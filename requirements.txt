@@ -1,1 +1,2 @@
--r requirements/base.txt
+Django==1.8.5
+wheel==0.24.0
