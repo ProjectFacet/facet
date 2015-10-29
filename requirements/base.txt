@@ -10,6 +10,7 @@ djangorestframework==3.2.4
 django-allauth==0.23
 django-location-field==1.6.1
 django-filter==0.11.0
+django-watson==1.1.8#egg=watson
 
 pilkit==1.1.13
 Pillow==3.0.0
