@@ -8,6 +8,7 @@ django-sql-explorer==0.8
 django-tinymce==2.0.5
 djangorestframework==3.2.4
 pilkit==1.1.13
+Pillow==3.0.0
 psycopg2==2.6.1
 six==1.10.0
 sqlparse==0.1.11
