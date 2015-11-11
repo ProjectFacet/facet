@@ -1,0 +1,13 @@
+html { padding:15px; }
+
+body {
+  border:0;
+  background:#202D3B;
+  font-family:monospace;
+  font-size:14px;
+  padding:10px;
+  color:#bdc3c7;
+  line-height:1.35em;
+  margin:0;
+  padding:0;
+}
