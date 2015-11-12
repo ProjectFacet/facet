@@ -109,37 +109,37 @@ class User(models.Model):
     )
 
 
-# class Organization(models.Model)
-# """ Media Organization """
-#
-#     org_id = models.SlugField(
-#         max_length=15,
-#         primary_key=True,
-#         help_text='Unique code for a user.'
-#         )
-#
-#     org_name = models.CharField(
-#         max_length=75,
-#         db_index=True,
-#         )
-#
-#     description = TextField(
-#         help_text="Short profile of organization.",
-#         blank=True
-#         )
-#
-#     org_logo = models.ImageField(
-#         upload_to="organizations",
-#         blank=True
-#         )
-#
-#     photo_display = ImageSpecField(
-#         source='photo',
-#         processors=[ResizeToFit(200, 200)],
-#         format='JPEG',
-#     )
-#
-#
+class Organization(models.Model)
+""" Media Organization """
+
+    org_id = models.SlugField(
+        max_length=15,
+        primary_key=True,
+        help_text='Unique code for a user.'
+        )
+
+    org_name = models.CharField(
+        max_length=75,
+        db_index=True,
+        )
+
+    description = models.TextField(
+        help_text="Short profile of organization.",
+        blank=True
+        )
+
+    org_logo = models.ImageField(
+        upload_to="organizations",
+        blank=True
+        )
+
+    logo_display = ImageSpecField(
+        source='photo',
+        processors=[ResizeToFit(200, 200)],
+        format='JPEG',
+    )
+
+
 # class Network(models.Model)
 # """ A group of organizations. """
 #
@@ -158,14 +158,14 @@ class User(models.Model):
 #         help_text="Short description of a network.",
 #         blank=True
 #         )
-#
+
 # #----------------------------------------------------#
 # # Content
 # #----------------------------------------------------#
-#
+
 # # A series has multiple stories.
 # # Stories can have multiple forms.
-#
+
 # class Series(models.Model)
 # """ A specific series """
 #
@@ -184,8 +184,8 @@ class User(models.Model):
 #         help_text="Short description of a series.",
 #         blank=True
 #     )
-#
-#
+
+
 # class Story(models.Model)
 # """ The unit of a story """
 #
@@ -204,55 +204,55 @@ class User(models.Model):
 #         help_text="Short description of a story.",
 #         blank=True
 #     )
-#
-#
+
+
 # # Tracking notes and documents and plans for a story
 # class StoryPlans(models.Model)
 # """ Planning for a story. """
 # pass
-#
-#
+
+
 # # Assets associated with a story
 # class StoryAssets(models.Model)
 # """ Assets for a story. """
 # pass
-#
-#
+
+
 # # Notes for the planning of a story
 # class StoryNotes(models.Model)
 # """ Notes for a story. """
 # pass
-#
-#
+
+
 # # Meta details associated with a story
 # # Perhaps place on main story class?
 # class StoryMeta(models.Model)
 # """ Meta details for a story. """
 # pass
-#
-#
-# class WebForms(Story)
+
+
+# class WebFacet(Story)
 # """ Regularly published web content.
 # Ex: Daily news, articles, videos, photo galleries
 # """
 # pass
-#
-#
-# class PrintForm(Story)
+
+
+# class PrintFacet(Story)
 # """ The print version of a story.
 # Ex: Daily news article, column, story.
 # """
 # pass
-#
-#
-# class RadioForm(Story)
+
+
+# class AudioFacet(Story)
 # """ Scheduled radio programming.
 # Ex: A single segment on Morning Edition.
 # """
 # pass
-#
-#
-# class TvForm(Story)
+
+
+# class VideoFacet(Story)
 # """ Scheduled television programming.
 # Ex: An episode of a television program.
 # """
