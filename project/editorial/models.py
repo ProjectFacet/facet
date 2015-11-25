@@ -18,28 +18,12 @@ from imagekit.models import ProcessedImageField
 # Models
 
 #----------------------------------------------------#
-# Users and permissions
+# Users
 #----------------------------------------------------#
 
 
 class User(models.Model):
     """ Site User """
-
-    # STATUS = (
-    #     ('ft', 'Full-time'),
-    #     ('pt', 'Part-time'),
-    #     ('fr', 'Freelance'),
-    #     ('co', 'Contract'),
-    # )
-    #
-    # PERMISSIONS = (
-    #     ('noncontent', 'Noncontent'),
-    #     ('affiliate', 'Affiliate'),
-    #     ('contributor', 'Contributor'),
-    #     ('staff', 'Staff'),
-    #     ('editor', 'Editor'),
-    #     ('administrator', 'Administrator'),
-    # )
 
     user_id = models.SlugField(
         max_length=15,
@@ -47,18 +31,38 @@ class User(models.Model):
         help_text='Unique code for a user.'
         )
 
-    first_name = models.CharField(
+    user_organization_id = models.ForeignKey(Organization)
+
+    user_admin_privilege = models.BooleanField(
+        initial = false
+        )
+
+    user_fname = models.CharField(
         max_length=45,
         db_index=True,
         )
 
-    last_name = models.CharField(
+    user_lname = models.CharField(
         max_length=45,
         db_index=True,
         )
 
     username = models.CharField(
         max_length=30
+        )
+
+    # user_password 
+
+    user_date_joined = models.DateTimeField(
+        auto_now_add=True
+        )
+
+    user_last_login = models.DateTimeField(
+        auto_now = True
+        )
+
+    user_is_active = models.BooleanField(
+        initial = True
         )
 
     email = models.EmailField(
@@ -75,16 +79,6 @@ class User(models.Model):
         blank=True
         )
 
-    # status = models.CharField(
-    #     max_length=1,
-    #     choice=STATUS
-    #     )
-
-    # permissions = models.CharField(
-    #     max_length=1,
-    #     choice=PERMISSIONS
-    #     )
-
     profile_photo = models.ImageField(
         upload_to="users",
         blank=True,
@@ -96,15 +90,27 @@ class User(models.Model):
         format='JPEG',
         )
 
-    facebook_un = models.CharField(
+    user_facebook = models.CharField(
         max_length=75
         )
 
-    twitter_un = models.CharField(
+    user_twitter = models.CharField(
         max_length=75
     )
 
-    linkedin_un = models.CharField(
+    user_linkedin = models.CharField(
+        max_length=75
+    )
+
+    user_instagram = models.CharField(
+        max_length=75
+    )
+
+    user_snapchat = models.CharField(
+        max_length=75
+    )
+
+    user_vine = models.CharField(
         max_length=75
     )
 
@@ -112,23 +118,29 @@ class User(models.Model):
 class Organization(models.Model)
 """ Media Organization """
 
-    org_id = models.SlugField(
+    organization_id = models.SlugField(
         max_length=15,
         primary_key=True,
         help_text='Unique code for a user.'
         )
 
-    org_name = models.CharField(
+    organization_name = models.CharField(
         max_length=75,
         db_index=True,
         )
 
-    description = models.TextField(
+    organization_owner = models.ForeignKey(User)
+
+    organization_description = models.TextField(
         help_text="Short profile of organization.",
         blank=True
         )
 
-    org_logo = models.ImageField(
+    organization_creation_date = models.DateTimeField(
+        auto_now_add=True
+        )
+
+    organization_logo = models.ImageField(
         upload_to="organizations",
         blank=True
         )
@@ -140,24 +152,45 @@ class Organization(models.Model)
     )
 
 
-# class Network(models.Model)
-# """ A group of organizations. """
-#
-#     network_id = models.SlugField(
-#         max_length=15,
-#         primary_key=True,
-#         help_text='unique identifier for a network'
-#         )
-#
-#     network_name = models.CharField(
-#         max_length=75,
-#         db_index=True,
-#         )
-#
-#     description = TextField(
-#         help_text="Short description of a network.",
-#         blank=True
-#         )
+class Network(models.Model)
+""" A group of organizations. """
+
+    network_id = models.SlugField(
+        max_length=15,
+        primary_key=True,
+        help_text='unique identifier for a network'
+        )
+
+    network_owner_organization = models.ForeignKey(Organization)
+
+    network_name = models.CharField(
+        max_length=75,
+        db_index=True,
+        )
+
+    network_creation_date = models.DateTimeField(
+        auto_now_add=True
+        )
+
+    network_description = TextField(
+        help_text="Short description of a network.",
+        blank=True
+        )
+
+    network_logo = models.ImageField(
+        upload_to="organizations",
+        blank=True
+        )
+
+    logo_display = ImageSpecField(
+        source='photo',
+        processors=[ResizeToFit(200, 200)],
+        format='JPEG',
+    )
+
+
+
+
 
 # #----------------------------------------------------#
 # # Content
