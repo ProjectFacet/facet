@@ -1,27 +1,36 @@
-""" Model for editorial application. """
+""" Model for editorial application.
+
+    Sections
+    ---------
+    People: User, Organization, Network
+    --Associations: NetworkOrganizaton, UserSeries, UserStory
+
+    Content: Series, Story, WebFacet, PrintFacet, AudioFacet, VideoFacet
+    --Associations: WebFacetContributors, PrintFacetContributors, AudioFacetContributors, VideoFacetContributors
+
+    MetaMaterials: SeriesPlan, StoryPlan, Asset
+    --Associations: WebFacetAsset, PrintFacetAsset, AudioFacetAsset, VideoFacetAsset
+"""
 
 from django.db import models
-
 from model_utils.models import TimeStampedModel
-
 from datetime import timedelta
-
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 from imagekit.processors import ResizeToFit
 from imagekit.models import ProcessedImageField
 
-
 # from django.core.exceptions import ValidationError
 # from django.core.urlresolvers import reverse
 # from django.core.validators import RegexValidator
-
 # from django.utils import timezone
 # from postgres.fields import ArrayField
 
-#----------------------------------------------------#
-#   People
-#----------------------------------------------------#
+
+#----------------------------------------------------------------------#
+#   People: User, Organization, Network
+#   --Associations: NetworkOrganizaton, UserSeries, UserStory
+#----------------------------------------------------------------------#
 
 
 class User(models.Model):
@@ -136,7 +145,7 @@ class User(models.Model):
     )
 
     class Meta:
-        verbose_name= = 'Team member'
+        verbose_name = 'Team member'
         verbose_name_plural = "Team members"
         ordering = ['user_credit_name']
 
@@ -197,7 +206,7 @@ class Organization(models.Model)
     )
 
     class Meta:
-        verbose_name= = 'Organization'
+        verbose_name = 'Organization'
         verbose_name_plural = "Organizations"
         ordering = ['organization_name']
 
@@ -260,7 +269,7 @@ class Network(models.Model)
     )
 
     class Meta:
-        verbose_name= = 'Network'
+        verbose_name = 'Network'
         verbose_name_plural = "Networks"
         ordering = ['network_name']
 
@@ -274,6 +283,7 @@ class Network(models.Model)
                                                 description=self.network_description
                                                 )
 
+#   Associations
 
 class NetworkOrganizaton(models.Model):
     """ The connection between Organizations and Networks. """
@@ -301,51 +311,171 @@ class NetworkOrganizaton(models.Model):
                                                 organization=self.organization.organization_name
                                                 )
 
-# #----------------------------------------------------#
-# # Content
-# #----------------------------------------------------#
 
-# # A series has multiple stories.
-# # Stories can have multiple forms.
+class UserStory(models.Model)
 
-# class Series(models.Model)
-# """ A specific series """
-#
-#     series_id = models.SlugField(
-#         max_length=15,
-#         primary_key=True,
-#         help_text='unique identifier for a series'
-#         )
-#
-#     series_name = models.CharField(
-#         max_length=75,
-#         db_index=True,
-#     )
-#
-#     description = TextField(
-#         help_text="Short description of a series.",
-#         blank=True
-#     )
+pass
+
+class UserSeries(models.Model)
+
+pass
+
+#----------------------------------------------------------------------#
+#   Content: Series, Story, WebFacet, PrintFacet, AudioFacet, VideoFacet
+#   --Associations: WebFacetContributors, PrintFacetContributors,
+#                  AudioFacetContributors, VideoFacetContributors
+#----------------------------------------------------------------------#
+
+# A Facet is always part of a story, even if there is only one facet.
+# A story is always part of a Series, even if it's a series of one.
+# (This helps maintain organization of assets as a series level for maximum flexibility.)
 
 
-# class Story(models.Model)
-# """ The unit of a story """
-#
-#     story_id = models.SlugField(
-#         max_length=15,
-#         primary_key=True,
-#         help_text='unique identifier for a story'
-#         )
-#
-#     series_id = models.CharField(
-#         max_length=75,
-#         db_index=True,
-#     )
-#
-#     description = TextField(
-#         help_text="Short description of a story.",
-#         blank=True
-#     )
+class Series(models.Model)
+    """ A specific series.
+
+    Series are an organizational component for one or more stories. The primary use is
+    to connect multiple stories on a particular topic. Series are also the method for keeping
+    assets easily available to all stories/facets.
+    """
+
+    series_id = models.SlugField(
+        max_length=15,
+        primary_key=True,
+        help_text='Unique identifier for a series.'
+        )
+
+    series_name = models.CharField(
+        max_length=75,
+        db_index=True,
+    )
+
+    series_description = TextField(
+        blank=True,
+        help_text='Short description of a series.',
+    )
+
+    series_owner = models.ForeignKey(
+        User,
+        help_text='The user that created the series.'
+        )
+
+    series_creation_date = models.DateTimeField(
+        auto_now_add=True
+        )
+
+    class Meta:
+        verbose_name = 'Series'
+        verbose_name_plural = "Series"
+        ordering = ['series_name']
+
+    def __str__(self):
+        return self.series_name
+
+    @property
+    def description(self):
+        return "{series}, {description}".format(
+                                                series=self.series_name,
+                                                description=self.series_description
+                                                )
+
+
+class Story(models.Model)
+    """ The unit of a story.
+
+    A story is the one or more facets that make up a particular story.
+    Sharing and collaboration is controlled at the story level.
+    The story also controls the sensivity and embargo status of the content.
+    """
+
+    story_id = models.SlugField(
+        max_length=15,
+        primary_key=True,
+        help_text='unique identifier for a story'
+        )
+
+    series_id = models.ForeignKey)
+        Series,
+        )
+
+    story_owner = models.ForeignKey(
+        User,
+        )
+
+    story_name = models.CharField(
+        max_lenth=500,
+        help_text='The name by which the series is identified'
+    )
+
+    story_description = TextField(
+        help_text="Short description of a story.",
+        blank=True
+    )
+
+    story_embargo = models.BooleanField(
+        initial=false
+        help_text='Is a story embargoed.'
+        )
+
+    story_embargo_datetime = models.DateTimeField(
+        help_text='When is the story no longer under embargo.'
+    )
+
+    # For now a boolean for sensitive or not. May have levels of sensitivity later.
+    story_sensitivity = models.BooleanField(
+        initial=false
+        help_text='Is a story sensitive, for limited viewing.'
+        )
+
+    story_creation_date = models.DateTimeField(
+        auto_now_add=True,
+        help_text='When was the story created.'
+    )
+
+    #TODO
+    #which users are associated with the story or any of its facets.
+    # story_team =
+
+
+class WebFacet(models.Model)
+    """ Regularly published web content.
+
+    Ex: Daily news, articles, videos, photo galleries
+    """
+pass
+
+
+class PrintFacet(models.Model)
+    """ The print version of a story.
+
+    Ex: Daily news article, column, story.
+    """
+pass
+
+
+class AudioFacet(models.Model)
+    """ Scheduled radio programming.
+
+    Ex: A single segment on Morning Edition.
+    """
+pass
+
+
+class VideoFacet(models.Model)
+    """ Scheduled television programming.
+
+    Ex: An episode of a television program.
+    """
+pass
+
+#   Associations
+
+
+#----------------------------------------------------------------------#
+#   MetaMaterials: SeriesPlan, StoryPlan, Asset
+#   --Associations: WebFacetAsset, PrintFacetAsset, AudioFacetAsset,
+#                   VideoFacetAsset
+#----------------------------------------------------------------------#
 
 
 # # Tracking notes and documents and plans for a story
@@ -373,29 +503,4 @@ class NetworkOrganizaton(models.Model):
 # pass
 
 
-# class WebFacet(Story)
-# """ Regularly published web content.
-# Ex: Daily news, articles, videos, photo galleries
-# """
-# pass
-
-
-# class PrintFacet(Story)
-# """ The print version of a story.
-# Ex: Daily news article, column, story.
-# """
-# pass
-
-
-# class AudioFacet(Story)
-# """ Scheduled radio programming.
-# Ex: A single segment on Morning Edition.
-# """
-# pass
-
-
-# class VideoFacet(Story)
-# """ Scheduled television programming.
-# Ex: An episode of a television program.
-# """
-# pass
+#   Assocations
