@@ -623,28 +623,130 @@ class VideoFacetContributors(models.Model)
 
 
 #----------------------------------------------------------------------#
-#   MetaMaterials: SeriesPlan, StoryPlan, Asset, Conversations
+#   MetaMaterials: SeriesPlan, StoryPlan, Asset, Conversation
 #   --Associations: WebFacetAsset, PrintFacetAsset, AudioFacetAsset,
 #                   VideoFacetAsset
 #----------------------------------------------------------------------#
 
 
-# class SeriesPlan(models.Model)
-#     """ Planning notes and conversation for a series. """
-#
-#
-# class StoryPlan(models.Model)
-#     """ Planning notes and conversation for a story. """
-#
-#
-# class Asset(models.Model)
-#     """ Assets for all the content contained in a series.
-#
-#     Because series are an organizational container for all content, whether
-#     there is one or more stories, making the asset associated with the series,
-#     makes it easily available to all content associated with it, rather than the
-#     assets either be attached to a story or to a series.
-#     """
+class SeriesPlan(models.Model)
+    """ Planning notes and conversation for a series. """
+
+    series_planning_id = models.SlugField(
+        max_length = 15,
+        primary_key=True,
+        help_text='Unique identifier for a series plan.'
+    )
+
+    series_id = models.ForeignKey(
+        Series,
+    )
+
+    series_plan_note = models.TextField(
+        help_text='Notes for planning a series. Can be any details needed to be tracked while a series is planned/reported.'
+    )
+
+    series_plan_note_owner = models.ForeignKey(
+        User,
+    )
+
+#TODO
+#Decide on best structure for SeriesConversation connections.
+
+
+class StoryPlan(models.Model)
+    """ Planning notes and conversation for a story. """
+
+    story_planning_id = models.SlugField(
+        max_length=15,
+        primary_key=True,
+        help_text='Unique identifier for a story plan.'
+    )
+
+    story_id = models.ForeignKey(
+        Story,
+    )
+
+    story_plan_note = models.TextField(
+        help_text='Notes for planning a story. Can be any details needed to be tracked while a story is planned/reported.'
+    )
+
+    story_plan_note_owner = models.ForeignKey(
+        User,
+    )
+
+#TODO
+#Decide on best structure for StoryConversation connections.
+
+
+class Asset(models.Model)
+    """ Assets for all the content contained in a series.
+
+    Because series are an organizational container for all content, whether
+    there is one or more stories, making the asset associated with the series,
+    makes it easily available to all content associated with it, rather than the
+    assets either be attached to a story or to a series.
+    """
+
+    asset_id = models.SlugField(
+        max_length=15,
+        primary_key=True,
+        help_text='Unique identifier for an asset.'
+        )
+
+    series_id = models.ForeignKey(
+        Series,
+        )
+
+    asset_owner = models.ForeignKey(
+        User,
+        )
+
+    asset_description = models.TextField(
+        max_length=300
+        help_text='What is the asset. (If a photo or graphic, it should be the caption.)'
+        )
+
+    asset_attribution = models.TextField(
+        max_lenth=200
+        help_text='The appropriate information for crediting the asset.'
+        )
+
+    asset_s3_link = models.URLField(
+        max_lenth=300
+        help_text='The item on S3.'
+        )
+
+    #Choices for Asset type
+    PHOTO = 'PIC'
+    GRAPHIC = 'GRAPH'
+    AUDIO = 'AUD'
+    VIDEO = 'VID'
+    DOCUMENT = 'DOC'
+
+    ASSET_TYPE_CHOICES = (
+        (PHOTO, 'Photograph'),
+        (GRAPHIC, 'Graphic'),
+        (AUDIO, 'Audio'),
+        (VIDEO, 'Video'),
+        (DOCUMENT, 'Document'),
+        )
+
+    asset_type = models.CharField(
+        choices = ASSET_TYPE_CHOICES,
+        help_text='What kind is the asset.'
+        )
+
+    asset_creation_date = models.DateTimeField(
+        auto_now_add=True,
+        help_text='When the asset was created.'
+        )
+
+
+class Conversation(models.Model)
+    """ Conversations between users. """
+
+pass
 
 
 #   Associations
