@@ -8,7 +8,7 @@
     Content: Series, Story, WebFacet, PrintFacet, AudioFacet, VideoFacet
     --Associations: WebFacetContributors, PrintFacetContributors, AudioFacetContributors, VideoFacetContributors
 
-    MetaMaterials: SeriesPlan, StoryPlan, Asset
+    MetaMaterials: SeriesPlan, StoryPlan, Asset, Conversations
     --Associations: WebFacetAsset, PrintFacetAsset, AudioFacetAsset, VideoFacetAsset
 """
 
@@ -313,13 +313,52 @@ class NetworkOrganizaton(models.Model):
                                                 )
 
 
-# class UserStory(models.Model)
-#     """ The connection between a user and a story they contributed to. """
-#
-#
-# class UserSeries(models.Model)
-#     """ The connection between a user and a series they contributed to. """
+class UserStory(models.Model)
+    """ The connection between a user and a story they contributed to. """
 
+    user_story_id = models.SlugField(
+        max_length=15,
+        primary_key=True,
+        help_text='Unique identifier for a user/story connection.'
+        )
+
+    user_id = models.ForeignKey(
+        User,
+        )
+
+    story_id = models.ForeignKey(
+        Story,
+        )
+
+    def __str__(self):
+        return "{user}, {story}".format(
+                                        user=self.user.user_credit_name,
+                                        story=self.story.story_name
+                                        )
+
+
+class UserSeries(models.Model)
+    """ The connection between a user and a series they contributed to. """
+
+    user_series_id = models.SlugField(
+        max_length=15,
+        primary_key=True,
+        help_text='Unique identifier for a user/series connection.'
+        )
+
+    user_id = models.ForeignKey(
+        User,
+        )
+
+    series_id = models.ForeignKey(
+        Series,
+        )
+
+    def __str__(self):
+        return "{user}, {series}".format(
+                                        user=self.user.user_credit_name,
+                                        series=self.series.series_name
+                                        )
 
 #----------------------------------------------------------------------#
 #   Content: Series, Story, WebFacet, PrintFacet, AudioFacet, VideoFacet
@@ -487,24 +526,104 @@ class Story(models.Model)
 #   ------------
 
 
-# class WebFacetContributors(models.Model)
-#     """ Which users are participating in creating the WebFacet. """
-#
-#
-# class PrintFacetContributors(models.Model)
-#     """ Which users are participating in creating the PrintFacet. """
-#
-##
-# class AudioFacetContributors(models.Model)
-#     """ Which users are participating in creating the AudioFacet. """
-#
-#
-# class VideoFacetContributors(models.Model)
-#     """ Which users are participating in creating the VideoFacet. """
+class WebFacetContributors(models.Model)
+    """ Which users are participating in creating the WebFacet. """
+
+    webfacet_contributor_id = models.SlugField(
+        max_length=15,
+        primary_key=True,
+        help_text='Unique identifier for a webfacet/contributor connection.'
+        )
+
+    webfacet_id = models.ForeignKey(
+        WebFacet,
+        )
+
+    user_id = models.ForeignKey(
+        User,
+        )
+
+    def __str__(self):
+        return "{webfacet}, {contributor}".format(
+                                        webfacet=self.webfacet.webfacet_title,
+                                        user=self.user.user_credit_name,
+                                        )
+
+
+class PrintFacetContributors(models.Model)
+    """ Which users are participating in creating the PrintFacet. """
+
+    printfacet_contributor_id = models.SlugField(
+        max_length=15,
+        primary_key=True,
+        help_text='Unique identifier for a printfacet/contributor connection.'
+        )
+
+    printfacet_id = models.ForeignKey(
+        PrintFacet,
+        )
+
+    user_id = models.ForeignKey(
+        User,
+        )
+
+    def __str__(self):
+        return "{printfacet}, {contributor}".format(
+                                        printfacet=self.webfacet.webfacet_title,
+                                        user=self.user.user_credit_name,
+                                        )
+
+
+class AudioFacetContributors(models.Model)
+    """ Which users are participating in creating the AudioFacet. """
+
+    audiofacet_contributor_id = models.SlugField(
+        max_length=15,
+        primary_key=True,
+        help_text='Unique identifier for a audiofacet/contributor connection.'
+        )
+
+    audiofacet_id = models.ForeignKey(
+        AudioFacet,
+        )
+
+    user_id = models.ForeignKey(
+        User,
+        )
+
+    def __str__(self):
+        return "{audiofacet}, {contributor}".format(
+                                        audiofacet=self.webfacet.webfacet_title,
+                                        user=self.user.user_credit_name,
+                                        )
+
+
+class VideoFacetContributors(models.Model)
+    """ Which users are participating in creating the VideoFacet. """
+
+    videofacet_contributor_id = models.SlugField(
+        max_length=15,
+        primary_key=True,
+        help_text='Unique identifier for a videofacet/contributor connection.'
+        )
+
+    videofacet_id = models.ForeignKey(
+        VideoFacet,
+        )
+
+    user_id = models.ForeignKey(
+        User,
+        )
+
+    def __str__(self):
+        return "{videofacet}, {contributor}".format(
+                                        videofacet=self.webfacet.webfacet_title,
+                                        user=self.user.user_credit_name,
+                                        )
 
 
 #----------------------------------------------------------------------#
-#   MetaMaterials: SeriesPlan, StoryPlan, Asset
+#   MetaMaterials: SeriesPlan, StoryPlan, Asset, Conversations
 #   --Associations: WebFacetAsset, PrintFacetAsset, AudioFacetAsset,
 #                   VideoFacetAsset
 #----------------------------------------------------------------------#
@@ -532,17 +651,97 @@ class Story(models.Model)
 #   ------------
 
 
-# class WebFacetAsset(models.Model)
-#     """ An asset connected to a specific webfacet. """
-#
-#
-# class PrintFacetAsset(models.Model)
-#     """ An asset connected to a specific printfacet. """
-#
-#
-# class AudioFacetAsset(models.Model)
-#     """ An asset connected to a specific audiofacet. """
-#
-#
-# class VideoFacetAsset(models.Model)
-#     """ An asset connected to a specific videofacet. """
+class WebFacetAsset(models.Model)
+    """ An asset connected to a specific webfacet. """
+
+    webfacet_asset_id = models.SlugField(
+        max_length=15,
+        primary_key=True,
+        help_text='Unique identifier for a webfacet/asset connection.'
+        )
+
+    webfacet_id = models.ForeignKey(
+        WebFacet,
+        )
+
+    asset_id = models.ForeignKey(
+        Asset,
+        )
+
+    def __str__(self):
+        return "{webfacet}, {asset}".format(
+                                        webfacet=self.webfacet.webfacet_title,
+                                        asset=self.asset.asset_description,
+                                        )
+
+
+class PrintFacetAsset(models.Model)
+    """ An asset connected to a specific printfacet. """
+
+    printfacet_asset_id = models.SlugField(
+        max_length=15,
+        primary_key=True,
+        help_text='Unique identifier for a printfacet/asset connection.'
+        )
+
+    printfacet_id = models.ForeignKey(
+        PrintFacet,
+        )
+
+    asset_id = models.ForeignKey(
+        Asset,
+        )
+
+    def __str__(self):
+        return "{printfacet}, {asset}".format(
+                                        printfacet=self.printfacet.printfacet_title,
+                                        asset=self.asset.asset_description,
+                                        )
+
+
+class AudioFacetAsset(models.Model)
+    """ An asset connected to a specific audiofacet. """
+
+    audiofacet_asset_id = models.SlugField(
+        max_length=15,
+        primary_key=True,
+        help_text='Unique identifier for a audiofacet/asset connection.'
+        )
+
+    audiofacet_id = models.ForeignKey(
+        AudioFacet,
+        )
+
+    asset_id = models.ForeignKey(
+        Asset,
+        )
+
+    def __str__(self):
+        return "{audiofacet}, {asset}".format(
+                                        audiofacet=self.sudiofacet.audiofacet_title,
+                                        asset=self.asset.asset_description,
+                                        )
+
+
+class VideoFacetAsset(models.Model)
+    """ An asset connected to a specific videofacet. """
+
+    videofacet_asset_id = models.SlugField(
+        max_length=15,
+        primary_key=True,
+        help_text='Unique identifier for a videofacet/asset connection.'
+        )
+
+    videofacet_id = models.ForeignKey(
+        VideoFacet,
+        )
+
+    asset_id = models.ForeignKey(
+        Asset,
+        )
+
+    def __str__(self):
+        return "{videofacet}, {asset}".format(
+                                        videofacet=self.videofacet.videofacet_title,
+                                        asset=self.asset.asset_description,
+                                        )
