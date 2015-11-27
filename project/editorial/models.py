@@ -48,11 +48,11 @@ class User(models.Model):
         help_text='Unique code for a user.'
         )
 
-    user_organization_id = models.ForeignKey(Organization)
+    user_organization_id = models.ForeignKey('Organization')
 
     user_admin_privilege = models.BooleanField(
-        initial = false
-        help_text='Is a user able to manage an organization/network and make/remove users.'
+        default=False,
+        help_text = 'Is a user able to manage an organization/network and make/remove users.'
         )
 
     user_fname = models.CharField(
@@ -91,7 +91,7 @@ class User(models.Model):
         )
 
     user_is_active = models.BooleanField(
-        initial = True
+        default = True
         )
 
     email = models.EmailField(
@@ -107,6 +107,11 @@ class User(models.Model):
         help_text="Short bio.",
         blank=True
         )
+
+    #TODO
+    # Add user_expertise
+    # An array of searchable tags about the user's particular skills, experience
+    # Ex. Courts, Education, Data, State Spending
 
     profile_photo = models.ImageField(
         upload_to="users",
@@ -160,7 +165,7 @@ class User(models.Model):
                                         )
 
 
-class Organization(models.Model)
+class Organization(models.Model):
     """ Media Organization.
 
     An organization is a media or publishing entity. Organization's are created
@@ -221,7 +226,7 @@ class Organization(models.Model)
                                                     )
 
 
-class Network(models.Model)
+class Network(models.Model):
     """ A group of organizations.
 
     A network is a collection of two or more organizations seeking to create a sharing
@@ -252,7 +257,7 @@ class Network(models.Model)
         auto_now_add=True
         )
 
-    network_description = TextField(
+    network_description = models.TextField(
         help_text="Short description of a network.",
         blank=True
         )
@@ -303,9 +308,6 @@ class NetworkOrganizaton(models.Model):
         Organization,
         )
 
-    class Meta:
-        unique_together = [['organization_name','network_name']]
-
     def __str__(self):
         return "{network}, {organization}".format(
                                                 network=self.network.network_name,
@@ -313,7 +315,7 @@ class NetworkOrganizaton(models.Model):
                                                 )
 
 
-class UserStory(models.Model)
+class UserStory(models.Model):
     """ The connection between a user and a story they contributed to. """
 
     user_story_id = models.SlugField(
@@ -327,7 +329,7 @@ class UserStory(models.Model)
         )
 
     story_id = models.ForeignKey(
-        Story,
+        'Story',
         )
 
     def __str__(self):
@@ -337,7 +339,7 @@ class UserStory(models.Model)
                                         )
 
 
-class UserSeries(models.Model)
+class UserSeries(models.Model):
     """ The connection between a user and a series they contributed to. """
 
     user_series_id = models.SlugField(
@@ -351,7 +353,7 @@ class UserSeries(models.Model)
         )
 
     series_id = models.ForeignKey(
-        Series,
+        'Series',
         )
 
     def __str__(self):
@@ -371,7 +373,7 @@ class UserSeries(models.Model)
 # (This helps maintain organization of assets as a series level for maximum flexibility.)
 
 
-class Series(models.Model)
+class Series(models.Model):
     """ A specific series.
 
     Series are an organizational component for one or more stories. The primary use is
@@ -387,10 +389,10 @@ class Series(models.Model)
 
     series_name = models.CharField(
         max_length=75,
-        db_index=True,
+        help_text='The name identifying the series.'
     )
 
-    series_description = TextField(
+    series_description = models.TextField(
         blank=True,
         help_text='Short description of a series.',
     )
@@ -420,7 +422,7 @@ class Series(models.Model)
                                                 )
 
 
-class Story(models.Model)
+class Story(models.Model):
     """ The unit of a story.
 
     A story is the one or more facets that make up a particular story.
@@ -432,28 +434,28 @@ class Story(models.Model)
         max_length=15,
         primary_key=True,
         help_text='unique identifier for a story'
-        )
+    )
 
-    series_id = models.ForeignKey)
+    series_id = models.ForeignKey(
         Series,
-        )
+    )
 
     story_owner = models.ForeignKey(
         User,
-        )
-
-    story_name = models.CharField(
-        max_lenth=500,
-        help_text='The name by which the series is identified'
     )
 
-    story_description = TextField(
+    story_name = models.CharField(
+        max_length=250,
+        help_text='The name by which the story is identified'
+    )
+
+    story_description = models.TextField(
         help_text="Short description of a story.",
         blank=True
     )
 
     story_embargo = models.BooleanField(
-        initial=false
+        default=False,
         help_text='Is a story embargoed?'
         )
 
@@ -463,7 +465,7 @@ class Story(models.Model)
 
     # For now a boolean for sensitive or not. May have levels of sensitivity later.
     story_sensitivity = models.BooleanField(
-        initial=false
+        default=False,
         help_text='Is a story sensitive, for limited viewing?'
         )
 
@@ -474,6 +476,7 @@ class Story(models.Model)
 
     #TODO
     #which users are associated with the story or any of its facets.
+    #postgres array of users?
     # story_team =
 
     class Meta:
@@ -492,41 +495,41 @@ class Story(models.Model)
                                                 )
 
 
-# class WebFacet(models.Model)
-#     """ Regularly published web content.
-#
-#     Ex: Daily news, articles, videos, photo galleries
-#     """
-#
-#
-# class PrintFacet(models.Model)
-#     """ The print version of a story.
-#
-#     Ex: Daily news article, column, story.
-#     """
-#
-#
-#
-# class AudioFacet(models.Model)
-#     """ Scheduled radio programming.
-#
-#     Ex: A single segment on Morning Edition.
-#     """
-#
-#
-#
-# class VideoFacet(models.Model)
-#     """ Scheduled television programming.
-#
-#     Ex: An episode of a television program.
-#     """
+class WebFacet(models.Model):
+    """ Regularly published web content.
 
+    Ex: Daily news, articles, videos, photo galleries
+    """
+pass
+
+class PrintFacet(models.Model):
+    """ The print version of a story.
+
+    Ex: Daily news article, column, story.
+    """
+pass
+
+
+class AudioFacet(models.Model):
+    """ Scheduled radio programming.
+
+    Ex: A single segment on Morning Edition.
+    """
+pass
+
+
+class VideoFacet(models.Model):
+    """ Scheduled television programming.
+
+    Ex: An episode of a television program.
+    """
+pass
 
 #   Associations
 #   ------------
 
 
-class WebFacetContributors(models.Model)
+class WebFacetContributors(models.Model):
     """ Which users are participating in creating the WebFacet. """
 
     webfacet_contributor_id = models.SlugField(
@@ -550,7 +553,7 @@ class WebFacetContributors(models.Model)
                                         )
 
 
-class PrintFacetContributors(models.Model)
+class PrintFacetContributors(models.Model):
     """ Which users are participating in creating the PrintFacet. """
 
     printfacet_contributor_id = models.SlugField(
@@ -574,7 +577,7 @@ class PrintFacetContributors(models.Model)
                                         )
 
 
-class AudioFacetContributors(models.Model)
+class AudioFacetContributors(models.Model):
     """ Which users are participating in creating the AudioFacet. """
 
     audiofacet_contributor_id = models.SlugField(
@@ -598,7 +601,7 @@ class AudioFacetContributors(models.Model)
                                         )
 
 
-class VideoFacetContributors(models.Model)
+class VideoFacetContributors(models.Model):
     """ Which users are participating in creating the VideoFacet. """
 
     videofacet_contributor_id = models.SlugField(
@@ -629,7 +632,7 @@ class VideoFacetContributors(models.Model)
 #----------------------------------------------------------------------#
 
 
-class SeriesPlan(models.Model)
+class SeriesPlan(models.Model):
     """ Planning notes and conversation for a series. """
 
     series_planning_id = models.SlugField(
@@ -654,7 +657,7 @@ class SeriesPlan(models.Model)
 #Decide on best structure for SeriesConversation connections.
 
 
-class StoryPlan(models.Model)
+class StoryPlan(models.Model):
     """ Planning notes and conversation for a story. """
 
     story_planning_id = models.SlugField(
@@ -679,7 +682,7 @@ class StoryPlan(models.Model)
 #Decide on best structure for StoryConversation connections.
 
 
-class Asset(models.Model)
+class Asset(models.Model):
     """ Assets for all the content contained in a series.
 
     Because series are an organizational container for all content, whether
@@ -703,17 +706,17 @@ class Asset(models.Model)
         )
 
     asset_description = models.TextField(
-        max_length=300
+        max_length=300,
         help_text='What is the asset. (If a photo or graphic, it should be the caption.)'
         )
 
     asset_attribution = models.TextField(
-        max_lenth=200
+        max_length=200,
         help_text='The appropriate information for crediting the asset.'
         )
 
     asset_s3_link = models.URLField(
-        max_lenth=300
+        max_length=300,
         help_text='The item on S3.'
         )
 
@@ -733,6 +736,7 @@ class Asset(models.Model)
         )
 
     asset_type = models.CharField(
+        max_length=20,
         choices = ASSET_TYPE_CHOICES,
         help_text='What kind is the asset.'
         )
@@ -743,7 +747,7 @@ class Asset(models.Model)
         )
 
 
-class Conversation(models.Model)
+class Conversation(models.Model):
     """ Conversations between users. """
 
 pass
@@ -753,7 +757,7 @@ pass
 #   ------------
 
 
-class WebFacetAsset(models.Model)
+class WebFacetAsset(models.Model):
     """ An asset connected to a specific webfacet. """
 
     webfacet_asset_id = models.SlugField(
@@ -777,7 +781,7 @@ class WebFacetAsset(models.Model)
                                         )
 
 
-class PrintFacetAsset(models.Model)
+class PrintFacetAsset(models.Model):
     """ An asset connected to a specific printfacet. """
 
     printfacet_asset_id = models.SlugField(
@@ -801,7 +805,7 @@ class PrintFacetAsset(models.Model)
                                         )
 
 
-class AudioFacetAsset(models.Model)
+class AudioFacetAsset(models.Model):
     """ An asset connected to a specific audiofacet. """
 
     audiofacet_asset_id = models.SlugField(
@@ -825,7 +829,7 @@ class AudioFacetAsset(models.Model)
                                         )
 
 
-class VideoFacetAsset(models.Model)
+class VideoFacetAsset(models.Model):
     """ An asset connected to a specific videofacet. """
 
     videofacet_asset_id = models.SlugField(
