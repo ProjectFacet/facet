@@ -284,6 +284,7 @@ class Network(models.Model)
                                                 )
 
 #   Associations
+#   ------------
 
 class NetworkOrganizaton(models.Model):
     """ The connection between Organizations and Networks. """
@@ -312,13 +313,13 @@ class NetworkOrganizaton(models.Model):
                                                 )
 
 
-class UserStory(models.Model)
+# class UserStory(models.Model)
+#     """ The connection between a user and a story they contributed to. """
+#
+#
+# class UserSeries(models.Model)
+#     """ The connection between a user and a series they contributed to. """
 
-pass
-
-class UserSeries(models.Model)
-
-pass
 
 #----------------------------------------------------------------------#
 #   Content: Series, Story, WebFacet, PrintFacet, AudioFacet, VideoFacet
@@ -414,7 +415,7 @@ class Story(models.Model)
 
     story_embargo = models.BooleanField(
         initial=false
-        help_text='Is a story embargoed.'
+        help_text='Is a story embargoed?'
         )
 
     story_embargo_datetime = models.DateTimeField(
@@ -424,7 +425,7 @@ class Story(models.Model)
     # For now a boolean for sensitive or not. May have levels of sensitivity later.
     story_sensitivity = models.BooleanField(
         initial=false
-        help_text='Is a story sensitive, for limited viewing.'
+        help_text='Is a story sensitive, for limited viewing?'
         )
 
     story_creation_date = models.DateTimeField(
@@ -436,39 +437,70 @@ class Story(models.Model)
     #which users are associated with the story or any of its facets.
     # story_team =
 
+    class Meta:
+        verbose_name = 'Story'
+        verbose_name_plural = "Stories"
+        ordering = ['story_name']
 
-class WebFacet(models.Model)
-    """ Regularly published web content.
+    def __str__(self):
+        return self.story_name
 
-    Ex: Daily news, articles, videos, photo galleries
-    """
-pass
-
-
-class PrintFacet(models.Model)
-    """ The print version of a story.
-
-    Ex: Daily news article, column, story.
-    """
-pass
-
-
-class AudioFacet(models.Model)
-    """ Scheduled radio programming.
-
-    Ex: A single segment on Morning Edition.
-    """
-pass
+    @property
+    def description(self):
+        return "{story}, {description}".format(
+                                                story=self.story_name,
+                                                description=self.story_description
+                                                )
 
 
-class VideoFacet(models.Model)
-    """ Scheduled television programming.
+# class WebFacet(models.Model)
+#     """ Regularly published web content.
+#
+#     Ex: Daily news, articles, videos, photo galleries
+#     """
+#
+#
+# class PrintFacet(models.Model)
+#     """ The print version of a story.
+#
+#     Ex: Daily news article, column, story.
+#     """
+#
+#
+#
+# class AudioFacet(models.Model)
+#     """ Scheduled radio programming.
+#
+#     Ex: A single segment on Morning Edition.
+#     """
+#
+#
+#
+# class VideoFacet(models.Model)
+#     """ Scheduled television programming.
+#
+#     Ex: An episode of a television program.
+#     """
 
-    Ex: An episode of a television program.
-    """
-pass
 
 #   Associations
+#   ------------
+
+
+# class WebFacetContributors(models.Model)
+#     """ Which users are participating in creating the WebFacet. """
+#
+#
+# class PrintFacetContributors(models.Model)
+#     """ Which users are participating in creating the PrintFacet. """
+#
+##
+# class AudioFacetContributors(models.Model)
+#     """ Which users are participating in creating the AudioFacet. """
+#
+#
+# class VideoFacetContributors(models.Model)
+#     """ Which users are participating in creating the VideoFacet. """
 
 
 #----------------------------------------------------------------------#
@@ -478,29 +510,39 @@ pass
 #----------------------------------------------------------------------#
 
 
-# # Tracking notes and documents and plans for a story
-# class StoryPlans(models.Model)
-# """ Planning for a story. """
-# pass
+# class SeriesPlan(models.Model)
+#     """ Planning notes and conversation for a series. """
+#
+#
+# class StoryPlan(models.Model)
+#     """ Planning notes and conversation for a story. """
+#
+#
+# class Asset(models.Model)
+#     """ Assets for all the content contained in a series.
+#
+#     Because series are an organizational container for all content, whether
+#     there is one or more stories, making the asset associated with the series,
+#     makes it easily available to all content associated with it, rather than the
+#     assets either be attached to a story or to a series.
+#     """
 
 
-# # Assets associated with a story
-# class StoryAssets(models.Model)
-# """ Assets for a story. """
-# pass
+#   Associations
+#   ------------
 
 
-# # Notes for the planning of a story
-# class StoryNotes(models.Model)
-# """ Notes for a story. """
-# pass
-
-
-# # Meta details associated with a story
-# # Perhaps place on main story class?
-# class StoryMeta(models.Model)
-# """ Meta details for a story. """
-# pass
-
-
-#   Assocations
+# class WebFacetAsset(models.Model)
+#     """ An asset connected to a specific webfacet. """
+#
+#
+# class PrintFacetAsset(models.Model)
+#     """ An asset connected to a specific printfacet. """
+#
+#
+# class AudioFacetAsset(models.Model)
+#     """ An asset connected to a specific audiofacet. """
+#
+#
+# class VideoFacetAsset(models.Model)
+#     """ An asset connected to a specific videofacet. """
