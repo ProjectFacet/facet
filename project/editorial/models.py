@@ -1,7 +1,11 @@
 """ Model for editorial application. """
 
 from django.db import models
+
+from model_utils.models import TimeStampedModel
+
 from datetime import timedelta
+
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 from imagekit.processors import ResizeToFit
@@ -11,7 +15,7 @@ from imagekit.models import ProcessedImageField
 # from django.core.exceptions import ValidationError
 # from django.core.urlresolvers import reverse
 # from django.core.validators import RegexValidator
-# from django.db import models
+
 # from django.utils import timezone
 # from postgres.fields import ArrayField
 
@@ -141,7 +145,10 @@ class User(models.Model):
 
     @property
     def description(self):
-        return "{user}, {title}".format(user=self.user_credit_name, title=self.user_title)
+        return "{user}, {title}".format(
+                                        user=self.user_credit_name,
+                                        title=self.user_title
+                                        )
 
 
 class Organization(models.Model)
@@ -165,7 +172,9 @@ class Organization(models.Model)
         db_index=True,
         )
 
-    organization_owner = models.ForeignKey(User)
+    organization_owner = models.ForeignKey(
+        User,
+        )
 
     organization_description = models.TextField(
         help_text="Short profile of organization.",
@@ -197,7 +206,10 @@ class Organization(models.Model)
 
     @property
     def description(self):
-        return "{organization}, {description}".format(organization=self.organization_name, description=self.organization_description)
+        return "{organization}, {description}".format(
+                                                    organization=self.organization_name,
+                                                    description=self.organization_description
+                                                    )
 
 
 class Network(models.Model)
@@ -217,7 +229,9 @@ class Network(models.Model)
         help_text='Unique identifier for a network'
         )
 
-    network_owner_organization = models.ForeignKey(Organization)
+    network_owner_organization = models.ForeignKey(
+        Organization,
+        )
 
     network_name = models.CharField(
         max_length=75,
@@ -255,10 +269,37 @@ class Network(models.Model)
 
     @property
     def description(self):
-        return "{network}, {description}".format(network=self.network_name, description=self.network_description)
+        return "{network}, {description}".format(
+                                                network=self.network_name,
+                                                description=self.network_description
+                                                )
 
 
-class NetworkOrganizaton()
+class NetworkOrganizaton(models.Model):
+    """ The connection between Organizations and Networks. """
+
+    network_organization_id = models.SlugField(
+        max_length=15,
+        primary_key=True,
+        help_text='Unique identifier for a network/organization connection.'
+        )
+
+    network_id = models.ForeignKey(
+        Network,
+        )
+
+    organization_id = models.ForeignKey(
+        Organization,
+        )
+
+    class Meta:
+        unique_together = [['organization_name','network_name']]
+
+    def __str__(self):
+        return "{network}, {organization}".format(
+                                                network=self.network.network_name,
+                                                organization=self.organization.organization_name
+                                                )
 
 # #----------------------------------------------------#
 # # Content
