@@ -3,13 +3,14 @@
     Sections
     ---------
     People: User, Organization, Network
-    --Associations: NetworkOrganizaton, UserSeries, UserStory
+    -Associations: NetworkOrganizaton, UserSeries, UserStory
 
     Content: Series, Story, WebFacet, PrintFacet, AudioFacet, VideoFacet
-    --Associations: WebFacetContributors, PrintFacetContributors, AudioFacetContributors, VideoFacetContributors
+    -Associations: WebFacetContributors, PrintFacetContributors, AudioFacetContributors, VideoFacetContributors
+                StoryCopyDetails, SeriesCopyDetails, WebFacetCopyDetails, PrintFacetCopyDetails, AudioFacetCopyDetails, VideoFacetCopyDetails
 
-    MetaMaterials: SeriesPlan, StoryPlan, Asset, Conversations
-    --Associations: WebFacetAsset, PrintFacetAsset, AudioFacetAsset, VideoFacetAsset
+    MetaMaterials: SeriesPlan, StoryPlan, Asset, Comment, CommentReadStatus, Discussion, PrivateDiscussion
+    -Associations: WebFacetAsset, PrintFacetAsset, AudioFacetAsset, VideoFacetAsset
 """
 
 from django.db import models
@@ -29,7 +30,7 @@ from imagekit.models import ProcessedImageField
 
 #----------------------------------------------------------------------#
 #   People: User, Organization, Network
-#   --Associations: NetworkOrganizaton, UserSeries, UserStory
+#   -Associations: NetworkOrganizaton, UserSeries, UserStory
 #----------------------------------------------------------------------#
 
 
@@ -364,8 +365,10 @@ class UserSeries(models.Model):
 
 #----------------------------------------------------------------------#
 #   Content: Series, Story, WebFacet, PrintFacet, AudioFacet, VideoFacet
-#   --Associations: WebFacetContributors, PrintFacetContributors,
+#   -Associations: WebFacetContributors, PrintFacetContributors,
 #                  AudioFacetContributors, VideoFacetContributors
+#                  StoryCopyDetails, SeriesCopyDetails, WebFacetCopyDetails,
+#                  PrintFacetCopyDetails, AudioFacetCopyDetails, VideoFacetCopyDetails
 #----------------------------------------------------------------------#
 
 # A Facet is always part of a story, even if there is only one facet.
@@ -525,6 +528,7 @@ class VideoFacet(models.Model):
     """
 pass
 
+
 #   Associations
 #   ------------
 
@@ -625,8 +629,44 @@ class VideoFacetContributors(models.Model):
                                         )
 
 
+class SeriesCopyDetails(models.Model):
+    """ The details of each copy of a series.
+
+    Each time an organization elects to copy a shared facet, query to see if the
+    series has already been copied over. If not copy the series and the story to the
+    new organization.
+    """
+    pass
+
+
+class StoryCopyDetails(models.Model):
+    """ The details of each copy of a story.
+
+    Each time an organization elects to copy a shared facet, query to see if the
+    story has already been copied over. If not, copy the story to the new organization.
+    """
+    pass
+
+
+class WebFacetCopyDetails(models.Model):
+    """ The details of a each copy of a webfacet. """
+    pass
+
+class PrintFacetCopyDetails(models.Model):
+    """ The details of a each copy of a printfacet. """
+    pass
+
+class AudioFacetCopyDetails(models.Model):
+    """ The details of a each copy of a audiofacet. """
+    pass
+
+class VideoFacetCopyDetails(models.Model):
+    """ The details of a each copy of a videofacet. """
+    pass
+
 #----------------------------------------------------------------------#
-#   MetaMaterials: SeriesPlan, StoryPlan, Asset, Conversation
+#   MetaMaterials: SeriesPlan, StoryPlan, Asset,
+#                  Comment, CommentReadStatus, Discussion, PrivateDiscussion
 #   --Associations: WebFacetAsset, PrintFacetAsset, AudioFacetAsset,
 #                   VideoFacetAsset
 #----------------------------------------------------------------------#
@@ -747,10 +787,28 @@ class Asset(models.Model):
         )
 
 
-class Conversation(models.Model):
-    """ Conversations between users. """
+class Discussion(models.Model):
+    """ Container for related comments. """
+    pass
 
-pass
+
+class PrivateDiscussion(models.Model):
+    """ Signifier of private conversations. """
+    pass
+
+
+class Comment(models.Model):
+    """ An individual comment made on a seriesplan, storyplan, webfacet,
+    audiofacet, videfacet, or between one or more people privately.
+    """
+    pass
+
+
+class CommentReadStatus(models.Model):
+    """ Tracking if a user involved in a discussion has read the most recent
+    comment in order to surface unread comments first.
+    """
+    pass
 
 
 #   Associations
