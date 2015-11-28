@@ -14,6 +14,7 @@
 """
 
 from django.db import models
+from django.contrib.postgres.fields import ArrayField
 from model_utils.models import TimeStampedModel
 from datetime import timedelta
 from imagekit.models import ImageSpecField
@@ -47,24 +48,24 @@ class User(models.Model):
         max_length=15,
         primary_key=True,
         help_text='Unique code for a user.'
-        )
+    )
 
     user_organization_id = models.ForeignKey('Organization')
 
     user_admin_privilege = models.BooleanField(
         default=False,
         help_text = 'Is a user able to manage an organization/network and make/remove users.'
-        )
+    )
 
     user_fname = models.CharField(
         max_length=45,
         db_index=True,
-        )
+    )
 
     user_lname = models.CharField(
         max_length=45,
         db_index=True,
-        )
+    )
 
     user_credit_name = models.CharField(
         max_length=75,
@@ -75,7 +76,7 @@ class User(models.Model):
         max_length=30,
         unique=True,
         help_text='Username as needed for login purposes.'
-        )
+    )
 
     user_title = models.CharField(
         max_length=100,
@@ -85,50 +86,49 @@ class User(models.Model):
 
     user_date_joined = models.DateTimeField(
         auto_now_add=True
-        )
+    )
 
     user_last_login = models.DateTimeField(
         auto_now = True
-        )
+    )
 
     user_is_active = models.BooleanField(
         default = True
-        )
+    )
 
     email = models.EmailField(
         blank=True,
-        )
+    )
 
     phone = models.CharField(
         max_length=20,
         blank=True,
-        )
+    )
 
     bio = models.TextField(
         help_text="Short bio.",
         blank=True
-        )
+    )
 
-    #TODO
-    # Add user_expertise
-    # An array of searchable tags about the user's particular skills, experience
-    # Ex. Courts, Education, Data, State Spending
+    user_expertise = models.ArrayField(
+        help_text='Array of user skills and beats to filter/search by.'
+    )
 
     profile_photo = models.ImageField(
         upload_to="users",
         blank=True,
-        )
+    )
 
     photo_display = ImageSpecField(
         source='photo',
         processors=[ResizeToFit(200, 200)],
         format='JPEG',
-        )
+    )
 
     #Links to user's professional social media accounts
     user_facebook = models.CharField(
         max_length=150
-        )
+    )
 
     user_twitter = models.CharField(
         max_length=150
@@ -180,30 +180,30 @@ class Organization(models.Model):
         max_length=15,
         primary_key=True,
         help_text='Unique code for an organization.'
-        )
+    )
 
     organization_name = models.CharField(
         max_length=75,
         db_index=True,
-        )
+    )
 
     organization_owner = models.ForeignKey(
         User,
-        )
+    )
 
     organization_description = models.TextField(
         help_text="Short profile of organization.",
         blank=True
-        )
+    )
 
     organization_creation_date = models.DateTimeField(
         auto_now_add=True
-        )
+    )
 
     organization_logo = models.ImageField(
         upload_to="organizations",
         blank=True
-        )
+    )
 
     logo_display = ImageSpecField(
         source='photo',
@@ -242,31 +242,31 @@ class Network(models.Model):
         max_length=15,
         primary_key=True,
         help_text='Unique identifier for a network'
-        )
+    )
 
     network_owner_organization = models.ForeignKey(
         Organization,
-        )
+    )
 
     network_name = models.CharField(
         max_length=75,
         db_index=True,
         help_text="The name by which members identify the network."
-        )
+    )
 
     network_creation_date = models.DateTimeField(
         auto_now_add=True
-        )
+    )
 
     network_description = models.TextField(
         help_text="Short description of a network.",
         blank=True
-        )
+    )
 
     network_logo = models.ImageField(
         upload_to="organizations",
         blank=True
-        )
+    )
 
     logo_display = ImageSpecField(
         source='photo',
@@ -299,15 +299,15 @@ class NetworkOrganizaton(models.Model):
         max_length=15,
         primary_key=True,
         help_text='Unique identifier for a network/organization connection.'
-        )
+    )
 
     network_id = models.ForeignKey(
         Network,
-        )
+    )
 
     organization_id = models.ForeignKey(
         Organization,
-        )
+    )
 
     def __str__(self):
         return "{network}, {organization}".format(
@@ -323,15 +323,15 @@ class UserStory(models.Model):
         max_length=15,
         primary_key=True,
         help_text='Unique identifier for a user/story connection.'
-        )
+    )
 
     user_id = models.ForeignKey(
         User,
-        )
+    )
 
     story_id = models.ForeignKey(
         'Story',
-        )
+    )
 
     def __str__(self):
         return "{user}, {story}".format(
@@ -347,15 +347,15 @@ class UserSeries(models.Model):
         max_length=15,
         primary_key=True,
         help_text='Unique identifier for a user/series connection.'
-        )
+    )
 
     user_id = models.ForeignKey(
         User,
-        )
+    )
 
     series_id = models.ForeignKey(
         'Series',
-        )
+    )
 
     def __str__(self):
         return "{user}, {series}".format(
@@ -388,7 +388,7 @@ class Series(models.Model):
         max_length=15,
         primary_key=True,
         help_text='Unique identifier for a series.'
-        )
+    )
 
     series_name = models.CharField(
         max_length=75,
@@ -403,11 +403,29 @@ class Series(models.Model):
     series_owner = models.ForeignKey(
         User,
         help_text='The user that created the series.'
-        )
+    )
 
     series_creation_date = models.DateTimeField(
         auto_now_add=True
-        )
+    )
+
+    share = models.BooleanField(
+        default=False,
+        help_text='The series is being shared with a network.'
+    )
+
+    collaborate = models.BooleanField(
+        default=False,
+        help_text='The series is being collaborated on with a network.'
+    )
+
+    shared_with = models.ArrayField(
+        help_text='Array of the network ids that a series is shared with.'
+    )
+
+    collaborate_with = models.ArrayField(
+        help_text='Array of the network ids that a series is open to collaboration with.'
+    )
 
     class Meta:
         verbose_name = 'Series'
@@ -477,10 +495,27 @@ class Story(models.Model):
         help_text='When was the story created.'
     )
 
-    #TODO
-    #which users are associated with the story or any of its facets.
-    #postgres array of users?
-    # story_team =
+    story_team = models.ArrayField(
+        help_text='Array of user_ids that participated in a story.'
+    )
+
+    share = models.BooleanField(
+        default=False,
+        help_text='The story is being shared with a network.'
+    )
+
+    collaborate = models.BooleanField(
+        default=False,
+        help_text='The story is being collaborated on with a network.'
+    )
+
+    shared_with = models.ArrayField(
+        help_text='Array of the network ids that a story is shared with.'
+    )
+
+    collaborate_with = models.ArrayField(
+        help_text='Array of the network ids that a story is open to collaboration with.'
+    )
 
     class Meta:
         verbose_name = 'Story'
@@ -540,15 +575,15 @@ class WebFacetContributors(models.Model):
         max_length=15,
         primary_key=True,
         help_text='Unique identifier for a webfacet/contributor connection.'
-        )
+    )
 
     webfacet_id = models.ForeignKey(
         WebFacet,
-        )
+    )
 
     user_id = models.ForeignKey(
         User,
-        )
+    )
 
     def __str__(self):
         return "{webfacet}, {contributor}".format(
@@ -564,15 +599,15 @@ class PrintFacetContributors(models.Model):
         max_length=15,
         primary_key=True,
         help_text='Unique identifier for a printfacet/contributor connection.'
-        )
+    )
 
     printfacet_id = models.ForeignKey(
         PrintFacet,
-        )
+    )
 
     user_id = models.ForeignKey(
         User,
-        )
+    )
 
     def __str__(self):
         return "{printfacet}, {contributor}".format(
@@ -588,15 +623,15 @@ class AudioFacetContributors(models.Model):
         max_length=15,
         primary_key=True,
         help_text='Unique identifier for a audiofacet/contributor connection.'
-        )
+    )
 
     audiofacet_id = models.ForeignKey(
         AudioFacet,
-        )
+    )
 
     user_id = models.ForeignKey(
         User,
-        )
+    )
 
     def __str__(self):
         return "{audiofacet}, {contributor}".format(
@@ -612,15 +647,15 @@ class VideoFacetContributors(models.Model):
         max_length=15,
         primary_key=True,
         help_text='Unique identifier for a videofacet/contributor connection.'
-        )
+    )
 
     videofacet_id = models.ForeignKey(
         VideoFacet,
-        )
+    )
 
     user_id = models.ForeignKey(
         User,
-        )
+    )
 
     def __str__(self):
         return "{videofacet}, {contributor}".format(
@@ -636,7 +671,31 @@ class SeriesCopyDetails(models.Model):
     series has already been copied over. If not copy the series and the story to the
     new organization.
     """
-    pass
+    copy_details_id = models.SlugField(
+        max_length=15,
+        primary_key=True,
+        help_text='Unique identifier for a series copy detail object.'
+    )
+
+    organization_id = models.ForeignKey(
+        Organization,
+        help_text='Id of the organization that made the copy.'
+    )
+
+    original_id = models.ForeignKey(
+        Series,
+        help_text='Original id of the series.'
+    )
+
+    new_id = models.SlugField(
+        max_length = 15
+        help_text='Id of the series on the copying organization\'s site.'
+    )
+
+    copy_date = models.DateTimeField(
+        auto_now_add=True,
+        help_text='Datetime when copy was made.'
+    )
 
 
 class StoryCopyDetails(models.Model):
@@ -645,24 +704,145 @@ class StoryCopyDetails(models.Model):
     Each time an organization elects to copy a shared facet, query to see if the
     story has already been copied over. If not, copy the story to the new organization.
     """
-    pass
+    copy_details_id = models.SlugField(
+        max_length=15,
+        primary_key=True,
+        help_text='Unique identifier for a story copy detail object.'
+    )
+
+    organization_id = models.ForeignKey(
+        Organization,
+        help_text='Id of the organization that made the copy.'
+    )
+
+    original_id = models.ForeignKey(
+        Series,
+        help_text='Original id of the story.'
+    )
+
+    new_id = models.SlugField(
+        max_length = 15
+        help_text='Id of the story on the copying organization\'s site.'
+    )
+
+    copy_date = models.DateTimeField(
+        auto_now_add=True,
+        help_text='Datetime when copy was made.'
+    )
 
 
 class WebFacetCopyDetails(models.Model):
     """ The details of a each copy of a webfacet. """
-    pass
+
+    copy_details_id = models.SlugField(
+        max_length=15,
+        primary_key=True,
+        help_text='Unique identifier for a story copy detail object.'
+    )
+
+    organization_id = models.ForeignKey(
+        Organization,
+        help_text='Id of the organization that made the copy.'
+    )
+
+    original_id = models.ForeignKey(
+        Series,
+        help_text='Original id of the story.'
+    )
+
+    new_id = models.SlugField(
+        max_length = 15
+        help_text='Id of the story on the copying organization\'s site.'
+    )
+
+    copy_date = models.DateTimeField(
+        auto_now_add=True,
+        help_text='Datetime when copy was made.'
+    )
 
 class PrintFacetCopyDetails(models.Model):
     """ The details of a each copy of a printfacet. """
-    pass
+    copy_details_id = models.SlugField(
+        max_length=15,
+        primary_key=True,
+        help_text='Unique identifier for a story copy detail object.'
+    )
+
+    organization_id = models.ForeignKey(
+        Organization,
+        help_text='Id of the organization that made the copy.'
+    )
+
+    original_id = models.ForeignKey(
+        Series,
+        help_text='Original id of the story.'
+    )
+
+    new_id = models.SlugField(
+        max_length = 15
+        help_text='Id of the story on the copying organization\'s site.'
+    )
+
+    copy_date = models.DateTimeField(
+        auto_now_add=True,
+        help_text='Datetime when copy was made.'
+    )
 
 class AudioFacetCopyDetails(models.Model):
     """ The details of a each copy of a audiofacet. """
-    pass
+    copy_details_id = models.SlugField(
+        max_length=15,
+        primary_key=True,
+        help_text='Unique identifier for a story copy detail object.'
+    )
+
+    organization_id = models.ForeignKey(
+        Organization,
+        help_text='Id of the organization that made the copy.'
+    )
+
+    original_id = models.ForeignKey(
+        Series,
+        help_text='Original id of the story.'
+    )
+
+    new_id = models.SlugField(
+        max_length = 15
+        help_text='Id of the story on the copying organization\'s site.'
+    )
+
+    copy_date = models.DateTimeField(
+        auto_now_add=True,
+        help_text='Datetime when copy was made.'
+    )
 
 class VideoFacetCopyDetails(models.Model):
     """ The details of a each copy of a videofacet. """
-    pass
+    copy_details_id = models.SlugField(
+        max_length=15,
+        primary_key=True,
+        help_text='Unique identifier for a story copy detail object.'
+    )
+
+    organization_id = models.ForeignKey(
+        Organization,
+        help_text='Id of the organization that made the copy.'
+    )
+
+    original_id = models.ForeignKey(
+        Series,
+        help_text='Original id of the story.'
+    )
+
+    new_id = models.SlugField(
+        max_length = 15
+        help_text='Id of the story on the copying organization\'s site.'
+    )
+
+    copy_date = models.DateTimeField(
+        auto_now_add=True,
+        help_text='Datetime when copy was made.'
+    )
 
 #----------------------------------------------------------------------#
 #   MetaMaterials: SeriesPlan, StoryPlan, Asset,
@@ -693,8 +873,9 @@ class SeriesPlan(models.Model):
         User,
     )
 
-#TODO
-#Decide on best structure for SeriesConversation connections.
+    series_discussion_id = models.ForeignKey(
+        'Discussion',
+    )
 
 
 class StoryPlan(models.Model):
@@ -718,8 +899,9 @@ class StoryPlan(models.Model):
         User,
     )
 
-#TODO
-#Decide on best structure for StoryConversation connections.
+    story_discussion_id = models.ForeignKey(
+        'Discussion',
+    )
 
 
 class Asset(models.Model):
@@ -735,30 +917,30 @@ class Asset(models.Model):
         max_length=15,
         primary_key=True,
         help_text='Unique identifier for an asset.'
-        )
+    )
 
     series_id = models.ForeignKey(
         Series,
-        )
+    )
 
     asset_owner = models.ForeignKey(
         User,
-        )
+    )
 
     asset_description = models.TextField(
         max_length=300,
         help_text='What is the asset. (If a photo or graphic, it should be the caption.)'
-        )
+    )
 
     asset_attribution = models.TextField(
         max_length=200,
         help_text='The appropriate information for crediting the asset.'
-        )
+    )
 
     asset_s3_link = models.URLField(
         max_length=300,
         help_text='The item on S3.'
-        )
+    )
 
     #Choices for Asset type
     PHOTO = 'PIC'
@@ -773,42 +955,133 @@ class Asset(models.Model):
         (AUDIO, 'Audio'),
         (VIDEO, 'Video'),
         (DOCUMENT, 'Document'),
-        )
+    )
 
     asset_type = models.CharField(
         max_length=20,
         choices = ASSET_TYPE_CHOICES,
         help_text='What kind is the asset.'
-        )
+    )
 
     asset_creation_date = models.DateTimeField(
         auto_now_add=True,
         help_text='When the asset was created.'
-        )
+    )
 
 
 class Discussion(models.Model):
-    """ Container for related comments. """
-    pass
+    """ Class for  for related comments. """
+
+    discussion_id = models.SlugField(
+        max_length=15,
+        primary_key=True,
+        help_text='Unique identifier for a discussion.'
+    )
+
+    # Choices for Discussion type
+    PRIVATE = 'PRI'
+    SERIESPLAN = 'SER'
+    STORYPLAN = 'STO'
+    WEBFACET = 'WF'
+    PRINTFACET = 'PF'
+    AUDIOFACET = 'AF'
+    VIDEOFACET = 'VF'
+
+    DISCUSSION_TYPE_CHOICES = (
+        (PRIVATE, 'Private Conversation'),
+        (SERIESPLAN, 'Series Conversation'),
+        (STORYPLAN, 'Story Conversation'),
+        (WEBFACET, 'WebFacet Conversation'),
+        (PRINTFACET, 'PrintFacet Conversation'),
+        (AUDIOFACET, 'AudioFacet Conversation'),
+        (VIDEOFACET, 'VideoFacet Conversation'),
+    )
+
+    discussion_type = models.CharField(
+        max_length=25,
+        choices=DISCUSSION_TYPE_CHOICES,
+        help_text='What kind of discussion is it.'
+    )
 
 
 class PrivateDiscussion(models.Model):
-    """ Signifier of private conversations. """
-    pass
+    """ Signifier of private conversations.
+
+    Private conversations can occur between two or more individuals and only exist in their
+    own inboxes and are not attached to any content types.
+    """
+
+    private_discussion_id = models.SlugField(
+        max_length = 15,
+        primary_key=True,
+        help_text='Unique identifier of a private discussion'
+    )
+
+    discussion_id = models.ForeignKey(
+        Discussion,
+    )
+
+    users = models.ArrayField(
+        help_text='Array of users participating in a private conversation.'
+    )
 
 
 class Comment(models.Model):
-    """ An individual comment made on a seriesplan, storyplan, webfacet,
+    """An individual comment.
+
+    Comments can be made on a seriesplan, storyplan, webfacet,
     audiofacet, videfacet, or between one or more people privately.
     """
-    pass
+
+    comment_id = models.SlugField(
+        max_length=25,
+        primary_key=True,
+        help_text='Unique identifier for a comment.'
+    )
+
+    user_id = models.ForeignKey(
+        User,
+    )
+
+    discussion_id = models.ForeignKey(
+        Discussion,
+    )
+
+    text = models.TextField(
+        help_text='The comment of the comment.'
+    )
+
+    comment_date = models.DateTimeField(
+        auto_now_add=True,
+    )
 
 
 class CommentReadStatus(models.Model):
     """ Tracking if a user involved in a discussion has read the most recent
     comment in order to surface unread comments first.
     """
-    pass
+
+    read_status_id = models.SlugField(
+        max_length=25,
+        primary_key=True,
+        help_text='Unique identifier for a comment read status.'
+    )
+
+    comment_id = models.ForeignKey(
+        Comment,
+    )
+
+    user_id = models.ForeignKey(
+        User,
+    )
+
+    datetime_read = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    has_read = models.BooleanField(
+        default=True,
+    )
 
 
 #   Associations
