@@ -665,6 +665,21 @@ class WebFacet(models.Model):
         help_text='Information for organizations making a copy of the webfacet.'
     )
 
+    class Meta:
+        verbose_name = 'Webfacet'
+        verbose_name_plural = 'Webfacets'
+        ordering = ['creation_date']
+
+    def __str__(self):
+        return self.webfacet_title
+
+    @property
+    def description(self):
+        return "Webfacet: {webfacet} by {credit}".format(
+                                webfacet=self.webfacet_id,
+                                credit=self.credit,
+                                )
+
 
 class PrintFacet(models.Model):
     """ The print version of a story.
@@ -785,6 +800,21 @@ class PrintFacet(models.Model):
     share_note = models.TextField(
         help_text='Information for organizations making a copy of the printfacet.'
     )
+
+    class Meta:
+        verbose_name = 'Printfacet'
+        verbose_name_plural = 'Printfacets'
+        ordering = ['creation_date']
+
+    def __str__(self):
+        return self.printfacet_title
+
+    @property
+    def description(self):
+        return "Printfacet: {printfacet} by {credit}".format(
+                                printfacet=self.printfacet_id,
+                                credit=self.credit,
+                                )
 
 
 class AudioFacet(models.Model):
@@ -907,6 +937,21 @@ class AudioFacet(models.Model):
         help_text='Information for organizations making a copy of the audiofacet.'
     )
 
+    class Meta:
+        verbose_name = 'Audiofacet'
+        verbose_name_plural = 'Audiofacets'
+        ordering = ['creation_date']
+
+    def __str__(self):
+        return self.audiofacet_title
+
+    @property
+    def description(self):
+        return "Audiofacet: {audiofacet} by {credit}".format(
+                                audiofacet=self.audiofacet_id,
+                                credit=self.credit,
+                                )
+
 
 class VideoFacet(models.Model):
     """ Scheduled television programming.
@@ -1028,6 +1073,21 @@ class VideoFacet(models.Model):
         help_text='Information for organizations making a copy of the videofacet.'
     )
 
+    class Meta:
+        verbose_name = 'Videofacet'
+        verbose_name_plural = 'Videofacets'
+        ordering = ['creation_date']
+
+    def __str__(self):
+        return self.videofacet_title
+
+    @property
+    def description(self):
+        return "Videofacet: {videofacet} by {credit}".format(
+                                videofacet=self.videofacet_id,
+                                credit=self.credit,
+                                )
+
 
 #   Associations
 #   ------------
@@ -1147,12 +1207,12 @@ class SeriesCopyDetails(models.Model):
         help_text='Id of the organization that made the copy.'
     )
 
-    original_id = models.ForeignKey(
+    original_series_id = models.ForeignKey(
         Series,
         help_text='Original id of the series.'
     )
 
-    new_id = models.SlugField(
+    new_series_id = models.SlugField(
         max_length = 15,
         help_text='Id of the series on the copying organization\'s site.'
     )
@@ -1161,6 +1221,12 @@ class SeriesCopyDetails(models.Model):
         auto_now_add=True,
         help_text='Datetime when copy was made.'
     )
+
+    def __str__(self):
+        return "Copyinfo for {copyorg} \'s copy of series: {series}".format(
+                                copyorg=self.organization_id.organization_name,
+                                series=self.original_series_id,
+                                )
 
 
 class StoryCopyDetails(models.Model):
@@ -1180,12 +1246,12 @@ class StoryCopyDetails(models.Model):
         help_text='Id of the organization that made the copy.'
     )
 
-    original_id = models.ForeignKey(
+    original_story_id = models.ForeignKey(
         Series,
         help_text='Original id of the story.'
     )
 
-    new_id = models.SlugField(
+    new_story_id = models.SlugField(
         max_length = 15,
         help_text='Id of the story on the copying organization\'s site.'
     )
@@ -1194,6 +1260,12 @@ class StoryCopyDetails(models.Model):
         auto_now_add=True,
         help_text='Datetime when copy was made.'
     )
+
+    def __str__(self):
+        return "Copyinfo for {copyorg} \'s copy of story: {story}".format(
+                                copyorg=self.organization_id.organization_name,
+                                story=self.original_story_id,
+                                )
 
 
 class WebFacetCopyDetails(models.Model):
@@ -1210,12 +1282,12 @@ class WebFacetCopyDetails(models.Model):
         help_text='Id of the organization that made the copy.'
     )
 
-    original_id = models.ForeignKey(
+    original_webfacet_id = models.ForeignKey(
         Series,
         help_text='Original id of the story.'
     )
 
-    new_id = models.SlugField(
+    new_webfacet_id = models.SlugField(
         max_length = 15,
         help_text='Id of the story on the copying organization\'s site.'
     )
@@ -1224,6 +1296,13 @@ class WebFacetCopyDetails(models.Model):
         auto_now_add=True,
         help_text='Datetime when copy was made.'
     )
+
+    def __str__(self):
+        return "Copyinfo for {copyorg} \'s copy of webfacet: {webfacet}".format(
+                                copyorg=self.organization_id.organization_name,
+                                webfacet=self.original_printfacet_id,
+                                )
+
 
 class PrintFacetCopyDetails(models.Model):
     """ The details of a each copy of a printfacet. """
@@ -1238,12 +1317,12 @@ class PrintFacetCopyDetails(models.Model):
         help_text='Id of the organization that made the copy.'
     )
 
-    original_id = models.ForeignKey(
+    original_printfacet_id = models.ForeignKey(
         Series,
         help_text='Original id of the story.'
     )
 
-    new_id = models.SlugField(
+    new_printfacet_id = models.SlugField(
         max_length = 15,
         help_text='Id of the story on the copying organization\'s site.'
     )
@@ -1252,6 +1331,13 @@ class PrintFacetCopyDetails(models.Model):
         auto_now_add=True,
         help_text='Datetime when copy was made.'
     )
+
+    def __str__(self):
+        return "Copyinfo for {copyorg} \'s copy of printfacet: {printfacet}".format(
+                                copyorg=self.organization_id.organization_name,
+                                printfacet=self.original_printfacet_id,
+                                )
+
 
 class AudioFacetCopyDetails(models.Model):
     """ The details of a each copy of a audiofacet. """
@@ -1266,12 +1352,12 @@ class AudioFacetCopyDetails(models.Model):
         help_text='Id of the organization that made the copy.'
     )
 
-    original_id = models.ForeignKey(
+    original_audiofacet_id = models.ForeignKey(
         Series,
         help_text='Original id of the story.'
     )
 
-    new_id = models.SlugField(
+    new_audiofacet_id = models.SlugField(
         max_length = 15,
         help_text='Id of the story on the copying organization\'s site.'
     )
@@ -1280,6 +1366,13 @@ class AudioFacetCopyDetails(models.Model):
         auto_now_add=True,
         help_text='Datetime when copy was made.'
     )
+
+    def __str__(self):
+        return "Copyinfo for {copyorg} \'s copy of audiofacet: {audiofacet}".format(
+                                copyorg=self.organization_id.organization_name,
+                                audiofacet=self.original_audiofacet_id,
+                                )
+
 
 class VideoFacetCopyDetails(models.Model):
     """ The details of a each copy of a videofacet. """
@@ -1294,12 +1387,12 @@ class VideoFacetCopyDetails(models.Model):
         help_text='Id of the organization that made the copy.'
     )
 
-    original_id = models.ForeignKey(
+    original_videofacet_id = models.ForeignKey(
         Series,
         help_text='Original id of the story.'
     )
 
-    new_id = models.SlugField(
+    new_videofacet_id = models.SlugField(
         max_length = 15,
         help_text='Id of the story on the copying organization\'s site.'
     )
@@ -1308,6 +1401,12 @@ class VideoFacetCopyDetails(models.Model):
         auto_now_add=True,
         help_text='Datetime when copy was made.'
     )
+
+    def __str__(self):
+        return "Copyinfo for {copyorg} \'s copy of videofacet: {videofacet}".format(
+                                copyorg=self.organization_id.organization_name,
+                                videofacet=self.original_videofacet_id,
+                                )
 
 #----------------------------------------------------------------------#
 #   MetaMaterials: SeriesPlan, StoryPlan, Asset,
@@ -1342,6 +1441,12 @@ class SeriesPlan(models.Model):
         'Discussion',
     )
 
+    def __str__(self):
+        return "SeriesPlan: {seriesplan} for Series: {series}".format(
+                                seriesplan=self.series_planning_id,
+                                series=self.series.series_id,
+                                )
+
 
 class StoryPlan(models.Model):
     """ Planning notes and conversation for a story. """
@@ -1367,6 +1472,12 @@ class StoryPlan(models.Model):
     story_discussion_id = models.ForeignKey(
         'Discussion',
     )
+
+    def __str__(self):
+        return "StoryPlan: {storyplan} for Story: {story}".format(
+                                storyplan=self.story_planning_id,
+                                story=self.story.story_id,
+                                )
 
 
 class Asset(models.Model):
@@ -1433,6 +1544,12 @@ class Asset(models.Model):
         help_text='When the asset was created.'
     )
 
+    def __str__(self):
+        return "Asset: {asset_id} is a {asset_type}".format(
+                                asset_id=self.asset_id,
+                                asset_type=self.asset_type,
+                                )
+
 
 class Discussion(models.Model):
     """ Class for  for related comments. """
@@ -1468,6 +1585,12 @@ class Discussion(models.Model):
         help_text='What kind of discussion is it.'
     )
 
+    def __str__(self):
+        return "Discussion:{discussion} from {discussion_type}".format(
+                                discussion=self.discussion_id,
+                                discussion_type=self.discussion_type
+                                )
+
 
 class PrivateDiscussion(models.Model):
     """ Signifier of private conversations.
@@ -1492,6 +1615,10 @@ class PrivateDiscussion(models.Model):
         help_text='Array of users participating in a private conversation.'
     )
 
+    def __str__(self):
+        return "Private discussion:{discussion}.".format(
+                                discussion=self.private_discussion_id,
+                                )
 
 class Comment(models.Model):
     """An individual comment.
@@ -1522,6 +1649,12 @@ class Comment(models.Model):
         auto_now_add=True,
     )
 
+    def __str__(self):
+        return "Comment:{comment} from discussion:{discussion}".format(
+                                comment=self.comment_id,
+                                discussion=self.discussion.discussion_id,
+                                )
+
 
 class CommentReadStatus(models.Model):
     """ Tracking if a user involved in a discussion has read the most recent
@@ -1550,6 +1683,12 @@ class CommentReadStatus(models.Model):
         default=True,
     )
 
+    def __str__(self):
+        return "Comment:{comment} has {status} read status.".format(
+                                comment=self.comment.comment_id,
+                                status=self.has_read,
+                                )
+
 
 #   Associations
 #   ------------
@@ -1573,7 +1712,7 @@ class WebFacetAsset(models.Model):
         )
 
     def __str__(self):
-        return "{webfacet}, {asset}".format(
+        return "{webfacet}: {asset}".format(
                                         webfacet=self.webfacet.webfacet_title,
                                         asset=self.asset.asset_description,
                                         )
@@ -1597,7 +1736,7 @@ class PrintFacetAsset(models.Model):
         )
 
     def __str__(self):
-        return "{printfacet}, {asset}".format(
+        return "{printfacet}: {asset}".format(
                                         printfacet=self.printfacet.printfacet_title,
                                         asset=self.asset.asset_description,
                                         )
@@ -1621,8 +1760,8 @@ class AudioFacetAsset(models.Model):
         )
 
     def __str__(self):
-        return "{audiofacet}, {asset}".format(
-                                        audiofacet=self.sudiofacet.audiofacet_title,
+        return "{audiofacet}: {asset}".format(
+                                        audiofacet=self.audiofacet.audiofacet_title,
                                         asset=self.asset.asset_description,
                                         )
 
@@ -1645,7 +1784,7 @@ class VideoFacetAsset(models.Model):
         )
 
     def __str__(self):
-        return "{videofacet}, {asset}".format(
+        return "{videofacet}: {asset}".format(
                                         videofacet=self.videofacet.videofacet_title,
                                         asset=self.asset.asset_description,
                                         )
