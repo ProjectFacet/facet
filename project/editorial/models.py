@@ -15,13 +15,13 @@
 
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
+from simple_history.models import HistoricalRecords
 from model_utils.models import TimeStampedModel
 from datetime import timedelta
 from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 from imagekit.processors import ResizeToFit
 from imagekit.models import ProcessedImageField
-
 # from django.core.exceptions import ValidationError
 # from django.core.urlresolvers import reverse
 # from django.core.validators import RegexValidator
@@ -538,14 +538,226 @@ class WebFacet(models.Model):
 
     Ex: Daily news, articles, videos, photo galleries
     """
-pass
+
+    webfacet_id = models.SlugField(
+        max_length=25,
+        primary_key=True,
+        help_text='Unique identifier for webfacet'
+    )
+
+    story_id = models.ForeignKey(
+        Story,
+    )
+
+    owner = models.ForeignKey(
+        User,
+    )
+
+    original_org = models.ForeignKey(
+        Organization,
+    )
+
+    editor = models.ForeignKey(
+        User,
+    )
+
+    contributors = models.ArrayField(
+        help_text='List of users that contributed to a story. Used to associate multiple users to a facet.'
+    )
+
+    credit = models.ForeignKey(
+        User,
+    )
+
+    code = models.CharField(
+        max_length=75,
+        help_text='Unique code as needed for ingest sytems. Use as needed'
+    )
+
+    title = models.TextField(
+        help_text='Headline of the Webfacet'
+    )
+
+    excerpt = models.TextField(
+        help_text='Excerpt from the Webfacet.'
+    )
+
+    description = models.TextField(
+        help_text='Description of the WebFacet.'
+    )
+
+    content = models.TextField(
+        help_text='Content of the webFacet.'
+    )
+
+    length = models.IntergerField(
+        help_text='Wordcount of the WebFacet.'
+    )
+
+    keywords = models.ArrayField(
+        help_text='List of keywords for search.'
+    )
+
+    # Choices for WebFacet status.
+    DRAFT = 'DRFT'
+    PITCH = 'PT'
+    IN_PROGRESS = 'IP'
+    EDIT = 'EDT'
+    REVISION = 'RVN'
+    READY = 'RDY'
+
+    WEBFACET_STATUS_CHOICES = (
+        (DRAFT, 'Draft'),
+        (PITCH, 'Pitch'),
+        (IN_PROGRESS, 'In Progress'),
+        (EDIT, 'Edit'),
+        (REVISION, 'Revision'),
+        (READY, 'Ready'),
+    )
+
+    status = models.CharField(
+        max_length=25,
+        choices=WEBFACET_STATUS_CHOICES,
+        help_text='WebFacet status choice.'
+    )
+
+    due_edit = models.DateTimeField(
+        help_text='Due for edit.'
+    )
+
+    run_date = models.DateTimeField(
+        help_text='Planned run date.'
+    )
+
+    creation_date = models.DateTimeField(
+        auto_now_add=True,
+        help_text='Day WebFacet was created.'
+    )
+
+    discussion_id = models.ForeignKey(
+        Discussion,
+        help_text='Id of edit discussion for the webfacet.'
+    )
+
+    edit_history = HistoricalRecords()
+
+    share_note = models.TextField(
+        help_text='Information for organizations making a copy of the webfacet.'
+    )
+
 
 class PrintFacet(models.Model):
     """ The print version of a story.
 
     Ex: Daily news article, column, story.
     """
-pass
+
+    webfacet_id = models.SlugField(
+        max_length=25,
+        primary_key=True,
+        help_text='Unique identifier for webfacet'
+    )
+
+    story_id = models.ForeignKey(
+        Story,
+    )
+
+    owner = models.ForeignKey(
+        User,
+    )
+
+    original_org = models.ForeignKey(
+        Organization,
+    )
+
+    editor = models.ForeignKey(
+        User,
+    )
+
+    contributors = models.ArrayField(
+        help_text='List of users that contributed to a story. Used to associate multiple users to a facet.'
+    )
+
+    credit = models.ForeignKey(
+        User,
+    )
+
+    code = models.CharField(
+        max_length=75,
+        help_text='Unique code as needed for ingest sytems. Use as needed'
+    )
+
+    title = models.TextField(
+        help_text='Headline of the Webfacet'
+    )
+
+    excerpt = models.TextField(
+        help_text='Excerpt from the Webfacet.'
+    )
+
+    description = models.TextField(
+        help_text='Description of the WebFacet.'
+    )
+
+    content = models.TextField(
+        help_text='Content of the webFacet.'
+    )
+
+    length = models.IntergerField(
+        help_text='Wordcount of the WebFacet.'
+    )
+
+    keywords = models.ArrayField(
+        help_text='List of keywords for search.'
+    )
+
+    # Choices for WebFacet status.
+    DRAFT = 'DRFT'
+    PITCH = 'PT'
+    IN_PROGRESS = 'IP'
+    EDIT = 'EDT'
+    REVISION = 'RVN'
+    READY = 'RDY'
+
+    WEBFACET_STATUS_CHOICES = (
+        (DRAFT, 'Draft'),
+        (PITCH, 'Pitch'),
+        (IN_PROGRESS, 'In Progress'),
+        (EDIT, 'Edit'),
+        (REVISION, 'Revision'),
+        (READY, 'Ready'),
+    )
+
+    status = models.CharField(
+        max_length=25,
+        choices=WEBFACET_STATUS_CHOICES,
+        help_text='WebFacet status choice.'
+    )
+
+    due_edit = models.DateTimeField(
+        help_text='Due for edit.'
+    )
+
+    run_date = models.DateTimeField(
+        help_text='Planned run date.'
+    )
+
+    creation_date = models.DateTimeField(
+        auto_now_add=True,
+        help_text='Day WebFacet was created.'
+    )
+
+    discussion_id = models.ForeignKey(
+        Discussion,
+        help_text='Id of edit discussion for the webfacet.'
+    )
+
+    edit_history = HistoricalRecords()
+
+    share_note = models.TextField(
+        help_text='Information for organizations making a copy of the webfacet.'
+    )
+
 
 
 class AudioFacet(models.Model):
@@ -553,7 +765,113 @@ class AudioFacet(models.Model):
 
     Ex: A single segment on Morning Edition.
     """
-pass
+
+    webfacet_id = models.SlugField(
+        max_length=25,
+        primary_key=True,
+        help_text='Unique identifier for webfacet'
+    )
+
+    story_id = models.ForeignKey(
+        Story,
+    )
+
+    owner = models.ForeignKey(
+        User,
+    )
+
+    original_org = models.ForeignKey(
+        Organization,
+    )
+
+    editor = models.ForeignKey(
+        User,
+    )
+
+    contributors = models.ArrayField(
+        help_text='List of users that contributed to a story. Used to associate multiple users to a facet.'
+    )
+
+    credit = models.ForeignKey(
+        User,
+    )
+
+    code = models.CharField(
+        max_length=75,
+        help_text='Unique code as needed for ingest sytems. Use as needed'
+    )
+
+    title = models.TextField(
+        help_text='Headline of the Webfacet'
+    )
+
+    excerpt = models.TextField(
+        help_text='Excerpt from the Webfacet.'
+    )
+
+    description = models.TextField(
+        help_text='Description of the WebFacet.'
+    )
+
+    content = models.TextField(
+        help_text='Content of the webFacet.'
+    )
+
+    length = models.IntergerField(
+        help_text='Wordcount of the WebFacet.'
+    )
+
+    keywords = models.ArrayField(
+        help_text='List of keywords for search.'
+    )
+
+    # Choices for WebFacet status.
+    DRAFT = 'DRFT'
+    PITCH = 'PT'
+    IN_PROGRESS = 'IP'
+    EDIT = 'EDT'
+    REVISION = 'RVN'
+    READY = 'RDY'
+
+    WEBFACET_STATUS_CHOICES = (
+        (DRAFT, 'Draft'),
+        (PITCH, 'Pitch'),
+        (IN_PROGRESS, 'In Progress'),
+        (EDIT, 'Edit'),
+        (REVISION, 'Revision'),
+        (READY, 'Ready'),
+    )
+
+    status = models.CharField(
+        max_length=25,
+        choices=WEBFACET_STATUS_CHOICES,
+        help_text='WebFacet status choice.'
+    )
+
+    due_edit = models.DateTimeField(
+        help_text='Due for edit.'
+    )
+
+    run_date = models.DateTimeField(
+        help_text='Planned run date.'
+    )
+
+    creation_date = models.DateTimeField(
+        auto_now_add=True,
+        help_text='Day WebFacet was created.'
+    )
+
+    discussion_id = models.ForeignKey(
+        Discussion,
+        help_text='Id of edit discussion for the webfacet.'
+    )
+
+    edit_history = HistoricalRecords()
+
+    share_note = models.TextField(
+        help_text='Information for organizations making a copy of the webfacet.'
+    )
+
 
 
 class VideoFacet(models.Model):
@@ -561,7 +879,112 @@ class VideoFacet(models.Model):
 
     Ex: An episode of a television program.
     """
-pass
+
+    webfacet_id = models.SlugField(
+        max_length=25,
+        primary_key=True,
+        help_text='Unique identifier for webfacet'
+    )
+
+    story_id = models.ForeignKey(
+        Story,
+    )
+
+    owner = models.ForeignKey(
+        User,
+    )
+
+    original_org = models.ForeignKey(
+        Organization,
+    )
+
+    editor = models.ForeignKey(
+        User,
+    )
+
+    contributors = models.ArrayField(
+        help_text='List of users that contributed to a story. Used to associate multiple users to a facet.'
+    )
+
+    credit = models.ForeignKey(
+        User,
+    )
+
+    code = models.CharField(
+        max_length=75,
+        help_text='Unique code as needed for ingest sytems. Use as needed'
+    )
+
+    title = models.TextField(
+        help_text='Headline of the Webfacet'
+    )
+
+    excerpt = models.TextField(
+        help_text='Excerpt from the Webfacet.'
+    )
+
+    description = models.TextField(
+        help_text='Description of the WebFacet.'
+    )
+
+    content = models.TextField(
+        help_text='Content of the webFacet.'
+    )
+
+    length = models.IntergerField(
+        help_text='Wordcount of the WebFacet.'
+    )
+
+    keywords = models.ArrayField(
+        help_text='List of keywords for search.'
+    )
+
+    # Choices for WebFacet status.
+    DRAFT = 'DRFT'
+    PITCH = 'PT'
+    IN_PROGRESS = 'IP'
+    EDIT = 'EDT'
+    REVISION = 'RVN'
+    READY = 'RDY'
+
+    WEBFACET_STATUS_CHOICES = (
+        (DRAFT, 'Draft'),
+        (PITCH, 'Pitch'),
+        (IN_PROGRESS, 'In Progress'),
+        (EDIT, 'Edit'),
+        (REVISION, 'Revision'),
+        (READY, 'Ready'),
+    )
+
+    status = models.CharField(
+        max_length=25,
+        choices=WEBFACET_STATUS_CHOICES,
+        help_text='WebFacet status choice.'
+    )
+
+    due_edit = models.DateTimeField(
+        help_text='Due for edit.'
+    )
+
+    run_date = models.DateTimeField(
+        help_text='Planned run date.'
+    )
+
+    creation_date = models.DateTimeField(
+        auto_now_add=True,
+        help_text='Day WebFacet was created.'
+    )
+
+    discussion_id = models.ForeignKey(
+        Discussion,
+        help_text='Id of edit discussion for the webfacet.'
+    )
+
+    edit_history = HistoricalRecords()
+
+    share_note = models.TextField(
+        help_text='Information for organizations making a copy of the webfacet.'
+    )
 
 
 #   Associations
