@@ -110,7 +110,9 @@ class User(models.Model):
         blank=True
     )
 
-    user_expertise = models.ArrayField(
+    user_expertise = ArrayField(
+        models.CharField(max_length=100),
+        default=list,
         help_text='Array of user skills and beats to filter/search by.'
     )
 
@@ -419,11 +421,15 @@ class Series(models.Model):
         help_text='The series is being collaborated on with a network.'
     )
 
-    shared_with = models.ArrayField(
+    shared_with = ArrayField(
+        models.CharField(max_length=100),
+        default=list,
         help_text='Array of the network ids that a series is shared with.'
     )
 
-    collaborate_with = models.ArrayField(
+    collaborate_with = ArrayField(
+        models.CharField(max_length=100),
+        default=list,
         help_text='Array of the network ids that a series is open to collaboration with.'
     )
 
@@ -495,7 +501,9 @@ class Story(models.Model):
         help_text='When was the story created.'
     )
 
-    story_team = models.ArrayField(
+    story_team = ArrayField(
+        models.CharField(max_length=100),
+        default=list,
         help_text='Array of user_ids that participated in a story.'
     )
 
@@ -509,11 +517,15 @@ class Story(models.Model):
         help_text='The story is being collaborated on with a network.'
     )
 
-    shared_with = models.ArrayField(
+    shared_with = ArrayField(
+        models.CharField(max_length=100),
+        default=list,
         help_text='Array of the network ids that a story is shared with.'
     )
 
-    collaborate_with = models.ArrayField(
+    collaborate_with = ArrayField(
+        models.CharField(max_length=100),
+        default=list,
         help_text='Array of the network ids that a story is open to collaboration with.'
     )
 
@@ -551,6 +563,7 @@ class WebFacet(models.Model):
 
     owner = models.ForeignKey(
         User,
+        related_name='webfacetowner'
     )
 
     original_org = models.ForeignKey(
@@ -559,14 +572,19 @@ class WebFacet(models.Model):
 
     editor = models.ForeignKey(
         User,
+        related_name='webfaceteditor'
     )
 
-    contributors = models.ArrayField(
+    contributors = ArrayField(
+        models.CharField(max_length=100),
+        default=list,
         help_text='List of users that contributed to a story. Used to associate multiple users to a facet.'
     )
 
     credit = models.ForeignKey(
         User,
+        related_name='webfacetcredit',
+        help_text='The full user name to be listed as the credit for the facet.'
     )
 
     code = models.CharField(
@@ -590,11 +608,13 @@ class WebFacet(models.Model):
         help_text='Content of the webFacet.'
     )
 
-    length = models.IntergerField(
+    length = models.IntegerField(
         help_text='Wordcount of the WebFacet.'
     )
 
-    keywords = models.ArrayField(
+    keywords = ArrayField(
+        models.CharField(max_length=100),
+        default=list,
         help_text='List of keywords for search.'
     )
 
@@ -635,7 +655,7 @@ class WebFacet(models.Model):
     )
 
     discussion_id = models.ForeignKey(
-        Discussion,
+        'Discussion',
         help_text='Id of edit discussion for the webfacet.'
     )
 
@@ -652,10 +672,10 @@ class PrintFacet(models.Model):
     Ex: Daily news article, column, story.
     """
 
-    webfacet_id = models.SlugField(
+    printfacet_id = models.SlugField(
         max_length=25,
         primary_key=True,
-        help_text='Unique identifier for webfacet'
+        help_text='Unique identifier for printfacet'
     )
 
     story_id = models.ForeignKey(
@@ -664,6 +684,7 @@ class PrintFacet(models.Model):
 
     owner = models.ForeignKey(
         User,
+        related_name='printfacetowner'
     )
 
     original_org = models.ForeignKey(
@@ -672,14 +693,19 @@ class PrintFacet(models.Model):
 
     editor = models.ForeignKey(
         User,
+        related_name='printfaceteditor'
     )
 
-    contributors = models.ArrayField(
-        help_text='List of users that contributed to a story. Used to associate multiple users to a facet.'
+    contributors = ArrayField(
+        models.CharField(max_length=100),
+        default=list,
+        help_text='List of users that contributed to a story. Used to associate multiple users to a printfacet.'
     )
 
     credit = models.ForeignKey(
         User,
+        related_name='printfacetcredit',
+        help_text='The full user name to be listed as the credit for the facet.'
     )
 
     code = models.CharField(
@@ -688,26 +714,28 @@ class PrintFacet(models.Model):
     )
 
     title = models.TextField(
-        help_text='Headline of the Webfacet'
+        help_text='Headline of the printfacet.'
     )
 
     excerpt = models.TextField(
-        help_text='Excerpt from the Webfacet.'
+        help_text='Excerpt from the printfacet.'
     )
 
     description = models.TextField(
-        help_text='Description of the WebFacet.'
+        help_text='Description of the printfacet.'
     )
 
     content = models.TextField(
-        help_text='Content of the webFacet.'
+        help_text='Content of the printfacet.'
     )
 
-    length = models.IntergerField(
-        help_text='Wordcount of the WebFacet.'
+    length = models.IntegerField(
+        help_text='Wordcount of the printfacet.'
     )
 
-    keywords = models.ArrayField(
+    keywords = ArrayField(
+        models.CharField(max_length=100),
+        default=list,
         help_text='List of keywords for search.'
     )
 
@@ -719,7 +747,7 @@ class PrintFacet(models.Model):
     REVISION = 'RVN'
     READY = 'RDY'
 
-    WEBFACET_STATUS_CHOICES = (
+    PRINTFACET_STATUS_CHOICES = (
         (DRAFT, 'Draft'),
         (PITCH, 'Pitch'),
         (IN_PROGRESS, 'In Progress'),
@@ -730,8 +758,8 @@ class PrintFacet(models.Model):
 
     status = models.CharField(
         max_length=25,
-        choices=WEBFACET_STATUS_CHOICES,
-        help_text='WebFacet status choice.'
+        choices=PRINTFACET_STATUS_CHOICES,
+        help_text='Printfacet status choice.'
     )
 
     due_edit = models.DateTimeField(
@@ -744,20 +772,19 @@ class PrintFacet(models.Model):
 
     creation_date = models.DateTimeField(
         auto_now_add=True,
-        help_text='Day WebFacet was created.'
+        help_text='Day printfacet was created.'
     )
 
     discussion_id = models.ForeignKey(
-        Discussion,
-        help_text='Id of edit discussion for the webfacet.'
+        'Discussion',
+        help_text='Id of edit discussion for the printfacet.'
     )
 
     edit_history = HistoricalRecords()
 
     share_note = models.TextField(
-        help_text='Information for organizations making a copy of the webfacet.'
+        help_text='Information for organizations making a copy of the printfacet.'
     )
-
 
 
 class AudioFacet(models.Model):
@@ -766,10 +793,10 @@ class AudioFacet(models.Model):
     Ex: A single segment on Morning Edition.
     """
 
-    webfacet_id = models.SlugField(
+    audiofacet_id = models.SlugField(
         max_length=25,
         primary_key=True,
-        help_text='Unique identifier for webfacet'
+        help_text='Unique identifier for audiofacet'
     )
 
     story_id = models.ForeignKey(
@@ -778,6 +805,7 @@ class AudioFacet(models.Model):
 
     owner = models.ForeignKey(
         User,
+        related_name='audiofacetowner'
     )
 
     original_org = models.ForeignKey(
@@ -786,14 +814,19 @@ class AudioFacet(models.Model):
 
     editor = models.ForeignKey(
         User,
+        related_name='audiofaceteditor'
     )
 
-    contributors = models.ArrayField(
-        help_text='List of users that contributed to a story. Used to associate multiple users to a facet.'
+    contributors = ArrayField(
+        models.CharField(max_length=100),
+        default=list,
+        help_text='List of users that contributed to a story. Used to associate multiple users to an audiofacet.'
     )
 
     credit = models.ForeignKey(
         User,
+        related_name='audiofacetcredit',
+        help_text='The full user name to be listed as the credit for the facet.'
     )
 
     code = models.CharField(
@@ -802,26 +835,28 @@ class AudioFacet(models.Model):
     )
 
     title = models.TextField(
-        help_text='Headline of the Webfacet'
+        help_text='Headline of the audiofacet.'
     )
 
     excerpt = models.TextField(
-        help_text='Excerpt from the Webfacet.'
+        help_text='Excerpt for the audiofacet.'
     )
 
     description = models.TextField(
-        help_text='Description of the WebFacet.'
+        help_text='Description of the audiofacet.'
     )
 
     content = models.TextField(
-        help_text='Content of the webFacet.'
+        help_text='Content of the audiofacet.'
     )
 
-    length = models.IntergerField(
-        help_text='Wordcount of the WebFacet.'
+    length = models.IntegerField(
+        help_text='Wordcount of the audiofacet.'
     )
 
-    keywords = models.ArrayField(
+    keywords = ArrayField(
+        models.CharField(max_length=100),
+        default=list,
         help_text='List of keywords for search.'
     )
 
@@ -833,7 +868,7 @@ class AudioFacet(models.Model):
     REVISION = 'RVN'
     READY = 'RDY'
 
-    WEBFACET_STATUS_CHOICES = (
+    AUDIOFACET_STATUS_CHOICES = (
         (DRAFT, 'Draft'),
         (PITCH, 'Pitch'),
         (IN_PROGRESS, 'In Progress'),
@@ -844,8 +879,8 @@ class AudioFacet(models.Model):
 
     status = models.CharField(
         max_length=25,
-        choices=WEBFACET_STATUS_CHOICES,
-        help_text='WebFacet status choice.'
+        choices=AUDIOFACET_STATUS_CHOICES,
+        help_text='Audiofacet status choice.'
     )
 
     due_edit = models.DateTimeField(
@@ -858,20 +893,19 @@ class AudioFacet(models.Model):
 
     creation_date = models.DateTimeField(
         auto_now_add=True,
-        help_text='Day WebFacet was created.'
+        help_text='Day audiofacet was created.'
     )
 
     discussion_id = models.ForeignKey(
-        Discussion,
-        help_text='Id of edit discussion for the webfacet.'
+        'Discussion',
+        help_text='Id of edit discussion for the audiofacet.'
     )
 
     edit_history = HistoricalRecords()
 
     share_note = models.TextField(
-        help_text='Information for organizations making a copy of the webfacet.'
+        help_text='Information for organizations making a copy of the audiofacet.'
     )
-
 
 
 class VideoFacet(models.Model):
@@ -880,10 +914,10 @@ class VideoFacet(models.Model):
     Ex: An episode of a television program.
     """
 
-    webfacet_id = models.SlugField(
+    videofacet_id = models.SlugField(
         max_length=25,
         primary_key=True,
-        help_text='Unique identifier for webfacet'
+        help_text='Unique identifier for videofacet'
     )
 
     story_id = models.ForeignKey(
@@ -892,6 +926,7 @@ class VideoFacet(models.Model):
 
     owner = models.ForeignKey(
         User,
+        related_name='videofacetowner'
     )
 
     original_org = models.ForeignKey(
@@ -900,14 +935,19 @@ class VideoFacet(models.Model):
 
     editor = models.ForeignKey(
         User,
+        related_name='videofaceteditor'
     )
 
-    contributors = models.ArrayField(
-        help_text='List of users that contributed to a story. Used to associate multiple users to a facet.'
+    contributors = ArrayField(
+        models.CharField(max_length=100),
+        default=list,
+        help_text='List of users that contributed to a story. Used to associate multiple users to a videofacet.'
     )
 
     credit = models.ForeignKey(
         User,
+        related_name='videofacetcredit',
+        help_text='The full user name to be listed as the credit for the facet.'
     )
 
     code = models.CharField(
@@ -916,26 +956,28 @@ class VideoFacet(models.Model):
     )
 
     title = models.TextField(
-        help_text='Headline of the Webfacet'
+        help_text='Headline of the videofacet.'
     )
 
     excerpt = models.TextField(
-        help_text='Excerpt from the Webfacet.'
+        help_text='Excerpt from the videofacet.'
     )
 
     description = models.TextField(
-        help_text='Description of the WebFacet.'
+        help_text='Description of the videofacet.'
     )
 
     content = models.TextField(
-        help_text='Content of the webFacet.'
+        help_text='Content of the videofacet.'
     )
 
-    length = models.IntergerField(
-        help_text='Wordcount of the WebFacet.'
+    length = models.IntegerField(
+        help_text='Wordcount of the videofacet.'
     )
 
-    keywords = models.ArrayField(
+    keywords = ArrayField(
+        models.CharField(max_length=100),
+        default=list,
         help_text='List of keywords for search.'
     )
 
@@ -947,7 +989,7 @@ class VideoFacet(models.Model):
     REVISION = 'RVN'
     READY = 'RDY'
 
-    WEBFACET_STATUS_CHOICES = (
+    VIDEOFACET_STATUS_CHOICES = (
         (DRAFT, 'Draft'),
         (PITCH, 'Pitch'),
         (IN_PROGRESS, 'In Progress'),
@@ -958,8 +1000,8 @@ class VideoFacet(models.Model):
 
     status = models.CharField(
         max_length=25,
-        choices=WEBFACET_STATUS_CHOICES,
-        help_text='WebFacet status choice.'
+        choices=VIDEOFACET_STATUS_CHOICES,
+        help_text='Videofacet status choice.'
     )
 
     due_edit = models.DateTimeField(
@@ -972,18 +1014,18 @@ class VideoFacet(models.Model):
 
     creation_date = models.DateTimeField(
         auto_now_add=True,
-        help_text='Day WebFacet was created.'
+        help_text='Day videofacet was created.'
     )
 
     discussion_id = models.ForeignKey(
-        Discussion,
-        help_text='Id of edit discussion for the webfacet.'
+        'Discussion',
+        help_text='ID of edit discussion for the videofacet.'
     )
 
     edit_history = HistoricalRecords()
 
     share_note = models.TextField(
-        help_text='Information for organizations making a copy of the webfacet.'
+        help_text='Information for organizations making a copy of the videofacet.'
     )
 
 
@@ -1111,7 +1153,7 @@ class SeriesCopyDetails(models.Model):
     )
 
     new_id = models.SlugField(
-        max_length = 15
+        max_length = 15,
         help_text='Id of the series on the copying organization\'s site.'
     )
 
@@ -1144,7 +1186,7 @@ class StoryCopyDetails(models.Model):
     )
 
     new_id = models.SlugField(
-        max_length = 15
+        max_length = 15,
         help_text='Id of the story on the copying organization\'s site.'
     )
 
@@ -1174,7 +1216,7 @@ class WebFacetCopyDetails(models.Model):
     )
 
     new_id = models.SlugField(
-        max_length = 15
+        max_length = 15,
         help_text='Id of the story on the copying organization\'s site.'
     )
 
@@ -1202,7 +1244,7 @@ class PrintFacetCopyDetails(models.Model):
     )
 
     new_id = models.SlugField(
-        max_length = 15
+        max_length = 15,
         help_text='Id of the story on the copying organization\'s site.'
     )
 
@@ -1230,7 +1272,7 @@ class AudioFacetCopyDetails(models.Model):
     )
 
     new_id = models.SlugField(
-        max_length = 15
+        max_length = 15,
         help_text='Id of the story on the copying organization\'s site.'
     )
 
@@ -1258,7 +1300,7 @@ class VideoFacetCopyDetails(models.Model):
     )
 
     new_id = models.SlugField(
-        max_length = 15
+        max_length = 15,
         help_text='Id of the story on the copying organization\'s site.'
     )
 
@@ -1444,7 +1486,9 @@ class PrivateDiscussion(models.Model):
         Discussion,
     )
 
-    users = models.ArrayField(
+    users = ArrayField(
+        models.CharField(max_length=100),
+        default=list,
         help_text='Array of users participating in a private conversation.'
     )
 
