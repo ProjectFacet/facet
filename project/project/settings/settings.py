@@ -13,13 +13,14 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+SETTINGS_DIR = os.path.dirname(__file__)
+PROJECT_DIR = os.path.abspath(SETTINGS_DIR + "/../..")
+GIT_DIR = os.path.abspath(PROJECT_DIR + "/..")
+# BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+# Dev purposes only, will be replaced...
 SECRET_KEY = 'w+1bk&e^ud@@&4delnj!da47%$yi+9*u#*v$t*jrtn7muk23ja'
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -59,7 +60,7 @@ ROOT_URLCONF = 'project.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(PROJECT_DIR, "templates")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
