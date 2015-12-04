@@ -502,6 +502,7 @@ class Story(models.Model):
     )
 
     story_team = ArrayField(
+        # Is this better as an array or as a ManyToManyField?
         models.CharField(max_length=100),
         default=list,
         help_text='Array of user_ids that participated in a story.'
@@ -582,6 +583,8 @@ class WebFacet(models.Model):
     )
 
     credit = models.ForeignKey(
+        # There can be multiple users listed as the credit.
+        # Best way relationship type?
         User,
         related_name='webfacetcredit',
         help_text='The full user name to be listed as the credit for the facet.'
@@ -718,6 +721,8 @@ class PrintFacet(models.Model):
     )
 
     credit = models.ForeignKey(
+        # There can be multiple users listed as the credit.
+        # Best way relationship type?
         User,
         related_name='printfacetcredit',
         help_text='The full user name to be listed as the credit for the facet.'
@@ -854,6 +859,8 @@ class AudioFacet(models.Model):
     )
 
     credit = models.ForeignKey(
+        # There can be multiple users listed as the credit.
+        # Best way relationship type?
         User,
         related_name='audiofacetcredit',
         help_text='The full user name to be listed as the credit for the facet.'
@@ -990,6 +997,8 @@ class VideoFacet(models.Model):
     )
 
     credit = models.ForeignKey(
+        # There can be multiple users listed as the credit.
+        # Best way relationship type?
         User,
         related_name='videofacetcredit',
         help_text='The full user name to be listed as the credit for the facet.'
