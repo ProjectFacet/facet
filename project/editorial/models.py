@@ -26,12 +26,12 @@ from imagekit.models import ProcessedImageField
 # from django.core.urlresolvers import reverse
 # from django.core.validators import RegexValidator
 # from django.utils import timezone
-# from postgres.fields import ArrayField
 
 
 #----------------------------------------------------------------------#
-#   People: User, Organization, Network
-#   -Associations: NetworkOrganizaton, UserSeries, UserStory
+#   People: 
+#   - Main Tables: User, Organization, Network
+#   - Associations: NetworkOrganizaton, UserSeries, UserStory
 #----------------------------------------------------------------------#
 
 
@@ -366,11 +366,12 @@ class UserSeries(models.Model):
                                         )
 
 #----------------------------------------------------------------------#
-#   Content: Series, Story, WebFacet, PrintFacet, AudioFacet, VideoFacet
-#   -Associations: WebFacetContributors, PrintFacetContributors,
-#                  AudioFacetContributors, VideoFacetContributors
-#                  StoryCopyDetails, SeriesCopyDetails, WebFacetCopyDetails,
-#                  PrintFacetCopyDetails, AudioFacetCopyDetails, VideoFacetCopyDetails
+#   Content: 
+#   - Main Tables:  Series, Story, WebFacet, PrintFacet, AudioFacet, VideoFacet
+#   - Associations: WebFacetContributors, PrintFacetContributors,
+#                   AudioFacetContributors, VideoFacetContributors
+#                   StoryCopyDetails, SeriesCopyDetails, WebFacetCopyDetails,
+#                   PrintFacetCopyDetails, AudioFacetCopyDetails, VideoFacetCopyDetails
 #----------------------------------------------------------------------#
 
 # A Facet is always part of a story, even if there is only one facet.
@@ -1418,9 +1419,10 @@ class VideoFacetCopyDetails(models.Model):
                                 )
 
 #----------------------------------------------------------------------#
-#   MetaMaterials: SeriesPlan, StoryPlan, Asset,
-#                  Comment, CommentReadStatus, Discussion, PrivateDiscussion
-#   --Associations: WebFacetAsset, PrintFacetAsset, AudioFacetAsset,
+#   MetaMaterials:
+#   - Main Tables:  SeriesPlan, StoryPlan, Asset, Comment
+#                   CommentReadStatus, Discussion, PrivateDiscussion
+#   - Associations: WebFacetAsset, PrintFacetAsset, AudioFacetAsset,
 #                   VideoFacetAsset
 #----------------------------------------------------------------------#
 
