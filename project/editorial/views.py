@@ -5,3 +5,8 @@ from django.http import HttpResponse
 def index(request):
     # return static homepage for now
     return render(request, 'editorial/home.html')
+
+def dashboard(request):
+    # return dashboard view for logged in user.
+    pass
+
