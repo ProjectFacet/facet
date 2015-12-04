@@ -429,9 +429,10 @@ class Series(models.Model):
     )
 
     # connection to users participating in a series
-    series_team = models.ManyToManyField(User)
+    series_team = models.ManyToManyField(
+        User
     )
-
+    
     series_creation_date = models.DateTimeField(
         auto_now_add=True
     )
@@ -530,7 +531,8 @@ class Story(models.Model):
     )
 
     # connection to users participating in a story
-    story_team = models.ManyToManyField(User)
+    story_team = models.ManyToManyField(
+        User,
     )
 
     share = models.BooleanField(
