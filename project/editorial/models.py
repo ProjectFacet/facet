@@ -434,6 +434,11 @@ class Series(models.Model):
         help_text='Array of the network ids that a series is open to collaboration with.'
     )
 
+    archived = models.BooleanField(
+        default=False,
+        help_text='Is the content no longer active and needed?'
+    )
+
     class Meta:
         verbose_name = 'Series'
         verbose_name_plural = "Series"
@@ -529,6 +534,11 @@ class Story(models.Model):
         models.CharField(max_length=100),
         default=list,
         help_text='Array of the network ids that a story is open to collaboration with.'
+    )
+
+    archived = models.BooleanField(
+        default=False,
+        help_text='Is the content no longer active and needed?'
     )
 
     class Meta:
