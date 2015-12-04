@@ -1,7 +1,7 @@
 from django.shortcuts import render
-from django.http impor HttpResponse
+from django.http import HttpResponse
 # Create your views here.
 
-def home(request):
+def index(request):
     # return static homepage for now
     return render(request, 'editorial/home.html')
