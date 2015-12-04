@@ -129,27 +129,39 @@ class User(models.Model):
 
     #Links to user's professional social media accounts
     user_facebook = models.CharField(
-        max_length=150
+        max_length=150,
+        blank=True,
+        null=True,
     )
 
     user_twitter = models.CharField(
-        max_length=150
+        max_length=150,
+        blank=True,
+        null=True,
     )
 
     user_linkedin = models.CharField(
-        max_length=150
+        max_length=150,
+        blank=True,
+        null=True,
     )
 
     user_instagram = models.CharField(
-        max_length=150
+        max_length=150,
+        blank=True,
+        null=True,
     )
 
     user_snapchat = models.CharField(
-        max_length=150
+        max_length=150,
+        blank=True,
+        null=True,
     )
 
     user_vine = models.CharField(
-        max_length=150
+        max_length=150,
+        blank=True,
+        null=True,
     )
 
     class Meta:
@@ -276,6 +288,10 @@ class Network(models.Model):
         format='JPEG',
     )
 
+    organizations = models.ManyToManyField(
+        Organization, through='NetworkOrganizaton'
+    )
+
     class Meta:
         verbose_name = 'Network'
         verbose_name_plural = "Networks"
@@ -317,53 +333,57 @@ class NetworkOrganizaton(models.Model):
                                                 organization=self.organization.organization_name
                                                 )
 
+# ----------------------------------
+# Replaced with ManytoMany Field
+# ----------------------------------
+# class UserStory(models.Model):
+#     """ The connection between a user and a story they contributed to. """
 
-class UserStory(models.Model):
-    """ The connection between a user and a story they contributed to. """
+#     user_story_id = models.SlugField(
+#         max_length=15,
+#         primary_key=True,
+#         help_text='Unique identifier for a user/story connection.'
+#     )
 
-    user_story_id = models.SlugField(
-        max_length=15,
-        primary_key=True,
-        help_text='Unique identifier for a user/story connection.'
-    )
+#     user_id = models.ForeignKey(
+#         User,
+#     )
 
-    user_id = models.ForeignKey(
-        User,
-    )
+#     story_id = models.ForeignKey(
+#         'Story',
+#     )
 
-    story_id = models.ForeignKey(
-        'Story',
-    )
+#     def __str__(self):
+#         return "{user}, {story}".format(
+#                                         user=self.user.user_credit_name,
+#                                         story=self.story.story_name
+#                                         )
 
-    def __str__(self):
-        return "{user}, {story}".format(
-                                        user=self.user.user_credit_name,
-                                        story=self.story.story_name
-                                        )
+# ----------------------------------
+# Replaced with ManytoMany Field
+# ----------------------------------
+# class UserSeries(models.Model):
+#     """ The connection between a user and a series they contributed to. """
 
+#     user_series_id = models.SlugField(
+#         max_length=15,
+#         primary_key=True,
+#         help_text='Unique identifier for a user/series connection.'
+#     )
 
-class UserSeries(models.Model):
-    """ The connection between a user and a series they contributed to. """
+#     user_id = models.ForeignKey(
+#         User,
+#     )
 
-    user_series_id = models.SlugField(
-        max_length=15,
-        primary_key=True,
-        help_text='Unique identifier for a user/series connection.'
-    )
+#     series_id = models.ForeignKey(
+#         'Series',
+#     )
 
-    user_id = models.ForeignKey(
-        User,
-    )
-
-    series_id = models.ForeignKey(
-        'Series',
-    )
-
-    def __str__(self):
-        return "{user}, {series}".format(
-                                        user=self.user.user_credit_name,
-                                        series=self.series.series_name
-                                        )
+#     def __str__(self):
+#         return "{user}, {series}".format(
+#                                         user=self.user.user_credit_name,
+#                                         series=self.series.series_name
+#                                         )
 
 #----------------------------------------------------------------------#
 #   Content: 
@@ -408,6 +428,10 @@ class Series(models.Model):
         help_text='The user that created the series.'
     )
 
+    # connection to users participating in a series
+    series_team = models.ManyToManyField(User)
+    )
+
     series_creation_date = models.DateTimeField(
         auto_now_add=True
     )
@@ -422,16 +446,14 @@ class Series(models.Model):
         help_text='The series is being collaborated on with a network.'
     )
 
-    shared_with = ArrayField(
-        models.CharField(max_length=100),
-        default=list,
-        help_text='Array of the network ids that a series is shared with.'
+    share_with = models.ManyToManyField(
+        Network,
+        help_text='Network ids that a series is shared with.'
     )
 
-    collaborate_with = ArrayField(
-        models.CharField(max_length=100),
-        default=list,
-        help_text='Array of the network ids that a series is open to collaboration with.'
+    collaborate_with = models.ManyToManyField(
+        Network,
+        help_text='Network ids that a series is open to collaboration with.'
     )
 
     archived = models.BooleanField(
@@ -507,11 +529,8 @@ class Story(models.Model):
         help_text='When was the story created.'
     )
 
-    story_team = ArrayField(
-        # Is this better as an array or as a ManyToManyField?
-        models.CharField(max_length=100),
-        default=list,
-        help_text='Array of user_ids that participated in a story.'
+    # connection to users participating in a story
+    story_team = models.ManyToManyField(User)
     )
 
     share = models.BooleanField(
@@ -524,16 +543,14 @@ class Story(models.Model):
         help_text='The story is being collaborated on with a network.'
     )
 
-    shared_with = ArrayField(
-        models.CharField(max_length=100),
-        default=list,
-        help_text='Array of the network ids that a story is shared with.'
+    share_with = models.ManyToManyField(
+        Network,
+        help_text='Network ids that a story is shared with.'
     )
 
-    collaborate_with = ArrayField(
-        models.CharField(max_length=100),
-        default=list,
-        help_text='Array of the network ids that a story is open to collaboration with.'
+    collaborate_with = models.ManyToManyField(
+        Network,
+        help_text='Network ids that a story is open to collaboration with.'
     )
 
     archived = models.BooleanField(
@@ -587,10 +604,9 @@ class WebFacet(models.Model):
         related_name='webfaceteditor'
     )
 
-    contributors = ArrayField(
-        models.CharField(max_length=100),
-        default=list,
-        help_text='List of users that contributed to a story. Used to associate multiple users to a facet.'
+    contributors = models.ManyToManyField(
+        User,
+        help_text='Users that contributed to a facet. Used to associate multiple users to a facet.'
     )
 
     credit = models.ForeignKey(
@@ -679,6 +695,10 @@ class WebFacet(models.Model):
         help_text='Information for organizations making a copy of the webfacet.'
     )
 
+    assets = ManyToManyField(
+        Asset
+    )
+
     class Meta:
         verbose_name = 'Webfacet'
         verbose_name_plural = 'Webfacets'
@@ -725,10 +745,9 @@ class PrintFacet(models.Model):
         related_name='printfaceteditor'
     )
 
-    contributors = ArrayField(
-        models.CharField(max_length=100),
-        default=list,
-        help_text='List of users that contributed to a story. Used to associate multiple users to a printfacet.'
+    contributors = models.ManyToManyField(
+        User,
+        help_text='Users that contributed to a facet. Used to associate multiple users to a facet.'
     )
 
     credit = models.ForeignKey(
@@ -817,6 +836,10 @@ class PrintFacet(models.Model):
         help_text='Information for organizations making a copy of the printfacet.'
     )
 
+    assets = ManyToManyField(
+        Asset
+    )
+
     class Meta:
         verbose_name = 'Printfacet'
         verbose_name_plural = 'Printfacets'
@@ -863,10 +886,9 @@ class AudioFacet(models.Model):
         related_name='audiofaceteditor'
     )
 
-    contributors = ArrayField(
-        models.CharField(max_length=100),
-        default=list,
-        help_text='List of users that contributed to a story. Used to associate multiple users to an audiofacet.'
+    contributors = models.ManyToManyField(
+        User,
+        help_text='Users that contributed to a facet. Used to associate multiple users to a facet.'
     )
 
     credit = models.ForeignKey(
@@ -955,6 +977,10 @@ class AudioFacet(models.Model):
         help_text='Information for organizations making a copy of the audiofacet.'
     )
 
+    assets = ManyToManyField(
+        Asset
+    )
+
     class Meta:
         verbose_name = 'Audiofacet'
         verbose_name_plural = 'Audiofacets'
@@ -1001,10 +1027,9 @@ class VideoFacet(models.Model):
         related_name='videofaceteditor'
     )
 
-    contributors = ArrayField(
-        models.CharField(max_length=100),
-        default=list,
-        help_text='List of users that contributed to a story. Used to associate multiple users to a videofacet.'
+    contributors = models.ManyToManyField(
+        User,
+        help_text='Users that contributed to a facet. Used to associate multiple users to a facet.'
     )
 
     credit = models.ForeignKey(
@@ -1091,6 +1116,10 @@ class VideoFacet(models.Model):
 
     share_note = models.TextField(
         help_text='Information for organizations making a copy of the videofacet.'
+    )
+
+    assets = ManyToManyField(
+        Asset
     )
 
     class Meta:
@@ -1630,10 +1659,8 @@ class PrivateDiscussion(models.Model):
         Discussion,
     )
 
-    users = ArrayField(
-        models.CharField(max_length=100),
-        default=list,
-        help_text='Array of users participating in a private conversation.'
+    users = ManyToManyField(
+        User,
     )
 
     def __str__(self):
@@ -1715,97 +1742,97 @@ class CommentReadStatus(models.Model):
 #   ------------
 
 
-class WebFacetAsset(models.Model):
-    """ An asset connected to a specific webfacet. """
+# class WebFacetAsset(models.Model):
+#     """ An asset connected to a specific webfacet. """
 
-    webfacet_asset_id = models.SlugField(
-        max_length=15,
-        primary_key=True,
-        help_text='Unique identifier for a webfacet/asset connection.'
-        )
+#     webfacet_asset_id = models.SlugField(
+#         max_length=15,
+#         primary_key=True,
+#         help_text='Unique identifier for a webfacet/asset connection.'
+#         )
 
-    webfacet_id = models.ForeignKey(
-        WebFacet,
-        )
+#     webfacet_id = models.ForeignKey(
+#         WebFacet,
+#         )
 
-    asset_id = models.ForeignKey(
-        Asset,
-        )
+#     asset_id = models.ForeignKey(
+#         Asset,
+#         )
 
-    def __str__(self):
-        return "{webfacet}: {asset}".format(
-                                        webfacet=self.webfacet.webfacet_title,
-                                        asset=self.asset.asset_description,
-                                        )
-
-
-class PrintFacetAsset(models.Model):
-    """ An asset connected to a specific printfacet. """
-
-    printfacet_asset_id = models.SlugField(
-        max_length=15,
-        primary_key=True,
-        help_text='Unique identifier for a printfacet/asset connection.'
-        )
-
-    printfacet_id = models.ForeignKey(
-        PrintFacet,
-        )
-
-    asset_id = models.ForeignKey(
-        Asset,
-        )
-
-    def __str__(self):
-        return "{printfacet}: {asset}".format(
-                                        printfacet=self.printfacet.printfacet_title,
-                                        asset=self.asset.asset_description,
-                                        )
+#     def __str__(self):
+#         return "{webfacet}: {asset}".format(
+#                                         webfacet=self.webfacet.webfacet_title,
+#                                         asset=self.asset.asset_description,
+#                                         )
 
 
-class AudioFacetAsset(models.Model):
-    """ An asset connected to a specific audiofacet. """
+# class PrintFacetAsset(models.Model):
+#     """ An asset connected to a specific printfacet. """
 
-    audiofacet_asset_id = models.SlugField(
-        max_length=15,
-        primary_key=True,
-        help_text='Unique identifier for a audiofacet/asset connection.'
-        )
+#     printfacet_asset_id = models.SlugField(
+#         max_length=15,
+#         primary_key=True,
+#         help_text='Unique identifier for a printfacet/asset connection.'
+#         )
 
-    audiofacet_id = models.ForeignKey(
-        AudioFacet,
-        )
+#     printfacet_id = models.ForeignKey(
+#         PrintFacet,
+#         )
 
-    asset_id = models.ForeignKey(
-        Asset,
-        )
+#     asset_id = models.ForeignKey(
+#         Asset,
+#         )
 
-    def __str__(self):
-        return "{audiofacet}: {asset}".format(
-                                        audiofacet=self.audiofacet.audiofacet_title,
-                                        asset=self.asset.asset_description,
-                                        )
+#     def __str__(self):
+#         return "{printfacet}: {asset}".format(
+#                                         printfacet=self.printfacet.printfacet_title,
+#                                         asset=self.asset.asset_description,
+#                                         )
 
 
-class VideoFacetAsset(models.Model):
-    """ An asset connected to a specific videofacet. """
+# class AudioFacetAsset(models.Model):
+#     """ An asset connected to a specific audiofacet. """
 
-    videofacet_asset_id = models.SlugField(
-        max_length=15,
-        primary_key=True,
-        help_text='Unique identifier for a videofacet/asset connection.'
-        )
+#     audiofacet_asset_id = models.SlugField(
+#         max_length=15,
+#         primary_key=True,
+#         help_text='Unique identifier for a audiofacet/asset connection.'
+#         )
 
-    videofacet_id = models.ForeignKey(
-        VideoFacet,
-        )
+#     audiofacet_id = models.ForeignKey(
+#         AudioFacet,
+#         )
 
-    asset_id = models.ForeignKey(
-        Asset,
-        )
+#     asset_id = models.ForeignKey(
+#         Asset,
+#         )
 
-    def __str__(self):
-        return "{videofacet}: {asset}".format(
-                                        videofacet=self.videofacet.videofacet_title,
-                                        asset=self.asset.asset_description,
-                                        )
+#     def __str__(self):
+#         return "{audiofacet}: {asset}".format(
+#                                         audiofacet=self.audiofacet.audiofacet_title,
+#                                         asset=self.asset.asset_description,
+#                                         )
+
+
+# class VideoFacetAsset(models.Model):
+#     """ An asset connected to a specific videofacet. """
+
+#     videofacet_asset_id = models.SlugField(
+#         max_length=15,
+#         primary_key=True,
+#         help_text='Unique identifier for a videofacet/asset connection.'
+#         )
+
+#     videofacet_id = models.ForeignKey(
+#         VideoFacet,
+#         )
+
+#     asset_id = models.ForeignKey(
+#         Asset,
+#         )
+
+#     def __str__(self):
+#         return "{videofacet}: {asset}".format(
+#                                         videofacet=self.videofacet.videofacet_title,
+#                                         asset=self.asset.asset_description,
+#                                         )
