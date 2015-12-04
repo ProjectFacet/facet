@@ -14,7 +14,6 @@
   <!-- Bootstrap -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
   <link rel="stylesheet" href="/static/css/bootstrap.css">
-  <link rel="stylesheet" href="/static/css/bootstrap-custom.css">
   <!-- endBootstrap -->
 
   <!-- Dependencies -->
@@ -35,7 +34,13 @@
 <body>
 
   <main id="wrapper" class="wrapkit-wrapper">
-    <!-- NAVIGATION -->
+
+  <!-- ================================================= -->
+  <!-- ================================================= -->
+                  <!-- NAVIGATION -->
+  <!-- ================================================= -->
+  <!-- ================================================= -->
+
     <nav class="navbar navbar-inverse">
       <div class="container-fluid">
         <div class="navbar-header">
@@ -50,8 +55,18 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Project Facet</a>
+          <!-- ================================================= -->
+                                <!-- LOGO -->
+          <!-- ================================================= -->
+          <div class="pull-left">
+            <a class="navbar-brand" href="#" role="logo">
+              <img src="static/images/logo/brand-text-light.png" alt="Facet Logo" class="logo">
+            </a>
+          </div>
         </div>
+          <!-- ================================================= -->
+                              <!-- MAIN MENU -->
+          <!-- ================================================= -->
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <li><a href="#">Dashboard</a></li>
@@ -59,10 +74,26 @@
             <li><a href="#">Teams</a></li>
             <li><a href="#">Discussions</a></li>
           </ul>
-            <ul class="nav navbar-nav navbar-right">
+          <!-- ================================================= -->
+                            <!-- PROFILE MENU -->
+          <!-- ================================================= -->
+          <ul class="nav navbar-nav navbar-right">
               <li><a href="#">Settings</a></li>
-              <li><a href="#">Log In</a></li>
-            </ul>
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Adds<span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                <!-- *********************************************** -->
+                <!-- Temporary links to these forms for dev purposes -->
+                <!-- *********************************************** -->
+                  <li><a href="#">Add Organization</a></li>
+                  <li><a href="#">Add User</a></li>
+                  <li><a href="#">Add Network</a></li>
+                  <li role="separator" class="divider"></li>
+                  <li><a href="#">Add Series</a></li>
+                  <li><a href="#">Add Story</a></li>
+                </ul>
+              </li>
+          </ul>
         </div>
       </div>
     </nav>
@@ -70,12 +101,26 @@
 
     <!-- BODY OF APP -->
     {% block content %}
-      <!-- Page Content Here Here -->
+      <!-- ================================================= -->
+      <!-- ================================================= -->
+                      <!-- MAIN CONTENT SECTION -->
+      <!-- ================================================= -->
+      <!-- ================================================= -->
     {% endblock %}
     <!-- END OF APP BODY -->
 
-    <!-- FOOTER -->
+    <!-- ================================================= -->
+    <!-- ================================================= -->
+                    <!-- FOOTER SECTION -->
+    <!-- ================================================= -->
+    <!-- ================================================= -->
+    <div class="mastfoot">
+      <div class="inner">
+        <p>Project Facet. v 0.1</p>
+      </div>
+    </div>
     <!-- END FOOTER -->
+
   </main><!--/#wrapper-->
 
   
@@ -86,15 +131,12 @@
   <!-- ================================================= -->
   <!-- ================================================= -->
 
-  <!-- VENDORS : jQuery & Bootstrap -->
-  <script src="bower_components/jquery/dist/jquery.js"></script>
-  <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script>
   <!-- Latest compiled and minified JavaScript -->
   <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
   <!-- VENDORS : jQuery & Bootstrap -->
-  <script src="static/scripts/vendor.js"></script>
+  <!-- // <script src="static/scripts/vendor.js"></script> -->
   <!-- END VENDORS -->
   <!-- DEPENDENCIES : Required plugins -->
   <script src="static/scripts/dependencies.js"></script>
