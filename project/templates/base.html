@@ -9,24 +9,26 @@
   <!-- favicon and touch icons -->
 
   <!-- font -->
-
+  <link href="http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,400,700,600,300" rel="stylesheet" type="text/css">
 
   <!-- Bootstrap -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-  <link rel="stylesheet" href="styles/bootstrap.css">
-  <link rel="stylesheet" href="styles/bootstrap-custom.css">
+  <link rel="stylesheet" href="/static/css/bootstrap.css">
+  <link rel="stylesheet" href="/static/css/bootstrap-custom.css">
   <!-- endBootstrap -->
 
   <!-- Dependencies -->
-  <link rel="stylesheet" href="styles/dependencies.css">
+  <link rel="stylesheet" href="/static/css/dependencies.css">
   <!-- endDependencies -->
 
   <!-- Wrapkit -->
-  <link rel="stylesheet" href="styles/wrapkit.css">
+  <link rel="stylesheet" href="/static/css/wrapkit.css">
   <!-- endWrapkit -->
 
   <!-- styles & other dependencies -->
-  <link rel="stylesheet" href="styles/facet.css">
+  <link rel="stylesheet" href="/static/css/components.css">
+  <link rel="stylesheet" href="/static/css/demo.css">
+  <link rel="stylesheet" href="/static/css/facet.css">
 
 </head>
 
@@ -76,54 +78,42 @@
     <!-- END FOOTER -->
   </main><!--/#wrapper-->
 
+  
+
+  <!-- ================================================= -->
+  <!-- ================================================= -->
+                  <!-- JS LINKS -->
+  <!-- ================================================= -->
+  <!-- ================================================= -->
+
   <!-- VENDORS : jQuery & Bootstrap -->
   <script src="bower_components/jquery/dist/jquery.js"></script>
   <script src="bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js"></script>
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+  <!-- VENDORS : jQuery & Bootstrap -->
+  <script src="static/scripts/vendor.js"></script>
   <!-- END VENDORS -->
-
   <!-- DEPENDENCIES : Required plugins -->
-  <script src="bower_components/velocity/velocity.js"></script>
-  <script src="bower_components/velocity/velocity.ui.js"></script>
-  <script src="bower_components/classie/classie.js"></script>
-  <script src="bower_components/eventEmitter/EventEmitter.js"></script>
-  <script src="bower_components/jquery-bridget/jquery.bridget.js"></script>
-  <script src="bower_components/interact/interact.js"></script>
-  <script src="bower_components/slimScroll/jquery.slimscroll.min.js"></script>
-  <script src="bower_components/screenfull/dist/screenfull.js"></script>
-  <script src="bower_components/jquery-cookie/jquery.cookie.js"></script>
-  <script src="bower_components/transitionize/dist/transitionize.js"></script>
-  <script src="bower_components/fastclick/lib/fastclick.js"></script>
-  <script src="bower_components/switchery/dist/switchery.js"></script>
-  <script src="bower_components/autogrow-textarea/jquery.autogrowtextarea.js"></script>
+  <script src="static/scripts/dependencies.js"></script>
   <!-- END DEPENDENCIES -->
-
   <!-- WRAPKIT -->
-  <script src="scripts/wrapkit/wrapkit-utils.js"></script>
-  <script src="scripts/wrapkit/wrapkit-layout.js"></script>
-  <script src="scripts/wrapkit/wrapkit-header.js"></script>
-  <script src="scripts/wrapkit/wrapkit-sidebar.js"></script>
-  <script src="scripts/wrapkit/wrapkit-content.js"></script>
-  <script src="scripts/wrapkit/wrapkit-footer.js"></script>
-  <script src="scripts/wrapkit/wrapkit-panel.js"></script>
+  <script src="static/scripts/wrapkit.js"></script>
   <!-- END WRAPKIT -->
-
   <!-- WRAPKIT SETUPS -->
-  <!-- Custom settings defined in these files -->
-  <script src="scripts/wrapkit/header.setup.js"></script>
-  <script src="scripts/wrapkit/sidebar.setup.js"></script>
-  <script src="scripts/wrapkit/content.setup.js"></script>
-  <script src="scripts/wrapkit/layout.setup.js"></script>
-  <script src="scripts/wrapkit/footer.setup.js"></script>
-  <script src="scripts/wrapkit/panel.setup.js"></script>
+  <script src="static/scripts/wrapkit-setup.js"></script>
   <!-- end WRAPKIT SETUPS -->
-
   <!-- PLUGIN SETUPS: vendors & dependencies setups -->
-  <!-- Custom settings defined in these files -->
-  <script src="scripts/plugins/bootstrap.setup.js"></script>
-  <script src="scripts/plugins/dependencies.setup.js"></script>
+  <script src="static/scripts/plugin-setups.js"></script>
   <!-- END PLUGIN SETUPS -->
-
-  <!-- scripts or other dependencies here -->
+  <!-- COMPONENTS -->
+  <script src="static/scripts/epiceditor.js"></script>
+  <script src="static/scripts/summernote.js"></script>
+  <!-- END COMPONENTS -->
+  <!-- DUMMY: Use for demo -->
+  <script src="static/scripts/demo/frm-editor-demo.js"></script>
 
 </body>
 </html>
