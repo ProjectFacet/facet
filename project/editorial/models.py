@@ -2,18 +2,18 @@
 
     Sections
     ---------
-    People: 
+    People:
     - Main Tables: User, Organization, Network
     - Associations: NetworkOrganizaton
 
-    Content: 
+    Content:
     - Main Tables:Series, Story, WebFacet, PrintFacet, AudioFacet, VideoFacet
     - Associations: WebFacetContributors, PrintFacetContributors, AudioFacetContributors, VideoFacetContributors
                 StoryCopyDetails, SeriesCopyDetails, WebFacetCopyDetails, PrintFacetCopyDetails, AudioFacetCopyDetails, VideoFacetCopyDetails
 
     MetaMaterials:
     - Main Tables: SeriesPlan, StoryPlan, Asset, Comment, CommentReadStatus, Discussion, PrivateDiscussion
-    - Associations: 
+    - Associations:
 """
 
 from django.db import models
@@ -32,7 +32,7 @@ from imagekit.models import ProcessedImageField
 
 
 #----------------------------------------------------------------------#
-#   People: 
+#   People:
 #   - Main Tables: User, Organization, Network
 #   - Associations: NetworkOrganizaton, UserSeries, UserStory
 #----------------------------------------------------------------------#
@@ -76,20 +76,14 @@ class User(models.Model):
         help_text='Full name of user as listed as a credit on content.'
     )
 
-    username = models.CharField(
-        max_length=30,
-        unique=True,
-        help_text='Username as needed for login purposes.'
-    )
-
     user_title = models.CharField(
         max_length=100,
         unique=True,
         help_text='Professional title'
     )
 
-    user_date_joined = models.DateTimeField(
-        auto_now_add=True
+    user_email = models.EmailField(
+        blank=True,
     )
 
     user_last_login = models.DateTimeField(
@@ -100,8 +94,8 @@ class User(models.Model):
         default = True
     )
 
-    email = models.EmailField(
-        blank=True,
+    user_date_joined = models.DateTimeField(
+        auto_now_add=True
     )
 
     phone = models.CharField(
@@ -294,7 +288,7 @@ class Network(models.Model):
     )
 
     organizations = models.ManyToManyField(
-        Organization, 
+        Organization,
         through='NetworkOrganizaton',
         related_name='network_organization',
     )
@@ -342,7 +336,7 @@ class NetworkOrganizaton(models.Model):
 
 
 #----------------------------------------------------------------------#
-#   Content: 
+#   Content:
 #   - Main Tables:  Series, Story, WebFacet, PrintFacet, AudioFacet, VideoFacet
 #   - Associations: WebFacetContributors, PrintFacetContributors,
 #                   AudioFacetContributors, VideoFacetContributors
@@ -392,7 +386,7 @@ class Series(models.Model):
         related_name='series_team_member',
         help_text='User contributing to the series.'
     )
-    
+
     series_creation_date = models.DateTimeField(
         auto_now_add=True
     )
@@ -566,7 +560,7 @@ class WebFacet(models.Model):
     )
 
     contributors = models.ManyToManyField(
-        User, 
+        User,
         through='WebFacetContributors',
         help_text='Users that contributed to a facet. Used to associate multiple users to a facet.'
     )
@@ -1710,4 +1704,3 @@ class CommentReadStatus(models.Model):
 #   ------------
 
 # None
-
