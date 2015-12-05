@@ -18,7 +18,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 # Application definition
 
-INSTALLED_APPS += (
+INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -67,11 +67,9 @@ TEMPLATES = [
 ]
 
 AUTHENTICATION_BACKENDS = (
-    ...
     # Needed to login by username in Django admin, regardless of `allauth`
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
-    ...
 )
 
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None

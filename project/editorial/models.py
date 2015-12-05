@@ -56,11 +56,6 @@ class User(models.Model):
 
     user_organization_id = models.ForeignKey('Organization')
 
-    user_admin_privilege = models.BooleanField(
-        default=False,
-        help_text = 'Is a user able to manage an organization/network and make/remove users.'
-    )
-
     user_fname = models.CharField(
         max_length=45,
         db_index=True,
@@ -82,20 +77,8 @@ class User(models.Model):
         help_text='Professional title'
     )
 
-    user_email = models.EmailField(
+    email = models.EmailField(
         blank=True,
-    )
-
-    user_last_login = models.DateTimeField(
-        auto_now = True
-    )
-
-    user_is_active = models.BooleanField(
-        default = True
-    )
-
-    user_date_joined = models.DateTimeField(
-        auto_now_add=True
     )
 
     phone = models.CharField(
