@@ -2,15 +2,18 @@
 
     Sections
     ---------
-    People: User, Organization, Network
-    -Associations: NetworkOrganizaton, UserSeries, UserStory
+    People: 
+    - Main Tables: User, Organization, Network
+    - Associations: NetworkOrganizaton
 
-    Content: Series, Story, WebFacet, PrintFacet, AudioFacet, VideoFacet
-    -Associations: WebFacetContributors, PrintFacetContributors, AudioFacetContributors, VideoFacetContributors
+    Content: 
+    - Main Tables:Series, Story, WebFacet, PrintFacet, AudioFacet, VideoFacet
+    - Associations: WebFacetContributors, PrintFacetContributors, AudioFacetContributors, VideoFacetContributors
                 StoryCopyDetails, SeriesCopyDetails, WebFacetCopyDetails, PrintFacetCopyDetails, AudioFacetCopyDetails, VideoFacetCopyDetails
 
-    MetaMaterials: SeriesPlan, StoryPlan, Asset, Comment, CommentReadStatus, Discussion, PrivateDiscussion
-    -Associations: WebFacetAsset, PrintFacetAsset, AudioFacetAsset, VideoFacetAsset
+    MetaMaterials:
+    - Main Tables: SeriesPlan, StoryPlan, Asset, Comment, CommentReadStatus, Discussion, PrivateDiscussion
+    - Associations: 
 """
 
 from django.db import models
@@ -261,6 +264,7 @@ class Network(models.Model):
 
     network_owner_organization = models.ForeignKey(
         Organization,
+        help_text='Organization that owns the network.'
     )
 
     network_name = models.CharField(
@@ -292,6 +296,7 @@ class Network(models.Model):
     organizations = models.ManyToManyField(
         Organization, 
         through='NetworkOrganizaton',
+        related_name='network_organization',
     )
 
     class Meta:
@@ -377,12 +382,15 @@ class Series(models.Model):
 
     series_owner = models.ForeignKey(
         User,
+        related_name='series_owner',
         help_text='The user that created the series.'
     )
 
     # connection to users participating in a series
     series_team = models.ManyToManyField(
-        User
+        User,
+        related_name='series_team_member',
+        help_text='User contributing to the series.'
     )
     
     series_creation_date = models.DateTimeField(
@@ -401,11 +409,13 @@ class Series(models.Model):
 
     share_with = models.ManyToManyField(
         Network,
+        related_name='series_shared_with_network',
         help_text='Network ids that a series is shared with.'
     )
 
     collaborate_with = models.ManyToManyField(
         Network,
+        related_name='series_collaborated_with_network',
         help_text='Network ids that a series is open to collaboration with.'
     )
 
@@ -451,6 +461,8 @@ class Story(models.Model):
 
     story_owner = models.ForeignKey(
         User,
+        related_name='story_owner',
+        help_text='User who created the story'
     )
 
     story_name = models.CharField(
@@ -486,25 +498,19 @@ class Story(models.Model):
     # connection to users participating in a story
     story_team = models.ManyToManyField(
         User,
-    )
-
-    share = models.BooleanField(
-        default=False,
-        help_text='The story is being shared with a network.'
-    )
-
-    collaborate = models.BooleanField(
-        default=False,
-        help_text='The story is being collaborated on with a network.'
+        related_name='story_team_member',
+        help_text='User contributing to the story.'
     )
 
     share_with = models.ManyToManyField(
         Network,
+        related_name='story_shared_with_network',
         help_text='Network ids that a story is shared with.'
     )
 
     collaborate_with = models.ManyToManyField(
         Network,
+        related_name='story_collaborated_with_network',
         help_text='Network ids that a story is open to collaboration with.'
     )
 
@@ -582,7 +588,7 @@ class WebFacet(models.Model):
         help_text='Headline of the Webfacet'
     )
 
-    excerpt = models.TextField(Hb
+    excerpt = models.TextField(
         help_text='Excerpt from the Webfacet.'
     )
 
@@ -651,8 +657,8 @@ class WebFacet(models.Model):
         help_text='Information for organizations making a copy of the webfacet.'
     )
 
-    assets = ManyToManyField(
-        Asset
+    assets = models.ManyToManyField(
+        'Asset',
     )
 
     class Meta:
@@ -793,8 +799,8 @@ class PrintFacet(models.Model):
         help_text='Information for organizations making a copy of the printfacet.'
     )
 
-    assets = ManyToManyField(
-        Asset
+    assets = models.ManyToManyField(
+        'Asset',
     )
 
     class Meta:
@@ -935,8 +941,8 @@ class AudioFacet(models.Model):
         help_text='Information for organizations making a copy of the audiofacet.'
     )
 
-    assets = ManyToManyField(
-        Asset
+    assets = models.ManyToManyField(
+        'Asset',
     )
 
     class Meta:
@@ -1077,8 +1083,8 @@ class VideoFacet(models.Model):
         help_text='Information for organizations making a copy of the videofacet.'
     )
 
-    assets = ManyToManyField(
-        Asset
+    assets = models.ManyToManyField(
+        'Asset',
     )
 
     class Meta:
@@ -1620,7 +1626,7 @@ class PrivateDiscussion(models.Model):
         Discussion,
     )
 
-    users = ManyToManyField(
+    users = models.ManyToManyField(
         User,
     )
 
