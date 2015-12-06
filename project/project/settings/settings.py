@@ -25,6 +25,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'bootstrap3',
     'editorial',
     'imagekit',
     'simple_history.models',
@@ -75,7 +76,9 @@ AUTHENTICATION_BACKENDS = (
 ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
-ACCOUNT_AUTHENTICATION_METHOD = 'user_email'
+ACCOUNT_AUTHENTICATION_METHOD = "email"
+
+LOGIN_REDIRECT_URL = '/'
 
 WSGI_APPLICATION = 'project.wsgi.application'
 

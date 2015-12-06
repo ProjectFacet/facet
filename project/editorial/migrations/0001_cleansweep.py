@@ -17,18 +17,18 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Asset',
             fields=[
-                ('asset_id', models.SlugField(help_text=b'Unique identifier for an asset.', max_length=15, serialize=False, primary_key=True)),
-                ('asset_description', models.TextField(help_text=b'What is the asset. (If a photo or graphic, it should be the caption.)', max_length=300)),
-                ('asset_attribution', models.TextField(help_text=b'The appropriate information for crediting the asset.', max_length=200)),
-                ('asset_s3_link', models.URLField(help_text=b'The item on S3.', max_length=300)),
+                ('id', models.SlugField(help_text=b'Unique identifier for an asset.', max_length=15, serialize=False, primary_key=True)),
+                ('description', models.TextField(help_text=b'What is the asset. (If a photo or graphic, it should be the caption.)', max_length=300)),
+                ('attribution', models.TextField(help_text=b'The appropriate information for crediting the asset.', max_length=200)),
+                ('s3_link', models.URLField(help_text=b'The item on S3.', max_length=300)),
                 ('asset_type', models.CharField(help_text=b'What kind is the asset.', max_length=20, choices=[(b'PIC', b'Photograph'), (b'GRAPH', b'Graphic'), (b'AUD', b'Audio'), (b'VID', b'Video'), (b'DOC', b'Document')])),
-                ('asset_creation_date', models.DateTimeField(help_text=b'When the asset was created.', auto_now_add=True)),
+                ('creation_date', models.DateTimeField(help_text=b'When the asset was created.', auto_now_add=True)),
             ],
         ),
         migrations.CreateModel(
             name='AudioFacet',
             fields=[
-                ('audiofacet_id', models.SlugField(help_text=b'Unique identifier for audiofacet', max_length=25, serialize=False, primary_key=True)),
+                ('id', models.SlugField(help_text=b'Unique identifier for audiofacet', max_length=25, serialize=False, primary_key=True)),
                 ('code', models.CharField(help_text=b'Unique code as needed for ingest sytems. Use as needed', max_length=75)),
                 ('title', models.TextField(help_text=b'Headline of the audiofacet.')),
                 ('excerpt', models.TextField(help_text=b'Excerpt for the audiofacet.')),
@@ -51,7 +51,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='AudioFacetContributor',
             fields=[
-                ('audiofacet_contributor_id', models.SlugField(help_text=b'Unique identifier for a audiofacet/contributor connection.', max_length=15, serialize=False, primary_key=True)),
+                ('id', models.SlugField(help_text=b'Unique identifier for a audiofacet/contributor connection.', max_length=15, serialize=False, primary_key=True)),
                 ('user_role', models.CharField(help_text=b'What did the user do?', max_length=255)),
                 ('audiofacet_id', models.ForeignKey(to='editorial.AudioFacet')),
             ],
@@ -59,7 +59,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='AudioFacetCopyDetail',
             fields=[
-                ('copy_details_id', models.SlugField(help_text=b'Unique identifier for a story copy detail object.', max_length=15, serialize=False, primary_key=True)),
+                ('id', models.SlugField(help_text=b'Unique identifier for a story copy detail object.', max_length=15, serialize=False, primary_key=True)),
                 ('new_audiofacet_id', models.SlugField(help_text=b"Id of the story on the copying organization's site.", max_length=15)),
                 ('copy_date', models.DateTimeField(help_text=b'Datetime when copy was made.', auto_now_add=True)),
             ],
@@ -67,15 +67,15 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Comment',
             fields=[
-                ('comment_id', models.SlugField(help_text=b'Unique identifier for a comment.', max_length=25, serialize=False, primary_key=True)),
+                ('id', models.SlugField(help_text=b'Unique identifier for a comment.', max_length=25, serialize=False, primary_key=True)),
                 ('text', models.TextField(help_text=b'The comment of the comment.')),
-                ('comment_date', models.DateTimeField(auto_now_add=True)),
+                ('date', models.DateTimeField(auto_now_add=True)),
             ],
         ),
         migrations.CreateModel(
             name='CommentReadStatus',
             fields=[
-                ('read_status_id', models.SlugField(help_text=b'Unique identifier for a comment read status.', max_length=25, serialize=False, primary_key=True)),
+                ('id', models.SlugField(help_text=b'Unique identifier for a comment read status.', max_length=25, serialize=False, primary_key=True)),
                 ('datetime_read', models.DateTimeField(auto_now_add=True)),
                 ('has_read', models.BooleanField(default=True)),
                 ('comment_id', models.ForeignKey(to='editorial.Comment')),
@@ -84,14 +84,14 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Discussion',
             fields=[
-                ('discussion_id', models.SlugField(help_text=b'Unique identifier for a discussion.', max_length=15, serialize=False, primary_key=True)),
+                ('id', models.SlugField(help_text=b'Unique identifier for a discussion.', max_length=15, serialize=False, primary_key=True)),
                 ('discussion_type', models.CharField(help_text=b'What kind of discussion is it.', max_length=25, choices=[(b'PRI', b'Private Conversation'), (b'SER', b'Series Conversation'), (b'STO', b'Story Conversation'), (b'WF', b'WebFacet Conversation'), (b'PF', b'PrintFacet Conversation'), (b'AF', b'AudioFacet Conversation'), (b'VF', b'VideoFacet Conversation')])),
             ],
         ),
         migrations.CreateModel(
             name='HistoricalAudioFacet',
             fields=[
-                ('audiofacet_id', models.SlugField(help_text=b'Unique identifier for audiofacet', max_length=25)),
+                ('id', models.SlugField(help_text=b'Unique identifier for audiofacet', max_length=25)),
                 ('code', models.CharField(help_text=b'Unique code as needed for ingest sytems. Use as needed', max_length=75)),
                 ('title', models.TextField(help_text=b'Headline of the audiofacet.')),
                 ('excerpt', models.TextField(help_text=b'Excerpt for the audiofacet.')),
@@ -117,7 +117,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='HistoricalPrintFacet',
             fields=[
-                ('printfacet_id', models.SlugField(help_text=b'Unique identifier for printfacet', max_length=25)),
+                ('id', models.SlugField(help_text=b'Unique identifier for printfacet', max_length=25)),
                 ('code', models.CharField(help_text=b'Unique code as needed for ingest sytems. Use as needed', max_length=75)),
                 ('title', models.TextField(help_text=b'Headline of the printfacet.')),
                 ('excerpt', models.TextField(help_text=b'Excerpt from the printfacet.')),
@@ -143,7 +143,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='HistoricalVideoFacet',
             fields=[
-                ('videofacet_id', models.SlugField(help_text=b'Unique identifier for videofacet', max_length=25)),
+                ('id', models.SlugField(help_text=b'Unique identifier for videofacet', max_length=25)),
                 ('code', models.CharField(help_text=b'Unique code as needed for ingest sytems. Use as needed', max_length=75)),
                 ('title', models.TextField(help_text=b'Headline of the videofacet.')),
                 ('excerpt', models.TextField(help_text=b'Excerpt from the videofacet.')),
@@ -169,7 +169,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='HistoricalWebFacet',
             fields=[
-                ('webfacet_id', models.SlugField(help_text=b'Unique identifier for webfacet', max_length=25)),
+                ('id', models.SlugField(help_text=b'Unique identifier for webfacet', max_length=25)),
                 ('code', models.CharField(help_text=b'Unique code as needed for ingest sytems. Use as needed', max_length=75)),
                 ('title', models.TextField(help_text=b'Headline of the Webfacet')),
                 ('excerpt', models.TextField(help_text=b'Excerpt from the Webfacet.')),
@@ -195,36 +195,34 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Network',
             fields=[
-                ('network_id', models.SlugField(help_text=b'Unique identifier for a network', max_length=15, serialize=False, primary_key=True)),
-                ('network_name', models.CharField(help_text=b'The name by which members identify the network.', max_length=75, db_index=True)),
-                ('network_creation_date', models.DateTimeField(auto_now_add=True)),
-                ('network_description', models.TextField(help_text=b'Short description of a network.', blank=True)),
-                ('network_logo', models.ImageField(upload_to=b'organizations', blank=True)),
+                ('id', models.SlugField(help_text=b'Unique identifier for a network', max_length=15, serialize=False, primary_key=True)),
+                ('name', models.CharField(help_text=b'The name by which members identify the network.', max_length=75, db_index=True)),
+                ('creation_date', models.DateTimeField(auto_now_add=True)),
+                ('logo', models.ImageField(upload_to=b'organizations', blank=True)),
             ],
             options={
-                'ordering': ['network_name'],
+                'ordering': ['name'],
                 'verbose_name': 'Network',
                 'verbose_name_plural': 'Networks',
             },
         ),
         migrations.CreateModel(
-            name='NetworkOrganizaton',
+            name='NetworkOrganization',
             fields=[
-                ('network_organization_id', models.SlugField(help_text=b'Unique identifier for a network/organization connection.', max_length=15, serialize=False, primary_key=True)),
+                ('id', models.SlugField(help_text=b'Unique identifier for a network/organization connection.', max_length=15, serialize=False, primary_key=True)),
                 ('network_id', models.ForeignKey(to='editorial.Network')),
             ],
         ),
         migrations.CreateModel(
             name='Organization',
             fields=[
-                ('organization_id', models.SlugField(help_text=b'Unique code for an organization.', max_length=15, serialize=False, primary_key=True)),
-                ('organization_name', models.CharField(max_length=75, db_index=True)),
-                ('organization_description', models.TextField(help_text=b'Short profile of organization.', blank=True)),
-                ('organization_creation_date', models.DateTimeField(auto_now_add=True)),
+                ('id', models.SlugField(help_text=b'Unique code for an organization.', max_length=15, serialize=False, primary_key=True)),
+                ('name', models.CharField(max_length=75, db_index=True)),
+                ('creation_date', models.DateTimeField(auto_now_add=True)),
                 ('organization_logo', models.ImageField(upload_to=b'organizations', blank=True)),
             ],
             options={
-                'ordering': ['organization_name'],
+                'ordering': ['name'],
                 'verbose_name': 'Organization',
                 'verbose_name_plural': 'Organizations',
             },
@@ -232,7 +230,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='PrintFacet',
             fields=[
-                ('printfacet_id', models.SlugField(help_text=b'Unique identifier for printfacet', max_length=25, serialize=False, primary_key=True)),
+                ('id', models.SlugField(help_text=b'Unique identifier for printfacet', max_length=25, serialize=False, primary_key=True)),
                 ('code', models.CharField(help_text=b'Unique code as needed for ingest sytems. Use as needed', max_length=75)),
                 ('title', models.TextField(help_text=b'Headline of the printfacet.')),
                 ('excerpt', models.TextField(help_text=b'Excerpt from the printfacet.')),
@@ -255,7 +253,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='PrintFacetContributor',
             fields=[
-                ('printfacet_contributor_id', models.SlugField(help_text=b'Unique identifier for a printfacet/contributor connection.', max_length=15, serialize=False, primary_key=True)),
+                ('id', models.SlugField(help_text=b'Unique identifier for a printfacet/contributor connection.', max_length=15, serialize=False, primary_key=True)),
                 ('user_role', models.CharField(help_text=b'What did the user do?', max_length=255)),
                 ('printfacet_id', models.ForeignKey(to='editorial.PrintFacet')),
             ],
@@ -263,33 +261,33 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='PrintFacetCopyDetail',
             fields=[
-                ('copy_details_id', models.SlugField(help_text=b'Unique identifier for a story copy detail object.', max_length=15, serialize=False, primary_key=True)),
+                ('id', models.SlugField(help_text=b'Unique identifier for a story copy detail object.', max_length=15, serialize=False, primary_key=True)),
                 ('new_printfacet_id', models.SlugField(help_text=b"Id of the story on the copying organization's site.", max_length=15)),
                 ('copy_date', models.DateTimeField(help_text=b'Datetime when copy was made.', auto_now_add=True)),
                 ('organization_id', models.ForeignKey(help_text=b'Id of the organization that made the copy.', to='editorial.Organization')),
+                ('original_printfacet_id', models.ForeignKey(help_text=b'Original id of the story.', to='editorial.PrintFacet')),
             ],
         ),
         migrations.CreateModel(
             name='PrivateDiscussion',
             fields=[
-                ('private_discussion_id', models.SlugField(help_text=b'Unique identifier of a private discussion', max_length=15, serialize=False, primary_key=True)),
+                ('id', models.SlugField(help_text=b'Unique identifier of a private discussion', max_length=15, serialize=False, primary_key=True)),
                 ('discussion_id', models.ForeignKey(to='editorial.Discussion')),
             ],
         ),
         migrations.CreateModel(
             name='Series',
             fields=[
-                ('series_id', models.SlugField(help_text=b'Unique identifier for a series.', max_length=15, serialize=False, primary_key=True)),
-                ('series_name', models.CharField(help_text=b'The name identifying the series.', max_length=75)),
-                ('series_description', models.TextField(help_text=b'Short description of a series.', blank=True)),
-                ('series_creation_date', models.DateTimeField(auto_now_add=True)),
+                ('id', models.SlugField(help_text=b'Unique identifier for a series.', max_length=15, serialize=False, primary_key=True)),
+                ('name', models.CharField(help_text=b'The name identifying the series.', max_length=75)),
+                ('creation_date', models.DateTimeField(auto_now_add=True)),
                 ('share', models.BooleanField(default=False, help_text=b'The series is being shared with a network.')),
                 ('collaborate', models.BooleanField(default=False, help_text=b'The series is being collaborated on with a network.')),
                 ('archived', models.BooleanField(default=False, help_text=b'Is the content no longer active and needed?')),
                 ('collaborate_with', models.ManyToManyField(help_text=b'Network ids that a series is open to collaboration with.', related_name='series_collaborated_with_network', to='editorial.Network')),
             ],
             options={
-                'ordering': ['series_name'],
+                'ordering': ['name'],
                 'verbose_name': 'Series',
                 'verbose_name_plural': 'Series',
             },
@@ -297,7 +295,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='SeriesCopyDetail',
             fields=[
-                ('copy_details_id', models.SlugField(help_text=b'Unique identifier for a series copy detail object.', max_length=15, serialize=False, primary_key=True)),
+                ('id', models.SlugField(help_text=b'Unique identifier for a series copy detail object.', max_length=15, serialize=False, primary_key=True)),
                 ('new_series_id', models.SlugField(help_text=b"Id of the series on the copying organization's site.", max_length=15)),
                 ('copy_date', models.DateTimeField(help_text=b'Datetime when copy was made.', auto_now_add=True)),
                 ('organization_id', models.ForeignKey(help_text=b'Id of the organization that made the copy.', to='editorial.Organization')),
@@ -307,29 +305,24 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='SeriesPlan',
             fields=[
-                ('series_planning_id', models.SlugField(help_text=b'Unique identifier for a series plan.', max_length=15, serialize=False, primary_key=True)),
-                ('series_plan_note', models.TextField(help_text=b'Notes for planning a series. Can be any details needed to be tracked while a series is planned/reported.')),
-                ('series_discussion_id', models.ForeignKey(to='editorial.Discussion')),
-                ('series_id', models.ForeignKey(to='editorial.Series')),
+                ('id', models.SlugField(help_text=b'Unique identifier for a series plan.', max_length=15, serialize=False, primary_key=True)),
+                ('note', models.TextField(help_text=b'Notes for planning a series. Can be any details needed to be tracked while a series is planned/reported.')),
             ],
         ),
         migrations.CreateModel(
             name='Story',
             fields=[
-                ('story_id', models.SlugField(help_text=b'unique identifier for a story', max_length=15, serialize=False, primary_key=True)),
-                ('story_name', models.CharField(help_text=b'The name by which the story is identified', max_length=250)),
-                ('story_description', models.TextField(help_text=b'Short description of a story.', blank=True)),
-                ('story_embargo', models.BooleanField(default=False, help_text=b'Is a story embargoed?')),
-                ('story_embargo_datetime', models.DateTimeField(help_text=b'When is the story no longer under embargo.')),
-                ('story_sensitivity', models.BooleanField(default=False, help_text=b'Is a story sensitive, for limited viewing?')),
-                ('story_creation_date', models.DateTimeField(help_text=b'When was the story created.', auto_now_add=True)),
+                ('id', models.SlugField(help_text=b'unique identifier for a story', max_length=15, serialize=False, primary_key=True)),
+                ('name', models.CharField(help_text=b'The name by which the story is identified', max_length=250)),
+                ('embargo', models.BooleanField(default=False, help_text=b'Is a story embargoed?')),
+                ('embargo_datetime', models.DateTimeField(help_text=b'When is the story no longer under embargo.')),
+                ('sensitivity', models.BooleanField(default=False, help_text=b'Is a story sensitive, for limited viewing?')),
+                ('creation_date', models.DateTimeField(help_text=b'When was the story created.', auto_now_add=True)),
                 ('archived', models.BooleanField(default=False, help_text=b'Is the content no longer active and needed?')),
                 ('collaborate_with', models.ManyToManyField(help_text=b'Network ids that a story is open to collaboration with.', related_name='story_collaborated_with_network', to='editorial.Network')),
-                ('series_id', models.ForeignKey(to='editorial.Series')),
-                ('share_with', models.ManyToManyField(help_text=b'Network ids that a story is shared with.', related_name='story_shared_with_network', to='editorial.Network')),
             ],
             options={
-                'ordering': ['story_name'],
+                'ordering': ['name'],
                 'verbose_name': 'Story',
                 'verbose_name_plural': 'Stories',
             },
@@ -337,45 +330,43 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='StoryCopyDetail',
             fields=[
-                ('copy_details_id', models.SlugField(help_text=b'Unique identifier for a story copy detail object.', max_length=15, serialize=False, primary_key=True)),
+                ('id', models.SlugField(help_text=b'Unique identifier for a story copy detail object.', max_length=15, serialize=False, primary_key=True)),
                 ('new_story_id', models.SlugField(help_text=b"Id of the story on the copying organization's site.", max_length=15)),
                 ('copy_date', models.DateTimeField(help_text=b'Datetime when copy was made.', auto_now_add=True)),
                 ('organization_id', models.ForeignKey(help_text=b'Id of the organization that made the copy.', to='editorial.Organization')),
-                ('original_story_id', models.ForeignKey(help_text=b'Original id of the story.', to='editorial.Series')),
+                ('original_story_id', models.ForeignKey(help_text=b'Original id of the story.', to='editorial.Story')),
             ],
         ),
         migrations.CreateModel(
             name='StoryPlan',
             fields=[
-                ('story_planning_id', models.SlugField(help_text=b'Unique identifier for a story plan.', max_length=15, serialize=False, primary_key=True)),
-                ('story_plan_note', models.TextField(help_text=b'Notes for planning a story. Can be any details needed to be tracked while a story is planned/reported.')),
-                ('story_discussion_id', models.ForeignKey(to='editorial.Discussion')),
-                ('story_id', models.ForeignKey(to='editorial.Story')),
+                ('id', models.SlugField(help_text=b'Unique identifier for a story plan.', max_length=15, serialize=False, primary_key=True)),
+                ('note', models.TextField(help_text=b'Notes for planning a story. Can be any details needed to be tracked while a story is planned/reported.')),
             ],
         ),
         migrations.CreateModel(
             name='User',
             fields=[
-                ('user_id', models.SlugField(help_text=b'Unique code for a user.', max_length=15, serialize=False, primary_key=True)),
-                ('user_fname', models.CharField(max_length=45, db_index=True)),
-                ('user_lname', models.CharField(max_length=45, db_index=True)),
-                ('user_credit_name', models.CharField(help_text=b'Full name of user as listed as a credit on content.', max_length=75)),
-                ('user_title', models.CharField(help_text=b'Professional title', unique=True, max_length=100)),
+                ('id', models.SlugField(help_text=b'Unique code for a user.', max_length=15, serialize=False, primary_key=True)),
+                ('fname', models.CharField(max_length=45, db_index=True)),
+                ('lname', models.CharField(max_length=45, db_index=True)),
+                ('credit_name', models.CharField(help_text=b'Full name of user as listed as a credit on content.', max_length=75)),
+                ('title', models.CharField(help_text=b'Professional title', unique=True, max_length=100)),
                 ('email', models.EmailField(max_length=254, blank=True)),
                 ('phone', models.CharField(max_length=20, blank=True)),
                 ('bio', models.TextField(help_text=b'Short bio.', blank=True)),
-                ('user_expertise', django.contrib.postgres.fields.ArrayField(default=list, help_text=b'Array of user skills and beats to filter/search by.', base_field=models.CharField(max_length=100), size=None)),
+                ('expertise', django.contrib.postgres.fields.ArrayField(default=list, help_text=b'Array of user skills and beats to filter/search by.', base_field=models.CharField(max_length=100), size=None)),
                 ('profile_photo', models.ImageField(upload_to=b'users', blank=True)),
-                ('user_facebook', models.CharField(max_length=150, null=True, blank=True)),
-                ('user_twitter', models.CharField(max_length=150, null=True, blank=True)),
-                ('user_linkedin', models.CharField(max_length=150, null=True, blank=True)),
-                ('user_instagram', models.CharField(max_length=150, null=True, blank=True)),
-                ('user_snapchat', models.CharField(max_length=150, null=True, blank=True)),
-                ('user_vine', models.CharField(max_length=150, null=True, blank=True)),
-                ('user_organization_id', models.ForeignKey(to='editorial.Organization')),
+                ('facebook', models.CharField(max_length=150, null=True, blank=True)),
+                ('twitter', models.CharField(max_length=150, null=True, blank=True)),
+                ('linkedin', models.CharField(max_length=150, null=True, blank=True)),
+                ('instagram', models.CharField(max_length=150, null=True, blank=True)),
+                ('snapchat', models.CharField(max_length=150, null=True, blank=True)),
+                ('vine', models.CharField(max_length=150, null=True, blank=True)),
+                ('organization_id', models.ForeignKey(to='editorial.Organization')),
             ],
             options={
-                'ordering': ['user_credit_name'],
+                'ordering': ['credit_name'],
                 'verbose_name': 'Team member',
                 'verbose_name_plural': 'Team members',
             },
@@ -383,7 +374,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='VideoFacet',
             fields=[
-                ('videofacet_id', models.SlugField(help_text=b'Unique identifier for videofacet', max_length=25, serialize=False, primary_key=True)),
+                ('id', models.SlugField(help_text=b'Unique identifier for videofacet', max_length=25, serialize=False, primary_key=True)),
                 ('code', models.CharField(help_text=b'Unique code as needed for ingest sytems. Use as needed', max_length=75)),
                 ('title', models.TextField(help_text=b'Headline of the videofacet.')),
                 ('excerpt', models.TextField(help_text=b'Excerpt from the videofacet.')),
@@ -406,7 +397,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='VideoFacetContributor',
             fields=[
-                ('videofacet_contributor_id', models.SlugField(help_text=b'Unique identifier for a videofacet/contributor connection.', max_length=15, serialize=False, primary_key=True)),
+                ('id', models.SlugField(help_text=b'Unique identifier for a videofacet/contributor connection.', max_length=15, serialize=False, primary_key=True)),
                 ('user_role', models.CharField(help_text=b'What did the user do?', max_length=255)),
                 ('user_id', models.ForeignKey(to='editorial.User')),
                 ('videofacet_id', models.ForeignKey(to='editorial.VideoFacet')),
@@ -415,17 +406,17 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='VideoFacetCopyDetail',
             fields=[
-                ('copy_details_id', models.SlugField(help_text=b'Unique identifier for a story copy detail object.', max_length=15, serialize=False, primary_key=True)),
+                ('id', models.SlugField(help_text=b'Unique identifier for a story copy detail object.', max_length=15, serialize=False, primary_key=True)),
                 ('new_videofacet_id', models.SlugField(help_text=b"Id of the story on the copying organization's site.", max_length=15)),
                 ('copy_date', models.DateTimeField(help_text=b'Datetime when copy was made.', auto_now_add=True)),
                 ('organization_id', models.ForeignKey(help_text=b'Id of the organization that made the copy.', to='editorial.Organization')),
-                ('original_videofacet_id', models.ForeignKey(help_text=b'Original id of the story.', to='editorial.Series')),
+                ('original_videofacet_id', models.ForeignKey(help_text=b'Original id of the story.', to='editorial.VideoFacet')),
             ],
         ),
         migrations.CreateModel(
             name='WebFacet',
             fields=[
-                ('webfacet_id', models.SlugField(help_text=b'Unique identifier for webfacet', max_length=25, serialize=False, primary_key=True)),
+                ('id', models.SlugField(help_text=b'Unique identifier for webfacet', max_length=25, serialize=False, primary_key=True)),
                 ('code', models.CharField(help_text=b'Unique code as needed for ingest sytems. Use as needed', max_length=75)),
                 ('title', models.TextField(help_text=b'Headline of the Webfacet')),
                 ('excerpt', models.TextField(help_text=b'Excerpt from the Webfacet.')),
@@ -448,7 +439,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='WebFacetContributor',
             fields=[
-                ('webfacet_contributor_id', models.SlugField(help_text=b'Unique identifier for a webfacet/contributor connection.', max_length=15, serialize=False, primary_key=True)),
+                ('id', models.SlugField(help_text=b'Unique identifier for a webfacet/contributor connection.', max_length=15, serialize=False, primary_key=True)),
                 ('user_role', models.CharField(help_text=b'What did the user do?', max_length=255)),
                 ('user_id', models.ForeignKey(to='editorial.User')),
                 ('webfacet_id', models.ForeignKey(to='editorial.WebFacet')),
@@ -457,11 +448,11 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='WebFacetCopyDetail',
             fields=[
-                ('copy_details_id', models.SlugField(help_text=b'Unique identifier for a story copy detail object.', max_length=15, serialize=False, primary_key=True)),
+                ('id', models.SlugField(help_text=b'Unique identifier for a story copy detail object.', max_length=15, serialize=False, primary_key=True)),
                 ('new_webfacet_id', models.SlugField(help_text=b"Id of the story on the copying organization's site.", max_length=15)),
                 ('copy_date', models.DateTimeField(help_text=b'Datetime when copy was made.', auto_now_add=True)),
                 ('organization_id', models.ForeignKey(help_text=b'Id of the organization that made the copy.', to='editorial.Organization')),
-                ('original_webfacet_id', models.ForeignKey(help_text=b'Original id of the story.', to='editorial.Series')),
+                ('original_webfacet_id', models.ForeignKey(help_text=b'Original id of the story.', to='editorial.WebFacet')),
             ],
         ),
         migrations.AddField(
@@ -536,33 +527,58 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='storyplan',
-            name='story_plan_note_owner',
+            name='note_owner',
             field=models.ForeignKey(to='editorial.User'),
         ),
         migrations.AddField(
+            model_name='storyplan',
+            name='story_discussion_id',
+            field=models.ForeignKey(to='editorial.Discussion'),
+        ),
+        migrations.AddField(
+            model_name='storyplan',
+            name='story_id',
+            field=models.ForeignKey(to='editorial.Story'),
+        ),
+        migrations.AddField(
             model_name='story',
-            name='story_owner',
+            name='owner',
             field=models.ForeignKey(related_name='story_owner', to='editorial.User', help_text=b'User who created the story'),
         ),
         migrations.AddField(
             model_name='story',
-            name='story_team',
+            name='series_id',
+            field=models.ForeignKey(to='editorial.Series'),
+        ),
+        migrations.AddField(
+            model_name='story',
+            name='share_with',
+            field=models.ManyToManyField(help_text=b'Network ids that a story is shared with.', related_name='story_shared_with_network', to='editorial.Network'),
+        ),
+        migrations.AddField(
+            model_name='story',
+            name='team',
             field=models.ManyToManyField(help_text=b'User contributing to the story.', related_name='story_team_member', to='editorial.User'),
         ),
         migrations.AddField(
             model_name='seriesplan',
-            name='series_plan_note_owner',
+            name='note_owner',
             field=models.ForeignKey(to='editorial.User'),
         ),
         migrations.AddField(
-            model_name='series',
-            name='series_owner',
-            field=models.ForeignKey(related_name='series_owner', to='editorial.User', help_text=b'The user that created the series.'),
+            model_name='seriesplan',
+            name='series_discussion_id',
+            field=models.ForeignKey(to='editorial.Discussion'),
+        ),
+        migrations.AddField(
+            model_name='seriesplan',
+            name='series_id',
+            field=models.ForeignKey(to='editorial.Series'),
         ),
         migrations.AddField(
             model_name='series',
-            name='series_team',
-            field=models.ManyToManyField(help_text=b'User contributing to the series.', related_name='series_team_member', to='editorial.User'),
+            name='owner',
+            field=models.ForeignKey(related_name='series_owner', to='editorial.User', help_text=b'The user that created the series.'),
         ),
         migrations.AddField(
             model_name='series',
@@ -570,14 +586,14 @@ class Migration(migrations.Migration):
             field=models.ManyToManyField(help_text=b'Network ids that a series is shared with.', related_name='series_shared_with_network', to='editorial.Network'),
         ),
         migrations.AddField(
+            model_name='series',
+            name='team',
+            field=models.ManyToManyField(help_text=b'User contributing to the series.', related_name='series_team_member', to='editorial.User'),
+        ),
+        migrations.AddField(
             model_name='privatediscussion',
             name='users',
             field=models.ManyToManyField(to='editorial.User'),
-        ),
-        migrations.AddField(
-            model_name='printfacetcopydetail',
-            name='original_printfacet_id',
-            field=models.ForeignKey(help_text=b'Original id of the story.', to='editorial.Series'),
         ),
         migrations.AddField(
             model_name='printfacetcontributor',
@@ -621,23 +637,23 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='organization',
-            name='organization_owner',
+            name='owner',
             field=models.ForeignKey(to='editorial.User'),
         ),
         migrations.AddField(
-            model_name='networkorganizaton',
+            model_name='networkorganization',
             name='organization_id',
             field=models.ForeignKey(to='editorial.Organization'),
         ),
         migrations.AddField(
             model_name='network',
-            name='network_owner_organization',
-            field=models.ForeignKey(help_text=b'Organization that owns the network.', to='editorial.Organization'),
+            name='organizations',
+            field=models.ManyToManyField(related_name='network_organization', through='editorial.NetworkOrganization', to='editorial.Organization'),
         ),
         migrations.AddField(
             model_name='network',
-            name='organizations',
-            field=models.ManyToManyField(related_name='network_organization', through='editorial.NetworkOrganizaton', to='editorial.Organization'),
+            name='owner_organization',
+            field=models.ForeignKey(help_text=b'Organization that owns the network.', to='editorial.Organization'),
         ),
         migrations.AddField(
             model_name='historicalwebfacet',
@@ -762,7 +778,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='audiofacetcopydetail',
             name='original_audiofacet_id',
-            field=models.ForeignKey(help_text=b'Original id of the story.', to='editorial.Series'),
+            field=models.ForeignKey(help_text=b'Original id of the story.', to='editorial.AudioFacet'),
         ),
         migrations.AddField(
             model_name='audiofacetcontributor',
@@ -806,7 +822,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='asset',
-            name='asset_owner',
+            name='owner',
             field=models.ForeignKey(to='editorial.User'),
         ),
         migrations.AddField(

@@ -60,7 +60,7 @@
           <!-- ================================================= -->
           <div class="pull-left">
             <a class="navbar-brand" href="#" role="logo">
-              <img src="static/images/logo/brand-text-light.png" alt="Facet Logo" class="logo">
+              <img src="/static/images/logo/brand-text-light.png" alt="Facet Logo" class="logo">
             </a>
           </div>
         </div>
@@ -68,16 +68,23 @@
                               <!-- MAIN MENU -->
           <!-- ================================================= -->
         <div id="navbar" class="navbar-collapse collapse">
+         <!-- if request.user.is_authenticated  -->
           <ul class="nav navbar-nav">
             <li><a href="#">Dashboard</a></li>
             <li><a href="#">Network</a></li>
             <li><a href="#">Teams</a></li>
             <li><a href="#">Discussions</a></li>
           </ul>
+          <!-- endif -->
           <!-- ================================================= -->
                             <!-- PROFILE MENU -->
           <!-- ================================================= -->
           <ul class="nav navbar-nav navbar-right">
+              {% if request.user.is_authenticated %}
+                <li><a href="/accounts/logout/" class="pull-right">Logout</a></li>
+              {% else %}
+                <li><a href="/accounts/login/" class="pull-right">Login</a></li>
+              {% endif %}
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" title="Temporary Links for Convenience">Adds<span class="caret"></span></a>
                 <ul class="dropdown-menu">
@@ -122,7 +129,7 @@
 
   </main><!--/#wrapper-->
 
-  
+
 
   <!-- ================================================= -->
   <!-- ================================================= -->
@@ -138,23 +145,23 @@
   <!-- // <script src="static/scripts/vendor.js"></script> -->
   <!-- END VENDORS -->
   <!-- DEPENDENCIES : Required plugins -->
-  <script src="static/scripts/dependencies.js"></script>
+  <script src="/static/scripts/dependencies.js"></script>
   <!-- END DEPENDENCIES -->
   <!-- WRAPKIT -->
-  <script src="static/scripts/wrapkit.js"></script>
+  <script src="/static/scripts/wrapkit.js"></script>
   <!-- END WRAPKIT -->
   <!-- WRAPKIT SETUPS -->
-  <script src="static/scripts/wrapkit-setup.js"></script>
+  <script src="/static/scripts/wrapkit-setup.js"></script>
   <!-- end WRAPKIT SETUPS -->
   <!-- PLUGIN SETUPS: vendors & dependencies setups -->
-  <script src="static/scripts/plugin-setups.js"></script>
+  <script src="/static/scripts/plugin-setups.js"></script>
   <!-- END PLUGIN SETUPS -->
   <!-- COMPONENTS -->
-  <script src="static/scripts/epiceditor.js"></script>
-  <script src="static/scripts/summernote.js"></script>
+  <script src="/static/scripts/epiceditor.js"></script>
+  <script src="/static/scripts/summernote.js"></script>
   <!-- END COMPONENTS -->
   <!-- DUMMY: Use for demo -->
-  <script src="static/scripts/demo/frm-editor-demo.js"></script>
+  <script src="/static/scripts/demo/frm-editor-demo.js"></script>
 
 </body>
 </html>

@@ -9,4 +9,3 @@ def index(request):
 def dashboard(request):
     # return dashboard view for logged in user.
     pass
-
