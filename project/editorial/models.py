@@ -4,7 +4,7 @@
     ---------
     People:
     - Main Tables: User, Organization, Network
-    - Associations: NetworkOrganizaton
+    - Associations: NetworkOrganization
 
     Content:
     - Main Tables: Series, Story, WebFacet, PrintFacet, AudioFacet, VideoFacet
@@ -34,7 +34,7 @@ from imagekit.models import ProcessedImageField
 #----------------------------------------------------------------------#
 #   People:
 #   - Main Tables: User, Organization, Network
-#   - Associations: NetworkOrganizaton, UserSeries, UserStory
+#   - Associations: NetworkOrganization, UserSeries, UserStory
 #----------------------------------------------------------------------#
 
 
@@ -272,7 +272,7 @@ class Network(models.Model):
 
     organizations = models.ManyToManyField(
         Organization,
-        through='NetworkOrganizaton',
+        through='NetworkOrganization',
         related_name='network_organization',
     )
 
@@ -294,7 +294,7 @@ class Network(models.Model):
 #   Associations
 #   ------------
 
-class NetworkOrganizaton(models.Model):
+class NetworkOrganization(models.Model):
     """ The connection between Organizations and Networks. """
 
     id = models.SlugField(
