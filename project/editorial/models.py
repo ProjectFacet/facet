@@ -1,13 +1,13 @@
 """ Model for editorial application.
 
-    Sections
+    Tables
     ---------
     People:
     - Main Tables: User, Organization, Network
     - Associations: NetworkOrganizaton
 
     Content:
-    - Main Tables:Series, Story, WebFacet, PrintFacet, AudioFacet, VideoFacet
+    - Main Tables: Series, Story, WebFacet, PrintFacet, AudioFacet, VideoFacet
     - Associations: WebFacetContributors, PrintFacetContributors, AudioFacetContributors, VideoFacetContributors
                 StoryCopyDetails, SeriesCopyDetails, WebFacetCopyDetails, PrintFacetCopyDetails, AudioFacetCopyDetails, VideoFacetCopyDetails
 
@@ -371,7 +371,7 @@ class Series(models.Model):
     )
 
     series_creation_date = models.DateTimeField(
-        auto_now_add=True
+        auto_now_add=True,
     )
 
     share = models.BooleanField(
@@ -544,16 +544,15 @@ class WebFacet(models.Model):
 
     contributors = models.ManyToManyField(
         User,
-        through='WebFacetContributors',
+        through='WebFacetContributor',
         help_text='Users that contributed to a facet. Used to associate multiple users to a facet.'
     )
 
-    credit = models.ForeignKey(
+    credit = models.ManyToManyField(
         # There can be multiple users listed as the credit.
-        # Should this be ManyToMany?
         User,
         related_name='webfacetcredit',
-        help_text='The full user name to be listed as the credit for the facet.'
+        help_text='The full user name(s) to be listed as the credit for the facet.'
     )
 
     code = models.CharField(
@@ -686,16 +685,15 @@ class PrintFacet(models.Model):
 
     contributors = models.ManyToManyField(
         User,
-        through='PrintFacetContributors',
+        through='PrintFacetContributor',
         help_text='Users that contributed to a facet. Used to associate multiple users to a facet.'
     )
 
-    credit = models.ForeignKey(
+    credit = models.ManyToManyField(
         # There can be multiple users listed as the credit.
-        # Should this be ManyToMany?
         User,
         related_name='printfacetcredit',
-        help_text='The full user name to be listed as the credit for the facet.'
+        help_text='The full user name(s) to be listed as the credit for the facet.'
     )
 
     code = models.CharField(
@@ -828,16 +826,15 @@ class AudioFacet(models.Model):
 
     contributors = models.ManyToManyField(
         User,
-        through='AudioFacetContributors',
+        through='AudioFacetContributor',
         help_text='Users that contributed to a facet. Used to associate multiple users to a facet.'
     )
 
-    credit = models.ForeignKey(
+    credit = models.ManyToManyField(
         # There can be multiple users listed as the credit.
-        # Should this be ManyToMany?
         User,
         related_name='audiofacetcredit',
-        help_text='The full user name to be listed as the credit for the facet.'
+        help_text='The full user name(s) to be listed as the credit for the facet.'
     )
 
     code = models.CharField(
@@ -970,16 +967,15 @@ class VideoFacet(models.Model):
 
     contributors = models.ManyToManyField(
         User,
-        through='VideoFacetContributors',
+        through='VideoFacetContributor',
         help_text='Users that contributed to a facet. Used to associate multiple users to a facet.'
     )
 
-    credit = models.ForeignKey(
+    credit = models.ManyToManyField(
         # There can be multiple users listed as the credit.
-        # Should this be ManyToMany?
         User,
         related_name='videofacetcredit',
-        help_text='The full user name to be listed as the credit for the facet.'
+        help_text='The full user name(s) to be listed as the credit for the facet.'
     )
 
     code = models.CharField(
@@ -1084,7 +1080,7 @@ class VideoFacet(models.Model):
 #   ------------
 
 
-class WebFacetContributors(models.Model):
+class WebFacetContributor(models.Model):
     """ Which users are participating in creating the WebFacet. """
 
     webfacet_contributor_id = models.SlugField(
@@ -1101,7 +1097,10 @@ class WebFacetContributors(models.Model):
         User,
     )
 
-    # Add user role text field/choice field
+    user_role = models.CharField(
+        max_length=255,
+        help_text='What did the user do?'
+    )
 
     def __str__(self):
         return "{webfacet}, {contributor}".format(
@@ -1110,7 +1109,7 @@ class WebFacetContributors(models.Model):
                                         )
 
 
-class PrintFacetContributors(models.Model):
+class PrintFacetContributor(models.Model):
     """ Which users are participating in creating the PrintFacet. """
 
     printfacet_contributor_id = models.SlugField(
@@ -1127,6 +1126,11 @@ class PrintFacetContributors(models.Model):
         User,
     )
 
+    user_role = models.CharField(
+        max_length=255,
+        help_text='What did the user do?'
+    )
+
     def __str__(self):
         return "{printfacet}, {contributor}".format(
                                         printfacet=self.webfacet.webfacet_title,
@@ -1134,7 +1138,7 @@ class PrintFacetContributors(models.Model):
                                         )
 
 
-class AudioFacetContributors(models.Model):
+class AudioFacetContributor(models.Model):
     """ Which users are participating in creating the AudioFacet. """
 
     audiofacet_contributor_id = models.SlugField(
@@ -1151,6 +1155,11 @@ class AudioFacetContributors(models.Model):
         User,
     )
 
+    user_role = models.CharField(
+        max_length=255,
+        help_text='What did the user do?'
+    )
+
     def __str__(self):
         return "{audiofacet}, {contributor}".format(
                                         audiofacet=self.webfacet.webfacet_title,
@@ -1158,7 +1167,7 @@ class AudioFacetContributors(models.Model):
                                         )
 
 
-class VideoFacetContributors(models.Model):
+class VideoFacetContributor(models.Model):
     """ Which users are participating in creating the VideoFacet. """
 
     videofacet_contributor_id = models.SlugField(
@@ -1175,6 +1184,11 @@ class VideoFacetContributors(models.Model):
         User,
     )
 
+    user_role = models.CharField(
+        max_length=255,
+        help_text='What did the user do?'
+    )
+
     def __str__(self):
         return "{videofacet}, {contributor}".format(
                                         videofacet=self.webfacet.webfacet_title,
@@ -1182,7 +1196,7 @@ class VideoFacetContributors(models.Model):
                                         )
 
 
-class SeriesCopyDetails(models.Model):
+class SeriesCopyDetail(models.Model):
     """ The details of each copy of a series.
 
     Each time an organization elects to copy a shared facet, query to see if the
@@ -1222,7 +1236,7 @@ class SeriesCopyDetails(models.Model):
                                 )
 
 
-class StoryCopyDetails(models.Model):
+class StoryCopyDetail(models.Model):
     """ The details of each copy of a story.
 
     Each time an organization elects to copy a shared facet, query to see if the
@@ -1261,7 +1275,7 @@ class StoryCopyDetails(models.Model):
                                 )
 
 
-class WebFacetCopyDetails(models.Model):
+class WebFacetCopyDetail(models.Model):
     """ The details of a each copy of a webfacet. """
 
     copy_details_id = models.SlugField(
@@ -1297,7 +1311,7 @@ class WebFacetCopyDetails(models.Model):
                                 )
 
 
-class PrintFacetCopyDetails(models.Model):
+class PrintFacetCopyDetail(models.Model):
     """ The details of a each copy of a printfacet. """
     copy_details_id = models.SlugField(
         max_length=15,
@@ -1332,7 +1346,7 @@ class PrintFacetCopyDetails(models.Model):
                                 )
 
 
-class AudioFacetCopyDetails(models.Model):
+class AudioFacetCopyDetail(models.Model):
     """ The details of a each copy of a audiofacet. """
     copy_details_id = models.SlugField(
         max_length=15,
@@ -1367,7 +1381,7 @@ class AudioFacetCopyDetails(models.Model):
                                 )
 
 
-class VideoFacetCopyDetails(models.Model):
+class VideoFacetCopyDetail(models.Model):
     """ The details of a each copy of a videofacet. """
     copy_details_id = models.SlugField(
         max_length=15,
