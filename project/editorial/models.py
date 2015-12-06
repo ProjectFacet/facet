@@ -47,31 +47,31 @@ class User(models.Model):
     to inactive. A general user creates and collaborates on content.
     """
 
-    user_id = models.SlugField(
+    id = models.SlugField(
         max_length=15,
         primary_key=True,
         db_index=True,
         help_text='Unique code for a user.'
     )
 
-    user_organization_id = models.ForeignKey('Organization')
+    organization_id = models.ForeignKey('Organization')
 
-    user_fname = models.CharField(
+    fname = models.CharField(
         max_length=45,
         db_index=True,
     )
 
-    user_lname = models.CharField(
+    lname = models.CharField(
         max_length=45,
         db_index=True,
     )
 
-    user_credit_name = models.CharField(
+    credit_name = models.CharField(
         max_length=75,
         help_text='Full name of user as listed as a credit on content.'
     )
 
-    user_title = models.CharField(
+    title = models.CharField(
         max_length=100,
         unique=True,
         help_text='Professional title'
@@ -91,7 +91,7 @@ class User(models.Model):
         blank=True
     )
 
-    user_expertise = ArrayField(
+    expertise = ArrayField(
         models.CharField(max_length=100),
         default=list,
         help_text='Array of user skills and beats to filter/search by.'
@@ -109,37 +109,37 @@ class User(models.Model):
     )
 
     #Links to user's professional social media accounts
-    user_facebook = models.CharField(
+    facebook = models.CharField(
         max_length=150,
         blank=True,
         null=True,
     )
 
-    user_twitter = models.CharField(
+    twitter = models.CharField(
         max_length=150,
         blank=True,
         null=True,
     )
 
-    user_linkedin = models.CharField(
+    linkedin = models.CharField(
         max_length=150,
         blank=True,
         null=True,
     )
 
-    user_instagram = models.CharField(
+    instagram = models.CharField(
         max_length=150,
         blank=True,
         null=True,
     )
 
-    user_snapchat = models.CharField(
+    snapchat = models.CharField(
         max_length=150,
         blank=True,
         null=True,
     )
 
-    user_vine = models.CharField(
+    vine = models.CharField(
         max_length=150,
         blank=True,
         null=True,
@@ -148,16 +148,16 @@ class User(models.Model):
     class Meta:
         verbose_name = 'Team member'
         verbose_name_plural = "Team members"
-        ordering = ['user_credit_name']
+        ordering = ['credit_name']
 
     def __str__(self):
-        return self.user_credit_name
+        return self.credit_name
 
     @property
     def description(self):
         return "{user}, {title}".format(
-                                        user=self.user_credit_name,
-                                        title=self.user_title
+                                        user=self.credit_name,
+                                        title=self.title
                                         )
 
 
@@ -171,27 +171,27 @@ class Organization(models.Model):
     from one admin user to another.
     """
 
-    organization_id = models.SlugField(
+    id = models.SlugField(
         max_length=15,
         primary_key=True,
         help_text='Unique code for an organization.'
     )
 
-    organization_name = models.CharField(
+    name = models.CharField(
         max_length=75,
         db_index=True,
     )
 
-    organization_owner = models.ForeignKey(
+    owner = models.ForeignKey(
         User,
     )
 
-    organization_description = models.TextField(
+    description = models.TextField(
         help_text="Short profile of organization.",
         blank=True
     )
 
-    organization_creation_date = models.DateTimeField(
+    creation_date = models.DateTimeField(
         auto_now_add=True
     )
 
@@ -209,16 +209,16 @@ class Organization(models.Model):
     class Meta:
         verbose_name = 'Organization'
         verbose_name_plural = "Organizations"
-        ordering = ['organization_name']
+        ordering = ['name']
 
     def __str__(self):
-        return self.organization_name
+        return self.name
 
     @property
     def description(self):
         return "{organization}, {description}".format(
-                                                    organization=self.organization_name,
-                                                    description=self.organization_description
+                                                    organization=self.name,
+                                                    description=self.description
                                                     )
 
 
@@ -233,33 +233,33 @@ class Network(models.Model):
     version of the content to their own account.
     """
 
-    network_id = models.SlugField(
+    id = models.SlugField(
         max_length=15,
         primary_key=True,
         help_text='Unique identifier for a network'
     )
 
-    network_owner_organization = models.ForeignKey(
+    owner_organization = models.ForeignKey(
         Organization,
         help_text='Organization that owns the network.'
     )
 
-    network_name = models.CharField(
+    name = models.CharField(
         max_length=75,
         db_index=True,
         help_text="The name by which members identify the network."
     )
 
-    network_creation_date = models.DateTimeField(
+    creation_date = models.DateTimeField(
         auto_now_add=True
     )
 
-    network_description = models.TextField(
+    description = models.TextField(
         help_text="Short description of a network.",
         blank=True
     )
 
-    network_logo = models.ImageField(
+    logo = models.ImageField(
         upload_to="organizations",
         blank=True
     )
@@ -279,16 +279,16 @@ class Network(models.Model):
     class Meta:
         verbose_name = 'Network'
         verbose_name_plural = "Networks"
-        ordering = ['network_name']
+        ordering = ['name']
 
     def __str__(self):
-        return self.network_name
+        return self.name
 
     @property
     def description(self):
         return "{network}, {description}".format(
-                                                network=self.network_name,
-                                                description=self.network_description
+                                                network=self.name,
+                                                description=self.description
                                                 )
 
 #   Associations
@@ -297,7 +297,7 @@ class Network(models.Model):
 class NetworkOrganizaton(models.Model):
     """ The connection between Organizations and Networks. """
 
-    network_organization_id = models.SlugField(
+    id = models.SlugField(
         max_length=15,
         primary_key=True,
         help_text='Unique identifier for a network/organization connection.'
@@ -313,8 +313,8 @@ class NetworkOrganizaton(models.Model):
 
     def __str__(self):
         return "{network}, {organization}".format(
-                                                network=self.network.network_name,
-                                                organization=self.organization.organization_name
+                                                network=self.network.name,
+                                                organization=self.organization.name
                                                 )
 
 
@@ -340,37 +340,37 @@ class Series(models.Model):
     assets easily available to all stories/facets.
     """
 
-    series_id = models.SlugField(
+    id = models.SlugField(
         max_length=15,
         primary_key=True,
         db_index=True,
         help_text='Unique identifier for a series.'
     )
 
-    series_name = models.CharField(
+    name = models.CharField(
         max_length=75,
         help_text='The name identifying the series.'
     )
 
-    series_description = models.TextField(
+    description = models.TextField(
         blank=True,
         help_text='Short description of a series.',
     )
 
-    series_owner = models.ForeignKey(
+    owner = models.ForeignKey(
         User,
         related_name='series_owner',
         help_text='The user that created the series.'
     )
 
     # connection to users participating in a series
-    series_team = models.ManyToManyField(
+    team = models.ManyToManyField(
         User,
         related_name='series_team_member',
         help_text='User contributing to the series.'
     )
 
-    series_creation_date = models.DateTimeField(
+    creation_date = models.DateTimeField(
         auto_now_add=True,
     )
 
@@ -404,16 +404,16 @@ class Series(models.Model):
     class Meta:
         verbose_name = 'Series'
         verbose_name_plural = "Series"
-        ordering = ['series_name']
+        ordering = ['name']
 
     def __str__(self):
-        return self.series_name
+        return self.name
 
     @property
     def description(self):
         return "{series}, {description}".format(
-                                                series=self.series_name,
-                                                description=self.series_description
+                                                series=self.name,
+                                                description=self.description
                                                 )
 
 
@@ -425,7 +425,7 @@ class Story(models.Model):
     The story also controls the sensivity and embargo status of the content.
     """
 
-    story_id = models.SlugField(
+    id = models.SlugField(
         max_length=15,
         primary_key=True,
         db_index=True,
@@ -436,44 +436,44 @@ class Story(models.Model):
         Series,
     )
 
-    story_owner = models.ForeignKey(
+    owner = models.ForeignKey(
         User,
         related_name='story_owner',
         help_text='User who created the story'
     )
 
-    story_name = models.CharField(
+    name = models.CharField(
         max_length=250,
         help_text='The name by which the story is identified'
     )
 
-    story_description = models.TextField(
+    description = models.TextField(
         help_text="Short description of a story.",
         blank=True
     )
 
-    story_embargo = models.BooleanField(
+    embargo = models.BooleanField(
         default=False,
         help_text='Is a story embargoed?'
         )
 
-    story_embargo_datetime = models.DateTimeField(
+    embargo_datetime = models.DateTimeField(
         help_text='When is the story no longer under embargo.'
     )
 
     # For now a boolean for sensitive or not. May have levels of sensitivity later.
-    story_sensitivity = models.BooleanField(
+    sensitivity = models.BooleanField(
         default=False,
         help_text='Is a story sensitive, for limited viewing?'
         )
 
-    story_creation_date = models.DateTimeField(
+    creation_date = models.DateTimeField(
         auto_now_add=True,
         help_text='When was the story created.'
     )
 
     # connection to users participating in a story
-    story_team = models.ManyToManyField(
+    team = models.ManyToManyField(
         User,
         related_name='story_team_member',
         help_text='User contributing to the story.'
@@ -499,16 +499,16 @@ class Story(models.Model):
     class Meta:
         verbose_name = 'Story'
         verbose_name_plural = "Stories"
-        ordering = ['story_name']
+        ordering = ['name']
 
     def __str__(self):
-        return self.story_name
+        return self.name
 
     @property
     def description(self):
         return "{story}, {description}".format(
-                                                story=self.story_name,
-                                                description=self.story_description
+                                                story=self.name,
+                                                description=self.description
                                                 )
 
 
@@ -518,7 +518,7 @@ class WebFacet(models.Model):
     Ex: Daily news, articles, videos, photo galleries
     """
 
-    webfacet_id = models.SlugField(
+    id = models.SlugField(
         max_length=25,
         primary_key=True,
         help_text='Unique identifier for webfacet'
@@ -648,7 +648,7 @@ class WebFacet(models.Model):
     @property
     def description(self):
         return "Webfacet: {webfacet} by {credit}".format(
-                                webfacet=self.webfacet_id,
+                                webfacet=self.id,
                                 credit=self.credit,
                                 )
 
@@ -659,7 +659,7 @@ class PrintFacet(models.Model):
     Ex: Daily news article, column, story.
     """
 
-    printfacet_id = models.SlugField(
+    id = models.SlugField(
         max_length=25,
         primary_key=True,
         help_text='Unique identifier for printfacet'
@@ -789,7 +789,7 @@ class PrintFacet(models.Model):
     @property
     def description(self):
         return "Printfacet: {printfacet} by {credit}".format(
-                                printfacet=self.printfacet_id,
+                                printfacet=self.id,
                                 credit=self.credit,
                                 )
 
@@ -800,7 +800,7 @@ class AudioFacet(models.Model):
     Ex: A single segment on Morning Edition.
     """
 
-    audiofacet_id = models.SlugField(
+    id = models.SlugField(
         max_length=25,
         primary_key=True,
         help_text='Unique identifier for audiofacet'
@@ -930,7 +930,7 @@ class AudioFacet(models.Model):
     @property
     def description(self):
         return "Audiofacet: {audiofacet} by {credit}".format(
-                                audiofacet=self.audiofacet_id,
+                                audiofacet=self.id,
                                 credit=self.credit,
                                 )
 
@@ -941,7 +941,7 @@ class VideoFacet(models.Model):
     Ex: An episode of a television program.
     """
 
-    videofacet_id = models.SlugField(
+    id = models.SlugField(
         max_length=25,
         primary_key=True,
         help_text='Unique identifier for videofacet'
@@ -1071,7 +1071,7 @@ class VideoFacet(models.Model):
     @property
     def description(self):
         return "Videofacet: {videofacet} by {credit}".format(
-                                videofacet=self.videofacet_id,
+                                videofacet=self.id,
                                 credit=self.credit,
                                 )
 
@@ -1083,7 +1083,7 @@ class VideoFacet(models.Model):
 class WebFacetContributor(models.Model):
     """ Which users are participating in creating the WebFacet. """
 
-    webfacet_contributor_id = models.SlugField(
+    id = models.SlugField(
         max_length=15,
         primary_key=True,
         help_text='Unique identifier for a webfacet/contributor connection.'
@@ -1104,15 +1104,15 @@ class WebFacetContributor(models.Model):
 
     def __str__(self):
         return "{webfacet}, {contributor}".format(
-                                        webfacet=self.webfacet.webfacet_title,
-                                        user=self.user.user_credit_name,
+                                        webfacet=self.webfacet.title,
+                                        contributor=self.user.credit_name,
                                         )
 
 
 class PrintFacetContributor(models.Model):
     """ Which users are participating in creating the PrintFacet. """
 
-    printfacet_contributor_id = models.SlugField(
+    id = models.SlugField(
         max_length=15,
         primary_key=True,
         help_text='Unique identifier for a printfacet/contributor connection.'
@@ -1133,15 +1133,15 @@ class PrintFacetContributor(models.Model):
 
     def __str__(self):
         return "{printfacet}, {contributor}".format(
-                                        printfacet=self.webfacet.webfacet_title,
-                                        user=self.user.user_credit_name,
+                                        printfacet=self.webfacet.title,
+                                        contributor=self.user.credit_name,
                                         )
 
 
 class AudioFacetContributor(models.Model):
     """ Which users are participating in creating the AudioFacet. """
 
-    audiofacet_contributor_id = models.SlugField(
+    id = models.SlugField(
         max_length=15,
         primary_key=True,
         help_text='Unique identifier for a audiofacet/contributor connection.'
@@ -1162,15 +1162,15 @@ class AudioFacetContributor(models.Model):
 
     def __str__(self):
         return "{audiofacet}, {contributor}".format(
-                                        audiofacet=self.webfacet.webfacet_title,
-                                        user=self.user.user_credit_name,
+                                        audiofacet=self.webfacet.title,
+                                        contributor=self.user.credit_name,
                                         )
 
 
 class VideoFacetContributor(models.Model):
     """ Which users are participating in creating the VideoFacet. """
 
-    videofacet_contributor_id = models.SlugField(
+    id = models.SlugField(
         max_length=15,
         primary_key=True,
         help_text='Unique identifier for a videofacet/contributor connection.'
@@ -1191,8 +1191,8 @@ class VideoFacetContributor(models.Model):
 
     def __str__(self):
         return "{videofacet}, {contributor}".format(
-                                        videofacet=self.webfacet.webfacet_title,
-                                        user=self.user.user_credit_name,
+                                        videofacet=self.webfacet.title,
+                                        contributor=self.user.credit_name,
                                         )
 
 
@@ -1203,7 +1203,7 @@ class SeriesCopyDetail(models.Model):
     series has already been copied over. If not copy the series and the story to the
     new organization.
     """
-    copy_details_id = models.SlugField(
+    id = models.SlugField(
         max_length=15,
         primary_key=True,
         help_text='Unique identifier for a series copy detail object.'
@@ -1231,7 +1231,7 @@ class SeriesCopyDetail(models.Model):
 
     def __str__(self):
         return "Copyinfo for {copyorg} \'s copy of series: {series}".format(
-                                copyorg=self.organization_id.organization_name,
+                                copyorg=self.organization_id.name,
                                 series=self.original_series_id,
                                 )
 
@@ -1242,7 +1242,7 @@ class StoryCopyDetail(models.Model):
     Each time an organization elects to copy a shared facet, query to see if the
     story has already been copied over. If not, copy the story to the new organization.
     """
-    copy_details_id = models.SlugField(
+    id = models.SlugField(
         max_length=15,
         primary_key=True,
         help_text='Unique identifier for a story copy detail object.'
@@ -1254,7 +1254,7 @@ class StoryCopyDetail(models.Model):
     )
 
     original_story_id = models.ForeignKey(
-        Series,
+        Story,
         help_text='Original id of the story.'
     )
 
@@ -1270,7 +1270,7 @@ class StoryCopyDetail(models.Model):
 
     def __str__(self):
         return "Copyinfo for {copyorg} \'s copy of story: {story}".format(
-                                copyorg=self.organization_id.organization_name,
+                                copyorg=self.organization_id.name,
                                 story=self.original_story_id,
                                 )
 
@@ -1278,7 +1278,7 @@ class StoryCopyDetail(models.Model):
 class WebFacetCopyDetail(models.Model):
     """ The details of a each copy of a webfacet. """
 
-    copy_details_id = models.SlugField(
+    id = models.SlugField(
         max_length=15,
         primary_key=True,
         help_text='Unique identifier for a story copy detail object.'
@@ -1290,7 +1290,7 @@ class WebFacetCopyDetail(models.Model):
     )
 
     original_webfacet_id = models.ForeignKey(
-        Series,
+        WebFacet,
         help_text='Original id of the story.'
     )
 
@@ -1306,14 +1306,14 @@ class WebFacetCopyDetail(models.Model):
 
     def __str__(self):
         return "Copyinfo for {copyorg} \'s copy of webfacet: {webfacet}".format(
-                                copyorg=self.organization_id.organization_name,
-                                webfacet=self.original_printfacet_id,
+                                copyorg=self.organization_id.name,
+                                webfacet=self.original_webfacet_id,
                                 )
 
 
 class PrintFacetCopyDetail(models.Model):
     """ The details of a each copy of a printfacet. """
-    copy_details_id = models.SlugField(
+    id = models.SlugField(
         max_length=15,
         primary_key=True,
         help_text='Unique identifier for a story copy detail object.'
@@ -1325,7 +1325,7 @@ class PrintFacetCopyDetail(models.Model):
     )
 
     original_printfacet_id = models.ForeignKey(
-        Series,
+        PrintFacet,
         help_text='Original id of the story.'
     )
 
@@ -1341,14 +1341,14 @@ class PrintFacetCopyDetail(models.Model):
 
     def __str__(self):
         return "Copyinfo for {copyorg} \'s copy of printfacet: {printfacet}".format(
-                                copyorg=self.organization_id.organization_name,
+                                copyorg=self.organization_id.name,
                                 printfacet=self.original_printfacet_id,
                                 )
 
 
 class AudioFacetCopyDetail(models.Model):
     """ The details of a each copy of a audiofacet. """
-    copy_details_id = models.SlugField(
+    id = models.SlugField(
         max_length=15,
         primary_key=True,
         help_text='Unique identifier for a story copy detail object.'
@@ -1360,7 +1360,7 @@ class AudioFacetCopyDetail(models.Model):
     )
 
     original_audiofacet_id = models.ForeignKey(
-        Series,
+        AudioFacet,
         help_text='Original id of the story.'
     )
 
@@ -1376,14 +1376,14 @@ class AudioFacetCopyDetail(models.Model):
 
     def __str__(self):
         return "Copyinfo for {copyorg} \'s copy of audiofacet: {audiofacet}".format(
-                                copyorg=self.organization_id.organization_name,
+                                copyorg=self.organization_id.name,
                                 audiofacet=self.original_audiofacet_id,
                                 )
 
 
 class VideoFacetCopyDetail(models.Model):
     """ The details of a each copy of a videofacet. """
-    copy_details_id = models.SlugField(
+    id = models.SlugField(
         max_length=15,
         primary_key=True,
         help_text='Unique identifier for a story copy detail object.'
@@ -1395,7 +1395,7 @@ class VideoFacetCopyDetail(models.Model):
     )
 
     original_videofacet_id = models.ForeignKey(
-        Series,
+        VideoFacet,
         help_text='Original id of the story.'
     )
 
@@ -1411,7 +1411,7 @@ class VideoFacetCopyDetail(models.Model):
 
     def __str__(self):
         return "Copyinfo for {copyorg} \'s copy of videofacet: {videofacet}".format(
-                                copyorg=self.organization_id.organization_name,
+                                copyorg=self.organization_id.name,
                                 videofacet=self.original_videofacet_id,
                                 )
 
@@ -1427,7 +1427,7 @@ class VideoFacetCopyDetail(models.Model):
 class SeriesPlan(models.Model):
     """ Planning notes and conversation for a series. """
 
-    series_planning_id = models.SlugField(
+    id = models.SlugField(
         max_length = 15,
         primary_key=True,
         help_text='Unique identifier for a series plan.'
@@ -1437,11 +1437,11 @@ class SeriesPlan(models.Model):
         Series,
     )
 
-    series_plan_note = models.TextField(
+    note = models.TextField(
         help_text='Notes for planning a series. Can be any details needed to be tracked while a series is planned/reported.'
     )
 
-    series_plan_note_owner = models.ForeignKey(
+    note_owner = models.ForeignKey(
         User,
     )
 
@@ -1451,15 +1451,15 @@ class SeriesPlan(models.Model):
 
     def __str__(self):
         return "SeriesPlan: {seriesplan} for Series: {series}".format(
-                                seriesplan=self.series_planning_id,
-                                series=self.series.series_id,
+                                seriesplan=self.id,
+                                series=self.series_id.id,
                                 )
 
 
 class StoryPlan(models.Model):
     """ Planning notes and conversation for a story. """
 
-    story_planning_id = models.SlugField(
+    id = models.SlugField(
         max_length=15,
         primary_key=True,
         help_text='Unique identifier for a story plan.'
@@ -1469,11 +1469,11 @@ class StoryPlan(models.Model):
         Story,
     )
 
-    story_plan_note = models.TextField(
+    note = models.TextField(
         help_text='Notes for planning a story. Can be any details needed to be tracked while a story is planned/reported.'
     )
 
-    story_plan_note_owner = models.ForeignKey(
+    note_owner = models.ForeignKey(
         User,
     )
 
@@ -1483,8 +1483,8 @@ class StoryPlan(models.Model):
 
     def __str__(self):
         return "StoryPlan: {storyplan} for Story: {story}".format(
-                                storyplan=self.story_planning_id,
-                                story=self.story.story_id,
+                                storyplan=self.id,
+                                story=self.story_id.id,
                                 )
 
 
@@ -1497,7 +1497,7 @@ class Asset(models.Model):
     assets either be attached to a story or to a series.
     """
 
-    asset_id = models.SlugField(
+    id = models.SlugField(
         max_length=15,
         primary_key=True,
         help_text='Unique identifier for an asset.'
@@ -1507,21 +1507,21 @@ class Asset(models.Model):
         Series,
     )
 
-    asset_owner = models.ForeignKey(
+    owner = models.ForeignKey(
         User,
     )
 
-    asset_description = models.TextField(
+    description = models.TextField(
         max_length=300,
         help_text='What is the asset. (If a photo or graphic, it should be the caption.)'
     )
 
-    asset_attribution = models.TextField(
+    attribution = models.TextField(
         max_length=200,
         help_text='The appropriate information for crediting the asset.'
     )
 
-    asset_s3_link = models.URLField(
+    s3_link = models.URLField(
         max_length=300,
         help_text='The item on S3.'
     )
@@ -1547,14 +1547,14 @@ class Asset(models.Model):
         help_text='What kind is the asset.'
     )
 
-    asset_creation_date = models.DateTimeField(
+    creation_date = models.DateTimeField(
         auto_now_add=True,
         help_text='When the asset was created.'
     )
 
     def __str__(self):
         return "Asset: {asset_id} is a {asset_type}".format(
-                                asset_id=self.asset_id,
+                                asset_id=self.id,
                                 asset_type=self.asset_type,
                                 )
 
@@ -1562,7 +1562,7 @@ class Asset(models.Model):
 class Discussion(models.Model):
     """ Class for  for related comments. """
 
-    discussion_id = models.SlugField(
+    id = models.SlugField(
         max_length=15,
         primary_key=True,
         help_text='Unique identifier for a discussion.'
@@ -1595,7 +1595,7 @@ class Discussion(models.Model):
 
     def __str__(self):
         return "Discussion:{discussion} from {discussion_type}".format(
-                                discussion=self.discussion_id,
+                                discussion=self.id,
                                 discussion_type=self.discussion_type
                                 )
 
@@ -1607,7 +1607,7 @@ class PrivateDiscussion(models.Model):
     own inboxes and are not attached to any content types.
     """
 
-    private_discussion_id = models.SlugField(
+    id = models.SlugField(
         max_length = 15,
         primary_key=True,
         help_text='Unique identifier of a private discussion'
@@ -1623,7 +1623,7 @@ class PrivateDiscussion(models.Model):
 
     def __str__(self):
         return "Private discussion:{discussion}.".format(
-                                discussion=self.private_discussion_id,
+                                discussion=self.id,
                                 )
 
 class Comment(models.Model):
@@ -1633,7 +1633,7 @@ class Comment(models.Model):
     audiofacet, videfacet, or between one or more people privately.
     """
 
-    comment_id = models.SlugField(
+    id = models.SlugField(
         max_length=25,
         primary_key=True,
         db_index=True,
@@ -1652,14 +1652,14 @@ class Comment(models.Model):
         help_text='The comment of the comment.'
     )
 
-    comment_date = models.DateTimeField(
+    date = models.DateTimeField(
         auto_now_add=True,
     )
 
     def __str__(self):
         return "Comment:{comment} from discussion:{discussion}".format(
-                                comment=self.comment_id,
-                                discussion=self.discussion.discussion_id,
+                                comment=self.id,
+                                discussion=self.discussion_id.id,
                                 )
 
 
@@ -1668,7 +1668,7 @@ class CommentReadStatus(models.Model):
     comment in order to surface unread comments first.
     """
 
-    read_status_id = models.SlugField(
+    id = models.SlugField(
         max_length=25,
         primary_key=True,
         help_text='Unique identifier for a comment read status.'
@@ -1692,7 +1692,7 @@ class CommentReadStatus(models.Model):
 
     def __str__(self):
         return "Comment:{comment} has {status} read status.".format(
-                                comment=self.comment.comment_id,
+                                comment=self.comment_id.id,
                                 status=self.has_read,
                                 )
 
