@@ -54,47 +54,64 @@ class User(models.Model):
         help_text='Unique code for a user.'
     )
 
-    organization_id = models.ForeignKey('Organization')
-
-    fname = models.CharField(
-        max_length=45,
-        db_index=True,
+    organization_id = models.ForeignKey(
+        'Organization',
+        blank=True,
+        null=True,
     )
 
-    lname = models.CharField(
+    first_name = models.CharField(
         max_length=45,
         db_index=True,
+        blank=True,
+        null=True,
+    )
+
+    last_name = models.CharField(
+        max_length=45,
+        db_index=True,
+        blank=True,
+        null=True,
     )
 
     credit_name = models.CharField(
         max_length=75,
-        help_text='Full name of user as listed as a credit on content.'
+        help_text='Full name of user as listed as a credit on content.',
+        blank=True,
+        null=True,
     )
 
     title = models.CharField(
         max_length=100,
         unique=True,
-        help_text='Professional title'
+        help_text='Professional title',
+        blank=True,
+        null=True,
     )
 
     email = models.EmailField(
         blank=True,
+        null=True,
     )
 
     phone = models.CharField(
         max_length=20,
         blank=True,
+        null=True,
     )
 
     bio = models.TextField(
         help_text="Short bio.",
-        blank=True
+        blank=True,
+        null=True,
     )
 
     expertise = ArrayField(
         models.CharField(max_length=100),
         default=list,
-        help_text='Array of user skills and beats to filter/search by.'
+        help_text='Array of user skills and beats to filter/search by.',
+        blank=True,
+        null=True,
     )
 
     profile_photo = models.ImageField(
