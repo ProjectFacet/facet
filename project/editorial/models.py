@@ -47,11 +47,14 @@ class User(models.Model):
     to inactive. A general user creates and collaborates on content.
     """
 
-    id = models.SlugField(
+    # using django automatic id
+
+    code = models.SlugField(
         max_length=15,
-        primary_key=True,
         db_index=True,
-        help_text='Unique code for a user.'
+        help_text='Unique code for a user.',
+        blank=True,
+        null=True,
     )
 
     organization_id = models.ForeignKey(
@@ -188,11 +191,7 @@ class Organization(models.Model):
     from one admin user to another.
     """
 
-    id = models.SlugField(
-        max_length=15,
-        primary_key=True,
-        help_text='Unique code for an organization.'
-    )
+    # using django automatic id
 
     name = models.CharField(
         max_length=75,
@@ -250,11 +249,7 @@ class Network(models.Model):
     version of the content to their own account.
     """
 
-    id = models.SlugField(
-        max_length=15,
-        primary_key=True,
-        help_text='Unique identifier for a network'
-    )
+    # using django automatic id
 
     owner_organization = models.ForeignKey(
         Organization,
@@ -314,11 +309,7 @@ class Network(models.Model):
 class NetworkOrganization(models.Model):
     """ The connection between Organizations and Networks. """
 
-    id = models.SlugField(
-        max_length=15,
-        primary_key=True,
-        help_text='Unique identifier for a network/organization connection.'
-    )
+    # using django automatic id
 
     network_id = models.ForeignKey(
         Network,
@@ -357,12 +348,7 @@ class Series(models.Model):
     assets easily available to all stories/facets.
     """
 
-    id = models.SlugField(
-        max_length=15,
-        primary_key=True,
-        db_index=True,
-        help_text='Unique identifier for a series.'
-    )
+    # using django automatic id
 
     name = models.CharField(
         max_length=75,
@@ -442,12 +428,7 @@ class Story(models.Model):
     The story also controls the sensivity and embargo status of the content.
     """
 
-    id = models.SlugField(
-        max_length=15,
-        primary_key=True,
-        db_index=True,
-        help_text='unique identifier for a story'
-    )
+    # id = django automatic id
 
     series_id = models.ForeignKey(
         Series,
@@ -535,11 +516,7 @@ class WebFacet(models.Model):
     Ex: Daily news, articles, videos, photo galleries
     """
 
-    id = models.SlugField(
-        max_length=25,
-        primary_key=True,
-        help_text='Unique identifier for webfacet'
-    )
+    # id = django automatic id
 
     story_id = models.ForeignKey(
         Story,
@@ -676,11 +653,7 @@ class PrintFacet(models.Model):
     Ex: Daily news article, column, story.
     """
 
-    id = models.SlugField(
-        max_length=25,
-        primary_key=True,
-        help_text='Unique identifier for printfacet'
-    )
+    # id = django automatic id
 
     story_id = models.ForeignKey(
         Story,
@@ -817,11 +790,7 @@ class AudioFacet(models.Model):
     Ex: A single segment on Morning Edition.
     """
 
-    id = models.SlugField(
-        max_length=25,
-        primary_key=True,
-        help_text='Unique identifier for audiofacet'
-    )
+    # id = django automatic id
 
     story_id = models.ForeignKey(
         Story,
@@ -958,11 +927,7 @@ class VideoFacet(models.Model):
     Ex: An episode of a television program.
     """
 
-    id = models.SlugField(
-        max_length=25,
-        primary_key=True,
-        help_text='Unique identifier for videofacet'
-    )
+    # id = django automatic id
 
     story_id = models.ForeignKey(
         Story,
@@ -1100,11 +1065,7 @@ class VideoFacet(models.Model):
 class WebFacetContributor(models.Model):
     """ Which users are participating in creating the WebFacet. """
 
-    id = models.SlugField(
-        max_length=15,
-        primary_key=True,
-        help_text='Unique identifier for a webfacet/contributor connection.'
-    )
+    # id = django automatic id
 
     webfacet_id = models.ForeignKey(
         WebFacet,
@@ -1129,11 +1090,7 @@ class WebFacetContributor(models.Model):
 class PrintFacetContributor(models.Model):
     """ Which users are participating in creating the PrintFacet. """
 
-    id = models.SlugField(
-        max_length=15,
-        primary_key=True,
-        help_text='Unique identifier for a printfacet/contributor connection.'
-    )
+    # id = django automatic id
 
     printfacet_id = models.ForeignKey(
         PrintFacet,
@@ -1158,11 +1115,7 @@ class PrintFacetContributor(models.Model):
 class AudioFacetContributor(models.Model):
     """ Which users are participating in creating the AudioFacet. """
 
-    id = models.SlugField(
-        max_length=15,
-        primary_key=True,
-        help_text='Unique identifier for a audiofacet/contributor connection.'
-    )
+    # id = django automatic id
 
     audiofacet_id = models.ForeignKey(
         AudioFacet,
@@ -1187,11 +1140,7 @@ class AudioFacetContributor(models.Model):
 class VideoFacetContributor(models.Model):
     """ Which users are participating in creating the VideoFacet. """
 
-    id = models.SlugField(
-        max_length=15,
-        primary_key=True,
-        help_text='Unique identifier for a videofacet/contributor connection.'
-    )
+    # id = django automatic id
 
     videofacet_id = models.ForeignKey(
         VideoFacet,
@@ -1220,11 +1169,8 @@ class SeriesCopyDetail(models.Model):
     series has already been copied over. If not copy the series and the story to the
     new organization.
     """
-    id = models.SlugField(
-        max_length=15,
-        primary_key=True,
-        help_text='Unique identifier for a series copy detail object.'
-    )
+
+    # id = django automatic id
 
     organization_id = models.ForeignKey(
         Organization,
@@ -1259,11 +1205,8 @@ class StoryCopyDetail(models.Model):
     Each time an organization elects to copy a shared facet, query to see if the
     story has already been copied over. If not, copy the story to the new organization.
     """
-    id = models.SlugField(
-        max_length=15,
-        primary_key=True,
-        help_text='Unique identifier for a story copy detail object.'
-    )
+
+    # id = django automatic id
 
     organization_id = models.ForeignKey(
         Organization,
@@ -1295,11 +1238,7 @@ class StoryCopyDetail(models.Model):
 class WebFacetCopyDetail(models.Model):
     """ The details of a each copy of a webfacet. """
 
-    id = models.SlugField(
-        max_length=15,
-        primary_key=True,
-        help_text='Unique identifier for a story copy detail object.'
-    )
+    # id = django automatic id
 
     organization_id = models.ForeignKey(
         Organization,
@@ -1330,11 +1269,8 @@ class WebFacetCopyDetail(models.Model):
 
 class PrintFacetCopyDetail(models.Model):
     """ The details of a each copy of a printfacet. """
-    id = models.SlugField(
-        max_length=15,
-        primary_key=True,
-        help_text='Unique identifier for a story copy detail object.'
-    )
+
+    # id = django automatic id
 
     organization_id = models.ForeignKey(
         Organization,
@@ -1365,11 +1301,8 @@ class PrintFacetCopyDetail(models.Model):
 
 class AudioFacetCopyDetail(models.Model):
     """ The details of a each copy of a audiofacet. """
-    id = models.SlugField(
-        max_length=15,
-        primary_key=True,
-        help_text='Unique identifier for a story copy detail object.'
-    )
+
+    # id = django automatic id
 
     organization_id = models.ForeignKey(
         Organization,
@@ -1400,11 +1333,8 @@ class AudioFacetCopyDetail(models.Model):
 
 class VideoFacetCopyDetail(models.Model):
     """ The details of a each copy of a videofacet. """
-    id = models.SlugField(
-        max_length=15,
-        primary_key=True,
-        help_text='Unique identifier for a story copy detail object.'
-    )
+
+    # id = django automatic id
 
     organization_id = models.ForeignKey(
         Organization,
@@ -1444,11 +1374,7 @@ class VideoFacetCopyDetail(models.Model):
 class SeriesPlan(models.Model):
     """ Planning notes and conversation for a series. """
 
-    id = models.SlugField(
-        max_length = 15,
-        primary_key=True,
-        help_text='Unique identifier for a series plan.'
-    )
+    # id = django automatic id
 
     series_id = models.ForeignKey(
         Series,
@@ -1476,11 +1402,7 @@ class SeriesPlan(models.Model):
 class StoryPlan(models.Model):
     """ Planning notes and conversation for a story. """
 
-    id = models.SlugField(
-        max_length=15,
-        primary_key=True,
-        help_text='Unique identifier for a story plan.'
-    )
+    # id = django automatic id
 
     story_id = models.ForeignKey(
         Story,
@@ -1514,11 +1436,7 @@ class Asset(models.Model):
     assets either be attached to a story or to a series.
     """
 
-    id = models.SlugField(
-        max_length=15,
-        primary_key=True,
-        help_text='Unique identifier for an asset.'
-    )
+    # id = django automatic id
 
     series_id = models.ForeignKey(
         Series,
@@ -1579,11 +1497,7 @@ class Asset(models.Model):
 class Discussion(models.Model):
     """ Class for  for related comments. """
 
-    id = models.SlugField(
-        max_length=15,
-        primary_key=True,
-        help_text='Unique identifier for a discussion.'
-    )
+    # id = django automatic id
 
     # Choices for Discussion type
     PRIVATE = 'PRI'
@@ -1624,11 +1538,7 @@ class PrivateDiscussion(models.Model):
     own inboxes and are not attached to any content types.
     """
 
-    id = models.SlugField(
-        max_length = 15,
-        primary_key=True,
-        help_text='Unique identifier of a private discussion'
-    )
+    # id = django automatic id
 
     discussion_id = models.ForeignKey(
         Discussion,
@@ -1650,12 +1560,7 @@ class Comment(models.Model):
     audiofacet, videfacet, or between one or more people privately.
     """
 
-    id = models.SlugField(
-        max_length=25,
-        primary_key=True,
-        db_index=True,
-        help_text='Unique identifier for a comment.'
-    )
+    # id = django automatic id
 
     user_id = models.ForeignKey(
         User,
@@ -1685,11 +1590,7 @@ class CommentReadStatus(models.Model):
     comment in order to surface unread comments first.
     """
 
-    id = models.SlugField(
-        max_length=25,
-        primary_key=True,
-        help_text='Unique identifier for a comment read status.'
-    )
+    # id = django automatic id
 
     comment_id = models.ForeignKey(
         Comment,
