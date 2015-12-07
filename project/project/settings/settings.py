@@ -33,7 +33,6 @@ INSTALLED_APPS = (
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    # 'cripsy_forms',
 )
 
 SITE_ID = 1
