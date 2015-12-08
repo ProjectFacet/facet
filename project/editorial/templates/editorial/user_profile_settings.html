@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+
+<form class="edit-user-profile" method="POST" action="{% url 'profile/settings' %}">
+  {% csrf_token %}
+  {% bootstrap_form form %}
+  {% if redirect_field_value %}
+  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+  {% endif %}
+  <button id="sign-in-button" class="btn btn-primary" type="submit">{% trans "Save" %}</button>
+</form>
+
+{% endblock %}

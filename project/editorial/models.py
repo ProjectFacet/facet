@@ -426,7 +426,7 @@ class Story(models.Model):
 
     description = models.TextField(
         help_text="Short description of a story.",
-        blank=True
+        blank=True,
     )
 
     embargo = models.BooleanField(

@@ -97,7 +97,7 @@
                   <li><a href="#">Add Network</a></li>
                   <li role="separator" class="divider"></li>
                   <li><a href="#">Add Series</a></li>
-                  <li><a href="#">Add Story</a></li>
+                  <li><a href="{% url 'story_new' %}">Add Story</a></li>
                 </ul>
               </li>
           </ul>
@@ -107,6 +107,7 @@
     <!-- END NAVIGATION -->
 
     <!-- BODY OF APP -->
+    <div class="container-fluid">
     {% block content %}
       <!-- ================================================= -->
       <!-- ================================================= -->
@@ -114,6 +115,7 @@
       <!-- ================================================= -->
       <!-- ================================================= -->
     {% endblock %}
+  </div>
     <!-- END OF APP BODY -->
 
     <!-- ================================================= -->
