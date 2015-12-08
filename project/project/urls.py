@@ -26,4 +26,5 @@ urlpatterns = [
     url(r'^accounts/', include(allauth.urls)),
     url(r'', include('editorial.urls')),
     url(r'^story/new/$', views.story_new, name='story_new'),
+    url(r'^user/profile/edit/', views.edit_user, name='edit_user')
 ]

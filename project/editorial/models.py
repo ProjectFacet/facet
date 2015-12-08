@@ -424,7 +424,7 @@ class Story(models.Model):
         help_text='The name by which the story is identified'
     )
 
-    description = models.TextField(
+    storydescription = models.TextField(
         help_text="Short description of a story.",
         blank=True,
     )
@@ -435,7 +435,9 @@ class Story(models.Model):
         )
 
     embargo_datetime = models.DateTimeField(
-        help_text='When is the story no longer under embargo.'
+        help_text='When is the story no longer under embargo.',
+        blank=True,
+        null=True
     )
 
     # For now a boolean for sensitive or not. May have levels of sensitivity later.
