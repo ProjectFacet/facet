@@ -83,6 +83,7 @@
               {% if request.user.is_authenticated %}
                 <li><a href="/accounts/logout/" class="pull-right">Logout</a></li>
               {% else %}
+                <li><a href="/accounts/signup/" class="pull-right">Signup</a></li>
                 <li><a href="/accounts/login/" class="pull-right">Login</a></li>
               {% endif %}
               <li class="dropdown">

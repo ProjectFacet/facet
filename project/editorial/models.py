@@ -25,8 +25,10 @@ from imagekit.models import ImageSpecField
 from imagekit.processors import ResizeToFill
 from imagekit.processors import ResizeToFit
 from imagekit.models import ProcessedImageField
+from django.contrib.auth.models import AbstractUser
+from django.utils.encoding import python_2_unicode_compatible
 # from django.core.exceptions import ValidationError
-# from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse
 # from django.core.validators import RegexValidator
 # from django.utils import timezone
 
@@ -38,7 +40,8 @@ from imagekit.models import ProcessedImageField
 #----------------------------------------------------------------------#
 
 
-class User(models.Model):
+@python_2_unicode_compatible
+class User(AbstractUser):
     """ Site User.
 
     A user can either be an admin or a general user. Most users
@@ -47,7 +50,7 @@ class User(models.Model):
     to inactive. A general user creates and collaborates on content.
     """
 
-    # using django automatic id
+    # id = django automatic id
 
     code = models.SlugField(
         max_length=15,
@@ -63,20 +66,6 @@ class User(models.Model):
         null=True,
     )
 
-    first_name = models.CharField(
-        max_length=45,
-        db_index=True,
-        blank=True,
-        null=True,
-    )
-
-    last_name = models.CharField(
-        max_length=45,
-        db_index=True,
-        blank=True,
-        null=True,
-    )
-
     credit_name = models.CharField(
         max_length=75,
         help_text='Full name of user as listed as a credit on content.',
@@ -88,11 +77,6 @@ class User(models.Model):
         max_length=100,
         unique=True,
         help_text='Professional title',
-        blank=True,
-        null=True,
-    )
-
-    email = models.EmailField(
         blank=True,
         null=True,
     )
@@ -120,12 +104,7 @@ class User(models.Model):
     profile_photo = models.ImageField(
         upload_to="users",
         blank=True,
-    )
-
-    photo_display = ImageSpecField(
-        source='photo',
-        processors=[ResizeToFit(200, 200)],
-        format='JPEG',
+        null=True,
     )
 
     #Links to user's professional social media accounts
@@ -191,7 +170,7 @@ class Organization(models.Model):
     from one admin user to another.
     """
 
-    # using django automatic id
+    # id = django automatic id
 
     name = models.CharField(
         max_length=75,
@@ -249,7 +228,7 @@ class Network(models.Model):
     version of the content to their own account.
     """
 
-    # using django automatic id
+    # id = django automatic id
 
     owner_organization = models.ForeignKey(
         Organization,
@@ -309,7 +288,7 @@ class Network(models.Model):
 class NetworkOrganization(models.Model):
     """ The connection between Organizations and Networks. """
 
-    # using django automatic id
+    # id = django automatic id
 
     network_id = models.ForeignKey(
         Network,
@@ -348,7 +327,7 @@ class Series(models.Model):
     assets easily available to all stories/facets.
     """
 
-    # using django automatic id
+    # id = django automatic id
 
     name = models.CharField(
         max_length=75,
