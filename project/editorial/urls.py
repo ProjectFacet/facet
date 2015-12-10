@@ -6,7 +6,7 @@ urlpatterns = [
     # homepage
     url(r'^$', views.index, name='index'),
     # create organization
-    url(r'^/organization/new$', views.new_organization, name="new_organization")
+    url(r'^/organization/new$', views.new_organization, name="new_organization"),
     # dashboard
     url(r'^/dashboard$', views.dashboard, name='dashboard'),
     # user profile

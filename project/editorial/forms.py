@@ -5,7 +5,7 @@ from django.utils.safestring import mark_safe
 from django.contrib.auth import get_user_model
 from django.forms import Textarea, TextInput, RadioSelect
 
-from editorial.models import User, Organization, Network, Story
+from editorial.models import User, Organization, Network, Story, Series
 
 
 class CreateOrganization(forms.ModelForm):
@@ -14,7 +14,7 @@ class CreateOrganization(forms.ModelForm):
     class Meta:
         model = Organization
         fields = ['name', 'org_description']
-        
+
 
 class EditUserProfile(forms.ModelForm):
     """ Handle a user completing their profile."""
@@ -25,12 +25,12 @@ class EditUserProfile(forms.ModelForm):
                  'expertise', 'facebook', 'twitter', 'linkedin', 'instagram', 'snapchat', 'vine',]
 
 
-class SeriesForm(form.ModelForm):
+class SeriesForm(forms.ModelForm):
     """" Form to create a new series. """
 
     class Meta:
         model = Series
-        fields = []
+        fields = ['name', 'series_description']
 
 
 class StoryForm(forms.ModelForm):

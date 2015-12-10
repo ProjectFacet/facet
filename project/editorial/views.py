@@ -41,7 +41,6 @@ def storylist(request):
 def story_new(request):
     """ Return edit story page. """
 
-
     form = StoryForm()
     if request.method == "POST":
         form = StoryForm(request.POST or None)
@@ -68,7 +67,7 @@ def series_new(request):
     """ Return edit series page. """
 
     form = SeriesForm()
-    if request.method == "POST"
+    if request.method == "POST":
         form = SeriesForm(request.POST or None)
     if form.is_valid():
         series = form.save(commit=False)
@@ -118,7 +117,7 @@ def edit_user(request):
 
 def new_organization(request):
     form = CreateOrganization()
-    if request.method == "POST"
+    if request.method == "POST":
         form = CreateOrganization(request.POST or None)
     if form.is_valid():
         organization = form.save(commit=False)
