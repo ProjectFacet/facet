@@ -80,7 +80,7 @@ ACCOUNT_AUTHENTICATION_METHOD = "email"
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/dashboard'
 
 WSGI_APPLICATION = 'project.wsgi.application'
 

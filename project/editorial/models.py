@@ -52,20 +52,20 @@ class User(AbstractUser):
         db_index=True,
         help_text='Unique code for a user.',
         blank=True,
-        null=True,
     )
 
+    # could make ManyToMany to accomodate freelance users contributing
+    # to multiple organizations
+    # or make optional for users not pushing content to an org
     organization_id = models.ForeignKey(
         'Organization',
         blank=True,
-        null=True,
     )
 
     credit_name = models.CharField(
         max_length=75,
         help_text='Full name of user as listed as a credit on content.',
         blank=True,
-        null=True,
     )
 
     title = models.CharField(
@@ -73,19 +73,16 @@ class User(AbstractUser):
         unique=True,
         help_text='Professional title',
         blank=True,
-        null=True,
     )
 
     phone = models.CharField(
         max_length=20,
         blank=True,
-        null=True,
     )
 
     bio = models.TextField(
         help_text="Short bio.",
         blank=True,
-        null=True,
     )
 
     expertise = ArrayField(
@@ -93,50 +90,42 @@ class User(AbstractUser):
         default=list,
         help_text='Array of user skills and beats to filter/search by.',
         blank=True,
-        null=True,
     )
 
     profile_photo = models.ImageField(
         upload_to="users",
         blank=True,
-        null=True,
     )
 
     #Links to user's professional social media accounts
     facebook = models.CharField(
         max_length=150,
         blank=True,
-        null=True,
     )
 
     twitter = models.CharField(
         max_length=150,
         blank=True,
-        null=True,
     )
 
     linkedin = models.CharField(
         max_length=150,
-        blank=True,
-        null=True,
+        blank=True,        
     )
 
     instagram = models.CharField(
         max_length=150,
-        blank=True,
-        null=True,
+        blank=True,        
     )
 
     snapchat = models.CharField(
         max_length=150,
-        blank=True,
-        null=True,
+        blank=True,        
     )
 
     vine = models.CharField(
         max_length=150,
-        blank=True,
-        null=True,
+        blank=True,        
     )
 
     class Meta:
@@ -176,10 +165,10 @@ class Organization(models.Model):
         User,
     )
 
-    story_description = models.TextField(
+    org_description = models.TextField(
         help_text="Short profile of organization.",
         blank=True,
-        null=True,
+        
     )
 
     creation_date = models.DateTimeField(
@@ -188,8 +177,7 @@ class Organization(models.Model):
 
     organization_logo = models.ImageField(
         upload_to="organizations",
-        blank=True,
-        null=True,
+        blank=True,        
     )
 
 
@@ -205,7 +193,7 @@ class Organization(models.Model):
     def description(self):
         return "{organization}, {description}".format(
                                                     organization=self.name,
-                                                    description=self.story_description
+                                                    description=self.org_description
                                                     )
 
 
@@ -239,14 +227,12 @@ class Network(models.Model):
 
     network_description = models.TextField(
         help_text="Short description of a network.",
-        blank=True,
-        null=True,
+        blank=True,        
     )
 
     logo = models.ImageField(
         upload_to="organizations",
-        blank=True
-    )
+        blank=True,    )
 
     organizations = models.ManyToManyField(
         Organization,
@@ -336,7 +322,8 @@ class Series(models.Model):
     team = models.ManyToManyField(
         User,
         related_name='series_team_member',
-        help_text='User contributing to the series.'
+        help_text='User contributing to the series.',
+        blank=True,
     )
 
     creation_date = models.DateTimeField(
@@ -356,13 +343,15 @@ class Series(models.Model):
     share_with = models.ManyToManyField(
         Network,
         related_name='series_shared_with_network',
-        help_text='Network ids that a series is shared with.'
+        help_text='Network ids that a series is shared with.',
+        blank=True,
     )
 
     collaborate_with = models.ManyToManyField(
         Network,
         related_name='series_collaborated_with_network',
-        help_text='Network ids that a series is open to collaboration with.'
+        help_text='Network ids that a series is open to collaboration with.',
+        blank=True,
     )
 
     archived = models.BooleanField(
@@ -413,8 +402,7 @@ class Story(models.Model):
 
     story_description = models.TextField(
         help_text="Short description of a story.",
-        blank=True,
-        null=True,
+        blank=True,        
     )
 
     embargo = models.BooleanField(
@@ -425,14 +413,14 @@ class Story(models.Model):
     embargo_datetime = models.DateTimeField(
         help_text='When is the story no longer under embargo.',
         blank=True,
-        null=True
+        null=True,
     )
 
     # For now a boolean for sensitive or not. May have levels of sensitivity later.
     sensitivity = models.BooleanField(
         default=False,
         help_text='Is a story sensitive, for limited viewing?'
-        )
+    )
 
     creation_date = models.DateTimeField(
         auto_now_add=True,
@@ -471,12 +459,12 @@ class Story(models.Model):
     def __str__(self):
         return self.name
 
-    # @property
-    # def description(self):
-    #     return "{story}, {description}".format(
-    #                                             story=self.name,
-    #                                             description=self.story_description
-    #                                             )
+    @property
+    def description(self):
+        return "{story}, {description}".format(
+                                                story=self.name,
+                                                description=self.story_description
+                                                )
 
 
 class WebFacet(models.Model):
@@ -521,8 +509,7 @@ class WebFacet(models.Model):
     code = models.CharField(
         max_length=75,
         help_text='Unique code as needed for ingest sytems. Use as needed',
-        blank=True,
-        null=True,
+        blank=True,        
     )
 
     title = models.TextField(
@@ -531,26 +518,22 @@ class WebFacet(models.Model):
 
     excerpt = models.TextField(
         help_text='Excerpt from the Webfacet.',
-        blank=True,
-        null=True,
+        blank=True,        
     )
 
     wf_description = models.TextField(
         help_text='Description of the WebFacet.',
-        blank=True,
-        null=True,
+        blank=True,        
     )
 
     content = models.TextField(
         help_text='Content of the webFacet.',
-        blank=True,
-        null=True,
+        blank=True,        
     )
 
     length = models.IntegerField(
         help_text='Wordcount of the WebFacet.',
-        blank=True,
-        null=True,
+        blank=True,        
     )
 
     keywords = ArrayField(
@@ -607,8 +590,7 @@ class WebFacet(models.Model):
 
     share_note = models.TextField(
         help_text='Information for organizations making a copy of the webfacet.',
-        blank=True,
-        null=True,
+        blank=True,        
     )
 
     assets = models.ManyToManyField(
@@ -673,8 +655,7 @@ class PrintFacet(models.Model):
     code = models.CharField(
         max_length=75,
         help_text='Unique code as needed for ingest sytems. Use as needed',
-        blank=True,
-        null=True,
+        blank=True,        
     )
 
     title = models.TextField(
@@ -683,26 +664,22 @@ class PrintFacet(models.Model):
 
     excerpt = models.TextField(
         help_text='Excerpt from the printfacet.',
-        blank=True,
-        null=True,
+        blank=True,        
     )
 
     pf_description = models.TextField(
         help_text='Description of the printfacet.',
-        blank=True,
-        null=True,
+        blank=True,        
     )
 
     content = models.TextField(
         help_text='Content of the printfacet.',
-        blank=True,
-        null=True,
+        blank=True,        
     )
 
     length = models.IntegerField(
         help_text='Wordcount of the printfacet.',
-        blank=True,
-        null=True,
+        blank=True,        
     )
 
     keywords = ArrayField(
@@ -714,18 +691,18 @@ class PrintFacet(models.Model):
 
     due_edit = models.DateTimeField(
         help_text='Due for edit.',
-        blank=True
+        blank=True,
     )
 
     run_date = models.DateTimeField(
         help_text='Planned run date.',
-        blank=True
+        blank=True,
     )
 
     creation_date = models.DateTimeField(
         auto_now_add=True,
         help_text='Day printfacet was created.',
-        blank=True
+        blank=True,
     )
 
     discussion_id = models.ForeignKey(
@@ -801,8 +778,7 @@ class AudioFacet(models.Model):
     code = models.CharField(
         max_length=75,
         help_text='Unique code as needed for ingest sytems. Use as needed',
-        blank=True,
-        null=True,
+        blank=True,        
     )
 
     title = models.TextField(
@@ -811,26 +787,23 @@ class AudioFacet(models.Model):
 
     excerpt = models.TextField(
         help_text='Excerpt for the audiofacet.',
-        blank=True,
-        null=True,
+        blank=True,        
     )
 
     af_description = models.TextField(
         help_text='Description of the audiofacet.',
-        blank=True,
-        null=True,
+        blank=True,        
     )
 
     content = models.TextField(
         help_text='Content of the audiofacet.',
-        blank=True,
-        null=True,
+        blank=True,        
     )
 
     length = models.IntegerField(
         help_text='Wordcount of the audiofacet.',
         blank=True,
-        null=True,
+        
     )
 
     keywords = ArrayField(
@@ -888,7 +861,7 @@ class AudioFacet(models.Model):
     share_note = models.TextField(
         help_text='Information for organizations making a copy of the audiofacet.',
         blank=True,
-        null=True,
+        
     )
 
     assets = models.ManyToManyField(
@@ -953,8 +926,7 @@ class VideoFacet(models.Model):
     code = models.CharField(
         max_length=75,
         help_text='Unique code as needed for ingest sytems. Use as needed',
-        blank=True,
-        null=True,
+        blank=True,        
     )
 
     title = models.TextField(
@@ -963,26 +935,22 @@ class VideoFacet(models.Model):
 
     excerpt = models.TextField(
         help_text='Excerpt from the videofacet.',
-        blank=True,
-        null=True,
+        blank=True,        
     )
 
     vf_description = models.TextField(
         help_text='Description of the videofacet.',
-        blank=True,
-        null=True,
+        blank=True,        
     )
 
     content = models.TextField(
         help_text='Content of the videofacet.',
-        blank=True,
-        null=True,
+        blank=True,        
     )
 
     length = models.IntegerField(
         help_text='Wordcount of the videofacet.',
-        blank=True,
-        null=True,
+        blank=True,        
     )
 
     keywords = ArrayField(
@@ -1039,8 +1007,7 @@ class VideoFacet(models.Model):
 
     share_note = models.TextField(
         help_text='Information for organizations making a copy of the videofacet.',
-        blank=True,
-        null=True,
+        blank=True,        
     )
 
     assets = models.ManyToManyField(
@@ -1454,15 +1421,13 @@ class Asset(models.Model):
     asset_description = models.TextField(
         max_length=300,
         help_text='What is the asset. (If a photo or graphic, it should be the caption.)',
-        blank=True,
-        null=True,
+        blank=True,        
     )
 
     attribution = models.TextField(
         max_length=200,
         help_text='The appropriate information for crediting the asset.',
-        blank=True,
-        null=True,
+        blank=True,        
     )
 
     s3_link = models.URLField(
