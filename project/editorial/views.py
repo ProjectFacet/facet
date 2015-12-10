@@ -32,7 +32,7 @@ def story_new(request):
     if form.is_valid():
         story = form.save(commit=False)
         story.owner = request.user
-        # story.creation_date = datetime.now()
+        # story.creation_date = datetime.datetime.now()
         story.save()
         return redirect('story_detail', pk=post.pk)
     else:

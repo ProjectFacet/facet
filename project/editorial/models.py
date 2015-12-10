@@ -21,15 +21,10 @@ from django.contrib.postgres.fields import ArrayField
 from simple_history.models import HistoricalRecords
 from model_utils.models import TimeStampedModel
 from datetime import timedelta
-from imagekit.models import ImageSpecField
-from imagekit.processors import ResizeToFill
-from imagekit.processors import ResizeToFit
 from imagekit.models import ProcessedImageField
 from django.contrib.auth.models import AbstractUser
 from django.utils.encoding import python_2_unicode_compatible
-# from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
-# from django.core.validators import RegexValidator
 # from django.utils import timezone
 
 
@@ -181,9 +176,10 @@ class Organization(models.Model):
         User,
     )
 
-    description = models.TextField(
+    story_description = models.TextField(
         help_text="Short profile of organization.",
-        blank=True
+        blank=True,
+        null=True,
     )
 
     creation_date = models.DateTimeField(
@@ -192,14 +188,10 @@ class Organization(models.Model):
 
     organization_logo = models.ImageField(
         upload_to="organizations",
-        blank=True
+        blank=True,
+        null=True,
     )
 
-    logo_display = ImageSpecField(
-        source='photo',
-        processors=[ResizeToFit(200, 200)],
-        format='JPEG',
-    )
 
     class Meta:
         verbose_name = 'Organization'
@@ -213,7 +205,7 @@ class Organization(models.Model):
     def description(self):
         return "{organization}, {description}".format(
                                                     organization=self.name,
-                                                    description=self.description
+                                                    description=self.story_description
                                                     )
 
 
@@ -245,20 +237,15 @@ class Network(models.Model):
         auto_now_add=True
     )
 
-    description = models.TextField(
+    network_description = models.TextField(
         help_text="Short description of a network.",
-        blank=True
+        blank=True,
+        null=True,
     )
 
     logo = models.ImageField(
         upload_to="organizations",
         blank=True
-    )
-
-    logo_display = ImageSpecField(
-        source='photo',
-        processors=[ResizeToFit(200, 200)],
-        format='JPEG',
     )
 
     organizations = models.ManyToManyField(
@@ -279,7 +266,7 @@ class Network(models.Model):
     def description(self):
         return "{network}, {description}".format(
                                                 network=self.name,
-                                                description=self.description
+                                                description=self.network_description
                                                 )
 
 #   Associations
@@ -334,7 +321,7 @@ class Series(models.Model):
         help_text='The name identifying the series.'
     )
 
-    description = models.TextField(
+    series_description = models.TextField(
         blank=True,
         help_text='Short description of a series.',
     )
@@ -395,7 +382,7 @@ class Series(models.Model):
     def description(self):
         return "{series}, {description}".format(
                                                 series=self.name,
-                                                description=self.description
+                                                description=self.series_description
                                                 )
 
 
@@ -424,9 +411,10 @@ class Story(models.Model):
         help_text='The name by which the story is identified'
     )
 
-    storydescription = models.TextField(
+    story_description = models.TextField(
         help_text="Short description of a story.",
         blank=True,
+        null=True,
     )
 
     embargo = models.BooleanField(
@@ -483,12 +471,12 @@ class Story(models.Model):
     def __str__(self):
         return self.name
 
-    @property
-    def description(self):
-        return "{story}, {description}".format(
-                                                story=self.name,
-                                                description=self.description
-                                                )
+    # @property
+    # def description(self):
+    #     return "{story}, {description}".format(
+    #                                             story=self.name,
+    #                                             description=self.story_description
+    #                                             )
 
 
 class WebFacet(models.Model):
@@ -532,33 +520,44 @@ class WebFacet(models.Model):
 
     code = models.CharField(
         max_length=75,
-        help_text='Unique code as needed for ingest sytems. Use as needed'
+        help_text='Unique code as needed for ingest sytems. Use as needed',
+        blank=True,
+        null=True,
     )
 
     title = models.TextField(
-        help_text='Headline of the Webfacet'
+        help_text='Headline of the Webfacet',
     )
 
     excerpt = models.TextField(
-        help_text='Excerpt from the Webfacet.'
+        help_text='Excerpt from the Webfacet.',
+        blank=True,
+        null=True,
     )
 
-    description = models.TextField(
-        help_text='Description of the WebFacet.'
+    wf_description = models.TextField(
+        help_text='Description of the WebFacet.',
+        blank=True,
+        null=True,
     )
 
     content = models.TextField(
-        help_text='Content of the webFacet.'
+        help_text='Content of the webFacet.',
+        blank=True,
+        null=True,
     )
 
     length = models.IntegerField(
-        help_text='Wordcount of the WebFacet.'
+        help_text='Wordcount of the WebFacet.',
+        blank=True,
+        null=True,
     )
 
     keywords = ArrayField(
         models.CharField(max_length=100),
         default=list,
-        help_text='List of keywords for search.'
+        help_text='List of keywords for search.',
+        blank=True,
     )
 
     # Choices for WebFacet status.
@@ -585,11 +584,13 @@ class WebFacet(models.Model):
     )
 
     due_edit = models.DateTimeField(
-        help_text='Due for edit.'
+        help_text='Due for edit.',
+        blank=True,
     )
 
     run_date = models.DateTimeField(
-        help_text='Planned run date.'
+        help_text='Planned run date.',
+        blank=True
     )
 
     creation_date = models.DateTimeField(
@@ -605,7 +606,9 @@ class WebFacet(models.Model):
     edit_history = HistoricalRecords()
 
     share_note = models.TextField(
-        help_text='Information for organizations making a copy of the webfacet.'
+        help_text='Information for organizations making a copy of the webfacet.',
+        blank=True,
+        null=True,
     )
 
     assets = models.ManyToManyField(
@@ -669,7 +672,9 @@ class PrintFacet(models.Model):
 
     code = models.CharField(
         max_length=75,
-        help_text='Unique code as needed for ingest sytems. Use as needed'
+        help_text='Unique code as needed for ingest sytems. Use as needed',
+        blank=True,
+        null=True,
     )
 
     title = models.TextField(
@@ -677,61 +682,50 @@ class PrintFacet(models.Model):
     )
 
     excerpt = models.TextField(
-        help_text='Excerpt from the printfacet.'
+        help_text='Excerpt from the printfacet.',
+        blank=True,
+        null=True,
     )
 
-    description = models.TextField(
-        help_text='Description of the printfacet.'
+    pf_description = models.TextField(
+        help_text='Description of the printfacet.',
+        blank=True,
+        null=True,
     )
 
     content = models.TextField(
-        help_text='Content of the printfacet.'
+        help_text='Content of the printfacet.',
+        blank=True,
+        null=True,
     )
 
     length = models.IntegerField(
-        help_text='Wordcount of the printfacet.'
+        help_text='Wordcount of the printfacet.',
+        blank=True,
+        null=True,
     )
 
     keywords = ArrayField(
         models.CharField(max_length=100),
         default=list,
-        help_text='List of keywords for search.'
-    )
-
-    # Choices for WebFacet status.
-    DRAFT = 'DRFT'
-    PITCH = 'PT'
-    IN_PROGRESS = 'IP'
-    EDIT = 'EDT'
-    REVISION = 'RVN'
-    READY = 'RDY'
-
-    PRINTFACET_STATUS_CHOICES = (
-        (DRAFT, 'Draft'),
-        (PITCH, 'Pitch'),
-        (IN_PROGRESS, 'In Progress'),
-        (EDIT, 'Edit'),
-        (REVISION, 'Revision'),
-        (READY, 'Ready'),
-    )
-
-    status = models.CharField(
-        max_length=25,
-        choices=PRINTFACET_STATUS_CHOICES,
-        help_text='Printfacet status choice.'
+        help_text='List of keywords for search.',
+        blank=True,
     )
 
     due_edit = models.DateTimeField(
-        help_text='Due for edit.'
+        help_text='Due for edit.',
+        blank=True
     )
 
     run_date = models.DateTimeField(
-        help_text='Planned run date.'
+        help_text='Planned run date.',
+        blank=True
     )
 
     creation_date = models.DateTimeField(
         auto_now_add=True,
-        help_text='Day printfacet was created.'
+        help_text='Day printfacet was created.',
+        blank=True
     )
 
     discussion_id = models.ForeignKey(
@@ -806,7 +800,9 @@ class AudioFacet(models.Model):
 
     code = models.CharField(
         max_length=75,
-        help_text='Unique code as needed for ingest sytems. Use as needed'
+        help_text='Unique code as needed for ingest sytems. Use as needed',
+        blank=True,
+        null=True,
     )
 
     title = models.TextField(
@@ -814,19 +810,27 @@ class AudioFacet(models.Model):
     )
 
     excerpt = models.TextField(
-        help_text='Excerpt for the audiofacet.'
+        help_text='Excerpt for the audiofacet.',
+        blank=True,
+        null=True,
     )
 
-    description = models.TextField(
-        help_text='Description of the audiofacet.'
+    af_description = models.TextField(
+        help_text='Description of the audiofacet.',
+        blank=True,
+        null=True,
     )
 
     content = models.TextField(
-        help_text='Content of the audiofacet.'
+        help_text='Content of the audiofacet.',
+        blank=True,
+        null=True,
     )
 
     length = models.IntegerField(
-        help_text='Wordcount of the audiofacet.'
+        help_text='Wordcount of the audiofacet.',
+        blank=True,
+        null=True,
     )
 
     keywords = ArrayField(
@@ -859,16 +863,19 @@ class AudioFacet(models.Model):
     )
 
     due_edit = models.DateTimeField(
-        help_text='Due for edit.'
+        help_text='Due for edit.',
+        blank=True,
     )
 
     run_date = models.DateTimeField(
-        help_text='Planned run date.'
+        help_text='Planned run date.',
+        blank=True,
     )
 
     creation_date = models.DateTimeField(
         auto_now_add=True,
-        help_text='Day audiofacet was created.'
+        help_text='Day audiofacet was created.',
+        blank=True,
     )
 
     discussion_id = models.ForeignKey(
@@ -879,7 +886,9 @@ class AudioFacet(models.Model):
     edit_history = HistoricalRecords()
 
     share_note = models.TextField(
-        help_text='Information for organizations making a copy of the audiofacet.'
+        help_text='Information for organizations making a copy of the audiofacet.',
+        blank=True,
+        null=True,
     )
 
     assets = models.ManyToManyField(
@@ -943,7 +952,9 @@ class VideoFacet(models.Model):
 
     code = models.CharField(
         max_length=75,
-        help_text='Unique code as needed for ingest sytems. Use as needed'
+        help_text='Unique code as needed for ingest sytems. Use as needed',
+        blank=True,
+        null=True,
     )
 
     title = models.TextField(
@@ -951,19 +962,27 @@ class VideoFacet(models.Model):
     )
 
     excerpt = models.TextField(
-        help_text='Excerpt from the videofacet.'
+        help_text='Excerpt from the videofacet.',
+        blank=True,
+        null=True,
     )
 
-    description = models.TextField(
-        help_text='Description of the videofacet.'
+    vf_description = models.TextField(
+        help_text='Description of the videofacet.',
+        blank=True,
+        null=True,
     )
 
     content = models.TextField(
-        help_text='Content of the videofacet.'
+        help_text='Content of the videofacet.',
+        blank=True,
+        null=True,
     )
 
     length = models.IntegerField(
-        help_text='Wordcount of the videofacet.'
+        help_text='Wordcount of the videofacet.',
+        blank=True,
+        null=True,
     )
 
     keywords = ArrayField(
@@ -996,16 +1015,19 @@ class VideoFacet(models.Model):
     )
 
     due_edit = models.DateTimeField(
-        help_text='Due for edit.'
+        help_text='Due for edit.',
+        blank=True,
     )
 
     run_date = models.DateTimeField(
-        help_text='Planned run date.'
+        help_text='Planned run date.',
+        blank=True,
     )
 
     creation_date = models.DateTimeField(
         auto_now_add=True,
-        help_text='Day videofacet was created.'
+        help_text='Day videofacet was created.',
+        blank=True,
     )
 
     discussion_id = models.ForeignKey(
@@ -1016,7 +1038,9 @@ class VideoFacet(models.Model):
     edit_history = HistoricalRecords()
 
     share_note = models.TextField(
-        help_text='Information for organizations making a copy of the videofacet.'
+        help_text='Information for organizations making a copy of the videofacet.',
+        blank=True,
+        null=True,
     )
 
     assets = models.ManyToManyField(
@@ -1058,7 +1082,7 @@ class WebFacetContributor(models.Model):
 
     user_role = models.CharField(
         max_length=255,
-        help_text='What did the user do?'
+        help_text='What did the user do?',
     )
 
     def __str__(self):
@@ -1427,14 +1451,18 @@ class Asset(models.Model):
         User,
     )
 
-    description = models.TextField(
+    asset_description = models.TextField(
         max_length=300,
-        help_text='What is the asset. (If a photo or graphic, it should be the caption.)'
+        help_text='What is the asset. (If a photo or graphic, it should be the caption.)',
+        blank=True,
+        null=True,
     )
 
     attribution = models.TextField(
         max_length=200,
-        help_text='The appropriate information for crediting the asset.'
+        help_text='The appropriate information for crediting the asset.',
+        blank=True,
+        null=True,
     )
 
     s3_link = models.URLField(

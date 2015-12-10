@@ -20,7 +20,11 @@ class EditUserProfile(forms.ModelForm):
 class StoryForm(forms.ModelForm):
     class Meta:
         model = Story
-        fields = ['name', 'storydescription']
-        widgets = {
-            'storydescription': Textarea()
-        }
+        fields = ['name', 'story_description']
+        # widgets = {
+        #     'story_description': Textarea()
+        # }
+
+# class StoryForm(forms.Form):
+#     name = forms.CharField()
+#     storydescription = forms.CharField(widget=forms.Textarea)
