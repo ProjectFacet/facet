@@ -60,6 +60,7 @@ class User(AbstractUser):
     organization_id = models.ForeignKey(
         'Organization',
         blank=True,
+        null=True,
     )
 
     credit_name = models.CharField(

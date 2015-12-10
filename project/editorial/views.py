@@ -121,7 +121,7 @@ def new_organization(request):
         form = CreateOrganization(request.POST or None)
     if form.is_valid():
         organization = form.save(commit=False)
-        owner = request.user
+        organization.owner = request.user
         organization.save()
         return redirect('index')
     else:
