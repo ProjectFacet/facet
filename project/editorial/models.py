@@ -394,6 +394,7 @@ class Story(models.Model):
     series_id = models.ForeignKey(
         Series,
         blank=True,
+        null=True
     )
 
     owner = models.ForeignKey(

@@ -10,7 +10,7 @@
 {% for story in stories %}
 
     <ul>
-        <li>{{story.name}} : {{story.story_description}}</li>
+        <li><a href="{% url 'story_detail' pk=story.id %}">{{story.name}}</a></li>
     </ul>
 
 {% endfor %}

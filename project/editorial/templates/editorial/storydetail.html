@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load bootstrap3 %}
+
+{% block content %}
+
+<h1>{{ story.name }}</h1>
+
+  {{story.story_description}}
+
+  <a href="{% url 'story_edit' pk=story.id %}">Edit Story</a>
+
+{% endblock %}

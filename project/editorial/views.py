@@ -21,7 +21,7 @@ from models import (
     Discussion)
 
 #----------------------------------------------------------------------#
-#   Initial Views
+#   Initial View
 #----------------------------------------------------------------------#
 
 def index(request):
@@ -42,9 +42,9 @@ def dashboard(request):
     Displays log of other user activity since last_login
     Ex: Oliver Q. added "Dhark Indicted" to Story: "Star City Organized Crime Leader Arrested"
     """
-    # queries for new comments since last_login from any discussions the user has participated
-    # queries for any new content created since last_login
-    # queries for other user activity since last_login
+    # query for new comments since last_login from any discussions the user has participated
+    # query for any new content created since last_login
+    # query for other user activity since last_login
 
     # return dashboard view for logged in user.
     return render(request, 'editorial/dashboard.html')
@@ -211,7 +211,7 @@ def story_list(request):
     editor, status.
     """
 
-    stories = Story.objects.filter(creation_date=timezone.now()).order_by('creation_date')
+    stories = Story.objects.all()
 
     return render(request, 'editorial/storylist.html', {'stories': stories})
 
@@ -227,26 +227,41 @@ def story_new(request):
         story.owner = request.user
         story.creation_date = timezone.now()
         story.save()
-        return redirect('story_detail', pk=post.pk)
+        return redirect('story_detail', pk=story.pk)
     else:
         form = StoryForm()
     return render(request, 'editorial/story.html', {'form': form})
 
 
-def story_detail(request):
+def story_detail(request, pk):
     """ The detail page for a story.
 
     Displays the story's planning notes, discussion, assets, share and collaboration status
     and sensivity status. From here the user can also see any facets, edit them and add new ones.
     """
 
-    return HttpResponse("I think it worked for a story.")
+    story = Story.objects.get(pk=pk)
+
+    return render(request, 'editorial/storydetail.html', {'story': story})
 
 
 def story_edit(request, pk):
     """ Edit story page. """
 
-    return HttpResponse("Could edit a story here.")
+    story = Story.objects.get(pk=pk)
+    form_class = StoryForm
+    if request.method == "POST":
+        form = StoryForm(data=request.POST, instance=story)
+        if form.is_valid():
+            form.save
+            return redirect('story_detail', pk=story.id)
+    else:
+        form = StoryForm(instance=Story)
+
+    return render(request, 'editorial/storyedit.html', {
+        'story': story,
+        'form': form,
+    })
 
 
 

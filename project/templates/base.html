@@ -73,7 +73,7 @@
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" title="Temporary Links for Convenience">Dashboard<span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                  <li><a href="#">Stories</a></li>
+                  <li><a href="{% url 'story_list' %}">Stories</a></li>
                   <li><a href="#">Series</a></li>
                   <li><a href="#">Collaborations</a></li>
                 </ul>
@@ -105,7 +105,7 @@
                 <!-- *********************************************** -->
                 <!-- Temporary links to these forms for dev purposes -->
                 <!-- *********************************************** -->
-                  <li><a href="{% url 'new_organization' %}">Add Organization</a></li>
+                  <li><a href="{% url 'organization_new' %}">Add Organization</a></li>
                   <li><a href="#">Add User</a></li>
                   <li><a href="{% url 'user_edit' %}">Edit User Profile</a></li>
                   <li><a href="#">Add Network</a></li>
