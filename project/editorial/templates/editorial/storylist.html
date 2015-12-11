@@ -7,6 +7,12 @@
 
 <h1>Story List</h1>
 
+{% for story in stories %}
 
+    <ul>
+        <li>{{story.name}} : {{story.story_description}}</li>
+    </ul>
+
+{% endfor %}
 
 {% endblock %}

@@ -16,6 +16,14 @@ class CreateOrganization(forms.ModelForm):
         fields = ['name', 'org_description']
 
 
+class EditOrganization(forms.ModelForm):
+    """ Edit an Organization. """
+
+    class Meta:
+        model = Organization
+        fields = ['name', 'org_description']
+
+
 class EditUserProfile(forms.ModelForm):
     """ Handle a user completing their profile."""
 
