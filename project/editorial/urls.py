@@ -14,36 +14,36 @@ urlpatterns = [
     #----------------------------------------------------------------------#
     #   Team URLS
     #----------------------------------------------------------------------#
-    url(r'^team$', views.team_list, name='team_list'),
+    # url(r'^team$', views.team_list, name='team_list'),
     #----------------------------------------------------------------------#
     #   Discussion URLS
     #----------------------------------------------------------------------#
-    url(r'^discussion$', views.discussion, name='discussion'),
+    # url(r'^discussion$', views.discussion, name='discussion'),
     #----------------------------------------------------------------------#
     #   Organization URLS
     #----------------------------------------------------------------------#
-    url(r'^/organization/new$', views.new_organization, name="new_organization"),
-    url(r'^organization/(?P<pk>[0-9]+)/$', views.org_detail, name='organization'),
-    url(r'^organization/(?P<pk>[0-9]+)/edit/$', views.org_edit, name='org_edit'),
+    url(r'^/organization/new$', views.organization_new, name="organization_new"),
+    # url(r'^organization/(?P<pk>[0-9]+)/$', views.org_detail, name='organization'),
+    # url(r'^organization/(?P<pk>[0-9]+)/edit/$', views.org_edit, name='org_edit'),
     #----------------------------------------------------------------------#
     #   User URLS
     #----------------------------------------------------------------------#
-    url(r'^user/(?P<pk>[0-9]+)/$', views.user_detail, name='user'),
+    url(r'^user/(?P<pk>[0-9]+)/$', views.user_detail, name='user_detail'),
     url(r'^user/edit/$', views.user_edit, name='user_edit'),
     #----------------------------------------------------------------------#
     #   Series URLS
     #----------------------------------------------------------------------#
     url(r'^series/new$', views.series_new, name='series_new'),
-    url(r'^series$', views.series_list, name='series_list'),
-    url(r'^series/(?P<pk>[0-9]+)/$', views.series_detail, name='series'),
-    url(r'^series/(?P<pk>[0-9]+)/edit/$', views.series_edit, name='series_edit'),
+    # url(r'^series$', views.series_list, name='series_list'),
+    # url(r'^series/(?P<pk>[0-9]+)/$', views.series_detail, name='series'),
+    # url(r'^series/(?P<pk>[0-9]+)/edit/$', views.series_edit, name='series_edit'),
     #----------------------------------------------------------------------#
     #   Story URLS
     #----------------------------------------------------------------------#
     url(r'^story/new/$', views.story_new, name='story_new'),
     url(r'^stories$', views.story_list, name='story_list'),
-    url(r'^story/(?P<pk>[0-9]+)/$', views.story_detail, name='story'),
-    url(r'^story/(?P<pk>[0-9]+)/edit/$', views.story_edit, name='story_edit'),
+    # url(r'^story/(?P<pk>[0-9]+)/$', views.story_detail, name='story'),
+    # url(r'^story/(?P<pk>[0-9]+)/edit/$', views.story_edit, name='story_edit'),
     #----------------------------------------------------------------------#
     #   Network URLS
     #----------------------------------------------------------------------#
