@@ -20,6 +20,10 @@ urlpatterns = [
     #----------------------------------------------------------------------#
     # url(r'^discussion$', views.discussion, name='discussion'),
     #----------------------------------------------------------------------#
+    #   Comment URLS
+    #----------------------------------------------------------------------#
+    # url(r'^comment$', views.comment, name='comment'),
+    #----------------------------------------------------------------------#
     #   Organization URLS
     #----------------------------------------------------------------------#
     url(r'^/organization/new$', views.org_new, name="org_new"),
@@ -47,9 +51,9 @@ urlpatterns = [
     #----------------------------------------------------------------------#
     #   Network URLS
     #----------------------------------------------------------------------#
-#     url(r'^network/new$', views.network_new, name='network_new')
-#     url(r'^network/(?P<pk>[0-9]+)/$', views.network_detail, name='network_detail'),
-#     url(r'^network/(?P<pk>[0-9]+)/edit/$', views.network_edit, name='network_edit'),
-#     url(r'^network/member$', views.network_member, name'network_member'),
-#     url(r'^network/stories$', views.network_stories, name='network_stories'),
+    url(r'^network/new$', views.network_new, name='network_new')
+    url(r'^network/(?P<pk>[0-9]+)/$', views.network_detail, name='network_detail'),
+    url(r'^network/(?P<pk>[0-9]+)/edit/$', views.network_edit, name='network_edit'),
+    url(r'^network/member$', views.network_member, name'network_member'),
+    url(r'^network/stories$', views.network_stories, name='network_stories'),
 ]

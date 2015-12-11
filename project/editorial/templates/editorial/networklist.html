@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load bootstrap3 %}
+
+{% block content %}
+
+<h1>Networks List</h1>
+
+{% for network in networks %}
+
+    <ul>
+        <li><a href="{% url 'network_detail' pk=network.id %}">{{network.name}}</a></li>
+    </ul>
+
+{% endfor %}
+
+{% endblock %}

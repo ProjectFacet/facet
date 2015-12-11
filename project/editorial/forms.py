@@ -5,7 +5,17 @@ from django.utils.safestring import mark_safe
 from django.contrib.auth import get_user_model
 from django.forms import Textarea, TextInput, RadioSelect
 
-from editorial.models import User, Organization, Network, Story, Series
+from editorial.models import (
+    User,
+    Organization,
+    Network,
+    Story,
+    Series,
+    WebFacet,
+    PrintFacet,
+    AudioFacet,
+    VideoFacet,
+    )
 
 
 class CreateOrganization(forms.ModelForm):
@@ -47,6 +57,14 @@ class StoryForm(forms.ModelForm):
     class Meta:
         model = Story
         fields = ['name', 'story_description']
+
+
+class NetworkForm(forms.ModelForm):
+    """ Create a new network. """
+
+    class Meta:
+        model = Network
+        fields = ['name', 'network_description']
 
 
 

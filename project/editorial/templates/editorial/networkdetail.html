@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% load bootstrap3 %}
+
+{% block content %}
+
+<h1>{{ network.name }}</h1>
+    <div>
+    {{network.network_description}}
+    </div>
+
+    <div>
+  <a href="{% url 'network_edit' pk=network.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+    </div>
+{% endblock %}

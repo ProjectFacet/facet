@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
-from .forms import StoryForm, EditUserProfile, SeriesForm, CreateOrganization
+from .forms import StoryForm, EditUserProfile, SeriesForm, CreateOrganization, NetworkForm
 from django.utils import timezone
 # from django.utils.timezone import now
 import datetime
@@ -100,6 +100,7 @@ def org_new(request):
         if form.is_valid():
             organization = form.save(commit=False)
             organization.owner = request.user
+            organization.creation_date = timezone.now()
             organization.save()
             return redirect('org_detail', pk=organization.pk)
     else:
@@ -315,30 +316,43 @@ def story_edit(request, pk):
 #   Network Views
 #----------------------------------------------------------------------#
 
-# def network_new(request):
-#     """ Create a new network. """
-#
-#     pass
+def network_new(request):
+    """ Create a new network. """
+
+    form = NetworkForm()
+    if request.method == "POST"
+        form.NetworkForm(request.POST or None)
+        if form.is_valid():
+            network = form.save(commit=False)
+            network.owner_organization = request.user.organization_id_id
+            network.creation_date = timezone.now()
+            organization.save()
+            return redirect('network_detail', pk=network.pk)
+    else: 
+        form = NetworkForm()
+    return render(request, 'editorial/networknew.html', {'form': form})
 
 
-# def network_detail(request):
-#     """ Public profile of a network. """
-#
-#     pass
+def network_detail(request, pk):
+    """ Public profile of a network. """
 
+    network = get_object_or_404(Network, pk=pk)
 
-# def network_edit(request, pk):
-#     """ Edit network page. """
-#
-#     pass
+    return render(request, 'editorial/networkdetail.html', {'network': network})
 
+# network_edit
+def network_edit(request, pk):
+    """ Edit network page. """
 
+    pass
+
+# network_member
 # def network_member(request):
 #     """ Table of networks your org is member of."""
 #
 #     pass
 
-
+# network_stories
 # def network_stories(request):
 #     """ Displays a filterable table of stories marked as shared/ready to share by any
 #     organizations that a user's organization is a part of.
