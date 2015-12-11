@@ -59,7 +59,7 @@
                                 <!-- LOGO -->
           <!-- ================================================= -->
           <div class="pull-left">
-            <a class="navbar-brand" href="#" role="logo">
+            <a class="navbar-brand" href="/" role="logo">
               <img src="/static/images/logo/brand-text-light.png" alt="Facet Logo" class="logo">
             </a>
           </div>
@@ -68,13 +68,13 @@
                               <!-- MAIN MENU -->
           <!-- ================================================= -->
         <div id="navbar" class="navbar-collapse collapse">
-         <!-- if request.user.is_authenticated  -->
+          {% if request.user.is_authenticated %} 
           <ul class="nav navbar-nav">
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" title="Temporary Links for Convenience">Dashboard<span class="caret"></span></a>
                 <ul class="dropdown-menu">
                   <li><a href="{% url 'story_list' %}">Stories</a></li>
-                  <li><a href="#">Series</a></li>
+                  <li><a href="{% url 'series_list' %}">Series</a></li>
                   <li><a href="#">Collaborations</a></li>
                 </ul>
             </li>
@@ -85,10 +85,10 @@
                   <li><a href="#">Network Stories</a></li>
                 </ul>
             </li>
-            <li><a href="#">Teams</a></li>
+            <li><a href="{% url 'team_list' %}">Teams</a></li>
             <li><a href="#">Discussions</a></li>
           </ul>
-          <!-- endif -->
+          {% endif %}
           <!-- ================================================= -->
                             <!-- PROFILE MENU -->
           <!-- ================================================= -->
@@ -105,9 +105,10 @@
                 <!-- *********************************************** -->
                 <!-- Temporary links to these forms for dev purposes -->
                 <!-- *********************************************** -->
-                  <li><a href="{% url 'organization_new' %}">Add Organization</a></li>
+                  <li><a href="{% url 'org_new' %}">Add Organization</a></li>
+                  <li><a href="{% url 'org_edit' pk=request.user.organization_id_id %}">Edit Organization</a></li>
                   <li><a href="#">Add User</a></li>
-                  <li><a href="{% url 'user_edit' %}">Edit User Profile</a></li>
+                  <li><a href="{% url 'user_edit' pk=request.user.id %}">Edit User Profile</a></li>
                   <li><a href="#">Add Network</a></li>
                   <li role="separator" class="divider"></li>
                   <li><a href="{% url 'series_new' %}">Add Series</a></li>

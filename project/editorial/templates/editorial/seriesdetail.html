@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% load bootstrap3 %}
+
+{% block content %}
+
+<h1>{{ series.name }}</h1>
+    <div>
+    {{series.series_description}}
+    </div>
+
+    <div>
+  <a href="{% url 'series_edit' pk=series.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+    </div>
+{% endblock %}

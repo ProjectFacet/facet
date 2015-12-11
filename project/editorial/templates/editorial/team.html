@@ -7,6 +7,13 @@
 
 <h1>Team Dashboard</h1>
 
+{% for user in org_team %}
+
+    <ul>
+        <li><a href="{% url 'user_detail' pk=user.id %}">{{user.credit_name}}</a></li>
+    </ul>
+
+{% endfor %}
 
 
 {% endblock %}

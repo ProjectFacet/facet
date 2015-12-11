@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% load bootstrap3 %}
+
+{% block content %}
+
+<h1>{{ user.credit_name }}</h1>
+    <div>
+    {{user.bio}}
+    </div>
+
+    <div>
+  <a href="{% url 'user_edit' pk=user.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+    </div>
+{% endblock %}

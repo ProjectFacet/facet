@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from .forms import StoryForm, EditUserProfile, SeriesForm, CreateOrganization
 from django.utils import timezone
@@ -60,7 +60,12 @@ def team_list(request):
     Displays team members from any network that the user's organization is part of.
     """
 
-    return render(request, 'editorial/team.html')
+    org_team = User.objects.filter(organization_id_id=request.user.organization_id_id)
+    print "ORG TEAM: ", org_team
+
+    return render(request, 'editorial/team.html', {
+        'org_team': org_team
+        })
 
 #----------------------------------------------------------------------#
 #   Discussion Views
@@ -81,7 +86,7 @@ def discussion(request):
 #   Organization Views
 #----------------------------------------------------------------------#
 
-def organization_new(request):
+def org_new(request):
     """ A user can create an organization after signing up.
 
     Ex. A member of a news organization creates an organization account for the newsroom.
@@ -91,18 +96,18 @@ def organization_new(request):
 
     form = CreateOrganization()
     if request.method == "POST":
-        # form = CreateOrganization(request.POST or None)
+        form = CreateOrganization(request.POST or None)
         if form.is_valid():
             organization = form.save(commit=False)
             organization.owner = request.user
             organization.save()
-            return redirect('index')
+            return redirect('org_detail', pk=organization.pk)
     else:
         form = CreateOrganization()
-    return render(request, 'editorial/createorg.html', {'form': form})
+    return render(request, 'editorial/organizationnew.html', {'form': form})
 
 
-def org_detail(request):
+def org_detail(request, pk):
     """ The public profile of an organization.
 
     Visible to users/organizations in the same networks.
@@ -110,41 +115,62 @@ def org_detail(request):
     shared content, admin email addresses.
     """
 
-    return render(request, 'editorial/org_detail.html')
+    organization = get_object_or_404(Organization, pk=pk)
+
+    return render(request, 'editorial/organizationdetail.html', {'organization': organization})
 
 
-def org_edit(request):
+def org_edit(request, pk):
     """ Edit organization page."""
 
-    return HttpResponse("Could edit an organization here.")
+    organization = get_object_or_404(Organization, pk=pk)
+
+    if request.method == "POST":
+        form = CreateOrganization(data=request.POST, instance=organization)
+        if form.is_valid():
+            form.save()
+            return redirect('org_detail', pk=organization.id)
+    else:
+        form = CreateOrganization(instance=organization)
+
+    return render(request, 'editorial/organizationedit.html', {
+            'organization': organization,
+            'form': form,
+    })
 
 #----------------------------------------------------------------------#
 #   User Views
 #----------------------------------------------------------------------#
 
-def user_detail(request):
+def user_detail(request, pk):
     """ The public profile of a user.
 
     Displays the user's organization, title, credit name, email, phone,
     bio, expertise, profile photo, social media links and most recent content.
     """
 
-    return render(request, 'editorial/user.html')
+    user = get_object_or_404(User, pk=pk)
+
+    return render(request, 'editorial/userdetail.html', {'user': user})
 
 
 def user_edit(request, pk):
-    # return user profile page with profile forms
-    user = get_object_or_404(POST, pk=pk)
+    """ Edit the user's profile."""
+
+    user = get_object_or_404(User, pk=pk)
 
     if request.method == "POST":
-        form = EditUserProfile(request.POST, instance=user)
-    if form.is_valid():
-        user = form.save(commit=False)
-        user.save()
-        return redirect('user_detail')
+        form = EditUserProfile(data=request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return redirect('user_detail', pk = user.id)
     else:
         form = EditUserProfile(instance=user)
-    return render(request, 'editorial/user_profile_settings.html', {'form': form})
+
+    return render(request, 'editorial/useredit.html', {
+            'user': user,
+            'form': form
+    })
 
 #----------------------------------------------------------------------#
 #   Series Views
@@ -155,7 +181,10 @@ def series_list(request):
 
     Initial display organizes content by series name.
     """
-    pass
+    
+    series = Series.objects.all()
+
+    return render(request, 'editorial/serieslist.html', {'series': series})
 
 
 def series_new(request):
@@ -175,29 +204,43 @@ def series_new(request):
     if form.is_valid():
         series = form.save(commit=False)
         series.owner = request.user
-        print "SERIES OWNER: ", series.owner
         series.creation_date = timezone.now()
         series.save()
-        return redirect('series_detail')
+        return redirect('series_detail', pk=series.pk)
     else:
         form = SeriesForm()
-    return render(request, 'editorial/series.html', {'form': form})
+    return render(request, 'editorial/seriesnew.html', {'form': form})
 
 
-def series_detail(request):
+def series_detail(request, pk):
     """ The detail page for a series.
 
     Displays the series' planning notes, discussion, assets, share and collaboration status
     and sensivity status.
     """
 
-    return HttpResponse("I think it worked for a series.")
+    series = get_object_or_404(Series, pk=pk)
+
+    return render(request, 'editorial/seriesdetail.html', {'series': series})
 
 
 def series_edit(request, pk):
     """ Edit series page."""
 
-    return HttpResponse("Could edit a series here.")
+    series = get_object_or_404(Series, pk=pk)
+
+    if request.method =="POST":
+        form = SeriesForm(data=request.POST, instance=series)
+        if form.is_valid():
+            form.save()
+            return redirect('series_detail', pk=series.id)
+    else:
+        form = SeriesForm(instance=series)
+
+    return render(request, 'editorial/seriesedit.html', {
+        'series': series,
+        'form': form,
+        })
 
 #----------------------------------------------------------------------#
 #   Story Views
@@ -230,7 +273,7 @@ def story_new(request):
         return redirect('story_detail', pk=story.pk)
     else:
         form = StoryForm()
-    return render(request, 'editorial/story.html', {'form': form})
+    return render(request, 'editorial/storynew.html', {'form': form})
 
 
 def story_detail(request, pk):
@@ -240,23 +283,22 @@ def story_detail(request, pk):
     and sensivity status. From here the user can also see any facets, edit them and add new ones.
     """
 
-    story = Story.objects.get(pk=pk)
+    story = get_object_or_404(Story, pk=pk)
 
     return render(request, 'editorial/storydetail.html', {'story': story})
 
 
 def story_edit(request, pk):
     """ Edit story page. """
-
-    story = Story.objects.get(pk=pk)
-    form_class = StoryForm
+    
+    story = get_object_or_404(Story, pk=pk)
     if request.method == "POST":
         form = StoryForm(data=request.POST, instance=story)
         if form.is_valid():
-            form.save
+            form.save()
             return redirect('story_detail', pk=story.id)
     else:
-        form = StoryForm(instance=Story)
+        form = StoryForm(instance=story)
 
     return render(request, 'editorial/storyedit.html', {
         'story': story,
@@ -264,14 +306,9 @@ def story_edit(request, pk):
     })
 
 
-
 #----------------------------------------------------------------------#
 #   Facet Views
 #----------------------------------------------------------------------#
-
-
-
-
 
 
 #----------------------------------------------------------------------#
