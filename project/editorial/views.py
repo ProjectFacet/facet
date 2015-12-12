@@ -5,7 +5,6 @@ import datetime
 
 from .forms import StoryForm, EditUserProfile, SeriesForm, CreateOrganization, NetworkForm
 
-
 from models import (
     User,
     Organization,
