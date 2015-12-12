@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
-from .forms import StoryForm, EditUserProfile, SeriesForm, CreateOrganization, NetworkForm
 from django.utils import timezone
-# from django.utils.timezone import now
 import datetime
+
+from .forms import StoryForm, EditUserProfile, SeriesForm, CreateOrganization, NetworkForm
+
+
 from models import (
     User,
     Organization,

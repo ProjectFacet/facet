@@ -8,13 +8,29 @@
 
     Content:
     - Main Tables: Series, Story, WebFacet, PrintFacet, AudioFacet, VideoFacet
-    - Associations: WebFacetContributors, PrintFacetContributors, AudioFacetContributors, VideoFacetContributors
-                StoryCopyDetails, SeriesCopyDetails, WebFacetCopyDetails, PrintFacetCopyDetails, AudioFacetCopyDetails, VideoFacetCopyDetails
+    - Associations: WebFacetContributors, PrintFacetContributors, AudioFacetContributors, 
+                    VideoFacetContributors, StoryCopyDetails, SeriesCopyDetails, 
+                    WebFacetCopyDetails, PrintFacetCopyDetails, AudioFacetCopyDetails,
+                    VideoFacetCopyDetails
 
     MetaMaterials:
-    - Main Tables: SeriesPlan, StoryPlan, Asset, Comment, CommentReadStatus, Discussion, PrivateDiscussion
+    - Main Tables: SeriesPlan, StoryPlan, Asset, Comment, CommentReadStatus, 
+                   Discussion, PrivateDiscussion
     - Associations:
 """
+
+#TODO
+# modify plan and note classes to be separate things.
+# A series has one plan that can have multiple notes
+# A story can have one plan that can have multiple notes.
+# Amend asset relationship
+# A series plan can have an asset
+# A story plan can have an asset
+# Any facet can have an asset
+# will use django lookup by relationship to locate additional
+# assets that can be used by a facet.
+# Add website to organization
+# social links to organization
 
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
@@ -25,7 +41,7 @@ from imagekit.models import ProcessedImageField
 from django.contrib.auth.models import AbstractUser
 from django.utils.encoding import python_2_unicode_compatible
 from django.core.urlresolvers import reverse
-# from django.utils import timezone
+from django.utils import timezone
 
 
 #----------------------------------------------------------------------#
