@@ -320,7 +320,7 @@ def network_new(request):
     """ Create a new network. """
 
     form = NetworkForm()
-    if request.method == "POST"
+    if request.method == "POST":
         form.NetworkForm(request.POST or None)
         if form.is_valid():
             network = form.save(commit=False)
@@ -340,30 +340,50 @@ def network_detail(request, pk):
 
     return render(request, 'editorial/networkdetail.html', {'network': network})
 
-# network_edit
+
 def network_edit(request, pk):
     """ Edit network page. """
 
-    pass
+    network = get_object_or_404(Network, pk=pk)
 
-# network_member
-# def network_member(request):
-#     """ Table of networks your org is member of."""
-#
-#     pass
+    if request.method == "POST":
+        form = NetworkForm(data=request.POST, instance=network)
+        if form.is_valid():
+            form.save()
+            return redirect('network_detail', pk=network.id)
+    else:
+        form = NetworkForm(instance=network)
 
-# network_stories
-# def network_stories(request):
-#     """ Displays a filterable table of stories marked as shared/ready to share by any
-#     organizations that a user's organization is a part of.
-#
-#     Initial display organizes content by story>facet>est. run date
-#     Filterable by story name, facet type, facet name, due for edit, est. run date, credit,
-#     editor, status.
-#
-#     Stories marked as share appear but are greyed out/inaccessible until the owner marks
-#     them as Ready to Share. (This is so partners know it will exist and can plan to incorporate
-#     it once it becomes available.)
-#     """
-#
-#     pass
+    return render(request, 'editorial/networkedit.html', {
+            'network': network,
+            'form': form,
+        })
+
+
+def network_member(request):
+    """ Table of networks your org is member of."""
+
+    network_membership = Network.objects.filter(member=request.user.organization_id_id)
+
+    return render(request, 'editorial/networklist.html', {'network_membership': network_membership})
+
+
+def network_stories(request):
+    """ Displays a filterable table of stories marked as shared/ready to share by any
+    organizations that a user's organization is a part of.
+
+    Initial display organizes content by story>facet>est. run date
+    Filterable by story name, facet type, facet name, due for edit, est. run date, credit,
+    editor, status.
+
+    Stories marked as share appear but are greyed out/inaccessible until the owner marks
+    them as Ready to Share. (This is so partners know it will exist and can plan to incorporate
+    it once it becomes available.)
+    """
+
+    network_stories = Story.objects.filter(share=True, share_with=request.user.organization_id_id)
+    print "NETWORK STORIES: ", network_stories
+
+    return render(request, 'editorial/networkstories.html', {
+        'network_stories': network_stories,
+        })

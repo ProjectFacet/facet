@@ -234,7 +234,7 @@ class Network(models.Model):
         upload_to="organizations",
         blank=True,    )
 
-    organizations = models.ManyToManyField(
+    member = models.ManyToManyField(
         Organization,
         through='NetworkOrganization',
         related_name='network_organization',
@@ -338,7 +338,7 @@ class Series(models.Model):
     # For now a boolean for sensitive or not. May have levels of sensitivity later.
     sensitivity = models.BooleanField(
         default=False,
-        help_text='Is a story sensitive, for limited viewing?'
+        help_text='Is a series sensitive, for limited viewing?'
     )
 
     collaborate = models.BooleanField(
@@ -424,12 +424,6 @@ class Story(models.Model):
         null=True,
     )
 
-    # For now a boolean for sensitive or not. May have levels of sensitivity later.
-    sensitivity = models.BooleanField(
-        default=False,
-        help_text='Is a story sensitive, for limited viewing?'
-    )
-
     creation_date = models.DateTimeField(
         auto_now_add=True,
         help_text='When was the story created.'
@@ -441,6 +435,27 @@ class Story(models.Model):
         related_name='story_team_member',
         help_text='User contributing to the story.',
         blank=True,
+    )
+
+    share = models.BooleanField(
+        default=False,
+        help_text='The story is being shared with a network.'
+    )
+
+    ready_to_share = models.BooleanField(
+        default=False,
+        help_text='The story is finished and ready to be copied.'
+    )
+
+    # For now a boolean for sensitive or not. May have levels of sensitivity later.
+    sensitivity = models.BooleanField(
+        default=False,
+        help_text='Is a story sensitive, for limited viewing?'
+    )
+
+    collaborate = models.BooleanField(
+        default=False,
+        help_text='The story is being collaborated on with a network.'
     )
 
     share_with = models.ManyToManyField(
