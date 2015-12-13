@@ -15,8 +15,8 @@ from models import (
     PrintFacet,
     AudioFacet,
     VideoFacet,
-    SeriesPlan,
-    StoryPlan,
+    SeriesNote,
+    StoryNote,
     Asset,
     Comment,
     Discussion)
@@ -183,7 +183,7 @@ def series_list(request):
 
     Initial display organizes content by series name.
     """
-    
+
     series = Series.objects.all()
 
     return render(request, 'editorial/serieslist.html', {'series': series})
@@ -292,7 +292,7 @@ def story_detail(request, pk):
 
 def story_edit(request, pk):
     """ Edit story page. """
-    
+
     story = get_object_or_404(Story, pk=pk)
     if request.method == "POST":
         form = StoryForm(data=request.POST, instance=story)
@@ -329,7 +329,7 @@ def network_new(request):
             network.creation_date = timezone.now()
             organization.save()
             return redirect('network_detail', pk=network.pk)
-    else: 
+    else:
         form = NetworkForm()
     return render(request, 'editorial/networknew.html', {'form': form})
 

@@ -11,8 +11,8 @@ from models import (
     PrintFacet,
     AudioFacet,
     VideoFacet,
-    SeriesPlan,
-    StoryPlan,
+    SeriesNote,
+    StoryNote,
     Asset,
     Comment,
     Discussion)
@@ -33,8 +33,8 @@ admin.site.register(WebFacet)
 admin.site.register(PrintFacet)
 admin.site.register(AudioFacet)
 admin.site.register(VideoFacet)
-admin.site.register(SeriesPlan)
-admin.site.register(StoryPlan)
+admin.site.register(SeriesNote)
+admin.site.register(StoryNote)
 admin.site.register(Asset)
 admin.site.register(Comment)
 admin.site.register(Discussion)

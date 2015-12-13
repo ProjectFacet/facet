@@ -8,29 +8,16 @@
 
     Content:
     - Main Tables: Series, Story, WebFacet, PrintFacet, AudioFacet, VideoFacet
-    - Associations: WebFacetContributors, PrintFacetContributors, AudioFacetContributors, 
-                    VideoFacetContributors, StoryCopyDetails, SeriesCopyDetails, 
+    - Associations: WebFacetContributors, PrintFacetContributors, AudioFacetContributors,
+                    VideoFacetContributors, StoryCopyDetails, SeriesCopyDetails,
                     WebFacetCopyDetails, PrintFacetCopyDetails, AudioFacetCopyDetails,
                     VideoFacetCopyDetails
 
     MetaMaterials:
-    - Main Tables: SeriesPlan, StoryPlan, Asset, Comment, CommentReadStatus, 
+    - Main Tables: SeriesPlan, StoryPlan, Asset, Comment, CommentReadStatus,
                    Discussion, PrivateDiscussion
     - Associations:
 """
-
-#TODO
-# modify plan and note classes to be separate things.
-# A series has one plan that can have multiple notes
-# A story can have one plan that can have multiple notes.
-# Amend asset relationship
-# A series plan can have an asset
-# A story plan can have an asset
-# Any facet can have an asset
-# will use django lookup by relationship to locate additional
-# assets that can be used by a facet.
-# Add website to organization
-# social links to organization
 
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
@@ -43,13 +30,11 @@ from django.utils.encoding import python_2_unicode_compatible
 from django.core.urlresolvers import reverse
 from django.utils import timezone
 
-
 #----------------------------------------------------------------------#
 #   People:
 #   - Main Tables: User, Organization, Network
 #   - Associations: NetworkOrganization, UserSeries, UserStory
 #----------------------------------------------------------------------#
-
 
 @python_2_unicode_compatible
 class User(AbstractUser):
@@ -61,19 +46,8 @@ class User(AbstractUser):
     to inactive. A general user creates and collaborates on content.
     """
 
-    # id = django automatic id
-
-    code = models.SlugField(
-        max_length=15,
-        db_index=True,
-        help_text='Unique code for a user.',
-        blank=True,
-    )
-
-    # could make ManyToMany to accomodate freelance users contributing
-    # to multiple organizations
-    # or make optional for users not pushing content to an org
-    organization_id = models.ForeignKey(
+    # Made optional for users not pushing content to an org (freelancers)
+    organization = models.ForeignKey(
         'Organization',
         blank=True,
         null=True,
@@ -108,39 +82,49 @@ class User(AbstractUser):
         blank=True,
     )
 
+    notes = models.ManyToManyField(
+        'UserNote',
+        related_name='user_note',
+    )
+
+    # FK to an asset?
     profile_photo = models.ImageField(
         upload_to="users",
         blank=True,
     )
 
-    #Links to user's professional social media accounts
     facebook = models.CharField(
-        max_length=150,
+        max_length=250,
         blank=True,
     )
 
     twitter = models.CharField(
-        max_length=150,
+        max_length=250,
         blank=True,
     )
 
     linkedin = models.CharField(
-        max_length=150,
+        max_length=250,
         blank=True,
     )
 
     instagram = models.CharField(
-        max_length=150,
+        max_length=250,
         blank=True,
     )
 
     snapchat = models.CharField(
-        max_length=150,
+        max_length=250,
         blank=True,
     )
 
     vine = models.CharField(
-        max_length=150,
+        max_length=250,
+        blank=True,
+    )
+
+    website = models.CharField(
+        max_length=250,
         blank=True,
     )
 
@@ -170,8 +154,6 @@ class Organization(models.Model):
     from one admin user to another.
     """
 
-    # id = django automatic id
-
     name = models.CharField(
         max_length=75,
         db_index=True,
@@ -179,20 +161,35 @@ class Organization(models.Model):
 
     owner = models.ForeignKey(
         User,
+        related_name='organization_owner',
     )
 
     org_description = models.TextField(
         help_text="Short profile of organization.",
         blank=True,
-
     )
 
     creation_date = models.DateTimeField(
         auto_now_add=True
     )
 
-    organization_logo = models.ImageField(
+    logo = models.ImageField(
         upload_to="organizations",
+        blank=True,
+    )
+
+    facebook = models.CharField(
+        max_length=250,
+        blank=True,
+    )
+
+    twitter = models.CharField(
+        max_length=250,
+        blank=True,
+    )
+
+    website = models.CharField(
+        max_length=250,
         blank=True,
     )
 
@@ -224,8 +221,6 @@ class Network(models.Model):
     version of the content to their own account.
     """
 
-    # id = django automatic id
-
     owner_organization = models.ForeignKey(
         Organization,
         help_text='Organization that owns the network.'
@@ -248,9 +243,10 @@ class Network(models.Model):
 
     logo = models.ImageField(
         upload_to="organizations",
-        blank=True,    )
+        blank=True,
+    )
 
-    member = models.ManyToManyField(
+    members = models.ManyToManyField(
         Organization,
         through='NetworkOrganization',
         related_name='network_organization',
@@ -277,13 +273,11 @@ class Network(models.Model):
 class NetworkOrganization(models.Model):
     """ The connection between Organizations and Networks. """
 
-    # id = django automatic id
-
-    network_id = models.ForeignKey(
+    network = models.ForeignKey(
         Network,
     )
 
-    organization_id = models.ForeignKey(
+    organization = models.ForeignKey(
         Organization,
     )
 
@@ -292,7 +286,6 @@ class NetworkOrganization(models.Model):
                                                 network=self.network.name,
                                                 organization=self.organization.name
                                                 )
-
 
 #----------------------------------------------------------------------#
 #   Content:
@@ -316,8 +309,6 @@ class Series(models.Model):
     assets easily available to all stories/facets.
     """
 
-    # id = django automatic id
-
     name = models.CharField(
         max_length=75,
         help_text='The name identifying the series.'
@@ -334,7 +325,6 @@ class Series(models.Model):
         help_text='The user that created the series.'
     )
 
-    # connection to users participating in a series
     team = models.ManyToManyField(
         User,
         related_name='series_team_member',
@@ -346,20 +336,15 @@ class Series(models.Model):
         auto_now_add=True,
     )
 
-    share = models.BooleanField(
-        default=False,
-        help_text='The series is being shared with a network.'
-    )
-
     # For now a boolean for sensitive or not. May have levels of sensitivity later.
     sensitivity = models.BooleanField(
         default=False,
         help_text='Is a series sensitive, for limited viewing?'
     )
 
-    collaborate = models.BooleanField(
+    share = models.BooleanField(
         default=False,
-        help_text='The series is being collaborated on with a network.'
+        help_text='The series is being shared with a network.'
     )
 
     share_with = models.ManyToManyField(
@@ -367,6 +352,11 @@ class Series(models.Model):
         related_name='series_shared_with_network',
         help_text='Network ids that a series is shared with.',
         blank=True,
+    )
+
+    collaborate = models.BooleanField(
+        default=False,
+        help_text='The series is being collaborated on with a network.'
     )
 
     collaborate_with = models.ManyToManyField(
@@ -379,6 +369,17 @@ class Series(models.Model):
     archived = models.BooleanField(
         default=False,
         help_text='Is the content no longer active and needed?'
+    )
+
+    discussion = models.ForeignKey(
+        'Discussion',
+        help_text=','
+    )
+
+    assets = models.ManyToManyField(
+        'Asset',
+        blank=True,
+        help_text='',
     )
 
     class Meta:
@@ -397,6 +398,7 @@ class Series(models.Model):
                                                 )
 
 
+
 class Story(models.Model):
     """ The unit of a story.
 
@@ -405,9 +407,7 @@ class Story(models.Model):
     The story also controls the sensivity and embargo status of the content.
     """
 
-    # id = django automatic id
-
-    series_id = models.ForeignKey(
+    series = models.ForeignKey(
         Series,
         blank=True,
         null=True
@@ -453,6 +453,11 @@ class Story(models.Model):
         blank=True,
     )
 
+    sensitive = models.BooleanField(
+        default=False,
+        help_text='Is a story sensitive and viewing it limited only to the team working on it?'
+    )
+
     share = models.BooleanField(
         default=False,
         help_text='The story is being shared with a network.'
@@ -463,22 +468,16 @@ class Story(models.Model):
         help_text='The story is finished and ready to be copied.'
     )
 
-    # For now a boolean for sensitive or not. May have levels of sensitivity later.
-    sensitivity = models.BooleanField(
-        default=False,
-        help_text='Is a story sensitive, for limited viewing?'
-    )
-
-    collaborate = models.BooleanField(
-        default=False,
-        help_text='The story is being collaborated on with a network.'
-    )
-
     share_with = models.ManyToManyField(
         Network,
         related_name='story_shared_with_network',
         help_text='Network ids that a story is shared with.',
         blank=True,
+    )
+
+    collaborate = models.BooleanField(
+        default=False,
+        help_text='The story is being collaborated on with a network.'
     )
 
     collaborate_with = models.ManyToManyField(
@@ -515,9 +514,7 @@ class WebFacet(models.Model):
     Ex: Daily news, articles, videos, photo galleries
     """
 
-    # id = django automatic id
-
-    story_id = models.ForeignKey(
+    story = models.ForeignKey(
         Story,
     )
 
@@ -542,7 +539,6 @@ class WebFacet(models.Model):
     )
 
     credit = models.ManyToManyField(
-        # There can be multiple users listed as the credit.
         User,
         related_name='webfacetcredit',
         help_text='The full user name(s) to be listed as the credit for the facet.'
@@ -615,17 +611,17 @@ class WebFacet(models.Model):
 
     run_date = models.DateTimeField(
         help_text='Planned run date.',
-        blank=True
+        blank=True,
     )
 
     creation_date = models.DateTimeField(
         auto_now_add=True,
-        help_text='Day WebFacet was created.'
+        help_text='Day WebFacet was created.',
     )
 
-    discussion_id = models.ForeignKey(
+    discussion = models.ForeignKey(
         'Discussion',
-        help_text='Id of edit discussion for the webfacet.'
+        help_text='Id of edit discussion for the webfacet.',
     )
 
     edit_history = HistoricalRecords()
@@ -661,9 +657,7 @@ class PrintFacet(models.Model):
     Ex: Daily news article, column, story.
     """
 
-    # id = django automatic id
-
-    story_id = models.ForeignKey(
+    story = models.ForeignKey(
         Story,
     )
 
@@ -747,7 +741,7 @@ class PrintFacet(models.Model):
         blank=True,
     )
 
-    discussion_id = models.ForeignKey(
+    discussion = models.ForeignKey(
         'Discussion',
         help_text='Id of edit discussion for the printfacet.'
     )
@@ -784,9 +778,7 @@ class AudioFacet(models.Model):
     Ex: A single segment on Morning Edition.
     """
 
-    # id = django automatic id
-
-    story_id = models.ForeignKey(
+    story = models.ForeignKey(
         Story,
     )
 
@@ -893,7 +885,7 @@ class AudioFacet(models.Model):
         blank=True,
     )
 
-    discussion_id = models.ForeignKey(
+    discussion = models.ForeignKey(
         'Discussion',
         help_text='Id of edit discussion for the audiofacet.'
     )
@@ -932,9 +924,7 @@ class VideoFacet(models.Model):
     Ex: An episode of a television program.
     """
 
-    # id = django automatic id
-
-    story_id = models.ForeignKey(
+    story = models.ForeignKey(
         Story,
     )
 
@@ -1040,7 +1030,7 @@ class VideoFacet(models.Model):
         blank=True,
     )
 
-    discussion_id = models.ForeignKey(
+    discussion = models.ForeignKey(
         'Discussion',
         help_text='ID of edit discussion for the videofacet.'
     )
@@ -1071,21 +1061,17 @@ class VideoFacet(models.Model):
                                 credit=self.credit,
                                 )
 
-
 #   Associations
 #   ------------
-
 
 class WebFacetContributor(models.Model):
     """ Which users are participating in creating the WebFacet. """
 
-    # id = django automatic id
-
-    webfacet_id = models.ForeignKey(
+    webfacet = models.ForeignKey(
         WebFacet,
     )
 
-    user_id = models.ForeignKey(
+    user = models.ForeignKey(
         User,
     )
 
@@ -1104,13 +1090,11 @@ class WebFacetContributor(models.Model):
 class PrintFacetContributor(models.Model):
     """ Which users are participating in creating the PrintFacet. """
 
-    # id = django automatic id
-
-    printfacet_id = models.ForeignKey(
+    printfacet = models.ForeignKey(
         PrintFacet,
     )
 
-    user_id = models.ForeignKey(
+    user = models.ForeignKey(
         User,
     )
 
@@ -1129,13 +1113,11 @@ class PrintFacetContributor(models.Model):
 class AudioFacetContributor(models.Model):
     """ Which users are participating in creating the AudioFacet. """
 
-    # id = django automatic id
-
-    audiofacet_id = models.ForeignKey(
+    audiofacet = models.ForeignKey(
         AudioFacet,
     )
 
-    user_id = models.ForeignKey(
+    user = models.ForeignKey(
         User,
     )
 
@@ -1154,13 +1136,11 @@ class AudioFacetContributor(models.Model):
 class VideoFacetContributor(models.Model):
     """ Which users are participating in creating the VideoFacet. """
 
-    # id = django automatic id
-
-    videofacet_id = models.ForeignKey(
+    videofacet = models.ForeignKey(
         VideoFacet,
     )
 
-    user_id = models.ForeignKey(
+    user = models.ForeignKey(
         User,
     )
 
@@ -1184,11 +1164,9 @@ class SeriesCopyDetail(models.Model):
     new organization.
     """
 
-    # id = django automatic id
-
-    organization_id = models.ForeignKey(
+    partner = models.ForeignKey(
         Organization,
-        help_text='Id of the organization that made the copy.'
+        help_text='Organization that made the copy.'
     )
 
     original_series_id = models.ForeignKey(
@@ -1196,7 +1174,7 @@ class SeriesCopyDetail(models.Model):
         help_text='Original id of the series.'
     )
 
-    new_series_id = models.SlugField(
+    partner_series_id = models.SlugField(
         max_length = 15,
         help_text='Id of the series on the copying organization\'s site.'
     )
@@ -1208,8 +1186,8 @@ class SeriesCopyDetail(models.Model):
 
     def __str__(self):
         return "Copyinfo for {copyorg} \'s copy of series: {series}".format(
-                                copyorg=self.organization_id.name,
-                                series=self.original_series_id,
+                                copyorg=self.partner.name,
+                                series=self.original_series_id
                                 )
 
 
@@ -1220,11 +1198,9 @@ class StoryCopyDetail(models.Model):
     story has already been copied over. If not, copy the story to the new organization.
     """
 
-    # id = django automatic id
-
-    organization_id = models.ForeignKey(
+    partner = models.ForeignKey(
         Organization,
-        help_text='Id of the organization that made the copy.'
+        help_text='Organization that made the copy.'
     )
 
     original_story_id = models.ForeignKey(
@@ -1232,7 +1208,7 @@ class StoryCopyDetail(models.Model):
         help_text='Original id of the story.'
     )
 
-    new_story_id = models.SlugField(
+    partner_story_id = models.SlugField(
         max_length = 15,
         help_text='Id of the story on the copying organization\'s site.'
     )
@@ -1244,7 +1220,7 @@ class StoryCopyDetail(models.Model):
 
     def __str__(self):
         return "Copyinfo for {copyorg} \'s copy of story: {story}".format(
-                                copyorg=self.organization_id.name,
+                                copyorg=self.partner.name,
                                 story=self.original_story_id,
                                 )
 
@@ -1252,11 +1228,9 @@ class StoryCopyDetail(models.Model):
 class WebFacetCopyDetail(models.Model):
     """ The details of a each copy of a webfacet. """
 
-    # id = django automatic id
-
-    organization_id = models.ForeignKey(
+    partner = models.ForeignKey(
         Organization,
-        help_text='Id of the organization that made the copy.'
+        help_text='Organization that made the copy.'
     )
 
     original_webfacet_id = models.ForeignKey(
@@ -1276,7 +1250,7 @@ class WebFacetCopyDetail(models.Model):
 
     def __str__(self):
         return "Copyinfo for {copyorg} \'s copy of webfacet: {webfacet}".format(
-                                copyorg=self.organization_id.name,
+                                copyorg=self.partner.name,
                                 webfacet=self.original_webfacet_id,
                                 )
 
@@ -1284,11 +1258,9 @@ class WebFacetCopyDetail(models.Model):
 class PrintFacetCopyDetail(models.Model):
     """ The details of a each copy of a printfacet. """
 
-    # id = django automatic id
-
-    organization_id = models.ForeignKey(
+    partner = models.ForeignKey(
         Organization,
-        help_text='Id of the organization that made the copy.'
+        help_text='Organization that made the copy.'
     )
 
     original_printfacet_id = models.ForeignKey(
@@ -1308,7 +1280,7 @@ class PrintFacetCopyDetail(models.Model):
 
     def __str__(self):
         return "Copyinfo for {copyorg} \'s copy of printfacet: {printfacet}".format(
-                                copyorg=self.organization_id.name,
+                                copyorg=self.partner.name,
                                 printfacet=self.original_printfacet_id,
                                 )
 
@@ -1316,11 +1288,9 @@ class PrintFacetCopyDetail(models.Model):
 class AudioFacetCopyDetail(models.Model):
     """ The details of a each copy of a audiofacet. """
 
-    # id = django automatic id
-
-    organization_id = models.ForeignKey(
+    partner = models.ForeignKey(
         Organization,
-        help_text='Id of the organization that made the copy.'
+        help_text='Organization that made the copy.'
     )
 
     original_audiofacet_id = models.ForeignKey(
@@ -1340,7 +1310,7 @@ class AudioFacetCopyDetail(models.Model):
 
     def __str__(self):
         return "Copyinfo for {copyorg} \'s copy of audiofacet: {audiofacet}".format(
-                                copyorg=self.organization_id.name,
+                                copyorg=self.partner.name,
                                 audiofacet=self.original_audiofacet_id,
                                 )
 
@@ -1348,11 +1318,9 @@ class AudioFacetCopyDetail(models.Model):
 class VideoFacetCopyDetail(models.Model):
     """ The details of a each copy of a videofacet. """
 
-    # id = django automatic id
-
-    organization_id = models.ForeignKey(
+    partner = models.ForeignKey(
         Organization,
-        help_text='Id of the organization that made the copy.'
+        help_text='Organization that made the copy.'
     )
 
     original_videofacet_id = models.ForeignKey(
@@ -1372,74 +1340,16 @@ class VideoFacetCopyDetail(models.Model):
 
     def __str__(self):
         return "Copyinfo for {copyorg} \'s copy of videofacet: {videofacet}".format(
-                                copyorg=self.organization_id.name,
+                                copyorg=self.partner.name,
                                 videofacet=self.original_videofacet_id,
                                 )
 
-
 #----------------------------------------------------------------------#
 #   MetaMaterials:
-#   - Main Tables:  SeriesPlan, StoryPlan, Asset, Comment
-#                   CommentReadStatus, Discussion, PrivateDiscussion
+#   - Main Tables:  Asset, Note, UserNote, SeriesNote, StoryNote, Comment
+#                   CommentReadStatus, Discussion, PrivateDiscussion,
 #   - Associations: None
 #----------------------------------------------------------------------#
-
-
-class SeriesPlan(models.Model):
-    """ Planning notes and conversation for a series. """
-
-    # id = django automatic id
-
-    series_id = models.ForeignKey(
-        Series,
-    )
-
-    note = models.TextField(
-        help_text='Notes for planning a series. Can be any details needed to be tracked while a series is planned/reported.'
-    )
-
-    note_owner = models.ForeignKey(
-        User,
-    )
-
-    series_discussion_id = models.ForeignKey(
-        'Discussion',
-    )
-
-    def __str__(self):
-        return "SeriesPlan: {seriesplan} for Series: {series}".format(
-                                seriesplan=self.id,
-                                series=self.series_id.id,
-                                )
-
-
-class StoryPlan(models.Model):
-    """ Planning notes and conversation for a story. """
-
-    # id = django automatic id
-
-    story_id = models.ForeignKey(
-        Story,
-    )
-
-    note = models.TextField(
-        help_text='Notes for planning a story. Can be any details needed to be tracked while a story is planned/reported.'
-    )
-
-    note_owner = models.ForeignKey(
-        User,
-    )
-
-    story_discussion_id = models.ForeignKey(
-        'Discussion',
-    )
-
-    def __str__(self):
-        return "StoryPlan: {storyplan} for Story: {story}".format(
-                                storyplan=self.id,
-                                story=self.story_id.id,
-                                )
-
 
 class Asset(models.Model):
     """ Assets for all the content contained in a series.
@@ -1450,14 +1360,9 @@ class Asset(models.Model):
     assets either be attached to a story or to a series.
     """
 
-    # id = django automatic id
-
-    series_id = models.ForeignKey(
-        Series,
-    )
-
     owner = models.ForeignKey(
         User,
+        related_name='asset_owner',
     )
 
     asset_description = models.TextField(
@@ -1503,17 +1408,96 @@ class Asset(models.Model):
         help_text='When the asset was created.'
     )
 
+    keywords = ArrayField(
+        models.CharField(max_length=100),
+        default=list,
+        help_text='List of keywords for search.'
+    )
+
     def __str__(self):
-        return "Asset: {asset_id} is a {asset_type}".format(
-                                asset_id=self.id,
+        return "Asset: {asset} is a {asset_type}".format(
+                                asset=self.id,
                                 asset_type=self.asset_type,
+                                )
+
+
+class Note(models.Model):
+    """ Abstract base class for notes."""
+
+    text = models.TextField(
+        help_text='Content of the note',
+        blank=True,
+    )
+
+    creation_date = models.DateTimeField(
+        auto_now_add=True,
+        help_text='When the note was created.'
+    )
+
+    class Meta:
+        abstract = True
+
+
+class UserNote(Note):
+    """ General purpose notes from a user. """
+
+    owner = models.ForeignKey(
+        User,
+        related_name='usernote_owner'
+    )
+
+    title = models.CharField(
+        max_length=255,
+    )
+
+    keywords = ArrayField(
+        models.CharField(max_length=100),
+        default=list,
+        help_text='List of keywords for search.'
+    )
+
+
+class SeriesNote(Note):
+    """ A note attached to a series."""
+
+    owner = models.ForeignKey(
+        User,
+        related_name='seriesnote_owner'
+    )
+
+    series = models.ForeignKey(
+        Series,
+        related_name='Se',
+    )
+
+    def __str__(self):
+        return "SeriesNote: {seriesnote} for Series: {series}".format(
+                                seriesnote=self.id,
+                                series=self.series.id,
+                                )
+
+
+class StoryNote(Note):
+    """ Planning notes and conversation for a story. """
+
+    owner = models.ForeignKey(
+        User,
+        related_name='storynote_owner'
+    )
+
+    story = models.ForeignKey(
+        Story,
+    )
+
+    def __str__(self):
+        return "StoryNote: {storynote} for Story: {story}".format(
+                                storynote=self.id,
+                                story=self.story.id,
                                 )
 
 
 class Discussion(models.Model):
     """ Class for  for related comments. """
-
-    # id = django automatic id
 
     # Choices for Discussion type
     PRIVATE = 'PRI'
@@ -1554,14 +1538,13 @@ class PrivateDiscussion(models.Model):
     own inboxes and are not attached to any content types.
     """
 
-    # id = django automatic id
-
-    discussion_id = models.ForeignKey(
+    discussion = models.ForeignKey(
         Discussion,
     )
 
     users = models.ManyToManyField(
         User,
+        related_name='private_discussion_user',
     )
 
     def __str__(self):
@@ -1576,18 +1559,16 @@ class Comment(models.Model):
     audiofacet, videfacet, or between one or more people privately.
     """
 
-    # id = django automatic id
-
-    user_id = models.ForeignKey(
+    user = models.ForeignKey(
         User,
     )
 
-    discussion_id = models.ForeignKey(
+    discussion = models.ForeignKey(
         Discussion,
     )
 
     text = models.TextField(
-        help_text='The comment of the comment.'
+        help_text='The content of the comment.'
     )
 
     date = models.DateTimeField(
@@ -1597,7 +1578,7 @@ class Comment(models.Model):
     def __str__(self):
         return "Comment:{comment} from discussion:{discussion}".format(
                                 comment=self.id,
-                                discussion=self.discussion_id.id,
+                                discussion=self.discussion.id,
                                 )
 
 
@@ -1606,13 +1587,11 @@ class CommentReadStatus(models.Model):
     comment in order to surface unread comments first.
     """
 
-    # id = django automatic id
-
-    comment_id = models.ForeignKey(
+    comment = models.ForeignKey(
         Comment,
     )
 
-    user_id = models.ForeignKey(
+    user = models.ForeignKey(
         User,
     )
 
@@ -1626,10 +1605,9 @@ class CommentReadStatus(models.Model):
 
     def __str__(self):
         return "Comment:{comment} has {status} read status.".format(
-                                comment=self.comment_id.id,
+                                comment=self.comment.id,
                                 status=self.has_read,
                                 )
-
 
 #   Associations
 #   ------------
