@@ -114,6 +114,7 @@
                     <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'org_detail' pk=request.user.organization %}"><span class="pull-right"><i class="fa fa-home text-muted"></i></span>Organization</a></li>
                     <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'org_edit' pk=request.user.organization %}"><span class="pull-right"><i class="fa fa-pencil text-muted"></i></span>Edit Organization</a></li>
                     {% endif %}
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'org_new' %}"><span class="pull-right"><i class="fa fa-users text-muted"></i></span>Create Organization</a></li>
                     <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'network_new' %}"><span class="pull-right"><i class="fa fa-users text-muted"></i></span>Create Network</a></li>
                     <li class="divider"></li>
                     <li role="presentation"><a role="menuitem" tabindex="-1" href="/accounts/logout"><span class="pull-right"><i class="fa fa-sign-out text-muted"></i></span> Sign out</a></li>

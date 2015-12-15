@@ -103,6 +103,10 @@ def org_new(request):
             organization.owner = request.user
             organization.creation_date = timezone.now()
             organization.save()
+            # left off trying to automatically connect user to organization
+            request.user.organization = organization
+            print request.user.organization.id
+            request.user.save()
             return redirect('org_detail', pk=organization.pk)
     else:
         form = CreateOrganization()
