@@ -12,8 +12,14 @@
       <p>{{ user.title }}</p>
       <p>{{ user.email }}</p>
       <p>{{ user.facebook }}</p>
+      <p>{{ user.organization.name }}</p>
     </div>
     <div class="col-md-6">
-      
+      <h1>Recent Stories</h1>
+      <ul>
+      {% for story in user_stories %}
+      <li><a href="{% url 'story_detail' pk=story.pk %}">{{ story.name }}</a></li>
+      {% endfor %}
+    </ul>
     </div>
 {% endblock %}

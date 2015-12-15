@@ -103,10 +103,10 @@ def org_new(request):
             organization.owner = request.user
             organization.creation_date = timezone.now()
             organization.save()
-            # left off trying to automatically connect user to organization
-            request.user.organization = organization
-            print request.user.organization.id
-            request.user.save()
+            # update user to connect them to the organization
+            current_user = get_object_or_404(User, pk=request.user.id)
+            current_user.organization = organization
+            current_user.save()
             return redirect('org_detail', pk=organization.pk)
     else:
         form = CreateOrganization()
@@ -156,8 +156,12 @@ def user_detail(request, pk):
     """
 
     user = get_object_or_404(User, pk=pk)
+    user_stories = Story.objects.filter(owner=user)
 
-    return render(request, 'editorial/userdetail.html', {'user': user})
+    return render(request, 'editorial/userdetail.html', {
+        'user': user,
+        'user_stories': user_stories
+        })
 
 
 def user_edit(request, pk):

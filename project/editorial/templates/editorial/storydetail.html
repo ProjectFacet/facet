@@ -8,6 +8,9 @@
     <div>
     {{story.story_description}}
     </div>
+    <div>
+    {{ story.owner.name }}
+    </div>
 
     <div>
   <a href="{% url 'story_edit' pk=story.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
