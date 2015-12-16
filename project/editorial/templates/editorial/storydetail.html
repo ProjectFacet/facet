@@ -4,15 +4,29 @@
 
 {% block content %}
 
-<h1>{{ story.name }}</h1>
-    <div>
-    {{story.story_description}}
+    <div class="row">
+        <p>{{ story.name }}</p>
+            <p>{{story.story_description}}</p>
+            <p>{{ story.owner.credit_name }}</p>
+            <div>
+            <a href="{% url 'story_edit' pk=story.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+            </div>
     </div>
-    <div>
-    {{ story.owner.name }}
+    <div class="row">
+        <form>
+            <div class="col-md-2">
+                {{ webform.title }}
+            </div>
+            <div class="col-md-8">
+                {{ webform.content }}
+            </div>
+            <div class="col-md-2">
+                {{ webform.share_note }}
+            </div>
+            <button type="submit" class="save btn btn-default">Save</button>
+        </form>
     </div>
+    
 
-    <div>
-  <a href="{% url 'story_edit' pk=story.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
-    </div>
+
 {% endblock %}

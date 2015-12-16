@@ -3,7 +3,13 @@ from django.http import HttpResponse
 from django.utils import timezone
 import datetime
 
-from .forms import StoryForm, EditUserProfile, SeriesForm, CreateOrganization, NetworkForm
+from .forms import (
+    EditUserProfile,
+    CreateOrganization,
+    NetworkForm,
+    SeriesForm,
+    StoryForm,
+    WebFacetForm)
 
 from models import (
     User,
@@ -295,7 +301,28 @@ def story_detail(request, pk):
 
     story = get_object_or_404(Story, pk=pk)
 
-    return render(request, 'editorial/storydetail.html', {'story': story})
+    # handle webfacet form
+    #TODO complete this concept
+    if request.method == "POST":
+        webform = WebFacetForm(request.POST or None)
+        if webform.is_valid():
+            webfacet = form.save(commit=False)
+            webfacet.story = story
+            webfacet.owner = request.user
+            webfacet.original_org = request.user.organization
+            webfacet.editor = request.user
+            webfacet.contributors = request.user
+            webfacet.credit = request.user
+            webfacet.creation_date = timezone.now()
+            webfacet.save()
+            return redirect('story_detail', pk=story.pk)
+    else:
+        webform = WebFacetForm() 
+
+    return render(request, 'editorial/storydetail.html', {
+        'story': story,
+        'webform': webform,
+        })
 
 
 def story_edit(request, pk):

@@ -18,6 +18,15 @@ from editorial.models import (
     )
 
 
+class EditUserProfile(forms.ModelForm):
+    """ Handle a user completing their profile."""
+
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'credit_name', 'title', 'phone', 'bio',
+                 'expertise', 'facebook', 'twitter', 'linkedin', 'instagram', 'snapchat', 'vine',]
+
+
 class CreateOrganization(forms.ModelForm):
     """ Create an Organization. """
 
@@ -34,13 +43,12 @@ class EditOrganization(forms.ModelForm):
         fields = ['name', 'org_description']
 
 
-class EditUserProfile(forms.ModelForm):
-    """ Handle a user completing their profile."""
+class NetworkForm(forms.ModelForm):
+    """ Create a new network. """
 
     class Meta:
-        model = User
-        fields = ['first_name', 'last_name', 'credit_name', 'title', 'phone', 'bio',
-                 'expertise', 'facebook', 'twitter', 'linkedin', 'instagram', 'snapchat', 'vine',]
+        model = Network
+        fields = ['name', 'network_description']
 
 
 class SeriesForm(forms.ModelForm):
@@ -59,12 +67,20 @@ class StoryForm(forms.ModelForm):
         fields = ['name', 'story_description']
 
 
-class NetworkForm(forms.ModelForm):
-    """ Create a new network. """
+class WebFacetForm(forms.ModelForm):
+    """ Webfacet form. """
 
     class Meta:
-        model = Network
-        fields = ['name', 'network_description']
-
-
-
+        model = WebFacet
+        fields = [
+            'code',
+            'title',
+            'excerpt',
+            'wf_description',
+            'content',
+            'keywords',
+            'status',
+            'due_edit',
+            'run_date',
+            'share_note'
+        ]
