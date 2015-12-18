@@ -61,7 +61,7 @@ class SeriesForm(forms.ModelForm):
 
 class StoryForm(forms.ModelForm):
     """ Form to create a new story. """
-    
+
     class Meta:
         model = Story
         fields = ['name', 'story_description']
@@ -78,9 +78,69 @@ class WebFacetForm(forms.ModelForm):
             'excerpt',
             'wf_description',
             'content',
+            'length',
             'keywords',
             'status',
             'due_edit',
             'run_date',
-            'share_note'
+            'share_note',
+        ]
+
+
+class PrintFacetForm(forms.ModelForm):
+    """ Printfacet form. """
+
+    class Meta:
+        model = PrintFacet
+        fields = [
+            'code',
+            'title',
+            'excerpt',
+            'pf_description',
+            'content',
+            'length',
+            'keywords',
+            'status',
+            'due_edit',
+            'run_date',
+            'share_note',
+        ]
+
+
+class AudioFacetForm(forms.ModelForm):
+    """ Audiofacet form. """
+
+    class Meta:
+        model = AudioFacet
+        fields = [
+            'code',
+            'title',
+            'excerpt',
+            'af_description',
+            'content',
+            'length',
+            'keywords',
+            'status',
+            'due_edit',
+            'run_date',
+            'share_note',
+        ]
+
+class VideoFacetForm(forms.ModelForm):
+    """ Videofacet form. """
+
+    class Meta:
+        model = VideoFacet
+        fields = [
+            'code',
+            'title',
+            'excerpt',
+            'vf_description',
+            'content',
+            'length',
+            'keywords',
+            'status',
+            'due_edit',
+            'run_date',
+            'share_note',
         ]

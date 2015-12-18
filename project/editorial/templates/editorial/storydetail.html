@@ -12,21 +12,37 @@
             <a href="{% url 'story_edit' pk=story.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
             </div>
     </div>
-    <div class="row">
-        <form>
-            <div class="col-md-2">
-                {{ webform.title }}
-            </div>
-            <div class="col-md-8">
-                {{ webform.content }}
-            </div>
-            <div class="col-md-2">
-                {{ webform.share_note }}
-            </div>
-            <button type="submit" class="save btn btn-default">Save</button>
-        </form>
-    </div>
-    
 
+
+    <div class="row">
+        <div class="col-md-3">
+        <form method="POST" class="post-form">
+          {% csrf_token %}
+          {% bootstrap_form webform %}
+          <button type="submit" class="save btn btn-default">Save</button>
+        </form>
+        </div>
+        <div class="col-md-3">
+        <form method="POST" class="post-form">
+          {% csrf_token %}
+          {% bootstrap_form printform %}
+          <button type="submit" class="save btn btn-default">Save</button>
+        </form>
+        </div>
+        <div class="col-md-3">
+        <form method="POST" class="post-form">
+          {% csrf_token %}
+          {% bootstrap_form audioform %}
+          <button type="submit" class="save btn btn-default">Save</button>
+        </form>
+        </div>
+        <div class="col-md-3">
+        <form method="POST" class="post-form">
+          {% csrf_token %}
+          {% bootstrap_form videoform %}
+          <button type="submit" class="save btn btn-default">Save</button>
+        </form>
+        </div>
+    </div>
 
 {% endblock %}

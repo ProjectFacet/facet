@@ -535,13 +535,15 @@ class WebFacet(models.Model):
     contributors = models.ManyToManyField(
         User,
         through='WebFacetContributor',
-        help_text='Users that contributed to a facet. Used to associate multiple users to a facet.'
+        help_text='Users that contributed to a facet. Used to associate multiple users to a facet.',
+        blank=True,
     )
 
     credit = models.ManyToManyField(
         User,
         related_name='webfacetcredit',
-        help_text='The full user name(s) to be listed as the credit for the facet.'
+        help_text='The full user name(s) to be listed as the credit for the facet.',
+        blank=True,
     )
 
     code = models.CharField(
@@ -607,11 +609,13 @@ class WebFacet(models.Model):
     due_edit = models.DateTimeField(
         help_text='Due for edit.',
         blank=True,
+        null=True,
     )
 
     run_date = models.DateTimeField(
         help_text='Planned run date.',
         blank=True,
+        null=True,
     )
 
     creation_date = models.DateTimeField(
@@ -622,6 +626,8 @@ class WebFacet(models.Model):
     discussion = models.ForeignKey(
         'Discussion',
         help_text='Id of edit discussion for the webfacet.',
+        blank=True,
+        null=True,
     )
 
     edit_history = HistoricalRecords()
@@ -633,6 +639,7 @@ class WebFacet(models.Model):
 
     assets = models.ManyToManyField(
         'Asset',
+        blank=True,
     )
 
     class Meta:
@@ -641,7 +648,7 @@ class WebFacet(models.Model):
         ordering = ['creation_date']
 
     def __str__(self):
-        return self.webfacet_title
+        return self.title
 
     @property
     def description(self):
@@ -725,6 +732,29 @@ class PrintFacet(models.Model):
         blank=True,
     )
 
+    # Choices for WebFacet status.
+    DRAFT = 'DRFT'
+    PITCH = 'PT'
+    IN_PROGRESS = 'IP'
+    EDIT = 'EDT'
+    REVISION = 'RVN'
+    READY = 'RDY'
+
+    PRINTFACET_STATUS_CHOICES = (
+        (DRAFT, 'Draft'),
+        (PITCH, 'Pitch'),
+        (IN_PROGRESS, 'In Progress'),
+        (EDIT, 'Edit'),
+        (REVISION, 'Revision'),
+        (READY, 'Ready'),
+    )
+
+    status = models.CharField(
+        max_length=25,
+        choices=PRINTFACET_STATUS_CHOICES,
+        help_text='Printfacet status choice.'
+    )
+
     due_edit = models.DateTimeField(
         help_text='Due for edit.',
         blank=True,
@@ -762,7 +792,7 @@ class PrintFacet(models.Model):
         ordering = ['creation_date']
 
     def __str__(self):
-        return self.printfacet_title
+        return self.title
 
     @property
     def description(self):
@@ -908,7 +938,7 @@ class AudioFacet(models.Model):
         ordering = ['creation_date']
 
     def __str__(self):
-        return self.audiofacet_title
+        return self.title
 
     @property
     def description(self):
@@ -1052,7 +1082,7 @@ class VideoFacet(models.Model):
         ordering = ['creation_date']
 
     def __str__(self):
-        return self.videofacet_title
+        return self.title
 
     @property
     def description(self):
@@ -1465,6 +1495,10 @@ class SeriesNote(Note):
         related_name='seriesnote_owner'
     )
 
+    title = models.CharField(
+        max_length=255,
+    )
+
     series = models.ForeignKey(
         Series,
         related_name='Se',
@@ -1483,6 +1517,10 @@ class StoryNote(Note):
     owner = models.ForeignKey(
         User,
         related_name='storynote_owner'
+    )
+
+    title = models.CharField(
+        max_length=255,
     )
 
     story = models.ForeignKey(

@@ -1,12 +1,14 @@
 from django.conf.urls import url, include
 
 from . import views
+# from views import HomeView
 
 urlpatterns = [
     #----------------------------------------------------------------------#
     #   Homepage URLS
     #----------------------------------------------------------------------#
     url(r'^$', views.index, name='index'),
+    # url(r'^$', HomeView.as_view(), name='index'),
     #----------------------------------------------------------------------#
     #   Dashboard URLS
     #----------------------------------------------------------------------#

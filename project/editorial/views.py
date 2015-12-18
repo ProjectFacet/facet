@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.utils import timezone
+from django.views.generic import TemplateView , UpdateView
 import datetime
 
 from .forms import (
@@ -9,7 +10,10 @@ from .forms import (
     NetworkForm,
     SeriesForm,
     StoryForm,
-    WebFacetForm)
+    WebFacetForm,
+    PrintFacetForm,
+    AudioFacetForm,
+    VideoFacetForm)
 
 from models import (
     User,
@@ -31,9 +35,15 @@ from models import (
 #   Initial View
 #----------------------------------------------------------------------#
 
+# class HomeView(TemplateView)
+#     # return static homepage for now
+#     template_name = "editorial/home.html"
+
+# function based view
 def index(request):
-    # return static homepage for now
-    return render(request, 'editorial/home.html')
+   """ Return static homepage."""
+
+   return render(request, 'editorial/home.html')
 
 #----------------------------------------------------------------------#
 #   Dashboard View
@@ -300,28 +310,80 @@ def story_detail(request, pk):
     """
 
     story = get_object_or_404(Story, pk=pk)
+    notes = StoryNote.objects.filter(story=story)
+    webfacet = get_object_or_404(WebFacet, story=story)
+    printfacet = get_object_or_404(PrintFacet, story=story)
+    audiofacet = get_object_or_404(AudioFacet, story=story)
+    videofacet = get_object_or_404(VideoFacet, story=story)
+    print webfacet
+    print audiofacet
+    print printfacet
+    print videofacet
 
     # handle webfacet form
-    #TODO complete this concept
     if request.method == "POST":
-        webform = WebFacetForm(request.POST or None)
+        webform = WebFacetForm(data=request.POST, instance=webfacet)
         if webform.is_valid():
-            webfacet = form.save(commit=False)
             webfacet.story = story
             webfacet.owner = request.user
             webfacet.original_org = request.user.organization
             webfacet.editor = request.user
-            webfacet.contributors = request.user
-            webfacet.credit = request.user
             webfacet.creation_date = timezone.now()
             webfacet.save()
             return redirect('story_detail', pk=story.pk)
     else:
-        webform = WebFacetForm() 
+        webform = WebFacetForm(instance=webfacet)
+
+    # handle printfacet form
+    if request.method == "POST":
+        printform = PrintFacetForm(data=request.POST, instance=printfacet)
+        if printform.is_valid():
+            printfacet.story = story
+            printfacet.owner = request.user
+            printfacet.original_org = request.user.organization
+            printfacet.editor = request.user
+            printfacet.creation_date = timezone.now()
+            printfacet.save()
+            return redirect('story_detail', pk=story.pk)
+    else:
+        printform = PrintFacetForm(instance=printfacet)
+
+    # handle audiofacet form
+    if request.method == "POST":
+        audioform = AudioFacetForm(data=request.POST, instance=audiofacet)
+        if audioform.is_valid():
+            audiofacet.story = story
+            audiofacet.owner = request.user
+            audiofacet.original_org = request.user.organization
+            audiofacet.editor = request.user
+            audiofacet.creation_date = timezone.now()
+            audiofacet.save()
+            return redirect('story_detail', pk=story.pk)
+    else:
+        audioform = AudioFacetForm(instance=audiofacet)
+
+    # handle videofacet form
+    if request.method == "POST":
+        videoform = VideoFacetForm(data=request.POST, instance=videofacet)
+        if videoform.is_valid():
+            videofacet.story = story
+            videofacet.owner = request.user
+            videofacet.original_org = request.user.organization
+            videofacet.editor = request.user
+            videofacet.creation_date = timezone.now()
+            videofacet.save()
+            return redirect('story_detail', pk=story.pk)
+    else:
+        videoform = VideoFacetForm(instance=videofacet)
+
 
     return render(request, 'editorial/storydetail.html', {
         'story': story,
+        'notes': notes,
         'webform': webform,
+        'printform': printform,
+        'audioform': audioform,
+        'videoform': videoform,
         })
 
 

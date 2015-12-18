@@ -185,3 +185,12 @@ label {
     margin: auto;
   height:100%;
 }
+
+textarea {
+  width: 100%;
+  color: #333;
+}
+
+select {
+  color:#333;
+}
