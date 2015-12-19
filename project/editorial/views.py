@@ -311,10 +311,6 @@ def story_detail(request, pk):
 
     story = get_object_or_404(Story, pk=pk)
     notes = StoryNote.objects.filter(story=story)
-    # webfacet = get_object_or_404(WebFacet, story=story)
-    # printfacet = get_object_or_404(PrintFacet, story=story)
-    # audiofacet = get_object_or_404(AudioFacet, story=story)
-    # videofacet = get_object_or_404(VideoFacet, story=story)
 
 # ------------------------------ #
 #           webfacet             #
@@ -324,13 +320,14 @@ def story_detail(request, pk):
         print "w1"
         # update an existing webfacet
         if request.method == "POST":
-            print "w2"
-            webform = WebFacetForm(data=request.POST, instance=webfacet)
-            if webform.is_valid():
-                print "w3"
-                webfacet.save()
-                print "w4"
-                return redirect('story_detail', pk=story.pk)
+            if 'webform' in request.POST:
+                print "w2"
+                webform = WebFacetForm(data=request.POST, instance=webfacet)
+                if webform.is_valid():
+                    print "w3"
+                    webfacet.save()
+                    print "w4"
+                    return redirect('story_detail', pk=story.pk)
         else:
             print "w5"
             webform = WebFacetForm(instance=webfacet)
@@ -366,13 +363,14 @@ def story_detail(request, pk):
         print "p1"
         # update an existing printfacet
         if request.method == "POST":
-            print "p2"
-            printform = PrintFacetForm(data=request.POST, instance=printfacet)
-            if printform.is_valid():
-                print "p3"
-                printfacet.save()
-                print "p4"
-                return redirect('story_detail', pk=story.pk)
+            if 'printform' in request.POST:
+                print "p2"
+                printform = PrintFacetForm(data=request.POST, instance=printfacet)
+                if printform.is_valid():
+                    print "p3"
+                    printfacet.save()
+                    print "p4"
+                    return redirect('story_detail', pk=story.pk)
         else:
             print "p5"
             printform = PrintFacetForm(instance=printfacet)
@@ -408,13 +406,14 @@ def story_detail(request, pk):
         print "a1"
         # update an existing webfacet
         if request.method == "POST":
-            print "a2"
-            audioform = AudioFacetForm(data=request.POST, instance=audiofacet)
-            if audioform.is_valid():
-                print "a3"
-                audiofacet.save()
-                print "a4"
-                return redirect('story_detail', pk=story.pk)
+            if 'audioform' in request.POST:
+                print "a2"
+                audioform = AudioFacetForm(data=request.POST, instance=audiofacet)
+                if audioform.is_valid():
+                    print "a3"
+                    audiofacet.save()
+                    print "a4"
+                    return redirect('story_detail', pk=story.pk)
         else:
             print "a5"
             audioform = AudioFacetForm(instance=audiofacet)
@@ -450,13 +449,14 @@ def story_detail(request, pk):
         print "v1"
         # update an existing printfacet
         if request.method == "POST":
-            print "v2"
-            videoform = VideoFacetForm(data=request.POST, instance=videofacet)
-            if videoform.is_valid():
-                print "v3"
-                videofacet.save()
-                print "v4"
-                return redirect('story_detail', pk=story.pk)
+            if 'videoform' in request.POST:
+                print "v2"
+                videoform = VideoFacetForm(data=request.POST, instance=videofacet)
+                if videoform.is_valid():
+                    print "v3"
+                    videofacet.save()
+                    print "v4"
+                    return redirect('story_detail', pk=story.pk)
         else:
             print "v5"
             videoform = VideoFacetForm(instance=videofacet)
@@ -471,7 +471,7 @@ def story_detail(request, pk):
                 print "v9"
                 if videoform.is_valid():
                     print "v10"
-                    videofacet = vidoeform.save(commit=False)
+                    videofacet = videoform.save(commit=False)
                     videofacet.story = story
                     videofacet.owner = request.user
                     videofacet.original_org = request.user.organization

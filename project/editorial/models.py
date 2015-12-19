@@ -758,11 +758,13 @@ class PrintFacet(models.Model):
     due_edit = models.DateTimeField(
         help_text='Due for edit.',
         blank=True,
+        null=True,
     )
 
     run_date = models.DateTimeField(
         help_text='Planned run date.',
         blank=True,
+        null=True,
     )
 
     creation_date = models.DateTimeField(
@@ -773,7 +775,9 @@ class PrintFacet(models.Model):
 
     discussion = models.ForeignKey(
         'Discussion',
-        help_text='Id of edit discussion for the printfacet.'
+        help_text='Id of edit discussion for the printfacet.',
+        blank=True,
+        null=True,
     )
 
     edit_history = HistoricalRecords()
@@ -902,11 +906,13 @@ class AudioFacet(models.Model):
     due_edit = models.DateTimeField(
         help_text='Due for edit.',
         blank=True,
+        null=True,
     )
 
     run_date = models.DateTimeField(
         help_text='Planned run date.',
         blank=True,
+        null=True,
     )
 
     creation_date = models.DateTimeField(
@@ -917,7 +923,9 @@ class AudioFacet(models.Model):
 
     discussion = models.ForeignKey(
         'Discussion',
-        help_text='Id of edit discussion for the audiofacet.'
+        help_text='Id of edit discussion for the audiofacet.',
+        blank=True,
+        null=True,
     )
 
     edit_history = HistoricalRecords()
@@ -1047,11 +1055,13 @@ class VideoFacet(models.Model):
     due_edit = models.DateTimeField(
         help_text='Due for edit.',
         blank=True,
+        null=True,
     )
 
     run_date = models.DateTimeField(
         help_text='Planned run date.',
         blank=True,
+        null=True,
     )
 
     creation_date = models.DateTimeField(
@@ -1062,7 +1072,9 @@ class VideoFacet(models.Model):
 
     discussion = models.ForeignKey(
         'Discussion',
-        help_text='ID of edit discussion for the videofacet.'
+        help_text='ID of edit discussion for the videofacet.',
+        blank=True,
+        null=True,
     )
 
     edit_history = HistoricalRecords()
