@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.utils import timezone
-from django.views.generic import TemplateView , UpdateView
+from django.views.generic import TemplateView , UpdateView, DetailView
 import datetime
 
 from .forms import (
@@ -35,7 +35,7 @@ from models import (
 #   Initial View
 #----------------------------------------------------------------------#
 
-# class HomeView(TemplateView)
+# class HomeView(DetailView)
 #     # return static homepage for now
 #     template_name = "editorial/home.html"
 
@@ -311,37 +311,50 @@ def story_detail(request, pk):
 
     story = get_object_or_404(Story, pk=pk)
     notes = StoryNote.objects.filter(story=story)
-    webfacet = get_object_or_404(WebFacet, story=story)
+    # webfacet = get_object_or_404(WebFacet, story=story)
     # printfacet = get_object_or_404(PrintFacet, story=story)
     # audiofacet = get_object_or_404(AudioFacet, story=story)
     # videofacet = get_object_or_404(VideoFacet, story=story)
 
-
 # ------------------------------ #
 #           webfacet             #
 # ------------------------------ #
-    if webfacet:
+    try:
+        webfacet = get_object_or_404(WebFacet, story=story)
+        print "w1"
         # update an existing webfacet
         if request.method == "POST":
+            print "w2"
             webform = WebFacetForm(data=request.POST, instance=webfacet)
             if webform.is_valid():
+                print "w3"
                 webfacet.save()
+                print "w4"
                 return redirect('story_detail', pk=story.pk)
         else:
+            print "w5"
             webform = WebFacetForm(instance=webfacet)
-    else:
+    except:
+        print "w6"
         # display form and save a new webfacet
         if request.method == "POST":
-            webform = WebFacetForm(request.POST or None)
-            if webform.is_valid():
-                webfacet.story = story
-                webfacet.owner = request.user
-                webfacet.original_org = request.user.organization
-                webfacet.editor = request.user
-                webfacet.creation_date = timezone.now()
-                webfacet.save()
-                return redirect('story_detail', pk=story.pk)
+            print "w7"
+            if 'webform' in request.POST:
+                print "w8"
+                webform = WebFacetForm(request.POST or None)
+                print "w9"
+                if webform.is_valid():
+                    print "w10"
+                    webfacet = webform.save(commit=False)
+                    webfacet.story = story
+                    webfacet.owner = request.user
+                    webfacet.original_org = request.user.organization
+                    webfacet.editor = request.user
+                    webfacet.creation_date = timezone.now()
+                    webfacet.save()
+                    return redirect('story_detail', pk=story.pk)
         else:
+            print "w11"
             webform = WebFacetForm()
 
 # ------------------------------ #
@@ -350,29 +363,40 @@ def story_detail(request, pk):
 
     try:
         printfacet = get_object_or_404(PrintFacet, story=story)
+        print "p1"
         # update an existing printfacet
         if request.method == "POST":
+            print "p2"
             printform = PrintFacetForm(data=request.POST, instance=printfacet)
             if printform.is_valid():
-                print "inside if printfacet printform is valid"
+                print "p3"
                 printfacet.save()
+                print "p4"
                 return redirect('story_detail', pk=story.pk)
         else:
+            print "p5"
             printform = PrintFacetForm(instance=printfacet)
     except:
+        print "p6"
         # display form and save a new printfacet
         if request.method == "POST":
-            printform = PrintFacetForm(request.POST or None)
-            if printform.is_valid():
-                print "inside else printform is valid"
-                printfacet.story = story
-                printfacet.owner = request.user
-                printfacet.original_org = request.user.organization
-                printfacet.editor = request.user
-                printfacet.creation_date = timezone.now()
-                printfacet.save()
-                return redirect('story_detail', pk=story.pk)
+            print "p7"
+            if 'printform' in request.POST:
+                print "p8"
+                printform = PrintFacetForm(request.POST or None)
+                print "p9"
+                if printform.is_valid():
+                    print "p10"
+                    printfacet = printform.save(commit=False)
+                    printfacet.story = story
+                    printfacet.owner = request.user
+                    printfacet.original_org = request.user.organization
+                    printfacet.editor = request.user
+                    printfacet.creation_date = timezone.now()
+                    printfacet.save()
+                    return redirect('story_detail', pk=story.pk)
         else:
+            print "p11"
             printform = PrintFacetForm()
 
 # ------------------------------ #
@@ -381,28 +405,40 @@ def story_detail(request, pk):
 
     try:
         audiofacet = get_object_or_404(AudioFacet, story=story)
+        print "a1"
         # update an existing webfacet
         if request.method == "POST":
+            print "a2"
             audioform = AudioFacetForm(data=request.POST, instance=audiofacet)
             if audioform.is_valid():
-                print "inside if audiofacet printform is valid"
+                print "a3"
                 audiofacet.save()
+                print "a4"
                 return redirect('story_detail', pk=story.pk)
         else:
+            print "a5"
             audioform = AudioFacetForm(instance=audiofacet)
     except:
+        print "a6"
         # display form and save a new webfacet
         if request.method == "POST":
-            audioform = AudioFacetForm(request.POST or None)
-            if audioform.is_valid():
-                audiofacet.story = story
-                audiofacet.owner = request.user
-                audiofacet.original_org = request.user.organization
-                audiofacet.editor = request.user
-                audiofacet.creation_date = timezone.now()
-                audiofacet.save()
-                return redirect('story_detail', pk=story.pk)
+            print "a7"
+            if 'audioform' in request.POST:
+                print "a8"
+                audioform = AudioFacetForm(request.POST or None)
+                print "a9"
+                if audioform.is_valid():
+                    print "a10"
+                    audiofacet = audioform.save(commit=False)
+                    audiofacet.story = story
+                    audiofacet.owner = request.user
+                    audiofacet.original_org = request.user.organization
+                    audiofacet.editor = request.user
+                    audiofacet.creation_date = timezone.now()
+                    audiofacet.save()
+                    return redirect('story_detail', pk=story.pk)
         else:
+            print "a11"
             audioform = AudioFacetForm()
 
 # ------------------------------ #
@@ -411,27 +447,40 @@ def story_detail(request, pk):
 
     try:
         videofacet = get_object_or_404(VideoFacet, story=story)
+        print "v1"
         # update an existing printfacet
         if request.method == "POST":
+            print "v2"
             videoform = VideoFacetForm(data=request.POST, instance=videofacet)
             if videoform.is_valid():
+                print "v3"
                 videofacet.save()
+                print "v4"
                 return redirect('story_detail', pk=story.pk)
         else:
+            print "v5"
             videoform = VideoFacetForm(instance=videofacet)
     except:
-        # displa form and save a new printfacet
+        print "v6"
+        # display form and save a new printfacet
         if request.method == "POST":
-            videoform = VideoFacetForm(request.POST or None)
-            if videoform.is_valid():
-                videofacet.story = story
-                videofacet.owner = request.user
-                videofacet.original_org = request.user.organization
-                videofacet.editor = request.user
-                videofacet.creation_date = timezone.now()
-                videofacet.save()
-                return redirect('story_detail', pk=story.pk)
+            print "v7"
+            if 'videoform' in request.POST:
+                print "v8"
+                videoform = VideoFacetForm(request.POST or None)
+                print "v9"
+                if videoform.is_valid():
+                    print "v10"
+                    videofacet = vidoeform.save(commit=False)
+                    videofacet.story = story
+                    videofacet.owner = request.user
+                    videofacet.original_org = request.user.organization
+                    videofacet.editor = request.user
+                    videofacet.creation_date = timezone.now()
+                    videofacet.save()
+                    return redirect('story_detail', pk=story.pk)
         else:
+            print "v11"
             videoform = VideoFacetForm()
 
 
