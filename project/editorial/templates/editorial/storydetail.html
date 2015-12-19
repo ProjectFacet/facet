@@ -13,35 +13,38 @@
             </div>
     </div>
 
-
     <div class="row">
         <div class="col-md-3">
-        <form method="POST" class="post-form">
-          {% csrf_token %}
-          {% bootstrap_form webform %}
-          <button type="submit" class="save btn btn-default">Save</button>
-        </form>
+          <h3>Web</h3>
+          <form method="POST" class="post-form">
+            {% csrf_token %}
+            {% bootstrap_form webform %}
+            <input type="submit" name="webform" value="Submit" />
+          </form>
         </div>
         <div class="col-md-3">
-        <form method="POST" class="post-form">
-          {% csrf_token %}
-          {% bootstrap_form printform %}
-          <button type="submit" class="save btn btn-default">Save</button>
-        </form>
+          <h3>Print</h3>
+          <form method="POST" class="post-form">
+            {% csrf_token %}
+            {% bootstrap_form printform %}
+            <input type="submit" name="printform" value="Submit" />
+          </form>
         </div>
         <div class="col-md-3">
-        <form method="POST" class="post-form">
-          {% csrf_token %}
-          {% bootstrap_form audioform %}
-          <button type="submit" class="save btn btn-default">Save</button>
-        </form>
+          <h3>Audio</h3>
+          <form method="POST" class="post-form">
+            {% csrf_token %}
+            {% bootstrap_form audioform %}
+            <input type="submit" name="audioform" value="Submit" />
+          </form>
         </div>
         <div class="col-md-3">
-        <form method="POST" class="post-form">
-          {% csrf_token %}
-          {% bootstrap_form videoform %}
-          <button type="submit" class="save btn btn-default">Save</button>
-        </form>
+          <h3>Video</h3>
+          <form method="POST" class="post-form">
+            {% csrf_token %}
+            {% bootstrap_form videoform %}
+            <input type="submit" name="videoform" value="Submit" />
+          </form>
         </div>
     </div>
 

@@ -77,7 +77,7 @@ def team_list(request):
     Displays team members from any network that the user's organization is part of.
     """
 
-    org_team = User.objects.filter(organization_id_id=request.user.organization_id_id)
+    org_team = User.objects.filter(organization=request.user.organization)
     print "ORG TEAM: ", org_team
 
     return render(request, 'editorial/team.html', {
@@ -312,69 +312,127 @@ def story_detail(request, pk):
     story = get_object_or_404(Story, pk=pk)
     notes = StoryNote.objects.filter(story=story)
     webfacet = get_object_or_404(WebFacet, story=story)
-    printfacet = get_object_or_404(PrintFacet, story=story)
-    audiofacet = get_object_or_404(AudioFacet, story=story)
-    videofacet = get_object_or_404(VideoFacet, story=story)
-    print webfacet
-    print audiofacet
-    print printfacet
-    print videofacet
+    # printfacet = get_object_or_404(PrintFacet, story=story)
+    # audiofacet = get_object_or_404(AudioFacet, story=story)
+    # videofacet = get_object_or_404(VideoFacet, story=story)
 
-    # handle webfacet form
-    if request.method == "POST":
-        webform = WebFacetForm(data=request.POST, instance=webfacet)
-        if webform.is_valid():
-            webfacet.story = story
-            webfacet.owner = request.user
-            webfacet.original_org = request.user.organization
-            webfacet.editor = request.user
-            webfacet.creation_date = timezone.now()
-            webfacet.save()
-            return redirect('story_detail', pk=story.pk)
-    else:
-        webform = WebFacetForm(instance=webfacet)
 
-    # handle printfacet form
-    if request.method == "POST":
-        printform = PrintFacetForm(data=request.POST, instance=printfacet)
-        if printform.is_valid():
-            printfacet.story = story
-            printfacet.owner = request.user
-            printfacet.original_org = request.user.organization
-            printfacet.editor = request.user
-            printfacet.creation_date = timezone.now()
-            printfacet.save()
-            return redirect('story_detail', pk=story.pk)
+# ------------------------------ #
+#           webfacet             #
+# ------------------------------ #
+    if webfacet:
+        # update an existing webfacet
+        if request.method == "POST":
+            webform = WebFacetForm(data=request.POST, instance=webfacet)
+            if webform.is_valid():
+                webfacet.save()
+                return redirect('story_detail', pk=story.pk)
+        else:
+            webform = WebFacetForm(instance=webfacet)
     else:
-        printform = PrintFacetForm(instance=printfacet)
+        # display form and save a new webfacet
+        if request.method == "POST":
+            webform = WebFacetForm(request.POST or None)
+            if webform.is_valid():
+                webfacet.story = story
+                webfacet.owner = request.user
+                webfacet.original_org = request.user.organization
+                webfacet.editor = request.user
+                webfacet.creation_date = timezone.now()
+                webfacet.save()
+                return redirect('story_detail', pk=story.pk)
+        else:
+            webform = WebFacetForm()
 
-    # handle audiofacet form
-    if request.method == "POST":
-        audioform = AudioFacetForm(data=request.POST, instance=audiofacet)
-        if audioform.is_valid():
-            audiofacet.story = story
-            audiofacet.owner = request.user
-            audiofacet.original_org = request.user.organization
-            audiofacet.editor = request.user
-            audiofacet.creation_date = timezone.now()
-            audiofacet.save()
-            return redirect('story_detail', pk=story.pk)
-    else:
-        audioform = AudioFacetForm(instance=audiofacet)
+# ------------------------------ #
+#           printfacet           #
+# ------------------------------ #
 
-    # handle videofacet form
-    if request.method == "POST":
-        videoform = VideoFacetForm(data=request.POST, instance=videofacet)
-        if videoform.is_valid():
-            videofacet.story = story
-            videofacet.owner = request.user
-            videofacet.original_org = request.user.organization
-            videofacet.editor = request.user
-            videofacet.creation_date = timezone.now()
-            videofacet.save()
-            return redirect('story_detail', pk=story.pk)
-    else:
-        videoform = VideoFacetForm(instance=videofacet)
+    try:
+        printfacet = get_object_or_404(PrintFacet, story=story)
+        # update an existing printfacet
+        if request.method == "POST":
+            printform = PrintFacetForm(data=request.POST, instance=printfacet)
+            if printform.is_valid():
+                print "inside if printfacet printform is valid"
+                printfacet.save()
+                return redirect('story_detail', pk=story.pk)
+        else:
+            printform = PrintFacetForm(instance=printfacet)
+    except:
+        # display form and save a new printfacet
+        if request.method == "POST":
+            printform = PrintFacetForm(request.POST or None)
+            if printform.is_valid():
+                print "inside else printform is valid"
+                printfacet.story = story
+                printfacet.owner = request.user
+                printfacet.original_org = request.user.organization
+                printfacet.editor = request.user
+                printfacet.creation_date = timezone.now()
+                printfacet.save()
+                return redirect('story_detail', pk=story.pk)
+        else:
+            printform = PrintFacetForm()
+
+# ------------------------------ #
+#           audiofacet           #
+# ------------------------------ #
+
+    try:
+        audiofacet = get_object_or_404(AudioFacet, story=story)
+        # update an existing webfacet
+        if request.method == "POST":
+            audioform = AudioFacetForm(data=request.POST, instance=audiofacet)
+            if audioform.is_valid():
+                print "inside if audiofacet printform is valid"
+                audiofacet.save()
+                return redirect('story_detail', pk=story.pk)
+        else:
+            audioform = AudioFacetForm(instance=audiofacet)
+    except:
+        # display form and save a new webfacet
+        if request.method == "POST":
+            audioform = AudioFacetForm(request.POST or None)
+            if audioform.is_valid():
+                audiofacet.story = story
+                audiofacet.owner = request.user
+                audiofacet.original_org = request.user.organization
+                audiofacet.editor = request.user
+                audiofacet.creation_date = timezone.now()
+                audiofacet.save()
+                return redirect('story_detail', pk=story.pk)
+        else:
+            audioform = AudioFacetForm()
+
+# ------------------------------ #
+#           videofacet           #
+# ------------------------------ #
+
+    try:
+        videofacet = get_object_or_404(VideoFacet, story=story)
+        # update an existing printfacet
+        if request.method == "POST":
+            videoform = VideoFacetForm(data=request.POST, instance=videofacet)
+            if videoform.is_valid():
+                videofacet.save()
+                return redirect('story_detail', pk=story.pk)
+        else:
+            videoform = VideoFacetForm(instance=videofacet)
+    except:
+        # displa form and save a new printfacet
+        if request.method == "POST":
+            videoform = VideoFacetForm(request.POST or None)
+            if videoform.is_valid():
+                videofacet.story = story
+                videofacet.owner = request.user
+                videofacet.original_org = request.user.organization
+                videofacet.editor = request.user
+                videofacet.creation_date = timezone.now()
+                videofacet.save()
+                return redirect('story_detail', pk=story.pk)
+        else:
+            videoform = VideoFacetForm()
 
 
     return render(request, 'editorial/storydetail.html', {
@@ -422,7 +480,7 @@ def network_new(request):
         form.NetworkForm(request.POST or None)
         if form.is_valid():
             network = form.save(commit=False)
-            network.owner_organization = request.user.organization_id_id
+            network.owner_organization = request.user.organization
             network.creation_date = timezone.now()
             organization.save()
             return redirect('network_detail', pk=network.pk)
@@ -461,7 +519,7 @@ def network_edit(request, pk):
 def network_member(request):
     """ Table of networks your org is member of."""
 
-    network_membership = Network.objects.filter(member=request.user.organization_id_id)
+    network_membership = Network.objects.filter(member=request.user.organization)
 
     return render(request, 'editorial/networklist.html', {'network_membership': network_membership})
 
