@@ -85,6 +85,7 @@ class User(AbstractUser):
     notes = models.ManyToManyField(
         'UserNote',
         related_name='user_note',
+        blank=True,
     )
 
     # FK to an asset?

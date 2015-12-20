@@ -332,7 +332,6 @@ def story_detail(request, pk):
     story = get_object_or_404(Story, pk=pk)
     notes = StoryNote.objects.filter(story=story)
     series = Series.objects.all()
-    print series
 
 # ------------------------------ #
 #           webfacet             #
@@ -375,6 +374,7 @@ def story_detail(request, pk):
         else:
             print "w11"
             webform = WebFacetForm()
+    print "WEBFORM: ", webform
 
 # ------------------------------ #
 #           printfacet           #
@@ -508,7 +508,6 @@ def story_detail(request, pk):
 
     return render(request, 'editorial/storydetail.html', {
         'story': story,
-        'notes': notes,
         'webform': webform,
         'printform': printform,
         'audioform': audioform,
@@ -536,7 +535,6 @@ def story_edit(request, pk):
         'story': story,
         'storyform': storyform,
     })
-
 
 
 #----------------------------------------------------------------------#
