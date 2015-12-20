@@ -5,47 +5,100 @@
 {% block content %}
 
     <div class="row">
-        <p>{{ story.name }}</p>
-            <p>{{story.story_description}}</p>
-            <p>{{ story.owner.credit_name }}</p>
-            <div>
-            <a href="{% url 'story_edit' pk=story.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
-            </div>
+        <h2>{{ story.name }}</h2><p>{{story.story_description}}</p>
     </div>
+<!-- ================================================= -->
+                    <!-- TABS -->
+<!-- ================================================= -->
+    <div class="row">
+
+      <div class="col-md-3"> </div>
+
+      <div class="col-md-6" id="facettabs">
+        <ul class="nav nav-tabs" role="tablist">
+          <li role="presentation" class="active"><a href="#storydetail" aria-controls="storydetail" role="tab" data-toggle="tab">Story Detail <i class="fa fa-angle-down"></i></a></li>
+          <li role="presentation"><a href="#web" aria-controls="web" role="tab" data-toggle="tab">Web</a></li>
+          <li role="presentation"><a href="#print" aria-controls="print" role="tab" data-toggle="tab">Print</a></li>
+          <li role="presentation"><a href="#audio" aria-controls="audio" role="tab" data-toggle="tab">Audio</a></li>
+          <li role="presentation"><a href="#video" aria-controls="video" role="tab" data-toggle="tab">Video</a></li>
+        </ul>
+      </div>
+
+      <div class="col-md-3"></div>
+
+    </div>
+<!-- ================================================= -->
+                      <!-- TAB CONTENT -->
+<!-- ================================================= -->
 
     <div class="row">
-        <div class="col-md-3">
-          <h3>Web</h3>
-          <form method="POST" class="post-form">
-            {% csrf_token %}
-            {% bootstrap_form webform %}
-            <input type="submit" name="webform" value="Submit" />
-          </form>
-        </div>
-        <div class="col-md-3">
-          <h3>Print</h3>
-          <form method="POST" class="post-form">
-            {% csrf_token %}
-            {% bootstrap_form printform %}
-            <input type="submit" name="printform" value="Submit" />
-          </form>
-        </div>
-        <div class="col-md-3">
-          <h3>Audio</h3>
-          <form method="POST" class="post-form">
-            {% csrf_token %}
-            {% bootstrap_form audioform %}
-            <input type="submit" name="audioform" value="Submit" />
-          </form>
-        </div>
-        <div class="col-md-3">
-          <h3>Video</h3>
-          <form method="POST" class="post-form">
-            {% csrf_token %}
-            {% bootstrap_form videoform %}
-            <input type="submit" name="videoform" value="Submit" />
-          </form>
-        </div>
-    </div>
+      <div class="col-md-12">
+        <div class="tab-content">
+
+          <div role="tabpanel" class="tab-pane active" id="storydetail">
+            <div class="row">
+              <div class="col-md-12">
+                <h2>{{ story.name }}</h2>
+                    <p>{{story.story_description}}</p>
+                    <p>{{ story.owner.credit_name }}</p>
+                    <div>
+                    <a href="{% url 'story_edit' pk=story.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+                    </div>
+              </div>
+            </div>
+          </div>
+
+          <div role="tabpanel" class="tab-pane" id="web">
+            <div class="row">
+              <div class="col-md-12">
+                <form method="POST" class="post-form">
+                  {% csrf_token %}
+                  {% bootstrap_form webform %}
+                  <button type="submit" class="save btn btn-default">Save</button>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <div role="tabpanel" class="tab-pane" id="print">
+            <div class="row">
+              <div class="col-md-12">
+                <form method="POST" class="post-form">
+                  {% csrf_token %}
+                  {% bootstrap_form printform %}
+                  <button type="submit" class="save btn btn-default">Save</button>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <div role="tabpanel" class="tab-pane" id="audio">
+            <div class="row">
+              <div class="col-md-12">
+                <form method="POST" class="post-form">
+                  {% csrf_token %}
+                  {% bootstrap_form audioform %}
+                  <button type="submit" class="save btn btn-default">Save</button>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <div role="tabpanel" class="tab-pane" id="video">
+            <div class="row">
+              <div class="col-md-12">
+                <form method="POST" class="post-form">
+                  {% csrf_token %}
+                  {% bootstrap_form videoform %}
+                  <button type="submit" class="save btn btn-default">Save</button>
+                </form>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- End tab content -->
+      </div><!-- End tabs -->
+    </div><!-- End row -->
+
 
 {% endblock %}

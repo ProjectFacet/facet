@@ -5,7 +5,7 @@ from django.views.generic import TemplateView , UpdateView, DetailView
 import datetime
 
 from .forms import (
-    EditUserProfile,
+    UserForm,
     CreateOrganization,
     NetworkForm,
     SeriesForm,
@@ -164,6 +164,21 @@ def org_edit(request, pk):
 #   User Views
 #----------------------------------------------------------------------#
 
+def user_new(request):
+    """ Quick form for making a new user and inviting them to login. """
+
+    form = UserForm()
+    if request.method == "POST":
+        form = UserForm(request.POST or None)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.save()
+            return redirect('user_detail', pk=user.pk)
+    else:
+        form=UserForm()
+    return render(request, 'editorial/usernew.html', {'form': form})
+
+
 def user_detail(request, pk):
     """ The public profile of a user.
 
@@ -186,12 +201,12 @@ def user_edit(request, pk):
     user = get_object_or_404(User, pk=pk)
 
     if request.method == "POST":
-        form = EditUserProfile(data=request.POST, instance=user)
+        form = UserForm(data=request.POST, instance=user)
         if form.is_valid():
             form.save()
             return redirect('user_detail', pk = user.id)
     else:
-        form = EditUserProfile(instance=user)
+        form = UserForm(instance=user)
 
     return render(request, 'editorial/useredit.html', {
             'user': user,
@@ -288,6 +303,8 @@ def story_list(request):
 def story_new(request):
     """ Create story page. """
 
+    series = Series.objects.all()
+    print series
     form = StoryForm()
     if request.method == "POST":
         form = StoryForm(request.POST or None)
@@ -299,7 +316,10 @@ def story_new(request):
         return redirect('story_detail', pk=story.pk)
     else:
         form = StoryForm()
-    return render(request, 'editorial/storynew.html', {'form': form})
+    return render(request, 'editorial/storynew.html', {
+        'form': form,
+        'series': series
+        })
 
 
 def story_detail(request, pk):
@@ -311,6 +331,8 @@ def story_detail(request, pk):
 
     story = get_object_or_404(Story, pk=pk)
     notes = StoryNote.objects.filter(story=story)
+    series = Series.objects.all()
+    print series
 
 # ------------------------------ #
 #           webfacet             #
@@ -497,25 +519,41 @@ def story_detail(request, pk):
 def story_edit(request, pk):
     """ Edit story page. """
 
+    print "SOMETHING"
     story = get_object_or_404(Story, pk=pk)
+
     if request.method == "POST":
-        form = StoryForm(data=request.POST, instance=story)
-        if form.is_valid():
-            form.save()
+        storyform = StoryForm(data=request.POST, instance=story)
+        series_id = request.POST['series']
+        series = Series.objects.get(pk=series_id)
+        if storyform.is_valid():
+            storyform.save()
             return redirect('story_detail', pk=story.id)
     else:
-        form = StoryForm(instance=story)
+        storyform = StoryForm(instance=story)
 
     return render(request, 'editorial/storyedit.html', {
         'story': story,
-        'form': form,
+        'storyform': storyform,
     })
 
 
+
 #----------------------------------------------------------------------#
-#   Facet Views
+#   Collaborations View
 #----------------------------------------------------------------------#
 
+def collaborations(request):
+    """ Return dashboard of series and stories that are part of a collaboration.
+    """
+
+    series_collaorations = Series.objects.filter(collaborate=True)
+    story_collaborations = Story.objects.filter(collaborate=True)
+
+    return render(request, 'editorial/collaborations.html', {
+        'series_collaorations': series_collaorations,
+        'story_collaborations': story_collaborations,
+    })
 
 #----------------------------------------------------------------------#
 #   Network Views

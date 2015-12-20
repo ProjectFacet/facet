@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load bootstrap3 %}
+
+{% block content %}
+
+<h1>Collaborations</h1>
+
+<h2>Series</h2>
+
+{% for series in series_collaborations %}
+
+    <ul>
+        <li><a href="{% url 'series_detail' pk=series.id %}">{{series.name}}</a></li>
+    </ul>
+
+{% endfor %}
+
+<h2>Stories</h2>
+
+{% for story in story_collaborations %}
+
+    <ul>
+        <li><a href="{% url 'story_detail' pk=story.id %}">{{story.name}}</a></li>
+    </ul>
+
+{% endfor %}
+
+{% endblock %}

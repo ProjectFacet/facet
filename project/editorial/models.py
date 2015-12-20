@@ -373,7 +373,9 @@ class Series(models.Model):
 
     discussion = models.ForeignKey(
         'Discussion',
-        help_text=','
+        help_text='Id of planning discussion for a series.',
+        blank=True,
+        null=True,
     )
 
     assets = models.ManyToManyField(
@@ -490,6 +492,13 @@ class Story(models.Model):
     archived = models.BooleanField(
         default=False,
         help_text='Is the content no longer active and needed?'
+    )
+
+    discussion = models.ForeignKey(
+        'Discussion',
+        help_text='Id of planning discussion for a story.',
+        blank=True,
+        null=True,
     )
 
     class Meta:

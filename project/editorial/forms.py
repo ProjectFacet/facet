@@ -18,7 +18,7 @@ from editorial.models import (
     )
 
 
-class EditUserProfile(forms.ModelForm):
+class UserForm(forms.ModelForm):
     """ Handle a user completing their profile."""
 
     class Meta:
@@ -56,15 +56,25 @@ class SeriesForm(forms.ModelForm):
 
     class Meta:
         model = Series
-        fields = ['name', 'series_description']
+        fields = ['name', 'series_description', 'collaborate']
 
 
 class StoryForm(forms.ModelForm):
     """ Form to create a new story. """
 
+    series = forms.ModelChoiceField(
+        queryset=Series.objects.all(),
+        widget=forms.Select
+        )
+
+    # team = forms.ModelChoiceField(
+    #     queryset=User.objects.all(),
+    #     widget=forms.SelectMultiple
+    # )
+
     class Meta:
         model = Story
-        fields = ['name', 'story_description']
+        fields = ['name', 'story_description', 'series', 'collaborate']
 
 
 class WebFacetForm(forms.ModelForm):

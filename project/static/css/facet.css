@@ -194,3 +194,8 @@ textarea {
 select {
   color:#333;
 }
+
+.nav-tabs {
+  display: inline-block;
+  text-align: center;
+}
