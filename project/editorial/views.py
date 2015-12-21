@@ -337,32 +337,29 @@ def story_detail(request, pk):
 #           webfacet             #
 # ------------------------------ #
     try:
+        print "TRY"
         webfacet = get_object_or_404(WebFacet, story=story)
-        print "w1"
+        print webfacet
         # update an existing webfacet
         if request.method == "POST":
+            print "IF POST"
             if 'webform' in request.POST:
-                print "w2"
+                print "IF WEBFORM"
                 webform = WebFacetForm(data=request.POST, instance=webfacet)
                 if webform.is_valid():
-                    print "w3"
+                    print webform.errors
                     webfacet.save()
-                    print "w4"
                     return redirect('story_detail', pk=story.pk)
         else:
-            print "w5"
+            print "Try Else"
             webform = WebFacetForm(instance=webfacet)
     except:
-        print "w6"
         # display form and save a new webfacet
         if request.method == "POST":
-            print "w7"
             if 'webform' in request.POST:
-                print "w8"
                 webform = WebFacetForm(request.POST or None)
-                print "w9"
                 if webform.is_valid():
-                    print "w10"
+                    print webform.errors
                     webfacet = webform.save(commit=False)
                     webfacet.story = story
                     webfacet.owner = request.user
@@ -372,9 +369,8 @@ def story_detail(request, pk):
                     webfacet.save()
                     return redirect('story_detail', pk=story.pk)
         else:
-            print "w11"
+            print "Except Else"
             webform = WebFacetForm()
-    print "WEBFORM: ", webform
 
 # ------------------------------ #
 #           printfacet           #
@@ -492,6 +488,7 @@ def story_detail(request, pk):
                 videoform = VideoFacetForm(request.POST or None)
                 print "v9"
                 if videoform.is_valid():
+                    print form.errors
                     print "v10"
                     videofacet = videoform.save(commit=False)
                     videofacet.story = story
