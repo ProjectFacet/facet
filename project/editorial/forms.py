@@ -51,6 +51,14 @@ class NetworkForm(forms.ModelForm):
         fields = ['name', 'network_description']
 
 
+class AddToNetworkForm(forms.ModelForm):
+    """ Add an organization to a network."""
+
+    class Meta:
+        model = NetworkOrganization
+        fields = []
+
+
 class SeriesForm(forms.ModelForm):
     """" Form to create a new series. """
 

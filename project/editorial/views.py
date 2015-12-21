@@ -13,7 +13,8 @@ from .forms import (
     WebFacetForm,
     PrintFacetForm,
     AudioFacetForm,
-    VideoFacetForm)
+    VideoFacetForm,
+    AddToNetworkForm)
 
 from models import (
     User,
@@ -559,16 +560,32 @@ def network_new(request):
 
     form = NetworkForm()
     if request.method == "POST":
-        form.NetworkForm(request.POST or None)
+        form = NetworkForm(request.POST or None)
         if form.is_valid():
             network = form.save(commit=False)
             network.owner_organization = request.user.organization
             network.creation_date = timezone.now()
-            organization.save()
+            network.save()
+            # update organization to make it a member of the network
             return redirect('network_detail', pk=network.pk)
     else:
         form = NetworkForm()
     return render(request, 'editorial/networknew.html', {'form': form})
+
+
+def org_to_network(request, pk):
+    """ Form to add an organization to a network. """
+
+    network = get_object_or_404(Network, pk=pk)
+
+    if request.method == "POST":
+        form = AddToNetworkForm(request.POST or None)
+        if form.is_valid():
+            connection = form.save(commit=False)
+            return redirect('network_detail', pk=network.pk)
+    else:
+        form = AddToNetworkForm()
+    return render(request, 'editorial/networkdetail.html', {'form': form})
 
 
 def network_detail(request, pk):
