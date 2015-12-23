@@ -16,8 +16,12 @@ from editorial.models import (
     PrintFacet,
     AudioFacet,
     VideoFacet,
+    Comment,
     )
 
+# ------------------------------ #
+#          User Forms           #
+# ------------------------------ #
 
 class UserForm(forms.ModelForm):
     """ Handle a user completing their profile."""
@@ -27,6 +31,9 @@ class UserForm(forms.ModelForm):
         fields = ['first_name', 'last_name', 'credit_name', 'title', 'phone', 'bio',
                  'expertise', 'facebook', 'twitter', 'linkedin', 'instagram', 'snapchat', 'vine',]
 
+# ------------------------------ #
+#      Organization Forms        #
+# ------------------------------ #
 
 class CreateOrganization(forms.ModelForm):
     """ Create an Organization. """
@@ -43,6 +50,9 @@ class EditOrganization(forms.ModelForm):
         model = Organization
         fields = ['name', 'org_description']
 
+# ------------------------------ #
+#         Network Forms          #
+# ------------------------------ #
 
 class NetworkForm(forms.ModelForm):
     """ Create a new network. """
@@ -59,6 +69,9 @@ class AddToNetworkForm(forms.ModelForm):
         model = NetworkOrganization
         fields = []
 
+# ------------------------------ #
+#          Series Forms          #
+# ------------------------------ #
 
 class SeriesForm(forms.ModelForm):
     """" Form to create a new series. """
@@ -67,6 +80,9 @@ class SeriesForm(forms.ModelForm):
         model = Series
         fields = ['name', 'series_description', 'collaborate']
 
+# ------------------------------ #
+#          Story Forms           #
+# ------------------------------ #
 
 class StoryForm(forms.ModelForm):
     """ Form to create a new story. """
@@ -85,6 +101,9 @@ class StoryForm(forms.ModelForm):
         model = Story
         fields = ['name', 'story_description', 'series', 'collaborate']
 
+# ------------------------------ #
+#          Facet Forms           #
+# ------------------------------ #
 
 class WebFacetForm(forms.ModelForm):
     """ Webfacet form. """
@@ -163,3 +182,14 @@ class VideoFacetForm(forms.ModelForm):
             'run_date',
             'share_note',
         ]
+
+# ------------------------------ #
+#         Comment Forms          #
+# ------------------------------ #
+
+class CommentForm(forms.ModelForm):
+    """ Private Comment form. """
+
+    class Meta:
+        model = Comment
+        fields = ['text']

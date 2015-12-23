@@ -14,7 +14,8 @@ from .forms import (
     PrintFacetForm,
     AudioFacetForm,
     VideoFacetForm,
-    AddToNetworkForm)
+    AddToNetworkForm,
+    CommentForm)
 
 from models import (
     User,

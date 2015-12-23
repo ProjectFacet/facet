@@ -798,6 +798,8 @@ class PrintFacet(models.Model):
 
     assets = models.ManyToManyField(
         'Asset',
+        null=True,
+        blank=True,
     )
 
     class Meta:
@@ -948,6 +950,8 @@ class AudioFacet(models.Model):
 
     assets = models.ManyToManyField(
         'Asset',
+        null=True,
+        blank=True,
     )
 
     class Meta:
@@ -1096,6 +1100,8 @@ class VideoFacet(models.Model):
 
     assets = models.ManyToManyField(
         'Asset',
+        null=True,
+        blank=True,
     )
 
     class Meta:
