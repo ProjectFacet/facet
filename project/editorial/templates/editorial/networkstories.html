@@ -10,7 +10,7 @@
 {% for story in networkstories %}
 
     <ul>
-        <li><a href="{% url 'story_detail' pk=story.id %}">{{story.name}}</a></li>
+        <li><a href="{% url 'story_detail' pk=story.id %}">{{story.name}} | {{story.story_description}}</a></li>
     </ul>
 
 {% endfor %}

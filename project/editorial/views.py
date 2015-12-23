@@ -642,9 +642,26 @@ def network_stories(request):
     it once it becomes available.)
     """
 
-    network_stories = Story.objects.filter(share=True)
-    print "NETWORK STORIES: ", network_stories
+    networkstories = [ ]
+    print "networkstories list: ", networkstories
+
+    org_id = request.user.organization_id
+    print "org id: ", org_id
+
+    networks = NetworkOrganization.objects.filter(organization_id=org_id)
+    print "NETWORKS: ", networks
+
+    for network in networks:
+        print "Network: ", network
+        shared_stories = Story.objects.filter(share_with = network.id)
+        print "SHARED STORIES: ", shared_stories
+        for story in shared_stories:
+            print "STORY: ", story
+            story = Story.objects.filter(id = story.id)
+            networkstories.extend(story)
+
+    print "FINAL NETWORK STORIES LIST: ", networkstories
 
     return render(request, 'editorial/networkstories.html', {
-        'network_stories': network_stories,
+        'networkstories': networkstories,
         })
