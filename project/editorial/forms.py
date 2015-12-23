@@ -9,6 +9,7 @@ from editorial.models import (
     User,
     Organization,
     Network,
+    NetworkOrganization,
     Story,
     Series,
     WebFacet,

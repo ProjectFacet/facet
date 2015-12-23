@@ -7,10 +7,10 @@
 
 <h1>Networks List</h1>
 
-{% for network in networks %}
+{% for network in network_list %}
 
     <ul>
-        <li><a href="{% url 'network_detail' pk=network.id %}">{{network.name}}</a></li>
+        <li><a href="{% url 'network_detail' pk=network.network.id %}">{{network.network}}</a></li>
     </ul>
 
 {% endfor %}

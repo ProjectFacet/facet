@@ -413,7 +413,7 @@ class Story(models.Model):
     series = models.ForeignKey(
         Series,
         blank=True,
-        null=True
+        null=True,
     )
 
     owner = models.ForeignKey(

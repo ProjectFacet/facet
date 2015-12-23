@@ -20,6 +20,7 @@ from models import (
     User,
     Organization,
     Network,
+    NetworkOrganization,
     Series,
     Story,
     WebFacet,
@@ -559,11 +560,12 @@ def network_new(request):
     """ Create a new network. """
 
     form = NetworkForm()
+    owner_org = get_object_or_404(Organization, pk=request.user.organization_id)
     if request.method == "POST":
         form = NetworkForm(request.POST or None)
         if form.is_valid():
             network = form.save(commit=False)
-            network.owner_organization = request.user.organization
+            network.owner_organization = owner_org
             network.creation_date = timezone.now()
             network.save()
             # update organization to make it a member of the network
@@ -592,6 +594,7 @@ def network_detail(request, pk):
     """ Public profile of a network. """
 
     network = get_object_or_404(Network, pk=pk)
+    print network
 
     return render(request, 'editorial/networkdetail.html', {'network': network})
 
@@ -615,12 +618,15 @@ def network_edit(request, pk):
         })
 
 
-def network_member(request):
+def network_list(request):
     """ Table of networks your org is member of."""
 
-    network_membership = Network.objects.filter(member=request.user.organization)
+    org_id = request.user.organization_id
+    print "org id: ", org_id
+    network_list = NetworkOrganization.objects.filter(organization_id=org_id)
+    print "network_list: ", network_list
 
-    return render(request, 'editorial/networklist.html', {'network_membership': network_membership})
+    return render(request, 'editorial/networklist.html', {'network_list': network_list})
 
 
 def network_stories(request):
@@ -636,7 +642,7 @@ def network_stories(request):
     it once it becomes available.)
     """
 
-    network_stories = Story.objects.filter(share=True, share_with=request.user.organization_id_id)
+    network_stories = Story.objects.filter(share=True)
     print "NETWORK STORIES: ", network_stories
 
     return render(request, 'editorial/networkstories.html', {
