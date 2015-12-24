@@ -525,8 +525,6 @@ def story_edit(request, pk):
 
     if request.method == "POST":
         storyform = StoryForm(data=request.POST, instance=story)
-        series_id = request.POST['series']
-        series = Series.objects.get(pk=series_id)
         if storyform.is_valid():
             storyform.save()
             return redirect('story_detail', pk=story.id)

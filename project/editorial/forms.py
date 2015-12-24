@@ -1,7 +1,6 @@
 import datetime
 
 from django import forms
-from chosen import forms as chosenforms
 from django.utils.safestring import mark_safe
 from django.contrib.auth import get_user_model
 from django.forms import Textarea, TextInput, RadioSelect
@@ -36,10 +35,6 @@ class ArrayFieldSelectMultiple(forms.SelectMultiple):
             value = value.split(self.delimiter)
         return super(ArrayFieldSelectMultiple, self).render_options(choices, value)
 
-    # def value_from_datadict(self, data, files, name):
-    #     if isinstance(data, MultiValueDict):
-    #         return self.delimiter.join(data.getlist(name))
-    #     return data.get(name, None)
 
 # ------------------------------ #
 #          User Forms            #
@@ -111,7 +106,8 @@ class StoryForm(forms.ModelForm):
 
     series = forms.ModelChoiceField(
         queryset=Series.objects.all(),
-        widget=forms.Select
+        widget=forms.Select,
+        required=False,
         )
 
     class Meta:
@@ -121,10 +117,6 @@ class StoryForm(forms.ModelForm):
             "team": ArrayFieldSelectMultiple(
                 choices=User.objects.all(), attrs={'class': 'chosen'}),
         }
-
-    # class Media:
-    #     css = {"all": ("static/css/chosen.css")}
-    #     js = ("static/scripts/jquery.min.js", "static/scripts/chosen.jquery.min.js")
 
 # ------------------------------ #
 #          Facet Forms           #
