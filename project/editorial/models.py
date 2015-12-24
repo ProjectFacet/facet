@@ -667,6 +667,10 @@ class WebFacet(models.Model):
                                 credit=self.credit,
                                 )
 
+    @property
+    def facet_type(self):
+        return "WebFacet"
+
 
 class PrintFacet(models.Model):
     """ The print version of a story.
@@ -816,6 +820,10 @@ class PrintFacet(models.Model):
                                 printfacet=self.id,
                                 credit=self.credit,
                                 )
+
+    @property
+    def facet_type(self):
+        return "PrintFacet"
 
 
 class AudioFacet(models.Model):
@@ -969,6 +977,10 @@ class AudioFacet(models.Model):
                                 credit=self.credit,
                                 )
 
+    @property
+    def facet_type(self):
+        return "AudioFacet"
+
 
 class VideoFacet(models.Model):
     """ Scheduled television programming.
@@ -1118,6 +1130,11 @@ class VideoFacet(models.Model):
                                 videofacet=self.id,
                                 credit=self.credit,
                                 )
+
+    @property
+    def facet_type(self):
+        return "VideoFacet"
+
 
 #   Associations
 #   ------------

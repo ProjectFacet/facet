@@ -49,3 +49,4 @@ django-tinymce==2.0.5
 django-watson==1.1.8
 djangorestframework==3.2.4
 pilkit==1.1.13
+django-crispy-forms==1.5.2

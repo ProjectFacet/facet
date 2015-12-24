@@ -333,6 +333,7 @@ def story_detail(request, pk):
     """
 
     story = get_object_or_404(Story, pk=pk)
+    team = story.team.all()
     notes = StoryNote.objects.filter(story=story)
     series = Series.objects.all()
 
@@ -509,6 +510,7 @@ def story_detail(request, pk):
     return render(request, 'editorial/storydetail.html', {
         'story': story,
         'webform': webform,
+        'team': team,
         'printform': printform,
         'audioform': audioform,
         'videoform': videoform,
@@ -661,8 +663,32 @@ def network_stories(request):
             story = Story.objects.filter(id = story.id)
             networkstories.extend(story)
 
-    print "FINAL NETWORK STORIES LIST: ", networkstories
+    networkstories = set(networkstories)
+
+    # networkstoriesdict={}
+    # for story in networkstories:
+    #     webfacet = WebFacet.objects.filter(story_id=story.id)
+    #     printfacet = PrintFacet.objects.filter(story_id=story.id)
+    #     audiofacet = AudioFacet.objects.filter(story_id=story.id)
+    #     videofacet = VideoFacet.objects.filter(story_id=story.id)
+    #     networkstoriesdict[story] = {"webfacet": webfacet,
+    #                             "printfacet": printfacet,
+    #                             "audiofacet": audiofacet,
+    #                             "videofacet": videofacet}
+
+    networkstoryfacets = []
+    for story in networkstories:
+        webfacet = WebFacet.objects.filter(story_id=story.id)
+        printfacet = PrintFacet.objects.filter(story_id=story.id)
+        audiofacet = AudioFacet.objects.filter(story_id=story.id)
+        videofacet = VideoFacet.objects.filter(story_id=story.id)
+        networkstoryfacets.extend(webfacet)
+        networkstoryfacets.extend(printfacet)
+        networkstoryfacets.extend(audiofacet)
+        networkstoryfacets.extend(videofacet)
+    print "ERRM, Maybe? ", networkstoryfacets
 
     return render(request, 'editorial/networkstories.html', {
         'networkstories': networkstories,
+        'networkstoryfacets': networkstoryfacets,
         })

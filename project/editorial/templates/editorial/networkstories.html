@@ -5,14 +5,33 @@
 
 {% block content %}
 
-<h1>Network Story List</h1>
+<h1>Network Story Facets List</h1>
 
-{% for story in networkstories %}
+<table class="table table-condensed">
+  <thead>
+    <tr>
+      <th>Story</th>
+      <th>Facet</th>
+      <th>Title</th>
+      <th>Credit</th>
+      <th>Edit Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for facet in networkstoryfacets %}
+    <tr>
+      <td>{{ facet.story.name }}</td>
+      <td>{{ facet.facet_type }}</td>
+      <td>{{ facet.title }}</td>
+      <td>{{ facet.credit.credit_name }}</td>
+      <td>{{ facet.due_edit}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
 
-    <ul>
-        <li><a href="{% url 'story_detail' pk=story.id %}">{{story.name}} | {{story.story_description}}</a></li>
-    </ul>
 
-{% endfor %}
+
+
 
 {% endblock %}

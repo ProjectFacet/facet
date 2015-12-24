@@ -1,6 +1,7 @@
 import datetime
 
 from django import forms
+from chosen import forms as chosenforms
 from django.utils.safestring import mark_safe
 from django.contrib.auth import get_user_model
 from django.forms import Textarea, TextInput, RadioSelect
@@ -19,8 +20,29 @@ from editorial.models import (
     Comment,
     )
 
+
 # ------------------------------ #
-#          User Forms           #
+#        Parent Forms            #
+# ------------------------------ #
+
+class ArrayFieldSelectMultiple(forms.SelectMultiple):
+
+    def __init__(self, *args, **kwargs):
+        self.delimiter = kwargs.pop("delimiter", ",")
+        super(ArrayFieldSelectMultiple, self).__init__(*args, **kwargs)
+
+    def render_options(self, choices, value):
+        if isinstance(value,str):
+            value = value.split(self.delimiter)
+        return super(ArrayFieldSelectMultiple, self).render_options(choices, value)
+
+    # def value_from_datadict(self, data, files, name):
+    #     if isinstance(data, MultiValueDict):
+    #         return self.delimiter.join(data.getlist(name))
+    #     return data.get(name, None)
+
+# ------------------------------ #
+#          User Forms            #
 # ------------------------------ #
 
 class UserForm(forms.ModelForm):
@@ -92,14 +114,17 @@ class StoryForm(forms.ModelForm):
         widget=forms.Select
         )
 
-    # team = forms.ModelChoiceField(
-    #     queryset=User.objects.all(),
-    #     widget=forms.SelectMultiple
-    # )
-
     class Meta:
         model = Story
-        fields = ['name', 'story_description', 'series', 'collaborate']
+        fields = ['name', 'story_description', 'series', 'collaborate', 'team']
+        widgets = {
+            "team": ArrayFieldSelectMultiple(
+                choices=User.objects.all(), attrs={'class': 'chosen'}),
+        }
+
+    # class Media:
+    #     css = {"all": ("static/css/chosen.css")}
+    #     js = ("static/scripts/jquery.min.js", "static/scripts/chosen.jquery.min.js")
 
 # ------------------------------ #
 #          Facet Forms           #
@@ -123,6 +148,9 @@ class WebFacetForm(forms.ModelForm):
             'run_date',
             'share_note',
         ]
+        # widgets = {
+        #     "keywords": ArrayFieldSelectMultiple(attrs={'class': 'chosen'}),
+        # }
 
 
 class PrintFacetForm(forms.ModelForm):

@@ -39,8 +39,14 @@
             <div class="row">
               <div class="col-md-12">
                 <h2>{{ story.name }}</h2>
+                    <h4>Description</h4>
                     <p>{{story.story_description}}</p>
+                    <h4>Credit</h4>
                     <p>{{ story.owner.credit_name }}</p>
+                    <h4>Team</h4>
+                    {% for member in team %}
+                    <p>{{ member.credit_name }}
+                    {% endfor %}
                     <div>
                     <a href="{% url 'story_edit' pk=story.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
                     </div>

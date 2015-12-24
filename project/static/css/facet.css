@@ -199,3 +199,8 @@ select {
   display: inline-block;
   text-align: center;
 }
+
+table {
+  background-color: #54657E;
+  text-align: left;
+}

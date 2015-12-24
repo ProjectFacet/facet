@@ -33,6 +33,7 @@ INSTALLED_APPS = (
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'chosen'
 )
 
 SITE_ID = 1
