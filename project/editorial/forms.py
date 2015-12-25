@@ -21,7 +21,6 @@ from editorial.models import (
     Comment,
     )
 
-
 # ------------------------------ #
 #        Parent Forms            #
 # ------------------------------ #
@@ -128,17 +127,17 @@ class WebFacetForm(forms.ModelForm):
     """ Webfacet form. """
 
     due_edit = forms.DateTimeField(
-        widget=DateTimePicker(
-            options={"format": "YYYY-MM-DD HH:mm"}
-        ),
         required=False,
+        widget=DateTimePicker(
+            options={"format": "YYYY-MM-DD HH:mm", "sideBySide": True}
+        )
     )
 
     run_date = forms.DateTimeField(
-        widget=DateTimePicker(
-            options={"format": "YYYY-MM-DD HH:mm"}
-        ),
         required=False,
+        widget=DateTimePicker(
+            options={"format": "YYYY-MM-DD HH:mm", "sideBySide": True}
+        )
     )
 
     class Meta:
