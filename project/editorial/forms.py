@@ -1,9 +1,11 @@
 import datetime
 
+from bootstrap3_datetime.widgets import DateTimePicker
 from django import forms
 from django.utils.safestring import mark_safe
 from django.contrib.auth import get_user_model
 from django.forms import Textarea, TextInput, RadioSelect
+from datetimewidget.widgets import DateTimeWidget
 
 from editorial.models import (
     User,
@@ -125,6 +127,15 @@ class StoryForm(forms.ModelForm):
 class WebFacetForm(forms.ModelForm):
     """ Webfacet form. """
 
+    due_edit = forms.DateTimeField(
+        widget=DateTimePicker(options={"format": "YYYY-MM-DD HH:mm",
+                                       "pickSeconds": False}))
+
+    run_date = forms.DateTimeField(
+        widget=DateTimePicker(options={"format": "YYYY-MM-DD HH:mm",
+                                       "pickSeconds": False}))
+
+
     class Meta:
         model = WebFacet
         fields = [
@@ -140,9 +151,9 @@ class WebFacetForm(forms.ModelForm):
             'run_date',
             'share_note',
         ]
-        # widgets = {
-        #     "keywords": ArrayFieldSelectMultiple(attrs={'class': 'chosen'}),
-        # }
+
+    class Media:
+        js = ('/static/scripts/moment.js', '/static/scripts/jquery.datetimepicker.js', '/static/scripts/bootstrap.datetimepicker.js')
 
 
 class PrintFacetForm(forms.ModelForm):

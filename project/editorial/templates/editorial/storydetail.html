@@ -60,6 +60,8 @@
                 <form method="POST" class="post-form">
                   {% csrf_token %}
                   {% bootstrap_form webform %}
+
+                  {{ form.media }}
                   <input type="submit" name="webform" value="Submit" />
                 </form>
               </div>
@@ -72,6 +74,8 @@
                 <form method="POST" class="post-form">
                   {% csrf_token %}
                   {% bootstrap_form printform %}
+
+                  {{ form.media }}
                   <input type="submit" name="printform" value="Submit" />
                 </form>
               </div>
@@ -84,6 +88,8 @@
                 <form method="POST" class="post-form">
                   {% csrf_token %}
                   {% bootstrap_form audioform %}
+
+                  {{ form.media }}
                   <input type="submit" name="audioform" value="Submit" />
                 </form>
               </div>
@@ -96,6 +102,8 @@
                 <form method="POST" class="post-form">
                   {% csrf_token %}
                   {% bootstrap_form videoform %}
+
+                  {{ form.media }}
                   <input type="submit" name="videoform" value="Submit" />
                 </form>
               </div>

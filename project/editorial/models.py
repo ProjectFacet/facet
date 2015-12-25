@@ -582,7 +582,7 @@ class WebFacet(models.Model):
     )
 
     length = models.IntegerField(
-        help_text='Wordcount of the WebFacet.',
+        help_text='Length of the webfacet.',
         blank=True,
     )
 
@@ -735,7 +735,7 @@ class PrintFacet(models.Model):
     )
 
     length = models.IntegerField(
-        help_text='Wordcount of the printfacet.',
+        help_text='Length of the printfacet.',
         blank=True,
     )
 
@@ -889,9 +889,8 @@ class AudioFacet(models.Model):
     )
 
     length = models.IntegerField(
-        help_text='Wordcount of the audiofacet.',
+        help_text='Runtime of the audiofacet.',
         blank=True,
-
     )
 
     keywords = ArrayField(
@@ -1045,7 +1044,7 @@ class VideoFacet(models.Model):
     )
 
     length = models.IntegerField(
-        help_text='Wordcount of the videofacet.',
+        help_text='Runtime of the videofacet.',
         blank=True,
     )
 

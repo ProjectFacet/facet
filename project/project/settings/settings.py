@@ -32,7 +32,8 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'allauth',
     'allauth.account',
-    'allauth.socialaccount'
+    'allauth.socialaccount',
+    'bootstrap3_datetime'
 )
 
 SITE_ID = 1
