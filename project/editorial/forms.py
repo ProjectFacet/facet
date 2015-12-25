@@ -128,13 +128,18 @@ class WebFacetForm(forms.ModelForm):
     """ Webfacet form. """
 
     due_edit = forms.DateTimeField(
-        widget=DateTimePicker(options={"format": "YYYY-MM-DD HH:mm",
-                                       "pickSeconds": False}))
+        widget=DateTimePicker(
+            options={"format": "YYYY-MM-DD HH:mm"}
+        ),
+        required=False,
+    )
 
     run_date = forms.DateTimeField(
-        widget=DateTimePicker(options={"format": "YYYY-MM-DD HH:mm",
-                                       "pickSeconds": False}))
-
+        widget=DateTimePicker(
+            options={"format": "YYYY-MM-DD HH:mm"}
+        ),
+        required=False,
+    )
 
     class Meta:
         model = WebFacet
@@ -153,7 +158,10 @@ class WebFacetForm(forms.ModelForm):
         ]
 
     class Media:
-        js = ('/static/scripts/moment.js', '/static/scripts/jquery.datetimepicker.js', '/static/scripts/bootstrap.datetimepicker.js')
+        css = {
+        'all': ('static/css/bootstrap-datetimepicker.css')
+        }
+        js = ('/static/scripts/moment.js', '/static/scripts/jquery.datetimepicker.js', '/static/scripts/bootstrap-datetimepicker.js')
 
 
 class PrintFacetForm(forms.ModelForm):
