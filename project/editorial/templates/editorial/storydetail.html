@@ -2,6 +2,10 @@
 
 {% load bootstrap3 %}
 
+{% block head %}
+{{ webform.media }}
+{% endblock %}
+
 {% block content %}
 
     <div class="row">
@@ -71,7 +75,7 @@
                   {% csrf_token %}
 
                   <!-- Left Column -->
-                  <div class="col-md-3">
+                  <div class="col-md-2">
 
                     <div class="form-group custom-form">
                       <a href="#" data-toggle="tooltip" title="{{ webform.title.help_text }}"><span class="field-label">{{ webform.title.label_tag }}</span></a>
@@ -160,7 +164,7 @@
                   <!-- End of Left Column -->
 
                   <!-- Center Column -->
-                  <div class="col-md-6">
+                  <div class="col-md-8">
 
                     <div class="form-group custom-form">
                       {{ webform.content }}
@@ -174,7 +178,7 @@
                   </div>
                   <!-- End of Center Column -->
                   <!-- Right Column -->
-                  <div class="col-md-3">
+                  <div class="col-md-2">
 
                     <div class="form-group custom-form">
                       <a href="#" data-toggle="tooltip" title="{{ webform.status.help_text }}"><span class="field-label">{{ webform.status.label_tag }}</span></a>
@@ -206,10 +210,9 @@
                     <p>Discussion</p>
                     <p>Edit History</p>
 
+                  <input type="submit" name="webform" value="Submit" />
                   </div>
                   <!-- End of Right Column -->
-                  {{ webform.media }}
-                  <input type="submit" name="webform" value="Submit" />
                 </form>
               </div>
             </div>
@@ -224,7 +227,6 @@
                   {% csrf_token %}
                   {% bootstrap_form printform %}
 
-                  {{ form.media }}
                   <input type="submit" name="printform" value="Submit" />
                 </form>
               </div>
@@ -241,7 +243,6 @@
                   {% csrf_token %}
                   {% bootstrap_form audioform %}
 
-                  {{ form.media }}
                   <input type="submit" name="audioform" value="Submit" />
                 </form>
               </div>
@@ -257,7 +258,6 @@
                   {% csrf_token %}
                   {% bootstrap_form videoform %}
 
-                  {{ form.media }}
                   <input type="submit" name="videoform" value="Submit" />
                 </form>
               </div>

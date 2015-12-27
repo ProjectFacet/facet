@@ -58,7 +58,7 @@ TINYMCE_JS_URL = os.path.join(STATIC_URL, 'scripts/tiny_mce/tinymce.min.js')
 TINYMCE_DEFAULT_CONFIG = {
     'plugins': "spellchecker,paste,searchreplace",
     'invalid_styles': 'position',
-    'theme': "advanced",
+    'theme': "modern",
 }
 TINYMCE_SPELLCHECKER = True
 
