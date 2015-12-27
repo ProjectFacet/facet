@@ -19,10 +19,9 @@ a:hover {
   border: 1px solid #fff;
 }
 
-
-/*
- * Base structure
- */
+/* -----------------------------------*/
+/*           Base structure           */
+/* -----------------------------------*/
 
 html,
 body {
@@ -31,6 +30,9 @@ body {
 }
 body {
   color: #fff;
+}
+
+.center {
   text-align: center;
 }
 
@@ -188,7 +190,9 @@ label {
 
 textarea {
   width: 100%;
-  color: #333;
+  color: #fff;
+  background-color: transparent;
+  border: none;
 }
 
 select {
@@ -200,7 +204,19 @@ select {
   text-align: center;
 }
 
+#facettabs {
+  text-align: center;
+}
+
 table {
   background-color: #54657E;
   text-align: left;
+}
+
+.field-label {
+  color: #54657E !important;
+}
+
+#id_content {
+ background-color: white;
 }

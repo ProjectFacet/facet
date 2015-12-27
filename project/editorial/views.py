@@ -335,7 +335,7 @@ def story_detail(request, pk):
     story = get_object_or_404(Story, pk=pk)
     team = story.team.all()
     notes = StoryNote.objects.filter(story=story)
-    series = Series.objects.all()
+    # series = Series.objects.all()
 
 # ------------------------------ #
 #           webfacet             #
@@ -368,7 +368,6 @@ def story_detail(request, pk):
                     webfacet.story = story
                     webfacet.owner = request.user
                     webfacet.original_org = request.user.organization
-                    webfacet.editor = request.user
                     webfacet.creation_date = timezone.now()
                     webfacet.save()
                     return redirect('story_detail', pk=story.pk)

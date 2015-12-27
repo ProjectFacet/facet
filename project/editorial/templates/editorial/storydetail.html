@@ -5,10 +5,13 @@
 {% block content %}
 
     <div class="row">
-        <h2>{{ story.name }}</h2><p>{{story.story_description}}</p>
+      <div class="col-md-12">
+      </div>
     </div>
 <!-- ================================================= -->
+<!-- ================================================= -->
                     <!-- TABS -->
+<!-- ================================================= -->
 <!-- ================================================= -->
     <div class="row">
 
@@ -28,20 +31,24 @@
 
     </div>
 <!-- ================================================= -->
+<!-- ================================================= -->
                       <!-- TAB CONTENT -->
+<!-- ================================================= -->
 <!-- ================================================= -->
 
     <div class="row">
       <div class="col-md-12">
         <div class="tab-content">
-
+        <!-- ================================================= -->
+                        <!--   STORY PANEL   -->
+        <!-- ================================================= -->
           <div role="tabpanel" class="tab-pane active" id="storydetail">
             <div class="row">
               <div class="col-md-12">
                 <h2>{{ story.name }}</h2>
                     <h4>Description</h4>
                     <p>{{story.story_description}}</p>
-                    <h4>Credit</h4>
+                    <h4>Owner</h4>
                     <p>{{ story.owner.credit_name }}</p>
                     <h4>Team</h4>
                     {% for member in team %}
@@ -53,21 +60,163 @@
               </div>
             </div>
           </div>
+          <!-- ================================================= -->
+                          <!--   WEB TAB CONTENT   -->
+          <!-- ================================================= -->
 
           <div role="tabpanel" class="tab-pane" id="web">
             <div class="row">
               <div class="col-md-12">
                 <form method="POST" class="post-form">
                   {% csrf_token %}
-                  {% bootstrap_form webform %}
 
-                  {{ form.media }}
+                  <!-- Left Column -->
+                  <div class="col-md-3">
+
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ webform.title.help_text }}"><span class="field-label">{{ webform.title.label_tag }}</span></a>
+                      {{ webform.title }}
+                      {% if webform.title.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ webform.title.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ webform.code.help_text }}"><span class="field-label">{{ webform.code.label_tag }}</span></a>
+                      {{ webform.code }}
+                      {% if webform.code.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ webform.code.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ webform.credit.help_text }}"><span class="field-label">{{ webform.credit.label_tag }}</span></a>
+                      {{ webform.credit }}
+                      {% if webform.credit.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ webform.credit.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ webform.editor.help_text }}"><span class="field-label">{{ webform.editor.label_tag }}</span></a>
+                      {{ webform.editor }}
+                      {% if webform.editor.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ webform.editor.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ webform.wf_description.help_text }}"><span class="field-label">{{ webform.wf_description.label_tag }}</span></a>
+                      {{ webform.wf_description }}
+                      {% if webform.wf_description.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ webform.wf_description.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ webform.excerpt.help_text }}"><span class="field-label">{{ webform.excerpt.label_tag }}</span></a>
+                      {{ webform.excerpt }}
+                      {% if webform.excerpt.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ webform.excerpt.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ webform.length.help_text }}"><span class="field-label">{{ webform.length.label_tag }}</span></a>
+                      {{ webform.length }}
+                      {% if webform.length.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ webform.length.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ webform.captions.help_text }}"><span class="field-label">{{ webform.captions.label_tag }}</span></a>
+                      {{ webform.captions }}
+                      {% if webform.captions.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ webform.captions.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ webform.sharenote.help_text }}"><span class="field-label">{{ webform.sharenote.label_tag }}</span></a>
+                      {{ webform.sharenote }}
+                      {% if webform.sharenote.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ webform.sharenote.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+
+
+                  </div>
+                  <!-- End of Left Column -->
+
+                  <!-- Center Column -->
+                  <div class="col-md-6">
+
+                    <div class="form-group custom-form">
+                      {{ webform.content }}
+                      {% if webform.content.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ webform.content.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+
+                  </div>
+                  <!-- End of Center Column -->
+                  <!-- Right Column -->
+                  <div class="col-md-3">
+
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ webform.status.help_text }}"><span class="field-label">{{ webform.status.label_tag }}</span></a>
+                      {{ webform.status }}
+                      {% if webform.status.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ webform.status.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ webform.due_edit.help_text }}"><span class="field-label">{{ webform.due_edit.label_tag }}</span></a>
+                      {{ webform.due_edit }}
+                      {% if webform.due_edit.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ webform.due_edit.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ webform.run_date.help_text }}"><span class="field-label">{{ webform.run_date.label_tag }}</span></a>
+                      {{ webform.run_date }}
+                      {% if webform.run_date.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ webform.run_date.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <p>Discussion</p>
+                    <p>Edit History</p>
+
+                  </div>
+                  <!-- End of Right Column -->
+                  {{ webform.media }}
                   <input type="submit" name="webform" value="Submit" />
                 </form>
               </div>
             </div>
           </div>
-
+          <!-- ================================================= -->
+                          <!--   PRINT TAB CONTENT   -->
+          <!-- ================================================= -->
           <div role="tabpanel" class="tab-pane" id="print">
             <div class="row">
               <div class="col-md-12">
@@ -81,6 +230,9 @@
               </div>
             </div>
           </div>
+          <!-- ================================================= -->
+                          <!--   AUDIO TAB CONTENT   -->
+          <!-- ================================================= -->
 
           <div role="tabpanel" class="tab-pane" id="audio">
             <div class="row">
@@ -95,7 +247,9 @@
               </div>
             </div>
           </div>
-
+          <!-- ================================================= -->
+                          <!--   VIDEO TAB CONTENT   -->
+          <!-- ================================================= -->
           <div role="tabpanel" class="tab-pane" id="video">
             <div class="row">
               <div class="col-md-12">

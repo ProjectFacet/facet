@@ -652,6 +652,11 @@ class WebFacet(models.Model):
         blank=True,
     )
 
+    captions = models.TextField(
+        help_text='Captions and credits for any assets in use.',
+        blank=True,
+    )
+
     class Meta:
         verbose_name = 'Webfacet'
         verbose_name_plural = 'Webfacets'
@@ -803,6 +808,11 @@ class PrintFacet(models.Model):
     assets = models.ManyToManyField(
         'Asset',
         null=True,
+        blank=True,
+    )
+
+    captions = models.TextField(
+        help_text='Captions and credits for any assets in use.',
         blank=True,
     )
 
@@ -961,6 +971,11 @@ class AudioFacet(models.Model):
         blank=True,
     )
 
+    captions = models.TextField(
+        help_text='Captions and credits for any assets in use.',
+        blank=True,
+    )
+
     class Meta:
         verbose_name = 'Audiofacet'
         verbose_name_plural = 'Audiofacets'
@@ -1112,6 +1127,11 @@ class VideoFacet(models.Model):
     assets = models.ManyToManyField(
         'Asset',
         null=True,
+        blank=True,
+    )
+
+    captions = models.TextField(
+        help_text='Captions and credits for any assets in use.',
         blank=True,
     )
 

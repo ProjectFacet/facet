@@ -129,14 +129,14 @@ class WebFacetForm(forms.ModelForm):
     due_edit = forms.DateTimeField(
         required=False,
         widget=DateTimePicker(
-            options={"format": "YYYY-MM-DD HH:mm", "sideBySide": True}
+            options={"format": "YYYY-MM-DD HH:mm", "sideBySide": True,}
         )
     )
 
     run_date = forms.DateTimeField(
         required=False,
         widget=DateTimePicker(
-            options={"format": "YYYY-MM-DD HH:mm", "sideBySide": True}
+            options={"format": "YYYY-MM-DD HH:mm", "sideBySide": True,}
         )
     )
 
@@ -154,7 +154,23 @@ class WebFacetForm(forms.ModelForm):
             'due_edit',
             'run_date',
             'share_note',
+            'captions',
+            'editor',
+            'contributors',
+            'credit',
         ]
+        widgets = {
+            "contributors": ArrayFieldSelectMultiple(
+                choices=User.objects.all(), attrs={'class': 'chosen'}),
+            "credit": ArrayFieldSelectMultiple(
+                choices=User.objects.all(), attrs={'class': 'chosen'}),
+            'title': Textarea(attrs={'rows':2}),
+            'wf_description': Textarea(attrs={'rows':3}),
+            'excerpt': Textarea(attrs={'rows':4}),
+            'captions': Textarea(attrs={'rows':5}),
+            'share_note': Textarea(attrs={'rows':5}),
+            'content': Textarea(attrs={'rows':25}),
+        }
 
     class Media:
         css = {
