@@ -6,6 +6,7 @@ from django.utils.safestring import mark_safe
 from django.contrib.auth import get_user_model
 from django.forms import Textarea, TextInput, RadioSelect
 from datetimewidget.widgets import DateTimeWidget
+from tinymce.widgets import TinyMCE
 
 from editorial.models import (
     User,
@@ -140,6 +141,8 @@ class WebFacetForm(forms.ModelForm):
         )
     )
 
+    content = forms.CharField(widget=TinyMCE(attrs={'rows':25}))
+
     class Meta:
         model = WebFacet
         fields = [
@@ -169,14 +172,13 @@ class WebFacetForm(forms.ModelForm):
             'excerpt': Textarea(attrs={'rows':4}),
             'captions': Textarea(attrs={'rows':5}),
             'share_note': Textarea(attrs={'rows':5}),
-            'content': Textarea(attrs={'rows':25}),
         }
 
     class Media:
         css = {
         'all': ('static/css/bootstrap-datetimepicker.css')
         }
-        js = ('/static/scripts/moment.js', '/static/scripts/jquery.datetimepicker.js', '/static/scripts/bootstrap-datetimepicker.js')
+        js = ('/static/scripts/moment.js', '/static/scripts/jquery.datetimepicker.js', '/static/scripts/bootstrap-datetimepicker.js', '/static/scripts/tiny_mce/tinymce.min.js')
 
 
 class PrintFacetForm(forms.ModelForm):

@@ -170,9 +170,9 @@ input {
   color: #333;
 }
 
-label {
+/*label {
   color: #fff;
-}
+}*/
 
 .navbar-inverse {
   background-color: #181d25;
@@ -193,6 +193,7 @@ textarea {
   color: #fff;
   background-color: transparent;
   border: none;
+  resize: none;
 }
 
 select {
@@ -202,6 +203,7 @@ select {
 .nav-tabs {
   display: inline-block;
   text-align: center;
+  color: #CAD3DF;
 }
 
 #facettabs {
@@ -213,10 +215,25 @@ table {
   text-align: left;
 }
 
-.field-label {
-  color: #54657E !important;
+label {
+  color: #8493A8 !important;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 300;
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+
 }
 
 #id_content {
  background-color: white;
+ color: #374355;
+ overflow-y: scroll;
+ resize: none;
+}
+
+input {
+  background-color: transparent;
+  color: #fff;
+  border: none;
 }

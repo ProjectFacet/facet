@@ -15,6 +15,8 @@ SECRET_KEY = 'w+1bk&e^ud@@&4delnj!da47%$yi+9*u#*v$t*jrtn7muk23ja'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+MEDIA_URL = "/media/"
+
 ALLOWED_HOSTS = []
 # Application definition
 
@@ -33,7 +35,8 @@ INSTALLED_APPS = (
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'bootstrap3_datetime'
+    'bootstrap3_datetime',
+    'tinymce'
 )
 
 SITE_ID = 1
@@ -49,6 +52,15 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.security.SecurityMiddleware',
     'simple_history.middleware.HistoryRequestMiddleware',
 )
+
+TINYMCE_JS_ROOT = '/static/scripts/tiny_mce/'
+TINYMCE_JS_URL = os.path.join(STATIC_URL, 'scripts/tiny_mce/tinymce.min.js')
+TINYMCE_DEFAULT_CONFIG = {
+    'plugins': "spellchecker,paste,searchreplace",
+    'invalid_styles': 'position',
+    'theme': "advanced",
+}
+TINYMCE_SPELLCHECKER = True
 
 ROOT_URLCONF = 'project.urls'
 
