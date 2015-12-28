@@ -237,3 +237,21 @@ input {
   color: #fff;
   border: none;
 }
+
+.discussion {
+  font-size: 12px;
+}
+
+.edit-history {
+  font-size: 11px;
+}
+
+.mce-content-body {
+  font-size: 12px !important;
+  color: #374355 !important;
+}
+
+.tiny-text {
+  font-size: 10px;
+  color: #8493A8;
+}

@@ -99,8 +99,21 @@ def discussion(request):
     Displays comments from any Facet Editing Discussion involving user.
     Displays comments from any PrivateDiscussion involving user.
     """
+    comments = Comment.objects.filter(user_id = request.user.id)
+    discussions = []
+    for comment in comments:
+      discussion = Discussion.objects.filter(id = comment.discussion_id)
+      discussions.extend(discussion)
+    recent_comments = []
+    for discussion in discussions:
+      recent_comment = Comment.objects.filter(discussion = discussion, date__gte=request.user.last_login)
+      recent_comments.extend(recent_comment)
 
-    return render(request, 'editorial/discussion.html')
+    print recent_comments
+
+    return render(request, 'editorial/discussion.html', {
+        'recent_comments': recent_comments,
+    })
 
 #----------------------------------------------------------------------#
 #   Organization Views
@@ -335,13 +348,15 @@ def story_detail(request, pk):
     story = get_object_or_404(Story, pk=pk)
     team = story.team.all()
     notes = StoryNote.objects.filter(story=story)
-    # series = Series.objects.all()
+    webcomments = Comment.objects.filter(discussion_id=4).order_by('-date')
+    # printcomments = Comment.objects.filter(discussion_id=4).order_by('-date')
+    # audiocomments = Comment.objects.filter(discussion_id=4).order_by('-date')
+    # videocomments = Comment.objects.filter(discussion_id=4).order_by('-date')
 
 # ------------------------------ #
 #           webfacet             #
 # ------------------------------ #
     try:
-        print "TRY"
         webfacet = get_object_or_404(WebFacet, story=story)
         print webfacet
         # update an existing webfacet
@@ -505,14 +520,27 @@ def story_detail(request, pk):
             print "v11"
             videoform = VideoFacetForm()
 
+    if webfacet:
+        webhistory = webfacet.edit_history.all()
+    # if printfacet:
+    #     printhistory = printfacet.edit_history.all()
+    # if audiohistory:
+    #     audiohistory = audiofacet.edit_history.all()
+    # if videohistory:
+    #     videohistory = videofacet.edit_history.all()
 
     return render(request, 'editorial/storydetail.html', {
         'story': story,
         'webform': webform,
         'team': team,
+        'webcomments': webcomments,
         'printform': printform,
         'audioform': audioform,
         'videoform': videoform,
+        'webhistory': webhistory,
+        # 'printhistory': printhistory,
+        # 'audiohistory': audiohistory,
+        # 'videohistory': videohistory,
         })
 
 

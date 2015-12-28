@@ -1677,6 +1677,9 @@ class Comment(models.Model):
         auto_now_add=True,
     )
 
+    class Meta:
+        ordering = ['date']
+
     def __str__(self):
         return "Comment:{comment} from discussion:{discussion}".format(
                                 comment=self.id,

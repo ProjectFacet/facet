@@ -207,9 +207,31 @@
                         </div>
                       {% endif %}
                     </div>
-                    <p>Discussion</p>
-                    <p>Edit History</p>
-
+                    <a href="#" data-toggle="tooltip" title="Discussion for the webfacet"><label class="field-label">Discussion</label></a>
+                    <div class="discussion">
+                        {% if webcomments %}
+                        <div class="row">
+                        {% for comment in webcomments %}
+                          <div class="col-md-10">
+                            <p>{{ comment.text }}</p>
+                            <p class="tiny-text">{{ comment.date|date:'D M j g:i a' }}</p>
+                          </div>
+                          <div class="col-md-2">
+                            <img class="media-object img-circle" width="32" src="/static/images/faces/face23.jpg" alt="user">
+                            <p class="tiny-text">{{ comment.user.first_name }}</p>
+                          </div>
+                        {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    <a href="#" data-toggle="tooltip" title="Edit history for the webfacet"><label class="field-label">Edit History</label></a>
+                    <div class="edit-history">
+                      {% if webhistory %}
+                        {% for entry in webhistory %}
+                        <p>{{ entry.history_date }}
+                        {% endfor %}
+                      {% endif %}
+                    </div>
                   <input type="submit" name="webform" value="Submit" />
                   </div>
                   <!-- End of Right Column -->
