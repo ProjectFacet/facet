@@ -397,6 +397,8 @@ def story_detail(request, pk):
                     webfacet.discussion = discussion
                     print webfacet.discussion
                     webfacet.save()
+                    # create history of the webfacet
+                    webhistory = webfacet.edit_history.all()
                     return redirect('story_detail', pk=story.pk)
         else:
             print "Except Else"
@@ -445,6 +447,8 @@ def story_detail(request, pk):
                     printfacet.discussion = discussion
                     print printfacet.discussion
                     printfacet.save()
+                    # create history of the printfacet
+                    printhistory = printfacet.edit_history.all()
                     return redirect('story_detail', pk=story.pk)
         else:
             print "p11"
@@ -493,6 +497,8 @@ def story_detail(request, pk):
                     audiofacet.discussion = discussion
                     print audiofacet.discussion
                     audiofacet.save()
+                    # create history of the audiofacet
+                    audiohistory = audiofacet.edit_history.all()
                     return redirect('story_detail', pk=story.pk)
         else:
             print "a11"
@@ -529,7 +535,6 @@ def story_detail(request, pk):
                 videoform = VideoFacetForm(request.POST or None)
                 print "v9"
                 if videoform.is_valid():
-                    print form.errors
                     print "v10"
                     videofacet = videoform.save(commit=False)
                     videofacet.story = story
@@ -542,20 +547,13 @@ def story_detail(request, pk):
                     videofacet.discussion = discussion
                     print videofacet.discussion
                     videofacet.save()
+                    # create history of the videofacet
+                    videohistory = videofacet.edit_history.all()
                     return redirect('story_detail', pk=story.pk)
         else:
             print "v11"
             videoform = VideoFacetForm()
             print "VIDEOFORM ASSIGNED"
-
-    # if webfacet:
-    #     webhistory = webfacet.edit_history.all()
-    # if printfacet:
-    #     printhistory = printfacet.edit_history.all()
-    # if audiohistory:
-    #     audiohistory = audiofacet.edit_history.all()
-    # if videohistory:
-    #     videohistory = videofacet.edit_history.all()
 
     return render(request, 'editorial/storydetail.html', {
         'story': story,
