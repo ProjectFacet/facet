@@ -262,6 +262,10 @@ def series_new(request):
         series = form.save(commit=False)
         series.owner = request.user
         series.creation_date = timezone.now()
+        discussion = Discussion.objects.create_discussion("SER")
+        print discussion
+        series.discussion = discussion
+        print series.discussion
         series.save()
         return redirect('series_detail', pk=series.pk)
     else:
@@ -388,11 +392,16 @@ def story_detail(request, pk):
                     webfacet.owner = request.user
                     webfacet.original_org = request.user.organization
                     webfacet.creation_date = timezone.now()
+                    discussion = Discussion.objects.create_discussion("WF")
+                    print discussion
+                    webfacet.discussion = discussion
+                    print webfacet.discussion
                     webfacet.save()
                     return redirect('story_detail', pk=story.pk)
         else:
             print "Except Else"
             webform = WebFacetForm()
+            print "WEBFORM ASSIGNED"
 
 # ------------------------------ #
 #           printfacet           #
@@ -431,11 +440,16 @@ def story_detail(request, pk):
                     printfacet.original_org = request.user.organization
                     printfacet.editor = request.user
                     printfacet.creation_date = timezone.now()
+                    discussion = Discussion.objects.create_discussion("PF")
+                    print discussion
+                    printfacet.discussion = discussion
+                    print printfacet.discussion
                     printfacet.save()
                     return redirect('story_detail', pk=story.pk)
         else:
             print "p11"
             printform = PrintFacetForm()
+            print "PRINTFORM ASSIGNED"
 
 # ------------------------------ #
 #           audiofacet           #
@@ -474,11 +488,16 @@ def story_detail(request, pk):
                     audiofacet.original_org = request.user.organization
                     audiofacet.editor = request.user
                     audiofacet.creation_date = timezone.now()
+                    discussion = Discussion.objects.create_discussion("AF")
+                    print discussion
+                    audiofacet.discussion = discussion
+                    print audiofacet.discussion
                     audiofacet.save()
                     return redirect('story_detail', pk=story.pk)
         else:
             print "a11"
             audioform = AudioFacetForm()
+            print "AUDIOFORM ASSIGNED"
 
 # ------------------------------ #
 #           videofacet           #
@@ -518,11 +537,16 @@ def story_detail(request, pk):
                     videofacet.original_org = request.user.organization
                     videofacet.editor = request.user
                     videofacet.creation_date = timezone.now()
+                    discussion = Discussion.objects.create_discussion("VF")
+                    print discussion
+                    videofacet.discussion = discussion
+                    print videofacet.discussion
                     videofacet.save()
                     return redirect('story_detail', pk=story.pk)
         else:
             print "v11"
             videoform = VideoFacetForm()
+            print "VIDEOFORM ASSIGNED"
 
     # if webfacet:
     #     webhistory = webfacet.edit_history.all()
@@ -535,8 +559,8 @@ def story_detail(request, pk):
 
     return render(request, 'editorial/storydetail.html', {
         'story': story,
-        'webform': webform,
         'team': team,
+        'webform': webform,
         'webcomments': webcomments,
         'printform': printform,
         'audioform': audioform,
