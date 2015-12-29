@@ -328,6 +328,10 @@ def story_new(request):
         story = form.save(commit=False)
         story.owner = request.user
         story.creation_date = timezone.now()
+        discussion = Discussion.objects.create_discussion("STO")
+        print discussion
+        story.discussion = discussion
+        print story.discussion
         story.save()
         return redirect('story_detail', pk=story.pk)
     else:
@@ -520,8 +524,8 @@ def story_detail(request, pk):
             print "v11"
             videoform = VideoFacetForm()
 
-    if webfacet:
-        webhistory = webfacet.edit_history.all()
+    # if webfacet:
+    #     webhistory = webfacet.edit_history.all()
     # if printfacet:
     #     printhistory = printfacet.edit_history.all()
     # if audiohistory:
@@ -537,7 +541,7 @@ def story_detail(request, pk):
         'printform': printform,
         'audioform': audioform,
         'videoform': videoform,
-        'webhistory': webhistory,
+        # 'webhistory': webhistory,
         # 'printhistory': printhistory,
         # 'audiohistory': audiohistory,
         # 'videohistory': videohistory,

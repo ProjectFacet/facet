@@ -807,7 +807,6 @@ class PrintFacet(models.Model):
 
     assets = models.ManyToManyField(
         'Asset',
-        null=True,
         blank=True,
     )
 
@@ -967,7 +966,6 @@ class AudioFacet(models.Model):
 
     assets = models.ManyToManyField(
         'Asset',
-        null=True,
         blank=True,
     )
 
@@ -1126,7 +1124,6 @@ class VideoFacet(models.Model):
 
     assets = models.ManyToManyField(
         'Asset',
-        null=True,
         blank=True,
     )
 
@@ -1598,6 +1595,15 @@ class StoryNote(Note):
                                 )
 
 
+class DiscussionManager(models.Manager):
+    """ Custom manager for discussions."""
+
+    def create_discussion(self, discussion_type):
+        """ Method for quick creation of a discussion."""
+        discussion = self.create(discussion_type=discussion_type)
+        return discussion
+
+
 class Discussion(models.Model):
     """ Class for  for related comments. """
 
@@ -1625,6 +1631,8 @@ class Discussion(models.Model):
         choices=DISCUSSION_TYPE_CHOICES,
         help_text='What kind of discussion is it.'
     )
+
+    objects = DiscussionManager()
 
     def __str__(self):
         return "Discussion:{discussion} from {discussion_type}".format(

@@ -23,8 +23,8 @@
 
       <div class="col-md-6" id="facettabs">
         <ul class="nav nav-tabs" role="tablist">
-          <li role="presentation" class="active"><a href="#storydetail" aria-controls="storydetail" role="tab" data-toggle="tab">Story Detail <i class="fa fa-angle-down"></i></a></li>
-          <li role="presentation"><a href="#web" aria-controls="web" role="tab" data-toggle="tab">Web</a></li>
+          <li role="presentation"><a href="#storydetail" aria-controls="storydetail" role="tab" data-toggle="tab">Story Detail <i class="fa fa-angle-down"></i></a></li>
+          <li role="presentation" class="active"><a href="#web" aria-controls="web" role="tab" data-toggle="tab">Web</a></li>
           <li role="presentation"><a href="#print" aria-controls="print" role="tab" data-toggle="tab">Print</a></li>
           <li role="presentation"><a href="#audio" aria-controls="audio" role="tab" data-toggle="tab">Audio</a></li>
           <li role="presentation"><a href="#video" aria-controls="video" role="tab" data-toggle="tab">Video</a></li>
@@ -46,7 +46,7 @@
         <!-- ================================================= -->
                         <!--   STORY PANEL   -->
         <!-- ================================================= -->
-          <div role="tabpanel" class="tab-pane active" id="storydetail">
+          <div role="tabpanel" class="tab-pane" id="storydetail">
             <div class="row">
               <div class="col-md-12">
                 <h2>{{ story.name }}</h2>
@@ -68,7 +68,7 @@
                           <!--   WEB TAB CONTENT   -->
           <!-- ================================================= -->
 
-          <div role="tabpanel" class="tab-pane" id="web">
+          <div role="tabpanel" class="tab-pane active" id="web">
             <div class="row">
               <div class="col-md-12">
                 <form method="POST" class="post-form">
@@ -87,7 +87,7 @@
                       {% endif %}
                     </div>
                     <div class="form-group custom-form">
-                      <a href="#" data-toggle="tooltip" title="{{ webform.code.help_text }}"><span class="field-label">{{ webform.code.label_tag }}</span></a>
+                      <a href="#" data-toggle="tooltip" title="{{ webform.code.help_text }}"><span class="field-label">{{ webform.code.label_tag }}</span></a></br/>
                       {{ webform.code }}
                       {% if webform.code.errors %}
                         <div class="alert alert-warning" role="alert">
@@ -96,7 +96,7 @@
                       {% endif %}
                     </div>
                     <div class="form-group custom-form">
-                      <a href="#" data-toggle="tooltip" title="{{ webform.credit.help_text }}"><span class="field-label">{{ webform.credit.label_tag }}</span></a>
+                      <a href="#" data-toggle="tooltip" title="{{ webform.credit.help_text }}"><span class="field-label">{{ webform.credit.label_tag }}</span></a><br/>
                       {{ webform.credit }}
                       {% if webform.credit.errors %}
                         <div class="alert alert-warning" role="alert">
@@ -105,7 +105,7 @@
                       {% endif %}
                     </div>
                     <div class="form-group custom-form">
-                      <a href="#" data-toggle="tooltip" title="{{ webform.editor.help_text }}"><span class="field-label">{{ webform.editor.label_tag }}</span></a>
+                      <a href="#" data-toggle="tooltip" title="{{ webform.editor.help_text }}"><span class="field-label">{{ webform.editor.label_tag }}</span></a><br/>
                       {{ webform.editor }}
                       {% if webform.editor.errors %}
                         <div class="alert alert-warning" role="alert">
@@ -290,5 +290,8 @@
       </div><!-- End tabs -->
     </div><!-- End row -->
 
+    <script>
+    $(".chosen-select").chosen()
+    </script>
 
 {% endblock %}

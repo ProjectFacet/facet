@@ -164,12 +164,9 @@ class WebFacetForm(forms.ModelForm):
             'share_note',
             'captions',
             'editor',
-            'contributors',
             'credit',
         ]
         widgets = {
-            'contributors': ArrayFieldSelectMultiple(
-                choices=User.objects.all(), attrs={'class': 'chosen-select'}),
             'credit': ArrayFieldSelectMultiple(
                 choices=User.objects.all(), attrs={'class': 'chosen-select'}),
             'title': Textarea(attrs={'rows':2}),

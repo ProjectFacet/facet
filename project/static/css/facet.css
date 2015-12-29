@@ -255,3 +255,7 @@ input {
   font-size: 10px;
   color: #8493A8;
 }
+
+.chosen-choices {
+  width: 100% !important;
+}

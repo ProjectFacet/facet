@@ -2,6 +2,9 @@
 
 {% load i18n %}
 {% load bootstrap3 %}
+{% block head %}
+{{ form.media }}
+{% endblock %}
 
 {% block content %}
 
@@ -12,5 +15,8 @@
 <button type="submit" class="save btn btn-default">Save</button>
 </form>
 
+<script>
+$(".chosen-select").chosen()
+</script>
 
 {% endblock %}
