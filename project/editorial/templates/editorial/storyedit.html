@@ -3,6 +3,10 @@
 {% load i18n %}
 {% load bootstrap3 %}
 
+{% block head %}
+{{ form.media }}
+{% endblock %}
+
 {% block content %}
 
 <h1>Edit Story</h1>
@@ -10,7 +14,7 @@
 
 {% bootstrap_form storyform %}
 
-{{ form.media }}
+
 <button type="submit" class="save btn btn-default">Save</button>
 </form>
 

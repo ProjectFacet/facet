@@ -29,11 +29,11 @@ from editorial.models import (
 class ArrayFieldSelectMultiple(forms.SelectMultiple):
 
     def __init__(self, *args, **kwargs):
-        self.delimiter = kwargs.pop("delimiter", ",")
+        self.delimiter = kwargs.pop('delimiter', ',')
         super(ArrayFieldSelectMultiple, self).__init__(*args, **kwargs)
 
     def render_options(self, choices, value):
-        if isinstance(value,str):
+        if isinstance(value, basestring):
             value = value.split(self.delimiter)
         return super(ArrayFieldSelectMultiple, self).render_options(choices, value)
 
@@ -93,7 +93,7 @@ class AddToNetworkForm(forms.ModelForm):
 # ------------------------------ #
 
 class SeriesForm(forms.ModelForm):
-    """" Form to create a new series. """
+    """ Form to create a new series. """
 
     class Meta:
         model = Series
@@ -116,9 +116,14 @@ class StoryForm(forms.ModelForm):
         model = Story
         fields = ['name', 'story_description', 'series', 'collaborate', 'team']
         widgets = {
-            "team": ArrayFieldSelectMultiple(
-                choices=User.objects.all(), attrs={'class': 'chosen'}),
+            'team': ArrayFieldSelectMultiple(
+                choices=User.objects.all(), attrs={'class': 'chosen-select'}),
         }
+
+    class Media:
+        css = {'all': ('/static/css/chosen.min.css')
+        }
+        js = ('/static/js/chosen.jquery.min.js')
 
 # ------------------------------ #
 #          Facet Forms           #
@@ -130,14 +135,14 @@ class WebFacetForm(forms.ModelForm):
     due_edit = forms.DateTimeField(
         required=False,
         widget=DateTimePicker(
-            options={"format": "YYYY-MM-DD HH:mm", "sideBySide": True,}
+            options={'format': 'YYYY-MM-DD HH:mm', 'sideBySide': True,}
         )
     )
 
     run_date = forms.DateTimeField(
         required=False,
         widget=DateTimePicker(
-            options={"format": "YYYY-MM-DD HH:mm", "sideBySide": True,}
+            options={'format': 'YYYY-MM-DD HH:mm', 'sideBySide': True,}
         )
     )
 
@@ -163,10 +168,10 @@ class WebFacetForm(forms.ModelForm):
             'credit',
         ]
         widgets = {
-            "contributors": ArrayFieldSelectMultiple(
-                choices=User.objects.all(), attrs={'class': 'chosen'}),
-            "credit": ArrayFieldSelectMultiple(
-                choices=User.objects.all(), attrs={'class': 'chosen'}),
+            'contributors': ArrayFieldSelectMultiple(
+                choices=User.objects.all(), attrs={'class': 'chosen-select'}),
+            'credit': ArrayFieldSelectMultiple(
+                choices=User.objects.all(), attrs={'class': 'chosen-select'}),
             'title': Textarea(attrs={'rows':2}),
             'wf_description': Textarea(attrs={'rows':3}),
             'excerpt': Textarea(attrs={'rows':4}),
@@ -176,9 +181,9 @@ class WebFacetForm(forms.ModelForm):
 
     class Media:
         css = {
-        'all': ('static/css/bootstrap-datetimepicker.css')
+            'all': ('static/css/bootstrap-datetimepicker.css', '/static/css/chosen.min.css')
         }
-        js = ('/static/scripts/moment.js', '/static/scripts/jquery.datetimepicker.js', '/static/scripts/bootstrap-datetimepicker.js', '/static/scripts/tiny_mce/tinymce.min.js')
+        js = ('/static/js/chosen.jquery.min.js', '/static/scripts/moment.js', '/static/scripts/jquery.datetimepicker.js', '/static/scripts/bootstrap-datetimepicker.js', '/static/scripts/tiny_mce/tinymce.min.js',)
 
 
 class PrintFacetForm(forms.ModelForm):
