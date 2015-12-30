@@ -7,6 +7,7 @@ PROJECT_DIR = os.path.abspath(SETTINGS_DIR + "/../..")
 GIT_DIR = os.path.abspath(PROJECT_DIR + "/..")
 
 STATIC_ROOT = GIT_DIR + "/static/"
+# Static files (CSS, JavaScript, Images)
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [os.path.join(PROJECT_DIR, "static")]
 # SECURITY WARNING: keep the secret key used in production secret!
@@ -112,8 +113,3 @@ TIME_ZONE = 'America/Los_Angeles'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.8/howto/static-files/
-
-STATIC_URL = '/static/'

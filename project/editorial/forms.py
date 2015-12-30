@@ -135,14 +135,14 @@ class WebFacetForm(forms.ModelForm):
     due_edit = forms.DateTimeField(
         required=False,
         widget=DateTimePicker(
-            options={'format': 'YYYY-MM-DD HH:mm', 'sideBySide': True,}
+            options={'format': 'YYYY-MM-DD HH:mm'}
         )
     )
 
     run_date = forms.DateTimeField(
         required=False,
         widget=DateTimePicker(
-            options={'format': 'YYYY-MM-DD HH:mm', 'sideBySide': True,}
+            options={'format': 'YYYY-MM-DD HH:mm'}
         )
     )
 
@@ -193,14 +193,14 @@ class PrintFacetForm(forms.ModelForm):
     due_edit = forms.DateTimeField(
         required=False,
         widget=DateTimePicker(
-            options={'format': 'YYYY-MM-DD HH:mm', 'sideBySide': True,}
+            options={'format': 'YYYY-MM-DD HH:mm'}
         )
     )
 
     run_date = forms.DateTimeField(
         required=False,
         widget=DateTimePicker(
-            options={'format': 'YYYY-MM-DD HH:mm', 'sideBySide': True,}
+            options={'format': 'YYYY-MM-DD HH:mm'}
         )
     )
 
@@ -251,14 +251,14 @@ class AudioFacetForm(forms.ModelForm):
     due_edit = forms.DateTimeField(
         required=False,
         widget=DateTimePicker(
-            options={'format': 'YYYY-MM-DD HH:mm', 'sideBySide': True,}
+            options={'format': 'YYYY-MM-DD HH:mm'}
         )
     )
 
     run_date = forms.DateTimeField(
         required=False,
         widget=DateTimePicker(
-            options={'format': 'YYYY-MM-DD HH:mm', 'sideBySide': True,}
+            options={'format': 'YYYY-MM-DD HH:mm'}
         )
     )
 
@@ -309,14 +309,14 @@ class VideoFacetForm(forms.ModelForm):
     due_edit = forms.DateTimeField(
         required=False,
         widget=DateTimePicker(
-            options={'format': 'YYYY-MM-DD HH:mm', 'sideBySide': True,}
+            options={'format': 'YYYY-MM-DD HH:mm'}
         )
     )
 
     run_date = forms.DateTimeField(
         required=False,
         widget=DateTimePicker(
-            options={'format': 'YYYY-MM-DD HH:mm', 'sideBySide': True,}
+            options={'format': 'YYYY-MM-DD HH:mm'}
         )
     )
 
@@ -365,7 +365,7 @@ class VideoFacetForm(forms.ModelForm):
 # ------------------------------ #
 
 class CommentForm(forms.ModelForm):
-    """ Private Comment form. """
+    """ Comment form. """
 
     class Meta:
         model = Comment

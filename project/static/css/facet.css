@@ -206,6 +206,10 @@ select {
   color: #CAD3DF;
 }
 
+.nav-tabs li a {
+  color: #CAD3DF !important;
+}
+
 #facettabs {
   text-align: center;
 }
