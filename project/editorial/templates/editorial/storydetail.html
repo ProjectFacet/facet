@@ -207,23 +207,50 @@
                         </div>
                       {% endif %}
                     </div>
+                    <!-- End of WebFacet form -->
+                    <input type="submit" name="webform" value="Submit" />
+                    </form>
+
                     <a href="#" data-toggle="tooltip" title="Discussion for the webfacet"><label class="field-label">Discussion</label></a>
                     <div class="discussion">
                         {% if webcomments %}
-                        <div class="row">
-                        {% for comment in webcomments %}
-                          <div class="col-md-10">
-                            <p>{{ comment.text }}</p>
-                            <p class="tiny-text">{{ comment.date|date:'D M j g:i a' }}</p>
+                          <div class="row">
+                            {% for comment in webcomments %}
+                              <div class="col-md-10">
+                                <p>{{ comment.text }}</p>
+                                <p class="tiny-text">{{ comment.date|date:'D M j g:i a' }}</p>
+                              </div>
+                              <div class="col-md-2">
+                                <img class="media-object img-circle" width="32" src="/static/images/faces/face23.jpg" alt="user">
+                                <p class="tiny-text">{{ comment.user.first_name }}</p>
+                              </div>
+                            {% endfor %}
                           </div>
-                          <div class="col-md-2">
-                            <img class="media-object img-circle" width="32" src="/static/images/faces/face23.jpg" alt="user">
-                            <p class="tiny-text">{{ comment.user.first_name }}</p>
-                          </div>
-                        {% endfor %}
-                        </div>
                         {% endif %}
-                    </div>
+                        <div class="row">
+                          <div class="col-md-12">
+                            <form action="/comment/new" method="POST" class="post-form form-inline" role="form">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                {{ webcommentform.text }}
+                                </div>
+                                {% if webcommentform.text.errors %}
+                                  <div class="alert alert-warning" role="alert">
+                                  {{ webcommentform.text.errors }}
+                                  </div>
+                                {% endif %}
+                                <input type="hidden" name="story" value="{{ story.pk }}" />
+                                <div class="form-group">
+                                  <button type="submit" class="btn btn-default" name="webcommentform">
+                                      <i class="fa fa-paper-plane"></i>
+                                  </button>
+                                </div>
+                                <!-- <input type="submit" name="webcommentform" value="Post Comment"/> -->
+                              </form>
+                            </div>
+                          </div>
+                      </div>
+
                     <a href="#" data-toggle="tooltip" title="Edit history for the webfacet"><label class="field-label">Edit History</label></a>
                     <div class="edit-history">
                       {% if webhistory %}
@@ -232,10 +259,8 @@
                         {% endfor %}
                       {% endif %}
                     </div>
-                  <input type="submit" name="webform" value="Submit" />
                   </div>
                   <!-- End of Right Column -->
-                </form>
               </div>
             </div>
           </div>

@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.utils import timezone
 from django.views.generic import TemplateView , UpdateView, DetailView
 import datetime
+import json
 
 from .forms import (
     UserForm,
@@ -15,7 +16,7 @@ from .forms import (
     AudioFacetForm,
     VideoFacetForm,
     AddToNetworkForm,
-    CommentForm)
+    WebFacetCommentForm)
 
 from models import (
     User,
@@ -366,21 +367,26 @@ def story_detail(request, pk):
         # retrieve discussion and comments
         webfacetdiscussion = get_object_or_404(Discussion, id=webfacet.discussion.id)
         webcomments = Comment.objects.filter(discussion=webfacetdiscussion).order_by('-date')
+        # retrieve history
+        webhistory = webfacet.edit_history.all()[:5]
         # update an existing webfacet
         if request.method == "POST":
             if 'webform' in request.POST:
                 webform = WebFacetForm(data=request.POST, instance=webfacet)
+                webcommentform = WebFacetCommentForm()
                 if webform.is_valid():
                     webfacet.save()
                     return redirect('story_detail', pk=story.pk)
         else:
             webform = WebFacetForm(instance=webfacet)
+            webcommentform = WebFacetCommentForm()
     except:
     # except WebFacet.DoesNotExist:
         # display form and save a new webfacet
         if request.method == "POST":
             if 'webform' in request.POST:
                 webform = WebFacetForm(request.POST or None)
+                webcommentform = WebFacetCommentForm()
                 if webform.is_valid():
                     webfacet = webform.save(commit=False)
                     webfacet.story = story
@@ -391,11 +397,12 @@ def story_detail(request, pk):
                     webfacet.discussion = discussion
                     webfacet.save()
                     # create history of the webfacet
-                    webhistory = webfacet.edit_history.all()
+                    webhistory = webfacet.edit_history.all()[:5]
                     # print webhistory
                     return redirect('story_detail', pk=story.pk)
         else:
             webform = WebFacetForm()
+            webcommentform = WebFacetCommentForm()
             # temp solution to unbound local error on first creation
             webcomments = []
             webhistory = []
@@ -409,6 +416,8 @@ def story_detail(request, pk):
         # retrieve discussion and comments
         printfacetdiscussion = get_object_or_404(Discussion, id=printfacet.discussion.id)
         printcomments = Comment.objects.filter(discussion=printfacetdiscussion).order_by('-date')
+        # retrieve history
+        printhistory = printfacet.edit_history.all()[:5]
         # update an existing printfacet
         if request.method == "POST":
             if 'printform' in request.POST:
@@ -433,7 +442,7 @@ def story_detail(request, pk):
                     printfacet.discussion = Discussion.objects.create_discussion("PF")
                     printfacet.save()
                     # create history of the printfacet
-                    printhistory = printfacet.edit_history.all()
+                    printhistory = printfacet.edit_history.all()[:5]
                     return redirect('story_detail', pk=story.pk)
         else:
             printform = PrintFacetForm()
@@ -450,6 +459,8 @@ def story_detail(request, pk):
         # retrieve discussion and comments
         audiofacetdiscussion = get_object_or_404(Discussion, id=audiofacet.discussion.id)
         audiocomments = Comment.objects.filter(discussion=audiofacetdiscussion).order_by('-date')
+        # retrieve history
+        audiohistory = audiofacet.edit_history.all()[:5]
         # update an existing webfacet
         if request.method == "POST":
             if 'audioform' in request.POST:
@@ -474,7 +485,7 @@ def story_detail(request, pk):
                     audiofacet.discussion = Discussion.objects.create_discussion("AF")
                     audiofacet.save()
                     # create history of the audiofacet
-                    audiohistory = audiofacet.edit_history.all()
+                    audiohistory = audiofacet.edit_history.all()[:5]
                     return redirect('story_detail', pk=story.pk)
         else:
             audioform = AudioFacetForm()
@@ -491,6 +502,8 @@ def story_detail(request, pk):
         # retrieve discussion and comments
         videofacetdiscussion = get_object_or_404(Discussion, id=videofacet.discussion.id)
         videocomments = Comment.objects.filter(discussion=videofacetdiscussion).order_by('-date')
+        # retrieve history
+        videohistory = videofacet.edit_history.all()[:5]
         # update an existing printfacet
         if request.method == "POST":
             if 'videoform' in request.POST:
@@ -515,7 +528,7 @@ def story_detail(request, pk):
                     videofacet.discussion = Discussion.objects.create_discussion("VF")
                     videofacet.save()
                     # create history of the videofacet
-                    videohistory = videofacet.edit_history.all()
+                    videohistory = videofacet.edit_history.all()[:5]
                     return redirect('story_detail', pk=story.pk)
         else:
             videoform = VideoFacetForm()
@@ -529,6 +542,7 @@ def story_detail(request, pk):
         'webform': webform,
         'webcomments': webcomments,
         'webhistory': webhistory,
+        'webcommentform': webcommentform,
         'printform': printform,
         'printcomments': printcomments,
         'printhistory': printhistory,
@@ -559,6 +573,58 @@ def story_edit(request, pk):
         'storyform': storyform,
     })
 
+#----------------------------------------------------------------------#
+#   Comments Views
+#----------------------------------------------------------------------#
+
+def create_webcomment(request):
+    """ Regular form posting method."""
+
+    if request.method == 'POST':
+        comment_text = request.POST.get('text')
+        print "TEXT: ", comment_text
+        story_id = request.POST.get('story')
+        story = get_object_or_404(Story, id=story_id)
+        webfacet = get_object_or_404(WebFacet, story=story)
+        print "WEBFACET: ", webfacet
+        discussion = get_object_or_404(Discussion, id=webfacet.discussion.id)
+        print "DISCUSSION: ", discussion
+        comment = Comment.objects.create_comment(user=request.user, discussion=discussion, text=comment_text)
+        print "COMMENT: ", comment
+        comment.save()
+
+        return redirect('story_detail', pk=story.id)
+
+
+# def create_webcomment(request):
+#     """ Receive AJAX Post for creating a comment on a webfacet. """
+#
+#     if request.method == 'POST':
+#         comment_text = request.POST.get('text')
+#         story = request.POST.get('story')
+#         webfacet = get_object_or_404(WebFacet, story=story)
+#         discussion = get_object_or_404(Discussion, id=webfacet.discussion.id)
+#
+#         response_data = {}
+#
+#         # comment = Comment(text=comment_text, user=request.user, discussion = discussion)
+#         comment = Comment.objects.create_comment(user=request.user, discussion=discussion, text=comment_text)
+#         comment.save()
+#
+#         response_data['result'] = 'Create post successful!'
+#         response_data['commentpk'] = comment.pk
+#         response_data['text'] = comment.text
+#         response_data['user'] = comment.user.credit_name
+#
+#         return HttpResponse(
+#             json.dumps(response_data),
+#             content_type="application/json"
+#         )
+#     else:
+#         return HttpResponse(
+#             json.dumps({"nothing to see": "this isn't happening"}),
+#             content_type="application/json"
+#         )
 
 #----------------------------------------------------------------------#
 #   Collaborations View

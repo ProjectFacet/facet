@@ -376,9 +376,14 @@ class VideoFacetForm(forms.ModelForm):
 #         Comment Forms          #
 # ------------------------------ #
 
-class CommentForm(forms.ModelForm):
+class WebFacetCommentForm(forms.ModelForm):
     """ Comment form. """
 
     class Meta:
         model = Comment
         fields = ['text']
+        widgets = {
+            'text': TextInput(
+                attrs={'id':'wf-comment', 'required': True, 'placeholder': 'Comment', 'class': 'form-control'}
+            ),
+        }

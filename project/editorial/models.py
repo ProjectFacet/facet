@@ -1662,6 +1662,15 @@ class PrivateDiscussion(models.Model):
                                 discussion=self.id,
                                 )
 
+class CommentManager(models.Manager):
+    """ Custom manager for comments."""
+
+    def create_comment(self, user, discussion, text):
+        """ Method for quick creation of a discussion."""
+        comment = self.create(user=user, discussion=discussion, text=text)
+        return comment
+
+
 class Comment(models.Model):
     """An individual comment.
 
@@ -1684,6 +1693,8 @@ class Comment(models.Model):
     date = models.DateTimeField(
         auto_now_add=True,
     )
+
+    objects = CommentManager()
 
     class Meta:
         ordering = ['date']
