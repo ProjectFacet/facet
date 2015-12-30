@@ -180,11 +180,31 @@ class WebFacetForm(forms.ModelForm):
         css = {
             'all': ('static/css/bootstrap-datetimepicker.css', '/static/css/chosen.min.css')
         }
-        js = ('/static/js/chosen.jquery.min.js', '/static/scripts/moment.js', '/static/scripts/jquery.datetimepicker.js', '/static/scripts/bootstrap-datetimepicker.js', '/static/scripts/tiny_mce/tinymce.min.js',)
+        js = ('/static/js/chosen.jquery.min.js',
+         '/static/scripts/moment.js',
+         '/static/scripts/jquery.datetimepicker.js',
+         '/static/scripts/bootstrap-datetimepicker.js',
+         '/static/scripts/tiny_mce/tinymce.min.js',)
 
 
 class PrintFacetForm(forms.ModelForm):
     """ Printfacet form. """
+
+    due_edit = forms.DateTimeField(
+        required=False,
+        widget=DateTimePicker(
+            options={'format': 'YYYY-MM-DD HH:mm', 'sideBySide': True,}
+        )
+    )
+
+    run_date = forms.DateTimeField(
+        required=False,
+        widget=DateTimePicker(
+            options={'format': 'YYYY-MM-DD HH:mm', 'sideBySide': True,}
+        )
+    )
+
+    content = forms.CharField(widget=TinyMCE(attrs={'rows':25}))
 
     class Meta:
         model = PrintFacet
@@ -200,11 +220,49 @@ class PrintFacetForm(forms.ModelForm):
             'due_edit',
             'run_date',
             'share_note',
+            'captions',
+            'editor',
+            'credit',
         ]
+        widgets = {
+            'credit': ArrayFieldSelectMultiple(
+                choices=User.objects.all(), attrs={'class': 'chosen-select'}),
+            'title': Textarea(attrs={'rows':2}),
+            'pf_description': Textarea(attrs={'rows':3}),
+            'excerpt': Textarea(attrs={'rows':4}),
+            'captions': Textarea(attrs={'rows':5}),
+            'share_note': Textarea(attrs={'rows':5}),
+        }
+
+    class Media:
+        css = {
+            'all': ('static/css/bootstrap-datetimepicker.css', '/static/css/chosen.min.css')
+        }
+        js = ('/static/js/chosen.jquery.min.js',
+         '/static/scripts/moment.js',
+         '/static/scripts/jquery.datetimepicker.js',
+         '/static/scripts/bootstrap-datetimepicker.js',
+         '/static/scripts/tiny_mce/tinymce.min.js',)
 
 
 class AudioFacetForm(forms.ModelForm):
     """ Audiofacet form. """
+
+    due_edit = forms.DateTimeField(
+        required=False,
+        widget=DateTimePicker(
+            options={'format': 'YYYY-MM-DD HH:mm', 'sideBySide': True,}
+        )
+    )
+
+    run_date = forms.DateTimeField(
+        required=False,
+        widget=DateTimePicker(
+            options={'format': 'YYYY-MM-DD HH:mm', 'sideBySide': True,}
+        )
+    )
+
+    content = forms.CharField(widget=TinyMCE(attrs={'rows':25}))
 
     class Meta:
         model = AudioFacet
@@ -220,10 +278,49 @@ class AudioFacetForm(forms.ModelForm):
             'due_edit',
             'run_date',
             'share_note',
+            'captions',
+            'editor',
+            'credit',
         ]
+        widgets = {
+            'credit': ArrayFieldSelectMultiple(
+                choices=User.objects.all(), attrs={'class': 'chosen-select'}),
+            'title': Textarea(attrs={'rows':2}),
+            'af_description': Textarea(attrs={'rows':3}),
+            'excerpt': Textarea(attrs={'rows':4}),
+            'captions': Textarea(attrs={'rows':5}),
+            'share_note': Textarea(attrs={'rows':5}),
+        }
+
+    class Media:
+        css = {
+            'all': ('static/css/bootstrap-datetimepicker.css', '/static/css/chosen.min.css')
+        }
+        js = ('/static/js/chosen.jquery.min.js',
+         '/static/scripts/moment.js',
+         '/static/scripts/jquery.datetimepicker.js',
+         '/static/scripts/bootstrap-datetimepicker.js',
+         '/static/scripts/tiny_mce/tinymce.min.js',)
+
 
 class VideoFacetForm(forms.ModelForm):
     """ Videofacet form. """
+
+    due_edit = forms.DateTimeField(
+        required=False,
+        widget=DateTimePicker(
+            options={'format': 'YYYY-MM-DD HH:mm', 'sideBySide': True,}
+        )
+    )
+
+    run_date = forms.DateTimeField(
+        required=False,
+        widget=DateTimePicker(
+            options={'format': 'YYYY-MM-DD HH:mm', 'sideBySide': True,}
+        )
+    )
+
+    content = forms.CharField(widget=TinyMCE(attrs={'rows':25}))
 
     class Meta:
         model = VideoFacet
@@ -239,7 +336,29 @@ class VideoFacetForm(forms.ModelForm):
             'due_edit',
             'run_date',
             'share_note',
+            'captions',
+            'editor',
+            'credit',
         ]
+        widgets = {
+            'credit': ArrayFieldSelectMultiple(
+                choices=User.objects.all(), attrs={'class': 'chosen-select'}),
+            'title': Textarea(attrs={'rows':2}),
+            'vf_description': Textarea(attrs={'rows':3}),
+            'excerpt': Textarea(attrs={'rows':4}),
+            'captions': Textarea(attrs={'rows':5}),
+            'share_note': Textarea(attrs={'rows':5}),
+        }
+
+    class Media:
+        css = {
+            'all': ('static/css/bootstrap-datetimepicker.css', '/static/css/chosen.min.css')
+        }
+        js = ('/static/js/chosen.jquery.min.js',
+         '/static/scripts/moment.js',
+         '/static/scripts/jquery.datetimepicker.js',
+         '/static/scripts/bootstrap-datetimepicker.js',
+         '/static/scripts/tiny_mce/tinymce.min.js',)
 
 # ------------------------------ #
 #         Comment Forms          #
