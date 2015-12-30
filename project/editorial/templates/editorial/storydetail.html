@@ -247,9 +247,168 @@
               <div class="col-md-12">
                 <form method="POST" class="post-form">
                   {% csrf_token %}
-                  {% bootstrap_form printform %}
 
+                  <!-- Left Column -->
+                  <div class="col-md-2">
+
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ printform.title.help_text }}"><span class="field-label">{{ printform.title.label_tag }}</span></a>
+                      {{ printform.title }}
+                      {% if printform.title.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ printform.title.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ printform.code.help_text }}"><span class="field-label">{{ printform.code.label_tag }}</span></a></br/>
+                      {{ printform.code }}
+                      {% if printform.code.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ printform.code.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ printform.credit.help_text }}"><span class="field-label">{{ printform.credit.label_tag }}</span></a><br/>
+                      {{ printform.credit }}
+                      {% if printform.credit.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ printform.credit.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ printform.editor.help_text }}"><span class="field-label">{{ printform.editor.label_tag }}</span></a><br/>
+                      {{ printform.editor }}
+                      {% if printform.editor.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ printform.editor.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ printform.wf_description.help_text }}"><span class="field-label">{{ printform.pf_description.label_tag }}</span></a>
+                      {{ printform.pf_description }}
+                      {% if printform.pf_description.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ printform.pf_description.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ printform.excerpt.help_text }}"><span class="field-label">{{ printform.excerpt.label_tag }}</span></a>
+                      {{ printform.excerpt }}
+                      {% if printform.excerpt.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ printform.excerpt.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ printform.length.help_text }}"><span class="field-label">{{ printform.length.label_tag }}</span></a>
+                      {{ printform.length }}
+                      {% if printform.length.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ printform.length.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ printform.captions.help_text }}"><span class="field-label">{{ printform.captions.label_tag }}</span></a>
+                      {{ printform.captions }}
+                      {% if printform.captions.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ printform.captions.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ printform.sharenote.help_text }}"><span class="field-label">{{ printform.sharenote.label_tag }}</span></a>
+                      {{ printform.sharenote }}
+                      {% if printform.sharenote.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ printform.sharenote.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+
+
+                  </div>
+                  <!-- End of Left Column -->
+
+                  <!-- Center Column -->
+                  <div class="col-md-8">
+
+                    <div class="form-group custom-form">
+                      {{ printform.content }}
+                      {% if printform.content.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ printform.content.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+
+                  </div>
+                  <!-- End of Center Column -->
+                  <!-- Right Column -->
+                  <div class="col-md-2">
+
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ printform.status.help_text }}"><span class="field-label">{{ printform.status.label_tag }}</span></a>
+                      {{ printform.status }}
+                      {% if printform.status.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ printform.status.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ printform.due_edit.help_text }}"><span class="field-label">{{ printform.due_edit.label_tag }}</span></a>
+                      {{ printform.due_edit }}
+                      {% if printform.due_edit.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ printform.due_edit.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ printform.run_date.help_text }}"><span class="field-label">{{ printform.run_date.label_tag }}</span></a>
+                      {{ printform.run_date }}
+                      {% if printform.run_date.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ printform.run_date.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <a href="#" data-toggle="tooltip" title="Discussion for the printfacet"><label class="field-label">Discussion</label></a>
+                    <div class="discussion">
+                        {% if printcomments %}
+                        <div class="row">
+                        {% for comment in printcomments %}
+                          <div class="col-md-10">
+                            <p>{{ comment.text }}</p>
+                            <p class="tiny-text">{{ comment.date|date:'D M j g:i a' }}</p>
+                          </div>
+                          <div class="col-md-2">
+                            <img class="media-object img-circle" width="32" src="/static/images/faces/face23.jpg" alt="user">
+                            <p class="tiny-text">{{ comment.user.first_name }}</p>
+                          </div>
+                        {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    <a href="#" data-toggle="tooltip" title="Edit history for the printfacet"><label class="field-label">Edit History</label></a>
+                    <div class="edit-history">
+                      {% if printhistory %}
+                        {% for entry in printhistory %}
+                        <p>{{ entry.history_date }}
+                        {% endfor %}
+                      {% endif %}
+                    </div>
                   <input type="submit" name="printform" value="Submit" />
+                  </div>
+                  <!-- End of Right Column -->
                 </form>
               </div>
             </div>
@@ -263,9 +422,168 @@
               <div class="col-md-12">
                 <form method="POST" class="post-form">
                   {% csrf_token %}
-                  {% bootstrap_form audioform %}
 
+                  <!-- Left Column -->
+                  <div class="col-md-2">
+
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ audioform.title.help_text }}"><span class="field-label">{{ audioform.title.label_tag }}</span></a>
+                      {{ audioform.title }}
+                      {% if audioform.title.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ audioform.title.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ audioform.code.help_text }}"><span class="field-label">{{ audioform.code.label_tag }}</span></a></br/>
+                      {{ audioform.code }}
+                      {% if audioform.code.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ audioform.code.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ audioform.credit.help_text }}"><span class="field-label">{{ audioform.credit.label_tag }}</span></a><br/>
+                      {{ audioform.credit }}
+                      {% if audioform.credit.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ audioform.credit.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ audioform.editor.help_text }}"><span class="field-label">{{ audioform.editor.label_tag }}</span></a><br/>
+                      {{ audioform.editor }}
+                      {% if audioform.editor.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ audioform.editor.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ audioform.wf_description.help_text }}"><span class="field-label">{{ audioform.af_description.label_tag }}</span></a>
+                      {{ audioform.af_description }}
+                      {% if audioform.af_description.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ audioform.af_description.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ audioform.excerpt.help_text }}"><span class="field-label">{{ audioform.excerpt.label_tag }}</span></a>
+                      {{ audioform.excerpt }}
+                      {% if audioform.excerpt.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ audioform.excerpt.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ audioform.length.help_text }}"><span class="field-label">{{ audioform.length.label_tag }}</span></a>
+                      {{ audioform.length }}
+                      {% if audioform.length.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ audioform.length.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ audioform.captions.help_text }}"><span class="field-label">{{ audioform.captions.label_tag }}</span></a>
+                      {{ audioform.captions }}
+                      {% if audioform.captions.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ audioform.captions.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ audioform.sharenote.help_text }}"><span class="field-label">{{ audioform.sharenote.label_tag }}</span></a>
+                      {{ audioform.sharenote }}
+                      {% if audioform.sharenote.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ audioform.sharenote.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+
+
+                  </div>
+                  <!-- End of Left Column -->
+
+                  <!-- Center Column -->
+                  <div class="col-md-8">
+
+                    <div class="form-group custom-form">
+                      {{ audioform.content }}
+                      {% if audioform.content.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ audioform.content.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+
+                  </div>
+                  <!-- End of Center Column -->
+                  <!-- Right Column -->
+                  <div class="col-md-2">
+
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ audioform.status.help_text }}"><span class="field-label">{{ audioform.status.label_tag }}</span></a>
+                      {{ audioform.status }}
+                      {% if audioform.status.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ audioform.status.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ audioform.due_edit.help_text }}"><span class="field-label">{{ audioform.due_edit.label_tag }}</span></a>
+                      {{ audioform.due_edit }}
+                      {% if audioform.due_edit.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ audioform.due_edit.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ audioform.run_date.help_text }}"><span class="field-label">{{ audioform.run_date.label_tag }}</span></a>
+                      {{ audioform.run_date }}
+                      {% if audioform.run_date.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ audioform.run_date.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <a href="#" data-toggle="tooltip" title="Discussion for the audiofacet"><label class="field-label">Discussion</label></a>
+                    <div class="discussion">
+                        {% if audiocomments %}
+                        <div class="row">
+                        {% for comment in audiocomments %}
+                          <div class="col-md-10">
+                            <p>{{ comment.text }}</p>
+                            <p class="tiny-text">{{ comment.date|date:'D M j g:i a' }}</p>
+                          </div>
+                          <div class="col-md-2">
+                            <img class="media-object img-circle" width="32" src="/static/images/faces/face23.jpg" alt="user">
+                            <p class="tiny-text">{{ comment.user.first_name }}</p>
+                          </div>
+                        {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    <a href="#" data-toggle="tooltip" title="Edit history for the audiofacet"><label class="field-label">Edit History</label></a>
+                    <div class="edit-history">
+                      {% if audiohistory %}
+                        {% for entry in audiohistory %}
+                        <p>{{ entry.history_date }}
+                        {% endfor %}
+                      {% endif %}
+                    </div>
                   <input type="submit" name="audioform" value="Submit" />
+                  </div>
+                  <!-- End of Right Column -->
                 </form>
               </div>
             </div>
@@ -278,9 +596,168 @@
               <div class="col-md-12">
                 <form method="POST" class="post-form">
                   {% csrf_token %}
-                  {% bootstrap_form videoform %}
 
+                  <!-- Left Column -->
+                  <div class="col-md-2">
+
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ videoform.title.help_text }}"><span class="field-label">{{ videoform.title.label_tag }}</span></a>
+                      {{ videoform.title }}
+                      {% if videoform.title.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ videoform.title.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ videoform.code.help_text }}"><span class="field-label">{{ videoform.code.label_tag }}</span></a></br/>
+                      {{ videoform.code }}
+                      {% if videoform.code.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ videoform.code.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ videoform.credit.help_text }}"><span class="field-label">{{ videoform.credit.label_tag }}</span></a><br/>
+                      {{ videoform.credit }}
+                      {% if videoform.credit.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ videoform.credit.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ videoform.editor.help_text }}"><span class="field-label">{{ videoform.editor.label_tag }}</span></a><br/>
+                      {{ videoform.editor }}
+                      {% if videoform.editor.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ videoform.editor.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ videoform.wf_description.help_text }}"><span class="field-label">{{ videoform.vf_description.label_tag }}</span></a>
+                      {{ videoform.vf_description }}
+                      {% if videoform.vf_description.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ videoform.vf_description.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ videoform.excerpt.help_text }}"><span class="field-label">{{ videoform.excerpt.label_tag }}</span></a>
+                      {{ videoform.excerpt }}
+                      {% if videoform.excerpt.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ videoform.excerpt.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ videoform.length.help_text }}"><span class="field-label">{{ videoform.length.label_tag }}</span></a>
+                      {{ videoform.length }}
+                      {% if videoform.length.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ videoform.length.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ videoform.captions.help_text }}"><span class="field-label">{{ videoform.captions.label_tag }}</span></a>
+                      {{ videoform.captions }}
+                      {% if videoform.captions.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ videoform.captions.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ videoform.sharenote.help_text }}"><span class="field-label">{{ videoform.sharenote.label_tag }}</span></a>
+                      {{ videoform.sharenote }}
+                      {% if videoform.sharenote.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ videoform.sharenote.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+
+
+                  </div>
+                  <!-- End of Left Column -->
+
+                  <!-- Center Column -->
+                  <div class="col-md-8">
+
+                    <div class="form-group custom-form">
+                      {{ videoform.content }}
+                      {% if videoform.content.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ videoform.content.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+
+                  </div>
+                  <!-- End of Center Column -->
+                  <!-- Right Column -->
+                  <div class="col-md-2">
+
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ videoform.status.help_text }}"><span class="field-label">{{ videoform.status.label_tag }}</span></a>
+                      {{ videoform.status }}
+                      {% if videoform.status.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ videoform.status.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ videoform.due_edit.help_text }}"><span class="field-label">{{ videoform.due_edit.label_tag }}</span></a>
+                      {{ videoform.due_edit }}
+                      {% if videoform.due_edit.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ videoform.due_edit.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ videoform.run_date.help_text }}"><span class="field-label">{{ videoform.run_date.label_tag }}</span></a>
+                      {{ videoform.run_date }}
+                      {% if videoform.run_date.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ videoform.run_date.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <a href="#" data-toggle="tooltip" title="Discussion for the videofacet"><label class="field-label">Discussion</label></a>
+                    <div class="discussion">
+                        {% if videocomments %}
+                        <div class="row">
+                        {% for comment in videocomments %}
+                          <div class="col-md-10">
+                            <p>{{ comment.text }}</p>
+                            <p class="tiny-text">{{ comment.date|date:'D M j g:i a' }}</p>
+                          </div>
+                          <div class="col-md-2">
+                            <img class="media-object img-circle" width="32" src="/static/images/faces/face23.jpg" alt="user">
+                            <p class="tiny-text">{{ comment.user.first_name }}</p>
+                          </div>
+                        {% endfor %}
+                        </div>
+                        {% endif %}
+                    </div>
+                    <a href="#" data-toggle="tooltip" title="Edit history for the videofacet"><label class="field-label">Edit History</label></a>
+                    <div class="edit-history">
+                      {% if videohistory %}
+                        {% for entry in videohistory %}
+                        <p>{{ entry.history_date }}
+                        {% endfor %}
+                      {% endif %}
+                    </div>
                   <input type="submit" name="videoform" value="Submit" />
+                  </div>
+                  <!-- End of Right Column -->
                 </form>
               </div>
             </div>

@@ -356,17 +356,16 @@ def story_detail(request, pk):
     story = get_object_or_404(Story, pk=pk)
     team = story.team.all()
     notes = StoryNote.objects.filter(story=story)
-    webcomments = Comment.objects.filter(discussion_id=4).order_by('-date')
-    # printcomments = Comment.objects.filter(discussion_id=4).order_by('-date')
-    # audiocomments = Comment.objects.filter(discussion_id=4).order_by('-date')
-    # videocomments = Comment.objects.filter(discussion_id=4).order_by('-date')
 
 # ------------------------------ #
 #           webfacet             #
 # ------------------------------ #
+
     try:
         webfacet = get_object_or_404(WebFacet, story=story)
-        print webfacet
+        # retrieve discussion and comments
+        webfacetdiscussion = get_object_or_404(Discussion, id=webfacet.discussion.id)
+        webcomments = Comment.objects.filter(discussion=webfacetdiscussion).order_by('-date')
         # update an existing webfacet
         if request.method == "POST":
             print "IF POST"
@@ -411,6 +410,9 @@ def story_detail(request, pk):
 
     try:
         printfacet = get_object_or_404(PrintFacet, story=story)
+        # retrieve discussion and comments
+        printfacetdiscussion = get_object_or_404(Discussion, id=printfacet.discussion.id)
+        printcomments = Comment.objects.filter(discussion=printfacetdiscussion).order_by('-date')
         print "p1"
         # update an existing printfacet
         if request.method == "POST":
@@ -461,6 +463,9 @@ def story_detail(request, pk):
 
     try:
         audiofacet = get_object_or_404(AudioFacet, story=story)
+        # retrieve discussion and comments
+        audiofacetdiscussion = get_object_or_404(Discussion, id=audiofacet.discussion.id)
+        audiocomments = Comment.objects.filter(discussion=audiofacetdiscussion).order_by('-date')
         print "a1"
         # update an existing webfacet
         if request.method == "POST":
@@ -511,6 +516,9 @@ def story_detail(request, pk):
 
     try:
         videofacet = get_object_or_404(VideoFacet, story=story)
+        # retrieve discussion and comments
+        videofacetdiscussion = get_object_or_404(Discussion, id=videofacet.discussion.id)
+        videocomments = Comment.objects.filter(discussion=videofacetdiscussion).order_by('-date')
         print "v1"
         # update an existing printfacet
         if request.method == "POST":
@@ -561,8 +569,11 @@ def story_detail(request, pk):
         'webform': webform,
         'webcomments': webcomments,
         'printform': printform,
+        'printcomments': printcomments,
         'audioform': audioform,
+        'audiocomments': audiocomments,
         'videoform': videoform,
+        'videocomments': videocomments,
         # 'webhistory': webhistory,
         # 'printhistory': printhistory,
         # 'audiohistory': audiohistory,
