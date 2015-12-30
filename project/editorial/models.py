@@ -576,7 +576,7 @@ class WebFacet(models.Model):
         blank=True,
     )
 
-    content = models.TextField(
+    wf_content = models.TextField(
         help_text='Content of the webFacet.',
         blank=True,
     )
@@ -734,7 +734,7 @@ class PrintFacet(models.Model):
         blank=True,
     )
 
-    content = models.TextField(
+    pf_content = models.TextField(
         help_text='Content of the printfacet.',
         blank=True,
     )
@@ -892,7 +892,7 @@ class AudioFacet(models.Model):
         blank=True,
     )
 
-    content = models.TextField(
+    af_content = models.TextField(
         help_text='Content of the audiofacet.',
         blank=True,
     )
@@ -1051,7 +1051,7 @@ class VideoFacet(models.Model):
         blank=True,
     )
 
-    content = models.TextField(
+    vf_content = models.TextField(
         help_text='Content of the videofacet.',
         blank=True,
     )

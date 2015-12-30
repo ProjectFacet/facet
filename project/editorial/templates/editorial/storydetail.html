@@ -167,10 +167,10 @@
                   <div class="col-md-8">
 
                     <div class="form-group custom-form">
-                      {{ webform.content }}
-                      {% if webform.content.errors %}
+                      {{ webform.wf_content }}
+                      {% if webform.wf_content.errors %}
                         <div class="alert alert-warning" role="alert">
-                        {{ webform.content.errors }}
+                        {{ webform.wf_content.errors }}
                         </div>
                       {% endif %}
                     </div>
@@ -341,10 +341,10 @@
                   <div class="col-md-8">
 
                     <div class="form-group custom-form">
-                      {{ printform.content }}
-                      {% if printform.content.errors %}
+                      {{ printform.pf_content }}
+                      {% if printform.pf_content.errors %}
                         <div class="alert alert-warning" role="alert">
-                        {{ printform.content.errors }}
+                        {{ printform.pf_content.errors }}
                         </div>
                       {% endif %}
                     </div>
@@ -516,10 +516,10 @@
                   <div class="col-md-8">
 
                     <div class="form-group custom-form">
-                      {{ audioform.content }}
-                      {% if audioform.content.errors %}
+                      {{ audioform.af_content }}
+                      {% if audioform.af_content.errors %}
                         <div class="alert alert-warning" role="alert">
-                        {{ audioform.content.errors }}
+                        {{ audioform.af_content.errors }}
                         </div>
                       {% endif %}
                     </div>
@@ -690,10 +690,10 @@
                   <div class="col-md-8">
 
                     <div class="form-group custom-form">
-                      {{ videoform.content }}
-                      {% if videoform.content.errors %}
+                      {{ videoform.vf_content }}
+                      {% if videoform.vf_content.errors %}
                         <div class="alert alert-warning" role="alert">
-                        {{ videoform.content.errors }}
+                        {{ videoform.vf_content.errors }}
                         </div>
                       {% endif %}
                     </div>
@@ -767,8 +767,8 @@
       </div><!-- End tabs -->
     </div><!-- End row -->
 
-    <script>
-    $(".chosen-select").chosen()
-    </script>
+  <script>
+  $(".chosen-select").chosen()
+  </script>
 
 {% endblock %}

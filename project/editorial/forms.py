@@ -146,7 +146,7 @@ class WebFacetForm(forms.ModelForm):
         )
     )
 
-    content = forms.CharField(widget=TinyMCE(attrs={'rows':25}))
+    wf_content = forms.CharField(widget=TinyMCE(attrs={'rows':25}))
 
     class Meta:
         model = WebFacet
@@ -155,7 +155,7 @@ class WebFacetForm(forms.ModelForm):
             'title',
             'excerpt',
             'wf_description',
-            'content',
+            'wf_content',
             'length',
             'keywords',
             'status',
@@ -204,7 +204,7 @@ class PrintFacetForm(forms.ModelForm):
         )
     )
 
-    content = forms.CharField(widget=TinyMCE(attrs={'rows':25}))
+    pf_content = forms.CharField(widget=TinyMCE(attrs={'rows':25}))
 
     class Meta:
         model = PrintFacet
@@ -213,7 +213,7 @@ class PrintFacetForm(forms.ModelForm):
             'title',
             'excerpt',
             'pf_description',
-            'content',
+            'pf_content',
             'length',
             'keywords',
             'status',
@@ -262,7 +262,7 @@ class AudioFacetForm(forms.ModelForm):
         )
     )
 
-    content = forms.CharField(widget=TinyMCE(attrs={'rows':25}))
+    af_content = forms.CharField(widget=TinyMCE(attrs={'rows':25}))
 
     class Meta:
         model = AudioFacet
@@ -271,7 +271,7 @@ class AudioFacetForm(forms.ModelForm):
             'title',
             'excerpt',
             'af_description',
-            'content',
+            'af_content',
             'length',
             'keywords',
             'status',
@@ -320,7 +320,7 @@ class VideoFacetForm(forms.ModelForm):
         )
     )
 
-    content = forms.CharField(widget=TinyMCE(attrs={'rows':25}))
+    vf_content = forms.CharField(widget=TinyMCE(attrs={'rows':25}))
 
     class Meta:
         model = VideoFacet
@@ -329,7 +329,7 @@ class VideoFacetForm(forms.ModelForm):
             'title',
             'excerpt',
             'vf_description',
-            'content',
+            'vf_content',
             'length',
             'keywords',
             'status',
