@@ -4,7 +4,7 @@ from bootstrap3_datetime.widgets import DateTimePicker
 from django import forms
 from django.utils.safestring import mark_safe
 from django.contrib.auth import get_user_model
-from django.forms import Textarea, TextInput, RadioSelect
+from django.forms import Textarea, TextInput, RadioSelect, Select, NumberInput
 from datetimewidget.widgets import DateTimeWidget
 from tinymce.widgets import TinyMCE
 
@@ -168,12 +168,15 @@ class WebFacetForm(forms.ModelForm):
         ]
         widgets = {
             'credit': ArrayFieldSelectMultiple(
-                choices=User.objects.all(), attrs={'class': 'chosen-select'}),
+                choices=User.objects.all(), attrs={'class': 'chosen-select form-control'}),
             'title': Textarea(attrs={'rows':2}),
             'wf_description': Textarea(attrs={'rows':3}),
             'excerpt': Textarea(attrs={'rows':4}),
             'captions': Textarea(attrs={'rows':5}),
             'share_note': Textarea(attrs={'rows':5}),
+            'editor': Select(attrs={'class': 'form-control'}),
+            'status': Select(attrs={'class': 'form-control'}),
+            'length': NumberInput(attrs={'class': 'form-control'}),
         }
 
     class Media:
@@ -226,12 +229,15 @@ class PrintFacetForm(forms.ModelForm):
         ]
         widgets = {
             'credit': ArrayFieldSelectMultiple(
-                choices=User.objects.all(), attrs={'class': 'chosen-select'}),
+                choices=User.objects.all(), attrs={'class': 'chosen-select form-control'}),
             'title': Textarea(attrs={'rows':2}),
-            'pf_description': Textarea(attrs={'rows':3}),
+            'wf_description': Textarea(attrs={'rows':3}),
             'excerpt': Textarea(attrs={'rows':4}),
             'captions': Textarea(attrs={'rows':5}),
             'share_note': Textarea(attrs={'rows':5}),
+            'editor': Select(attrs={'class': 'form-control'}),
+            'status': Select(attrs={'class': 'form-control'}),
+            'length': NumberInput(attrs={'class': 'form-control'}),
         }
 
     class Media:
@@ -284,12 +290,15 @@ class AudioFacetForm(forms.ModelForm):
         ]
         widgets = {
             'credit': ArrayFieldSelectMultiple(
-                choices=User.objects.all(), attrs={'class': 'chosen-select'}),
+                choices=User.objects.all(), attrs={'class': 'chosen-select form-control'}),
             'title': Textarea(attrs={'rows':2}),
-            'af_description': Textarea(attrs={'rows':3}),
+            'wf_description': Textarea(attrs={'rows':3}),
             'excerpt': Textarea(attrs={'rows':4}),
             'captions': Textarea(attrs={'rows':5}),
             'share_note': Textarea(attrs={'rows':5}),
+            'editor': Select(attrs={'class': 'form-control'}),
+            'status': Select(attrs={'class': 'form-control'}),
+            'length': NumberInput(attrs={'class': 'form-control'}),
         }
 
     class Media:
@@ -342,12 +351,15 @@ class VideoFacetForm(forms.ModelForm):
         ]
         widgets = {
             'credit': ArrayFieldSelectMultiple(
-                choices=User.objects.all(), attrs={'class': 'chosen-select'}),
+                choices=User.objects.all(), attrs={'class': 'chosen-select form-control'}),
             'title': Textarea(attrs={'rows':2}),
-            'vf_description': Textarea(attrs={'rows':3}),
+            'wf_description': Textarea(attrs={'rows':3}),
             'excerpt': Textarea(attrs={'rows':4}),
             'captions': Textarea(attrs={'rows':5}),
             'share_note': Textarea(attrs={'rows':5}),
+            'editor': Select(attrs={'class': 'form-control'}),
+            'status': Select(attrs={'class': 'form-control'}),
+            'length': NumberInput(attrs={'class': 'form-control'}),
         }
 
     class Media:
