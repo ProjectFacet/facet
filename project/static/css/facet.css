@@ -179,12 +179,12 @@ input {
 }
 
 .navbar-center {
-    position: absolute;
-    width: 100%;
-    left: 0;
-    top: 0;
-    text-align: center;
-    margin: auto;
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+  text-align: center;
+  margin: auto;
   height:100%;
 }
 
@@ -262,4 +262,12 @@ input {
 
 .chosen-choices {
   width: 200px !important;
+}
+
+#wf-comment {
+  font-size: 12px;
+}
+
+.discussion, .comment {
+  margin-top: 10px;
 }

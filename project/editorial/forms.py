@@ -383,7 +383,43 @@ class WebFacetCommentForm(forms.ModelForm):
         model = Comment
         fields = ['text']
         widgets = {
-            'text': TextInput(
-                attrs={'id':'wf-comment', 'required': True, 'placeholder': 'Comment', 'class': 'form-control'}
+            'text': Textarea(
+                attrs={'id':'wf-comment', 'required': True, 'placeholder': 'Comment', 'class': 'form-control', 'rows':2}
+            ),
+        }
+
+class PrintFacetCommentForm(forms.ModelForm):
+    """ Comment form. """
+
+    class Meta:
+        model = Comment
+        fields = ['text']
+        widgets = {
+            'text': Textarea(
+                attrs={'id':'pf-comment', 'required': True, 'placeholder': 'Comment', 'class': 'form-control', 'rows':2}
+            ),
+        }
+
+class AudioFacetCommentForm(forms.ModelForm):
+    """ Comment form. """
+
+    class Meta:
+        model = Comment
+        fields = ['text']
+        widgets = {
+            'text': Textarea(
+                attrs={'id':'af-comment', 'required': True, 'placeholder': 'Comment', 'class': 'form-control', 'rows':2}
+            ),
+        }
+
+class VideoFacetCommentForm(forms.ModelForm):
+    """ Comment form. """
+
+    class Meta:
+        model = Comment
+        fields = ['text']
+        widgets = {
+            'text': Textarea(
+                attrs={'id':'vf-comment', 'required': True, 'placeholder': 'Comment', 'class': 'form-control', 'rows':2}
             ),
         }

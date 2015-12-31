@@ -181,8 +181,7 @@
                   <div class="col-md-2">
 
                     <div class="form-group custom-form">
-                      <a href="#" data-toggle="tooltip" title="{{ webform.status.help_text }}"><span class="field-label">{{ webform.status.label_tag }}</span></a>
-                      {{ webform.status }}
+                      <a href="#" data-toggle="tooltip" title="{{ webform.status.help_text }}"><span class="field-label">{{ webform.status.label_tag }}</span></a> {{ webform.status }}
                       {% if webform.status.errors %}
                         <div class="alert alert-warning" role="alert">
                         {{ webform.status.errors }}
@@ -211,8 +210,8 @@
                     <input type="submit" name="webform" value="Submit" />
                     </form>
 
-                    <a href="#" data-toggle="tooltip" title="Discussion for the webfacet"><label class="field-label">Discussion</label></a>
                     <div class="discussion">
+                    <a href="#" data-toggle="tooltip" title="Discussion for the webfacet"><label class="field-label">Discussion</label></a>
                         {% if webcomments %}
                           <div class="row">
                             {% for comment in webcomments %}
@@ -227,9 +226,11 @@
                             {% endfor %}
                           </div>
                         {% endif %}
+                    </div>
+                    <div class="comment">
                         <div class="row">
-                          <div class="col-md-12">
-                            <form action="/comment/new" method="POST" class="post-form form-inline" role="form">
+                          <form action="/webcomment/new" method="POST" class="post-form" role="form">
+                            <div class="col-md-10">
                                 {% csrf_token %}
                                 <div class="form-group">
                                 {{ webcommentform.text }}
@@ -240,15 +241,17 @@
                                   </div>
                                 {% endif %}
                                 <input type="hidden" name="story" value="{{ story.pk }}" />
+                            </div>
+                            <div class="col-md-2">
                                 <div class="form-group">
-                                  <button type="submit" class="btn btn-default" name="webcommentform">
+                                  <button type="submit" class="btn btn-default btn-sm" name="webcommentform">
                                       <i class="fa fa-paper-plane"></i>
                                   </button>
                                 </div>
                                 <!-- <input type="submit" name="webcommentform" value="Post Comment"/> -->
-                              </form>
                             </div>
-                          </div>
+                          </form>
+                        </div>
                       </div>
 
                     <a href="#" data-toggle="tooltip" title="Edit history for the webfacet"><label class="field-label">Edit History</label></a>
@@ -406,8 +409,12 @@
                         </div>
                       {% endif %}
                     </div>
-                    <a href="#" data-toggle="tooltip" title="Discussion for the printfacet"><label class="field-label">Discussion</label></a>
+                    <!-- End of PrintFacet Form -->
+                    <input type="submit" name="printform" value="Submit" />
+                    </form>
+
                     <div class="discussion">
+                      <a href="#" data-toggle="tooltip" title="Discussion for the printfacet"><label class="field-label">Discussion</label></a>
                         {% if printcomments %}
                         <div class="row">
                         {% for comment in printcomments %}
@@ -423,6 +430,33 @@
                         </div>
                         {% endif %}
                     </div>
+                    <div class="comment">
+                        <div class="row">
+                          <form action="/printcomment/new" method="POST" class="post-form" role="form">
+                            <div class="col-md-10">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                {{ printcommentform.text }}
+                                </div>
+                                {% if printcommentform.text.errors %}
+                                  <div class="alert alert-warning" role="alert">
+                                  {{ printcommentform.text.errors }}
+                                  </div>
+                                {% endif %}
+                                <input type="hidden" name="story" value="{{ story.pk }}" />
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                  <button type="submit" class="btn btn-default btn-sm" name="printcommentform">
+                                      <i class="fa fa-paper-plane"></i>
+                                  </button>
+                                </div>
+                                <!-- <input type="submit" name="printcommentform" value="Post Comment"/> -->
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+
                     <a href="#" data-toggle="tooltip" title="Edit history for the printfacet"><label class="field-label">Edit History</label></a>
                     <div class="edit-history">
                       {% if printhistory %}
@@ -431,10 +465,10 @@
                         {% endfor %}
                       {% endif %}
                     </div>
-                  <input type="submit" name="printform" value="Submit" />
+
                   </div>
                   <!-- End of Right Column -->
-                </form>
+
               </div>
             </div>
           </div>
@@ -581,9 +615,13 @@
                         </div>
                       {% endif %}
                     </div>
-                    <a href="#" data-toggle="tooltip" title="Discussion for the audiofacet"><label class="field-label">Discussion</label></a>
+                    <!-- End of AudioFacet form -->
+                    <input type="submit" name="audioform" value="Submit" />
+                    </form>
+
                     <div class="discussion">
-                        {% if audiocomments %}
+                    <a href="#" data-toggle="tooltip" title="Discussion for the audiofacet"><label class="field-label">Discussion</label></a>
+                      {% if audiocomments %}
                         <div class="row">
                         {% for comment in audiocomments %}
                           <div class="col-md-10">
@@ -598,6 +636,33 @@
                         </div>
                         {% endif %}
                     </div>
+                    <div class="comment">
+                        <div class="row">
+                          <form action="/audiocomment/new" method="POST" class="post-form" role="form">
+                            <div class="col-md-10">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                {{ audiocommentform.text }}
+                                </div>
+                                {% if audiocommentform.text.errors %}
+                                  <div class="alert alert-warning" role="alert">
+                                  {{ audiocommentform.text.errors }}
+                                  </div>
+                                {% endif %}
+                                <input type="hidden" name="story" value="{{ story.pk }}" />
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                  <button type="submit" class="btn btn-default btn-sm" name="audiocommentform">
+                                      <i class="fa fa-paper-plane"></i>
+                                  </button>
+                                </div>
+                                <!-- <input type="submit" name="audiocommentform" value="Post Comment"/> -->
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+
                     <a href="#" data-toggle="tooltip" title="Edit history for the audiofacet"><label class="field-label">Edit History</label></a>
                     <div class="edit-history">
                       {% if audiohistory %}
@@ -606,10 +671,9 @@
                         {% endfor %}
                       {% endif %}
                     </div>
-                  <input type="submit" name="audioform" value="Submit" />
+
                   </div>
                   <!-- End of Right Column -->
-                </form>
               </div>
             </div>
           </div>
@@ -755,9 +819,13 @@
                         </div>
                       {% endif %}
                     </div>
+                    <!-- End of VideoFacet Form -->
+                    <input type="submit" name="videoform" value="Submit" />
+                  </form>
+
+                  <div class="discussion">
                     <a href="#" data-toggle="tooltip" title="Discussion for the videofacet"><label class="field-label">Discussion</label></a>
-                    <div class="discussion">
-                        {% if videocomments %}
+                      {% if videocomments %}
                         <div class="row">
                         {% for comment in videocomments %}
                           <div class="col-md-10">
@@ -772,6 +840,33 @@
                         </div>
                         {% endif %}
                     </div>
+                    <div class="comment">
+                        <div class="row">
+                          <form action="/videocomment/new" method="POST" class="post-form" role="form">
+                            <div class="col-md-10">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                {{ videocommentform.text }}
+                                </div>
+                                {% if videocommentform.text.errors %}
+                                  <div class="alert alert-warning" role="alert">
+                                  {{ videocommentform.text.errors }}
+                                  </div>
+                                {% endif %}
+                                <input type="hidden" name="story" value="{{ story.pk }}" />
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                  <button type="submit" class="btn btn-default btn-sm" name="videocommentform">
+                                      <i class="fa fa-paper-plane"></i>
+                                  </button>
+                                </div>
+                                <!-- <input type="submit" name="videocommentform" value="Post Comment"/> -->
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+
                     <a href="#" data-toggle="tooltip" title="Edit history for the videofacet"><label class="field-label">Edit History</label></a>
                     <div class="edit-history">
                       {% if videohistory %}
@@ -780,10 +875,9 @@
                         {% endfor %}
                       {% endif %}
                     </div>
-                  <input type="submit" name="videoform" value="Submit" />
+
                   </div>
                   <!-- End of Right Column -->
-                </form>
               </div>
             </div>
           </div>

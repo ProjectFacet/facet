@@ -28,7 +28,10 @@ urlpatterns = [
     #----------------------------------------------------------------------#
     #   Comment URLS
     #----------------------------------------------------------------------#
-    url(r'^comment/new$', views.create_webcomment, name='create_webcomment'),
+    url(r'^webcomment/new$', views.create_webcomment, name='create_webcomment'),
+    url(r'^printcomment/new$', views.create_printcomment, name='create_printcomment'),
+    url(r'^audiocomment/new$', views.create_audiocomment, name='create_audiocomment'),
+    url(r'^videocomment/new$', views.create_videocomment, name='create_videocomment'),
     #----------------------------------------------------------------------#
     #   Organization URLS
     #----------------------------------------------------------------------#

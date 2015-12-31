@@ -16,7 +16,10 @@ from .forms import (
     AudioFacetForm,
     VideoFacetForm,
     AddToNetworkForm,
-    WebFacetCommentForm)
+    WebFacetCommentForm,
+    PrintFacetCommentForm,
+    AudioFacetCommentForm,
+    VideoFacetCommentForm)
 
 from models import (
     User,
@@ -366,7 +369,7 @@ def story_detail(request, pk):
         webfacet = get_object_or_404(WebFacet, story=story)
         # retrieve discussion and comments
         webfacetdiscussion = get_object_or_404(Discussion, id=webfacet.discussion.id)
-        webcomments = Comment.objects.filter(discussion=webfacetdiscussion).order_by('-date')
+        webcomments = Comment.objects.filter(discussion=webfacetdiscussion).order_by('-date')[:3]
         # retrieve history
         webhistory = webfacet.edit_history.all()[:5]
         # update an existing webfacet
@@ -415,23 +418,26 @@ def story_detail(request, pk):
         printfacet = get_object_or_404(PrintFacet, story=story)
         # retrieve discussion and comments
         printfacetdiscussion = get_object_or_404(Discussion, id=printfacet.discussion.id)
-        printcomments = Comment.objects.filter(discussion=printfacetdiscussion).order_by('-date')
+        printcomments = Comment.objects.filter(discussion=printfacetdiscussion).order_by('-date')[:3]
         # retrieve history
         printhistory = printfacet.edit_history.all()[:5]
         # update an existing printfacet
         if request.method == "POST":
             if 'printform' in request.POST:
                 printform = PrintFacetForm(data=request.POST, instance=printfacet)
+                printcommentform = PrintFacetCommentForm()
                 if printform.is_valid():
                     printfacet.save()
                     return redirect('story_detail', pk=story.pk)
         else:
             printform = PrintFacetForm(instance=printfacet)
+            printcommentform = PrintFacetCommentForm()
     except:
         # display form and save a new printfacet
         if request.method == "POST":
             if 'printform' in request.POST:
                 printform = PrintFacetForm(request.POST or None)
+                printcommentform = PrintFacetCommentForm()
                 if printform.is_valid():
                     printfacet = printform.save(commit=False)
                     printfacet.story = story
@@ -446,6 +452,7 @@ def story_detail(request, pk):
                     return redirect('story_detail', pk=story.pk)
         else:
             printform = PrintFacetForm()
+            printcommentform = PrintFacetCommentForm()
             # temp solution to unbound local error on first creation
             printcomments = []
             printhistory = []
@@ -458,23 +465,26 @@ def story_detail(request, pk):
         audiofacet = get_object_or_404(AudioFacet, story=story)
         # retrieve discussion and comments
         audiofacetdiscussion = get_object_or_404(Discussion, id=audiofacet.discussion.id)
-        audiocomments = Comment.objects.filter(discussion=audiofacetdiscussion).order_by('-date')
+        audiocomments = Comment.objects.filter(discussion=audiofacetdiscussion).order_by('-date')[:3]
         # retrieve history
         audiohistory = audiofacet.edit_history.all()[:5]
         # update an existing webfacet
         if request.method == "POST":
             if 'audioform' in request.POST:
                 audioform = AudioFacetForm(data=request.POST, instance=audiofacet)
+                audiocommentform = AudioFacetCommentForm()
                 if audioform.is_valid():
                     audiofacet.save()
                     return redirect('story_detail', pk=story.pk)
         else:
             audioform = AudioFacetForm(instance=audiofacet)
+            audiocommentform = AudioFacetCommentForm()
     except:
         # display form and save a new webfacet
         if request.method == "POST":
             if 'audioform' in request.POST:
                 audioform = AudioFacetForm(request.POST or None)
+                audiocommentform = AudioFacetCommentForm()
                 if audioform.is_valid():
                     audiofacet = audioform.save(commit=False)
                     audiofacet.story = story
@@ -489,6 +499,7 @@ def story_detail(request, pk):
                     return redirect('story_detail', pk=story.pk)
         else:
             audioform = AudioFacetForm()
+            audiocommentform = AudioFacetCommentForm()
             # temp solution to unbound local error on first creation
             audiocomments = []
             audiohistory = []
@@ -501,23 +512,26 @@ def story_detail(request, pk):
         videofacet = get_object_or_404(VideoFacet, story=story)
         # retrieve discussion and comments
         videofacetdiscussion = get_object_or_404(Discussion, id=videofacet.discussion.id)
-        videocomments = Comment.objects.filter(discussion=videofacetdiscussion).order_by('-date')
+        videocomments = Comment.objects.filter(discussion=videofacetdiscussion).order_by('-date')[:3]
         # retrieve history
         videohistory = videofacet.edit_history.all()[:5]
         # update an existing printfacet
         if request.method == "POST":
             if 'videoform' in request.POST:
                 videoform = VideoFacetForm(data=request.POST, instance=videofacet)
+                videocommentform = VideoFacetCommentForm()
                 if videoform.is_valid():
                     videofacet.save()
                     return redirect('story_detail', pk=story.pk)
         else:
             videoform = VideoFacetForm(instance=videofacet)
+            videocommentform = VideoFacetCommentForm()
     except:
         # display form and save a new printfacet
         if request.method == "POST":
             if 'videoform' in request.POST:
                 videoform = VideoFacetForm(request.POST or None)
+                videocommentform = VideoFacetCommentForm()
                 if videoform.is_valid():
                     videofacet = videoform.save(commit=False)
                     videofacet.story = story
@@ -532,6 +546,7 @@ def story_detail(request, pk):
                     return redirect('story_detail', pk=story.pk)
         else:
             videoform = VideoFacetForm()
+            videocommentform = VideoFacetCommentForm()
             # temp solution to unbound local error on first creation
             videocomments = []
             videohistory = []
@@ -546,12 +561,15 @@ def story_detail(request, pk):
         'printform': printform,
         'printcomments': printcomments,
         'printhistory': printhistory,
+        'printcommentform': printcommentform,
         'audioform': audioform,
         'audiocomments': audiocomments,
         'audiohistory': audiohistory,
+        'audiocommentform': audiocommentform,
         'videoform': videoform,
         'videocomments': videocomments,
         'videohistory': videohistory,
+        'videocommentform': videocommentform,
         })
 
 
@@ -582,15 +600,56 @@ def create_webcomment(request):
 
     if request.method == 'POST':
         comment_text = request.POST.get('text')
-        print "TEXT: ", comment_text
         story_id = request.POST.get('story')
         story = get_object_or_404(Story, id=story_id)
         webfacet = get_object_or_404(WebFacet, story=story)
-        print "WEBFACET: ", webfacet
         discussion = get_object_or_404(Discussion, id=webfacet.discussion.id)
-        print "DISCUSSION: ", discussion
         comment = Comment.objects.create_comment(user=request.user, discussion=discussion, text=comment_text)
-        print "COMMENT: ", comment
+        comment.save()
+
+        return redirect('story_detail', pk=story.id)
+
+
+def create_printcomment(request):
+    """ Regular form posting method."""
+
+    if request.method == 'POST':
+        comment_text = request.POST.get('text')
+        story_id = request.POST.get('story')
+        story = get_object_or_404(Story, id=story_id)
+        printfacet = get_object_or_404(PrintFacet, story=story)
+        discussion = get_object_or_404(Discussion, id=printfacet.discussion.id)
+        comment = Comment.objects.create_comment(user=request.user, discussion=discussion, text=comment_text)
+        comment.save()
+
+        return redirect('story_detail', pk=story.id)
+
+
+def create_audiocomment(request):
+    """ Regular form posting method."""
+
+    if request.method == 'POST':
+        comment_text = request.POST.get('text')
+        story_id = request.POST.get('story')
+        story = get_object_or_404(Story, id=story_id)
+        audiofacet = get_object_or_404(AudioFacet, story=story)
+        discussion = get_object_or_404(Discussion, id=audiofacet.discussion.id)
+        comment = Comment.objects.create_comment(user=request.user, discussion=discussion, text=comment_text)
+        comment.save()
+
+        return redirect('story_detail', pk=story.id)
+
+
+def create_videocomment(request):
+    """ Regular form posting method."""
+
+    if request.method == 'POST':
+        comment_text = request.POST.get('text')
+        story_id = request.POST.get('story')
+        story = get_object_or_404(Story, id=story_id)
+        videofacet = get_object_or_404(VideoFacet, story=story)
+        discussion = get_object_or_404(Discussion, id=videofacet.discussion.id)
+        comment = Comment.objects.create_comment(user=request.user, discussion=discussion, text=comment_text)
         comment.save()
 
         return redirect('story_detail', pk=story.id)
