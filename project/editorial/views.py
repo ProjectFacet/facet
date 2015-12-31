@@ -104,14 +104,26 @@ def team_list(request):
     adduserform = AddUserForm()
 
     networkusers = {}
-    org_id = request.user.organization_id
-    networkorgs = NetworkOrganization.objects.filter(organization_id=org_id)
-    print "NWORGS: ", networkorgs
-    for networkorg in networkorgs:
-        network = Network.objects.filter(name = networkorg.network  .name)
-        orgs = NetworkOrganization.objects.filter(network=network)
-    print "NWS: ", network
-    print "ORGS: ", orgs
+    networkorgs = NetworkOrganization.objects.filter(organization = request.user.organization)
+    print "NETWORKSORGS: ", networkorgs
+
+    everything = []
+    for item in networkorgs:
+        nwos = NetworkOrganization.objects.filter(network=item.network)
+        everything.extend(nwos)
+    print "EVERYTHING: ", everything
+
+
+
+
+
+    # networkorgs = NetworkOrganization.objects.filter(organization_id=org_id)
+    # print "NWORGS: ", networkorgs
+    # for networkorg in networkorgs:
+    #     network = Network.objects.filter(name = networkorg.network  .name)
+    #     orgs = NetworkOrganization.objects.filter(network=network)
+    # print "NWS: ", network
+    # print "ORGS: ", orgs
 
 
 
@@ -253,6 +265,8 @@ def user_detail(request, pk):
 
     user = get_object_or_404(User, pk=pk)
     user_stories = Story.objects.filter(owner=user)
+
+    content = user.get_user_content()
 
     return render(request, 'editorial/userdetail.html', {
         'user': user,

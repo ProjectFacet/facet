@@ -137,6 +137,31 @@ class User(AbstractUser):
     def __str__(self):
         return self.credit_name
 
+    def get_user_content(self):
+        """Return dictionary of all content user is associated with as
+        owner, editor, team or credit."""
+
+        user_content = {}
+
+        user_content['series_owner'] = Series.objects.filter(owner=self)
+        user_content['series_team'] = Series.objects.filter(team__id=self.pk)
+        user_content['story_owner'] = Story.objects.filter(owner=self)
+        user_content['story_team'] = Story.objects.filter(team__id=self.pk)
+        user_content['webfacet_owner'] = WebFacet.objects.filter(owner=self)
+        user_content['webfacet_editor'] = WebFacet.objects.filter(editor=self)
+        user_content['webfacet_credit'] = WebFacet.objects.filter(credit__id=self.pk)
+        user_content['printfacet_owner'] = PrintFacet.objects.filter(owner=self)
+        user_content['printfacet_editor'] = PrintFacet.objects.filter(editor=self)
+        user_content['printfacet_credit'] = PrintFacet.objects.filter(credit__id=self.pk)
+        user_content['audiofacet_owner'] = AudioFacet.objects.filter(owner=self)
+        user_content['audiofacet_editor'] = AudioFacet.objects.filter(editor=self)
+        user_content['audiofacet_credit'] = AudioFacet.objects.filter(credit__id=self.pk)
+        user_content['videofacet_owner'] = VideoFacet.objects.filter(owner=self)
+        user_content['videofacet_editor'] = VideoFacet.objects.filter(editor=self)
+        user_content['videofacet_credit'] = VideoFacet.objects.filter(credit__id=self.pk)
+
+        return user_content
+
     @property
     def description(self):
         return "{user}, {title}".format(
