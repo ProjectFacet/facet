@@ -49,7 +49,7 @@ urlpatterns = [
     #----------------------------------------------------------------------#
     #   Series URLS
     #----------------------------------------------------------------------#
-    url(r'^series/new$', views.series_new, name='series_new'),
+    url(r'^series/new/$', views.series_new, name='series_new'),
     url(r'^series$', views.series_list, name='series_list'),
     url(r'^series/(?P<pk>[0-9]+)/$', views.series_detail, name='series_detail'),
     url(r'^series/(?P<pk>[0-9]+)/edit/$', views.series_edit, name='series_edit'),
@@ -63,7 +63,7 @@ urlpatterns = [
     #----------------------------------------------------------------------#
     #   Network URLS
     #----------------------------------------------------------------------#
-    url(r'^network/new$', views.network_new, name='network_new'),
+    url(r'^network/new/$', views.network_new, name='network_new'),
     url(r'^network/(?P<pk>[0-9]+)/$', views.network_detail, name='network_detail'),
     url(r'^network/(?P<pk>[0-9]+)/edit/$', views.network_edit, name='network_edit'),
     url(r'^network/list$', views.network_list, name='network_list'),

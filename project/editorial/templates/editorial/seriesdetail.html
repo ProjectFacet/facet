@@ -7,9 +7,56 @@
 <h1 class="center">{{ series.name }}</h1>
     <div>
     {{series.series_description}}
+    <a href="{% url 'series_edit' pk=series.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+    </div>
+    <div class="row">
+      <div class="col-md-10"></div>
+      <div class="col-md-2">
+        <div class="discussion">
+        <a href="#" data-toggle="tooltip" title="Discussion for the webfacet"><label class="field-label">Discussion</label></a>
+            {% if seriescomments %}
+              <div class="row">
+                {% for comment in seriescomments %}
+                  <div class="col-md-10">
+                    <p>{{ comment.text }}</p>
+                    <p class="tiny-text">{{ comment.date|date:'D M j g:i a' }}</p>
+                  </div>
+                  <div class="col-md-2">
+                    <img class="media-object img-circle" width="32" src="/static/images/faces/face23.jpg" alt="user">
+                    <p class="tiny-text">{{ comment.user.first_name }}</p>
+                  </div>
+                {% endfor %}
+              </div>
+            {% endif %}
+        </div>
+        <div class="comment">
+            <div class="row">
+              <form action="/seriescomment/new" method="POST" class="post-form" role="form">
+                <div class="col-md-10">
+                    {% csrf_token %}
+                    <div class="form-group">
+                    {{ seriescommentform.text }}
+                    </div>
+                    {% if seriescommentform.text.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ seriescommentform.text.errors }}
+                      </div>
+                    {% endif %}
+                    <input type="hidden" name="story" value="{{ story.pk }}" />
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                      <button type="submit" class="btn btn-default btn-sm" name="seriescommentform">
+                          <i class="fa fa-paper-plane"></i>
+                      </button>
+                    </div>
+                    <!-- <input type="submit" name="seriescommentform" value="Post Comment"/> -->
+                </div>
+              </form>
+            </div>
+          </div>
+      </div>
+
     </div>
 
-    <div>
-  <a href="{% url 'series_edit' pk=series.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
-    </div>
 {% endblock %}

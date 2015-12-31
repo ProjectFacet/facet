@@ -271,3 +271,7 @@ input {
 .discussion, .comment {
   margin-top: 10px;
 }
+
+.modal-title {
+  color: #3D4D65;
+}

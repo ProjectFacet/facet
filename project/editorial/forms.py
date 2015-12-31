@@ -4,7 +4,7 @@ from bootstrap3_datetime.widgets import DateTimePicker
 from django import forms
 from django.utils.safestring import mark_safe
 from django.contrib.auth import get_user_model
-from django.forms import Textarea, TextInput, RadioSelect, Select, NumberInput
+from django.forms import Textarea, TextInput, RadioSelect, Select, NumberInput, CheckboxInput
 from datetimewidget.widgets import DateTimeWidget
 from tinymce.widgets import TinyMCE
 
@@ -42,12 +42,20 @@ class ArrayFieldSelectMultiple(forms.SelectMultiple):
 #          User Forms            #
 # ------------------------------ #
 
-class UserForm(forms.ModelForm):
+class AddUserForm(forms.ModelForm):
+    """ Handles creating users for an organization."""
+
+    class Meta:
+        model = User
+        fields = ['email', 'password', 'is_superuser', 'is_staff']
+
+
+class UserProfileForm(forms.ModelForm):
     """ Handle a user completing their profile."""
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'credit_name', 'title', 'phone', 'bio',
+        fields = ['first_name', 'last_name', 'username', 'credit_name', 'title', 'phone', 'bio',
                  'expertise', 'facebook', 'twitter', 'linkedin', 'instagram', 'snapchat', 'vine',]
 
 # ------------------------------ #

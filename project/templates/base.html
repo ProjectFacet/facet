@@ -131,6 +131,8 @@
                     <li class="divider"></li>
                     {% if request.user.organization %}
                     <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'org_detail' pk=request.user.organization.id %}"><span class="pull-right"><i class="fa fa-home text-muted"></i></span>Organization</a></li>
+                    {% endif %}
+                    {% if request.user.organization.owner = request.user %}
                     <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'org_edit' pk=request.user.organization.id %}"><span class="pull-right"><i class="fa fa-pencil text-muted"></i></span>Edit Organization</a></li>
                     {% endif %}
                     <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'org_new' %}"><span class="pull-right"><i class="fa fa-users text-muted"></i></span>Create Organization</a></li>

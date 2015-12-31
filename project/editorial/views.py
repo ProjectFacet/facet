@@ -6,7 +6,8 @@ import datetime
 import json
 
 from .forms import (
-    UserForm,
+    AddUserForm,
+    UserProfileForm,
     CreateOrganization,
     NetworkForm,
     SeriesForm,
@@ -68,11 +69,24 @@ def dashboard(request):
     Displays log of other user activity since last_login
     Ex: Oliver Q. added "Dhark Indicted" to Story: "Star City Organized Crime Leader Arrested"
     """
-    # query for new comments since last_login from any discussions the user has participated
+    # query for new comments since last_login from any discussions the user has participated in
+    comments = Comment.objects.filter(user_id = request.user.id)
+    discussions = []
+    for comment in comments:
+      discussion = Discussion.objects.filter(id = comment.discussion_id)
+      discussions.extend(discussion)
+    recent_comments = []
+    for discussion in set(discussions):
+      recent_comment = Comment.objects.filter(discussion = discussion, date__gte=request.user.last_login)
+      recent_comments.extend(recent_comment)
+
     # query for any new content created since last_login
+
+
+
     # query for other user activity since last_login
 
-    # return dashboard view for logged in user.
+
     return render(request, 'editorial/dashboard.html')
 
 #----------------------------------------------------------------------#
@@ -86,11 +100,34 @@ def team_list(request):
     Displays team members from any network that the user's organization is part of.
     """
 
-    org_team = User.objects.filter(organization=request.user.organization)
-    print "ORG TEAM: ", org_team
+    org_team = User.objects.filter(organization=request.user.organization).order_by()
+    adduserform = AddUserForm()
+
+    networkusers = {}
+    org_id = request.user.organization_id
+    networkorgs = NetworkOrganization.objects.filter(organization_id=org_id)
+    print "NWORGS: ", networkorgs
+    for networkorg in networkorgs:
+        network = Network.objects.filter(name = networkorg.network  .name)
+        orgs = NetworkOrganization.objects.filter(network=network)
+    print "NWS: ", network
+    print "ORGS: ", orgs
+
+
+
+        # networkusers[nwo.network.name] = {nwo.organization.name:[]}
+        # users = User.objects.filter(organization=nwo.organization)
+        # for user in users:
+        #     if user.organization in networkusers[nwo.network.name]:
+        #         networkusers[nwo.network.name][nwo.organization.name].append(user)
+        #     else:
+        #         networkusers[nwo.network.name][nwo.organization.name] = [user]
+    print "DID IT WORK: ", networkusers
 
     return render(request, 'editorial/team.html', {
-        'org_team': org_team
+        'org_team': org_team,
+        'adduserform': adduserform,
+        'networkusers': networkusers,
         })
 
 #----------------------------------------------------------------------#
@@ -111,8 +148,8 @@ def discussion(request):
       discussion = Discussion.objects.filter(id = comment.discussion_id)
       discussions.extend(discussion)
     recent_comments = []
-    for discussion in discussions:
-      recent_comment = Comment.objects.filter(discussion = discussion, date__gte=request.user.last_login)
+    for discussion in set(discussions):
+      recent_comment = Comment.objects.filter(discussion = discussion).order_by('-date')
       recent_comments.extend(recent_comment)
 
     print recent_comments
@@ -120,6 +157,12 @@ def discussion(request):
     return render(request, 'editorial/discussion.html', {
         'recent_comments': recent_comments,
     })
+
+#----------------------------------------------------------------------#
+#   Schedule Views
+#----------------------------------------------------------------------#
+
+
 
 #----------------------------------------------------------------------#
 #   Organization Views
@@ -189,15 +232,15 @@ def org_edit(request, pk):
 def user_new(request):
     """ Quick form for making a new user and inviting them to login. """
 
-    form = UserForm()
     if request.method == "POST":
-        form = UserForm(request.POST or None)
+        form = AddUserForm(request.POST or None)
         if form.is_valid():
             user = form.save(commit=False)
+            user.organization = request.user.organization
             user.save()
-            return redirect('user_detail', pk=user.pk)
+            return redirect('team_list')
     else:
-        form=UserForm()
+        form=AddUserForm()
     return render(request, 'editorial/usernew.html', {'form': form})
 
 
@@ -223,12 +266,12 @@ def user_edit(request, pk):
     user = get_object_or_404(User, pk=pk)
 
     if request.method == "POST":
-        form = UserForm(data=request.POST, instance=user)
+        form = UserProfileForm(data=request.POST, instance=user)
         if form.is_valid():
             form.save()
             return redirect('user_detail', pk = user.id)
     else:
-        form = UserForm(instance=user)
+        form = UserProfileForm(instance=user)
 
     return render(request, 'editorial/useredit.html', {
             'user': user,
@@ -288,9 +331,12 @@ def series_detail(request, pk):
 
     series = get_object_or_404(Series, pk=pk)
     seriescommentform = SeriesCommentForm()
+    seriesdiscussion = get_object_or_404(Discussion, id=series.discussion.id)
+    seriescomments = Comment.objects.filter(discussion=seriesdiscussion).order_by('-date')
 
     return render(request, 'editorial/seriesdetail.html', {
         'series': series,
+        'seriescomments': seriescomments,
         'seriescommentform': seriescommentform,
     })
 

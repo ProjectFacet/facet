@@ -5,15 +5,53 @@
 
 {% block content %}
 
-<h1>Team Dashboard</h1>
+<h1 class="center">Team Dashboard</h1>
 
-{% for user in org_team %}
+<div class="row">
+  <div class="col-md-6">
+    <h2 class="center">{{ request.user.organization }}</h2>
 
-    <ul>
-        <li><a href="{% url 'user_detail' pk=user.id %}">{{user.credit_name}}</a></li>
-    </ul>
+    <a href="#"><i class="fa fa-plus" data-toggle="modal" data-target="#myModal"></i></a>
+    {% for user in org_team %}
+        <ul>
+            <li>
+              {% if user.credit_name %}
+              <a href="{% url 'user_detail' pk=user.id %}">{{user.credit_name}}</a>
+              {% else %}
+              <a href="{% url 'user_detail' pk=user.id %}">{{user.email}}</a>
+              {% endif %}
+            </li>
+        </ul>
+    {% endfor %}
+  </div>
+  <div class="col-md-6">
+    <h2 class="center">Network Teams</h2>
+      
+  </div>
+</div>
 
-{% endfor %}
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Add a user to your team</h4>
+      </div>
+      <div class="modal-body">
+        <form action="/user/new/" method="POST" class="post-form">
+        {% csrf_token %}
+        {% bootstrap_form adduserform %}
+        <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>
+
 
 
 {% endblock %}
