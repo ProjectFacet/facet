@@ -376,6 +376,32 @@ class VideoFacetForm(forms.ModelForm):
 #         Comment Forms          #
 # ------------------------------ #
 
+class SeriesCommentForm(forms.ModelForm):
+    """ Comment form. """
+
+    class Meta:
+        model = Comment
+        fields = ['text']
+        widgets = {
+            'text': Textarea(
+                attrs={'id':'series-comment', 'required': True, 'placeholder': 'Comment', 'class': 'form-control', 'rows':2}
+            ),
+        }
+
+
+class StoryCommentForm(forms.ModelForm):
+    """ Comment form. """
+
+    class Meta:
+        model = Comment
+        fields = ['text']
+        widgets = {
+            'text': Textarea(
+                attrs={'id':'story-comment', 'required': True, 'placeholder': 'Comment', 'class': 'form-control', 'rows':2}
+            ),
+        }
+
+
 class WebFacetCommentForm(forms.ModelForm):
     """ Comment form. """
 

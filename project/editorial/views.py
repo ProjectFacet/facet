@@ -16,6 +16,8 @@ from .forms import (
     AudioFacetForm,
     VideoFacetForm,
     AddToNetworkForm,
+    SeriesCommentForm,
+    StoryCommentForm,
     WebFacetCommentForm,
     PrintFacetCommentForm,
     AudioFacetCommentForm,
@@ -285,8 +287,12 @@ def series_detail(request, pk):
     """
 
     series = get_object_or_404(Series, pk=pk)
+    seriescommentform = SeriesCommentForm()
 
-    return render(request, 'editorial/seriesdetail.html', {'series': series})
+    return render(request, 'editorial/seriesdetail.html', {
+        'series': series,
+        'seriescommentform': seriescommentform,
+    })
 
 
 def series_edit(request, pk):
@@ -358,6 +364,9 @@ def story_detail(request, pk):
     """
 
     story = get_object_or_404(Story, pk=pk)
+    storycommentform = StoryCommentForm()
+    storydiscussion = get_object_or_404(Discussion, id=story.discussion.id)
+    storycomments = Comment.objects.filter(discussion=storydiscussion).order_by('-date')
     team = story.team.all()
     notes = StoryNote.objects.filter(story=story)
 
@@ -553,6 +562,8 @@ def story_detail(request, pk):
 
     return render(request, 'editorial/storydetail.html', {
         'story': story,
+        'storycommentform': storycommentform,
+        'storycomments': storycomments,
         'team': team,
         'webform': webform,
         'webcomments': webcomments,
@@ -594,6 +605,33 @@ def story_edit(request, pk):
 #----------------------------------------------------------------------#
 #   Comments Views
 #----------------------------------------------------------------------#
+
+def create_seriescomment(request):
+    """ Regular form posting method."""
+
+    if request.method == 'POST':
+        comment_text = request.POST.get('text')
+        series_id = request.POST.get('series')
+        series = get_object_or_404(Story, id=series_id)
+        discussion = get_object_or_404(Discussion, id=series.discussion.id)
+        comment = Comment.objects.create_comment(user=request.user, discussion=discussion, text=comment_text)
+        comment.save()
+
+        return redirect('story_detail', pk=story.id)
+
+
+def create_storycomment(request):
+    """ Regular form posting method."""
+
+    if request.method == 'POST':
+        comment_text = request.POST.get('text')
+        story_id = request.POST.get('story')
+        story = get_object_or_404(Story, id=story_id)
+        discussion = get_object_or_404(Discussion, id=story.discussion.id)
+        comment = Comment.objects.create_comment(user=request.user, discussion=discussion, text=comment_text)
+        comment.save()
+
+        return redirect('story_detail', pk=story.id)
 
 def create_webcomment(request):
     """ Regular form posting method."""

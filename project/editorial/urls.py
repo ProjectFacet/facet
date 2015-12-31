@@ -28,6 +28,8 @@ urlpatterns = [
     #----------------------------------------------------------------------#
     #   Comment URLS
     #----------------------------------------------------------------------#
+    url(r'^seriescomment/new$', views.create_seriescomment, name='create_seriescomment'),
+    url(r'^storycomment/new$', views.create_storycomment, name='create_storycomment'),
     url(r'^webcomment/new$', views.create_webcomment, name='create_webcomment'),
     url(r'^printcomment/new$', views.create_printcomment, name='create_printcomment'),
     url(r'^audiocomment/new$', views.create_audiocomment, name='create_audiocomment'),

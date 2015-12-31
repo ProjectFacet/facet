@@ -48,7 +48,7 @@
         <!-- ================================================= -->
           <div role="tabpanel" class="tab-pane" id="storydetail">
             <div class="row">
-              <div class="col-md-12">
+              <div class="col-md-10">
                 <h2>{{ story.name }}</h2>
                     <h4>Description</h4>
                     <p>{{story.story_description}}</p>
@@ -61,6 +61,51 @@
                     <div>
                     <a href="{% url 'story_edit' pk=story.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
                     </div>
+              </div>
+              <div class="col-md-2">
+                <div class="discussion">
+                <a href="#" data-toggle="tooltip" title="Discussion for the webfacet"><label class="field-label">Discussion</label></a>
+                    {% if storycomments %}
+                      <div class="row">
+                        {% for comment in storycomments %}
+                          <div class="col-md-10">
+                            <p>{{ comment.text }}</p>
+                            <p class="tiny-text">{{ comment.date|date:'D M j g:i a' }}</p>
+                          </div>
+                          <div class="col-md-2">
+                            <img class="media-object img-circle" width="32" src="/static/images/faces/face23.jpg" alt="user">
+                            <p class="tiny-text">{{ comment.user.first_name }}</p>
+                          </div>
+                        {% endfor %}
+                      </div>
+                    {% endif %}
+                </div>
+                <div class="comment">
+                    <div class="row">
+                      <form action="/storycomment/new" method="POST" class="post-form" role="form">
+                        <div class="col-md-10">
+                            {% csrf_token %}
+                            <div class="form-group">
+                            {{ storycommentform.text }}
+                            </div>
+                            {% if storycommentform.text.errors %}
+                              <div class="alert alert-warning" role="alert">
+                              {{ storycommentform.text.errors }}
+                              </div>
+                            {% endif %}
+                            <input type="hidden" name="story" value="{{ story.pk }}" />
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                              <button type="submit" class="btn btn-default btn-sm" name="storycommentform">
+                                  <i class="fa fa-paper-plane"></i>
+                              </button>
+                            </div>
+                            <!-- <input type="submit" name="webcommentform" value="Post Comment"/> -->
+                        </div>
+                      </form>
+                    </div>
+                  </div>
               </div>
             </div>
           </div>
