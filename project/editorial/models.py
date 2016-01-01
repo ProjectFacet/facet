@@ -237,6 +237,20 @@ class Organization(models.Model):
 
         return organization_users
 
+    def get_org_networks(self):
+        """ Return list of all the networks that an organization is owner of or member of."""
+
+        organization_networks = {}
+        organization_networks['organization'] = self
+        organization_networks['network_owner'] = Network.objects.filter(owner_organization=self)
+        organization_networks['network_member'] = []
+        network_orgs = NetworkOrganization.objects.filter(organization = self)
+        for item in network_orgs:
+            network = item.network
+            organization_networks['network_member'].append(network)
+
+        return organization_networks
+
     @property
     def description(self):
         return "{organization}, {description}".format(
@@ -305,8 +319,8 @@ class Network(models.Model):
         networkorgs = NetworkOrganization.objects.filter(network=self)
 
         for item in networkorgs:
-            org = get_object_or_404(Organization, id=item.organization.id)
-            network_organizations['organizations'].append(org)
+            org = Organization.objects.filter(id=item.organization.id)
+            network_organizations['organizations'].extend(org)
 
         return network_organizations
 
@@ -347,9 +361,6 @@ class NetworkOrganization(models.Model):
 #----------------------------------------------------------------------#
 
 # A Facet is always part of a story, even if there is only one facet.
-# A story is always part of a Series, even if it's a series of one.
-# (This helps maintain organization of assets as a series level for maximum flexibility.)
-
 
 class Series(models.Model):
     """ A specific series.

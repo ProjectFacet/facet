@@ -86,7 +86,6 @@ def dashboard(request):
 
     # query for other user activity since last_login
 
-
     return render(request, 'editorial/dashboard.html')
 
 #----------------------------------------------------------------------#
@@ -100,46 +99,35 @@ def team_list(request):
     Displays team members from any network that the user's organization is part of.
     """
 
-    org_team = User.objects.filter(organization=request.user.organization).order_by()
+    # the user's organization
+    organization = request.user.organization
+    org_team = Organization.get_org_users(organization)
+    # users from organizations in networks that the logged in user's Organization is a member of
+    network_users = {}
+    org_networks = Organization.get_org_networks(organization)
+    networks = []
+    for item in org_networks['network_owner']:
+        networks.append(item)
+    for item in org_networks['network_member']:
+        networks.append(item)
+    unique_networks = set(networks)
+    for network in unique_networks:
+        orgdict = Network.get_network_organizations(network)
+        network_users[str(network.name)] = {}
+        for org in orgdict['organizations']:
+            orguserdict = Organization.get_org_users(org)
+            print orguserdict['users']
+            network_users[str(network.name)][str(org.name)]=orguserdict['users']
+    # form for adding a new user to the team
+    # only visible for admin users
     adduserform = AddUserForm()
 
-    networkusers = {}
-    networkorgs = NetworkOrganization.objects.filter(organization = request.user.organization)
-    print "NETWORKSORGS: ", networkorgs
 
-    everything = []
-    for item in networkorgs:
-        nwos = NetworkOrganization.objects.filter(network=item.network)
-        everything.extend(nwos)
-    print "EVERYTHING: ", everything
-
-
-
-
-
-    # networkorgs = NetworkOrganization.objects.filter(organization_id=org_id)
-    # print "NWORGS: ", networkorgs
-    # for networkorg in networkorgs:
-    #     network = Network.objects.filter(name = networkorg.network  .name)
-    #     orgs = NetworkOrganization.objects.filter(network=network)
-    # print "NWS: ", network
-    # print "ORGS: ", orgs
-
-
-
-        # networkusers[nwo.network.name] = {nwo.organization.name:[]}
-        # users = User.objects.filter(organization=nwo.organization)
-        # for user in users:
-        #     if user.organization in networkusers[nwo.network.name]:
-        #         networkusers[nwo.network.name][nwo.organization.name].append(user)
-        #     else:
-        #         networkusers[nwo.network.name][nwo.organization.name] = [user]
-    print "DID IT WORK: ", networkusers
 
     return render(request, 'editorial/team.html', {
         'org_team': org_team,
         'adduserform': adduserform,
-        'networkusers': networkusers,
+        # 'networkusers': networkusers,
         })
 
 #----------------------------------------------------------------------#
@@ -215,6 +203,8 @@ def org_detail(request, pk):
     """
 
     organization = get_object_or_404(Organization, pk=pk)
+
+    users = Organization.get_org_users(organization)
 
     return render(request, 'editorial/organizationdetail.html', {'organization': organization})
 

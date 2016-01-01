@@ -12,7 +12,7 @@
     <h2 class="center">{{ request.user.organization }}</h2>
 
     <a href="#"><i class="fa fa-plus" data-toggle="modal" data-target="#myModal"></i></a>
-    {% for user in org_team %}
+    {% for user in org_team.users %}
         <ul>
             <li>
               {% if user.credit_name %}
@@ -26,7 +26,7 @@
   </div>
   <div class="col-md-6">
     <h2 class="center">Network Teams</h2>
-      
+
   </div>
 </div>
 
