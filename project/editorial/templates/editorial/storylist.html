@@ -22,14 +22,14 @@
         </tr>
       </thead>
       <tbody>
-        {% for story in stories %}
+        {% for facet in storyfacets %}
         <tr>
-          <th>{{ }}</th>
-          <th>{{ }}</th>
-          <th>{{ }}</th>
-          <th>{{ }}</th>
-          <th>{{ }}</th>
-          <th>{{ }}</th>
+          <th><a href="{% url 'story_detail' pk=facet.story.id %}">{{ facet.story.name }}</a></th>
+          <th>{{ facet.facet_type}}</th>
+          <th>{{ facet.title }}</th>
+          <th>{{ facet.owner.credit_name }}</th>
+          <th>{{ facet.due_edit|date:'n/j, g:i a' }}</th>
+          <th>{{ facet.run_date|date:'n/j, g:i a'}}</th>
         </tr>
         {% endfor %}
       </tbody>

@@ -77,16 +77,27 @@ def dashboard(request):
       discussions.extend(discussion)
     recent_comments = []
     for discussion in set(discussions):
-      recent_comment = Comment.objects.filter(discussion = discussion, date__gte=request.user.last_login)
+      # --------------------------------------------------------------------------------#
+      # query for production code but not helpful for development
+      # recent_comment = Comment.objects.filter(discussion = discussion, date__gte=request.user.last_login)
+      # --------------------------------------------------------------------------------#
+      recent_comment = Comment.objects.filter(discussion = discussion).order_by('-date')
       recent_comments.extend(recent_comment)
 
     # query for any new content created since last_login
 
-    stories = Story.objects.filter(creation_date__gte=request.user.last_login)
+    # --------------------------------------------------------------------------------#
+    #actual query needed but not helpful for development
+    # stories = Story.objects.filter(creation_date__gte=request.user.last_login)
+    # --------------------------------------------------------------------------------#
+    stories = Story.objects.filter(original_org = request.user.organization)
 
     # query for other user activity since last_login
 
-    return render(request, 'editorial/dashboard.html')
+    return render(request, 'editorial/dashboard.html', {
+        'recent_comments': recent_comments,
+        'stories': stories,
+    })
 
 #----------------------------------------------------------------------#
 #   Team Views
@@ -377,7 +388,19 @@ def story_list(request):
 
     stories = Story.objects.all()
 
-    return render(request, 'editorial/storylist.html', {'stories': stories})
+    storyfacets = []
+    for story in stories:
+        storyfacets.extend(WebFacet.objects.filter(story_id=story.id))
+        storyfacets.extend(PrintFacet.objects.filter(story_id=story.id))
+        storyfacets.extend(AudioFacet.objects.filter(story_id=story.id))
+        storyfacets.extend(VideoFacet.objects.filter(story_id=story.id))
+    print "STORYFACETS: ", storyfacets
+
+    return render(request, 'editorial/storylist.html', {
+        'stories': stories,
+        'storyfacets': storyfacets,
+        }
+    )
 
 
 def story_new(request):
@@ -912,14 +935,10 @@ def network_stories(request):
 
     networkstoryfacets = []
     for story in networkstories:
-        webfacet = WebFacet.objects.filter(story_id=story.id)
-        printfacet = PrintFacet.objects.filter(story_id=story.id)
-        audiofacet = AudioFacet.objects.filter(story_id=story.id)
-        videofacet = VideoFacet.objects.filter(story_id=story.id)
-        networkstoryfacets.extend(webfacet)
-        networkstoryfacets.extend(printfacet)
-        networkstoryfacets.extend(audiofacet)
-        networkstoryfacets.extend(videofacet)
+        networkstoryfacets.extend(WebFacet.objects.filter(story_id=story.id))
+        networkstoryfacets.extend(PrintFacet.objects.filter(story_id=story.id))
+        networkstoryfacets.extend(AudioFacet.objects.filter(story_id=story.id))
+        networkstoryfacets.extend(VideoFacet.objects.filter(story_id=story.id))
     print "ERRM, Maybe? ", networkstoryfacets
 
     return render(request, 'editorial/networkstories.html', {
