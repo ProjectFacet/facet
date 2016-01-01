@@ -228,6 +228,15 @@ class Organization(models.Model):
     def __str__(self):
         return self.name
 
+    def get_org_users(self):
+        """ Return dictionary of all users in an organization."""
+
+        organization_users = {}
+        organization_users['organization'] = self
+        organization_users['users'] = User.objects.filter(organization=self)
+
+        return organization_users
+
     @property
     def description(self):
         return "{organization}, {description}".format(
@@ -285,6 +294,21 @@ class Network(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_network_organizations(self):
+        """ Return dictionary of all organizations that are part of a network. """
+
+        network_organizations = {}
+        network_organizations['network'] = self
+        network_organizations['organizations'] = []
+
+        networkorgs = NetworkOrganization.objects.filter(network=self)
+
+        for item in networkorgs:
+            org = get_object_or_404(Organization, id=item.organization.id)
+            network_organizations['organizations'].append(org)
+
+        return network_organizations
 
     @property
     def description(self):

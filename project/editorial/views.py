@@ -841,7 +841,6 @@ def network_detail(request, pk):
     """ Public profile of a network. """
 
     network = get_object_or_404(Network, pk=pk)
-    print network
 
     return render(request, 'editorial/networkdetail.html', {'network': network})
 
