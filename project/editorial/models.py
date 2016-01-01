@@ -482,6 +482,12 @@ class Story(models.Model):
         help_text='User who created the story'
     )
 
+    original_org = models.ForeignKey(
+        Organization,
+        related_name='story_org',
+        help_text="Organization the story was originally created by."
+    )
+
     name = models.CharField(
         max_length=250,
         help_text='The name by which the story is identified'

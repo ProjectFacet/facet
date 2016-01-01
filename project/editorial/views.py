@@ -82,7 +82,7 @@ def dashboard(request):
 
     # query for any new content created since last_login
 
-
+    stories = Story.objects.filter(creation_date__gte=request.user.last_login)
 
     # query for other user activity since last_login
 
@@ -103,7 +103,7 @@ def team_list(request):
     organization = request.user.organization
     org_team = Organization.get_org_users(organization)
     # users from organizations in networks that the logged in user's Organization is a member of
-    network_users = {}
+    networkusers = {}
     org_networks = Organization.get_org_networks(organization)
     networks = []
     for item in org_networks['network_owner']:
@@ -113,21 +113,21 @@ def team_list(request):
     unique_networks = set(networks)
     for network in unique_networks:
         orgdict = Network.get_network_organizations(network)
-        network_users[str(network.name)] = {}
+        networkusers[str(network.name)] = {}
         for org in orgdict['organizations']:
             orguserdict = Organization.get_org_users(org)
-            print orguserdict['users']
-            network_users[str(network.name)][str(org.name)]=orguserdict['users']
+            users=orguserdict['users']
+            networkusers[str(network.name)]['orgs'] = {'org': org, 'users': users }
+            # networkusers[str(network.name)][str(org.name)]=orguserdict['users']
+    print "NETWORKUSERS: ", networkusers
     # form for adding a new user to the team
     # only visible for admin users
     adduserform = AddUserForm()
 
-
-
     return render(request, 'editorial/team.html', {
         'org_team': org_team,
         'adduserform': adduserform,
-        # 'networkusers': networkusers,
+        'networkusers': networkusers,
         })
 
 #----------------------------------------------------------------------#
@@ -391,6 +391,7 @@ def story_new(request):
     if form.is_valid():
         story = form.save(commit=False)
         story.owner = request.user
+        story.original_org = request.user.organization
         story.creation_date = timezone.now()
         discussion = Discussion.objects.create_discussion("STO")
         print discussion
