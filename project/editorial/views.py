@@ -77,22 +77,22 @@ def dashboard(request):
       discussions.extend(discussion)
     recent_comments = []
     for discussion in set(discussions):
-      # --------------------------------------------------------------------------------#
-      # query for production code but not helpful for development
-      # recent_comment = Comment.objects.filter(discussion = discussion, date__gte=request.user.last_login)
-      # --------------------------------------------------------------------------------#
+    # --------------------------------------------------------------------------------#
+    # actual query needed but not helpful for development
+    # recent_comment = Comment.objects.filter(discussion = discussion, date__gte=request.user.last_login)
+    # --------------------------------------------------------------------------------#
       recent_comment = Comment.objects.filter(discussion = discussion).order_by('-date')
       recent_comments.extend(recent_comment)
 
     # query for any new content created since last_login
 
     # --------------------------------------------------------------------------------#
-    #actual query needed but not helpful for development
+    # actual query needed but not helpful for development
     # stories = Story.objects.filter(creation_date__gte=request.user.last_login)
     # --------------------------------------------------------------------------------#
     stories = Story.objects.filter(original_org = request.user.organization)
 
-    # query for other user activity since last_login
+    # TODO: query for other user activity since last_login
 
     return render(request, 'editorial/dashboard.html', {
         'recent_comments': recent_comments,
@@ -109,6 +109,8 @@ def team_list(request):
     Displays team members from the user's own organization.
     Displays team members from any network that the user's organization is part of.
     """
+    # FIXME: Optimize query and create better object for parsing in template
+    # Not successfully able to access network>orgs and network>orgs>users in template
 
     # the user's organization
     organization = request.user.organization
@@ -130,7 +132,7 @@ def team_list(request):
             users=orguserdict['users']
             networkusers[str(network.name)]['orgs'] = {'org': org, 'users': users }
             # networkusers[str(network.name)][str(org.name)]=orguserdict['users']
-    print "NETWORKUSERS: ", networkusers
+    # print "NETWORKUSERS: ", networkusers
     # form for adding a new user to the team
     # only visible for admin users
     adduserform = AddUserForm()
@@ -163,8 +165,6 @@ def discussion(request):
       recent_comment = Comment.objects.filter(discussion = discussion).order_by('-date')
       recent_comments.extend(recent_comment)
 
-    print recent_comments
-
     return render(request, 'editorial/discussion.html', {
         'recent_comments': recent_comments,
     })
@@ -173,7 +173,7 @@ def discussion(request):
 #   Schedule Views
 #----------------------------------------------------------------------#
 
-
+# TODO: After finishing story dashboard, reuse content here but displayed via calendar/agenda
 
 #----------------------------------------------------------------------#
 #   Organization Views
@@ -386,6 +386,8 @@ def story_list(request):
     editor, status.
     """
 
+    #FIXME: Revise query to get all stories and any facets that exist for those stories
+
     stories = Story.objects.all()
 
     storyfacets = []
@@ -433,6 +435,10 @@ def story_detail(request, pk):
     Displays the story's planning notes, discussion, assets, share and collaboration status
     and sensivity status. From here the user can also see any facets, edit them and add new ones.
     """
+
+    #FIXME: Inconsistent error. Clunky code.
+    # Can create webfacet, the values appear on reload. Then make Printfacet
+    # printfacet data doesn't appear to save and so on with the other facets.
 
     story = get_object_or_404(Story, pk=pk)
     storycommentform = StoryCommentForm()
@@ -676,6 +682,8 @@ def story_edit(request, pk):
 #   Comments Views
 #----------------------------------------------------------------------#
 
+#TODO: Refactor to reduce repetitiveness
+
 def create_seriescomment(request):
     """ Regular form posting method."""
 
@@ -763,6 +771,7 @@ def create_videocomment(request):
         return redirect('story_detail', pk=story.id)
 
 
+# FIXME: Needs further debugging before replacing above sections
 # def create_webcomment(request):
 #     """ Receive AJAX Post for creating a comment on a webfacet. """
 #
@@ -897,6 +906,8 @@ def network_stories(request):
     them as Ready to Share. (This is so partners know it will exist and can plan to incorporate
     it once it becomes available.)
     """
+
+    # FIXME: similar issue as the story list page.
 
     networkstories = [ ]
     print "networkstories list: ", networkstories
