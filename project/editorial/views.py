@@ -407,11 +407,11 @@ def story_new(request):
     """ Create story page. """
 
     series = Series.objects.all()
-    form = StoryForm()
+    storyform = StoryForm()
     if request.method == "POST":
-        form = StoryForm(request.POST or None)
-    if form.is_valid():
-        story = form.save(commit=False)
+        storyform = StoryForm(request.POST or None)
+    if storyform.is_valid():
+        story = storyform.save(commit=False)
         story.owner = request.user
         story.original_org = request.user.organization
         story.creation_date = timezone.now()
@@ -420,9 +420,9 @@ def story_new(request):
         story.save()
         return redirect('story_detail', pk=story.pk)
     else:
-        form = StoryForm()
+        storyform = StoryForm()
     return render(request, 'editorial/storynew.html', {
-        'form': form,
+        'storyform': storyform,
         'series': series
         })
 
