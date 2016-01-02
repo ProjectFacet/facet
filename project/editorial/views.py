@@ -407,7 +407,6 @@ def story_new(request):
     """ Create story page. """
 
     series = Series.objects.all()
-    print series
     form = StoryForm()
     if request.method == "POST":
         form = StoryForm(request.POST or None)
@@ -417,9 +416,7 @@ def story_new(request):
         story.original_org = request.user.organization
         story.creation_date = timezone.now()
         discussion = Discussion.objects.create_discussion("STO")
-        print discussion
         story.discussion = discussion
-        print story.discussion
         story.save()
         return redirect('story_detail', pk=story.pk)
     else:
@@ -447,10 +444,15 @@ def story_detail(request, pk):
 # ------------------------------ #
 #           webfacet             #
 # ------------------------------ #
-    webcommentform = WebFacetCommentForm()
+
+    # create these here for efficiency
+    webform=WebFacetForm()
+    webcommentform=WebFacetCommentForm()
+
     try:
-        print "WF-TRY"
         webfacet = get_object_or_404(WebFacet, story=story)
+        # IF WEBFACET EXISTS DO ALL OF THE FOLLOWING
+        webform = WebFacetForm(instance=webfacet)
         # retrieve discussion and comments
         webfacetdiscussion = get_object_or_404(Discussion, id=webfacet.discussion.id)
         webcomments = Comment.objects.filter(discussion=webfacetdiscussion).order_by('-date')[:3]
@@ -458,29 +460,21 @@ def story_detail(request, pk):
         webhistory = webfacet.edit_history.all()[:5]
         # update an existing webfacet
         if request.method == "POST":
-            print "WF-TRY IF POST"
             if 'webform' in request.POST:
-                print "WF-TRY IF POST IF WEBFORM POST"
                 webform = WebFacetForm(data=request.POST, instance=webfacet)
                 if webform.is_valid():
                     webfacet.save()
+                    print "webfacet updated"
                     return redirect('story_detail', pk=story.pk)
-            else:
-                webform=WebFacetForm(instance=webfacet)
-        else:
-            print "WF-TRY ELSE"
-            webform = WebFacetForm(instance=webfacet)
     except:
-        print "WF-EXCEPT"
     # except WebFacet.DoesNotExist:
         # display form and save a new webfacet
+        webcomments = []
+        webhistory = []
         if request.method == "POST":
-            print "WF-EXCEPT POST"
             if 'webform' in request.POST:
-                print "WF-TRY ELSE POST IF WEBFORM POST"
                 webform = WebFacetForm(request.POST or None)
                 if webform.is_valid():
-                    print "WF-EXCEPT IF POST IF WEBFORM POST IS VALID"
                     webfacet = webform.save(commit=False)
                     webfacet.story = story
                     webfacet.owner = request.user
@@ -489,23 +483,23 @@ def story_detail(request, pk):
                     discussion = Discussion.objects.create_discussion("WF")
                     webfacet.discussion = discussion
                     webfacet.save()
+                    print "webfacet created"
                     # create history of the webfacet
                     webhistory = webfacet.edit_history.all()[:5]
-                    # print webhistory
                     return redirect('story_detail', pk=story.pk)
-        else:
-            print "WF-EXCEPT IF POST ELSE"
-            webform = WebFacetForm()
-            # temp solution to unbound local error on first creation
-            webcomments = []
-            webhistory = []
 
 # ------------------------------ #
 #           printfacet           #
 # ------------------------------ #
-    printcommentform = PrintFacetCommentForm()
+
+    # create these here for efficiency
+    printform=PrintFacetForm()
+    printcommentform=PrintFacetCommentForm()
+
     try:
         printfacet = get_object_or_404(PrintFacet, story=story)
+        # IF WEBFACET EXISTS DO ALL OF THE FOLLOWING
+        printform = PrintFacetForm(instance=printfacet)
         # retrieve discussion and comments
         printfacetdiscussion = get_object_or_404(Discussion, id=printfacet.discussion.id)
         printcomments = Comment.objects.filter(discussion=printfacetdiscussion).order_by('-date')[:3]
@@ -517,11 +511,13 @@ def story_detail(request, pk):
                 printform = PrintFacetForm(data=request.POST, instance=printfacet)
                 if printform.is_valid():
                     printfacet.save()
+                    print "printfacet updated"
                     return redirect('story_detail', pk=story.pk)
-        else:
-            printform = PrintFacetForm(instance=printfacet)
     except:
+    # except PrintFacet.DoesNotExist:
         # display form and save a new printfacet
+        printcomments = []
+        printhistory = []
         if request.method == "POST":
             if 'printform' in request.POST:
                 printform = PrintFacetForm(request.POST or None)
@@ -530,41 +526,45 @@ def story_detail(request, pk):
                     printfacet.story = story
                     printfacet.owner = request.user
                     printfacet.original_org = request.user.organization
-                    printfacet.editor = request.user
                     printfacet.creation_date = timezone.now()
-                    printfacet.discussion = Discussion.objects.create_discussion("PF")
+                    discussion = Discussion.objects.create_discussion("WF")
+                    printfacet.discussion = discussion
                     printfacet.save()
+                    print "printfacet created"
                     # create history of the printfacet
                     printhistory = printfacet.edit_history.all()[:5]
                     return redirect('story_detail', pk=story.pk)
-        else:
-            printform = PrintFacetForm()
-            # temp solution to unbound local error on first creation
-            printcomments = []
-            printhistory = []
 
 # ------------------------------ #
 #           audiofacet           #
 # ------------------------------ #
-    audiocommentform = AudioFacetCommentForm()
+
+    # create these here for efficiency
+    audioform=AudioFacetForm()
+    audiocommentform=AudioFacetCommentForm()
+
     try:
         audiofacet = get_object_or_404(AudioFacet, story=story)
+        # IF WEBFACET EXISTS DO ALL OF THE FOLLOWING
+        audioform = AudioFacetForm(instance=audiofacet)
         # retrieve discussion and comments
         audiofacetdiscussion = get_object_or_404(Discussion, id=audiofacet.discussion.id)
         audiocomments = Comment.objects.filter(discussion=audiofacetdiscussion).order_by('-date')[:3]
         # retrieve history
         audiohistory = audiofacet.edit_history.all()[:5]
-        # update an existing webfacet
+        # update an existing audiofacet
         if request.method == "POST":
             if 'audioform' in request.POST:
                 audioform = AudioFacetForm(data=request.POST, instance=audiofacet)
                 if audioform.is_valid():
                     audiofacet.save()
+                    print "audiofacet updated"
                     return redirect('story_detail', pk=story.pk)
-        else:
-            audioform = AudioFacetForm(instance=audiofacet)
     except:
-        # display form and save a new webfacet
+    # except AudioFacet.DoesNotExist:
+        # display form and save a new audiofacet
+        audiocomments = []
+        audiohistory = []
         if request.method == "POST":
             if 'audioform' in request.POST:
                 audioform = AudioFacetForm(request.POST or None)
@@ -573,41 +573,46 @@ def story_detail(request, pk):
                     audiofacet.story = story
                     audiofacet.owner = request.user
                     audiofacet.original_org = request.user.organization
-                    audiofacet.editor = request.user
                     audiofacet.creation_date = timezone.now()
-                    audiofacet.discussion = Discussion.objects.create_discussion("AF")
+                    discussion = Discussion.objects.create_discussion("WF")
+                    audiofacet.discussion = discussion
                     audiofacet.save()
+                    print "audiofacet created"
                     # create history of the audiofacet
                     audiohistory = audiofacet.edit_history.all()[:5]
                     return redirect('story_detail', pk=story.pk)
-        else:
-            audioform = AudioFacetForm()
-            # temp solution to unbound local error on first creation
-            audiocomments = []
-            audiohistory = []
 
 # ------------------------------ #
 #           videofacet           #
 # ------------------------------ #
-    videocommentform = VideoFacetCommentForm()
+
+    # create these here for efficiency
+    videoform=VideoFacetForm()
+    videocommentform=VideoFacetCommentForm()
+
     try:
         videofacet = get_object_or_404(VideoFacet, story=story)
+        # IF WEBFACET EXISTS DO ALL OF THE FOLLOWING
+        videoform = VideoFacetForm(instance=videofacet)
         # retrieve discussion and comments
         videofacetdiscussion = get_object_or_404(Discussion, id=videofacet.discussion.id)
         videocomments = Comment.objects.filter(discussion=videofacetdiscussion).order_by('-date')[:3]
         # retrieve history
         videohistory = videofacet.edit_history.all()[:5]
-        # update an existing printfacet
+        # update an existing videofacet
         if request.method == "POST":
+            print "videoform displayed with old content"
             if 'videoform' in request.POST:
                 videoform = VideoFacetForm(data=request.POST, instance=videofacet)
                 if videoform.is_valid():
                     videofacet.save()
+                    print "videofacet updated"
                     return redirect('story_detail', pk=story.pk)
-        else:
-            videoform = VideoFacetForm(instance=videofacet)
     except:
-        # display form and save a new printfacet
+    # except VideoFacet.DoesNotExist:
+        # display form and save a new videofacet
+        videocomments = []
+        videohistory = []
         if request.method == "POST":
             if 'videoform' in request.POST:
                 videoform = VideoFacetForm(request.POST or None)
@@ -616,18 +621,14 @@ def story_detail(request, pk):
                     videofacet.story = story
                     videofacet.owner = request.user
                     videofacet.original_org = request.user.organization
-                    videofacet.editor = request.user
                     videofacet.creation_date = timezone.now()
-                    videofacet.discussion = Discussion.objects.create_discussion("VF")
+                    discussion = Discussion.objects.create_discussion("WF")
+                    videofacet.discussion = discussion
                     videofacet.save()
+                    print "videofacet created"
                     # create history of the videofacet
                     videohistory = videofacet.edit_history.all()[:5]
                     return redirect('story_detail', pk=story.pk)
-        else:
-            videoform = VideoFacetForm()
-            # temp solution to unbound local error on first creation
-            videocomments = []
-            videohistory = []
 
     return render(request, 'editorial/storydetail.html', {
         'story': story,
@@ -651,7 +652,6 @@ def story_detail(request, pk):
         'videohistory': videohistory,
         'videocommentform': videocommentform,
         })
-
 
 
 def story_edit(request, pk):
