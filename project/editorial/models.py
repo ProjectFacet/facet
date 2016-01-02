@@ -592,6 +592,7 @@ class WebFacet(models.Model):
 
     story = models.ForeignKey(
         Story,
+        related_name='webfacetstory',
     )
 
     owner = models.ForeignKey(
@@ -751,6 +752,7 @@ class PrintFacet(models.Model):
 
     story = models.ForeignKey(
         Story,
+        related_name='printfacetstory',
     )
 
     owner = models.ForeignKey(
@@ -909,6 +911,7 @@ class AudioFacet(models.Model):
 
     story = models.ForeignKey(
         Story,
+        related_name='audiofacetstory',
     )
 
     owner = models.ForeignKey(
@@ -1068,6 +1071,7 @@ class VideoFacet(models.Model):
 
     story = models.ForeignKey(
         Story,
+        related_name='videofacetstory',
     )
 
     owner = models.ForeignKey(

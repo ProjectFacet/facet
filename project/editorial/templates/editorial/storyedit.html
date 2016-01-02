@@ -9,14 +9,148 @@
 
 {% block content %}
 
-<h1>Edit Story</h1>
+<div class="row">
+  <div class="col-md-12">
+    <h1>Edit Story</h1>
+    <div class="row">
     <form method="POST" class="post-form">{% csrf_token %}
 
-{% bootstrap_form storyform %}
+      <div class="col-md-6">
+        <!-- Left Side -->
+        <div class="form-group custom-form">
+          <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ storyform.name.label_tag }}</span></a>
+          {{ storyform.name }}
+          {% if storyform.name.errors %}
+            <div class="alert alert-warning" role="alert">
+            {{ storyform.name.errors }}
+            </div>
+          {% endif %}
+        </div>
+        <div class="form-group custom-form">
+          <a href="#" data-toggle="tooltip" title="{{ storyform.story_description.help_text }}"><span class="field-label">{{ storyform.story_description.label_tag }}</span></a>
+          {{ storyform.story_description }}
+          {% if storyform.story_description.errors %}
+            <div class="alert alert-warning" role="alert">
+            {{ storyform.story_description.errors }}
+            </div>
+          {% endif %}
+        </div>
+        <div class="form-group custom-form">
+          <a href="#" data-toggle="tooltip" title="{{ storyform.series.help_text }}"><span class="field-label">{{ storyform.series.label_tag }}</span></a>
+          {{ storyform.series }}
+          {% if storyform.series.errors %}
+            <div class="alert alert-warning" role="alert">
+            {{ storyform.series.errors }}
+            </div>
+          {% endif %}
+        </div>
+        <div class="form-group custom-form">
+          <a href="#" data-toggle="tooltip" title="{{ storyform.team.help_text }}"><span class="field-label">{{ storyform.team.label_tag }}</span></a>
+          {{ storyform.team }}
+          {% if storyform.team.errors %}
+            <div class="alert alert-warning" role="alert">
+            {{ storyform.team.errors }}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+
+      <!-- Right Side -->
+      <div class="col-md-6">
+        <div class="form-group custom-form">
+          <a href="#" data-toggle="tooltip" title="{{ storyform.share.help_text }}"><span class="field-label">{{ storyform.share.label_tag }}</span></a>
+          {{ storyform.share }}
+          {% if storyform.share.errors %}
+            <div class="alert alert-warning" role="alert">
+            {{ storyform.share.errors }}
+            </div>
+          {% endif %}
+        </div>
+        <div class="form-group custom-form">
+          <a href="#" data-toggle="tooltip" title="{{ storyform.ready_to_share.help_text }}"><span class="field-label">{{ storyform.ready_to_share.label_tag }}</span></a>
+          {{ storyform.ready_to_share }}
+          {% if storyform.ready_to_share.errors %}
+            <div class="alert alert-warning" role="alert">
+            {{ storyform.ready_to_share.errors }}
+            </div>
+          {% endif %}
+        </div>
+        <div class="form-group custom-form">
+          <a href="#" data-toggle="tooltip" title="{{ storyform.share_with.help_text }}"><span class="field-label">{{ storyform.share_with.label_tag }}</span></a>
+          {{ storyform.share_with }}
+          {% if storyform.share_with.errors %}
+            <div class="alert alert-warning" role="alert">
+            {{ storyform.share_with.errors }}
+            </div>
+          {% endif %}
+        </div>
+        <div class="form-group custom-form">
+          <a href="#" data-toggle="tooltip" title="{{ storyform.collaborate.help_text }}"><span class="field-label">{{ storyform.collaborate.label_tag }}</span></a>
+          {{ storyform.collaborate }}
+          {% if storyform.collaborate.errors %}
+            <div class="alert alert-warning" role="alert">
+            {{ storyform.collaborate.errors }}
+            </div>
+          {% endif %}
+        </div>
+        <div class="form-group custom-form">
+          <a href="#" data-toggle="tooltip" title="{{ storyform.collaborate_with.help_text }}"><span class="field-label">{{ storyform.collaborate_with.label_tag }}</span></a>
+          {{ storyform.collaborate_with }}
+          {% if storyform.collaborate_with.errors %}
+            <div class="alert alert-warning" role="alert">
+            {{ storyform.collaborate_with.errors }}
+            </div>
+          {% endif %}
+        </div>
+        <div class="form-group custom-form">
+          <a href="#" data-toggle="tooltip" title="{{ storyform.embargo.help_text }}"><span class="field-label">{{ storyform.embargo.label_tag }}</span></a>
+          {{ storyform.embargo }}
+          {% if storyform.embargo.errors %}
+            <div class="alert alert-warning" role="alert">
+            {{ storyform.embargo.errors }}
+            </div>
+          {% endif %}
+        </div>
+        <div class="form-group custom-form">
+          <a href="#" data-toggle="tooltip" title="{{ storyform.embargo_datetime.help_text }}"><span class="field-label">{{ storyform.embargo_datetime.label_tag }}</span></a>
+          {{ storyform.embargo_datetime }}
+          {% if storyform.embargo_datetime.errors %}
+            <div class="alert alert-warning" role="alert">
+            {{ storyform.embargo_datetime.errors }}
+            </div>
+          {% endif %}
+        </div>
+        <div class="form-group custom-form">
+          <a href="#" data-toggle="tooltip" title="{{ storyform.sensitive.help_text }}"><span class="field-label">{{ storyform.sensitive.label_tag }}</span></a>
+          {{ storyform.sensitive }}
+          {% if storyform.sensitive.errors %}
+            <div class="alert alert-warning" role="alert">
+            {{ storyform.sensitive.errors }}
+            </div>
+          {% endif %}
+        </div>
+        <div class="form-group custom-form">
+          <a href="#" data-toggle="tooltip" title="{{ storyform.archived.help_text }}"><span class="field-label">{{ storyform.archived.label_tag }}</span></a>
+          {{ storyform.archived }}
+          {% if storyform.archived.errors %}
+            <div class="alert alert-warning" role="alert">
+            {{ storyform.archived.errors }}
+            </div>
+          {% endif %}
+        </div>
 
 
-<button type="submit" class="save btn btn-default">Save</button>
-</form>
+      </div>
+
+
+
+    <button type="submit" class="save btn btn-default">Save</button>
+    </form>
+
+
+    </div>
+  </div>
+</div>
 
 <script>
 $(".chosen-select").chosen()

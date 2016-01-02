@@ -120,12 +120,25 @@ class StoryForm(forms.ModelForm):
         required=False,
         )
 
+    embargo_datetime = forms.DateTimeField(
+        required=False,
+        widget=DateTimePicker(
+            options={'format': 'YYYY-MM-DD HH:mm'},
+            attrs={'id': 'story-embargo-picker'}
+        )
+    )
+
     class Meta:
         model = Story
-        fields = ['name', 'story_description', 'series', 'collaborate', 'team']
+        fields = ['name', 'story_description', 'series', 'collaborate', 'collaborate_with','team', 'embargo', 'embargo_datetime', 'sensitive', 'share', 'ready_to_share', 'share_with', 'archived' ]
         widgets = {
             'team': ArrayFieldSelectMultiple(
                 choices=User.objects.all(), attrs={'class': 'chosen-select'}),
+            'collaborate_with': ArrayFieldSelectMultiple(
+                choices=Organization.objects.all(), attrs={'class': 'chosen-select'}),
+            'share_with': ArrayFieldSelectMultiple(
+                choices=Network.objects.all(), attrs={'class': 'chosen-select'}),
+            'series': Select(attrs={'class': 'form-control'}),
         }
 
     class Media:
@@ -143,14 +156,16 @@ class WebFacetForm(forms.ModelForm):
     due_edit = forms.DateTimeField(
         required=False,
         widget=DateTimePicker(
-            options={'format': 'YYYY-MM-DD HH:mm'}
+            options={'format': 'YYYY-MM-DD HH:mm'},
+            attrs={'id': 'wf_dueedit_picker'}
         )
     )
 
     run_date = forms.DateTimeField(
         required=False,
         widget=DateTimePicker(
-            options={'format': 'YYYY-MM-DD HH:mm'}
+            options={'format': 'YYYY-MM-DD HH:mm'},
+            attrs={'id': 'wf_rundate_picker'}
         )
     )
 
@@ -204,14 +219,16 @@ class PrintFacetForm(forms.ModelForm):
     due_edit = forms.DateTimeField(
         required=False,
         widget=DateTimePicker(
-            options={'format': 'YYYY-MM-DD HH:mm'}
+            options={'format': 'YYYY-MM-DD HH:mm'},
+            attrs={'id': 'pf_dueedit_picker'}
         )
     )
 
     run_date = forms.DateTimeField(
         required=False,
         widget=DateTimePicker(
-            options={'format': 'YYYY-MM-DD HH:mm'}
+            options={'format': 'YYYY-MM-DD HH:mm'},
+            attrs={'id': 'pf_rundate_picker'}
         )
     )
 
@@ -265,14 +282,16 @@ class AudioFacetForm(forms.ModelForm):
     due_edit = forms.DateTimeField(
         required=False,
         widget=DateTimePicker(
-            options={'format': 'YYYY-MM-DD HH:mm'}
+            options={'format': 'YYYY-MM-DD HH:mm'},
+            attrs={'id': 'af_dueedit_picker'}
         )
     )
 
     run_date = forms.DateTimeField(
         required=False,
         widget=DateTimePicker(
-            options={'format': 'YYYY-MM-DD HH:mm'}
+            options={'format': 'YYYY-MM-DD HH:mm'},
+            attrs={'id': 'af_rundate_picker'}
         )
     )
 
@@ -326,14 +345,16 @@ class VideoFacetForm(forms.ModelForm):
     due_edit = forms.DateTimeField(
         required=False,
         widget=DateTimePicker(
-            options={'format': 'YYYY-MM-DD HH:mm'}
+            options={'format': 'YYYY-MM-DD HH:mm'},
+            attrs={'id': 'vf_dueedit_picker'}
         )
     )
 
     run_date = forms.DateTimeField(
         required=False,
         widget=DateTimePicker(
-            options={'format': 'YYYY-MM-DD HH:mm'}
+            options={'format': 'YYYY-MM-DD HH:mm'},
+            attrs={'id': 'vf_rundate_picker'}
         )
     )
 

@@ -5,7 +5,7 @@
 
 {% block content %}
 
-<h1 class="center">Story List</h1>
+<h2 class="center">Story List</h2>
 
 <div class="row">
   <div class="col-md-12">
@@ -24,12 +24,12 @@
       <tbody>
         {% for facet in storyfacets %}
         <tr>
-          <th><a href="{% url 'story_detail' pk=facet.story.id %}">{{ facet.story.name }}</a></th>
-          <th>{{ facet.facet_type}}</th>
-          <th>{{ facet.title }}</th>
-          <th>{{ facet.owner.credit_name }}</th>
-          <th>{{ facet.due_edit|date:'n/j, g:i a' }}</th>
-          <th>{{ facet.run_date|date:'n/j, g:i a'}}</th>
+          <td><a href="{% url 'story_detail' pk=facet.story.id %}">{{ facet.story.name }}</a></th>
+          <td>{{ facet.facet_type}}</td>
+          <td>{{ facet.title }}</td>
+          <td>{{ facet.owner.credit_name }}</td>
+          <td>{{ facet.due_edit|date:'n/j, g:i a' }}</td>
+          <td>{{ facet.run_date|date:'n/j, g:i a'}}</td>
         </tr>
         {% endfor %}
       </tbody>
@@ -42,7 +42,8 @@
 
     <ul>
         <li><a href="{% url 'story_detail' pk=story.id %}">{{story.name}}</a></li>
-    </ul>
+        <li>{{ story.webfacet_set.title }}</li>
+   </ul>
 
 {% endfor %}
 

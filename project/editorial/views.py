@@ -394,7 +394,7 @@ def story_list(request):
         storyfacets.extend(PrintFacet.objects.filter(story_id=story.id))
         storyfacets.extend(AudioFacet.objects.filter(story_id=story.id))
         storyfacets.extend(VideoFacet.objects.filter(story_id=story.id))
-    print "STORYFACETS: ", storyfacets
+    # print "STORYFACETS: ", storyfacets
 
     return render(request, 'editorial/storylist.html', {
         'stories': stories,
@@ -447,8 +447,9 @@ def story_detail(request, pk):
 # ------------------------------ #
 #           webfacet             #
 # ------------------------------ #
-
+    webcommentform = WebFacetCommentForm()
     try:
+        print "WF-TRY"
         webfacet = get_object_or_404(WebFacet, story=story)
         # retrieve discussion and comments
         webfacetdiscussion = get_object_or_404(Discussion, id=webfacet.discussion.id)
@@ -457,23 +458,29 @@ def story_detail(request, pk):
         webhistory = webfacet.edit_history.all()[:5]
         # update an existing webfacet
         if request.method == "POST":
+            print "WF-TRY IF POST"
             if 'webform' in request.POST:
+                print "WF-TRY IF POST IF WEBFORM POST"
                 webform = WebFacetForm(data=request.POST, instance=webfacet)
-                webcommentform = WebFacetCommentForm()
                 if webform.is_valid():
                     webfacet.save()
                     return redirect('story_detail', pk=story.pk)
+            else:
+                webform=WebFacetForm(instance=webfacet)
         else:
+            print "WF-TRY ELSE"
             webform = WebFacetForm(instance=webfacet)
-            webcommentform = WebFacetCommentForm()
     except:
+        print "WF-EXCEPT"
     # except WebFacet.DoesNotExist:
         # display form and save a new webfacet
         if request.method == "POST":
+            print "WF-EXCEPT POST"
             if 'webform' in request.POST:
+                print "WF-TRY ELSE POST IF WEBFORM POST"
                 webform = WebFacetForm(request.POST or None)
-                webcommentform = WebFacetCommentForm()
                 if webform.is_valid():
+                    print "WF-EXCEPT IF POST IF WEBFORM POST IS VALID"
                     webfacet = webform.save(commit=False)
                     webfacet.story = story
                     webfacet.owner = request.user
@@ -487,8 +494,8 @@ def story_detail(request, pk):
                     # print webhistory
                     return redirect('story_detail', pk=story.pk)
         else:
+            print "WF-EXCEPT IF POST ELSE"
             webform = WebFacetForm()
-            webcommentform = WebFacetCommentForm()
             # temp solution to unbound local error on first creation
             webcomments = []
             webhistory = []
@@ -496,7 +503,7 @@ def story_detail(request, pk):
 # ------------------------------ #
 #           printfacet           #
 # ------------------------------ #
-
+    printcommentform = PrintFacetCommentForm()
     try:
         printfacet = get_object_or_404(PrintFacet, story=story)
         # retrieve discussion and comments
@@ -508,19 +515,16 @@ def story_detail(request, pk):
         if request.method == "POST":
             if 'printform' in request.POST:
                 printform = PrintFacetForm(data=request.POST, instance=printfacet)
-                printcommentform = PrintFacetCommentForm()
                 if printform.is_valid():
                     printfacet.save()
                     return redirect('story_detail', pk=story.pk)
         else:
             printform = PrintFacetForm(instance=printfacet)
-            printcommentform = PrintFacetCommentForm()
     except:
         # display form and save a new printfacet
         if request.method == "POST":
             if 'printform' in request.POST:
                 printform = PrintFacetForm(request.POST or None)
-                printcommentform = PrintFacetCommentForm()
                 if printform.is_valid():
                     printfacet = printform.save(commit=False)
                     printfacet.story = story
@@ -535,7 +539,6 @@ def story_detail(request, pk):
                     return redirect('story_detail', pk=story.pk)
         else:
             printform = PrintFacetForm()
-            printcommentform = PrintFacetCommentForm()
             # temp solution to unbound local error on first creation
             printcomments = []
             printhistory = []
@@ -543,7 +546,7 @@ def story_detail(request, pk):
 # ------------------------------ #
 #           audiofacet           #
 # ------------------------------ #
-
+    audiocommentform = AudioFacetCommentForm()
     try:
         audiofacet = get_object_or_404(AudioFacet, story=story)
         # retrieve discussion and comments
@@ -555,19 +558,16 @@ def story_detail(request, pk):
         if request.method == "POST":
             if 'audioform' in request.POST:
                 audioform = AudioFacetForm(data=request.POST, instance=audiofacet)
-                audiocommentform = AudioFacetCommentForm()
                 if audioform.is_valid():
                     audiofacet.save()
                     return redirect('story_detail', pk=story.pk)
         else:
             audioform = AudioFacetForm(instance=audiofacet)
-            audiocommentform = AudioFacetCommentForm()
     except:
         # display form and save a new webfacet
         if request.method == "POST":
             if 'audioform' in request.POST:
                 audioform = AudioFacetForm(request.POST or None)
-                audiocommentform = AudioFacetCommentForm()
                 if audioform.is_valid():
                     audiofacet = audioform.save(commit=False)
                     audiofacet.story = story
@@ -582,7 +582,6 @@ def story_detail(request, pk):
                     return redirect('story_detail', pk=story.pk)
         else:
             audioform = AudioFacetForm()
-            audiocommentform = AudioFacetCommentForm()
             # temp solution to unbound local error on first creation
             audiocomments = []
             audiohistory = []
@@ -590,7 +589,7 @@ def story_detail(request, pk):
 # ------------------------------ #
 #           videofacet           #
 # ------------------------------ #
-
+    videocommentform = VideoFacetCommentForm()
     try:
         videofacet = get_object_or_404(VideoFacet, story=story)
         # retrieve discussion and comments
@@ -602,19 +601,16 @@ def story_detail(request, pk):
         if request.method == "POST":
             if 'videoform' in request.POST:
                 videoform = VideoFacetForm(data=request.POST, instance=videofacet)
-                videocommentform = VideoFacetCommentForm()
                 if videoform.is_valid():
                     videofacet.save()
                     return redirect('story_detail', pk=story.pk)
         else:
             videoform = VideoFacetForm(instance=videofacet)
-            videocommentform = VideoFacetCommentForm()
     except:
         # display form and save a new printfacet
         if request.method == "POST":
             if 'videoform' in request.POST:
                 videoform = VideoFacetForm(request.POST or None)
-                videocommentform = VideoFacetCommentForm()
                 if videoform.is_valid():
                     videofacet = videoform.save(commit=False)
                     videofacet.story = story
@@ -629,7 +625,6 @@ def story_detail(request, pk):
                     return redirect('story_detail', pk=story.pk)
         else:
             videoform = VideoFacetForm()
-            videocommentform = VideoFacetCommentForm()
             # temp solution to unbound local error on first creation
             videocomments = []
             videohistory = []
@@ -656,6 +651,7 @@ def story_detail(request, pk):
         'videohistory': videohistory,
         'videocommentform': videocommentform,
         })
+
 
 
 def story_edit(request, pk):
@@ -921,17 +917,6 @@ def network_stories(request):
             networkstories.extend(story)
 
     networkstories = set(networkstories)
-
-    # networkstoriesdict={}
-    # for story in networkstories:
-    #     webfacet = WebFacet.objects.filter(story_id=story.id)
-    #     printfacet = PrintFacet.objects.filter(story_id=story.id)
-    #     audiofacet = AudioFacet.objects.filter(story_id=story.id)
-    #     videofacet = VideoFacet.objects.filter(story_id=story.id)
-    #     networkstoriesdict[story] = {"webfacet": webfacet,
-    #                             "printfacet": printfacet,
-    #                             "audiofacet": audiofacet,
-    #                             "videofacet": videofacet}
 
     networkstoryfacets = []
     for story in networkstories:

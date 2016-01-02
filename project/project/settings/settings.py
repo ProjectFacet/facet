@@ -16,6 +16,7 @@ SECRET_KEY = 'w+1bk&e^ud@@&4delnj!da47%$yi+9*u#*v$t*jrtn7muk23ja'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+MEDIA_ROOT = GIT_DIR + "/media/"
 MEDIA_URL = "/media/"
 
 ALLOWED_HOSTS = []
