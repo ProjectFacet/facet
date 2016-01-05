@@ -698,6 +698,7 @@ class WebFacet(models.Model):
     creation_date = models.DateTimeField(
         auto_now_add=True,
         help_text='Day WebFacet was created.',
+        blank=True,
     )
 
     discussion = models.ForeignKey(
@@ -772,14 +773,16 @@ class PrintFacet(models.Model):
     contributors = models.ManyToManyField(
         User,
         through='PrintFacetContributor',
-        help_text='Users that contributed to a facet. Used to associate multiple users to a facet.'
+        help_text='Users that contributed to a facet. Used to associate multiple users to a facet.',
+        blank=True,
     )
 
     credit = models.ManyToManyField(
         # There can be multiple users listed as the credit.
         User,
         related_name='printfacetcredit',
-        help_text='The full user name(s) to be listed as the credit for the facet.'
+        help_text='The full user name(s) to be listed as the credit for the facet.',
+        blank=True,
     )
 
     code = models.CharField(
@@ -857,7 +860,6 @@ class PrintFacet(models.Model):
     creation_date = models.DateTimeField(
         auto_now_add=True,
         help_text='Day printfacet was created.',
-        blank=True,
     )
 
     discussion = models.ForeignKey(
@@ -870,7 +872,8 @@ class PrintFacet(models.Model):
     edit_history = HistoricalRecords()
 
     share_note = models.TextField(
-        help_text='Information for organizations making a copy of the printfacet.'
+        help_text='Information for organizations making a copy of the printfacet.',
+        blank=True,
     )
 
     assets = models.ManyToManyField(
@@ -931,14 +934,16 @@ class AudioFacet(models.Model):
     contributors = models.ManyToManyField(
         User,
         through='AudioFacetContributor',
-        help_text='Users that contributed to a facet. Used to associate multiple users to a facet.'
+        help_text='Users that contributed to a facet. Used to associate multiple users to a facet.',
+        blank=True,
     )
 
     credit = models.ManyToManyField(
         # There can be multiple users listed as the credit.
         User,
         related_name='audiofacetcredit',
-        help_text='The full user name(s) to be listed as the credit for the facet.'
+        help_text='The full user name(s) to be listed as the credit for the facet.',
+        blank=True,
     )
 
     code = models.CharField(
@@ -974,7 +979,8 @@ class AudioFacet(models.Model):
     keywords = ArrayField(
         models.CharField(max_length=100),
         default=list,
-        help_text='List of keywords for search.'
+        help_text='List of keywords for search.',
+        blank=True,
     )
 
     # Choices for WebFacet status.
@@ -1091,14 +1097,16 @@ class VideoFacet(models.Model):
     contributors = models.ManyToManyField(
         User,
         through='VideoFacetContributor',
-        help_text='Users that contributed to a facet. Used to associate multiple users to a facet.'
+        help_text='Users that contributed to a facet. Used to associate multiple users to a facet.',
+        blank=True,
     )
 
     credit = models.ManyToManyField(
         # There can be multiple users listed as the credit.
         User,
         related_name='videofacetcredit',
-        help_text='The full user name(s) to be listed as the credit for the facet.'
+        help_text='The full user name(s) to be listed as the credit for the facet.',
+        blank=True,
     )
 
     code = models.CharField(
@@ -1134,7 +1142,8 @@ class VideoFacet(models.Model):
     keywords = ArrayField(
         models.CharField(max_length=100),
         default=list,
-        help_text='List of keywords for search.'
+        help_text='List of keywords for search.',
+        blank=True,
     )
 
     # Choices for WebFacet status.

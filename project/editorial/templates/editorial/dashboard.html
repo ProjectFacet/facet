@@ -36,7 +36,7 @@
       <tbody>
         {% for story in stories %}
         <tr>
-          <td>{{ story.name }}</td>
+          <td><a href="{% url 'story_detail' story.id %}">{{ story.name }}</a></td>
           <td>{% if story.series %} {{ story.series.name }} {% endif %}</td>
           <td>{{ story.owner.credit_name }}</td>
           <td>{{ story.description }}</td>

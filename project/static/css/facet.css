@@ -275,3 +275,7 @@ input {
 .modal-title {
   color: #3D4D65;
 }
+
+.chosen-container .chosen-drop {
+  width: 200px !important;
+}

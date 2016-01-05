@@ -135,9 +135,9 @@ class StoryForm(forms.ModelForm):
             'team': ArrayFieldSelectMultiple(
                 choices=User.objects.all(), attrs={'class': 'chosen-select'}),
             'collaborate_with': ArrayFieldSelectMultiple(
-                choices=Organization.objects.all(), attrs={'class': 'chosen-select'}),
+                choices=Organization.objects.all(), attrs={'class': 'chosen-select', 'id':'collaborate-with'}),
             'share_with': ArrayFieldSelectMultiple(
-                choices=Network.objects.all(), attrs={'class': 'chosen-select'}),
+                choices=Network.objects.all(), attrs={'class': 'chosen-select', 'id':'share-with'}),
             'series': Select(attrs={'class': 'form-control'}),
         }
 
@@ -169,7 +169,7 @@ class WebFacetForm(forms.ModelForm):
         )
     )
 
-    wf_content = forms.CharField(widget=TinyMCE(attrs={'rows':25}))
+    wf_content = forms.CharField(widget=TinyMCE(attrs={'rows':25, 'id': 'wf_content'}))
 
     class Meta:
         model = WebFacet
@@ -232,7 +232,7 @@ class PrintFacetForm(forms.ModelForm):
         )
     )
 
-    pf_content = forms.CharField(widget=TinyMCE(attrs={'rows':25}))
+    pf_content = forms.CharField(widget=TinyMCE(attrs={'rows':25, 'id': 'pf_content'}))
 
     class Meta:
         model = PrintFacet
@@ -256,7 +256,8 @@ class PrintFacetForm(forms.ModelForm):
             'credit': ArrayFieldSelectMultiple(
                 choices=User.objects.all(), attrs={'class': 'chosen-select form-control'}),
             'title': Textarea(attrs={'rows':2}),
-            'wf_description': Textarea(attrs={'rows':3}),
+            'pf_description': Textarea(attrs={'rows':3}),
+            # 'pf_content':Textarea(attrs={'rows':25}),
             'excerpt': Textarea(attrs={'rows':4}),
             'captions': Textarea(attrs={'rows':5}),
             'share_note': Textarea(attrs={'rows':5}),
@@ -295,7 +296,7 @@ class AudioFacetForm(forms.ModelForm):
         )
     )
 
-    af_content = forms.CharField(widget=TinyMCE(attrs={'rows':25}))
+    af_content = forms.CharField(widget=TinyMCE(attrs={'rows':25, 'id': 'af_content'}))
 
     class Meta:
         model = AudioFacet
@@ -319,7 +320,7 @@ class AudioFacetForm(forms.ModelForm):
             'credit': ArrayFieldSelectMultiple(
                 choices=User.objects.all(), attrs={'class': 'chosen-select form-control'}),
             'title': Textarea(attrs={'rows':2}),
-            'wf_description': Textarea(attrs={'rows':3}),
+            'af_description': Textarea(attrs={'rows':3}),
             'excerpt': Textarea(attrs={'rows':4}),
             'captions': Textarea(attrs={'rows':5}),
             'share_note': Textarea(attrs={'rows':5}),
@@ -358,7 +359,7 @@ class VideoFacetForm(forms.ModelForm):
         )
     )
 
-    vf_content = forms.CharField(widget=TinyMCE(attrs={'rows':25}))
+    vf_content = forms.CharField(widget=TinyMCE(attrs={'rows':25, 'id': 'vf_content'}))
 
     class Meta:
         model = VideoFacet
@@ -382,7 +383,7 @@ class VideoFacetForm(forms.ModelForm):
             'credit': ArrayFieldSelectMultiple(
                 choices=User.objects.all(), attrs={'class': 'chosen-select form-control'}),
             'title': Textarea(attrs={'rows':2}),
-            'wf_description': Textarea(attrs={'rows':3}),
+            'vf_description': Textarea(attrs={'rows':3}),
             'excerpt': Textarea(attrs={'rows':4}),
             'captions': Textarea(attrs={'rows':5}),
             'share_note': Textarea(attrs={'rows':5}),

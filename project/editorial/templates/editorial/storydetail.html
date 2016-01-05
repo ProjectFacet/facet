@@ -48,7 +48,7 @@
         <!-- ================================================= -->
           <div role="tabpanel" class="tab-pane" id="storydetail">
             <div class="row">
-              <div class="col-md-10">
+              <div class="col-md-6">
                 <h2>{{ story.name }}</h2>
                     <h4>Description</h4>
                     <p>{{story.story_description}}</p>
@@ -62,6 +62,40 @@
                     <a href="{% url 'story_edit' pk=story.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
                     </div>
               </div>
+              <div class="col-md-4">
+                <h4>Series</h4>
+                {{ story.series.name }}
+                <h4>Origin</h4>
+                {{ story.original_org.name }}
+                <h4>Embargo</h4>
+                  {% if story.embargo %}
+                    <p>Embargoed until {{ story.embargo_datetime|date:'D M j g:i a' }}</p>
+                  {% endif %}
+                <h4>Created</h4>
+                {{ story.creation_date|date:'D M j g:i a'}}
+                <h4>Sensitive</h4>
+                {{ story.sensitive }}
+                <h4>Share</h4>
+                {{ story.share }}
+                <h4>Ready to Share</h4>
+                {{ story.ready_to_share }}
+                <h4>Shared With</h4>
+                {% if story.share %}
+                {{ story.share_with.name }}
+                {% endif %}
+                <h4>Collaboration</h4>
+                {{ story.collaborate }}
+                <h4>Collaborate With</h4>
+                {% if story.collaborate %}
+                  {{ story.collaborate_with.name }}
+                {% endif %}
+                <h4>Archived?</h4>
+                {{ story.archived }}
+
+
+              </div>
+
+
               <div class="col-md-2">
                 <div class="discussion">
                 <a href="#" data-toggle="tooltip" title="Discussion for the webfacet"><label class="field-label">Discussion</label></a>
@@ -454,9 +488,9 @@
                         </div>
                       {% endif %}
                     </div>
-                    <!-- End of PrintFacet Form -->
-                    <input type="submit" name="printform" value="Submit" />
-                    </form>
+                <!-- End of PrintFacet Form -->
+                <input type="submit" name="printform" value="Submit" />
+                </form>
 
                     <div class="discussion">
                       <a href="#" data-toggle="tooltip" title="Discussion for the printfacet"><label class="field-label">Discussion</label></a>

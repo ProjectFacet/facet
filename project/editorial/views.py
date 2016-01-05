@@ -408,6 +408,8 @@ def story_list(request):
 def story_new(request):
     """ Create story page. """
 
+    #FIXME: Team, shared_with, collaborate_with do not save on creation
+
     series = Series.objects.all()
     storyform = StoryForm()
     if request.method == "POST":
@@ -416,7 +418,6 @@ def story_new(request):
         story = storyform.save(commit=False)
         story.owner = request.user
         story.original_org = request.user.organization
-        story.creation_date = timezone.now()
         discussion = Discussion.objects.create_discussion("STO")
         story.discussion = discussion
         story.save()
@@ -427,6 +428,25 @@ def story_new(request):
         'storyform': storyform,
         'series': series
         })
+
+
+def story_edit(request, pk):
+    """ Edit story page. """
+
+    story = get_object_or_404(Story, pk=pk)
+
+    if request.method == "POST":
+        storyform = StoryForm(data=request.POST, instance=story)
+        if storyform.is_valid():
+            storyform.save()
+            return redirect('story_detail', pk=story.id)
+    else:
+        storyform = StoryForm(instance=story)
+
+    return render(request, 'editorial/storyedit.html', {
+        'story': story,
+        'storyform': storyform,
+    })
 
 
 def story_detail(request, pk):
@@ -456,8 +476,10 @@ def story_detail(request, pk):
     webcommentform=WebFacetCommentForm()
 
     try:
+        print "WF Try"
         webfacet = get_object_or_404(WebFacet, story=story)
         # IF WEBFACET EXISTS DO ALL OF THE FOLLOWING
+        # rebind webform to include webfacet instance
         webform = WebFacetForm(instance=webfacet)
         # retrieve discussion and comments
         webfacetdiscussion = get_object_or_404(Discussion, id=webfacet.discussion.id)
@@ -466,22 +488,32 @@ def story_detail(request, pk):
         webhistory = webfacet.edit_history.all()[:5]
         # update an existing webfacet
         if request.method == "POST":
+            print "WF Try If Post"
             if 'webform' in request.POST:
+                print "WF Try If Post If webform"
                 webform = WebFacetForm(data=request.POST, instance=webfacet)
+                import pdb; pdb.set_trace()
                 if webform.is_valid():
+                    print "WF Try If Post If Webform Valid"
                     webfacet.save()
                     print "webfacet updated"
                     return redirect('story_detail', pk=story.pk)
     except:
+        print "WF Except"
     # except WebFacet.DoesNotExist:
         # display form and save a new webfacet
         webcomments = []
         webhistory = []
         if request.method == "POST":
+            print "WF Except Post"
             if 'webform' in request.POST:
+                print "WF Except Post If webform"
                 webform = WebFacetForm(request.POST or None)
                 if webform.is_valid():
+                    import pdb; pdb.set_trace()
+                    print "WF Except Post If webform Valid"
                     webfacet = webform.save(commit=False)
+                    print "webfacet = webform.save(commit=False)"
                     webfacet.story = story
                     webfacet.owner = request.user
                     webfacet.original_org = request.user.organization
@@ -503,8 +535,10 @@ def story_detail(request, pk):
     printcommentform=PrintFacetCommentForm()
 
     try:
+        print "PF Try"
         printfacet = get_object_or_404(PrintFacet, story=story)
-        # IF WEBFACET EXISTS DO ALL OF THE FOLLOWING
+        print "PRINTFACET", printfacet
+        # IF PRINTFACET EXISTS DO ALL OF THE FOLLOWING
         printform = PrintFacetForm(instance=printfacet)
         # retrieve discussion and comments
         printfacetdiscussion = get_object_or_404(Discussion, id=printfacet.discussion.id)
@@ -513,22 +547,32 @@ def story_detail(request, pk):
         printhistory = printfacet.edit_history.all()[:5]
         # update an existing printfacet
         if request.method == "POST":
+            print "PF Try If Post"
             if 'printform' in request.POST:
+                print "PF Try If Post If printform"
+                import pdb; pdb.set_trace()
                 printform = PrintFacetForm(data=request.POST, instance=printfacet)
                 if printform.is_valid():
+                    print "PF Try If Post If printform Valid"
                     printfacet.save()
                     print "printfacet updated"
                     return redirect('story_detail', pk=story.pk)
     except:
+        print "PF Except"
     # except PrintFacet.DoesNotExist:
         # display form and save a new printfacet
         printcomments = []
         printhistory = []
         if request.method == "POST":
+            print "PF Except If Post"
             if 'printform' in request.POST:
+                print "PF Except If Post If printform"
+                import pdb; pdb.set_trace()
                 printform = PrintFacetForm(request.POST or None)
                 if printform.is_valid():
+                    print "PF Except If Post If printform Valid"
                     printfacet = printform.save(commit=False)
+                    print "printfacet = printform.save(commit=False)"
                     printfacet.story = story
                     printfacet.owner = request.user
                     printfacet.original_org = request.user.organization
@@ -550,6 +594,7 @@ def story_detail(request, pk):
     audiocommentform=AudioFacetCommentForm()
 
     try:
+        print "AF Try"
         audiofacet = get_object_or_404(AudioFacet, story=story)
         # IF WEBFACET EXISTS DO ALL OF THE FOLLOWING
         audioform = AudioFacetForm(instance=audiofacet)
@@ -560,22 +605,32 @@ def story_detail(request, pk):
         audiohistory = audiofacet.edit_history.all()[:5]
         # update an existing audiofacet
         if request.method == "POST":
+            print "AF Try If Post"
             if 'audioform' in request.POST:
+                print "AF Try If Post If Audioform"
+                import pdb; pdb.set_trace()
                 audioform = AudioFacetForm(data=request.POST, instance=audiofacet)
                 if audioform.is_valid():
+                    print "AF Try If Post If Audioform Valid"
                     audiofacet.save()
                     print "audiofacet updated"
                     return redirect('story_detail', pk=story.pk)
     except:
+        print "AF Except"
     # except AudioFacet.DoesNotExist:
         # display form and save a new audiofacet
         audiocomments = []
         audiohistory = []
         if request.method == "POST":
+            print "AF Except If Post"
             if 'audioform' in request.POST:
+                print "AF Except If Post If Audioform"
+                import pdb; pdb.set_trace()
                 audioform = AudioFacetForm(request.POST or None)
                 if audioform.is_valid():
+                    print "AF Except If Post If Audioform Valid"
                     audiofacet = audioform.save(commit=False)
+                    print "audiofacet = audioform.save(commit=False)"
                     audiofacet.story = story
                     audiofacet.owner = request.user
                     audiofacet.original_org = request.user.organization
@@ -597,6 +652,7 @@ def story_detail(request, pk):
     videocommentform=VideoFacetCommentForm()
 
     try:
+        print "VF Try"
         videofacet = get_object_or_404(VideoFacet, story=story)
         # IF WEBFACET EXISTS DO ALL OF THE FOLLOWING
         videoform = VideoFacetForm(instance=videofacet)
@@ -607,28 +663,37 @@ def story_detail(request, pk):
         videohistory = videofacet.edit_history.all()[:5]
         # update an existing videofacet
         if request.method == "POST":
-            print "videoform displayed with old content"
+            print "VF Try If Post"
             if 'videoform' in request.POST:
+                print "VF Try If Post If Videoform"
+                import pdb; pdb.set_trace()
                 videoform = VideoFacetForm(data=request.POST, instance=videofacet)
                 if videoform.is_valid():
+                    print "VF Try If Post If Videoform Valid"
                     videofacet.save()
                     print "videofacet updated"
                     return redirect('story_detail', pk=story.pk)
     except:
+        print "VF Except If Post If Videoform Valid"
     # except VideoFacet.DoesNotExist:
         # display form and save a new videofacet
         videocomments = []
         videohistory = []
         if request.method == "POST":
+            print "VF Except If Post"
             if 'videoform' in request.POST:
+                print "VF Except If Post If Videoform"
                 videoform = VideoFacetForm(request.POST or None)
                 if videoform.is_valid():
+                    import pdb; pdb.set_trace()
+                    print "VF Except If Post If Videoform Valid"
                     videofacet = videoform.save(commit=False)
+                    print "videofacet = videoform.save(commit=False)"
                     videofacet.story = story
                     videofacet.owner = request.user
                     videofacet.original_org = request.user.organization
                     videofacet.creation_date = timezone.now()
-                    discussion = Discussion.objects.create_discussion("WF")
+                    discussion = Discussion.objects.create_discussion("VF")
                     videofacet.discussion = discussion
                     videofacet.save()
                     print "videofacet created"
@@ -659,24 +724,6 @@ def story_detail(request, pk):
         'videocommentform': videocommentform,
         })
 
-
-def story_edit(request, pk):
-    """ Edit story page. """
-
-    story = get_object_or_404(Story, pk=pk)
-
-    if request.method == "POST":
-        storyform = StoryForm(data=request.POST, instance=story)
-        if storyform.is_valid():
-            storyform.save()
-            return redirect('story_detail', pk=story.id)
-    else:
-        storyform = StoryForm(instance=story)
-
-    return render(request, 'editorial/storyedit.html', {
-        'story': story,
-        'storyform': storyform,
-    })
 
 #----------------------------------------------------------------------#
 #   Comments Views
