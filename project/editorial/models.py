@@ -255,7 +255,10 @@ class Organization(models.Model):
         network_orgs = NetworkOrganization.objects.filter(organization = self)
         for item in network_orgs:
             network = item.network
-            organization_networks.append(network)
+            if network not in organization_networks:
+                organization_networks.append(network)
+
+
 
         return organization_networks
 
