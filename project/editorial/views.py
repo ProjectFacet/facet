@@ -396,6 +396,22 @@ def story_list(request):
         storyfacets.extend(PrintFacet.objects.filter(story_id=story.id))
         storyfacets.extend(AudioFacet.objects.filter(story_id=story.id))
         storyfacets.extend(VideoFacet.objects.filter(story_id=story.id))
+
+    # class Story...
+    #    web = m2m  # NO
+    #
+    #@    def all_facets():
+    #    reutirn
+    # class Web:
+    #    story = ...
+
+    # stories = Story.objects.prefetch_related('webfacet_set', 'printfacet_set')
+    # my_story.webfacet_set.all() = list of wfs for a sstory
+
+    # {% for story in story %}
+    # {% for facet in story.webfacet_set.all %}
+
+    #
     # print "STORYFACETS: ", storyfacets
 
     return render(request, 'editorial/storylist.html', {
@@ -408,12 +424,11 @@ def story_list(request):
 def story_new(request):
     """ Create story page. """
 
-    #FIXME: Team, shared_with, collaborate_with do not save on creation
-
     series = Series.objects.all()
     storyform = StoryForm()
     if request.method == "POST":
         storyform = StoryForm(request.POST or None)
+        import pdb; pdb.set_trace()
     if storyform.is_valid():
         story = storyform.save(commit=False)
         story.owner = request.user
@@ -421,7 +436,8 @@ def story_new(request):
         discussion = Discussion.objects.create_discussion("STO")
         story.discussion = discussion
         story.save()
-        print story.team.all()
+        storyform.save_m2m()
+        print "STORY TEAM", story.team.all()
         return redirect('story_detail', pk=story.pk)
     else:
         storyform = StoryForm()
@@ -522,6 +538,7 @@ def story_detail(request, pk):
                     discussion = Discussion.objects.create_discussion("WF")
                     webfacet.discussion = discussion
                     webfacet.save()
+                    webform.save_m2m()
                     print "webfacet created"
                     # create history of the webfacet
                     webhistory = webfacet.edit_history.all()[:5]
@@ -538,7 +555,6 @@ def story_detail(request, pk):
     try:
         print "PF Try"
         printfacet = get_object_or_404(PrintFacet, story=story)
-        print "PRINTFACET", printfacet
         # IF PRINTFACET EXISTS DO ALL OF THE FOLLOWING
         printform = PrintFacetForm(instance=printfacet)
         # retrieve discussion and comments
@@ -551,7 +567,7 @@ def story_detail(request, pk):
             print "PF Try If Post"
             if 'printform' in request.POST:
                 print "PF Try If Post If printform"
-                # import pdb; pdb.set_trace()
+                import pdb; pdb.set_trace()
                 printform = PrintFacetForm(data=request.POST, instance=printfacet)
                 if printform.is_valid():
                     print "PF Try If Post If printform Valid"
@@ -581,6 +597,7 @@ def story_detail(request, pk):
                     discussion = Discussion.objects.create_discussion("WF")
                     printfacet.discussion = discussion
                     printfacet.save()
+                    printform.save_m2m()
                     print "printfacet created"
                     # create history of the printfacet
                     printhistory = printfacet.edit_history.all()[:5]
@@ -639,6 +656,7 @@ def story_detail(request, pk):
                     discussion = Discussion.objects.create_discussion("WF")
                     audiofacet.discussion = discussion
                     audiofacet.save()
+                    audioform.save_m2m()
                     print "audiofacet created"
                     # create history of the audiofacet
                     audiohistory = audiofacet.edit_history.all()[:5]
@@ -697,6 +715,7 @@ def story_detail(request, pk):
                     discussion = Discussion.objects.create_discussion("VF")
                     videofacet.discussion = discussion
                     videofacet.save()
+                    videoform.save_m2m()
                     print "videofacet created"
                     # create history of the videofacet
                     videohistory = videofacet.edit_history.all()[:5]

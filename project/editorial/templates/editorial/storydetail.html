@@ -80,19 +80,17 @@
                 <h4>Ready to Share</h4>
                 {{ story.ready_to_share }}
                 <h4>Shared With</h4>
-                {% if story.share %}
-                  TBD
-                {% endif %}
+                {% for network in story.share_with.all %}
+                  <li>{{ network }}</li>
+                {% endfor %}
                 <h4>Collaboration</h4>
                 {{ story.collaborate }}
                 <h4>Collaborate With</h4>
-                {% if story.collaborate %}
-                  tbd
-                {% endif %}
+                {% for collaborator in story.collaborate_with.all %}
+                <li>{{ collaborator }}</li>
+                {% endfor %}
                 <h4>Archived?</h4>
                 {{ story.archived }}
-
-
               </div>
 
 
