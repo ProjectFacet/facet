@@ -110,37 +110,29 @@ def team_list(request):
     Displays team members from any network that the user's organization is part of.
     """
     # FIXME: Optimize query and create better object for parsing in template
-    # Not successfully able to access network>orgs and network>orgs>users in template
 
     # the user's organization
     organization = request.user.organization
-    org_team = Organization.get_org_users(organization)
-    # users from organizations in networks that the logged in user's Organization is a member of
-    networkusers = {}
-    org_networks = Organization.get_org_networks(organization)
-    networks = []
-    for item in org_networks['network_owner']:
-        networks.append(item)
-    for item in org_networks['network_member']:
-        networks.append(item)
-    unique_networks = set(networks)
-    for network in unique_networks:
-        orgdict = Network.get_network_organizations(network)
-        networkusers[str(network.name)] = {}
-        for org in orgdict['organizations']:
-            orguserdict = Organization.get_org_users(org)
-            users=orguserdict['users']
-            networkusers[str(network.name)]['orgs'] = {'org': org, 'users': users }
-            # networkusers[str(network.name)][str(org.name)]=orguserdict['users']
-    # print "NETWORKUSERS: ", networkusers
+    networks = Organization.get_org_networks(organization)
+
+    print "NETWORKS: ", networks
+
+    #
+    # org_networks = Organization.get_org_networks(organization)
+    # networkorganizations = Network.get_network_organizations(network)
+    # org_users Organization.get_org_users(org)
+
+
+
     # form for adding a new user to the team
-    # only visible for admin users
     adduserform = AddUserForm()
+    # only visible for admin users
+
 
     return render(request, 'editorial/team.html', {
-        'org_team': org_team,
+        'organization': organization,
+        'networks': networks,
         'adduserform': adduserform,
-        'networkusers': networkusers,
         })
 
 #----------------------------------------------------------------------#
@@ -515,7 +507,6 @@ def story_detail(request, pk):
                     print "WF Try If Post If Webform Valid"
                     webform.save()
                     print "webfacet updated"
-                    print "WEBFACET CREDIT", webfacet.credit.all()
                     return redirect('story_detail', pk=story.pk)
     except:
         print "WF Except"
@@ -541,7 +532,6 @@ def story_detail(request, pk):
                     webfacet.discussion = discussion
                     webfacet.save()
                     webform.save_m2m()
-                    print "WEBFACET CREDIT", webfacet.credit.all()
                     print "webfacet created"
                     # create history of the webfacet
                     webhistory = webfacet.edit_history.all()[:5]
@@ -636,7 +626,6 @@ def story_detail(request, pk):
                     print "AF Try If Post If Audioform Valid"
                     audioform.save()
                     print "audiofacet updated"
-                    print "WEBFACET CREDIT", audiofacet.credit.all
                     return redirect('story_detail', pk=story.pk)
     except:
         print "AF Except"

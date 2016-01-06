@@ -240,14 +240,22 @@ class Organization(models.Model):
     def get_org_networks(self):
         """ Return list of all the networks that an organization is owner of or member of."""
 
-        organization_networks = {}
-        organization_networks['organization'] = self
-        organization_networks['network_owner'] = Network.objects.filter(owner_organization=self)
-        organization_networks['network_member'] = []
+        # organization_networks = {}
+        # organization_networks['organization'] = self
+        # organization_networks['network_owner'] = Network.objects.filter(owner_organization=self)
+        # organization_networks['network_member'] = []
+        # network_orgs = NetworkOrganization.objects.filter(organization = self)
+        # for item in network_orgs:
+        #     network = item.network
+        #     organization_networks['network_member'].append(network)
+
+        organization_networks = []
+        owned_networks = Network.objects.filter(owner_organization=self)
+        organization_networks.extend(owned_networks)
         network_orgs = NetworkOrganization.objects.filter(organization = self)
         for item in network_orgs:
             network = item.network
-            organization_networks['network_member'].append(network)
+            organization_networks.append(network)
 
         return organization_networks
 
@@ -310,17 +318,9 @@ class Network(models.Model):
         return self.name
 
     def get_network_organizations(self):
-        """ Return dictionary of all organizations that are part of a network. """
+        """ Return list of all organizations that are part of a network. """
 
-        network_organizations = {}
-        network_organizations['network'] = self
-        network_organizations['organizations'] = []
-
-        networkorgs = NetworkOrganization.objects.filter(network=self)
-
-        for item in networkorgs:
-            org = Organization.objects.filter(id=item.organization.id)
-            network_organizations['organizations'].extend(org)
+        network_organizations = NetworkOrganization.objects.filter(network=self)
 
         return network_organizations
 
