@@ -481,7 +481,6 @@ def story_detail(request, pk):
     storycommentform = StoryCommentForm()
     storydiscussion = get_object_or_404(Discussion, id=story.discussion.id)
     storycomments = Comment.objects.filter(discussion=storydiscussion).order_by('-date')
-    team = story.team.all()
     notes = StoryNote.objects.filter(story=story)
 
 # ------------------------------ #
@@ -495,6 +494,8 @@ def story_detail(request, pk):
     try:
         print "WF Try"
         webfacet = get_object_or_404(WebFacet, story=story)
+        print "WEBFACET CREDIT", webfacet.credit.all()
+
         # IF WEBFACET EXISTS DO ALL OF THE FOLLOWING
         # rebind webform to include webfacet instance
         webform = WebFacetForm(instance=webfacet)
@@ -509,11 +510,12 @@ def story_detail(request, pk):
             if 'webform' in request.POST:
                 print "WF Try If Post If webform"
                 webform = WebFacetForm(data=request.POST, instance=webfacet)
-                # import pdb; pdb.set_trace()
+                import pdb; pdb.set_trace()
                 if webform.is_valid():
                     print "WF Try If Post If Webform Valid"
-                    webfacet.save()
+                    webform.save()
                     print "webfacet updated"
+                    print "WEBFACET CREDIT", webfacet.credit.all()
                     return redirect('story_detail', pk=story.pk)
     except:
         print "WF Except"
@@ -539,6 +541,7 @@ def story_detail(request, pk):
                     webfacet.discussion = discussion
                     webfacet.save()
                     webform.save_m2m()
+                    print "WEBFACET CREDIT", webfacet.credit.all()
                     print "webfacet created"
                     # create history of the webfacet
                     webhistory = webfacet.edit_history.all()[:5]
@@ -571,7 +574,7 @@ def story_detail(request, pk):
                 printform = PrintFacetForm(data=request.POST, instance=printfacet)
                 if printform.is_valid():
                     print "PF Try If Post If printform Valid"
-                    printfacet.save()
+                    printform.save()
                     print "printfacet updated"
                     return redirect('story_detail', pk=story.pk)
     except:
@@ -614,6 +617,7 @@ def story_detail(request, pk):
     try:
         print "AF Try"
         audiofacet = get_object_or_404(AudioFacet, story=story)
+        print "AUDIOFACET CREDIT: ", audiofacet.credit.all()
         # IF WEBFACET EXISTS DO ALL OF THE FOLLOWING
         audioform = AudioFacetForm(instance=audiofacet)
         # retrieve discussion and comments
@@ -630,8 +634,9 @@ def story_detail(request, pk):
                 audioform = AudioFacetForm(data=request.POST, instance=audiofacet)
                 if audioform.is_valid():
                     print "AF Try If Post If Audioform Valid"
-                    audiofacet.save()
+                    audioform.save()
                     print "audiofacet updated"
+                    print "WEBFACET CREDIT", audiofacet.credit.all
                     return redirect('story_detail', pk=story.pk)
     except:
         print "AF Except"
@@ -689,7 +694,7 @@ def story_detail(request, pk):
                 videoform = VideoFacetForm(data=request.POST, instance=videofacet)
                 if videoform.is_valid():
                     print "VF Try If Post If Videoform Valid"
-                    videofacet.save()
+                    videoform.save()
                     print "videofacet updated"
                     return redirect('story_detail', pk=story.pk)
     except:
@@ -725,7 +730,6 @@ def story_detail(request, pk):
         'story': story,
         'storycommentform': storycommentform,
         'storycomments': storycomments,
-        'team': team,
         'webform': webform,
         'webcomments': webcomments,
         'webhistory': webhistory,

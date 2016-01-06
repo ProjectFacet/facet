@@ -55,8 +55,8 @@
                     <h4>Owner</h4>
                     <p>{{ story.owner.credit_name }}</p>
                     <h4>Team</h4>
-                    {% for member in team %}
-                    <p>{{ member.credit_name }}
+                    {% for member in story.team.all %}
+                    <p>{{ member.credit_name }}</p>
                     {% endfor %}
                     <div>
                     <a href="{% url 'story_edit' pk=story.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
@@ -81,13 +81,13 @@
                 {{ story.ready_to_share }}
                 <h4>Shared With</h4>
                 {% for network in story.share_with.all %}
-                  <li>{{ network }}</li>
+                  <p>{{ network }}</p>
                 {% endfor %}
                 <h4>Collaboration</h4>
                 {{ story.collaborate }}
                 <h4>Collaborate With</h4>
                 {% for collaborator in story.collaborate_with.all %}
-                <li>{{ collaborator }}</li>
+                <lp>{{ collaborator }}</p>
                 {% endfor %}
                 <h4>Archived?</h4>
                 {{ story.archived }}
