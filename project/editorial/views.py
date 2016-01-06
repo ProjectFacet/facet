@@ -421,6 +421,7 @@ def story_new(request):
         discussion = Discussion.objects.create_discussion("STO")
         story.discussion = discussion
         story.save()
+        print story.team.all()
         return redirect('story_detail', pk=story.pk)
     else:
         storyform = StoryForm()
@@ -492,7 +493,7 @@ def story_detail(request, pk):
             if 'webform' in request.POST:
                 print "WF Try If Post If webform"
                 webform = WebFacetForm(data=request.POST, instance=webfacet)
-                import pdb; pdb.set_trace()
+                # import pdb; pdb.set_trace()
                 if webform.is_valid():
                     print "WF Try If Post If Webform Valid"
                     webfacet.save()
@@ -510,7 +511,7 @@ def story_detail(request, pk):
                 print "WF Except Post If webform"
                 webform = WebFacetForm(request.POST or None)
                 if webform.is_valid():
-                    import pdb; pdb.set_trace()
+                    # import pdb; pdb.set_trace()
                     print "WF Except Post If webform Valid"
                     webfacet = webform.save(commit=False)
                     print "webfacet = webform.save(commit=False)"
@@ -550,7 +551,7 @@ def story_detail(request, pk):
             print "PF Try If Post"
             if 'printform' in request.POST:
                 print "PF Try If Post If printform"
-                import pdb; pdb.set_trace()
+                # import pdb; pdb.set_trace()
                 printform = PrintFacetForm(data=request.POST, instance=printfacet)
                 if printform.is_valid():
                     print "PF Try If Post If printform Valid"
@@ -567,7 +568,7 @@ def story_detail(request, pk):
             print "PF Except If Post"
             if 'printform' in request.POST:
                 print "PF Except If Post If printform"
-                import pdb; pdb.set_trace()
+                # import pdb; pdb.set_trace()
                 printform = PrintFacetForm(request.POST or None)
                 if printform.is_valid():
                     print "PF Except If Post If printform Valid"
@@ -608,7 +609,7 @@ def story_detail(request, pk):
             print "AF Try If Post"
             if 'audioform' in request.POST:
                 print "AF Try If Post If Audioform"
-                import pdb; pdb.set_trace()
+                # import pdb; pdb.set_trace()
                 audioform = AudioFacetForm(data=request.POST, instance=audiofacet)
                 if audioform.is_valid():
                     print "AF Try If Post If Audioform Valid"
@@ -625,7 +626,7 @@ def story_detail(request, pk):
             print "AF Except If Post"
             if 'audioform' in request.POST:
                 print "AF Except If Post If Audioform"
-                import pdb; pdb.set_trace()
+                # import pdb; pdb.set_trace()
                 audioform = AudioFacetForm(request.POST or None)
                 if audioform.is_valid():
                     print "AF Except If Post If Audioform Valid"
@@ -666,7 +667,7 @@ def story_detail(request, pk):
             print "VF Try If Post"
             if 'videoform' in request.POST:
                 print "VF Try If Post If Videoform"
-                import pdb; pdb.set_trace()
+                # # import pdb; pdb.set_trace()
                 videoform = VideoFacetForm(data=request.POST, instance=videofacet)
                 if videoform.is_valid():
                     print "VF Try If Post If Videoform Valid"
@@ -685,7 +686,7 @@ def story_detail(request, pk):
                 print "VF Except If Post If Videoform"
                 videoform = VideoFacetForm(request.POST or None)
                 if videoform.is_valid():
-                    import pdb; pdb.set_trace()
+                    # import pdb; pdb.set_trace()
                     print "VF Except If Post If Videoform Valid"
                     videofacet = videoform.save(commit=False)
                     print "videofacet = videoform.save(commit=False)"

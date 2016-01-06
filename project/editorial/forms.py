@@ -133,7 +133,7 @@ class StoryForm(forms.ModelForm):
         fields = ['name', 'story_description', 'series', 'collaborate', 'collaborate_with','team', 'embargo', 'embargo_datetime', 'sensitive', 'share', 'ready_to_share', 'share_with', 'archived' ]
         widgets = {
             'team': ArrayFieldSelectMultiple(
-                choices=User.objects.all(), attrs={'class': 'chosen-select'}),
+                choices=User.objects.all(), attrs={'class': 'chosen-select', 'id':'story-team'}),
             'collaborate_with': ArrayFieldSelectMultiple(
                 choices=Organization.objects.all(), attrs={'class': 'chosen-select', 'id':'collaborate-with'}),
             'share_with': ArrayFieldSelectMultiple(
@@ -191,7 +191,7 @@ class WebFacetForm(forms.ModelForm):
         ]
         widgets = {
             'credit': ArrayFieldSelectMultiple(
-                choices=User.objects.all(), attrs={'class': 'chosen-select form-control'}),
+                choices=User.objects.all(), attrs={'class': 'chosen-select form-control', 'id':'webfacet-credit'}),
             'title': Textarea(attrs={'rows':2}),
             'wf_description': Textarea(attrs={'rows':3}),
             'excerpt': Textarea(attrs={'rows':4}),
@@ -254,10 +254,9 @@ class PrintFacetForm(forms.ModelForm):
         ]
         widgets = {
             'credit': ArrayFieldSelectMultiple(
-                choices=User.objects.all(), attrs={'class': 'chosen-select form-control'}),
+                choices=User.objects.all(), attrs={'class': 'chosen-select form-control', 'id':'printfacet-credit'}),
             'title': Textarea(attrs={'rows':2}),
             'pf_description': Textarea(attrs={'rows':3}),
-            # 'pf_content':Textarea(attrs={'rows':25}),
             'excerpt': Textarea(attrs={'rows':4}),
             'captions': Textarea(attrs={'rows':5}),
             'share_note': Textarea(attrs={'rows':5}),
@@ -318,7 +317,7 @@ class AudioFacetForm(forms.ModelForm):
         ]
         widgets = {
             'credit': ArrayFieldSelectMultiple(
-                choices=User.objects.all(), attrs={'class': 'chosen-select form-control'}),
+                choices=User.objects.all(), attrs={'class': 'chosen-select form-control', 'id':'audiofacet-credit'}),
             'title': Textarea(attrs={'rows':2}),
             'af_description': Textarea(attrs={'rows':3}),
             'excerpt': Textarea(attrs={'rows':4}),
@@ -381,7 +380,7 @@ class VideoFacetForm(forms.ModelForm):
         ]
         widgets = {
             'credit': ArrayFieldSelectMultiple(
-                choices=User.objects.all(), attrs={'class': 'chosen-select form-control'}),
+                choices=User.objects.all(), attrs={'class': 'chosen-select form-control', 'id':'videofacet-credit'}),
             'title': Textarea(attrs={'rows':2}),
             'vf_description': Textarea(attrs={'rows':3}),
             'excerpt': Textarea(attrs={'rows':4}),
