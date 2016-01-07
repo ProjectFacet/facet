@@ -109,25 +109,14 @@ def team_list(request):
     Displays team members from the user's own organization.
     Displays team members from any network that the user's organization is part of.
     """
-    # FIXME: Optimize query and create better object for parsing in template
 
     # the user's organization
     organization = request.user.organization
     networks = Organization.get_org_networks(organization)
 
-    print "NETWORKS: ", networks
-
-    #
-    # org_networks = Organization.get_org_networks(organization)
-    # networkorganizations = Network.get_network_organizations(network)
-    # org_users Organization.get_org_users(org)
-
-
-
     # form for adding a new user to the team
     adduserform = AddUserForm()
     # only visible for admin users
-
 
     return render(request, 'editorial/team.html', {
         'organization': organization,

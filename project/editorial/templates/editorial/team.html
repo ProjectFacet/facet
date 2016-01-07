@@ -26,9 +26,15 @@
   </div>
   <div class="col-md-6">
     <h2 class="center">Network Teams</h2>
-      {% for network in networks.network_owner %}
-        <h3>{{ network }}</h3>
-        
+      {% for network in networks %}
+        <h3>{{ network.name }}</h3>
+        {% for organization in network.members.all %}
+          <h4>{{ organization.name }}</h4>
+            {% for user in organization.user_set.all %}
+            <p>{{ user.credit_name }} | {{ user.email }}</p>
+            {% endfor %}
+        {% endfor %}
+
       {% endfor %}
   </div>
 </div>
