@@ -24,7 +24,7 @@
       <tbody>
       {% for story in stories %}
 
-        {% if story.webfacetstory.all %}
+        {% if story.webfacetstory.all or story.printfacetstory.all or story.audiofacetstory.all or story.videofacetstory.all %}
           {% for facet in story.webfacetstory.all %}
             <tr>
               <td><a href="{% url 'story_detail' pk=facet.story.id %}">{{ facet.story.name }}</a></th>
@@ -35,8 +35,6 @@
               <td>{{ facet.run_date|date:'n/j, g:i a'}}</td>
             </tr>
           {% endfor %}
-
-        {% elif story.printfacetstory.all %}
           {% for facet in story.printfacetstory.all %}
             <tr>
               <td><a href="{% url 'story_detail' pk=facet.story.id %}">{{ facet.story.name }}</a></th>
@@ -47,8 +45,6 @@
               <td>{{ facet.run_date|date:'n/j, g:i a'}}</td>
             </tr>
           {% endfor %}
-
-        {% elif story.audiofacetstory.all %}
           {% for facet in story.audiofacetstory.all %}
             <tr>
               <td><a href="{% url 'story_detail' pk=facet.story.id %}">{{ facet.story.name }}</a></th>
@@ -59,8 +55,6 @@
               <td>{{ facet.run_date|date:'n/j, g:i a'}}</td>
             </tr>
           {% endfor %}
-
-        {% elif story.videofacetstory.all %}
           {% for facet in story.videofacetstory.all %}
             <tr>
               <td><a href="{% url 'story_detail' pk=facet.story.id %}">{{ facet.story.name }}</a></td>
@@ -71,7 +65,6 @@
               <td>{{ facet.run_date|date:'n/j, g:i a'}}</td>
             </tr>
           {% endfor %}
-
         {% else %}
             <tr>
               <td><a href="{% url 'story_detail' pk=story.id %}">{{ story.name }}</a></td>

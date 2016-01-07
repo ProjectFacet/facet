@@ -14,22 +14,68 @@
       <th>Facet</th>
       <th>Title</th>
       <th>Credit</th>
+      <th>Organization</th>
       <th>Edit Date</th>
     </tr>
   </thead>
   <tbody>
-    {% for facet in networkstoryfacets %}
-    <tr>
-      <td>{{ facet.story.name }}</td>
-      <td>{{ facet.facet_type }}</td>
-      <td>{{ facet.title }}</td>
-      <td>{{ facet.credit.credit_name }}</td>
-      <td>{{ facet.due_edit}}</td>
-    </tr>
-    {% endfor %}
+  {% for story in networkstories %}
+
+    {% if story.webfacetstory.all or story.printfacetstory.all or story.audiofacetstory.all or story.videofacetstory.all %}
+      {% for facet in story.webfacetstory.all %}
+        <tr>
+          <td>{{ facet.story.name }}</td>
+          <td>{{ facet.facet_type}}</td>
+          <td>{{ facet.title }}</td>
+          <td>{{ facet.owner.credit_name }}</td>
+          <td>{{ facet.original_org }}</td>
+          <td>{{ facet.due_edit|date:'n/j, g:i a'}}</td>
+        </tr>
+      {% endfor %}
+      {% for facet in story.printfacetstory.all %}
+        <tr>
+          <td>{{ facet.story.name }}</td>
+          <td>{{ facet.facet_type}}</td>
+          <td>{{ facet.title }}</td>
+          <td>{{ facet.owner.credit_name }}</td>
+          <td>{{ facet.original_org }}</td>
+          <td>{{ facet.due_edit|date:'n/j, g:i a'}}</td>
+        </tr>
+      {% endfor %}
+      {% for facet in story.audiofacetstory.all %}
+        <tr>
+          <td>{{ facet.story.name }}</td>
+          <td>{{ facet.facet_type}}</td>
+          <td>{{ facet.title }}</td>
+          <td>{{ facet.owner.credit_name }}</td>
+          <td>{{ facet.original_org }}</td>
+          <td>{{ facet.due_edit|date:'n/j, g:i a'}}</td>
+        </tr>
+      {% endfor %}
+      {% for facet in story.videofacetstory.all %}
+        <tr>
+          <td>{{ facet.story.name }}</td>
+          <td>{{ facet.facet_type}}</td>
+          <td>{{ facet.title }}</td>
+          <td>{{ facet.owner.credit_name }}</td>
+          <td>{{ facet.original_org }}</td>
+          <td>{{ facet.due_edit|date:'n/j, g:i a'}}</td>
+        </tr>
+      {% endfor %}
+    {% else %}
+        <tr>
+          <td>{{ story.name }}</td>
+          <td></td>
+          <td><i class="tiny-text">No Facets Currently</i></td>
+          <td>{{ story.owner.credit_name }}</td>
+          <td>{{ story.original_org }}</td>
+          <td></td>
+        </tr>
+    {% endif %}
+
+  {% endfor %}
   </tbody>
 </table>
-
 
 
 

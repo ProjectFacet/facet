@@ -367,26 +367,7 @@ def story_list(request):
     editor, status.
     """
 
-    #FIXME: Revise query to get all stories and any facets that exist for those stories
-
     stories = Story.objects.filter(original_org=request.user.organization)
-
-    # class Story...
-    #    web = m2m  # NO
-    #
-    #@    def all_facets():
-    #    reutirn
-    # class Web:
-    #    story = ...
-
-    # stories = Story.objects.prefetch_related('webfacet_set', 'printfacet_set')
-    # my_story.webfacet_set.all() = list of wfs for a sstory
-
-    # {% for story in story %}
-    # {% for facet in story.webfacet_set.all %}
-
-    #
-    # print "STORYFACETS: ", storyfacets
 
     return render(request, 'editorial/storylist.html', {
         'stories': stories,
@@ -948,37 +929,18 @@ def network_stories(request):
     it once it becomes available.)
     """
 
-    # FIXME: similar issue as the story list page.
-
-    networkstories = [ ]
-    print "networkstories list: ", networkstories
-
     org_id = request.user.organization_id
-    print "org id: ", org_id
 
     networks = NetworkOrganization.objects.filter(organization_id=org_id)
-    print "NETWORKS: ", networks
 
+    networkstories = []
     for network in networks:
-        print "Network: ", network
         shared_stories = Story.objects.filter(share_with = network.id)
-        print "SHARED STORIES: ", shared_stories
         for story in shared_stories:
-            print "STORY: ", story
-            story = Story.objects.filter(id = story.id)
-            networkstories.extend(story)
-
-    networkstories = set(networkstories)
-
-    networkstoryfacets = []
-    for story in networkstories:
-        networkstoryfacets.extend(WebFacet.objects.filter(story_id=story.id))
-        networkstoryfacets.extend(PrintFacet.objects.filter(story_id=story.id))
-        networkstoryfacets.extend(AudioFacet.objects.filter(story_id=story.id))
-        networkstoryfacets.extend(VideoFacet.objects.filter(story_id=story.id))
-    print "ERRM, Maybe? ", networkstoryfacets
+            story = Story.objects.get(id = story.id)
+            if story not in networkstories:
+                networkstories.append(story)
 
     return render(request, 'editorial/networkstories.html', {
         'networkstories': networkstories,
-        'networkstoryfacets': networkstoryfacets,
         })

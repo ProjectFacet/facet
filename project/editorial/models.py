@@ -258,8 +258,6 @@ class Organization(models.Model):
             if network not in organization_networks:
                 organization_networks.append(network)
 
-
-
         return organization_networks
 
     @property
@@ -324,8 +322,22 @@ class Network(models.Model):
         """ Return list of all organizations that are part of a network. """
 
         network_organizations = NetworkOrganization.objects.filter(network=self)
-
+        print "NETWORK ORGANIZATIONS: ", network_organizations
         return network_organizations
+
+
+    def get_network_shared_stories(self):
+        """ Return list of stories shared with a network. """
+
+        network_orgs = get_network_organizations(self)
+
+        network_stories = []
+        for network in network_orgs:
+            shared_stories = Story.objects.filter(share_with = self.id)
+            print "SHARED STORIES: ", shared_stories
+            network_stories.extend(shared_stories)
+
+        return network_stories
 
     @property
     def description(self):
