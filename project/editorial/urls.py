@@ -26,6 +26,10 @@ urlpatterns = [
     #----------------------------------------------------------------------#
     url(r'^discussion$', views.discussion, name='discussion'),
     #----------------------------------------------------------------------#
+    #   Private Message URLS
+    #----------------------------------------------------------------------#
+    url(r'^privatemessage/new/$', views.private_message_new, name='private_message_new'),
+    #----------------------------------------------------------------------#
     #   Comment URLS
     #----------------------------------------------------------------------#
     url(r'^seriescomment/new$', views.create_seriescomment, name='create_seriescomment'),

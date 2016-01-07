@@ -50,6 +50,7 @@
 </head>
 
 <body>
+  {% load bootstrap3 %}
 
   <main id="wrapper" class="wrapkit-wrapper">
 
@@ -117,6 +118,17 @@
           </li>
           </ul>
           {% endif %}
+
+          <div class="pull-right" role="navigation">
+          <!-- ================================================= -->
+                                <!-- MESSAGING -->
+          <!-- ================================================= -->
+          <div class="dropdown-ext">
+            <a aria-label="notifications" class="btn btn-icon navbar-btn dropdown-toggle" data-toggle="modal" data-target="#sendPrivateMessage" href="#" title="Send a private message">
+              <i class="fa fa-comments-o"></i>
+            </a>
+          </div><!-- /.dropdown -->
+
           <!-- ================================================= -->
                             <!-- PROFILE LINKS -->
           <!-- ================================================= -->
@@ -148,6 +160,7 @@
           </ul>
         </div>
       </div>
+      </div>
     </nav>
     <!-- END NAVIGATION -->
 
@@ -170,6 +183,42 @@
     <!-- ================================================= -->
 
     <!-- Footer -->
+
+    <!-- ================================================= -->
+    <!-- ================================================= -->
+                    <!-- MODAL WINDOWS SECTION -->
+    <!-- ================================================= -->
+    <!-- ================================================= -->
+
+    <!-- Modal -->
+    <div class="modal fade" id="sendPrivateMessage" tabindex="-1" role="dialog" aria-labelledby="sendPrivateMessageLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="sendPrivateMessageLabel">Send a private message</h4>
+          </div>
+          <div class="modal-body">
+            <form action="privatemessage/new/" method="POST" class="post-form">
+            {% csrf_token %}
+            {% bootstrap_form privatemessageform %}
+            <button type="submit" class="btn btn-primary">Save</button>
+            </form>
+          </div>
+          <div class="modal-footer">
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+    <!-- End of Modal Windows -->
+
+
+
+
 
   </main><!--/#wrapper-->
 

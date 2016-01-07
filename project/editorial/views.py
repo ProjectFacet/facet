@@ -17,6 +17,7 @@ from .forms import (
     AudioFacetForm,
     VideoFacetForm,
     AddToNetworkForm,
+    PrivateMessageForm,
     SeriesCommentForm,
     StoryCommentForm,
     WebFacetCommentForm,
@@ -39,6 +40,7 @@ from models import (
     StoryNote,
     Asset,
     Comment,
+    PrivateMessage,
     Discussion)
 
 #----------------------------------------------------------------------#
@@ -706,6 +708,29 @@ def story_detail(request, pk):
 
 #TODO: Refactor to reduce repetitiveness
 
+def private_message_new(request):
+    """ Private messaging method. """
+
+    print "IN PRIVATE MESSAGE VIEW"
+    if request.method == 'POST':
+        privatemessageform=PrivateMessageForm(request.POST or None)
+        print "IN PM POST"
+        if privatemessageform.is_valid():
+            message_text = request.POST.get('text')
+            send_to = request.POST.get('recipient')
+            recipient = get_object_or_404(User, id=send_to)
+            discussion = Discussion.objects.create_discussion('PRI')
+            message = PrivateMessage.objects.create_private_message(user=request.user, recipient=recipient, discussion=discussion, text=message_text)
+            print "MESSAGE: ", message
+            message.save()
+    return redirect('/discussion')
+
+
+def create_privatecomment_reply(request):
+    """ Reply to a private message."""
+    pass
+
+
 def create_seriescomment(request):
     """ Regular form posting method."""
 
@@ -944,3 +969,24 @@ def network_stories(request):
     return render(request, 'editorial/networkstories.html', {
         'networkstories': networkstories,
         })
+
+
+def copy_network_story(request, pk):
+    """ Copy a story and related facets.
+
+    Currently automatically copies story and all facets.
+    """
+
+    #TODO: Query for a story, collect that story and it's facets
+    # make a copy of that story and facets for the copying organizations
+    # create a record in copy_details_ Tables
+
+    # story fields to keep: original_org, name, story_description, embargo, embargo_datetime,
+    # creation_date, team,
+
+    # facet fields to keep: story, original_org, editor, contributors, credit, title, excerpt, wf_description
+    # wf_content, length, keywords, creation_date, share_note, assets, captions
+
+    story = get_object_or_404(Story, pk=pk)
+
+    return redirect('network_stories')

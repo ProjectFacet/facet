@@ -19,6 +19,7 @@ from editorial.models import (
     PrintFacet,
     AudioFacet,
     VideoFacet,
+    PrivateMessage,
     Comment,
     )
 
@@ -398,12 +399,12 @@ class VideoFacetForm(forms.ModelForm):
 #         Comment Forms          #
 # ------------------------------ #
 
-class PrivateCommentForm(forms.ModelForm):
-    """ Comment form for private comments. """
+class PrivateMessageForm(forms.ModelForm):
+    """ Message form for private messages. """
 
     class Meta:
-        model = Comment
-        fields = ['text']
+        model = PrivateMessage
+        fields = ['text', 'recipient']
         widgets = {
             'text': Textarea(
                 attrs={'id':'private-comment', 'required': True, 'placeholder': 'Message', 'class': 'form-control', 'rows':10}
