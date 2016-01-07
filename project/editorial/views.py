@@ -369,14 +369,7 @@ def story_list(request):
 
     #FIXME: Revise query to get all stories and any facets that exist for those stories
 
-    stories = Story.objects.all()
-
-    storyfacets = []
-    for story in stories:
-        storyfacets.extend(WebFacet.objects.filter(story_id=story.id))
-        storyfacets.extend(PrintFacet.objects.filter(story_id=story.id))
-        storyfacets.extend(AudioFacet.objects.filter(story_id=story.id))
-        storyfacets.extend(VideoFacet.objects.filter(story_id=story.id))
+    stories = Story.objects.filter(original_org=request.user.organization)
 
     # class Story...
     #    web = m2m  # NO
@@ -397,7 +390,6 @@ def story_list(request):
 
     return render(request, 'editorial/storylist.html', {
         'stories': stories,
-        'storyfacets': storyfacets,
         }
     )
 

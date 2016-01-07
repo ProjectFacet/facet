@@ -22,29 +22,71 @@
         </tr>
       </thead>
       <tbody>
-        {% for facet in storyfacets %}
-        <tr>
-          <td><a href="{% url 'story_detail' pk=facet.story.id %}">{{ facet.story.name }}</a></th>
-          <td>{{ facet.facet_type}}</td>
-          <td>{{ facet.title }}</td>
-          <td>{{ facet.owner.credit_name }}</td>
-          <td>{{ facet.due_edit|date:'n/j, g:i a' }}</td>
-          <td>{{ facet.run_date|date:'n/j, g:i a'}}</td>
-        </tr>
-        {% endfor %}
+      {% for story in stories %}
+
+        {% if story.webfacetstory.all %}
+          {% for facet in story.webfacetstory.all %}
+            <tr>
+              <td><a href="{% url 'story_detail' pk=facet.story.id %}">{{ facet.story.name }}</a></th>
+              <td>{{ facet.facet_type}}</td>
+              <td>{{ facet.title }}</td>
+              <td>{{ facet.owner.credit_name }}</td>
+              <td>{{ facet.due_edit|date:'n/j, g:i a' }}</td>
+              <td>{{ facet.run_date|date:'n/j, g:i a'}}</td>
+            </tr>
+          {% endfor %}
+
+        {% elif story.printfacetstory.all %}
+          {% for facet in story.printfacetstory.all %}
+            <tr>
+              <td><a href="{% url 'story_detail' pk=facet.story.id %}">{{ facet.story.name }}</a></th>
+              <td>{{ facet.facet_type}}</td>
+              <td>{{ facet.title }}</td>
+              <td>{{ facet.owner.credit_name }}</td>
+              <td>{{ facet.due_edit|date:'n/j, g:i a' }}</td>
+              <td>{{ facet.run_date|date:'n/j, g:i a'}}</td>
+            </tr>
+          {% endfor %}
+
+        {% elif story.audiofacetstory.all %}
+          {% for facet in story.audiofacetstory.all %}
+            <tr>
+              <td><a href="{% url 'story_detail' pk=facet.story.id %}">{{ facet.story.name }}</a></th>
+              <td>{{ facet.facet_type}}</td>
+              <td>{{ facet.title }}</td>
+              <td>{{ facet.owner.credit_name }}</td>
+              <td>{{ facet.due_edit|date:'n/j, g:i a' }}</td>
+              <td>{{ facet.run_date|date:'n/j, g:i a'}}</td>
+            </tr>
+          {% endfor %}
+
+        {% elif story.videofacetstory.all %}
+          {% for facet in story.videofacetstory.all %}
+            <tr>
+              <td><a href="{% url 'story_detail' pk=facet.story.id %}">{{ facet.story.name }}</a></td>
+              <td>{{ facet.facet_type}}</td>
+              <td>{{ facet.title }}</td>
+              <td>{{ facet.owner.credit_name }}</td>
+              <td>{{ facet.due_edit|date:'n/j, g:i a' }}</td>
+              <td>{{ facet.run_date|date:'n/j, g:i a'}}</td>
+            </tr>
+          {% endfor %}
+
+        {% else %}
+            <tr>
+              <td><a href="{% url 'story_detail' pk=story.id %}">{{ story.name }}</a></td>
+              <td></td>
+              <td><i class="tiny-text">Create a facet</i></td>
+              <td>{{ story.owner.credit_name }}</td>
+              <td></td>
+              <td></td>
+            </tr>
+        {% endif %}
+
+      {% endfor %}
       </tbody>
     </table>
   </div>
 </div>
-
-
-{% for story in stories %}
-
-    <ul>
-        <li><a href="{% url 'story_detail' pk=story.id %}">{{story.name}}</a></li>
-        <li>{{ story.webfacet_set.title }}</li>
-   </ul>
-
-{% endfor %}
 
 {% endblock %}
