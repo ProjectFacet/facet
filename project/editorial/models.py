@@ -684,7 +684,7 @@ class WebFacet(models.Model):
     NEEDS_REVIEW = 'NR'
     READY = 'RDY'
 
-    VIDEOFACET_STATUS_CHOICES = (
+    WEBFACET_STATUS_CHOICES = (
         (DRAFT, 'Draft'),
         (PITCH, 'Pitch'),
         (IN_PROGRESS, 'In Progress'),
@@ -848,7 +848,7 @@ class PrintFacet(models.Model):
     NEEDS_REVIEW = 'NR'
     READY = 'RDY'
 
-    VIDEOFACET_STATUS_CHOICES = (
+    PRINTFACET_STATUS_CHOICES = (
         (DRAFT, 'Draft'),
         (PITCH, 'Pitch'),
         (IN_PROGRESS, 'In Progress'),
@@ -1012,7 +1012,7 @@ class AudioFacet(models.Model):
     NEEDS_REVIEW = 'NR'
     READY = 'RDY'
 
-    VIDEOFACET_STATUS_CHOICES = (
+    AUDIOFACET_STATUS_CHOICES = (
         (DRAFT, 'Draft'),
         (PITCH, 'Pitch'),
         (IN_PROGRESS, 'In Progress'),
@@ -1581,6 +1581,8 @@ class VideoFacetCopyDetail(models.Model):
         auto_now_add=True,
         help_text='Datetime when copy was made.'
     )
+
+    objects = VideoFacetCopyDetailManager()
 
     def __str__(self):
         return "Copyinfo for {copyorg} \'s copy of videofacet: {videofacet}".format(
