@@ -29,8 +29,8 @@
             <tr>
               <td><a href="{% url 'story_detail' pk=facet.story.id %}">{{ facet.story.name }}</a></th>
               <td>{{ facet.facet_type}}</td>
-              <td>{{ facet.title }}</td>
-              <td>{{ facet.owner.credit_name }}</td>
+              <td><a href="#" data-toggle="tooltip" title="{{ facet.wf_description }}">{{ facet.title }}</a></td>
+              <td>{{ facet.credit.all.0.credit_name }}</td>
               <td>{{ facet.due_edit|date:'n/j, g:i a' }}</td>
               <td>{{ facet.run_date|date:'n/j, g:i a'}}</td>
             </tr>
@@ -39,8 +39,8 @@
             <tr>
               <td><a href="{% url 'story_detail' pk=facet.story.id %}">{{ facet.story.name }}</a></th>
               <td>{{ facet.facet_type}}</td>
-              <td>{{ facet.title }}</td>
-              <td>{{ facet.owner.credit_name }}</td>
+              <td><a href="#" data-toggle="tooltip" title="{{ facet.pf_description }}">{{ facet.title }}</a></td>
+              <td>{{ facet.credit.all.0.credit_name }}</td>
               <td>{{ facet.due_edit|date:'n/j, g:i a' }}</td>
               <td>{{ facet.run_date|date:'n/j, g:i a'}}</td>
             </tr>
@@ -49,8 +49,8 @@
             <tr>
               <td><a href="{% url 'story_detail' pk=facet.story.id %}">{{ facet.story.name }}</a></th>
               <td>{{ facet.facet_type}}</td>
-              <td>{{ facet.title }}</td>
-              <td>{{ facet.owner.credit_name }}</td>
+              <td><a href="#" data-toggle="tooltip" title="{{ facet.af_description }}">{{ facet.title }}</a></td>
+              <td>{{ facet.credit.all.0.credit_name }}</td>
               <td>{{ facet.due_edit|date:'n/j, g:i a' }}</td>
               <td>{{ facet.run_date|date:'n/j, g:i a'}}</td>
             </tr>
@@ -59,8 +59,8 @@
             <tr>
               <td><a href="{% url 'story_detail' pk=facet.story.id %}">{{ facet.story.name }}</a></td>
               <td>{{ facet.facet_type}}</td>
-              <td>{{ facet.title }}</td>
-              <td>{{ facet.owner.credit_name }}</td>
+              <td><a href="#" data-toggle="tooltip" title="{{ facet.vf_description }}">{{ facet.title }}</a></td>
+              <td>{{ facet.credit.all.0.credit_name }}</td>
               <td>{{ facet.due_edit|date:'n/j, g:i a' }}</td>
               <td>{{ facet.run_date|date:'n/j, g:i a'}}</td>
             </tr>

@@ -1756,6 +1756,51 @@ class PrivateDiscussion(models.Model):
                                 discussion=self.id,
                                 )
 
+
+class PrivateMessageManager(models.Manager):
+    """ Customer manager for private messaging."""
+
+    def create_private_message(self, user, recipient, discussion, text):
+        """ Method for quick creation of a private discussion."""
+
+        message = self.create(user=user, recipient=recipient, discussion=discussion, text=text)
+        return message
+
+
+class PrivateMessage(models.Model):
+    """ A private message to a specific user.
+
+    Private messages can be sent to a specific user and will only be
+    visible to those users in their inbox.
+    """
+
+    user = models.ForeignKey(
+        User,
+        related_name='private_message_sender',
+        help_text='The sender of the private message.',
+    )
+
+    recipient = models.ForeignKey(
+        User,
+        related_name='private_message_recipient',
+        help_text='The recipient of the private message.'
+    )
+
+    discussion = models.ForeignKey(
+        Discussion,
+    )
+
+    text = models.TextField(
+        help_text='The content of the message.'
+    )
+
+    date = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    objects = PrivateMessageManager()
+
+
 class CommentManager(models.Manager):
     """ Custom manager for comments."""
 

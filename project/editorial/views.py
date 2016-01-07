@@ -367,7 +367,7 @@ def story_list(request):
     editor, status.
     """
 
-    stories = Story.objects.filter(original_org=request.user.organization)
+    stories = Story.objects.filter(original_org=request.user.organization).exclude(archived=True)
 
     return render(request, 'editorial/storylist.html', {
         'stories': stories,
@@ -935,7 +935,7 @@ def network_stories(request):
 
     networkstories = []
     for network in networks:
-        shared_stories = Story.objects.filter(share_with = network.id)
+        shared_stories = Story.objects.filter(share_with = network.id).exclude(archived=True)
         for story in shared_stories:
             story = Story.objects.get(id = story.id)
             if story not in networkstories:

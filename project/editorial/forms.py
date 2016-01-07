@@ -398,6 +398,19 @@ class VideoFacetForm(forms.ModelForm):
 #         Comment Forms          #
 # ------------------------------ #
 
+class PrivateCommentForm(forms.ModelForm):
+    """ Comment form for private comments. """
+
+    class Meta:
+        model = Comment
+        fields = ['text']
+        widgets = {
+            'text': Textarea(
+                attrs={'id':'private-comment', 'required': True, 'placeholder': 'Message', 'class': 'form-control', 'rows':10}
+            ),
+        }
+
+
 class SeriesCommentForm(forms.ModelForm):
     """ Comment form. """
 
