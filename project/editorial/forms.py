@@ -404,7 +404,7 @@ class PrivateMessageForm(forms.ModelForm):
 
     class Meta:
         model = PrivateMessage
-        fields = ['text', 'recipient']
+        fields = ['recipient', 'text']
         widgets = {
             'text': Textarea(
                 attrs={'id':'private-comment', 'required': True, 'placeholder': 'Message', 'class': 'form-control', 'rows':10}

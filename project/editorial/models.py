@@ -681,14 +681,16 @@ class WebFacet(models.Model):
     IN_PROGRESS = 'IP'
     EDIT = 'EDT'
     REVISION = 'RVN'
+    NEEDS_REVIEW = 'NR'
     READY = 'RDY'
 
-    WEBFACET_STATUS_CHOICES = (
+    VIDEOFACET_STATUS_CHOICES = (
         (DRAFT, 'Draft'),
         (PITCH, 'Pitch'),
         (IN_PROGRESS, 'In Progress'),
         (EDIT, 'Edit'),
         (REVISION, 'Revision'),
+        (NEEDS_REVIEW, 'Needs Review'),
         (READY, 'Ready'),
     )
 
@@ -837,22 +839,25 @@ class PrintFacet(models.Model):
         blank=True,
     )
 
-    # Choices for WebFacet status.
+    # Choices for PrintFacet status.
     DRAFT = 'DRFT'
     PITCH = 'PT'
     IN_PROGRESS = 'IP'
     EDIT = 'EDT'
     REVISION = 'RVN'
+    NEEDS_REVIEW = 'NR'
     READY = 'RDY'
 
-    PRINTFACET_STATUS_CHOICES = (
+    VIDEOFACET_STATUS_CHOICES = (
         (DRAFT, 'Draft'),
         (PITCH, 'Pitch'),
         (IN_PROGRESS, 'In Progress'),
         (EDIT, 'Edit'),
         (REVISION, 'Revision'),
+        (NEEDS_REVIEW, 'Needs Review'),
         (READY, 'Ready'),
     )
+
 
     status = models.CharField(
         max_length=25,
@@ -998,20 +1003,22 @@ class AudioFacet(models.Model):
         blank=True,
     )
 
-    # Choices for WebFacet status.
+    # Choices for AudioFacet status.
     DRAFT = 'DRFT'
     PITCH = 'PT'
     IN_PROGRESS = 'IP'
     EDIT = 'EDT'
     REVISION = 'RVN'
+    NEEDS_REVIEW = 'NR'
     READY = 'RDY'
 
-    AUDIOFACET_STATUS_CHOICES = (
+    VIDEOFACET_STATUS_CHOICES = (
         (DRAFT, 'Draft'),
         (PITCH, 'Pitch'),
         (IN_PROGRESS, 'In Progress'),
         (EDIT, 'Edit'),
         (REVISION, 'Revision'),
+        (NEEDS_REVIEW, 'Needs Review'),
         (READY, 'Ready'),
     )
 
@@ -1051,7 +1058,6 @@ class AudioFacet(models.Model):
     share_note = models.TextField(
         help_text='Information for organizations making a copy of the audiofacet.',
         blank=True,
-
     )
 
     assets = models.ManyToManyField(
@@ -1161,12 +1167,13 @@ class VideoFacet(models.Model):
         blank=True,
     )
 
-    # Choices for WebFacet status.
+    # Choices for VideoFacet status.
     DRAFT = 'DRFT'
     PITCH = 'PT'
     IN_PROGRESS = 'IP'
     EDIT = 'EDT'
     REVISION = 'RVN'
+    NEEDS_REVIEW = 'NR'
     READY = 'RDY'
 
     VIDEOFACET_STATUS_CHOICES = (
@@ -1175,6 +1182,7 @@ class VideoFacet(models.Model):
         (IN_PROGRESS, 'In Progress'),
         (EDIT, 'Edit'),
         (REVISION, 'Revision'),
+        (NEEDS_REVIEW, 'Needs Review'),
         (READY, 'Ready'),
     )
 
@@ -1376,6 +1384,15 @@ class SeriesCopyDetail(models.Model):
                                 )
 
 
+class StoryCopyDetailManager(models.Manager):
+    """Custom manager to create copy records for stories. """
+
+    def create_story_copy_record(self, partner, original_story_id, partner_story_id):
+        """Method for quick creation of a copy record."""
+        story_copy_detail=self.create(partner=partner, original_story_id=original_story_id, partner_story_id=partner_story_id)
+        return story_copy_detail
+
+
 class StoryCopyDetail(models.Model):
     """ The details of each copy of a story.
 
@@ -1403,11 +1420,22 @@ class StoryCopyDetail(models.Model):
         help_text='Datetime when copy was made.'
     )
 
+    objects = StoryCopyDetailManager()
+
     def __str__(self):
         return "Copyinfo for {copyorg} \'s copy of story: {story}".format(
                                 copyorg=self.partner.name,
                                 story=self.original_story_id,
                                 )
+
+
+class WebFacetCopyDetailManager(models.Manager):
+    """Custom manager for WebFacet Copy Details."""
+
+    def create_webfacet_copy_record(self, partner, original_webfacet_id, new_webfacet_id):
+        """Method for quick creation of webfacet copy detail record."""
+        webfacet_copy_detail=self.create(partner=partner, original_webfacet_id=original_webfacet_id, new_webfacet_id=new_webfacet_id)
+        return create_webfacet_copy_record
 
 
 class WebFacetCopyDetail(models.Model):
@@ -1420,12 +1448,12 @@ class WebFacetCopyDetail(models.Model):
 
     original_webfacet_id = models.ForeignKey(
         WebFacet,
-        help_text='Original id of the story.'
+        help_text='Original id of the facet.'
     )
 
     new_webfacet_id = models.SlugField(
         max_length = 15,
-        help_text='Id of the story on the copying organization\'s site.'
+        help_text='Id of the webfacet on the copying organization\'s site.'
     )
 
     copy_date = models.DateTimeField(
@@ -1433,11 +1461,22 @@ class WebFacetCopyDetail(models.Model):
         help_text='Datetime when copy was made.'
     )
 
+    objects = WebFacetCopyDetailManager()
+
     def __str__(self):
         return "Copyinfo for {copyorg} \'s copy of webfacet: {webfacet}".format(
                                 copyorg=self.partner.name,
                                 webfacet=self.original_webfacet_id,
                                 )
+
+
+class PrintFacetCopyDetailManager(models.Manager):
+    """Custom manager for PrintFacet Copy Details."""
+
+    def create_printfacet_copy_record(self, partner, original_printfacet_id, new_printfacet_id):
+        """Method for quick creation of printfacet copy detail record."""
+        printfacet_copy_detail=self.create(partner=partner, original_printfacet_id=original_printfacet_id, new_printfacet_id=new_printfacet_id)
+        return create_printfacet_copy_record
 
 
 class PrintFacetCopyDetail(models.Model):
@@ -1450,12 +1489,12 @@ class PrintFacetCopyDetail(models.Model):
 
     original_printfacet_id = models.ForeignKey(
         PrintFacet,
-        help_text='Original id of the story.'
+        help_text='Original id of the facet.'
     )
 
     new_printfacet_id = models.SlugField(
         max_length = 15,
-        help_text='Id of the story on the copying organization\'s site.'
+        help_text='Id of the print on the copying organization\'s site.'
     )
 
     copy_date = models.DateTimeField(
@@ -1463,11 +1502,22 @@ class PrintFacetCopyDetail(models.Model):
         help_text='Datetime when copy was made.'
     )
 
+    objects = PrintFacetCopyDetailManager()
+
     def __str__(self):
         return "Copyinfo for {copyorg} \'s copy of printfacet: {printfacet}".format(
                                 copyorg=self.partner.name,
                                 printfacet=self.original_printfacet_id,
                                 )
+
+
+class AudioFacetCopyDetailManager(models.Manager):
+    """Custom manager for AudioFacet Copy Details."""
+
+    def create_audiofacet_copy_record(self, partner, original_audiofacet_id, new_audiofacet_id):
+        """Method for quick creation of audiofacet copy detail record."""
+        audiofacet_copy_detail=self.create(partner=partner, original_audiofacet_id=original_audiofacet_id, new_audiofacet_id=new_audiofacet_id)
+        return create_audiofacet_copy_record
 
 
 class AudioFacetCopyDetail(models.Model):
@@ -1498,6 +1548,15 @@ class AudioFacetCopyDetail(models.Model):
                                 copyorg=self.partner.name,
                                 audiofacet=self.original_audiofacet_id,
                                 )
+
+
+class VideoFacetCopyDetailManager(models.Manager):
+    """Custom manager for VideoFacet Copy Details."""
+
+    def create_videofacet_copy_record(self, partner, original_videofacet_id, new_videofacet_id):
+        """Method for quick creation of videofacet copy detail record."""
+        videofacet_copy_detail=self.create(partner=partner, original_videofacet_id=original_videofacet_id, new_videofacet_id=new_videofacet_id)
+        return create_videofacet_copy_record
 
 
 class VideoFacetCopyDetail(models.Model):
