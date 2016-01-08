@@ -497,10 +497,15 @@ class Story(models.Model):
         help_text='User who created the story'
     )
 
-    original_org = models.ForeignKey(
+    organization = models.ForeignKey(
         Organization,
-        related_name='story_org',
-        help_text="Organization the story was originally created by."
+        help_text="Organization that owns this story."
+    )
+
+    original_story = models.BooleanField(
+        default=True,
+        help_text='Was this story originally created by a user from this organization?'
+        #If story is not original, set to false and use StoryCopyDetail for additional info.
     )
 
     name = models.CharField(
@@ -615,8 +620,15 @@ class WebFacet(models.Model):
         related_name='webfacetowner'
     )
 
-    original_org = models.ForeignKey(
+    organization = models.ForeignKey(
         Organization,
+        help_text='Organization that owns this webfacet.'
+    )
+
+    original_webfacet = models.BooleanField(
+        default=True,
+        help_text='Was this webfacet originally created by a user from this organization?',
+        # If webfacet is not original, set to false and use WebFacetCopyDetail for additional info.
     )
 
     editor = models.ForeignKey(
@@ -778,8 +790,15 @@ class PrintFacet(models.Model):
         related_name='printfacetowner'
     )
 
-    original_org = models.ForeignKey(
+    organization = models.ForeignKey(
         Organization,
+        help_text='Organization that owns this printfacet.'
+    )
+
+    original_printfacet = models.BooleanField(
+        default=True,
+        help_text='Was this printfacet originally created by a user from this organization?',
+        # If printfacet is not original, set to false and use PrintFacetCopyDetail for additional info.
     )
 
     editor = models.ForeignKey(
@@ -942,8 +961,15 @@ class AudioFacet(models.Model):
         related_name='audiofacetowner'
     )
 
-    original_org = models.ForeignKey(
+    organization = models.ForeignKey(
         Organization,
+        help_text='Organization that owns this audiofacet.'
+    )
+
+    original_audiofacet = models.BooleanField(
+        default=True,
+        help_text='Was this audiofacet originally created by a user from this organization?',
+        # If audiofacet is not original, set to false and use AudioFacetCopyDetail for additional info.
     )
 
     editor = models.ForeignKey(
@@ -1106,8 +1132,15 @@ class VideoFacet(models.Model):
         related_name='videofacetowner'
     )
 
-    original_org = models.ForeignKey(
+    organization = models.ForeignKey(
         Organization,
+        help_text='Organization that owns this videofacet.'
+    )
+
+    original_videofacet = models.BooleanField(
+        default=True,
+        help_text='Was this videofacet originally created by a user from this organization?',
+        # If videofacet is not original, set to false and use VideoFacetCopyDetail for additional info.
     )
 
     editor = models.ForeignKey(
@@ -1349,6 +1382,15 @@ class VideoFacetContributor(models.Model):
                                         )
 
 
+class SeriesCopyDetailManager(models.Manager):
+    """Custom manager to create copy records for series. """
+
+    def create_story_copy_record(self, original_org, partner, original_series, partner_series):
+        """Method for quick creation of a copy record."""
+        story_copy_detail=self.create(original_org=original_org, partner=partner, original_series=original_series, partner_series=partner_series)
+        return story_copy_detail
+
+
 class SeriesCopyDetail(models.Model):
     """ The details of each copy of a series.
 
@@ -1357,19 +1399,28 @@ class SeriesCopyDetail(models.Model):
     new organization.
     """
 
+    original_org = models.ForeignKey(
+        Organization,
+        help_text='Organization that originally created the content.',
+        related_name='original_series_organization',
+    )
+
+    original_series = models.ForeignKey(
+        Series,
+        help_text='Original copy of the series.',
+        related_name='original_series_detail'
+    )
+
     partner = models.ForeignKey(
         Organization,
-        help_text='Organization that made the copy.'
+        help_text='Organization that made the copy.',
+        related_name='series_copying_organization',
     )
 
-    original_series_id = models.ForeignKey(
+    partner_series = models.ForeignKey(
         Series,
-        help_text='Original id of the series.'
-    )
-
-    partner_series_id = models.SlugField(
-        max_length = 15,
-        help_text='Id of the series on the copying organization\'s site.'
+        help_text='The new version of the series saved by the partner organization.',
+        related_name='series_copy',
     )
 
     copy_date = models.DateTimeField(
@@ -1377,19 +1428,21 @@ class SeriesCopyDetail(models.Model):
         help_text='Datetime when copy was made.'
     )
 
+    objects = SeriesCopyDetailManager()
+
     def __str__(self):
         return "Copyinfo for {copyorg} \'s copy of series: {series}".format(
                                 copyorg=self.partner.name,
-                                series=self.original_series_id
+                                series=self.original_series,
                                 )
 
 
 class StoryCopyDetailManager(models.Manager):
     """Custom manager to create copy records for stories. """
 
-    def create_story_copy_record(self, partner, original_story_id, partner_story_id):
+    def create_story_copy_record(self, original_org, partner, original_story, partner_story):
         """Method for quick creation of a copy record."""
-        story_copy_detail=self.create(partner=partner, original_story_id=original_story_id, partner_story_id=partner_story_id)
+        story_copy_detail=self.create(original_org=original_org, partner=partner, original_story=original_story, partner_story=partner_story)
         return story_copy_detail
 
 
@@ -1400,19 +1453,28 @@ class StoryCopyDetail(models.Model):
     story has already been copied over. If not, copy the story to the new organization.
     """
 
+    original_org = models.ForeignKey(
+        Organization,
+        help_text='Organization that originally created the content.',
+        related_name='original_story_organization',
+    )
+
+    original_story = models.ForeignKey(
+        Story,
+        help_text='Original copy of the story.',
+        related_name='original_story_detail',
+    )
+
     partner = models.ForeignKey(
         Organization,
-        help_text='Organization that made the copy.'
+        help_text='Organization that made the copy.',
+        related_name='story_copying_organization',
     )
 
-    original_story_id = models.ForeignKey(
+    partner_story = models.ForeignKey(
         Story,
-        help_text='Original id of the story.'
-    )
-
-    partner_story_id = models.SlugField(
-        max_length = 15,
-        help_text='Id of the story on the copying organization\'s site.'
+        help_text='The new version of the story saved by the partner organization.',
+        related_name='story_copy',
     )
 
     copy_date = models.DateTimeField(
@@ -1425,35 +1487,44 @@ class StoryCopyDetail(models.Model):
     def __str__(self):
         return "Copyinfo for {copyorg} \'s copy of story: {story}".format(
                                 copyorg=self.partner.name,
-                                story=self.original_story_id,
+                                story=self.original_story,
                                 )
 
 
 class WebFacetCopyDetailManager(models.Manager):
     """Custom manager for WebFacet Copy Details."""
 
-    def create_webfacet_copy_record(self, partner, original_webfacet_id, new_webfacet_id):
+    def create_webfacet_copy_record(self, original_org, partner, original_webfacet, partner_webfacet):
         """Method for quick creation of webfacet copy detail record."""
-        webfacet_copy_detail=self.create(partner=partner, original_webfacet_id=original_webfacet_id, new_webfacet_id=new_webfacet_id)
+        webfacet_copy_detail=self.create(original_org=original_org, partner=partner, original_webfacet=original_webfacet, partner_webfacet=partner_webfacet)
         return create_webfacet_copy_record
 
 
 class WebFacetCopyDetail(models.Model):
     """ The details of a each copy of a webfacet. """
 
+    original_org = models.ForeignKey(
+        Organization,
+        help_text='Organization that originally created the content.',
+        related_name='original_webfacet_organization',
+    )
+
+    original_webfacet = models.ForeignKey(
+        WebFacet,
+        help_text='Original copy of the webfacet.',
+        related_name='original_webfacet_detail',
+    )
+
     partner = models.ForeignKey(
         Organization,
-        help_text='Organization that made the copy.'
+        help_text='Organization that made the copy.',
+        related_name='webfacet_copying_organization',
     )
 
-    original_webfacet_id = models.ForeignKey(
+    partner_webfacet = models.ForeignKey(
         WebFacet,
-        help_text='Original id of the facet.'
-    )
-
-    new_webfacet_id = models.SlugField(
-        max_length = 15,
-        help_text='Id of the webfacet on the copying organization\'s site.'
+        help_text='The new version of the webfacet saved by the partner organization.',
+        related_name='webfacet_copy',
     )
 
     copy_date = models.DateTimeField(
@@ -1466,35 +1537,44 @@ class WebFacetCopyDetail(models.Model):
     def __str__(self):
         return "Copyinfo for {copyorg} \'s copy of webfacet: {webfacet}".format(
                                 copyorg=self.partner.name,
-                                webfacet=self.original_webfacet_id,
+                                webfacet=self.original_webfacet,
                                 )
 
 
 class PrintFacetCopyDetailManager(models.Manager):
     """Custom manager for PrintFacet Copy Details."""
 
-    def create_printfacet_copy_record(self, partner, original_printfacet_id, new_printfacet_id):
+    def create_printfacet_copy_record(self, original_org, partner, original_printfacet, partner_printfacet):
         """Method for quick creation of printfacet copy detail record."""
-        printfacet_copy_detail=self.create(partner=partner, original_printfacet_id=original_printfacet_id, new_printfacet_id=new_printfacet_id)
+        printfacet_copy_detail=self.create(original_org=original_org, partner=partner, original_printfacet=original_printfacet, partner_printfacet=partner_printfacet)
         return create_printfacet_copy_record
 
 
 class PrintFacetCopyDetail(models.Model):
     """ The details of a each copy of a printfacet. """
 
+    original_org = models.ForeignKey(
+        Organization,
+        help_text='Organization that originally created the content.',
+        related_name='original_printfacet_organization',
+    )
+
+    original_printfacet = models.ForeignKey(
+        PrintFacet,
+        help_text='Original copy of the printfacet.',
+        related_name='original_printfacet_detail',
+    )
+
     partner = models.ForeignKey(
         Organization,
-        help_text='Organization that made the copy.'
+        help_text='Organization that made the copy.',
+        related_name='printfacet_copying_organization',
     )
 
-    original_printfacet_id = models.ForeignKey(
+    partner_printfacet = models.ForeignKey(
         PrintFacet,
-        help_text='Original id of the facet.'
-    )
-
-    new_printfacet_id = models.SlugField(
-        max_length = 15,
-        help_text='Id of the print on the copying organization\'s site.'
+        help_text='The new version of the printfacet saved by the partner organization.',
+        related_name='printfacet_copy',
     )
 
     copy_date = models.DateTimeField(
@@ -1507,35 +1587,44 @@ class PrintFacetCopyDetail(models.Model):
     def __str__(self):
         return "Copyinfo for {copyorg} \'s copy of printfacet: {printfacet}".format(
                                 copyorg=self.partner.name,
-                                printfacet=self.original_printfacet_id,
+                                printfacet=self.original_printfacet,
                                 )
 
 
 class AudioFacetCopyDetailManager(models.Manager):
     """Custom manager for AudioFacet Copy Details."""
 
-    def create_audiofacet_copy_record(self, partner, original_audiofacet_id, new_audiofacet_id):
+    def create_audiofacet_copy_record(self, original_org, partner, original_audiofacet, partner_audiofacet):
         """Method for quick creation of audiofacet copy detail record."""
-        audiofacet_copy_detail=self.create(partner=partner, original_audiofacet_id=original_audiofacet_id, new_audiofacet_id=new_audiofacet_id)
+        audiofacet_copy_detail=self.create(original_org=original_org, partner=partner, original_audiofacet=original_audiofacet, partner_audiofacet=partner_audiofacet)
         return create_audiofacet_copy_record
 
 
 class AudioFacetCopyDetail(models.Model):
     """ The details of a each copy of a audiofacet. """
 
+    original_org = models.ForeignKey(
+        Organization,
+        help_text='Organization that originally created the content.',
+        related_name='original_audiofacet_organization',
+    )
+
+    original_audiofacet = models.ForeignKey(
+        AudioFacet,
+        help_text='Original copy of the audiofacet.',
+        related_name='original_audiofacet_detail',
+    )
+
     partner = models.ForeignKey(
         Organization,
-        help_text='Organization that made the copy.'
+        help_text='Organization that made the copy.',
+        related_name='audiofacet_copying_organization',
     )
 
-    original_audiofacet_id = models.ForeignKey(
+    partner_audiofacet = models.ForeignKey(
         AudioFacet,
-        help_text='Original id of the story.'
-    )
-
-    new_audiofacet_id = models.SlugField(
-        max_length = 15,
-        help_text='Id of the story on the copying organization\'s site.'
+        help_text='The new version of the audiofacet saved by the partner organization.',
+        related_name='audiofacet_copy',
     )
 
     copy_date = models.DateTimeField(
@@ -1543,43 +1632,54 @@ class AudioFacetCopyDetail(models.Model):
         help_text='Datetime when copy was made.'
     )
 
+    objects = AudioFacetCopyDetailManager()
+
     def __str__(self):
         return "Copyinfo for {copyorg} \'s copy of audiofacet: {audiofacet}".format(
                                 copyorg=self.partner.name,
-                                audiofacet=self.original_audiofacet_id,
+                                audiofacet=self.original_audiofacet,
                                 )
 
 
 class VideoFacetCopyDetailManager(models.Manager):
     """Custom manager for VideoFacet Copy Details."""
 
-    def create_videofacet_copy_record(self, partner, original_videofacet_id, new_videofacet_id):
+    def create_videofacet_copy_record(self, original_org, partner, original_videofacet, partner_videofacet):
         """Method for quick creation of videofacet copy detail record."""
-        videofacet_copy_detail=self.create(partner=partner, original_videofacet_id=original_videofacet_id, new_videofacet_id=new_videofacet_id)
+        videofacet_copy_detail=self.create(original_org=original_org, partner=partner, original_videofacet=original_videofacet, partner_videofacet=partner_videofacet)
         return create_videofacet_copy_record
 
 
 class VideoFacetCopyDetail(models.Model):
     """ The details of a each copy of a videofacet. """
 
+    original_org = models.ForeignKey(
+        Organization,
+        help_text='Organization that originally created the content.',
+        related_name='original_videofacet_organization',
+    )
+
+    original_videofacet = models.ForeignKey(
+        VideoFacet,
+        help_text='Original copy of the videofacet.',
+        related_name='original_videofacet_detail',
+    )
+
     partner = models.ForeignKey(
         Organization,
-        help_text='Organization that made the copy.'
+        help_text='Organization that made the copy.',
+        related_name='videofacet_copying_organization',
     )
 
-    original_videofacet_id = models.ForeignKey(
+    partner_videofacet = models.ForeignKey(
         VideoFacet,
-        help_text='Original id of the story.'
-    )
-
-    new_videofacet_id = models.SlugField(
-        max_length = 15,
-        help_text='Id of the story on the copying organization\'s site.'
+        help_text='The new version of the videofacet saved by the partner organization.',
+        related_name='videofacet_copy',
     )
 
     copy_date = models.DateTimeField(
         auto_now_add=True,
-        help_text='Datetime when copy was made.'
+        help_text='Datetime when copy was made.',
     )
 
     objects = VideoFacetCopyDetailManager()
@@ -1587,7 +1687,7 @@ class VideoFacetCopyDetail(models.Model):
     def __str__(self):
         return "Copyinfo for {copyorg} \'s copy of videofacet: {videofacet}".format(
                                 copyorg=self.partner.name,
-                                videofacet=self.original_videofacet_id,
+                                videofacet=self.original_videofacet,
                                 )
 
 #----------------------------------------------------------------------#

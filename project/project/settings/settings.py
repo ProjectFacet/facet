@@ -38,7 +38,8 @@ INSTALLED_APPS = (
     'allauth.account',
     'allauth.socialaccount',
     'bootstrap3_datetime',
-    'tinymce'
+    'tinymce',
+    'debug_toolbar',
 )
 
 SITE_ID = 1
