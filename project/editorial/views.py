@@ -92,8 +92,8 @@ def dashboard(request):
     # actual query needed but not helpful for development
     # stories = Story.objects.filter(creation_date__gte=request.user.last_login)
     # --------------------------------------------------------------------------------#
-    stories = Story.objects.filter(original_org = request.user.organization)
-
+    stories = Story.objects.filter(organization = request.user.organization)
+    print "DASHBOARD STORIES: ", stories
     # TODO: query for other user activity since last_login
 
     return render(request, 'editorial/dashboard.html', {
@@ -369,7 +369,7 @@ def story_list(request):
     editor, status.
     """
 
-    stories = Story.objects.filter(original_org=request.user.organization).exclude(archived=True)
+    stories = Story.objects.filter(organization=request.user.organization).exclude(archived=True)
 
     return render(request, 'editorial/storylist.html', {
         'stories': stories,
@@ -384,16 +384,15 @@ def story_new(request):
     storyform = StoryForm()
     if request.method == "POST":
         storyform = StoryForm(request.POST or None)
-        import pdb; pdb.set_trace()
+        #import pdb; pdb.set_trace()
     if storyform.is_valid():
         story = storyform.save(commit=False)
         story.owner = request.user
-        story.original_org = request.user.organization
+        story.organization = request.user.organization
         discussion = Discussion.objects.create_discussion("STO")
         story.discussion = discussion
         story.save()
         storyform.save_m2m()
-        print "STORY TEAM", story.team.all()
         return redirect('story_detail', pk=story.pk)
     else:
         storyform = StoryForm()
@@ -429,10 +428,6 @@ def story_detail(request, pk):
     and sensivity status. From here the user can also see any facets, edit them and add new ones.
     """
 
-    #FIXME: Inconsistent error. Clunky code.
-    # Can create webfacet, the values appear on reload. Then make Printfacet
-    # printfacet data doesn't appear to save and so on with the other facets.
-
     story = get_object_or_404(Story, pk=pk)
     storycommentform = StoryCommentForm()
     storydiscussion = get_object_or_404(Discussion, id=story.discussion.id)
@@ -466,7 +461,7 @@ def story_detail(request, pk):
             if 'webform' in request.POST:
                 print "WF Try If Post If webform"
                 webform = WebFacetForm(data=request.POST, instance=webfacet)
-                import pdb; pdb.set_trace()
+                #import pdb; pdb.set_trace()
                 if webform.is_valid():
                     print "WF Try If Post If Webform Valid"
                     webform.save()
@@ -484,13 +479,13 @@ def story_detail(request, pk):
                 print "WF Except Post If webform"
                 webform = WebFacetForm(request.POST or None)
                 if webform.is_valid():
-                    # import pdb; pdb.set_trace()
+                    # #import pdb; pdb.set_trace()
                     print "WF Except Post If webform Valid"
                     webfacet = webform.save(commit=False)
                     print "webfacet = webform.save(commit=False)"
                     webfacet.story = story
                     webfacet.owner = request.user
-                    webfacet.original_org = request.user.organization
+                    webfacet.organization = request.user.organization
                     webfacet.creation_date = timezone.now()
                     discussion = Discussion.objects.create_discussion("WF")
                     webfacet.discussion = discussion
@@ -524,7 +519,7 @@ def story_detail(request, pk):
             print "PF Try If Post"
             if 'printform' in request.POST:
                 print "PF Try If Post If printform"
-                import pdb; pdb.set_trace()
+                #import pdb; pdb.set_trace()
                 printform = PrintFacetForm(data=request.POST, instance=printfacet)
                 if printform.is_valid():
                     print "PF Try If Post If printform Valid"
@@ -541,7 +536,7 @@ def story_detail(request, pk):
             print "PF Except If Post"
             if 'printform' in request.POST:
                 print "PF Except If Post If printform"
-                # import pdb; pdb.set_trace()
+                # #import pdb; pdb.set_trace()
                 printform = PrintFacetForm(request.POST or None)
                 if printform.is_valid():
                     print "PF Except If Post If printform Valid"
@@ -549,7 +544,7 @@ def story_detail(request, pk):
                     print "printfacet = printform.save(commit=False)"
                     printfacet.story = story
                     printfacet.owner = request.user
-                    printfacet.original_org = request.user.organization
+                    printfacet.organization = request.user.organization
                     printfacet.creation_date = timezone.now()
                     discussion = Discussion.objects.create_discussion("WF")
                     printfacet.discussion = discussion
@@ -584,7 +579,7 @@ def story_detail(request, pk):
             print "AF Try If Post"
             if 'audioform' in request.POST:
                 print "AF Try If Post If Audioform"
-                # import pdb; pdb.set_trace()
+                # #import pdb; pdb.set_trace()
                 audioform = AudioFacetForm(data=request.POST, instance=audiofacet)
                 if audioform.is_valid():
                     print "AF Try If Post If Audioform Valid"
@@ -601,7 +596,7 @@ def story_detail(request, pk):
             print "AF Except If Post"
             if 'audioform' in request.POST:
                 print "AF Except If Post If Audioform"
-                # import pdb; pdb.set_trace()
+                # #import pdb; pdb.set_trace()
                 audioform = AudioFacetForm(request.POST or None)
                 if audioform.is_valid():
                     print "AF Except If Post If Audioform Valid"
@@ -609,7 +604,7 @@ def story_detail(request, pk):
                     print "audiofacet = audioform.save(commit=False)"
                     audiofacet.story = story
                     audiofacet.owner = request.user
-                    audiofacet.original_org = request.user.organization
+                    audiofacet.organization = request.user.organization
                     audiofacet.creation_date = timezone.now()
                     discussion = Discussion.objects.create_discussion("WF")
                     audiofacet.discussion = discussion
@@ -643,7 +638,7 @@ def story_detail(request, pk):
             print "VF Try If Post"
             if 'videoform' in request.POST:
                 print "VF Try If Post If Videoform"
-                # # import pdb; pdb.set_trace()
+                # # #import pdb; pdb.set_trace()
                 videoform = VideoFacetForm(data=request.POST, instance=videofacet)
                 if videoform.is_valid():
                     print "VF Try If Post If Videoform Valid"
@@ -662,13 +657,13 @@ def story_detail(request, pk):
                 print "VF Except If Post If Videoform"
                 videoform = VideoFacetForm(request.POST or None)
                 if videoform.is_valid():
-                    # import pdb; pdb.set_trace()
+                    # #import pdb; pdb.set_trace()
                     print "VF Except If Post If Videoform Valid"
                     videofacet = videoform.save(commit=False)
                     print "videofacet = videoform.save(commit=False)"
                     videofacet.story = story
                     videofacet.owner = request.user
-                    videofacet.original_org = request.user.organization
+                    videofacet.organization = request.user.organization
                     videofacet.creation_date = timezone.now()
                     discussion = Discussion.objects.create_discussion("VF")
                     videofacet.discussion = discussion
@@ -706,7 +701,7 @@ def story_detail(request, pk):
 #   Comments Views
 #----------------------------------------------------------------------#
 
-#TODO: Refactor to reduce repetitiveness
+#TODO: Refactor to reduce repetitiveness/use AJAX for submission
 
 def private_message_new(request):
     """ Private messaging method. """
@@ -981,10 +976,10 @@ def copy_network_story(request, pk):
     # make a copy of that story and facets for the copying organizations
     # create a record in copy_details_ Tables
 
-    # story fields to keep: original_org, name, story_description, embargo, embargo_datetime,
+    # story fields to keep: organization, name, story_description, embargo, embargo_datetime,
     # creation_date, team,
 
-    # facet fields to keep: story, original_org, editor, contributors, credit, title, excerpt, wf_description
+    # facet fields to keep: story, organization, editor, contributors, credit, title, excerpt, wf_description
     # wf_content, length, keywords, creation_date, share_note, assets, captions
 
     story = get_object_or_404(Story, pk=pk)
