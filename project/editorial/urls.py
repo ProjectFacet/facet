@@ -72,4 +72,8 @@ urlpatterns = [
     url(r'^network/(?P<pk>[0-9]+)/edit/$', views.network_edit, name='network_edit'),
     url(r'^network/list$', views.network_list, name='network_list'),
     url(r'^network/stories$', views.network_stories, name='network_stories'),
+    #----------------------------------------------------------------------#
+    #   Copy URLS
+    #----------------------------------------------------------------------#
+    url(r'^story/copy/(?P<pk>[0-9]+)/$', views.copy_network_story, name='copy_network_story'),    
 ]

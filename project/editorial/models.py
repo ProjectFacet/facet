@@ -596,6 +596,37 @@ class Story(models.Model):
     def __str__(self):
         return self.name
 
+
+    def copy_story(self):
+        """ Create a copy of a story for a partner organization in a network.
+
+        Copied stories keep name, story_description, embargo, embargo, datetime,
+        creation_date, team. All other attributes are cleared or set to False.
+        Organization is set to the copier's organization and the original_content
+        flag is set to false. Triggering a copy also triggers the creation of a
+        story copy detail record.
+        """
+
+        story_copy = get_object_or_404(story=self)
+        # Set the id = None to create teh copy the story instance
+        story_copy.id = None
+        #clear attributes for the copying organization
+        story_copy.series = ''
+        story_copy.owner = request.user
+        story_copy.organization = request.user.organization
+        story_copy.original_story = False
+        story_copy.sensitive = False
+        story_copy.share = False
+        story_copy.ready_to_share = False
+        story_copy.share_with = ''
+        story_copy.collaborate = False
+        story_copy.collaborate_with = ''
+        story_copy.archived = False
+        story_copy.discussion = Discussion.objects.create_discussion("STO")
+
+        return story_copy
+
+
     @property
     def description(self):
         return "{story}, {description}".format(

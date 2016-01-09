@@ -24,7 +24,7 @@
     {% if story.webfacetstory.all or story.printfacetstory.all or story.audiofacetstory.all or story.videofacetstory.all %}
       {% for facet in story.webfacetstory.all %}
         <tr>
-          <td>{{ facet.story.name }}</td>
+          <td>{{ facet.story.name }}  <a href="/story/copy/{{ facet.story_id }}" method=POST><i class="fa fa-clone"></i></a></td>
           <td>{{ facet.facet_type}}</td>
           <td><a href="#" data-toggle="tooltip" title="{{ facet.wf_description }}">{{ facet.title }}</a></td>
           <td>{{ facet.owner.credit_name }}</td>

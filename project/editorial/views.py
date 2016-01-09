@@ -972,16 +972,31 @@ def copy_network_story(request, pk):
     Currently automatically copies story and all facets.
     """
 
-    #TODO: Query for a story, collect that story and it's facets
+    #TODO: Query for a story, collect that story and its facets
     # make a copy of that story and facets for the copying organizations
-    # create a record in copy_details_ Tables
+    # create a record in copy_details_ tables
+    if request.method == "POST":
+        print "*" * 25
+        print "MAKING A STORY COPY"
+        import pdb; pdb.set_trace()
+        original_story = get_object_or_404(Story, pk=pk)
+        print "Original Story: ", original_story
+        original_org = original_story.organization
+        print "Original Org: ", original_org
+        # call story class method to create a copy
+        copied_story = Story.copy_story(original_story)
+        partner = request.user.organization
+        print "Partner: ", partner
+        partner_story = copied_story
 
-    # story fields to keep: organization, name, story_description, embargo, embargo_datetime,
-    # creation_date, team,
+        copy_record = StoryCopyDetail.objects.create_story_copy_record(
+            original_org=original_org,
+            partner=partner,
+            original_story=original_story,
+            partner_story=partner_story
+            )
 
-    # facet fields to keep: story, organization, editor, contributors, credit, title, excerpt, wf_description
-    # wf_content, length, keywords, creation_date, share_note, assets, captions
-
-    story = get_object_or_404(Story, pk=pk)
+        print "COPIED STORY, ", copied_story
+        print "COPY RECORD: ", copy_record
 
     return redirect('network_stories')
