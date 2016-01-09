@@ -75,20 +75,22 @@
                 {{ story.creation_date|date:'D M j g:i a'}}
                 <h4>Sensitive</h4>
                 {{ story.sensitive }}
-                <h4>Share</h4>
-                {{ story.share }}
-                <h4>Ready to Share</h4>
-                {{ story.ready_to_share }}
-                <h4>Shared With</h4>
-                {% for network in story.share_with.all %}
-                  <p>{{ network }}</p>
-                {% endfor %}
-                <h4>Collaboration</h4>
-                {{ story.collaborate }}
-                <h4>Collaborate With</h4>
-                {% for collaborator in story.collaborate_with.all %}
-                <lp>{{ collaborator }}</p>
-                {% endfor %}
+                {% if story.original_story == True %}
+                  <h4>Share</h4>
+                  {{ story.share }}
+                  <h4>Ready to Share</h4>
+                  {{ story.ready_to_share }}
+                  <h4>Shared With</h4>
+                  {% for network in story.share_with.all %}
+                    <p>{{ network }}</p>
+                  {% endfor %}
+                  <h4>Collaboration</h4>
+                  {{ story.collaborate }}
+                  <h4>Collaborate With</h4>
+                  {% for collaborator in story.collaborate_with.all %}
+                  <lp>{{ collaborator }}</p>
+                  {% endfor %}
+                {% endif %}
                 <h4>Archived?</h4>
                 {{ story.archived }}
               </div>

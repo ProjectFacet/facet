@@ -29,6 +29,7 @@ from django.contrib.auth.models import AbstractUser
 from django.utils.encoding import python_2_unicode_compatible
 from django.core.urlresolvers import reverse
 from django.utils import timezone
+from django.shortcuts import get_object_or_404
 
 #----------------------------------------------------------------------#
 #   People:
@@ -562,6 +563,7 @@ class Story(models.Model):
         related_name='story_shared_with_network',
         help_text='Network ids that a story is shared with.',
         blank=True,
+        null=True,
     )
 
     collaborate = models.BooleanField(
@@ -574,6 +576,7 @@ class Story(models.Model):
         related_name='story_collaborated_with_network',
         help_text='Network ids that a story is open to collaboration with.',
         blank=True,
+        null=True,
     )
 
     archived = models.BooleanField(
@@ -607,22 +610,26 @@ class Story(models.Model):
         story copy detail record.
         """
 
-        story_copy = get_object_or_404(story=self)
-        # Set the id = None to create teh copy the story instance
+        story_copy = get_object_or_404(Story, id=self.id)
+        # Set the id = None to create the copy the story instance
         story_copy.id = None
-        #clear attributes for the copying organization
-        story_copy.series = ''
-        story_copy.owner = request.user
-        story_copy.organization = request.user.organization
+        story_copy.save()
+        # clear relationships if they exist
+        if story_copy.series:
+            story_copy.series.clear()
+        if story_copy.share_with:
+            story_copy.share_with.clear()
+        if story_copy.collaborate_with:
+            story_copy.collaborate_with.clear()
+        # clear attributes for the copying organization
         story_copy.original_story = False
         story_copy.sensitive = False
         story_copy.share = False
         story_copy.ready_to_share = False
-        story_copy.share_with = ''
         story_copy.collaborate = False
-        story_copy.collaborate_with = ''
         story_copy.archived = False
         story_copy.discussion = Discussion.objects.create_discussion("STO")
+        story_copy.save()
 
         return story_copy
 
@@ -792,6 +799,25 @@ class WebFacet(models.Model):
 
     def __str__(self):
         return self.title
+
+    def copy_webfacet(self):
+        """ Create a copy of a webfacet for a partner organization in a network."""
+
+        webfacet_copy = get_object_or_404(WebFacet, id=self.id)
+        # set the id=None to create the copy of the webfacet instance
+        webfacet_copy.id=None
+        webfacet_copy.save()
+        # clear attributes for the copying Organization
+        webfacet_copy.original_content=False
+        webfacet_copy.code = ''
+        webfacet_copy.status= 'NR'
+        webfacet_copy.due_edit = None
+        webfacet_copy.run_date = None
+        webfacet_copy.discussion = Discussion.objects.create_discussion("WF")
+        webfacet_copy.edit_history = webfacet_copy.edit_history.all()
+        webfacet_copy.save()
+
+        return webfacet_copy
 
     @property
     def description(self):
@@ -964,6 +990,26 @@ class PrintFacet(models.Model):
     def __str__(self):
         return self.title
 
+    def copy_printfacet(self):
+        """ Create a copy of a printfacet for a partner organization in a network."""
+
+        printfacet_copy = get_object_or_404(PrintFacet, id=self.id)
+        # set the id=None to create the copy of the printfacet instance
+        printfacet_copy.id=None
+        printfacet_copy.save()
+        # clear attributes for the copying Organization
+        printfacet_copy.original_content=False
+        printfacet_copy.code = ''
+        printfacet_copy.status= 'NR'
+        printfacet_copy.due_edit = None
+        printfacet_copy.run_date = None
+        printfacet_copy.discussion = Discussion.objects.create_discussion("PF")
+        printfacet_copy.edit_history = printfacet_copy.edit_history.all()
+        printfacet_copy.save()
+
+        return printfacet_copy
+
+
     @property
     def description(self):
         return "Printfacet: {printfacet} by {credit}".format(
@@ -1135,6 +1181,25 @@ class AudioFacet(models.Model):
     def __str__(self):
         return self.title
 
+    def copy_audiofacet(self):
+        """ Create a copy of a audiofacet for a partner organization in a network."""
+
+        audiofacet_copy = get_object_or_404(AudioFacet, id=self.id)
+        # set the id=None to create the copy of the audiofacet instance
+        audiofacet_copy.id=None
+        audiofacet_copy.save()
+        # clear attributes for the copying Organization
+        audiofacet_copy.original_content=False
+        audiofacet_copy.code = ''
+        audiofacet_copy.status= 'NR'
+        audiofacet_copy.due_edit = None
+        audiofacet_copy.run_date = None
+        audiofacet_copy.discussion = Discussion.objects.create_discussion("AF")
+        audiofacet_copy.edit_history = audiofacet_copy.edit_history.all()
+        audiofacet_copy.save()
+
+        return audiofacet_copy
+
     @property
     def description(self):
         return "Audiofacet: {audiofacet} by {credit}".format(
@@ -1305,6 +1370,25 @@ class VideoFacet(models.Model):
 
     def __str__(self):
         return self.title
+
+    def copy_videofacet(self):
+        """ Create a copy of a videofacet for a partner organization in a network."""
+
+        videofacet_copy = get_object_or_404(VideoFacet, id=self.id)
+        # set the id=None to create the copy of the videofacet instance
+        videofacet_copy.id=None
+        videofacet_copy.save()
+        # clear attributes for the copying Organization
+        videofacet_copy.original_content=False
+        videofacet_copy.code = ''
+        videofacet_copy.status= 'NR'
+        videofacet_copy.due_edit = None
+        videofacet_copy.run_date = None
+        videofacet_copy.discussion = Discussion.objects.create_discussion("VF")
+        videofacet_copy.edit_history = videofacet_copy.edit_history.all()
+        videofacet_copy.save()
+
+        return videofacet_copy
 
     @property
     def description(self):

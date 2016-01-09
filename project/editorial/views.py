@@ -41,7 +41,12 @@ from models import (
     Asset,
     Comment,
     PrivateMessage,
-    Discussion)
+    Discussion,
+    StoryCopyDetail,
+    WebFacetCopyDetail,
+    PrintFacetCopyDetail,
+    AudioFacetCopyDetail,
+    VideoFacetCopyDetail,)
 
 #----------------------------------------------------------------------#
 #   Initial View
@@ -93,7 +98,6 @@ def dashboard(request):
     # stories = Story.objects.filter(creation_date__gte=request.user.last_login)
     # --------------------------------------------------------------------------------#
     stories = Story.objects.filter(organization = request.user.organization)
-    print "DASHBOARD STORIES: ", stories
     # TODO: query for other user activity since last_login
 
     return render(request, 'editorial/dashboard.html', {
@@ -967,36 +971,99 @@ def network_stories(request):
 
 
 def copy_network_story(request, pk):
-    """ Copy a story and related facets.
+    """ Copy a story and related facets. """
 
-    Currently automatically copies story and all facets.
-    """
+    original_story = get_object_or_404(Story, pk=pk)
+    original_org = original_story.organization
 
-    #TODO: Query for a story, collect that story and its facets
-    # make a copy of that story and facets for the copying organizations
-    # create a record in copy_details_ tables
+    original_webfacet = original_story.webfacetstory.all()
+    original_printfacet = original_story.printfacetstory.all()
+    original_audiofacet = original_story.audiofacetstory.all()
+    original_videofacet = original_story.videofacetstory.all()
+
+    user = request.user
+    organization = request.user.organization
+    partner = request.user.organization
+
     if request.method == "POST":
-        print "*" * 25
-        print "MAKING A STORY COPY"
-        import pdb; pdb.set_trace()
-        original_story = get_object_or_404(Story, pk=pk)
-        print "Original Story: ", original_story
-        original_org = original_story.organization
-        print "Original Org: ", original_org
-        # call story class method to create a copy
-        copied_story = Story.copy_story(original_story)
-        partner = request.user.organization
-        print "Partner: ", partner
-        partner_story = copied_story
 
-        copy_record = StoryCopyDetail.objects.create_story_copy_record(
+        #Create a copy of the story and a storycopydetail record
+        copied_story = Story.copy_story(original_story)
+        copied_story.owner = user
+        copied_story.organization = organization
+        copied_story.save()
+        partner_story = copied_story
+        story_copy_record = StoryCopyDetail.objects.create_story_copy_record(
             original_org=original_org,
             partner=partner,
             original_story=original_story,
             partner_story=partner_story
             )
+        print "Story Copied"
 
-        print "COPIED STORY, ", copied_story
-        print "COPY RECORD: ", copy_record
+        # Create copy of facets if they exist
+        if original_webfacet[0]:
+            print original_webfacet[0]
+            copied_webfacet = WebFacet.copy_webfacet(original_webfacet[0])
+            copied_webfacet.story = partner_story
+            copied_webfacet.owner = user
+            copied_webfacet.organization = organization
+            copied_webfacet.save()
+            partner_webfacet = copied_webfacet
+            webfacet_copy_record = WebFacetCopyDetail.objects.create_webfacet_copy_record(
+                original_org=original_org,
+                partner=partner,
+                original_webfacet=original_webfacet[0],
+                partner_webfacet=partner_webfacet
+            )
+            print "Webfacet Copied"
+
+        if original_printfacet[0]:
+            print original_printfacet[0]
+            copied_printfacet = PrintFacet.copy_printfacet(original_printfacet[0])
+            copied_printfacet.story = partner_story
+            copied_printfacet.owner = user
+            copied_printfacet.organization = organization
+            copied_printfacet.save()
+            partner_printfacet = copied_printfacet
+            printfacet_copy_record = PrintFacetCopyDetail.objects.create_printfacet_copy_record(
+                original_org=original_org,
+                partner=partner,
+                original_printfacet=original_printfacet,
+                partner_printfacet=partner_printfacet
+            )
+            print "Printfacet Copied"
+
+        if original_audiofacet[0]:
+            print original_audiofacet[0]
+            copied_audiofacet = AudioFacet.copy_audiofacet(original_audiofacet[0])
+            copied_audiofacet.story = partner_story
+            copied_audiofacet.owner = user
+            copied_audiofacet.organization = organization
+            copied_audiofacet.save()
+            partner_audiofacet = copied_audiofacet
+            audiofacet_copy_record = AudioFacetCopyDetail.objects.create_audiofacet_copy_record(
+                original_org=original_org,
+                partner=partner,
+                original_audiofacet=original_audiofacet,
+                partner_audiofacet=partner_audiofacet
+            )
+            print "Audiofacet Copied"
+
+        if original_videofacet[0]:
+            print original_videofacet[0]
+            copied_videofacet = VideoFacet.copy_videofacet(original_videofacet[0])
+            copied_videofacet.story = partner_story
+            copied_videofacet.owner = user
+            copied_videofacet.organization = organization
+            copied_videofacet.save()
+            partner_videofacet = copied_videofacet
+            videofacet_copy_record = VideoFacetCopyDetail.objects.create_videofacet_copy_record(
+                original_org=original_org,
+                partner=partner,
+                original_videofacet=original_videofacet,
+                partner_videofacet=partner_videofacet
+            )
+            print "Videofacet Copied"
 
     return redirect('network_stories')
