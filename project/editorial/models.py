@@ -163,6 +163,44 @@ class User(AbstractUser):
 
         return user_content
 
+    def inbox_comments(self):
+        """ Return list of comments from discussions the user is a participant in."""
+
+        comments = Comment.objects.filter(user_id=self)
+        discussions = []
+        for comment in comments:
+            discussions = Comment.discussion_set.all()
+            discussions.extend(discussions)
+        inbox_comments = []
+        for discussion in set(discussions):
+            comments = Comment.objects.filter(discussion=discussion)
+            relevant_comments.extend(comments)
+
+        return inbox_comments
+
+    def recent_comments(self):
+        """Return list of comments from discussions the user is a participant in
+        since the user's last login."""
+
+        comments = Comment.objects.filter(user_id=self)
+        discussions = []
+        for comment in comments:
+            discussions = Comment.discussion_set.all()
+            discussions.extend(discussions)
+        relevant_comments = []
+        for discussion in set(discussions):
+            recent_comment = Comment.objects.filter(discussion=discussion, date__gte=request.user.last_login)
+            relevant_comments.extend(recent_comment)
+
+        return recent_comments
+
+    def private_messages(self):
+        """ Return all private messages a user is a recipient of."""
+
+        messages = PrivateMessage.objects.filter(recipient=self)
+
+        return private_messages
+
     @property
     def description(self):
         return "{user}, {title}".format(

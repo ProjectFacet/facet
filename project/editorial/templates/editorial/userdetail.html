@@ -4,22 +4,55 @@
 
 {% block content %}
 
-    <div class="col-md-6">
-      <h1>{{ user.credit_name }}</h1>
-      <p>{{ user.bio }}</p>
-      <a href="{% url 'user_edit' pk=user.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
-      <p>{{ user.phone }}</p>
-      <p>{{ user.title }}</p>
-      <p>{{ user.email }}</p>
-      <p>{{ user.facebook }}</p>
-      <p>{{ user.organization.name }}</p>
+<div class="row particles" id="user-hero">
+  <div class="upper-content">
+  <div class="col-md-2 col-lg-2 col-sm-1">
+    <img alt="cover" class="profile-page-pic no-padding border-white content-upper-75" src="/static/images/faces/face23.jpg">
+  </div>
+  <div class="col-lg-10 content-upper-75">
+    <h1 class="media-heading text-light">{{ user.credit_name }}</h1>
+    <p class="mb-4x text-light"><span class="mr-2x">{{ user.title }} | {{ user.organization.name }}</span> <span><i class="fa fa-map-marker fa-fw"></i> San Francisco, CA</span></p>
+    <p>{{ user.bio }}</p>
+    <p> {{ user.phone }} | {{ user.email }} |
+      <a href="{{ user.twitter }}" class="btn btn-sm btn-circle ml-1x" aria-label="twitter"><i class="fa fa-lg fa-twitter"></i></a>
+      <a href="{{ user.github }}" class="btn btn-sm btn-circle" aria-label="github"><i class="fa fa-lg fa-github"></i></a>
+      <a href="{{ user.instagram }}" class="btn btn-sm btn-circle ml-1x" aria-label="instagram"><i class="fa fa-lg fa-instagram"></i></a>
+      <a href="{{ user.facebook }}" class="btn btn-sm btn-circle ml-1x" aria-label="facebook"><i class="fa fa-lg fa-facebook"></i></a>
+      <a href="{{ user.linkedin }}" class="btn btn-sm btn-circle ml-1x" aria-label="linkedin"><i class="fa fa-lg fa-linkedin-square"></i></a>
+      <a href="{{ user.vine }}" class="btn btn-sm btn-circle ml-1x" aria-label="vine"><i class="fa fa-lg fa-vine"></i></a>
+      </p>
+  </div>
+</div>
+</div>
+<div class="row">
+  <div class="col-md-6">
+
+  </div>
+  <div class="col-md-6">
+    <div class="col-md-6" id="dashboard-right">
+      <table class="table table-condensed">
+        <thead>
+          <tr>
+            <th>Story</th>
+            <th>Series</th>
+            <th>Creator</th>
+            <th>Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for story in user_stories %}
+          <tr>
+            <td><a href="{% url 'story_detail' story.id %}">{{ story.name }}</a></td>
+            <td>{% if story.series %} {{ story.series.name }} {% endif %}</td>
+            <td>{{ story.owner.credit_name }}</td>
+            <td>{{ story.description }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
-    <div class="col-md-6">
-      <h1>Recent Stories</h1>
-      <ul>
-      {% for story in user_stories %}
-      <li><a href="{% url 'story_detail' pk=story.pk %}">{{ story.name }}</a></li>
-      {% endfor %}
-    </ul>
-    </div>
+  </div>
+
+</div>
+
 {% endblock %}

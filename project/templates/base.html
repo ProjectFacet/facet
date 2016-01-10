@@ -123,11 +123,13 @@
           <!-- ================================================= -->
                                 <!-- MESSAGING -->
           <!-- ================================================= -->
-          <div class="dropdown-ext">
-            <a aria-label="notifications" class="btn btn-icon navbar-btn dropdown-toggle" data-toggle="modal" data-target="#sendPrivateMessage" href="#" title="Send a private message">
-              <i class="fa fa-comments-o"></i>
-            </a>
-          </div><!-- /.dropdown -->
+          {% if request.user.is_authenticated %}
+            <div class="dropdown-ext">
+              <a aria-label="notifications" class="btn btn-icon navbar-btn dropdown-toggle" data-toggle="modal" data-target="#sendPrivateMessage" href="#" title="Send a private message">
+                <i class="fa fa-comments-o"></i>
+              </a>
+            </div><!-- /.dropdown -->
+          {% endif %}
 
           <!-- ================================================= -->
                             <!-- PROFILE LINKS -->
@@ -234,6 +236,8 @@
 
     <!-- VENDORS : jQuery & Bootstrap -->
     <!-- <script src="static/scripts/vendor.js"></script> -->
+    <script type='text/javascript' src='/static/scripts/jquery.particleground.min.js'></script>
+    <script type='text/javascript' src='/static/scripts/particles.js'></script>
     <!-- END VENDORS -->
 
     <!-- MAIN JS -->
