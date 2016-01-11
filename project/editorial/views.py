@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.conf import settings
+from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.utils import timezone
 from django.views.generic import TemplateView , UpdateView, DetailView
@@ -221,6 +223,12 @@ def user_new(request):
             user = form.save(commit=False)
             user.organization = request.user.organization
             user.save()
+            mail_subject = "New Facet User Details"
+            message = "You've been added to Facet. Your login is your email and your password is please."
+            print message
+            recipient = [user.email]
+            sender_email = request.user.email
+            send_mail(mail_subject, message, settings.EMAIL_HOST_USER, recipient, fail_silently=False)
             return redirect('team_list')
     else:
         form=AddUserForm()
@@ -881,6 +889,18 @@ def delete_network(request, pk):
         # if request.user == network.owner_organization
         network.delete()
         return redirect('network_list')
+
+
+# def invite_org_to_network(request, pk):
+#     """ Send an email to a user with a link to confirm adding their
+#     organization to your network."""
+#
+#     network = get_object_or_404(Network, pk=pk)
+#     mail_subject = "Join" + network.name + "on Facet"
+#     message = "Click this link to view the network details and click the Join button to request addition to the network. <a href=""/network/""" + {{network.id}} ">" + {{network.name}} + "</a>"
+#     recipient=
+#
+#     send_mail(mail_subject, message, settings.EMAIL_HOST_USER, recipient, fail_silently=False)
 
 
 def org_to_network(request, pk):
