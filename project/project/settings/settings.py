@@ -39,8 +39,18 @@ INSTALLED_APPS = (
     'allauth.socialaccount',
     'bootstrap3_datetime',
     'tinymce',
+    # 'actstream',
     'debug_toolbar',
 )
+
+# ACTSTREAM_SETTINGS = {
+#     'MANAGER': 'editorial.managers.MyActionManager',
+#     'FETCH_RELATIONS': True,
+#     'USE_PREFETCH': True,
+#     'USE_JSONFIELD': False,
+#     'GFK_FETCH_DEPTH': 1,
+# }
+
 
 SITE_ID = 1
 
