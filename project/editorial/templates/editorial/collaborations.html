@@ -7,24 +7,51 @@
 
 <h1 class="center">Collaborations</h1>
 
-<h2>Series</h2>
+<div class="row">
+  <div class="col-md-6">
+    <h2 class="center">Series</h2>
+      <table class="table table-condensed">
+        <thead>
+          <tr>
+            <th>{{ series.name }}</th>
+            <th>{{ series.description }}</th>
+            <th>{{ series.organization }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for series in series_collaborations %}
+          <tr>
+            <td><a href="{% url 'series_detail' pk=series.id %}">{{series.name}}</a></td>
+            <td>{{ series.description }}</td>
+            <td>{{ series.organization }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+  </div>
+  <div class="col-md-6">
+    <h2 class="center">Stories</h2>
+      <table class="table table-condensed">
+        <thead>
+          <tr>
+            <th>Story</th>
+            <th>Description</th>
+            <th>Organization</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for story in story_collaborations %}
+          <tr>
+            <td><a href="{% url 'story_detail' pk=story.id %}">{{story.name}}</a></td>
+            <td>{{ story.description }}</td>
+            <td>{{ story.organization }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+  </div>
+</div>
 
-{% for series in series_collaborations %}
 
-    <ul>
-        <li><a href="{% url 'series_detail' pk=series.id %}">{{series.name}}</a></li>
-    </ul>
-
-{% endfor %}
-
-<h2>Stories</h2>
-
-{% for story in story_collaborations %}
-
-    <ul>
-        <li><a href="{% url 'story_detail' pk=story.id %}">{{story.name}}</a></li>
-    </ul>
-
-{% endfor %}
 
 {% endblock %}

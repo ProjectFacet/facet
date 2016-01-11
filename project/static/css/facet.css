@@ -215,8 +215,13 @@ select {
 }
 
 table {
-  background-color: #54657E;
+  background-color: transparent;
   text-align: left;
+  margin-top: 10px;
+}
+
+th {
+  color: #8493A8;
 }
 
 label {
@@ -284,9 +289,9 @@ input {
   z-index: 0;
   color: #fff;
   height: 150px;
-  background-color: #fff;
+  background-color: #374355;
   margin-top: -15px;
-  background-image: linear-gradient(to right, rgba(0,131,213,1) 0%, rgba(162,52,213,0.63) 74%, rgba(162,52,213,0.5) 100%);
+  /*background-image: linear-gradient(to right, rgba(0,131,213,1) 0%, rgba(162,52,213,0.63) 74%, rgba(162,52,213,0.5) 100%);*/
 }
 
 .profile-page-pic {
@@ -298,4 +303,37 @@ input {
 
 .content-upper-75 {
   margin-top: -75px !important;
+}
+
+div.vertical-line{
+  width: 1px; /* Line width */
+  background-color: white; /* Line color */
+  height: 500px; /* Override in-line if you want specific height. */
+  float: left; /* Causes the line to float to left of content.
+    You can instead use position:absolute or display:inline-block
+    if this fits better with your design */
+}
+
+.dark, .dark a {
+  color: #8493A8 !important;
+  text-decoration: none;
+}
+
+.darker, .darker a {
+  color: #374355 !important;
+}
+
+.network-panel {
+  height: 275px;
+}
+
+.sameline {
+  display: inline;
+  margin-left: 10px;
+}
+
+.clear {
+  background-color: transparent;
+  border: none;
+  color: #8493A8;
 }

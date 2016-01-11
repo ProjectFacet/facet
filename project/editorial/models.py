@@ -440,6 +440,12 @@ class Series(models.Model):
         help_text='The user that created the series.'
     )
 
+    organization = models.ForeignKey(
+        Organization,
+        related_name='series_organization',
+        help_text='The org'
+    )
+
     team = models.ManyToManyField(
         User,
         related_name='series_team_member',

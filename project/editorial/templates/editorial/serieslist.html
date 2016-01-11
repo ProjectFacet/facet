@@ -7,12 +7,27 @@
 
 <h1 class="center">Series List</h1>
 
-{% for series in series %}
-
-    <ul>
-        <li><a href="{% url 'series_detail' pk=series.id %}">{{series.name}}</a></li>
-    </ul>
-
-{% endfor %}
+<div class="row">
+  <div class="col-md-12">
+    <table class="table table-condensed">
+      <thead>
+        <tr>
+          <th>Series</th>
+          <th>Description</th>
+          <th>Story Count</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for series in series %}
+          <tr>
+            <td>{{ series.name }}</td>
+            <td>{{ series.series_description }}</td>
+            <td>{{ series.story_set.count }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
 
 {% endblock %}

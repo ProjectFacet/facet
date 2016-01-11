@@ -24,9 +24,7 @@
     {% if story.webfacetstory.all or story.printfacetstory.all or story.audiofacetstory.all or story.videofacetstory.all %}
       {% for facet in story.webfacetstory.all %}
         <tr>
-          <td>{{ facet.story.name }}<form action="/story/copy/{{ facet.story_id }}/" method="POST">{% csrf_token %}<button type="submit" class="btn btn-default btn-sm">
-              <i class="fa fa-clone"></i>
-          </button></form></td>
+          <td>{{ facet.story.name }}<form action="/story/copy/{{ facet.story_id }}/" method="POST" class="sameline">{% csrf_token %}<button class="clear" type="submit"><i class="fa fa-clone"></i></button></form></td>
           <td>{{ facet.facet_type}}</td>
           <td><a href="#" data-toggle="tooltip" title="{{ facet.wf_description }}">{{ facet.title }}</a></td>
           <td>{{ facet.owner.credit_name }}</td>

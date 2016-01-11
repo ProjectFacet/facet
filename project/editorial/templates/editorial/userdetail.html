@@ -25,17 +25,12 @@
 </div>
 </div>
 <div class="row">
-  <div class="col-md-6">
-
-  </div>
-  <div class="col-md-6">
-    <div class="col-md-6" id="dashboard-right">
+    <div class="col-md-12" id="dashboard-right">
       <table class="table table-condensed">
         <thead>
           <tr>
             <th>Story</th>
             <th>Series</th>
-            <th>Creator</th>
             <th>Description</th>
           </tr>
         </thead>
@@ -43,16 +38,13 @@
           {% for story in user_stories %}
           <tr>
             <td><a href="{% url 'story_detail' story.id %}">{{ story.name }}</a></td>
-            <td>{% if story.series %} {{ story.series.name }} {% endif %}</td>
-            <td>{{ story.owner.credit_name }}</td>
+            <td>{% if story.series %}<a href="{% url 'series_detail' story.series.id %}">{{ story.series.name }}</a>{% endif %}</td>
             <td>{{ story.description }}</td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
     </div>
-  </div>
-
 </div>
 
 {% endblock %}

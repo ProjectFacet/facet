@@ -5,14 +5,33 @@
 
 {% block content %}
 
-<h1 class="center">Networks List</h1>
+<h1 class="center">Networks</h1>
 
+<div class="row">
 {% for network in network_list %}
 
-    <ul>
-        <li><a href="{% url 'network_detail' pk=network.network.id %}">{{network.network}}</a></li>
-    </ul>
+<div class="col-lg-4 col-md-6 col-sm-6">
+  <div class="panel fade in panel-default" data-init-panel="true">
+    <div class="panel-body network-panel">
+      <div class="media">
+        <div class="media-body">
+          <h3 class="dark"><a href="{% url 'network_detail' network.id %}">{{ network.name }}</a></h3>
+          <p class="help-block">{{ network.network_description }}</p>
+          <hr>
+          <p class="dark">Managing Organization: {{ network.owner_organization.name }}</p>
+          <p class="dark">Member Organizations: {% for organization in network.members.all %}{{ organization.name }}, {% endfor %}</p>
+        </div><!-- /.media -body-->
+      </div><!-- /.media -->
+    </div><!-- /.panel-body -->
+
+    <div class="progress progress-xs no-radius no-margin">
+      <div class="progress-bar bg-grd-blue" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+      </div>
+    </div><!-- /.progress -->
+  </div><!-- /.panel -->
+</div><!-- /.cols -->
 
 {% endfor %}
 
+</div>
 {% endblock %}

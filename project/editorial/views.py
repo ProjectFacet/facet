@@ -290,7 +290,7 @@ def series_list(request):
     Initial display organizes content by series name.
     """
 
-    series = Series.objects.all()
+    series = Series.objects.filter(organization=request.user.organization)
 
     return render(request, 'editorial/serieslist.html', {'series': series})
 
@@ -872,7 +872,7 @@ def network_new(request):
     """ Create a new network. """
 
     form = NetworkForm()
-    owner_org = get_object_or_404(Organization, pk=request.user.organization_id)
+    owner_org = request.user.organization
     if request.method == "POST":
         form = NetworkForm(request.POST or None)
         if form.is_valid():
@@ -880,11 +880,23 @@ def network_new(request):
             network.owner_organization = owner_org
             network.creation_date = timezone.now()
             network.save()
-            # update organization to make it a member of the network
+            # network.members.add(owner_org)
+            # print "added owner to membership"
+            # print "Members: ", network.members.all()
             return redirect('network_detail', pk=network.pk)
     else:
         form = NetworkForm()
     return render(request, 'editorial/networknew.html', {'form': form})
+
+
+def delete_network(request, pk):
+    """ Delete a network and dependent records."""
+
+    if request == "POST":
+        network = get_object_or_404(Network, pk=pk)
+        # if request.user == network.owner_organization
+        network.delete()
+        return redirect('network_list')
 
 
 def org_to_network(request, pk):
@@ -932,9 +944,9 @@ def network_edit(request, pk):
 def network_list(request):
     """ Table of networks your org is member of."""
 
-    org_id = request.user.organization_id
-    print "org id: ", org_id
-    network_list = NetworkOrganization.objects.filter(organization_id=org_id)
+    organization = request.user.organization
+    print "org id: ", organization
+    network_list = Organization.get_org_networks(organization)
     print "network_list: ", network_list
 
     return render(request, 'editorial/networklist.html', {'network_list': network_list})
@@ -959,7 +971,7 @@ def network_stories(request):
 
     networkstories = []
     for network in networks:
-        shared_stories = Story.objects.filter(share_with = network.id).exclude(archived=True)
+        shared_stories = Story.objects.filter(share_with = network.id).exclude(archived=True).exclude(organization=request.user.organization)
         for story in shared_stories:
             story = Story.objects.get(id = story.id)
             if story not in networkstories:
