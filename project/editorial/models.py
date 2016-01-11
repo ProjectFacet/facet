@@ -1935,6 +1935,10 @@ class Asset(models.Model):
 class Note(models.Model):
     """ Abstract base class for notes."""
 
+    title = models.CharField(
+        max_length=255,
+    )
+
     text = models.TextField(
         help_text='Content of the note',
         blank=True,
@@ -1949,16 +1953,42 @@ class Note(models.Model):
         abstract = True
 
 
+class NetworkNote(Note):
+    """ General purpose notes for a network."""
+
+    owner=models.ForeignKey(
+        User,
+        related_name='networknote_owner'
+    )
+
+    keywords = ArrayField(
+        models.CharField(max_length=100),
+        default=list,
+        help_text='List of keywords for note search.'
+    )
+
+
+class OrganizationNote(Note):
+    """ General purpose notes for an organization."""
+
+    owner=models.ForeignKey(
+        User,
+        related_name='organizationnote_owner'
+    )
+
+    keywords = ArrayField(
+        models.CharField(max_length=100),
+        default=list,
+        help_text='List of keywords for note search.'
+    )
+
+
 class UserNote(Note):
     """ General purpose notes from a user. """
 
     owner = models.ForeignKey(
         User,
         related_name='usernote_owner'
-    )
-
-    title = models.CharField(
-        max_length=255,
     )
 
     keywords = ArrayField(
@@ -1974,10 +2004,6 @@ class SeriesNote(Note):
     owner = models.ForeignKey(
         User,
         related_name='seriesnote_owner'
-    )
-
-    title = models.CharField(
-        max_length=255,
     )
 
     series = models.ForeignKey(
@@ -1998,10 +2024,6 @@ class StoryNote(Note):
     owner = models.ForeignKey(
         User,
         related_name='storynote_owner'
-    )
-
-    title = models.CharField(
-        max_length=255,
     )
 
     story = models.ForeignKey(
