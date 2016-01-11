@@ -21,6 +21,11 @@ from editorial.models import (
     VideoFacet,
     PrivateMessage,
     Comment,
+    NetworkNote,
+    OrganizationNote,
+    UserNote,
+    SeriesNote,
+    StoryNote,
     )
 
 # ------------------------------ #
@@ -488,3 +493,14 @@ class VideoFacetCommentForm(forms.ModelForm):
                 attrs={'id':'vf-comment', 'required': True, 'placeholder': 'Comment', 'class': 'form-control', 'rows':2}
             ),
         }
+
+# ------------------------------ #
+#         Note Forms          #
+# ------------------------------ #
+
+class NetworkNoteForm(forms.ModelForm):
+    """ Note form for a network. """
+
+    class Meta:
+        model=NetworkNote
+        fields = ['title', 'text', 'keywords']

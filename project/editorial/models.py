@@ -1964,7 +1964,8 @@ class NetworkNote(Note):
     keywords = ArrayField(
         models.CharField(max_length=100),
         default=list,
-        help_text='List of keywords for note search.'
+        help_text='List of keywords for note search.',
+        blank=True,
     )
 
 
@@ -1979,7 +1980,8 @@ class OrganizationNote(Note):
     keywords = ArrayField(
         models.CharField(max_length=100),
         default=list,
-        help_text='List of keywords for note search.'
+        help_text='List of keywords for note search.',
+        blank=True,
     )
 
 
@@ -1994,7 +1996,8 @@ class UserNote(Note):
     keywords = ArrayField(
         models.CharField(max_length=100),
         default=list,
-        help_text='List of keywords for search.'
+        help_text='List of keywords for search.',
+        blank=True,
     )
 
 
@@ -2008,7 +2011,7 @@ class SeriesNote(Note):
 
     series = models.ForeignKey(
         Series,
-        related_name='Se',
+        related_name="seriesnote",
     )
 
     def __str__(self):
