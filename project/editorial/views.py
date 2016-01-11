@@ -77,27 +77,12 @@ def dashboard(request):
     Ex: Oliver Q. added "Dhark Indicted" to Story: "Star City Organized Crime Leader Arrested"
     """
     # query for new comments since last_login from any discussions the user has participated in
-    comments = Comment.objects.filter(user_id = request.user.id)
-    discussions = []
-    for comment in comments:
-      discussion = Discussion.objects.filter(id = comment.discussion_id)
-      discussions.extend(discussion)
-    recent_comments = []
-    for discussion in set(discussions):
-    # --------------------------------------------------------------------------------#
-    # actual query needed but not helpful for development
-    # recent_comment = Comment.objects.filter(discussion = discussion, date__gte=request.user.last_login)
-    # --------------------------------------------------------------------------------#
-      recent_comment = Comment.objects.filter(discussion = discussion).order_by('-date')
-      recent_comments.extend(recent_comment)
-
+    recent_comments = User.recent_comments(request.user)
     # query for any new content created since last_login
 
+    # stories = Story.objects.filter(creation_date__gte=request.user.last_login)[:8]
     # --------------------------------------------------------------------------------#
-    # actual query needed but not helpful for development
-    # stories = Story.objects.filter(creation_date__gte=request.user.last_login)
-    # --------------------------------------------------------------------------------#
-    stories = Story.objects.filter(organization = request.user.organization)
+    stories = Story.objects.filter(organization = request.user.organization)[:8]
     # TODO: query for other user activity since last_login
 
     return render(request, 'editorial/dashboard.html', {
@@ -142,18 +127,16 @@ def discussion(request):
     Displays comments from any Facet Editing Discussion involving user.
     Displays comments from any PrivateDiscussion involving user.
     """
-    comments = Comment.objects.filter(user_id = request.user.id)
-    discussions = []
-    for comment in comments:
-      discussion = Discussion.objects.filter(id = comment.discussion_id)
-      discussions.extend(discussion)
-    recent_comments = []
-    for discussion in set(discussions):
-      recent_comment = Comment.objects.filter(discussion = discussion).order_by('-date')
-      recent_comments.extend(recent_comment)
+
+    comments = User.inbox_comments(request.user)
+
+    private_messages_received = User.private_messages_received(request.user)
+    private_messages_sent = User.private_messages_sent(request.user)
 
     return render(request, 'editorial/discussion.html', {
-        'recent_comments': recent_comments,
+        'comments': comments,
+        'private_messages_received': private_messages_received,
+        'private_messages_sent': private_messages_sent
     })
 
 #----------------------------------------------------------------------#
@@ -715,11 +698,12 @@ def private_message_new(request):
         privatemessageform=PrivateMessageForm(request.POST or None)
         print "IN PM POST"
         if privatemessageform.is_valid():
+            message_subject = request.POST.get('subject')
             message_text = request.POST.get('text')
             send_to = request.POST.get('recipient')
             recipient = get_object_or_404(User, id=send_to)
             discussion = Discussion.objects.create_discussion('PRI')
-            message = PrivateMessage.objects.create_private_message(user=request.user, recipient=recipient, discussion=discussion, text=message_text)
+            message = PrivateMessage.objects.create_private_message(user=request.user, recipient=recipient, discussion=discussion, subject=message_subject, text=message_text)
             print "MESSAGE: ", message
             message.save()
     return redirect('/discussion')

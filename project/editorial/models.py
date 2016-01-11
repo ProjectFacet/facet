@@ -169,12 +169,13 @@ class User(AbstractUser):
         comments = Comment.objects.filter(user_id=self)
         discussions = []
         for comment in comments:
-            discussions = Comment.discussion_set.all()
-            discussions.extend(discussions)
+            discussion = comment.discussion
+            discussions.append(discussion)
         inbox_comments = []
+        print "DISCUSSIONS: ", discussions
         for discussion in set(discussions):
-            comments = Comment.objects.filter(discussion=discussion)
-            relevant_comments.extend(comments)
+            comments = Comment.objects.filter(discussion_id=discussion.id).order_by('-date')
+            inbox_comments.extend(comments)
 
         return inbox_comments
 
@@ -185,21 +186,26 @@ class User(AbstractUser):
         comments = Comment.objects.filter(user_id=self)
         discussions = []
         for comment in comments:
-            discussions = Comment.discussion_set.all()
-            discussions.extend(discussions)
-        relevant_comments = []
+            discussion = comment.discussion
+            discussions.append(discussion)
+        recent_comments = []
         for discussion in set(discussions):
-            recent_comment = Comment.objects.filter(discussion=discussion, date__gte=request.user.last_login)
-            relevant_comments.extend(recent_comment)
+            recent_comment = Comment.objects.filter(discussion_id=discussion.id, date__gte=self.last_login)
+            recent_comments.extend(recent_comment)
 
         return recent_comments
 
-    def private_messages(self):
+    def private_messages_received(self):
         """ Return all private messages a user is a recipient of."""
 
-        messages = PrivateMessage.objects.filter(recipient=self)
+        messages_received = PrivateMessage.objects.filter(recipient=self)
+        return messages_received
 
-        return private_messages
+    def private_messages_sent(self):
+        """ Return all private messages a user is a recipient of."""
+
+        messages_sent = PrivateMessage.objects.filter(user=self)
+        return messages_sent
 
     @property
     def description(self):
@@ -2080,10 +2086,10 @@ class PrivateDiscussion(models.Model):
 class PrivateMessageManager(models.Manager):
     """ Customer manager for private messaging."""
 
-    def create_private_message(self, user, recipient, discussion, text):
+    def create_private_message(self, user, recipient, discussion, subject, text):
         """ Method for quick creation of a private discussion."""
 
-        message = self.create(user=user, recipient=recipient, discussion=discussion, text=text)
+        message = self.create(user=user, recipient=recipient, discussion=discussion, subject=subject, text=text)
         return message
 
 
@@ -2108,6 +2114,11 @@ class PrivateMessage(models.Model):
 
     discussion = models.ForeignKey(
         Discussion,
+    )
+
+    subject = models.TextField(
+        help_text='The topic of the message.',
+        blank=True,
     )
 
     text = models.TextField(

@@ -327,6 +327,10 @@ div.vertical-line{
   height: 275px;
 }
 
+.user-panel {
+  height: 200px;
+}
+
 .sameline {
   display: inline;
   margin-left: 10px;

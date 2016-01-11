@@ -8,6 +8,7 @@
 <div class="row">
   <!-- LEFT SIDE -->
   <div class="col-md-6" id="dashboard-left">
+    {% if recent_comments %}
     <table class="table table-condensed">
       <tbody>
         {% for comment in recent_comments %}
@@ -19,6 +20,11 @@
         {% endfor %}
       </tbody>
     </table>
+    {% else %}
+    <p>Hello!</p>
+    <p>It looks like no one has posted any comments anywhere yet!<p>
+    <p>You can change this right now, by adding a comment to any series, story or facet you like.</p>
+    {% endif %}
   </div>
   <!-- RIGHT SIDE -->
   <div class="col-md-6" id="dashboard-right">
@@ -35,7 +41,7 @@
         {% for story in stories %}
         <tr>
           <td><a href="{% url 'story_detail' story.id %}">{{ story.name }}</a></td>
-          <td>{% if story.series %} {{ story.series.name }} {% endif %}</td>
+          <td>{% if story.series %} <a href="{% url 'series_detail' story.series.id %}">{{ story.series.name }}</a>{% endif %}</td>
           <td>{{ story.owner.credit_name }}</td>
           <td>{{ story.description }}</td>
         </tr>
