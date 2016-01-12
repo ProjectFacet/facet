@@ -19,6 +19,10 @@ a:hover {
   border: 1px solid #fff;
 }
 
+.wrapkit-wrapper {
+  min-height: 400px !important;
+}
+
 /* -----------------------------------*/
 /*           Base structure           */
 /* -----------------------------------*/
@@ -303,6 +307,14 @@ input {
 
 .content-upper-75 {
   margin-top: -75px !important;
+}
+
+.content-upper-50 {
+  margin-top: -50px !important;
+}
+
+.content-upper-25 {
+  margin-top: -25px !important;
 }
 
 div.vertical-line{

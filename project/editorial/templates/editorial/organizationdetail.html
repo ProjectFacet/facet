@@ -5,10 +5,54 @@
 
 {% block content %}
 
-<h1 class="center">{{ organization.name }}</h1>
+<div class="row particles" id="user-hero">
+  <div class="upper-content">
+  <!-- <div class="col-md-2 col-lg-2 col-sm-1">
+    <img alt="cover" class="profile-page-pic no-padding border-white content-upper-75" src="/static/images/faces/face23.jpg">
+  </div> -->
+  <div class="col-lg-12 content-upper-75">
+    <h1 class="media-heading text-light center content-upper-25">{{ organization.name }}</h1>
+    <h5 class="center"> {{ organization.org_description }}</h5>
+  </div>
+  <!-- <div class="social">
+  <p>
+    <a href="{{ user.twitter }}" class="btn btn-sm btn-circle ml-1x" aria-label="twitter"><i class="fa fa-lg fa-twitter"></i></a>
+    <a href="{{ user.github }}" class="btn btn-sm btn-circle" aria-label="github"><i class="fa fa-lg fa-github"></i></a>
+    <a href="{{ user.instagram }}" class="btn btn-sm btn-circle ml-1x" aria-label="instagram"><i class="fa fa-lg fa-instagram"></i></a>
+    <a href="{{ user.facebook }}" class="btn btn-sm btn-circle ml-1x" aria-label="facebook"><i class="fa fa-lg fa-facebook"></i></a>
+    <a href="{{ user.vine }}" class="btn btn-sm btn-circle ml-1x" aria-label="vine"><i class="fa fa-lg fa-vine"></i></a>
+    </p>
+  </div> -->
+  </div>
+</div>
 
-{{ organization.org_description }}
+<div class="row">
+  <!-- Left Column -->
+  <div class="col-md-9">
+    <div class="discussion">
 
+    </div>
+    <div class="orgnotes">
+    </div>
+  </div>
+  <!-- Right column -->
+  <div class="col-md-3">
+    <div class="team">
+
+    </div>
+  </div>
+
+</div>
+
+
+
+
+
+<!-- ************************************** BLARGH ************************************** -->
+<br>
+<br>
+<br>
+<br>
 <div>
 <p>Add Note<a href="#"><i class="fa fa-plus sameline" data-toggle="modal" data-target="#addOrganizationNote"></i></a></p>
 

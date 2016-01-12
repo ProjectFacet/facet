@@ -20,7 +20,7 @@
       <tbody>
         {% for series in series %}
           <tr>
-            <td>{{ series.name }}</td>
+            <td><a href="{% url 'series_detail' series.id %}">{{ series.name }}</a></td>
             <td>{{ series.series_description }}</td>
             <td>{{ series.story_set.count }}</td>
           </tr>

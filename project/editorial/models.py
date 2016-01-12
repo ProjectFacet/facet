@@ -264,6 +264,13 @@ class Organization(models.Model):
         blank=True,
     )
 
+    discussion = models.ForeignKey(
+        'Discussion',
+        related_name='organization_discussion',
+        help_text='Id of discussion for an organization.',
+        blank=True,
+        null=True,
+    )
 
     class Meta:
         verbose_name = 'Organization'
@@ -353,6 +360,14 @@ class Network(models.Model):
         Organization,
         through='NetworkOrganization',
         related_name='network_organization',
+    )
+
+    discussion = models.ForeignKey(
+        'Discussion',
+        related_name='network_discussion',
+        help_text='Id of discussion for a network.',
+        blank=True,
+        null=True,
     )
 
     class Meta:
@@ -2063,6 +2078,8 @@ class Discussion(models.Model):
     """ Class for  for related comments. """
 
     # Choices for Discussion type
+    ORGANIZATION = 'ORG'
+    NETWORK = 'NET'
     PRIVATE = 'PRI'
     SERIESPLAN = 'SER'
     STORYPLAN = 'STO'
@@ -2072,6 +2089,8 @@ class Discussion(models.Model):
     VIDEOFACET = 'VF'
 
     DISCUSSION_TYPE_CHOICES = (
+        (ORGANIZATION, 'Organization Conversation'),
+        (NETWORK, 'Network Conversation'),
         (PRIVATE, 'Private Conversation'),
         (SERIESPLAN, 'Series Conversation'),
         (STORYPLAN, 'Story Conversation'),

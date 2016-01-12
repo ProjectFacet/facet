@@ -172,6 +172,8 @@ def org_new(request):
             organization = form.save(commit=False)
             organization.owner = request.user
             organization.creation_date = timezone.now()
+            discussion = Discussion.objects.create_discussion("ORG")
+            organization.discussion = discussion
             organization.save()
             # update user to connect them to the organization
             current_user = get_object_or_404(User, pk=request.user.id)
@@ -360,9 +362,7 @@ def series_new(request):
         series.owner = request.user
         series.creation_date = timezone.now()
         discussion = Discussion.objects.create_discussion("SER")
-        print discussion
         series.discussion = discussion
-        print series.discussion
         series.save()
         return redirect('series_detail', pk=series.pk)
     else:
@@ -923,6 +923,8 @@ def network_new(request):
             network = form.save(commit=False)
             network.owner_organization = owner_org
             network.creation_date = timezone.now()
+            discussion = Discussion.objects.create_discussion("NET")
+            network.discussion = discussion
             network.save()
             # network.members.add(owner_org)
             # print "added owner to membership"
