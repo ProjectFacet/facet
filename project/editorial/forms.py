@@ -419,6 +419,29 @@ class PrivateMessageForm(forms.ModelForm):
             ),
         }
 
+class OrganizationCommentForm(forms.ModelForm):
+    """ Comment form for organization. """
+
+    class Meta:
+        model = Comment
+        fields = ['text']
+        widgets = {
+            'text': Textarea(
+                attrs={'id':'organization-comment', 'required': True, 'placeholder': 'Comment', 'class': 'form-control', 'rows':2}
+            ),
+        }
+
+class NetworkCommentForm(forms.ModelForm):
+    """ Comment form for a network. """
+
+    class Meta:
+        model = Comment
+        fields = ['text']
+        widgets = {
+            'text': Textarea(
+                attrs={'id':'network-comment', 'required': True, 'placeholder': 'Comment', 'class': 'form-control', 'rows':2}
+            ),
+        }
 
 class SeriesCommentForm(forms.ModelForm):
     """ Comment form. """

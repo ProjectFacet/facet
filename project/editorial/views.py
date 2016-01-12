@@ -20,6 +20,8 @@ from .forms import (
     VideoFacetForm,
     AddToNetworkForm,
     PrivateMessageForm,
+    OrganizationCommentForm,
+    NetworkCommentForm,
     SeriesCommentForm,
     StoryCommentForm,
     WebFacetCommentForm,
@@ -196,10 +198,17 @@ def org_detail(request, pk):
     organization = get_object_or_404(Organization, pk=pk)
     organizationnoteform = OrganizationNoteForm()
     users = Organization.get_org_users(organization)
+    if organization.discussion:
+        organizationcomments = organization.discussion.comment.all()
+    else:
+        organizationcomments = []
+    organizationcommentform = OrganizationCommentForm()
 
     return render(request, 'editorial/organizationdetail.html', {
         'organization': organization,
-        'organizationnoteform': organizationnoteform
+        'organizationnoteform': organizationnoteform,
+        'organizationcomments': organizationcomments,
+        'organizationcommentform': organizationcommentform,
         })
 
 
@@ -774,6 +783,33 @@ def create_privatecomment_reply(request):
     pass
 
 
+def create_organizationcomment(request):
+    """ Regular form posting method."""
+
+    if request.method == 'POST':
+        comment_text = request.POST.get('text')
+        organization = request.user.organization
+        discussion = get_object_or_404(Discussion, id=organization.discussion.id)
+        comment = Comment.objects.create_comment(user=request.user, discussion=discussion, text=comment_text)
+        comment.save()
+
+        return redirect('org_detail', pk=organization.id)
+
+
+def create_networkcomment(request):
+    """ Regular form posting method."""
+
+    if request.method == 'POST':
+        comment_text = request.POST.get('text')
+        network_id = request.POST.get('network')
+        network = get_object_or_404(Network, id=network_id)
+        discussion = get_object_or_404(Discussion, id=network.discussion.id)
+        comment = Comment.objects.create_comment(user=request.user, discussion=discussion, text=comment_text)
+        comment.save()
+
+        return redirect('org_detail', pk=organization.id)
+
+
 def create_seriescomment(request):
     """ Regular form posting method."""
 
@@ -977,9 +1013,17 @@ def network_detail(request, pk):
 
     network = get_object_or_404(Network, pk=pk)
     networknoteform = NetworkNoteForm()
+    if network.discussion:
+        networkcomments = network.discussion.comment.all()
+    else:
+        networkcomments = []
+    networkcommentform = NetworkCommentForm()
+
     return render(request, 'editorial/networkdetail.html', {
         'network': network,
-        'networknoteform': networknoteform
+        'networknoteform': networknoteform,
+        'networkcomments': networkcomments,
+        'networkcommentform': networkcommentform,
         })
 
 
