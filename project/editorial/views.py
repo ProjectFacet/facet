@@ -25,7 +25,10 @@ from .forms import (
     WebFacetCommentForm,
     PrintFacetCommentForm,
     AudioFacetCommentForm,
-    VideoFacetCommentForm)
+    VideoFacetCommentForm,
+    NetworkNoteForm,
+    OrganizationNoteForm,
+    UserNoteForm,)
 
 from models import (
     User,
@@ -48,7 +51,10 @@ from models import (
     WebFacetCopyDetail,
     PrintFacetCopyDetail,
     AudioFacetCopyDetail,
-    VideoFacetCopyDetail,)
+    VideoFacetCopyDetail,
+    NetworkNote,
+    OrganizationNote,
+    UserNote)
 
 #----------------------------------------------------------------------#
 #   Initial View
@@ -186,10 +192,13 @@ def org_detail(request, pk):
     """
 
     organization = get_object_or_404(Organization, pk=pk)
-
+    organizationnoteform = OrganizationNoteForm()
     users = Organization.get_org_users(organization)
 
-    return render(request, 'editorial/organizationdetail.html', {'organization': organization})
+    return render(request, 'editorial/organizationdetail.html', {
+        'organization': organization,
+        'organizationnoteform': organizationnoteform
+        })
 
 
 def org_edit(request, pk):
@@ -209,6 +218,31 @@ def org_edit(request, pk):
             'organization': organization,
             'form': form,
     })
+
+
+def organization_notes(request, pk):
+    """ Display all of the notes for an organization. """
+
+    organization = get_object_or_404(Organization, pk=pk)
+    organizationnotes = OrganizationNote.objects.filter(organization_id=organization.id)
+    return render(request, 'editorial/organizationnotes.html', {
+        'organizationnotes': organizationnotes,
+    })
+
+
+def create_organization_note(request):
+    """ Post a note to an organization."""
+
+    if request.method == "POST":
+        form = OrganizationNoteForm(request.POST or None)
+        if form.is_valid():
+            org_id = request.POST.get('organization')
+            organization = get_object_or_404(Organization, pk=org_id)
+            organizationnote = form.save(commit=False)
+            organizationnote.owner = request.user
+            organizationnote.organization = organization
+            organizationnote.save()
+            return redirect('organization_notes', pk=organization.pk)
 
 #----------------------------------------------------------------------#
 #   User Views
@@ -270,6 +304,27 @@ def user_edit(request, pk):
             'user': user,
             'form': form
     })
+
+
+def user_notes(request,pk):
+    """ Display all of the notes for a user. """
+
+    usernotes = UserNote.objects.filter(owner_id=request.user)
+    return render(request, 'editorial/usernotes.html', {
+        'usernotes': usernotes,
+    })
+
+
+def create_user_note(request):
+    """ Post a note to a user."""
+
+    if request.method == "POST":
+        form = UserNoteForm(request.POST or None)
+        if form.is_valid():
+            usernote = form.save(commit=False)
+            usernote.owner = request.user
+            usernote.save()
+            return redirect('user_notes', pk=request.user.pk)
 
 #----------------------------------------------------------------------#
 #   Series Views
@@ -701,10 +756,8 @@ def story_detail(request, pk):
 def private_message_new(request):
     """ Private messaging method. """
 
-    print "IN PRIVATE MESSAGE VIEW"
     if request.method == 'POST':
         privatemessageform=PrivateMessageForm(request.POST or None)
-        print "IN PM POST"
         if privatemessageform.is_valid():
             message_subject = request.POST.get('subject')
             message_text = request.POST.get('text')
@@ -712,7 +765,6 @@ def private_message_new(request):
             recipient = get_object_or_404(User, id=send_to)
             discussion = Discussion.objects.create_discussion('PRI')
             message = PrivateMessage.objects.create_private_message(user=request.user, recipient=recipient, discussion=discussion, subject=message_subject, text=message_text)
-            print "MESSAGE: ", message
             message.save()
     return redirect('/discussion')
 
@@ -922,8 +974,11 @@ def network_detail(request, pk):
     """ Public profile of a network. """
 
     network = get_object_or_404(Network, pk=pk)
-
-    return render(request, 'editorial/networkdetail.html', {'network': network})
+    networknoteform = NetworkNoteForm()
+    return render(request, 'editorial/networkdetail.html', {
+        'network': network,
+        'networknoteform': networknoteform
+        })
 
 
 def network_edit(request, pk):
@@ -1083,3 +1138,28 @@ def copy_network_story(request, pk):
             print "Videofacet Copied"
 
     return redirect('network_stories')
+
+
+def network_notes(request, pk):
+    """ Display all of the notes for a network. """
+
+    network = get_object_or_404(Network, pk=pk)
+    networknotes = NetworkNote.objects.filter(network_id=network.id)
+    return render(request, 'editorial/networknotes.html', {
+        'networknotes': networknotes,
+    })
+
+
+def create_network_note(request):
+    """ Post a note to a network."""
+
+    if request.method == "POST":
+        form = NetworkNoteForm(request.POST or None)
+        if form.is_valid():
+            nw_id = request.POST.get('network')
+            network = get_object_or_404(Network, pk=nw_id)
+            networknote = form.save(commit=False)
+            networknote.owner = request.user
+            networknote.network = network
+            networknote.save()
+            return redirect('network_notes', pk=network.pk)

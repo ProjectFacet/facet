@@ -499,8 +499,48 @@ class VideoFacetCommentForm(forms.ModelForm):
 # ------------------------------ #
 
 class NetworkNoteForm(forms.ModelForm):
-    """ Note form for a network. """
+    """ Note form for a network note. """
 
     class Meta:
         model=NetworkNote
         fields = ['title', 'text', 'keywords']
+        widgets = {
+            'title': Textarea(
+                attrs={'id': 'nn-title', 'required': True, 'placeholder': 'Note Title', 'class': 'form-control', 'rows': 1}
+            ),
+            'text': Textarea(
+                attrs={'id':'nn-text', 'required': True, 'placeholder': 'Note', 'class': 'form-control', 'rows':10}
+            ),
+        }
+
+
+class OrganizationNoteForm(forms.ModelForm):
+    """ Note form for an organization note. """
+
+    class Meta:
+        model=OrganizationNote
+        fields = ['title', 'text', 'keywords']
+        widgets = {
+            'title': Textarea(
+                attrs={'id': 'on-title', 'required': True, 'placeholder': 'Note Title', 'class': 'form-control', 'rows': 1}
+            ),
+            'text': Textarea(
+                attrs={'id':'on-text', 'required': True, 'placeholder': 'Note', 'class': 'form-control', 'rows':10}
+            ),
+        }
+
+
+class UserNoteForm(forms.ModelForm):
+    """ Note form for a user note. """
+
+    class Meta:
+        model=UserNote
+        fields = ['title', 'text', 'keywords']
+        widgets = {
+            'title': Textarea(
+                attrs={'id': 'un-title', 'required': True, 'placeholder': 'Note Title', 'class': 'form-control', 'rows': 1}
+            ),
+            'text': Textarea(
+                attrs={'id':'un-text', 'required': True, 'placeholder': 'Note', 'class': 'form-control', 'rows':10}
+            ),
+        }

@@ -125,6 +125,11 @@
           <!-- ================================================= -->
           {% if request.user.is_authenticated %}
             <div class="dropdown-ext">
+              <a aria-label="notifications" class="btn btn-icon navbar-btn dropdown-toggle" data-toggle="modal" data-target="#addUserNote" href="#" title="Add a note">
+                <i class="fa fa-sticky-note"></i>
+              </a>
+            </div><!-- /.dropdown -->
+            <div class="dropdown-ext">
               <a aria-label="notifications" class="btn btn-icon navbar-btn dropdown-toggle" data-toggle="modal" data-target="#sendPrivateMessage" href="#" title="Send a private message">
                 <i class="fa fa-comments-o"></i>
               </a>
@@ -192,7 +197,7 @@
     <!-- ================================================= -->
     <!-- ================================================= -->
 
-    <!-- Modal -->
+    <!-- Private Message Modal -->
     <div class="modal fade" id="sendPrivateMessage" tabindex="-1" role="dialog" aria-labelledby="sendPrivateMessageLabel">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -204,7 +209,7 @@
             <form action="privatemessage/new/" method="POST" class="post-form">
             {% csrf_token %}
             {% bootstrap_form privatemessageform %}
-            <button type="submit" class="btn btn-primary">Save</button>
+            <button type="submit" class="btn btn-primary">Send Message</button>
             </form>
           </div>
           <div class="modal-footer">
@@ -212,6 +217,29 @@
         </div>
       </div>
     </div>
+
+    <!-- User Note Modal -->
+    <div class="modal fade" id="addUserNote" tabindex="-1" role="dialog" aria-labelledby="addUserNoteLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="addUserNoteLabel">Create a note</h4>
+          </div>
+          <div class="modal-body">
+            <form action="user/note/new/" method="POST" class="post-form">
+            {% csrf_token %}
+            {% bootstrap_form usernoteform %}
+            <button type="submit" class="btn btn-primary">Create Note</button>
+            </form>
+          </div>
+          <div class="modal-footer">
+          </div>
+        </div>
+      </div>
+    </div>
+
+
 
 
 

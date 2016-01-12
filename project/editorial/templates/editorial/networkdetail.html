@@ -13,4 +13,37 @@
     <div>
   <a href="{% url 'network_edit' pk=network.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
     </div>
+
+    <div>
+    <p>Add Note<a href="#"><i class="fa fa-plus sameline" data-toggle="modal" data-target="#addNetworkNote"></i></a></p>
+
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="addNetworkNote" tabindex="-1" role="dialog" aria-labelledby="addNetworkNoteModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="addUserModalLabel">Add a note for this network</h4>
+          </div>
+          <div class="modal-body">
+            <form action="/network/note/new/" method="POST" class="post-form">
+            {% csrf_token %}
+            {% bootstrap_form networknoteform %}
+            <input type="hidden" name="network" value="{{ network.pk }}" />
+            <button type="submit" class="btn btn-primary">Post Note</button>
+            </form>
+          </div>
+          <div class="modal-footer">
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
 {% endblock %}

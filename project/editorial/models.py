@@ -1961,6 +1961,11 @@ class NetworkNote(Note):
         related_name='networknote_owner'
     )
 
+    network=models.ForeignKey(
+        Network,
+        related_name='networknote_network'
+    )
+
     keywords = ArrayField(
         models.CharField(max_length=100),
         default=list,
@@ -1975,6 +1980,11 @@ class OrganizationNote(Note):
     owner=models.ForeignKey(
         User,
         related_name='organizationnote_owner'
+    )
+
+    organization=models.ForeignKey(
+        Organization,
+        related_name="orgnote_org"
     )
 
     keywords = ArrayField(

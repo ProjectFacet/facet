@@ -44,12 +44,16 @@ urlpatterns = [
     url(r'^/organization/new$', views.org_new, name="org_new"),
     url(r'^organization/(?P<pk>[0-9]+)/$', views.org_detail, name='org_detail'),
     url(r'^organization/(?P<pk>[0-9]+)/edit/$', views.org_edit, name='org_edit'),
+    url(r'^organization/(?P<pk>[0-9]+)/notes/$', views.organization_notes, name='organization_notes'),
+    url(r'^organization/note/new/$', views.create_organization_note, name='create_organization_note'),
     #----------------------------------------------------------------------#
     #   User URLS
     #----------------------------------------------------------------------#
     url(r'^user/new/$', views.user_new, name='user_new'),
     url(r'^user/(?P<pk>[0-9]+)/$', views.user_detail, name='user_detail'),
     url(r'^user/(?P<pk>[0-9]+)/edit/$', views.user_edit, name='user_edit'),
+    url(r'^user/(?P<pk>[0-9]+)/notes/$', views.user_notes, name='user_notes'),
+    url(r'^user/note/new/$', views.create_user_note, name='create_user_note'),
     #----------------------------------------------------------------------#
     #   Series URLS
     #----------------------------------------------------------------------#
@@ -72,8 +76,10 @@ urlpatterns = [
     url(r'^network/(?P<pk>[0-9]+)/edit/$', views.network_edit, name='network_edit'),
     url(r'^network/list$', views.network_list, name='network_list'),
     url(r'^network/stories$', views.network_stories, name='network_stories'),
+    url(r'^network/(?P<pk>[0-9]+)/notes/$', views.network_notes, name='network_notes'),
+    url(r'^network/note/new/$', views.create_network_note, name='create_network_note'),
     #----------------------------------------------------------------------#
     #   Copy URLS
     #----------------------------------------------------------------------#
-    url(r'^story/copy/(?P<pk>[0-9]+)/$', views.copy_network_story, name='copy_network_story'),    
+    url(r'^story/copy/(?P<pk>[0-9]+)/$', views.copy_network_story, name='copy_network_story'),
 ]

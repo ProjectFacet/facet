@@ -11,7 +11,7 @@
   </div>
   <div class="col-lg-10 content-upper-75">
     <h1 class="media-heading text-light">{{ user.credit_name }}</h1>
-    <p class="mb-4x text-light"><span class="mr-2x">{{ user.title }} | {{ user.organization.name }}</span> <span><i class="fa fa-map-marker fa-fw"></i> San Francisco, CA</span></p>
+    <p class="mb-4x text-light"><span class="mr-2x">{{ user.title }} | <a href="{% url 'org_detail' pk=user.organization.id %}">{{ user.organization.name }}</a></span> <span><i class="fa fa-map-marker fa-fw"></i> San Francisco, CA</span></p>
     <p>{{ user.bio }}</p>
     <p> {{ user.phone }} | {{ user.email }} |
       <a href="{{ user.twitter }}" class="btn btn-sm btn-circle ml-1x" aria-label="twitter"><i class="fa fa-lg fa-twitter"></i></a>
