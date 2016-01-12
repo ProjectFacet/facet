@@ -32,6 +32,8 @@ urlpatterns = [
     #----------------------------------------------------------------------#
     #   Comment URLS
     #----------------------------------------------------------------------#
+    url(r'^organizationcomment/new$', views.create_orgcomment, name='create_orgcomment'),
+    url(r'^networkcomment/new$', views.create_networkcomment, name='create_networkcomment'),
     url(r'^seriescomment/new$', views.create_seriescomment, name='create_seriescomment'),
     url(r'^storycomment/new$', views.create_storycomment, name='create_storycomment'),
     url(r'^webcomment/new$', views.create_webcomment, name='create_webcomment'),

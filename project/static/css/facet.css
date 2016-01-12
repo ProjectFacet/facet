@@ -235,7 +235,6 @@ label {
   font-size: 12px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-
 }
 
 #id_content {
@@ -335,12 +334,50 @@ div.vertical-line{
   color: #374355 !important;
 }
 
+.bright, .bright a {
+  color: #ECEFF4;
+}
+
+.brighter, .brighter a {
+  color: #fff;
+}
+
 .network-panel {
   height: 275px;
 }
 
-.user-panel {
+.team-panel {
   height: 200px;
+}
+
+.uppercase {
+  text-transform: uppercase;
+}
+
+.user-panel-body {
+  height: 4em;
+  padding: 6px;
+  background-color: #374355;
+}
+
+.team-panel-avatar {
+  width: auto !important;
+  height: 4em !important;
+  padding: 0px !important;
+  margin-top: -6px !important;
+  margin-left: -6px !important;
+  border-radius: 2px 0px 0px 0px !important;
+  position: relative !important;
+  display: inline-block !important;
+  text-align: center !important;
+  transition: border-color 0.3s ease 0s !important;
+  border: medium none !important;
+}
+
+.kit-avatar.kit-avatar-square, .kit-avatar.kit-avatar-square > img {
+  border-radius: 2px 0px 0px 0px;
+  height: 4em;
+  width: auto;
 }
 
 .sameline {

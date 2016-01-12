@@ -198,10 +198,7 @@ def org_detail(request, pk):
     organization = get_object_or_404(Organization, pk=pk)
     organizationnoteform = OrganizationNoteForm()
     users = Organization.get_org_users(organization)
-    if organization.discussion:
-        organizationcomments = organization.discussion.comment.all()
-    else:
-        organizationcomments = []
+    organizationcomments = Comment.objects.filter(discussion=organization.discussion).order_by('-date')
     organizationcommentform = OrganizationCommentForm()
 
     return render(request, 'editorial/organizationdetail.html', {
@@ -783,7 +780,7 @@ def create_privatecomment_reply(request):
     pass
 
 
-def create_organizationcomment(request):
+def create_orgcomment(request):
     """ Regular form posting method."""
 
     if request.method == 'POST':
@@ -1013,10 +1010,7 @@ def network_detail(request, pk):
 
     network = get_object_or_404(Network, pk=pk)
     networknoteform = NetworkNoteForm()
-    if network.discussion:
-        networkcomments = network.discussion.comment.all()
-    else:
-        networkcomments = []
+    networkcomments = Comment.objects.filter(discussion=network.discussion).order_by('-date')
     networkcommentform = NetworkCommentForm()
 
     return render(request, 'editorial/networkdetail.html', {
