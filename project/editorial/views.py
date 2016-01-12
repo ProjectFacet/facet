@@ -197,6 +197,7 @@ def org_detail(request, pk):
 
     organization = get_object_or_404(Organization, pk=pk)
     organizationnoteform = OrganizationNoteForm()
+    organizationnotes = OrganizationNote.objects.filter(organization=organization)
     users = Organization.get_org_users(organization)
     organizationcomments = Comment.objects.filter(discussion=organization.discussion).order_by('-date')
     organizationcommentform = OrganizationCommentForm()
@@ -204,6 +205,7 @@ def org_detail(request, pk):
     return render(request, 'editorial/organizationdetail.html', {
         'organization': organization,
         'organizationnoteform': organizationnoteform,
+        'organizationnotes': organizationnotes,
         'organizationcomments': organizationcomments,
         'organizationcommentform': organizationcommentform,
         })
@@ -233,6 +235,7 @@ def organization_notes(request, pk):
 
     organization = get_object_or_404(Organization, pk=pk)
     organizationnotes = OrganizationNote.objects.filter(organization_id=organization.id)
+
     return render(request, 'editorial/organizationnotes.html', {
         'organizationnotes': organizationnotes,
     })
@@ -241,16 +244,15 @@ def organization_notes(request, pk):
 def create_organization_note(request):
     """ Post a note to an organization."""
 
+    organization = request.user.organization
     if request.method == "POST":
         form = OrganizationNoteForm(request.POST or None)
         if form.is_valid():
-            org_id = request.POST.get('organization')
-            organization = get_object_or_404(Organization, pk=org_id)
             organizationnote = form.save(commit=False)
             organizationnote.owner = request.user
             organizationnote.organization = organization
             organizationnote.save()
-            return redirect('organization_notes', pk=organization.pk)
+            return redirect('organization_notes', pk=organization.id)
 
 #----------------------------------------------------------------------#
 #   User Views
@@ -1009,12 +1011,14 @@ def network_detail(request, pk):
     """ Public profile of a network. """
 
     network = get_object_or_404(Network, pk=pk)
+    network_members = Network.get_network_organizations(network)
     networknoteform = NetworkNoteForm()
     networkcomments = Comment.objects.filter(discussion=network.discussion).order_by('-date')
     networkcommentform = NetworkCommentForm()
 
     return render(request, 'editorial/networkdetail.html', {
         'network': network,
+        'network_members': network_members,
         'networknoteform': networknoteform,
         'networkcomments': networkcomments,
         'networkcommentform': networkcommentform,

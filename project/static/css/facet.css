@@ -36,6 +36,34 @@ body {
   color: #fff;
 }
 
+hr {
+  border-width: 1px 0px 0px;
+  border-style: solid none none;
+  border-color: #54657E;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.left-rule {
+  border-left: 1px solid #54657E;
+}
+
+.right-rule {
+  border-right: 1px solid #54657E;
+}
+
+.team {
+  padding-left: -10px;
+}
+
+.discussion, .orgnotes {
+  padding-right: -10px;
+}
+
+#team-label {
+  padding-left: 20px;
+}
+
 .center {
   text-align: center;
 }
@@ -291,7 +319,7 @@ input {
 #user-hero {
   z-index: 0;
   color: #fff;
-  height: 150px;
+  height: 100px;
   background-color: #374355;
   margin-top: -15px;
   /*background-image: linear-gradient(to right, rgba(0,131,213,1) 0%, rgba(162,52,213,0.63) 74%, rgba(162,52,213,0.5) 100%);*/
@@ -304,6 +332,14 @@ input {
   border: 2px solid #fff;
 }
 
+.content-upper-100 {
+  margin-top: -100px !important;
+}
+
+.content-upper-85 {
+  margin-top: -85px !important;
+}
+
 .content-upper-75 {
   margin-top: -75px !important;
 }
@@ -314,6 +350,10 @@ input {
 
 .content-upper-25 {
   margin-top: -25px !important;
+}
+
+.content-lower-10 {
+  margin-top: 10px;
 }
 
 div.vertical-line{
@@ -378,6 +418,11 @@ div.vertical-line{
   border-radius: 2px 0px 0px 0px;
   height: 4em;
   width: auto;
+}
+
+.note-panel {
+  background-color:#374355 ;
+  color: #fff;
 }
 
 .sameline {

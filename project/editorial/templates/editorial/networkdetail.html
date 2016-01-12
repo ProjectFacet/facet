@@ -4,46 +4,185 @@
 
 {% block content %}
 
+<div class="row particles" id="user-hero">
+  <div class="upper-content">
+  <!-- <div class="col-md-2 col-lg-2 col-sm-1">
+    <img alt="cover" class="profile-page-pic no-padding border-white content-upper-75" src="/static/images/faces/face23.jpg">
+  </div> -->
+  <div class="col-lg-12 content-upper-85">
+    <h1 class="media-heading text-light center">{{ network.name }}</h1>
+    <h5 class="center"> {{ network.network_description }}</h5>
+  </div>
+  <!-- <div class="social">
+  <p>
+    <a href="{{ user.twitter }}" class="btn btn-sm btn-circle ml-1x" aria-label="twitter"><i class="fa fa-lg fa-twitter"></i></a>
+    <a href="{{ user.github }}" class="btn btn-sm btn-circle" aria-label="github"><i class="fa fa-lg fa-github"></i></a>
+    <a href="{{ user.instagram }}" class="btn btn-sm btn-circle ml-1x" aria-label="instagram"><i class="fa fa-lg fa-instagram"></i></a>
+    <a href="{{ user.facebook }}" class="btn btn-sm btn-circle ml-1x" aria-label="facebook"><i class="fa fa-lg fa-facebook"></i></a>
+    <a href="{{ user.vine }}" class="btn btn-sm btn-circle ml-1x" aria-label="vine"><i class="fa fa-lg fa-vine"></i></a>
+    </p>
+  </div> -->
+  </div>
+</div>
 
-<h1 class="center">{{ network.name }}</h1>
-    <div>
-    {{network.network_description}}
+<div class="row content-lower-10">
+  <!-- Left Column -->
+  <div class="col-md-10 right-rule">
+    <div class="discussion">
+      <div class="comments">
+      <a href="#" data-toggle="tooltip" title="Discussion for the network"><label class="field-label">Discussion</label></a>
+          {% if networkcomments %}
+          {% for comment in networkcomments %}
+            <div class="row">
+                <div class="col-md-10">
+                  <p>{{ comment.text }}</p>
+                  <p class="tiny-text">{{ comment.date|date:'D M j g:i a' }}</p>
+                </div>
+                <div class="col-md-2">
+                  <img class="media-object img-circle" width="32" src="/static/images/faces/face23.jpg" alt="user">
+                  <p class="tiny-text">{{ comment.user.first_name }}</p>
+                </div>
+            </div>
+          {% endfor %}
+          {% endif %}
+      </div>
+      <div class="post-comment">
+            <div class="row">
+              <form action="/networkcomment/new" method="POST" class="post-form" role="form">
+                <div class="col-md-10">
+                    {% csrf_token %}
+                    <div class="form-group">
+                    {{ networkcommentform.text }}
+                    </div>
+                    {% if networkcommentform.text.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ networkcommentform.text.errors }}
+                      </div>
+                    {% endif %}
+                    <input type="hidden" name="network" value="{{ network.pk }}" />
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                      <button type="submit" class="btn btn-default btn-sm" name="networkcommentform">
+                          <i class="fa fa-paper-plane"></i>
+                      </button>
+                    </div>
+                    <!-- <input type="submit" name="seriescommentform" value="Post Comment"/> -->
+                </div>
+              </form>
+            </div>
+        </div>
     </div>
+    <hr>
+    <div class="orgnotes">
+      <div>
+      <a href="#" data-toggle="tooltip" title="Network Notes"><label class="field-label">Notes</label></a>
+      <a href="#" data-toggle="modal" data-target="#addNetworkNote" title="Add Network Note"><i class="fa fa-plus sameline"></i></a></p>
+      </div>
+      <div class="displaynotes">
+      {% for note in networknotes %}
+      <!-- MODAL TRIGGER -->
+        <a href="#" data-toggle="modal" data-target="#addNote{{note.id}}">
+          <div class="col-lg-2 col-md-3 col-sm-6">
+            <div class="panel fade in panel-default note-panel" data-init-panel="true">
+              <div class="panel-body">
+                <div class="media">
+                  <div class="media-left">
+                    <!-- Place icon or image here -->
+                  </div>
+                  <div class="media-body">
+                    <h5 class="media-heading brighter">{{ note.title }}</h5>
+                    <p class="help-block bright">{{ note.owner.credit_name }}</p>
+                  </div><!-- /.media -body-->
+                </div><!-- /.media -->
+              </div><!-- /.panel-body -->
 
-    <div>
-  <a href="{% url 'network_edit' pk=network.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
-    </div>
-
-    <div>
-    <p>Add Note<a href="#"><i class="fa fa-plus sameline" data-toggle="modal" data-target="#addNetworkNote"></i></a></p>
-
-    </div>
-
-    <!-- Modal -->
-    <div class="modal fade" id="addNetworkNote" tabindex="-1" role="dialog" aria-labelledby="addNetworkNoteModalLabel">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="addUserModalLabel">Add a note for this network</h4>
-          </div>
-          <div class="modal-body">
-            <form action="/network/note/new/" method="POST" class="post-form">
-            {% csrf_token %}
-            {% bootstrap_form networknoteform %}
-            <input type="hidden" name="network" value="{{ network.pk }}" />
-            <button type="submit" class="btn btn-primary">Post Note</button>
-            </form>
-          </div>
-          <div class="modal-footer">
+              <div class="progress progress-xs no-radius no-margin">
+                <div class="progress-bar bg-grd-blue" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                </div>
+              </div><!-- /.progress -->
+            </div><!-- /.panel -->
+          </div><!-- /.cols -->
+        </a>
+      <!-- END MODAL TRIGGER -->
+      <!-- MODAL ITSELF -->
+        <div class="modal fade" id="addNote{{note.id}}" tabindex="-1" role="dialog" aria-labelledby="addaddNote{{note.id}}">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="addNote{{note.id}}Label">{{ note.title }}</h4>
+              </div>
+              <div class="modal-body dark">
+                {{ note.text }}
+              </div>
+              <div class="modal-footer">
+                <p class="tiny-text">{{ note.owner }} | {{ note.creation_date|date:'D M j g:i a' }}<p>
+                <p class="tiny-text">Keywords: {% for keyword in note.keywords %}{{ keyword }}, {% endfor %}<p>
+              </div>
+            </div>
           </div>
         </div>
+      <!-- END MODAL -->
+      {% endfor %}
+    </div>
+    </div>
+  </div>
+  <!-- Right column -->
+  <div class="col-md-2">
+    <div class="team">
+      <div class="row">
+        <a href="#" data-toggle="tooltip" title="{{ network.name }} Members"><label class="field-label" id="team-label">Organizations</label></a>
+        {% for org in network.members.all %}
+        <div class="col-lg-12 col-md-12 col-sm-12">
+          <div class="panel fade in panel-default" data-init-panel="true">
+            <div class="user-panel-body">
+              <div class="media">
+                <div class="media-left">
+                  <div class="kit-avatar kit-avatar-42 kit-avatar-square no-border team-panel-avatar">
+                    <img class="media-object" src="/static/images/dummy/unknown-profile.jpg" alt="project brand">
+                  </div>
+                </div>
+                <div class="media-body">
+                  <h5 class="media-heading brighter uppercase">{{ org.name}}</h>
+                  <p class="help-block bright tiny-text">{{ org.org_description }}</p>
+                </div><!-- /.media -body-->
+              </div><!-- /.media -->
+            </div><!-- /.panel-body -->
+
+            <div class="progress progress-xs no-radius no-margin">
+              <div class="progress-bar bg-grd-teal" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+              </div>
+            </div><!-- /.progress -->
+          </div><!-- /.panel -->
+        </div><!-- /.cols -->
+        {% endfor %}
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- Add Note Modal -->
+<div class="modal fade" id="addNetworkNote" tabindex="-1" role="dialog" aria-labelledby="addNetworkNoteModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="addUserModalLabel">Add a note for this network</h4>
+      </div>
+      <div class="modal-body">
+        <form action="/network/note/new/" method="POST" class="post-form">
+        {% csrf_token %}
+        {% bootstrap_form networknoteform %}
+        <input type="hidden" name="network" value="{{ network.pk }}" />
+        <button type="submit" class="btn btn-primary">Post Note</button>
+        </form>
+      </div>
+      <div class="modal-footer">
       </div>
     </div>
-
-
-
-
-
-
+  </div>
+</div>
 {% endblock %}
