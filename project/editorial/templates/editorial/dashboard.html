@@ -8,13 +8,19 @@
 <div class="row">
   <!-- LEFT SIDE -->
   <div class="col-md-6" id="dashboard-left">
+    <div class="dashboard-comments">
     {% if recent_comments %}
     <table class="table table-condensed">
       <tbody>
         {% for comment in recent_comments %}
         <tr>
-          <td>{{ comment.text }}</td>
-          <td><p class="tiny-text"> {{ comment.date|date:'D, n/j' }}<br/>{{ comment.date|date:'g:i a' }}</p></td>
+          <td>{{ comment.text }}<br>
+            <p class="tiny-text">
+              {% if comment.discussion.organization %}
+                <a href="{% url 'org_detail' pk=comment.discussion.organization.id %}">{{ comment.discussion.organization.name }}</a>
+              {% endif %}
+            <p></td>
+          <td><p class="tiny-text"> {{ comment.date|date:'n/j' }}<br/>{{ comment.date|date:'g:i a' }}</p></td>
           <td><img class="media-object img-circle" width="32" src="static/images/faces/face23.jpg" alt="user"><p class="tiny-text">{{ comment.user.first_name }}</p></td>
         </tr>
         {% endfor %}
@@ -25,9 +31,11 @@
     <p>It looks like no one has posted any comments anywhere yet!<p>
     <p>You can change this right now, by adding a comment to any series, story or facet you like.</p>
     {% endif %}
+    </div>
+    <hr>
   </div>
   <!-- RIGHT SIDE -->
-  <div class="col-md-6" id="dashboard-right">
+  <div class="col-md-6 left-rule" id="dashboard-right">
     <table class="table table-condensed">
       <thead>
         <tr>

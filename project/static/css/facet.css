@@ -44,6 +44,10 @@ hr {
   margin-bottom: 10px;
 }
 
+.subtle {
+  border-color: #3D4365;
+}
+
 .left-rule {
   border-left: 1px solid #54657E;
 }
