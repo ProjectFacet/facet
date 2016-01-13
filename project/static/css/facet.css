@@ -295,9 +295,9 @@ input {
   color: #374355 !important;
 }
 
-.tiny-text {
+.tiny-text, .tiny-text a {
   font-size: 10px;
-  color: #8493A8;
+  color: #8493A8 !important;
 }
 
 .chosen-choices {

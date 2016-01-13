@@ -190,7 +190,10 @@ class User(AbstractUser):
             discussions.append(discussion)
         recent_comments = []
         for discussion in set(discussions):
-            recent_comment = Comment.objects.filter(discussion_id=discussion.id, date__gte=self.last_login)
+            # for production
+            # recent_comment = Comment.objects.filter(discussion_id=discussion.id, date__gte=self.last_login)
+            # for development
+            recent_comment = Comment.objects.filter(discussion_id=discussion.id)
             recent_comments.extend(recent_comment)
 
         return recent_comments
@@ -2221,7 +2224,7 @@ class Comment(models.Model):
     objects = CommentManager()
 
     class Meta:
-        ordering = ['date']
+        ordering = ['-date']
 
     def __str__(self):
         return "Comment:{comment} from discussion:{discussion}".format(
