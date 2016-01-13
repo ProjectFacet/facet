@@ -87,9 +87,8 @@ def dashboard(request):
     Ex: Oliver Q. added "Dhark Indicted" to Story: "Star City Organized Crime Leader Arrested"
     """
     # query for new comments since last_login from any discussions the user has participated in
-    recent_comments = User.recent_comments(request.user)[:8]
+    recent_comments = User.recent_comments(request.user)[:10]
     # query for any new content created since last_login
-
     # stories = Story.objects.filter(creation_date__gte=request.user.last_login)[:8]
     # --------------------------------------------------------------------------------#
     stories = Story.objects.filter(organization = request.user.organization)[:10]
@@ -806,7 +805,7 @@ def create_networkcomment(request):
         comment = Comment.objects.create_comment(user=request.user, discussion=discussion, text=comment_text)
         comment.save()
 
-        return redirect('org_detail', pk=organization.id)
+        return redirect('network_detail', pk=network.id)
 
 
 def create_seriescomment(request):
@@ -815,12 +814,12 @@ def create_seriescomment(request):
     if request.method == 'POST':
         comment_text = request.POST.get('text')
         series_id = request.POST.get('series')
-        series = get_object_or_404(Story, id=series_id)
+        series = get_object_or_404(Series, id=series_id)
         discussion = get_object_or_404(Discussion, id=series.discussion.id)
         comment = Comment.objects.create_comment(user=request.user, discussion=discussion, text=comment_text)
         comment.save()
 
-        return redirect('story_detail', pk=story.id)
+        return redirect('series_detail', pk=series.id)
 
 
 def create_storycomment(request):

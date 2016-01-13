@@ -322,6 +322,10 @@ class Organization(models.Model):
                                                     description=self.org_description
                                                     )
 
+    @property
+    def type(self):
+        return "Organization"
+
 
 class Network(models.Model):
     """ A group of organizations.
@@ -408,6 +412,10 @@ class Network(models.Model):
                                                 network=self.name,
                                                 description=self.network_description
                                                 )
+
+    @property
+    def type(self):
+        return "Network"
 
 #   Associations
 #   ------------
@@ -543,6 +551,10 @@ class Series(models.Model):
                                                 series=self.name,
                                                 description=self.series_description
                                                 )
+
+    @property
+    def type(self):
+        return "Series"
 
 
 
@@ -708,6 +720,10 @@ class Story(models.Model):
                                                 story=self.name,
                                                 description=self.story_description
                                                 )
+
+    @property
+    def type(self):
+        return "Story"
 
 
 class WebFacet(models.Model):
@@ -895,7 +911,7 @@ class WebFacet(models.Model):
                                 )
 
     @property
-    def facet_type(self):
+    def type(self):
         return "WebFacet"
 
 
@@ -1086,7 +1102,7 @@ class PrintFacet(models.Model):
                                 )
 
     @property
-    def facet_type(self):
+    def type(self):
         return "PrintFacet"
 
 
@@ -1276,7 +1292,7 @@ class AudioFacet(models.Model):
                                 )
 
     @property
-    def facet_type(self):
+    def type(self):
         return "AudioFacet"
 
 
@@ -1466,7 +1482,7 @@ class VideoFacet(models.Model):
                                 )
 
     @property
-    def facet_type(self):
+    def type(self):
         return "VideoFacet"
 
 
@@ -1949,6 +1965,10 @@ class Asset(models.Model):
                                 asset_type=self.asset_type,
                                 )
 
+    @property
+    def type(self):
+        return "{asset_type} Asset". format(asset_type=self.asset_type)
+
 
 class Note(models.Model):
     """ Abstract base class for notes."""
@@ -1991,6 +2011,10 @@ class NetworkNote(Note):
         blank=True,
     )
 
+    @property
+    def type(self):
+        return "Network Note"
+
 
 class OrganizationNote(Note):
     """ General purpose notes for an organization."""
@@ -2012,6 +2036,10 @@ class OrganizationNote(Note):
         blank=True,
     )
 
+    @property
+    def type(self):
+        return "Organization Note"
+
 
 class UserNote(Note):
     """ General purpose notes from a user. """
@@ -2027,6 +2055,10 @@ class UserNote(Note):
         help_text='List of keywords for search.',
         blank=True,
     )
+
+    @property
+    def type(self):
+        return "User Note"
 
 
 class SeriesNote(Note):
@@ -2048,6 +2080,10 @@ class SeriesNote(Note):
                                 series=self.series.id,
                                 )
 
+    @property
+    def type(self):
+        return "Series Note"
+
 
 class StoryNote(Note):
     """ Planning notes and conversation for a story. """
@@ -2066,6 +2102,11 @@ class StoryNote(Note):
                                 storynote=self.id,
                                 story=self.story.id,
                                 )
+
+
+    @property
+    def type(self):
+        return "Story Note"
 
 
 class DiscussionManager(models.Manager):
@@ -2188,6 +2229,10 @@ class PrivateMessage(models.Model):
 
     objects = PrivateMessageManager()
 
+    @property
+    def type(self):
+        return "Private Message"
+
 
 class CommentManager(models.Manager):
     """ Custom manager for comments."""
@@ -2224,13 +2269,17 @@ class Comment(models.Model):
     objects = CommentManager()
 
     class Meta:
-        ordering = ['-date']
+        ordering = ['date']
 
     def __str__(self):
         return "Comment:{comment} from discussion:{discussion}".format(
                                 comment=self.id,
                                 discussion=self.discussion.id,
                                 )
+
+    @property
+    def type(self):
+        return "Comment"
 
 
 class CommentReadStatus(models.Model):

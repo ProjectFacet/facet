@@ -28,7 +28,7 @@
           {% for facet in story.webfacetstory.all %}
             <tr>
               <td><a href="{% url 'story_detail' pk=facet.story.id %}">{{ facet.story.name }}</a></th>
-              <td>{{ facet.facet_type}}</td>
+              <td>{{ facet.type}}</td>
               <td><a href="#" data-toggle="tooltip" title="{{ facet.wf_description }}">{{ facet.title }}</a></td>
               <td>{{ facet.credit.all.0.credit_name }}</td>
               <td>{{ facet.due_edit|date:'n/j, g:i a' }}</td>
@@ -38,7 +38,7 @@
           {% for facet in story.printfacetstory.all %}
             <tr>
               <td><a href="{% url 'story_detail' pk=facet.story.id %}">{{ facet.story.name }}</a></th>
-              <td>{{ facet.facet_type}}</td>
+              <td>{{ facet.type}}</td>
               <td><a href="#" data-toggle="tooltip" title="{{ facet.pf_description }}">{{ facet.title }}</a></td>
               <td>{{ facet.credit.all.0.credit_name }}</td>
               <td>{{ facet.due_edit|date:'n/j, g:i a' }}</td>
@@ -48,7 +48,7 @@
           {% for facet in story.audiofacetstory.all %}
             <tr>
               <td><a href="{% url 'story_detail' pk=facet.story.id %}">{{ facet.story.name }}</a></th>
-              <td>{{ facet.facet_type}}</td>
+              <td>{{ facet.type}}</td>
               <td><a href="#" data-toggle="tooltip" title="{{ facet.af_description }}">{{ facet.title }}</a></td>
               <td>{{ facet.credit.all.0.credit_name }}</td>
               <td>{{ facet.due_edit|date:'n/j, g:i a' }}</td>
@@ -58,7 +58,7 @@
           {% for facet in story.videofacetstory.all %}
             <tr>
               <td><a href="{% url 'story_detail' pk=facet.story.id %}">{{ facet.story.name }}</a></td>
-              <td>{{ facet.facet_type}}</td>
+              <td>{{ facet.type}}</td>
               <td><a href="#" data-toggle="tooltip" title="{{ facet.vf_description }}">{{ facet.title }}</a></td>
               <td>{{ facet.credit.all.0.credit_name }}</td>
               <td>{{ facet.due_edit|date:'n/j, g:i a' }}</td>

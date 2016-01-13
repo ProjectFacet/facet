@@ -25,7 +25,7 @@
       {% for facet in story.webfacetstory.all %}
         <tr>
           <td>{{ facet.story.name }}<form action="/story/copy/{{ facet.story_id }}/" method="POST" class="sameline">{% csrf_token %}<button class="clear" type="submit"><i class="fa fa-clone"></i></button></form></td>
-          <td>{{ facet.facet_type}}</td>
+          <td>{{ facet.type}}</td>
           <td><a href="#" data-toggle="tooltip" title="{{ facet.wf_description }}">{{ facet.title }}</a></td>
           <td>{{ facet.owner.credit_name }}</td>
           <td>{{ facet.organization.name }}</td>
@@ -35,7 +35,7 @@
       {% for facet in story.printfacetstory.all %}
         <tr>
           <td>{{ facet.story.name }}</td>
-          <td>{{ facet.facet_type}}</td>
+          <td>{{ facet.type}}</td>
           <td><a href="#" data-toggle="tooltip" title="{{ facet.pf_description }}">{{ facet.title }}</a></td>
           <td>{{ facet.owner.credit_name }}</td>
           <td>{{ facet.organization.name }}</td>
@@ -45,7 +45,7 @@
       {% for facet in story.audiofacetstory.all %}
         <tr>
           <td>{{ facet.story.name }}</td>
-          <td>{{ facet.facet_type}}</td>
+          <td>{{ facet.type}}</td>
           <td><a href="#" data-toggle="tooltip" title="{{ facet.af_description }}">{{ facet.title }}</a></td>
           <td>{{ facet.owner.credit_name }}</td>
           <td>{{ facet.organization.name }}</td>
@@ -55,7 +55,7 @@
       {% for facet in story.videofacetstory.all %}
         <tr>
           <td>{{ facet.story.name }}</td>
-          <td>{{ facet.facet_type}}</td>
+          <td>{{ facet.type}}</td>
           <td><a href="#" data-toggle="tooltip" title="{{ facet.vf_description }}">{{ facet.title }}</a></td>
           <td>{{ facet.owner.credit_name }}</td>
           <td>{{ facet.organization.name }}</td>
