@@ -360,6 +360,10 @@ input {
   margin-top: 10px;
 }
 
+.pad-5 {
+  padding-top: 5px !important;
+}
+
 div.vertical-line{
   width: 1px; /* Line width */
   background-color: white; /* Line color */
@@ -392,6 +396,7 @@ div.vertical-line{
 
 .team-panel {
   height: 200px;
+  background-color: #374355;
 }
 
 .uppercase {
@@ -403,6 +408,7 @@ div.vertical-line{
   padding: 6px;
   background-color: #374355;
 }
+
 
 .team-panel-avatar {
   width: auto !important;
@@ -439,6 +445,20 @@ div.vertical-line{
   border: none;
   color: #8493A8;
 }
+
+.comment-td {
+  width: 90%;
+}
+
+.dashboard-comments {
+  marging-bottom: 10px;
+}
+
+.slimScrollBar {
+  background: #54657E none repeat scroll 0% 0% !important;
+  width: 6px;
+}
+
 
 /*Sorting Tables*/
 

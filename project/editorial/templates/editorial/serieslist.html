@@ -5,11 +5,17 @@
 
 {% block content %}
 
-<h1 class="center">Series List</h1>
+<div class="row particles" id="user-hero">
+  <div class="upper-content">
+    <div class="col-lg-12 content-upper-75">
+      <h1 class="media-heading text-light center">Series</h1>
+    </div>
+  </div>
+</div>
 
 <div class="row">
   <div class="col-md-12">
-    <table class="table table-condensed">
+    <table id="series-list" class="table table-condensed">
       <thead>
         <tr>
           <th>Series</th>
@@ -29,5 +35,11 @@
     </table>
   </div>
 </div>
+
+<script>
+$(document).ready(function() {
+    $('#series-list').DataTable();
+} );
+</script>
 
 {% endblock %}

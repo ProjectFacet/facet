@@ -5,10 +5,16 @@
 
 {% block content %}
 
-<h1 class="center">Collaborations</h1>
+<div class="row particles" id="user-hero">
+  <div class="upper-content">
+    <div class="col-lg-12 content-upper-75">
+      <h1 class="media-heading text-light center">Collaborations</h1>
+    </div>
+  </div>
+</div>
 
 <div class="row">
-  <div class="col-md-6">
+  <!-- <div class="col-md-6">
     <h2 class="center">Series</h2>
       <table class="table table-condensed">
         <thead>
@@ -28,10 +34,10 @@
           {% endfor %}
         </tbody>
       </table>
-  </div>
-  <div class="col-md-6">
-    <h2 class="center">Stories</h2>
-      <table class="table table-condensed">
+  </div> -->
+  <div class="col-md-12">
+    <!-- <h2 class="center">Stories</h2> -->
+      <table id="collaboration-stories" class="table table-condensed">
         <thead>
           <tr>
             <th>Story</th>
@@ -52,6 +58,11 @@
   </div>
 </div>
 
+<script>
+$(document).ready(function() {
+    $('#collaboration-stories').DataTable();
+} );
+</script>
 
 
 {% endblock %}

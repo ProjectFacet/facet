@@ -7,77 +7,86 @@
 
 <h1 class="center">Network Story Facets List</h1>
 
-<table class="table table-condensed">
-  <thead>
-    <tr>
-      <th>Story</th>
-      <th>Facet</th>
-      <th>Title</th>
-      <th>Credit</th>
-      <th>Organization</th>
-      <th>Edit Date</th>
-    </tr>
-  </thead>
-  <tbody>
-  {% for story in networkstories %}
 
-    {% if story.webfacetstory.all or story.printfacetstory.all or story.audiofacetstory.all or story.videofacetstory.all %}
-      {% for facet in story.webfacetstory.all %}
+<div class="row">
+  <div class="col-md-12">
+    <table id="network-stories-list" class="table table-condensed">
+      <thead>
         <tr>
-          <td>{{ facet.story.name }}<form action="/story/copy/{{ facet.story_id }}/" method="POST" class="sameline">{% csrf_token %}<button class="clear" type="submit"><i class="fa fa-clone"></i></button></form></td>
-          <td>{{ facet.type}}</td>
-          <td><a href="#" data-toggle="tooltip" title="{{ facet.wf_description }}">{{ facet.title }}</a></td>
-          <td>{{ facet.owner.credit_name }}</td>
-          <td>{{ facet.organization.name }}</td>
-          <td>{{ facet.due_edit|date:'n/j, g:i a'}}</td>
+          <th>Story</th>
+          <th>Facet</th>
+          <th>Title</th>
+          <th>Credit</th>
+          <th>Organization</th>
+          <th>Edit Date</th>
         </tr>
-      {% endfor %}
-      {% for facet in story.printfacetstory.all %}
-        <tr>
-          <td>{{ facet.story.name }}</td>
-          <td>{{ facet.type}}</td>
-          <td><a href="#" data-toggle="tooltip" title="{{ facet.pf_description }}">{{ facet.title }}</a></td>
-          <td>{{ facet.owner.credit_name }}</td>
-          <td>{{ facet.organization.name }}</td>
-          <td>{{ facet.due_edit|date:'n/j, g:i a'}}</td>
-        </tr>
-      {% endfor %}
-      {% for facet in story.audiofacetstory.all %}
-        <tr>
-          <td>{{ facet.story.name }}</td>
-          <td>{{ facet.type}}</td>
-          <td><a href="#" data-toggle="tooltip" title="{{ facet.af_description }}">{{ facet.title }}</a></td>
-          <td>{{ facet.owner.credit_name }}</td>
-          <td>{{ facet.organization.name }}</td>
-          <td>{{ facet.due_edit|date:'n/j, g:i a'}}</td>
-        </tr>
-      {% endfor %}
-      {% for facet in story.videofacetstory.all %}
-        <tr>
-          <td>{{ facet.story.name }}</td>
-          <td>{{ facet.type}}</td>
-          <td><a href="#" data-toggle="tooltip" title="{{ facet.vf_description }}">{{ facet.title }}</a></td>
-          <td>{{ facet.owner.credit_name }}</td>
-          <td>{{ facet.organization.name }}</td>
-          <td>{{ facet.due_edit|date:'n/j, g:i a'}}</td>
-        </tr>
-      {% endfor %}
-    {% else %}
-        <tr>
-          <td>{{ story.name }}</td>
-          <td></td>
-          <td><i class="tiny-text">No Facets Currently</i></td>
-          <td>{{ story.owner.credit_name }}</td>
-          <td>{{ story.organization.name }}</td>
-          <td></td>
-        </tr>
-    {% endif %}
+      </thead>
+      <tbody>
+      {% for story in networkstories %}
 
-  {% endfor %}
-  </tbody>
-</table>
+        {% if story.webfacetstory.all or story.printfacetstory.all or story.audiofacetstory.all or story.videofacetstory.all %}
+          {% for facet in story.webfacetstory.all %}
+            <tr>
+              <td>{{ facet.story.name }}<form action="/story/copy/{{ facet.story_id }}/" method="POST" class="sameline">{% csrf_token %}<button class="clear" type="submit"><i class="fa fa-clone"></i></button></form></td>
+              <td>{{ facet.type}}</td>
+              <td><a href="#" data-toggle="tooltip" title="{{ facet.wf_description }}">{{ facet.title }}</a></td>
+              <td>{{ facet.owner.credit_name }}</td>
+              <td>{{ facet.organization.name }}</td>
+              <td>{{ facet.due_edit|date:'n/j, g:i a'}}</td>
+            </tr>
+          {% endfor %}
+          {% for facet in story.printfacetstory.all %}
+            <tr>
+              <td>{{ facet.story.name }}</td>
+              <td>{{ facet.type}}</td>
+              <td><a href="#" data-toggle="tooltip" title="{{ facet.pf_description }}">{{ facet.title }}</a></td>
+              <td>{{ facet.owner.credit_name }}</td>
+              <td>{{ facet.organization.name }}</td>
+              <td>{{ facet.due_edit|date:'n/j, g:i a'}}</td>
+            </tr>
+          {% endfor %}
+          {% for facet in story.audiofacetstory.all %}
+            <tr>
+              <td>{{ facet.story.name }}</td>
+              <td>{{ facet.type}}</td>
+              <td><a href="#" data-toggle="tooltip" title="{{ facet.af_description }}">{{ facet.title }}</a></td>
+              <td>{{ facet.owner.credit_name }}</td>
+              <td>{{ facet.organization.name }}</td>
+              <td>{{ facet.due_edit|date:'n/j, g:i a'}}</td>
+            </tr>
+          {% endfor %}
+          {% for facet in story.videofacetstory.all %}
+            <tr>
+              <td>{{ facet.story.name }}</td>
+              <td>{{ facet.type}}</td>
+              <td><a href="#" data-toggle="tooltip" title="{{ facet.vf_description }}">{{ facet.title }}</a></td>
+              <td>{{ facet.owner.credit_name }}</td>
+              <td>{{ facet.organization.name }}</td>
+              <td>{{ facet.due_edit|date:'n/j, g:i a'}}</td>
+            </tr>
+          {% endfor %}
+        {% else %}
+            <tr>
+              <td>{{ story.name }}</td>
+              <td></td>
+              <td><i class="tiny-text">No Facets Currently</i></td>
+              <td>{{ story.owner.credit_name }}</td>
+              <td>{{ story.organization.name }}</td>
+              <td></td>
+            </tr>
+        {% endif %}
 
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
 
+<script>
+$(document).ready(function() {
+    $('#network-stories-list').DataTable();
+} );
+</script>
 
 
 {% endblock %}
