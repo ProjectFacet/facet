@@ -76,6 +76,11 @@ class User(AbstractUser):
         blank=True,
     )
 
+    location = models.CharField(
+        max_length='255',
+        blank=True,
+    )
+
     expertise = ArrayField(
         models.CharField(max_length=100),
         default=list,
@@ -240,6 +245,11 @@ class Organization(models.Model):
 
     org_description = models.TextField(
         help_text="Short profile of organization.",
+        blank=True,
+    )
+
+    location = models.CharField(
+        max_length='255',
         blank=True,
     )
 
@@ -507,6 +517,12 @@ class Series(models.Model):
         blank=True,
     )
 
+    share_with_date = models.DateTimeField(
+        help_text="Estimated date the series will be available",
+        blank=True,
+        null=True,
+    )
+
     collaborate = models.BooleanField(
         default=False,
         help_text='The series is being collaborated on with a network.'
@@ -631,6 +647,12 @@ class Story(models.Model):
     share = models.BooleanField(
         default=False,
         help_text='The story is being shared with a network.'
+    )
+
+    share_with_date = models.DateTimeField(
+        help_text="Estimated date the story will be available",
+        blank=True,
+        null=True,
     )
 
     ready_to_share = models.BooleanField(
@@ -1982,6 +2004,19 @@ class Note(models.Model):
         help_text='When the note was created.'
     )
 
+    important = models.BooleanField(
+        default=False,
+        help_text='Mark as important for pinning to top of notes',
+        blank=True,
+    )
+
+    keywords = ArrayField(
+        models.CharField(max_length=100),
+        default=list,
+        help_text='List of keywords for note search.',
+        blank=True,
+    )
+
     class Meta:
         abstract = True
 
@@ -1997,13 +2032,6 @@ class NetworkNote(Note):
     network=models.ForeignKey(
         Network,
         related_name='networknote_network'
-    )
-
-    keywords = ArrayField(
-        models.CharField(max_length=100),
-        default=list,
-        help_text='List of keywords for note search.',
-        blank=True,
     )
 
     @property
@@ -2024,13 +2052,6 @@ class OrganizationNote(Note):
         related_name="orgnote_org"
     )
 
-    keywords = ArrayField(
-        models.CharField(max_length=100),
-        default=list,
-        help_text='List of keywords for note search.',
-        blank=True,
-    )
-
     @property
     def type(self):
         return "Organization Note"
@@ -2042,13 +2063,6 @@ class UserNote(Note):
     owner = models.ForeignKey(
         User,
         related_name='usernote_owner'
-    )
-
-    keywords = ArrayField(
-        models.CharField(max_length=100),
-        default=list,
-        help_text='List of keywords for search.',
-        blank=True,
     )
 
     @property
@@ -2097,7 +2111,6 @@ class StoryNote(Note):
                                 storynote=self.id,
                                 story=self.story.id,
                                 )
-
 
     @property
     def type(self):
