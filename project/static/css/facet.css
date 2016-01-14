@@ -439,3 +439,10 @@ div.vertical-line{
   border: none;
   color: #8493A8;
 }
+
+/*Sorting Tables*/
+
+.dataTables_info {
+  font-size: 10px;
+  color: #8493A8 !important;
+}

@@ -810,14 +810,13 @@ class WebFacet(models.Model):
     )
 
     # Choices for WebFacet status.
-    DRAFT = 'DRFT'
-    PITCH = 'PT'
-    IN_PROGRESS = 'IP'
-    EDIT = 'EDT'
-    REVISION = 'RVN'
-    NEEDS_REVIEW = 'NR'
-    READY = 'RDY'
-
+    DRAFT = 'Draft'
+    PITCH = 'Pitch'
+    IN_PROGRESS = 'In Progress'
+    EDIT = 'Edit'
+    REVISION = 'Revision'
+    NEEDS_REVIEW = 'Needs Review'
+    READY = 'Ready'
     WEBFACET_STATUS_CHOICES = (
         (DRAFT, 'Draft'),
         (PITCH, 'Pitch'),
@@ -1000,14 +999,13 @@ class PrintFacet(models.Model):
     )
 
     # Choices for PrintFacet status.
-    DRAFT = 'DRFT'
-    PITCH = 'PT'
-    IN_PROGRESS = 'IP'
-    EDIT = 'EDT'
-    REVISION = 'RVN'
-    NEEDS_REVIEW = 'NR'
-    READY = 'RDY'
-
+    DRAFT = 'Draft'
+    PITCH = 'Pitch'
+    IN_PROGRESS = 'In Progress'
+    EDIT = 'Edit'
+    REVISION = 'Revision'
+    NEEDS_REVIEW = 'Needs Review'
+    READY = 'Ready'
     PRINTFACET_STATUS_CHOICES = (
         (DRAFT, 'Draft'),
         (PITCH, 'Pitch'),
@@ -1017,7 +1015,6 @@ class PrintFacet(models.Model):
         (NEEDS_REVIEW, 'Needs Review'),
         (READY, 'Ready'),
     )
-
 
     status = models.CharField(
         max_length=25,
@@ -1191,14 +1188,13 @@ class AudioFacet(models.Model):
     )
 
     # Choices for AudioFacet status.
-    DRAFT = 'DRFT'
-    PITCH = 'PT'
-    IN_PROGRESS = 'IP'
-    EDIT = 'EDT'
-    REVISION = 'RVN'
-    NEEDS_REVIEW = 'NR'
-    READY = 'RDY'
-
+    DRAFT = 'Draft'
+    PITCH = 'Pitch'
+    IN_PROGRESS = 'In Progress'
+    EDIT = 'Edit'
+    REVISION = 'Revision'
+    NEEDS_REVIEW = 'Needs Review'
+    READY = 'Ready'
     AUDIOFACET_STATUS_CHOICES = (
         (DRAFT, 'Draft'),
         (PITCH, 'Pitch'),
@@ -1381,14 +1377,13 @@ class VideoFacet(models.Model):
     )
 
     # Choices for VideoFacet status.
-    DRAFT = 'DRFT'
-    PITCH = 'PT'
-    IN_PROGRESS = 'IP'
-    EDIT = 'EDT'
-    REVISION = 'RVN'
-    NEEDS_REVIEW = 'NR'
-    READY = 'RDY'
-
+    DRAFT = 'Draft'
+    PITCH = 'Pitch'
+    IN_PROGRESS = 'In Progress'
+    EDIT = 'Edit'
+    REVISION = 'Revision'
+    NEEDS_REVIEW = 'Needs Review'
+    READY = 'Ready'
     VIDEOFACET_STATUS_CHOICES = (
         (DRAFT, 'Draft'),
         (PITCH, 'Pitch'),
@@ -2269,7 +2264,7 @@ class Comment(models.Model):
     objects = CommentManager()
 
     class Meta:
-        ordering = ['date']
+        ordering = ['-date']
 
     def __str__(self):
         return "Comment:{comment} from discussion:{discussion}".format(

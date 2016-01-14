@@ -26,6 +26,7 @@
   <!-- endWrapkit -->
 
   <!-- styles & other dependencies -->
+
   <link rel="stylesheet" href="/static/css/components.css">
   <link rel="stylesheet" href="/static/css/demo.css">
   <link rel="stylesheet" href="/static/css/chosen.css">
@@ -37,6 +38,7 @@
   <!-- MULTISELECT FOR ARRAYS  -->
   <script src="/static/scripts/chosen.jquery.min.js"></script>
   <!-- END MULTISELECT FOR ARRAYS  -->
+  <script src="https://cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>
   <!-- END DATETIME PICKER JS  -->
   <script src="/static/scripts/moment.js"></script>
   <script src="/static/scripts/bootstrap-datetimepicker.js"></script>
@@ -91,29 +93,29 @@
           <ul class="nav navbar-nav">
             <li id="display_name"><a href="{% url 'user_detail' pk=request.user.id %}">{{ request.user.credit_name }}</a></li>
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle uppercase" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" title="Temporary Links for Convenience">Content<span class="caret"></span></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" title="Temporary Links for Convenience">Content<span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                  <li><a href="{% url 'story_list' %}" class="uppercase">Stories</a></li>
-                  <li><a href="{% url 'series_list' %}" class="uppercase">Series</a></li>
-                  <li><a href="{% url 'collaborations' %}" class="uppercase">Collaborations</a></li>
+                  <li><a href="{% url 'story_list' %}">Stories</a></li>
+                  <li><a href="{% url 'series_list' %}">Series</a></li>
+                  <li><a href="{% url 'collaborations' %}">Collaborations</a></li>
                 </ul>
             </li>
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle uppercase" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" title="Temporary Links for Convenience">Networks<span class="caret"></span></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" title="Temporary Links for Convenience">Networks<span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                  <li><a href="{% url 'network_list' %}" class="uppercase">Networks</a></li>
-                  <li><a href="{% url 'network_stories' %}" class="uppercase">Network Stories</a></li>
+                  <li><a href="{% url 'network_list' %}">Networks</a></li>
+                  <li><a href="{% url 'network_stories' %}">Network Stories</a></li>
                 </ul>
             </li>
-            <li><a href="{% url 'team_list' %}" class="uppercase">Teams</a></li>
-            <li><a href="{% url 'discussion' %}" class="uppercase">Discussions</a></li>
+            <li><a href="{% url 'team_list' %}">Teams</a></li>
+            <li><a href="{% url 'discussion' %}">Discussions</a></li>
 
 
             <li class="dropdown">
-            <a href="#" class="dropdown-toggle uppercase" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" title="Temporary Links for Convenience">Add New</a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" title="Temporary Links for Convenience">Add New</a>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-              <li><a href="{% url 'series_new' %}" class="uppercase">Series</a></li>
-              <li><a href="{% url 'story_new' %}" class="uppercase">Story</a></li>
+              <li><a href="{% url 'series_new' %}">Series</a></li>
+              <li><a href="{% url 'story_new' %}">Story</a></li>
             </ul>
           </li>
           </ul>

@@ -3,6 +3,10 @@
 {% load i18n %}
 {% load bootstrap3 %}
 
+{% block head %}
+
+{% endblock %}
+
 {% block content %}
 
 <h2 class="center">Story List</h2>
@@ -10,20 +14,20 @@
 <div class="row">
   <div class="col-md-12">
 
-    <table class="table table-condensed">
+    <table id="example" class="table table-condensed">
       <thead>
         <tr>
-          <th>Story</th>
-          <th>Facet</th>
-          <th>Title</th>
-          <th>Credit</th>
-          <th>Edit Date</th>
-          <th>Run Date</th>
+          <th class="dark">Story</th>
+          <th class="dark">Facet</th>
+          <th class="dark">Title</th>
+          <th class="dark">Credit</th>
+          <th class="dark">Edit Date</th>
+          <th class="dark">Run Date</th>
+          <th class="dark">Status</th>
         </tr>
       </thead>
       <tbody>
       {% for story in stories %}
-
         {% if story.webfacetstory.all or story.printfacetstory.all or story.audiofacetstory.all or story.videofacetstory.all %}
           {% for facet in story.webfacetstory.all %}
             <tr>
@@ -33,6 +37,7 @@
               <td>{{ facet.credit.all.0.credit_name }}</td>
               <td>{{ facet.due_edit|date:'n/j, g:i a' }}</td>
               <td>{{ facet.run_date|date:'n/j, g:i a'}}</td>
+              <td>{{ facet.status }}</td>
             </tr>
           {% endfor %}
           {% for facet in story.printfacetstory.all %}
@@ -43,6 +48,7 @@
               <td>{{ facet.credit.all.0.credit_name }}</td>
               <td>{{ facet.due_edit|date:'n/j, g:i a' }}</td>
               <td>{{ facet.run_date|date:'n/j, g:i a'}}</td>
+              <td>{{ facet.status }}</td>
             </tr>
           {% endfor %}
           {% for facet in story.audiofacetstory.all %}
@@ -53,6 +59,7 @@
               <td>{{ facet.credit.all.0.credit_name }}</td>
               <td>{{ facet.due_edit|date:'n/j, g:i a' }}</td>
               <td>{{ facet.run_date|date:'n/j, g:i a'}}</td>
+              <td>{{ facet.status }}</td>
             </tr>
           {% endfor %}
           {% for facet in story.videofacetstory.all %}
@@ -63,14 +70,16 @@
               <td>{{ facet.credit.all.0.credit_name }}</td>
               <td>{{ facet.due_edit|date:'n/j, g:i a' }}</td>
               <td>{{ facet.run_date|date:'n/j, g:i a'}}</td>
+              <td>{{ facet.status }}</td>
             </tr>
           {% endfor %}
         {% else %}
             <tr>
               <td><a href="{% url 'story_detail' pk=story.id %}">{{ story.name }}</a></td>
-              <td></td>
               <td><i class="tiny-text">Create a facet</i></td>
+              <td></td>
               <td>{{ story.owner.credit_name }}</td>
+              <td></td>
               <td></td>
               <td></td>
             </tr>
@@ -81,5 +90,11 @@
     </table>
   </div>
 </div>
+
+<script>
+$(document).ready(function() {
+    $('#example').DataTable();
+} );
+</script>
 
 {% endblock %}
