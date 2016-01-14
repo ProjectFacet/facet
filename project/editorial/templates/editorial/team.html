@@ -33,7 +33,7 @@
         </div><!-- /.panel-body -->
 
         <div class="progress progress-xs no-radius no-margin">
-          <div class="progress-bar bg-grd-blue" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+          <div class="progress-bar bg-grd-cyan" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
           </div>
         </div><!-- /.progress -->
       </div><!-- /.panel -->
@@ -51,10 +51,9 @@
           <hr>
             {% for organization in network.members.all %}
               <h4 class="brighter">{{ organization.name }}</h4>
-                {% for organization in network.members.all %}
                   <div class="row">
                   {% for user in organization.user_set.all %}
-                    <div class="col-lg-4 col-md-6 col-sm-12">
+                    <div class="col-lg-3 col-md-4 col-sm-12">
                       <div class="panel fade in panel-default" data-init-panel="true">
                         <div class="user-panel-body">
                           <div class="media">
@@ -78,7 +77,6 @@
                     </div><!-- /.cols -->
                   {% endfor %}
                 </div>
-                {% endfor %}
             {% endfor %}
       {% endfor %}
     </div>

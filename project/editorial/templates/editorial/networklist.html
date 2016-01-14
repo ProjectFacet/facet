@@ -21,17 +21,17 @@
     <div class="panel-body network-panel">
       <div class="media">
         <div class="media-body">
-          <h3 class="dark"><a href="{% url 'network_detail' network.id %}">{{ network.name }}</a></h3>
-          <p class="help-block">{{ network.network_description }}</p>
+          <h3 class="brighter"><a href="{% url 'network_detail' network.id %}">{{ network.name }}</a></h3>
+          <p class="help-block bright">{{ network.network_description }} {% if request.user.organization == network.owner_organization %}<a href="{% url 'network_edit' pk=network.id %}"><i class="fa fa-pencil sameline dark"></i></a>{% endif %}</p>
           <hr>
-          <p class="dark">Managing Organization: {{ network.owner_organization.name }}</p>
-          <p class="dark">Member Organizations: {% for organization in network.members.all %}{{ organization.name }}, {% endfor %}</p>
+          <p class="bright">Managing Organization: {{ network.owner_organization.name }}</p>
+          <p class="bright">Member Organizations: {% for organization in network.members.all %}{{ organization.name }}, {% endfor %}</p>
         </div><!-- /.media -body-->
       </div><!-- /.media -->
     </div><!-- /.panel-body -->
 
     <div class="progress progress-xs no-radius no-margin">
-      <div class="progress-bar bg-grd-blue" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+      <div class="progress-bar bg-grd-red" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
       </div>
     </div><!-- /.progress -->
   </div><!-- /.panel -->

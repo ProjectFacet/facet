@@ -11,17 +11,8 @@
   </div> -->
   <div class="col-lg-12 content-upper-85">
     <h1 class="media-heading text-light center">{{ network.name }}</h1>
-    <h5 class="center"> {{ network.network_description }}</h5>
+    <h5 class="center"> {{ network.network_description }} {% if request.user.organization == network.owner_organization %}<a href="{% url 'network_edit' pk=network.id %}"><i class="fa fa-pencil sameline"></i></a>{% endif %}</h5>
   </div>
-  <!-- <div class="social">
-  <p>
-    <a href="{{ user.twitter }}" class="btn btn-sm btn-circle ml-1x" aria-label="twitter"><i class="fa fa-lg fa-twitter"></i></a>
-    <a href="{{ user.github }}" class="btn btn-sm btn-circle" aria-label="github"><i class="fa fa-lg fa-github"></i></a>
-    <a href="{{ user.instagram }}" class="btn btn-sm btn-circle ml-1x" aria-label="instagram"><i class="fa fa-lg fa-instagram"></i></a>
-    <a href="{{ user.facebook }}" class="btn btn-sm btn-circle ml-1x" aria-label="facebook"><i class="fa fa-lg fa-facebook"></i></a>
-    <a href="{{ user.vine }}" class="btn btn-sm btn-circle ml-1x" aria-label="vine"><i class="fa fa-lg fa-vine"></i></a>
-    </p>
-  </div> -->
   </div>
 </div>
 
@@ -98,7 +89,7 @@
               </div><!-- /.panel-body -->
 
               <div class="progress progress-xs no-radius no-margin">
-                <div class="progress-bar bg-grd-blue" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                <div class="progress-bar bg-grd-orange" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
                 </div>
               </div><!-- /.progress -->
             </div><!-- /.panel -->
