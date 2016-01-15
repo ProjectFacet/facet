@@ -171,7 +171,7 @@ class User(AbstractUser):
         since the user's last login."""
 
         discussion_ids = {cd['discussion_id'] for cd in Comment.objects.filter(user_id=self.id).values('discussion_id')}
-        recent_comments = Comment.objects.filter(discussion_id__in=discussion_ids, date_gte=self.last_login)
+        recent_comments = Comment.objects.filter(discussion_id__in=discussion_ids, date__gte=self.last_login)
 
         return recent_comments
 

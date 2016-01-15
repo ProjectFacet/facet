@@ -300,6 +300,11 @@ input {
   color: #8493A8 !important;
 }
 
+.alert-text, .alert-text a {
+  font-size: 10px;
+  color: #0082D5 !important;
+}
+
 .chosen-choices {
   width: 200px !important;
 }

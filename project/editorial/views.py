@@ -101,16 +101,22 @@ def dashboard(request):
     Ex: Oliver Q. added "Dhark Indicted" to Story: "Star City Organized Crime Leader Arrested"
     """
     # query for new comments since last_login from any discussions the user has participated in
-    recent_comments = User.recent_comments(request.user)[:10]
+    recent_comments = User.recent_comments(request.user)
+    # if no new comments, display 10 most recent older comments
+    older_comments = User.inbox_comments(request.user)[:10]
+
     # query for any new content created since last_login
-    # stories = Story.objects.filter(creation_date__gte=request.user.last_login)[:8]
-    # --------------------------------------------------------------------------------#
-    stories = Story.objects.filter(organization = request.user.organization)[:10]
+    new_stories = Story.objects.filter(creation_date__gte=request.user.last_login)[:8]
+    # if no new stories, display 10 most recent stories
+    old_stories = Story.objects.filter(organization = request.user.organization)[:10]
+
     # TODO: query for other user activity since last_login
 
     return render(request, 'editorial/dashboard.html', {
         'recent_comments': recent_comments,
-        'stories': stories,
+        'older_comments': older_comments,
+        'new_stories': new_stories,
+        'old_stories': old_stories,
     })
 
 #----------------------------------------------------------------------#
