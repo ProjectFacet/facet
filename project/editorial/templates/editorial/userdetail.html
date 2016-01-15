@@ -25,12 +25,11 @@
 </div>
 </div>
 <div class="row">
-    <div class="col-md-12" id="dashboard-right">
-      <table class="table table-condensed">
+    <div class="col-md-10" id="dashboard-left">
+      <table id="user-stories-list" class="table table-condensed">
         <thead>
           <tr>
             <th>Story</th>
-            <th>Series</th>
             <th>Description</th>
           </tr>
         </thead>
@@ -38,13 +37,24 @@
           {% for story in user_stories %}
           <tr>
             <td><a href="{% url 'story_detail' story.id %}">{{ story.name }}</a></td>
-            <td>{% if story.series %}<a href="{% url 'series_detail' story.series.id %}">{{ story.series.name }}</a>{% endif %}</td>
             <td>{{ story.description }}</td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
     </div>
+    <div class="col-md-2" id="dashboard-right">
+    </div>
 </div>
+
+<script>
+$(document).ready(function() {
+    $('#user-stories-list').DataTable({
+      scrollY: 400,
+      paging: false
+    });
+} );
+</script>
+
 
 {% endblock %}
