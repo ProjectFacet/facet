@@ -30,6 +30,8 @@
           <th class="dark">Edit Date</th>
           <th class="dark">Run Date</th>
           <th class="dark">Status</th>
+          <th class="dark">Sharing</th>
+          <th class="dark">Collaboration</th>
         </tr>
       </thead>
       <tbody>
@@ -44,6 +46,8 @@
               <td>{{ facet.due_edit|date:'n/j, g:i a' }}</td>
               <td>{{ facet.run_date|date:'n/j, g:i a'}}</td>
               <td>{{ facet.status }}</td>
+              <td>{% if facet.story.share == True %}<i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</td>
+              <td>{% if facet.story.collaborate == True %}<i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</td>
             </tr>
           {% endfor %}
           {% for facet in story.printfacetstory.all %}
@@ -55,6 +59,8 @@
               <td>{{ facet.due_edit|date:'n/j, g:i a' }}</td>
               <td>{{ facet.run_date|date:'n/j, g:i a'}}</td>
               <td>{{ facet.status }}</td>
+              <td>{% if facet.story.share == True %}<i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</td>
+              <td>{% if facet.story.collaborate == True %}<i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</td>
             </tr>
           {% endfor %}
           {% for facet in story.audiofacetstory.all %}
@@ -66,6 +72,8 @@
               <td>{{ facet.due_edit|date:'n/j, g:i a' }}</td>
               <td>{{ facet.run_date|date:'n/j, g:i a'}}</td>
               <td>{{ facet.status }}</td>
+              <td>{% if facet.story.share == True %}<i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</td>
+              <td>{% if facet.story.collaborate == True %}<i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</td>
             </tr>
           {% endfor %}
           {% for facet in story.videofacetstory.all %}
@@ -77,6 +85,8 @@
               <td>{{ facet.due_edit|date:'n/j, g:i a' }}</td>
               <td>{{ facet.run_date|date:'n/j, g:i a'}}</td>
               <td>{{ facet.status }}</td>
+              <td>{% if facet.story.share == True %}<i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</td>
+              <td>{% if facet.story.collaborate == True %}<i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</td>
             </tr>
           {% endfor %}
         {% else %}
@@ -88,6 +98,8 @@
               <td></td>
               <td></td>
               <td></td>
+              <td>{% if story.share == True %}<i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</td>
+              <td>{% if story.collaborate == True %}<i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</td>
             </tr>
         {% endif %}
 

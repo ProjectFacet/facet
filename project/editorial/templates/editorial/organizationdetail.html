@@ -30,16 +30,16 @@
   <!-- Left Column -->
   <div class="col-md-10 right-rule">
     <div class="discussion">
-      <div class="comments">
       <a href="#" data-toggle="tooltip" title="Discussion for the organization"><label class="field-label">Discussion</label></a>
+      <div class="comments" data-toggle="slimScroll" style="height:280px" data-color="#5D9CEC" data-allow-page-scroll="false">
           {% if organizationcomments %}
           {% for comment in organizationcomments %}
             <div class="row">
-                <div class="col-md-10">
+                <div class="col-md-11">
                   <p>{{ comment.text }}</p>
                   <p class="tiny-text">{{ comment.date|date:'D M j g:i a' }}</p>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-1">
                   <img class="media-object img-circle" width="32" src="/static/images/faces/face23.jpg" alt="user">
                   <p class="tiny-text">{{ comment.user.first_name }}</p>
                 </div>
@@ -93,13 +93,13 @@
                   </div>
                   <div class="media-body">
                     <h5 class="media-heading brighter">{{ note.title }}</h5>
-                    <p class="help-block bright">{{ note.owner.credit_name }}</p>
+                    <p class="help-block tiny-text bright">{{ note.owner.credit_name }}</p>
                   </div><!-- /.media -body-->
                 </div><!-- /.media -->
               </div><!-- /.panel-body -->
 
               <div class="progress progress-xs no-radius no-margin">
-                <div class="progress-bar bg-grd-blue" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                <div class="progress-bar bg-grd-orange" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
                 </div>
               </div><!-- /.progress -->
             </div><!-- /.panel -->
@@ -126,6 +126,7 @@
         </div>
       <!-- END MODAL -->
       {% endfor %}
+      <a href="{% url 'organization_notes' pk=organization.id %}" class="link-text">See all notes...</a>
     </div>
     </div>
   </div>
@@ -135,6 +136,7 @@
       <div class="row">
         <a href="#" data-toggle="tooltip" title="{{ organization.name }} Team Members"><label class="field-label" id="team-label">Team</label></a>
         {% for user in organization.user_set.all %}
+        <a href="{% url 'user_detail' pk=request.user.id %}">
         <div class="col-lg-12 col-md-12 col-sm-12">
           <div class="panel fade in panel-default" data-init-panel="true">
             <div class="user-panel-body">
@@ -157,6 +159,7 @@
             </div><!-- /.progress -->
           </div><!-- /.panel -->
         </div><!-- /.cols -->
+        </a>
         {% endfor %}
       </div>
 

@@ -216,7 +216,7 @@ def org_detail(request, pk):
 
     organization = get_object_or_404(Organization, pk=pk)
     organizationnoteform = OrganizationNoteForm()
-    organizationnotes = OrganizationNote.objects.filter(organization=organization)
+    organizationnotes = OrganizationNote.objects.filter(organization=organization)[:5]
     users = Organization.get_org_users(organization)
     organizationcomments = Comment.objects.filter(discussion=organization.discussion).order_by('-date')
     organizationcommentform = OrganizationCommentForm()
@@ -307,7 +307,7 @@ def user_detail(request, pk):
 
     user = get_object_or_404(User, pk=pk)
     user_stories = Story.objects.filter(owner=user)
-    usernotes = UserNote.objects.filter(owner_id=user.id)
+    usernotes = UserNote.objects.filter(owner_id=user.id)[:4]
     print usernotes
     usernoteform = UserNoteForm()
 
@@ -1037,6 +1037,7 @@ def network_detail(request, pk):
     network = get_object_or_404(Network, pk=pk)
     network_members = Network.get_network_organizations(network)
     networknoteform = NetworkNoteForm()
+    networknotes = NetworkNote.objects.filter(network=network)
     networkcomments = Comment.objects.filter(discussion=network.discussion).order_by('-date')
     networkcommentform = NetworkCommentForm()
 
@@ -1044,6 +1045,7 @@ def network_detail(request, pk):
         'network': network,
         'network_members': network_members,
         'networknoteform': networknoteform,
+        'networknotes': networknotes,
         'networkcomments': networkcomments,
         'networkcommentform': networkcommentform,
         })
@@ -1230,4 +1232,4 @@ def create_network_note(request):
             networknote.owner = request.user
             networknote.network = network
             networknote.save()
-            return redirect('network_notes', pk=network.pk)
+            return redirect('network_detail', pk=network.pk)

@@ -53,7 +53,7 @@ class AddUserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['email', 'password', 'is_superuser', 'is_staff']
+        fields = ['email', 'password', 'is_superuser', 'is_staff', 'user_type']
 
 
 class UserProfileForm(forms.ModelForm):

@@ -20,16 +20,16 @@
   <!-- Left Column -->
   <div class="col-md-10 right-rule">
     <div class="discussion">
-      <div class="comments">
       <a href="#" data-toggle="tooltip" title="Discussion for the network"><label class="field-label">Discussion</label></a>
+      <div class="comments" data-toggle="slimScroll" style="height:280px" data-color="#5D9CEC" data-allow-page-scroll="false">
           {% if networkcomments %}
           {% for comment in networkcomments %}
             <div class="row">
-                <div class="col-md-10">
+                <div class="col-md-11">
                   <p>{{ comment.text }}</p>
                   <p class="tiny-text">{{ comment.date|date:'D M j g:i a' }}</p>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-1">
                   <img class="media-object img-circle" width="32" src="/static/images/faces/face23.jpg" alt="user">
                   <p class="tiny-text">{{ comment.user.first_name }}</p>
                 </div>
@@ -40,7 +40,7 @@
       <div class="post-comment">
             <div class="row">
               <form action="/networkcomment/new" method="POST" class="post-form" role="form">
-                <div class="col-md-10">
+                <div class="col-md-11">
                     {% csrf_token %}
                     <div class="form-group">
                     {{ networkcommentform.text }}
@@ -52,7 +52,7 @@
                     {% endif %}
                     <input type="hidden" name="network" value="{{ network.pk }}" />
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-1">
                     <div class="form-group">
                       <button type="submit" class="btn btn-default btn-sm" name="networkcommentform">
                           <i class="fa fa-paper-plane"></i>
@@ -83,7 +83,7 @@
                   </div>
                   <div class="media-body">
                     <h5 class="media-heading brighter">{{ note.title }}</h5>
-                    <p class="help-block bright">{{ note.owner.credit_name }}</p>
+                    <p class="help-block tiny-text bright">{{ note.owner.credit_name }}</p>
                   </div><!-- /.media -body-->
                 </div><!-- /.media -->
               </div><!-- /.panel-body -->
@@ -136,7 +136,7 @@
                 </div>
                 <div class="media-body">
                   <h5 class="media-heading brighter uppercase">{{ org.name}}</h>
-                  <p class="help-block bright tiny-text">{{ org.org_description }}</p>
+                  <!-- <p class="help-block bright tiny-text">{{ org.org_description }}</p> -->
                 </div><!-- /.media -body-->
               </div><!-- /.media -->
             </div><!-- /.panel-body -->

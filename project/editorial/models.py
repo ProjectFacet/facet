@@ -20,6 +20,7 @@
 """
 
 from django.db import models
+from django.db.models import Q
 from django.contrib.postgres.fields import ArrayField
 from simple_history.models import HistoricalRecords
 from model_utils.models import TimeStampedModel
@@ -53,6 +54,23 @@ class User(AbstractUser):
         blank=True,
         null=True,
     )
+
+    ADMIN = 'Admin'
+    EDITOR = 'Editor'
+    STAFF = 'Staff'
+    USER_TYPE_CHOICES = (
+        (ADMIN, 'Admin'),
+        (EDITOR, 'Editor'),
+        (STAFF, 'Staff'),
+    )
+
+    user_type = models.CharField(
+        max_length=25,
+        choices=USER_TYPE_CHOICES,
+        help_text='Type of user.'
+    )
+
+
 
     credit_name = models.CharField(
         max_length=75,
@@ -148,13 +166,18 @@ class User(AbstractUser):
         owner, editor, team or credit."""
 
         user_content = []
-        series = Series.object.filter(Q(Q(owner=self) | Q(team=self)))
+        series = Series.objects.filter(Q(Q(owner=self) | Q(team=self)))
         stories = Story.objects.filter(Q(Q(owner=self) | Q(team=self)))
         webfacets = WebFacet.objects.filter(Q(Q(owner=self) | Q(editor=self) | Q(credit=self)))
         printfacets = PrintFacet.objects.filter(Q(Q(owner=self) | Q(editor=self) | Q(credit=self)))
         audiofacets = AudioFacet.objects.filter(Q(Q(owner=self) | Q(editor=self) | Q(credit=self)))
         videofacets = VideoFacet.objects.filter(Q(Q(owner=self) | Q(editor=self) | Q(credit=self)))
-        user_content.append(series, stories, webfacets, printfacets, audiofacets, videofacets)
+        user_content.extend(series)
+        user_content.extend(stories)
+        user_content.extend(webfacets)
+        user_content.extend(printfacets)
+        user_content.extend(audiofacets)
+        user_content.extend(videofacets)
 
         return user_content
 

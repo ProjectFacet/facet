@@ -13,16 +13,27 @@
   </div>
 </div>
 
-<div class="row">
+<div class="row content-lower-25">
 {% for network in network_list %}
 
-<div class="col-lg-4 col-md-6 col-sm-6">
+<div class="col-lg-3 col-md-4 col-sm-6">
   <div class="panel fade in panel-default" data-init-panel="true">
     <div class="panel-body network-panel">
       <div class="media">
         <div class="media-body">
           <h3 class="brighter"><a href="{% url 'network_detail' network.id %}">{{ network.name }}</a></h3>
           <p class="help-block bright">{{ network.network_description }} {% if request.user.organization == network.owner_organization %}<a href="{% url 'network_edit' pk=network.id %}"><i class="fa fa-pencil sameline dark"></i></a>{% endif %}</p>
+          <!-- <hr>
+          <div class="row">
+            <div class="col-md-6">
+              <p class="bright">Stories Shared </p>
+              <p>A Number</p>
+            </div>
+            <div class="col-md-6">
+              <p class="bright">Collaborations</p>
+              <p>A Number</p>
+            </div>
+          </div> -->
           <hr>
           <p class="bright">Managing Organization: {{ network.owner_organization.name }}</p>
           <p class="bright">Member Organizations: {% for organization in network.members.all %}{{ organization.name }}, {% endfor %}</p>

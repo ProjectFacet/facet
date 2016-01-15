@@ -26,7 +26,7 @@
 </div>
 <div class="row">
     <div class="col-md-10" id="dashboard-left">
-      <div data-toggle="slimScroll" style="height:350px" data-color="#5D9CEC" data-allow-page-scroll="false">
+      <!-- <div data-toggle="slimScroll" style="height:350px" data-color="#5D9CEC" data-allow-page-scroll="false"> -->
       <table id="user-stories-list" class="table table-condensed">
         <thead>
           <tr>
@@ -38,12 +38,13 @@
           {% for story in user_stories %}
           <tr>
             <td><a href="{% url 'story_detail' story.id %}">{{ story.name }}</a></td>
-            <td>{{ story.description }}</td>
+            <td class="description-td">{{ story.description }}</td>
           </tr>
           {% endfor %}
         </tbody>
       </table>
-    </div>
+    <!-- </div> -->
+  </div>
     <div class="col-md-2 orgnotes" id="dashboard-right">
       {% if request.user.id == user.id %}
       <div>
@@ -96,9 +97,12 @@
         </div>
       <!-- END MODAL -->
       {% endfor %}
+      <a href="{% url 'user_notes' pk=request.user.id %}" class="link-text">See all notes...</a>
+
     </div>
     </div>
     {% endif %}
+  </div>
 
     <!-- Add Note Modal -->
     <div class="modal fade" id="addUserNote" tabindex="-1" role="dialog" aria-labelledby="addUserNoteModalLabel">
@@ -125,7 +129,6 @@
 <script>
 $(document).ready(function() {
     $('#user-stories-list').DataTable({
-      scrollY: 400,
     });
 } );
 </script>
