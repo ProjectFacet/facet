@@ -26,6 +26,7 @@
 </div>
 <div class="row">
     <div class="col-md-10" id="dashboard-left">
+      <div data-toggle="slimScroll" style="height:350px" data-color="#5D9CEC" data-allow-page-scroll="false">
       <table id="user-stories-list" class="table table-condensed">
         <thead>
           <tr>
@@ -43,15 +44,88 @@
         </tbody>
       </table>
     </div>
-    <div class="col-md-2" id="dashboard-right">
+    <div class="col-md-2 orgnotes" id="dashboard-right">
+      {% if request.user.id == user.id %}
+      <div>
+      <a href="#" data-toggle="tooltip" title="User Notes"><label class="field-label">Notes</label></a>
+      <a href="#" data-toggle="modal" data-target="#addUserNote" title="Add User Note"><i class="fa fa-plus sameline dark"></i></a></p>
+      </div>
+      <div id="displaynotes">
+      {% for note in usernotes %}
+      <!-- MODAL TRIGGER -->
+        <a href="#" data-toggle="modal" data-target="#displayNote{{note.id}}">
+          <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="panel fade in panel-default note-panel" data-init-panel="true">
+              <div class="panel-body">
+                <div class="media">
+                  <div class="media-left">
+                    <!-- Place icon or image here -->
+                  </div>
+                  <div class="media-body">
+                    <h5 class="media-heading brighter">{{ note.title }}</h5>
+                    <p class="help-block bright">{{ note.creation_date|date:'n/j, g:i a' }}</p>
+                  </div><!-- /.media -body-->
+                </div><!-- /.media -->
+              </div><!-- /.panel-body -->
+
+              <div class="progress progress-xs no-radius no-margin">
+                <div class="progress-bar bg-grd-orange" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                </div>
+              </div><!-- /.progress -->
+            </div><!-- /.panel -->
+          </div><!-- /.cols -->
+        </a>
+      <!-- END MODAL TRIGGER -->
+      <!-- MODAL ITSELF -->
+        <div class="modal fade" id="displayNote{{note.id}}" tabindex="-1" role="dialog" aria-labelledby="displayNote{{note.id}}">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="addNote{{note.id}}Label">{{ note.title }}</h4>
+              </div>
+              <div class="modal-body dark">
+                {{ note.text }}
+              </div>
+              <div class="modal-footer">
+                <p class="tiny-text">{{ note.owner }} | {{ note.creation_date|date:'D M j g:i a' }}<p>
+                <p class="tiny-text">Keywords: {% for keyword in note.keywords %}{{ keyword }}, {% endfor %}<p>
+              </div>
+            </div>
+          </div>
+        </div>
+      <!-- END MODAL -->
+      {% endfor %}
     </div>
-</div>
+    </div>
+    {% endif %}
+
+    <!-- Add Note Modal -->
+    <div class="modal fade" id="addUserNote" tabindex="-1" role="dialog" aria-labelledby="addUserNoteModalLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="addUserModalLabel">Add a note for this user</h4>
+          </div>
+          <div class="modal-body">
+            <form action="/user/note/new/" method="POST" class="post-form">
+            {% csrf_token %}
+            {% bootstrap_form usernoteform %}
+            <input type="hidden" name="user" value="{{ user.pk }}" />
+            <button type="submit" class="btn btn-primary">Post Note</button>
+            </form>
+          </div>
+          <div class="modal-footer">
+          </div>
+        </div>
+      </div>
+    </div>
 
 <script>
 $(document).ready(function() {
     $('#user-stories-list').DataTable({
       scrollY: 400,
-      paging: false
     });
 } );
 </script>

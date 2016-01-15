@@ -301,12 +301,17 @@ def user_detail(request, pk):
 
     user = get_object_or_404(User, pk=pk)
     user_stories = Story.objects.filter(owner=user)
+    usernotes = UserNote.objects.filter(owner_id=user.id)
+    print usernotes
+    usernoteform = UserNoteForm()
 
     content = user.get_user_content()
 
     return render(request, 'editorial/userdetail.html', {
         'user': user,
-        'user_stories': user_stories
+        'user_stories': user_stories,
+        'usernotes': usernotes,
+        'usernoteform': usernoteform
         })
 
 
@@ -333,7 +338,7 @@ def user_notes(request,pk):
     """ Display all of the notes for a user. """
 
     usernotes = UserNote.objects.filter(owner_id=request.user)
-    return render(request, 'editorial/usernotes.html', {
+    return render(request, 'editorial/user_detail.html', {
         'usernotes': usernotes,
     })
 

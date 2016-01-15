@@ -144,43 +144,25 @@ class User(AbstractUser):
         return self.credit_name
 
     def get_user_content(self):
-        """Return dictionary of all content user is associated with as
+        """Return list of all content user is associated with as
         owner, editor, team or credit."""
 
-        user_content = {}
-
-        user_content['series_owner'] = Series.objects.filter(owner=self)
-        user_content['series_team'] = Series.objects.filter(team__id=self.pk)
-        user_content['story_owner'] = Story.objects.filter(owner=self)
-        user_content['story_team'] = Story.objects.filter(team__id=self.pk)
-        user_content['webfacet_owner'] = WebFacet.objects.filter(owner=self)
-        user_content['webfacet_editor'] = WebFacet.objects.filter(editor=self)
-        user_content['webfacet_credit'] = WebFacet.objects.filter(credit__id=self.pk)
-        user_content['printfacet_owner'] = PrintFacet.objects.filter(owner=self)
-        user_content['printfacet_editor'] = PrintFacet.objects.filter(editor=self)
-        user_content['printfacet_credit'] = PrintFacet.objects.filter(credit__id=self.pk)
-        user_content['audiofacet_owner'] = AudioFacet.objects.filter(owner=self)
-        user_content['audiofacet_editor'] = AudioFacet.objects.filter(editor=self)
-        user_content['audiofacet_credit'] = AudioFacet.objects.filter(credit__id=self.pk)
-        user_content['videofacet_owner'] = VideoFacet.objects.filter(owner=self)
-        user_content['videofacet_editor'] = VideoFacet.objects.filter(editor=self)
-        user_content['videofacet_credit'] = VideoFacet.objects.filter(credit__id=self.pk)
+        user_content = []
+        series = Series.object.filter(Q(Q(owner=self) | Q(team=self)))
+        stories = Story.objects.filter(Q(Q(owner=self) | Q(team=self)))
+        webfacets = WebFacet.objects.filter(Q(Q(owner=self) | Q(editor=self) | Q(credit=self)))
+        printfacets = PrintFacet.objects.filter(Q(Q(owner=self) | Q(editor=self) | Q(credit=self)))
+        audiofacets = AudioFacet.objects.filter(Q(Q(owner=self) | Q(editor=self) | Q(credit=self)))
+        videofacets = VideoFacet.objects.filter(Q(Q(owner=self) | Q(editor=self) | Q(credit=self)))
+        user_content.append(series, stories, webfacets, printfacets, audiofacets, videofacets)
 
         return user_content
 
     def inbox_comments(self):
         """ Return list of comments from discussions the user is a participant in."""
 
-        comments = Comment.objects.filter(user_id=self)
-        discussions = []
-        for comment in comments:
-            discussion = comment.discussion
-            discussions.append(discussion)
-        inbox_comments = []
-        print "DISCUSSIONS: ", discussions
-        for discussion in set(discussions):
-            comments = Comment.objects.filter(discussion_id=discussion.id).order_by('-date')
-            inbox_comments.extend(comments)
+        discussion_ids = {cd['discussion_id'] for cd in Comment.objects.filter(user_id=self.id).values('discussion_id')}
+        inbox_comments = Comment.objects.filter(discussion_id__in=discussion_ids)
 
         return inbox_comments
 
@@ -188,18 +170,8 @@ class User(AbstractUser):
         """Return list of comments from discussions the user is a participant in
         since the user's last login."""
 
-        comments = Comment.objects.filter(user_id=self)
-        discussions = []
-        for comment in comments:
-            discussion = comment.discussion
-            discussions.append(discussion)
-        recent_comments = []
-        for discussion in set(discussions):
-            # for production
-            # recent_comment = Comment.objects.filter(discussion_id=discussion.id, date__gte=self.last_login)
-            # for development
-            recent_comment = Comment.objects.filter(discussion_id=discussion.id)
-            recent_comments.extend(recent_comment)
+        discussion_ids = {cd['discussion_id'] for cd in Comment.objects.filter(user_id=self.id).values('discussion_id')}
+        recent_comments = Comment.objects.filter(discussion_id__in=discussion_ids, date_gte=self.last_login)
 
         return recent_comments
 

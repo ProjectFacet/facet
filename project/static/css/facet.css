@@ -467,3 +467,15 @@ div.vertical-line{
   font-size: 10px;
   color: #8493A8 !important;
 }
+
+#user-stories-list_length {
+  display: none;
+}
+
+#user-stories-list_filter {
+  text-align: left;
+}
+
+#displaynotes {
+
+}
