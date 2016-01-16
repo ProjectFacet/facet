@@ -4,11 +4,15 @@
 
 {% block content %}
 
-<h1 class="center">{{ series.name }}</h1>
-    <div>
-    {{series.series_description}}
-    <a href="{% url 'series_edit' pk=series.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+<div class="row particles" id="user-hero">
+  <div class="upper-content">
+    <div class="col-lg-12 content-upper-75">
+      <h1 class="media-heading text-light center">{{ series.name }}</h1>
+      <h5 class="center"> {{ series.series_description }} {% if request.user.organization == series.owner_organization %}<a href="{% url 'series_edit' pk=series.id %}"><i class="fa fa-pencil sameline"></i></a>{% endif %}</h5>
     </div>
+  </div>
+</div>
+
     <div class="row">
       <div class="col-md-10"></div>
       <div class="col-md-2">

@@ -333,7 +333,7 @@ input {
 #user-hero {
   z-index: 0;
   color: #fff;
-  height: 100px;
+  height: 105px;
   background-color: #374355;
   margin-top: -15px;
   /*background-image: linear-gradient(to right, rgba(0,131,213,1) 0%, rgba(162,52,213,0.63) 74%, rgba(162,52,213,0.5) 100%);*/
