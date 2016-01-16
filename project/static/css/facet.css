@@ -23,6 +23,11 @@ a:hover {
   min-height: 400px !important;
 }
 
+h1 .media-heading {
+  margin-top: -10px;
+  margin-bottom: 10px;
+  }
+
 /* -----------------------------------*/
 /*           Base structure           */
 /* -----------------------------------*/
@@ -370,6 +375,10 @@ input {
   margin-top: -10px !important;
 }
 
+.content-upper-5 {
+  margin-top: -5px !important;
+}
+
 .content-lower-10 {
   margin-top: 10px;
 }
@@ -428,6 +437,26 @@ div.vertical-line{
 
 .uppercase {
   text-transform: uppercase;
+}
+
+.spread-01 {
+  letter-spacing: .1em;
+}
+
+.spread-025 {
+  letter-spacing: .25em;
+}
+
+.spread-05 {
+  letter-spacing: .5em;
+}
+
+.spread-075 {
+  letter-spacing: .75em;
+}
+
+.spread-1 {
+  letter-spacing: 1em;
 }
 
 .user-panel-body {
@@ -600,4 +629,8 @@ div.vertical-line{
 .network-team-panel {
   background-color: transparent !important;
   border: 1px solid #374355;
+}
+
+.thin {
+  font-weight: 300;
 }

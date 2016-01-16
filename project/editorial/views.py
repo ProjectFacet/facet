@@ -30,7 +30,8 @@ from .forms import (
     VideoFacetCommentForm,
     NetworkNoteForm,
     OrganizationNoteForm,
-    UserNoteForm,)
+    UserNoteForm,
+    SeriesNoteForm,)
 
 from models import (
     User,
@@ -56,7 +57,8 @@ from models import (
     VideoFacetCopyDetail,
     NetworkNote,
     OrganizationNote,
-    UserNote)
+    UserNote,
+    SeriesNote,)
 
 #----------------------------------------------------------------------#
 #   Initial View
@@ -408,12 +410,15 @@ def series_detail(request, pk):
     """
 
     series = get_object_or_404(Series, pk=pk)
+    seriesnoteform = SeriesNoteForm()
+    seriesnotes = SeriesNote.objects.filter(series=series)[:10]
     seriescommentform = SeriesCommentForm()
-    seriesdiscussion = get_object_or_404(Discussion, id=series.discussion.id)
-    seriescomments = Comment.objects.filter(discussion=seriesdiscussion).order_by('-date')
+    seriescomments = Comment.objects.filter(discussion=series.discussion).order_by('-date')
 
     return render(request, 'editorial/seriesdetail.html', {
         'series': series,
+        'seriesnoteform': seriesnoteform,
+        'seriesnotes': seriesnotes,
         'seriescomments': seriescomments,
         'seriescommentform': seriescommentform,
     })
@@ -436,6 +441,32 @@ def series_edit(request, pk):
         'series': series,
         'form': form,
         })
+
+def series_notes(request, pk):
+    """ Display all of the notes for an series. """
+
+    series = get_object_or_404(Series, pk=pk)
+    seriesnotes = SeriesNote.objects.filter(series_id=series.id)
+
+    return render(request, 'editorial/seriesnotes.html', {
+        'seriesnotes': seriesnotes,
+    })
+
+
+def create_series_note(request):
+    """ Post a note to an series."""
+
+    if request.method == "POST":
+        form = SeriesNoteForm(request.POST or None)
+        if form.is_valid():
+            series_id = request.POST.get('series')
+            series = get_object_or_404(Series, pk=series_id)
+            seriesnote = form.save(commit=False)
+            seriesnote.owner = request.user
+            seriesnote.series = series
+            seriesnote.save()
+            return redirect('series_detail', pk=series.id)
+
 
 #----------------------------------------------------------------------#
 #   Story Views

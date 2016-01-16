@@ -111,7 +111,11 @@ class SeriesForm(forms.ModelForm):
 
     class Meta:
         model = Series
-        fields = ['name', 'series_description', 'collaborate']
+        fields = ['name', 'series_description', 'collaborate', 'collaborate_with', 'team']
+        widgets = {
+            'team': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select', 'id':'seriies-team'}),
+            'collaborate_with': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select', 'id':'collaborate-with'}),
+            }
 
 # ------------------------------ #
 #          Story Forms           #
@@ -549,6 +553,21 @@ class OrganizationNoteForm(forms.ModelForm):
             ),
             'text': Textarea(
                 attrs={'id':'on-text', 'required': True, 'placeholder': 'Note', 'class': 'form-control', 'rows':10}
+            ),
+        }
+
+class SeriesNoteForm(forms.ModelForm):
+    """ Note form for a series note. """
+
+    class Meta:
+        model=SeriesNote
+        fields = ['title', 'text', 'keywords']
+        widgets = {
+            'title': Textarea(
+                attrs={'id': 'series-title', 'required': True, 'placeholder': 'Note Title', 'class': 'form-control', 'rows': 1}
+            ),
+            'text': Textarea(
+                attrs={'id':'series-text', 'required': True, 'placeholder': 'Note', 'class': 'form-control', 'rows':10}
             ),
         }
 

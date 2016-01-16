@@ -67,6 +67,8 @@ urlpatterns = [
     url(r'^series$', views.series_list, name='series_list'),
     url(r'^series/(?P<pk>[0-9]+)/$', views.series_detail, name='series_detail'),
     url(r'^series/(?P<pk>[0-9]+)/edit/$', views.series_edit, name='series_edit'),
+    url(r'^series/(?P<pk>[0-9]+)/notes/$', views.series_notes, name='series_notes'),
+    url(r'^series/note/new/$', views.create_series_note, name='create_series_note'),
     #----------------------------------------------------------------------#
     #   Story URLS
     #----------------------------------------------------------------------#
