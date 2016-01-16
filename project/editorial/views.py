@@ -78,13 +78,11 @@ def index(request):
 def test(request):
     """ User for rapid testing of new pages."""
 
-    stories = Story.objects.filter(organization=request.user.organization).exclude(archived=True)
 
     return render(request, 'editorial/test.html', {
-        'stories': stories,
+
         }
     )
-
 
 #----------------------------------------------------------------------#
 #   Dashboard View

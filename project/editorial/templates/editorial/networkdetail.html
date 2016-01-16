@@ -116,6 +116,7 @@
         </div>
       <!-- END MODAL -->
       {% endfor %}
+      <a href="{% url 'network_notes' pk=network.id %}" class="link-text">See all notes...</a>
     </div>
     </div>
   </div>
@@ -136,6 +137,7 @@
                 </div>
                 <div class="media-body">
                   <h5 class="media-heading brighter uppercase">{{ org.name}}</h>
+                  <p class="tiny-text brighter">{{ org.location }}</p>
                   <!-- <p class="help-block bright tiny-text">{{ org.org_description }}</p> -->
                 </div><!-- /.media -body-->
               </div><!-- /.media -->
@@ -147,6 +149,7 @@
             </div><!-- /.progress -->
           </div><!-- /.panel -->
         </div><!-- /.cols -->
+
         {% endfor %}
       </div>
 
