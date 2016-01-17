@@ -19,7 +19,7 @@
       <div class="col-md-6 right-rule">
         <a href="#" data-toggle="tooltip" title="Discussion for the series"><label class="field-label">Discussion</label></a>
         <!-- Comments from series discussion -->
-        <div class="discussion" data-toggle="slimScroll" style="height:320px" data-color="#5D9CEC" data-allow-page-scroll="false">
+        <div class="discussion" data-toggle="slimScroll" style="height:280px" data-color="#5D9CEC" data-allow-page-scroll="false">
             {% if seriescomments %}
               <div class="row">
                 {% for comment in seriescomments %}
@@ -69,17 +69,26 @@
       </div>
       <div class="col-md-6">
         <a href="#" data-toggle="tooltip" title="Series Details"><label class="field-label">Details</label></a>
-        <p>Created: {{ series.creation_date|date:'D M j g:i a' }}</p>
-        <p>Archived: {{ series.archived }}</p>
-        <p>Sensitive: {{ series.sensitive }}</p>
-        <p>Collaboration: {{ series.collaborate }}</p>
-        <p>Partners: </p>{% for collaborator in series.collaborate_with.all %}
-        <p>{{ collaborator.name }}</p>
-        {% endfor %}
-        <p>Team: </p>
-        {% for user in series.team.all %}
-          <p>{{ user.credit_name }}</p>
-        {% endfor %}
+        <div class="row">
+          <div class="col-md-6">
+            <h4>Created: <span class="sameline bright">{{ series.creation_date|date:'D M j g:i a' }}</span></h4>
+            <h4>Archived: <span class="sameline bright">{% if facet.story.archived == True %} <i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</span></h4>
+            <h4>Sensitive: <span class="sameline bright">{% if facet.story.sensitive == True %} <i class="fa fa-check-square-o"></i>{% else %}  <i class="fa fa-square-o"></i>{% endif %}</span></h4>
+          </div>
+          <div class="col-md-6">
+            <h4>Collaboration: <span class="sameline bright">{% if facet.story.collaborate == True %} <i class="fa fa-check-square-o"></i>{% else %} <i class="fa fa-square-o"></i>{% endif %}</span></h4>
+            <h4>Partners: </h4>
+            {% for collaborator in series.collaborate_with.all %}
+            <p>- {{ collaborator.name }}</p>
+            {% endfor %}
+          </div>
+          <div class="col-md-12">
+          <h4>Team: </h4>
+          {% for user in series.team.all %}
+            <p><a href="{% url 'user_detail' pk=user.id %}">{{ user.credit_name }}</a></p>
+          {% endfor %}
+          </div>
+        </div>
       </div>
     </div>
     <hr>
@@ -144,7 +153,7 @@
     <a href="#" data-toggle="tooltip" title="Series Stories"><label class="field-label">Stories</label></a>
     <a href="{% url 'story_new' %}" title="Add A Story"><i class="fa fa-plus sameline dark"></i></a
     <div class="stories">
-      <div class="row" data-toggle="slimScroll" style="height:600px" data-color="#5D9CEC" data-allow-page-scroll="false">
+      <div class="row" data-toggle="slimScroll" style="height:525px" data-color="#5D9CEC" data-allow-page-scroll="false">
       {% for story in series.story_set.all %}
           <a href="{% url 'story_detail' pk=story.id %}">
             <div class="col-lg-6 col-md-6 col-sm-12">
@@ -157,20 +166,22 @@
                     <div class="media-body">
                       <h5 class="brighter">{{ story.name }}</h5>
                       <p class="tiny-text">{{ story.creation_date }}</p>
+                      {% if story.webfacetstory.all or story.printfacetstory.all or story.audiofacetstory.all or story.videofacetstory.all %}
                       <p class="dark">
-                      {% if story.webfacet.all %}
+                      {% for facet in story.webfacetstory.all %}
                       <i class="fa fa-laptop"></i>
-                      {% endif %}
-                      {% if story.printfacet.all %}
+                      {% endfor %}
+                      {% for facet in story.printfacetstory.all %}
                       <i class="fa fa-newspaper-o"></i>
-                      {% endif %}
-                      {% if story.audiofacet.all %}
+                      {% endfor %}
+                      {% for facet in story.audiofacetstory.all %}
                       <i class="fa fa-microphone"></i>
-                      {% endif %}
-                      {% if story.videofacet.all %}
+                      {% endfor %}
+                      {% for facet in story.videofacetstory.all %}
                       <i class="fa fa-film"></i>
-                      {% endif %}
+                      {% endfor %}
                       </p>
+                      {% endif %}
                     </div><!-- /.media -body-->
                   </div><!-- /.media -->
                 </div><!-- /.panel-body -->
