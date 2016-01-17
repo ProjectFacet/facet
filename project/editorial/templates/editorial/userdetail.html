@@ -7,11 +7,11 @@
 <div class="row particles" id="user-hero">
   <div class="upper-content">
   <div class="col-md-2 col-lg-2 col-sm-1">
-    <img alt="cover" class="profile-page-pic no-padding border-white content-upper-75" src="/static/images/faces/face23.jpg">
+    <img alt="cover" class="profile-page-pic no-padding border-white content-upper-75" src="/static/media/profile/{{ user.first_name}}{{user.id}}.jpg">
   </div>
   <div class="col-lg-10 content-upper-75">
     <h1 class="media-heading text-light">{{ user.credit_name }}</h1>
-    <p class="mb-4x text-light"><span class="mr-2x">{{ user.title }} | <a href="{% url 'org_detail' pk=user.organization.id %}">{{ user.organization.name }}</a></span> <span><i class="fa fa-map-marker fa-fw"></i> San Francisco, CA</span></p>
+    <p class="mb-4x text-light"><span class="mr-2x">{{ user.title }} | <a href="{% url 'org_detail' pk=user.organization.id %}">{{ user.organization.name }}</a></span> <span><i class="fa fa-map-marker fa-fw"></i> {{ user.location }}</span></p>
     <p>{{ user.bio }}</p>
     <p> {{ user.phone }} | {{ user.email }} |
       <a href="{{ user.twitter }}" class="btn btn-sm btn-circle ml-1x" aria-label="twitter"><i class="fa fa-lg fa-twitter"></i></a>

@@ -53,7 +53,7 @@ class AddUserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['email', 'password', 'is_superuser', 'is_staff', 'user_type']
+        fields = ['email', 'password', 'username', 'is_superuser', 'is_staff', 'user_type']
 
 
 class UserProfileForm(forms.ModelForm):
@@ -61,7 +61,7 @@ class UserProfileForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'username', 'credit_name', 'title', 'phone', 'bio',
+        fields = ['first_name', 'last_name', 'username', 'credit_name', 'title', 'phone', 'bio', 'location',
                  'expertise', 'facebook', 'twitter', 'linkedin', 'instagram', 'snapchat', 'vine',]
 
 # ------------------------------ #
