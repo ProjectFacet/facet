@@ -504,6 +504,12 @@ div.vertical-line{
   color: #fff;
 }
 
+.story-panel {
+  height: 7em;
+  background-color:#374355 ;
+  color: #fff;
+}
+
 .sameline {
   display: inline;
   margin-left: 10px;

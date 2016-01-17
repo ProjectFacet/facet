@@ -19,7 +19,7 @@
       <div class="col-md-6 right-rule">
         <a href="#" data-toggle="tooltip" title="Discussion for the series"><label class="field-label">Discussion</label></a>
         <!-- Comments from series discussion -->
-        <div class="discussion" data-toggle="slimScroll" style="height:280px" data-color="#5D9CEC" data-allow-page-scroll="false">
+        <div class="discussion" data-toggle="slimScroll" style="height:320px" data-color="#5D9CEC" data-allow-page-scroll="false">
             {% if seriescomments %}
               <div class="row">
                 {% for comment in seriescomments %}
@@ -86,14 +86,14 @@
     <div class="seriesnotes">
       <div class="section-title">
       <a href="#" data-toggle="tooltip" title="Series Notes"><label class="field-label">Notes</label></a>
-      <a href="#" data-toggle="modal" data-target="#addSeriesNote" title="Add Series Note"><i class="fa fa-plus sameline dark"></i></a></p>
+      <a href="#" data-toggle="modal" data-target="#addSeriesNote" title="Add Series Note"><i class="fa fa-plus sameline dark"></i></a>
       </div>
       <div class="displaynotes">
           <div class="row">
             {% for note in seriesnotes %}
             <!-- MODAL TRIGGER -->
               <a href="#" data-toggle="modal" data-target="#addNote{{note.id}}">
-                <div class="col-lg-2 col-md-3 col-sm-12">
+                <div class="col-lg-3 col-md-3 col-sm-12">
                   <div class="panel fade in panel-default note-panel" data-init-panel="true">
                     <div class="panel-body">
                       <div class="media">
@@ -142,10 +142,47 @@
   </div>
   <div class="col-md-4 left-rule">
     <a href="#" data-toggle="tooltip" title="Series Stories"><label class="field-label">Stories</label></a>
-    <div class="stories" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
+    <a href="{% url 'story_new' %}" title="Add A Story"><i class="fa fa-plus sameline dark"></i></a
+    <div class="stories">
+      <div class="row" data-toggle="slimScroll" style="height:600px" data-color="#5D9CEC" data-allow-page-scroll="false">
       {% for story in series.story_set.all %}
-        <p>{{ story.name }}</p>
-      {% endfor %}
+          <a href="{% url 'story_detail' pk=story.id %}">
+            <div class="col-lg-6 col-md-6 col-sm-12">
+              <div class="panel fade in panel-default" data-init-panel="true">
+                <div class="panel-bod story-panel">
+                  <div class="media">
+                    <div class="media-left">
+                      <!-- Place icon or image here -->
+                    </div>
+                    <div class="media-body">
+                      <h5 class="brighter">{{ story.name }}</h5>
+                      <p class="tiny-text">{{ story.creation_date }}</p>
+                      <p class="dark">
+                      {% if story.webfacet.all %}
+                      <i class="fa fa-laptop"></i>
+                      {% endif %}
+                      {% if story.printfacet.all %}
+                      <i class="fa fa-newspaper-o"></i>
+                      {% endif %}
+                      {% if story.audiofacet.all %}
+                      <i class="fa fa-microphone"></i>
+                      {% endif %}
+                      {% if story.videofacet.all %}
+                      <i class="fa fa-film"></i>
+                      {% endif %}
+                      </p>
+                    </div><!-- /.media -body-->
+                  </div><!-- /.media -->
+                </div><!-- /.panel-body -->
+                <div class="progress progress-xs no-radius no-margin">
+                  <div class="progress-bar bg-grd-blue" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                  </div>
+                </div><!-- /.progress -->
+              </div><!-- /.panel -->
+            </div><!-- /.cols -->
+          </a>
+        {% endfor %}
+      </div>
     </div>
   </div>
 </div>
