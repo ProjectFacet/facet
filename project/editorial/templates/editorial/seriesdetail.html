@@ -71,19 +71,20 @@
         <a href="#" data-toggle="tooltip" title="Series Details"><label class="field-label">Details</label></a>
         <div class="row">
           <div class="col-md-6">
-            <h4>Created: <span class="sameline bright">{{ series.creation_date|date:'D M j g:i a' }}</span></h4>
-            <h4>Archived: <span class="sameline bright">{% if facet.story.archived == True %} <i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</span></h4>
-            <h4>Sensitive: <span class="sameline bright">{% if facet.story.sensitive == True %} <i class="fa fa-check-square-o"></i>{% else %}  <i class="fa fa-square-o"></i>{% endif %}</span></h4>
+            <h5>Created: <span class="sameline bright">{{ series.creation_date|date:'D M j g:i a' }}</span></h5>
+            <h5>Archived: <span class="sameline bright">{% if facet.story.archived == True %} <i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</span></h5>
+            <h5>Sensitive: <span class="sameline bright">{% if facet.story.sensitive == True %} <i class="fa fa-check-square-o"></i>{% else %}  <i class="fa fa-square-o"></i>{% endif %}</span></h5>
           </div>
           <div class="col-md-6">
-            <h4>Collaboration: <span class="sameline bright">{% if facet.story.collaborate == True %} <i class="fa fa-check-square-o"></i>{% else %} <i class="fa fa-square-o"></i>{% endif %}</span></h4>
-            <h4>Partners: </h4>
+            <h5>Collaboration: <span class="sameline bright">{% if facet.story.collaborate == True %} <i class="fa fa-check-square-o"></i>{% else %} <i class="fa fa-square-o"></i>{% endif %}</span></h5>
+            <h5>Partners: </h5>
             {% for collaborator in series.collaborate_with.all %}
             <p>- {{ collaborator.name }}</p>
             {% endfor %}
           </div>
           <div class="col-md-12">
-          <h4>Team: </h4>
+          <hr>
+          <h5>Team: </h5>
           {% for user in series.team.all %}
             <p><a href="{% url 'user_detail' pk=user.id %}">{{ user.credit_name }}</a></p>
           {% endfor %}
@@ -129,7 +130,7 @@
                   <div class="modal-content">
                     <div class="modal-header">
                       <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                      <h4 class="modal-title" id="addNote{{note.id}}Label">{{ note.title }}</h4>
+                      <h5 class="modal-title" id="addNote{{note.id}}Label">{{ note.title }}</h5>
                     </div>
                     <div class="modal-body dark">
                       {{ note.text }}
@@ -151,7 +152,7 @@
   </div>
   <div class="col-md-4 left-rule">
     <a href="#" data-toggle="tooltip" title="Series Stories"><label class="field-label">Stories</label></a>
-    <a href="{% url 'story_new' %}" title="Add A Story"><i class="fa fa-plus sameline dark"></i></a
+    <a href="{% url 'story_new' %}" title="Add A Story"><i class="fa fa-plus sameline dark"></i></a>
     <div class="stories">
       <div class="row" data-toggle="slimScroll" style="height:525px" data-color="#5D9CEC" data-allow-page-scroll="false">
       {% for story in series.story_set.all %}
@@ -204,7 +205,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="addUserModalLabel">Add a note for this series</h4>
+        <h5 class="modal-title" id="addUserModalLabel">Add a note for this series</h5>
       </div>
       <div class="modal-body">
         <form action="/series/note/new/" method="POST" class="post-form">

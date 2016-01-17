@@ -31,7 +31,8 @@ from .forms import (
     NetworkNoteForm,
     OrganizationNoteForm,
     UserNoteForm,
-    SeriesNoteForm,)
+    SeriesNoteForm,
+    StoryNoteForm,)
 
 from models import (
     User,
@@ -58,7 +59,8 @@ from models import (
     NetworkNote,
     OrganizationNote,
     UserNote,
-    SeriesNote,)
+    SeriesNote,
+    StoryNote,)
 
 #----------------------------------------------------------------------#
 #   Initial View
@@ -540,6 +542,8 @@ def story_detail(request, pk):
     """
 
     story = get_object_or_404(Story, pk=pk)
+    storynoteform = StoryNoteForm()
+    storynotes = StoryNote.objects.filter(story=story)
     storycommentform = StoryCommentForm()
     storydiscussion = get_object_or_404(Discussion, id=story.discussion.id)
     storycomments = Comment.objects.filter(discussion=storydiscussion).order_by('-date')
@@ -787,6 +791,8 @@ def story_detail(request, pk):
 
     return render(request, 'editorial/storydetail.html', {
         'story': story,
+        'storynoteform': storynoteform,
+        'storynotes': storynotes,
         'storycommentform': storycommentform,
         'storycomments': storycomments,
         'webform': webform,
@@ -807,6 +813,31 @@ def story_detail(request, pk):
         'videocommentform': videocommentform,
         })
 
+
+def story_notes(request, pk):
+    """ Display all of the notes for an story. """
+
+    story = get_object_or_404(Series, pk=pk)
+    storynotes = SeriesNote.objects.filter(story_id=story.id)
+
+    return render(request, 'editorial/storynotes.html', {
+        'storynotes': storynotes,
+    })
+
+
+def create_story_note(request):
+    """ Post a note to an story."""
+
+    if request.method == "POST":
+        form = StoryNoteForm(request.POST or None)
+        if form.is_valid():
+            story_id = request.POST.get('story')
+            story = get_object_or_404(Story, pk=story_id)
+            storynote = form.save(commit=False)
+            storynote.owner = request.user
+            storynote.story = story
+            storynote.save()
+            return redirect('story_detail', pk=story.id)
 
 #----------------------------------------------------------------------#
 #   Comments Views

@@ -76,6 +76,7 @@ urlpatterns = [
     url(r'^stories$', views.story_list, name='story_list'),
     url(r'^story/(?P<pk>[0-9]+)/$', views.story_detail, name='story_detail'),
     url(r'^story/(?P<pk>[0-9]+)/edit/$', views.story_edit, name='story_edit'),
+    url(r'^story/note/new/$', views.create_story_note, name='create_story_note'),
     #----------------------------------------------------------------------#
     #   Network URLS
     #----------------------------------------------------------------------#

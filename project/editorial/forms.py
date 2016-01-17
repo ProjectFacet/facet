@@ -572,6 +572,22 @@ class SeriesNoteForm(forms.ModelForm):
         }
 
 
+class StoryNoteForm(forms.ModelForm):
+    """ Note form for a story notes. """
+
+    class Meta:
+        model=StoryNote
+        fields = ['title', 'text', 'keywords']
+        widgets = {
+            'title': Textarea(
+                attrs={'id': 'story-title', 'required': True, 'placeholder': 'Note Title', 'class': 'form-control', 'rows': 1}
+            ),
+            'text': Textarea(
+                attrs={'id':'story-text', 'required': True, 'placeholder': 'Note', 'class': 'form-control', 'rows':10}
+            ),
+        }
+
+
 class UserNoteForm(forms.ModelForm):
     """ Note form for a user note. """
 

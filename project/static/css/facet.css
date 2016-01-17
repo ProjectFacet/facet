@@ -640,3 +640,19 @@ div.vertical-line{
 .thin {
   font-weight: 300;
 }
+
+#wf_content_ifr {
+  height: 500px !important;
+}
+
+#pf_content_ifr {
+  height: 500px !important;
+}
+
+#af_content_ifr {
+  height: 500px !important;
+}
+
+#vf_content_ifr {
+  height: 500px !important;
+}
