@@ -19,6 +19,7 @@ from .forms import (
     AudioFacetForm,
     VideoFacetForm,
     AddToNetworkForm,
+    InviteToNetworkForm,
     PrivateMessageForm,
     OrganizationCommentForm,
     NetworkCommentForm,
@@ -388,11 +389,11 @@ def series_new(request):
     series interface.
     """
 
-    form = SeriesForm()
+    seriesform = SeriesForm()
     if request.method == "POST":
-        form = SeriesForm(request.POST or None)
-    if form.is_valid():
-        series = form.save(commit=False)
+        seriesform = SeriesForm(request.POST or None)
+    if seriesform.is_valid():
+        series = seriesform.save(commit=False)
         series.owner = request.user
         series.creation_date = timezone.now()
         discussion = Discussion.objects.create_discussion("SER")
@@ -401,7 +402,7 @@ def series_new(request):
         return redirect('series_detail', pk=series.pk)
     else:
         form = SeriesForm()
-    return render(request, 'editorial/seriesnew.html', {'form': form})
+    return render(request, 'editorial/seriesnew.html', {'seriesform': seriesform})
 
 
 def series_detail(request, pk):
@@ -1045,9 +1046,9 @@ def network_new(request):
             discussion = Discussion.objects.create_discussion("NET")
             network.discussion = discussion
             network.save()
-            # network.members.add(owner_org)
-            # print "added owner to membership"
-            # print "Members: ", network.members.all()
+            owner_membership = NetworkOrganization.objects.create(network=network, organization=owner_org)
+            print "added owner to membership"
+            print "Members: ", network.members.all()
             return redirect('network_detail', pk=network.pk)
     else:
         form = NetworkForm()
@@ -1064,16 +1065,38 @@ def delete_network(request, pk):
         return redirect('network_list')
 
 
-# def invite_org_to_network(request, pk):
-#     """ Send an email to a user with a link to confirm adding their
-#     organization to your network."""
-#
-#     network = get_object_or_404(Network, pk=pk)
-#     mail_subject = "Join" + network.name + "on Facet"
-#     message = "Click this link to view the network details and click the Join button to request addition to the network. <a href=""/network/""" + {{network.id}} ">" + {{network.name}} + "</a>"
-#     recipient=
-#
-#     send_mail(mail_subject, message, settings.EMAIL_HOST_USER, recipient, fail_silently=False)
+def send_network_invite(request):
+    """ Send private message with link to join a network."""
+
+    network = request.POST.get('network')
+    print "Post Network", network
+    network = get_object_or_404(Network, id=network)
+    user_email = request.POST.get('invited_user')
+    print "USER EMAIL", user_email
+    user = get_object_or_404(User, email=user_email)
+    print "USER: ", user
+    organization = get_object_or_404(Organization, id=user.organization_id)
+    print "ORG: ", organization
+    message_subject = "Invitation for {organization} to join {network}".format(organization = organization.name, network=network.name)
+    print "MESSAGE SUBJECT", message_subject
+    message_text = '<form action="/network/invitation/accept/" method="POST" class="post-form">{csrf}<input type="hidden" name="network" value="{network}" /><button type="submit" class="btn btn-primary">Accept Invitation</button></form>'.format(network=network.id, csrf='{\\% \\csrf %}')
+    print "MESSAGE TEXT: ", message_text
+    discussion = Discussion.objects.create_discussion('PRI')
+    invitation_message = PrivateMessage.objects.create_private_message(user=request.user, recipient=user, discussion=discussion, subject=message_subject, text=message_text)
+    print "Successfully joined Network!"
+    return redirect('network_detail', pk=network.pk)
+
+
+def confirm_network_invite(request):
+    """ Receive confirmed networkwork invitation and create new NetworkOrganization
+    connection."""
+
+    network = request.POST.get('network')
+    network = get_object_or_404(Network, id=network)
+    organization = request.user.organization
+    new_connection = NetworkOrganization.objects.create(network=network, organization=owner_org)
+    print "Successfully joined Network!"
+    return redirect('network_detail', pk=network.pk)
 
 
 def org_to_network(request, pk):
@@ -1097,6 +1120,7 @@ def network_detail(request, pk):
     network = get_object_or_404(Network, pk=pk)
     network_members = Network.get_network_organizations(network)
     networknoteform = NetworkNoteForm()
+    networkinvitationform = InviteToNetworkForm()
     networknotes = NetworkNote.objects.filter(network=network)
     networkcomments = Comment.objects.filter(discussion=network.discussion).order_by('-date')
     networkcommentform = NetworkCommentForm()
@@ -1104,6 +1128,7 @@ def network_detail(request, pk):
     return render(request, 'editorial/networkdetail.html', {
         'network': network,
         'network_members': network_members,
+        'networkinvitationform': networkinvitationform,
         'networknoteform': networknoteform,
         'networknotes': networknotes,
         'networkcomments': networkcomments,

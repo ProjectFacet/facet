@@ -82,6 +82,8 @@ urlpatterns = [
     #----------------------------------------------------------------------#
     url(r'^network/new/$', views.network_new, name='network_new'),
     url(r'^network/(?P<pk>[0-9]+)/$', views.network_detail, name='network_detail'),
+    url(r'^network/invitation/$', views.send_network_invite, name='send_network_invite'),
+    url(r'^network/invitation/accept/$', views.confirm_network_invite, name='confirm_network_invite'),
     url(r'^network/(?P<pk>[0-9]+)/edit/$', views.network_edit, name='network_edit'),
     url(r'^network/list$', views.network_list, name='network_list'),
     url(r'^network/stories$', views.network_stories, name='network_stories'),

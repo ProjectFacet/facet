@@ -49,6 +49,14 @@ hr {
   margin-bottom: 10px;
 }
 
+#display_name, #display_name a {
+  color: #8493a8 !important;
+}
+
+#display_org_name, #display_org_name a {
+  color: #54657E !important;
+}
+
 .subtle {
   border-color: #3D4365;
 }
@@ -661,6 +669,40 @@ input {
   border-bottom: 1px solid #54657E;
 }
 
+textarea {
+  border: 1px solid #54657E;
+}
+
+/*textarea #network-comment {
+  background-color: transparent !important;
+  border: 1px solid rgb(84, 101, 126) !important;
+}*/
+
 .profile-row {
   margin-top: 10px;
+}
+
+.chosen-container-multi .chosen-choices {
+  background-image: none !important;
+  background-color: transparent !important;
+  border: 1px solid #54657E;
+}
+
+.chosen-container-multi .chosen-choices li.search-field input[type="text"] {
+  color: #54657E;
+}
+
+#story-embargo-picker_picker {
+  color: #333;
+}
+
+#story-embargo-picker {
+  background-image: none !important;
+  background-color: transparent !important;
+  border: 1px solid #54657E;
+}
+
+.glyphicon-calendar {
+  background-color: transparent !important;
+  color: #54657E;
 }

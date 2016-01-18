@@ -128,6 +128,11 @@ class User(AbstractUser):
         blank=True,
     )
 
+    github = models.CharField(
+        max_length=250,
+        blank=True,
+    )
+
     linkedin = models.CharField(
         max_length=250,
         blank=True,
@@ -425,6 +430,15 @@ class Network(models.Model):
 #   Associations
 #   ------------
 
+class NetworkOrganizationManager(models.Manager):
+    """Custom manager for NetworkOrganization."""
+
+    def create_networkorganization(self, network, organization):
+        """ Method for quick creation of network organization relationship."""
+
+        network_organization = self.create(network=network, organization=organization)
+        return network_organization
+
 class NetworkOrganization(models.Model):
     """ The connection between Organizations and Networks. """
 
@@ -435,6 +449,8 @@ class NetworkOrganization(models.Model):
     organization = models.ForeignKey(
         Organization,
     )
+
+    objects = NetworkOrganizationManager()
 
     def __str__(self):
         return "{network}, {organization}".format(

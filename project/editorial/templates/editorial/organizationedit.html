@@ -5,8 +5,15 @@
 
 {% block content %}
 
-<h1 class="center">Edit Organization</h1>
-    <form method="POST" class="post-form">{% csrf_token %}
+<div class="row particles" id="user-hero">
+  <div class="upper-content">
+    <div class="col-lg-12 content-upper-75">
+      <h1 class="media-heading text-light center thin uppercase spread-025">Edit {{ organization.name }}</h1>
+    </div>
+  </div>
+</div>
+
+<form method="POST" class="post-form">{% csrf_token %}
 
 {% bootstrap_form form %}
 <button type="submit" class="save btn btn-default">Save</button>

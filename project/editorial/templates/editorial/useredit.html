@@ -8,11 +8,17 @@
 
 <div class="row particles" id="user-hero">
   <div class="upper-content">
-    <div class="col-lg-12 content-upper-75">
-      <h1 class="media-heading text-light center thin uppercase spread-025">{{ user.credit_name }}</h1>
-      <p class="center thin">Edit {{ user.credit_name }}'s profile and click Save to keep changes.
-    </div>
+  <div class="col-md-2 col-lg-2 col-sm-1">
+    <img alt="cover" class="profile-page-pic no-padding border-white content-upper-75" src="/static/media/profile/{{ user.first_name}}{{user.id}}.jpg">
   </div>
+  <div class="col-lg-10 content-upper-75">
+    <h1 class="media-heading text-light thin uppercase spread-025">{{ user.credit_name }}</h1>
+    <p> &nbsp;</p>
+    <p class="mb-4x text-light">Edit {% if request.user.id == user.id %} your {% else %} {{ user.credit_name }}'s {% endif %}profile and click Save to keep changes.</p>
+    <p> &nbsp;</p>
+    <p> &nbsp;</p>
+  </div>
+</div>
 </div>
 
 <form class="post-form" method="POST">{% csrf_token %}
@@ -159,6 +165,22 @@
         {% if userform.website.errors %}
           <div class="alert alert-warning" role="alert">
           {{ userform.website.errors }}
+          </div>
+        {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="row profile-row">
+      <div class="form-group custom-form">
+        <div class="col-md-2">
+        <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.github.label_tag }}</span></a>
+        </div>
+        <div class="col-md-10">
+        {{ userform.github }}
+        {% if userform.github.errors %}
+          <div class="alert alert-warning" role="alert">
+          {{ userform.github.errors }}
           </div>
         {% endif %}
         </div>

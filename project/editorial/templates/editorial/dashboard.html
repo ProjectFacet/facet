@@ -54,7 +54,7 @@
                   <p>
                   </td>
                 <!-- <td><p class="tiny-text"> {{ comment.date|date:'n/j' }}<br/>{{ comment.date|date:'g:i a' }}</p></td> -->
-                <td><a href="{% url 'user_detail' pk=comment.user.id %}"><img class="media-object img-circle" width="32" src="static/images/faces/face23.jpg" alt="user"></a><p class="tiny-text">{{ comment.user.first_name }}</p></td>
+                <td><a href="{% url 'user_detail' pk=comment.user.id %}"><img class="media-object img-circle" width="32" src="/static/media/profile/{{ user.first_name}}{{user.id}}.jpg" alt="user"></a><p class="tiny-text">{{ comment.user.first_name }}</p></td>
               </tr>
               {% endfor %}
             </tbody>
@@ -103,7 +103,7 @@
                   <p>
                   </td>
                 <!-- <td><p class="tiny-text"> {{ comment.date|date:'n/j' }}<br/>{{ comment.date|date:'g:i a' }}</p></td> -->
-                <td><a href="{% url 'user_detail' pk=comment.user.id %}"><img class="media-object img-circle" width="32" src="static/images/faces/face23.jpg" alt="user"></a><p class="tiny-text">{{ comment.user.first_name }}</p></td>
+                <td><a href="{% url 'user_detail' pk=comment.user.id %}"><img class="media-object img-circle" width="32" src="/static/media/profile/{{ user.first_name}}{{user.id}}.jpg" alt="user"></a><p class="tiny-text">{{ comment.user.first_name }}</p></td>
               </tr>
               {% endfor %}
             </tbody>

@@ -62,7 +62,7 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'username', 'credit_name', 'title', 'phone', 'email', 'bio', 'location',
-                 'expertise', 'website', 'facebook', 'twitter', 'linkedin', 'instagram', 'snapchat', 'vine',]
+                 'expertise', 'website', 'facebook', 'github', 'twitter', 'linkedin', 'instagram', 'snapchat', 'vine',]
         widgets = {
             'expertise': Textarea(attrs={'rows':2}),
         }
@@ -105,6 +105,11 @@ class AddToNetworkForm(forms.ModelForm):
         model = NetworkOrganization
         fields = []
 
+class InviteToNetworkForm(forms.Form):
+    """ Send private message inviting an organization to a network."""
+
+    invited_user = forms.CharField(max_length=100)
+
 # ------------------------------ #
 #          Series Forms          #
 # ------------------------------ #
@@ -116,9 +121,14 @@ class SeriesForm(forms.ModelForm):
         model = Series
         fields = ['name', 'series_description', 'collaborate', 'collaborate_with', 'team']
         widgets = {
-            'team': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select', 'id':'seriies-team'}),
+            'team': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select', 'id':'series-team'}),
             'collaborate_with': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select', 'id':'collaborate-with'}),
             }
+
+    class Media:
+        css = {'all': ('/static/css/chosen.min.css')
+        }
+        js = ('/static/js/chosen.jquery.min.js')
 
 # ------------------------------ #
 #          Story Forms           #

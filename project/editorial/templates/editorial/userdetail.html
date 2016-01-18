@@ -10,16 +10,16 @@
     <img alt="cover" class="profile-page-pic no-padding border-white content-upper-75" src="/static/media/profile/{{ user.first_name}}{{user.id}}.jpg">
   </div>
   <div class="col-lg-10 content-upper-75">
-    <h1 class="media-heading text-light">{{ user.credit_name }}</h1>
-    <p class="mb-4x text-light"><span class="mr-2x">{{ user.title }} | <a href="{% url 'org_detail' pk=user.organization.id %}">{{ user.organization.name }}</a></span> <span><i class="fa fa-map-marker fa-fw"></i> {{ user.location }}</span></p>
+    <h1 class="media-heading text-light thin uppercase spread-025">{{ user.credit_name }}</h1>
+    <p class="mb-4x text-light thin"><span class="mr-2x">{{ user.title }} | <a href="{% url 'org_detail' pk=user.organization.id %}">{{ user.organization.name }}</a></span> <span><i class="fa fa-map-marker fa-fw"></i> {{ user.location }}</span></p>
     <p>{{ user.bio }}</p>
     <p> {{ user.phone }} | {{ user.email }} |
-      <a href="{{ user.twitter }}" class="btn btn-sm btn-circle ml-1x" aria-label="twitter"><i class="fa fa-lg fa-twitter"></i></a>
-      <a href="{{ user.github }}" class="btn btn-sm btn-circle" aria-label="github"><i class="fa fa-lg fa-github"></i></a>
-      <a href="{{ user.instagram }}" class="btn btn-sm btn-circle ml-1x" aria-label="instagram"><i class="fa fa-lg fa-instagram"></i></a>
-      <a href="{{ user.facebook }}" class="btn btn-sm btn-circle ml-1x" aria-label="facebook"><i class="fa fa-lg fa-facebook"></i></a>
-      <a href="{{ user.linkedin }}" class="btn btn-sm btn-circle ml-1x" aria-label="linkedin"><i class="fa fa-lg fa-linkedin-square"></i></a>
-      <a href="{{ user.vine }}" class="btn btn-sm btn-circle ml-1x" aria-label="vine"><i class="fa fa-lg fa-vine"></i></a>
+      {% if user.twitter %}<a href="{{ user.twitter }}" class="btn btn-sm btn-circle ml-1x" aria-label="twitter"><i class="fa fa-lg fa-twitter"></i></a>{% endif %}
+      {% if user.github %}<a href="{{ user.github }}" class="btn btn-sm btn-circle" aria-label="github"><i class="fa fa-lg fa-github"></i></a>{% endif %}
+      {% if user.instagram %}<a href="{{ user.instagram }}" class="btn btn-sm btn-circle ml-1x" aria-label="instagram"><i class="fa fa-lg fa-instagram"></i></a>{% endif %}
+      {% if user.facebook %}<a href="{{ user.facebook }}" class="btn btn-sm btn-circle ml-1x" aria-label="facebook"><i class="fa fa-lg fa-facebook"></i></a>{% endif %}
+      {% if user.linkedin %}<a href="{{ user.linkedin }}" class="btn btn-sm btn-circle ml-1x" aria-label="linkedin"><i class="fa fa-lg fa-linkedin-square"></i></a>{% endif %}
+      {% if user.vine %}<a href="{{ user.vine }}" class="btn btn-sm btn-circle ml-1x" aria-label="vine"><i class="fa fa-lg fa-vine"></i></a>{% endif %}
       </p>
   </div>
 </div>
