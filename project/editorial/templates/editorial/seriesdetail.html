@@ -7,7 +7,7 @@
 <div class="row particles" id="user-hero">
   <div class="upper-content">
     <div class="col-lg-12 content-upper-75">
-      <h1 class="media-heading text-light center thin uppercase spread-025">{{ series.name }}</h1>
+      <h1 class="media-heading text-light center thin uppercase spread-025">Series: {{ series.name }}</h1>
       <h5 class="center thin spread-01 content-upper-5"> {{ series.series_description }} {% if request.user.organization == series.organization %}<a href="{% url 'series_edit' pk=series.id %}"><i class="fa fa-pencil sameline"></i></a>{% endif %}</h5>
     </div>
   </div>
@@ -28,7 +28,7 @@
                     <p class="tiny-text">{{ comment.date|date:'D M j g:i a' }}</p>
                   </div>
                   <div class="col-md-2">
-                    <img class="media-object img-circle" width="32" src="/static/images/faces/face23.jpg" alt="user">
+                    <img class="media-object img-circle" width="32" src="/static/media/profile/{{ user.first_name}}{{user.id}}.jpg" alt="user">
                     <p class="tiny-text">{{ comment.user.first_name }}</p>
                   </div>
                 {% endfor %}
@@ -72,11 +72,11 @@
         <div class="row">
           <div class="col-md-6">
             <h5>Created: <span class="sameline bright">{{ series.creation_date|date:'D M j g:i a' }}</span></h5>
-            <h5>Archived: <span class="sameline bright">{% if facet.story.archived == True %} <i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</span></h5>
-            <h5>Sensitive: <span class="sameline bright">{% if facet.story.sensitive == True %} <i class="fa fa-check-square-o"></i>{% else %}  <i class="fa fa-square-o"></i>{% endif %}</span></h5>
+            <h5>Archived: <span class="sameline bright">{% if series.archived == True %} <i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</span></h5>
+            <h5>Sensitive: <span class="sameline bright">{% if series.sensitive == True %} <i class="fa fa-check-square-o"></i>{% else %}  <i class="fa fa-square-o"></i>{% endif %}</span></h5>
           </div>
           <div class="col-md-6">
-            <h5>Collaboration: <span class="sameline bright">{% if facet.story.collaborate == True %} <i class="fa fa-check-square-o"></i>{% else %} <i class="fa fa-square-o"></i>{% endif %}</span></h5>
+            <h5>Collaboration: <span class="sameline bright">{% if series.collaborate == True %} <i class="fa fa-check-square-o"></i>{% else %} <i class="fa fa-square-o"></i>{% endif %}</span></h5>
             <h5>Partners: </h5>
             {% for collaborator in series.collaborate_with.all %}
             <p>- {{ collaborator.name }}</p>

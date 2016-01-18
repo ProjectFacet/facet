@@ -186,6 +186,14 @@ class User(AbstractUser):
 
         return user_content
 
+    def get_user_stories(self):
+        """Return list of stories that a user is associated with."""
+
+        user_stories = Story.objects.filter(Q(Q(owner=self) | Q(team=self)))
+
+        return user_stories
+
+
     def inbox_comments(self):
         """ Return list of comments from discussions the user is a participant in."""
 

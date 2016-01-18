@@ -310,9 +310,9 @@ def user_detail(request, pk):
     """
 
     user = get_object_or_404(User, pk=pk)
-    user_stories = Story.objects.filter(owner=user)
+    user_stories = User.get_user_stories(user)
+    user_content = User.get_user_content(user)
     usernotes = UserNote.objects.filter(owner_id=user.id)[:4]
-    print usernotes
     usernoteform = UserNoteForm()
 
     content = user.get_user_content()
@@ -320,6 +320,7 @@ def user_detail(request, pk):
     return render(request, 'editorial/userdetail.html', {
         'user': user,
         'user_stories': user_stories,
+        'user_content': user_content,
         'usernotes': usernotes,
         'usernoteform': usernoteform
         })
@@ -396,10 +397,12 @@ def series_new(request):
     if seriesform.is_valid():
         series = seriesform.save(commit=False)
         series.owner = request.user
+        series.organization = request.user.organization
         series.creation_date = timezone.now()
         discussion = Discussion.objects.create_discussion("SER")
         series.discussion = discussion
         series.save()
+        seriesform.save_m2m()
         return redirect('series_detail', pk=series.pk)
     else:
         form = SeriesForm()

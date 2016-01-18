@@ -12,7 +12,7 @@
   <div class="col-lg-10 content-upper-75">
     <h1 class="media-heading text-light thin uppercase spread-025">{{ user.credit_name }}</h1>
     <p class="mb-4x text-light thin"><span class="mr-2x">{{ user.title }} | <a href="{% url 'org_detail' pk=user.organization.id %}">{{ user.organization.name }}</a></span> <span><i class="fa fa-map-marker fa-fw"></i> {{ user.location }}</span></p>
-    <p>{{ user.bio }}</p>
+    <p>{{ user.bio }} {% if request.user.id == user.id or request.user.id == user.organization.owner.id %}<a href="{% url 'user_edit' pk=user.id %}"><i class="fa fa-pencil sameline dark"></i></a>{% endif %}</p>
     <p> {{ user.phone }} | {{ user.email }} |
       {% if user.twitter %}<a href="{{ user.twitter }}" class="btn btn-sm btn-circle ml-1x" aria-label="twitter"><i class="fa fa-lg fa-twitter"></i></a>{% endif %}
       {% if user.github %}<a href="{{ user.github }}" class="btn btn-sm btn-circle" aria-label="github"><i class="fa fa-lg fa-github"></i></a>{% endif %}
