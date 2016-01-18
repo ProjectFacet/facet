@@ -100,7 +100,7 @@ class User(AbstractUser):
     )
 
     expertise = ArrayField(
-        models.CharField(max_length=100),
+        models.CharField(max_length=255),
         default=list,
         help_text='Array of user skills and beats to filter/search by.',
         blank=True,

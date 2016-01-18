@@ -4,12 +4,292 @@
 {% load bootstrap3 %}
 
 {% block content %}
+{% if request.user.id == user.id or request.user.id == user.organization.owner.id %}
 
-<form class="post-form" method="POST">
-  {% csrf_token %}
-  {% bootstrap_form form %}
-</br>
-  <button id="edit-button" class="btn btn-primary" type="submit">{% trans "Save" %}</button>
+<div class="row particles" id="user-hero">
+  <div class="upper-content">
+    <div class="col-lg-12 content-upper-75">
+      <h1 class="media-heading text-light center thin uppercase spread-025">{{ user.credit_name }}</h1>
+      <p class="center thin">Edit {{ user.credit_name }}'s profile and click Save to keep changes.
+    </div>
+  </div>
+</div>
+
+<form class="post-form" method="POST">{% csrf_token %}
+
+<div class="row profile-row">
+  <!-- Left Column -->
+  <div class="col-md-6">
+
+    <div class="row profile-row">
+      <div class="form-group custom-form">
+        <div class="col-md-2">
+        <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.first_name.label_tag }}</span></a>
+        </div>
+        <div class="col-md-10">
+        {{ userform.first_name }}
+        {% if userform.first_name.errors %}
+          <div class="alert alert-warning" role="alert">
+          {{ userform.first_name.errors }}
+          </div>
+        {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="row profile-row">
+      <div class="form-group custom-form">
+        <div class="col-md-2">
+        <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.last_name.label_tag }}</span></a>
+        </div>
+        <div class="col-md-10">
+        {{ userform.last_name }}
+        {% if userform.last_name.errors %}
+          <div class="alert alert-warning" role="alert">
+          {{ userform.last_name.errors }}
+          </div>
+        {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="row profile-row">
+      <div class="form-group custom-form">
+        <div class="col-md-2">
+        <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.credit_name.label_tag }}</span></a>
+        </div>
+        <div class="col-md-10">
+        {{ userform.credit_name }}
+        {% if userform.credit_name.errors %}
+          <div class="alert alert-warning" role="alert">
+          {{ userform.credit_name.errors }}
+          </div>
+        {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="row profile-row">
+      <div class="form-group custom-form">
+        <div class="col-md-2">
+        <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.username.label_tag }}</span></a>
+        </div>
+        <div class="col-md-10">
+        {{ userform.username }}
+        {% if userform.username.errors %}
+          <div class="alert alert-warning" role="alert">
+          {{ userform.username.errors }}
+          </div>
+        {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="row profile-row">
+      <div class="form-group custom-form">
+        <div class="col-md-2">
+        <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.title.label_tag }}</span></a>
+        </div>
+        <div class="col-md-10">
+        {{ userform.title }}
+        {% if userform.title.errors %}
+          <div class="alert alert-warning" role="alert">
+          {{ userform.title.errors }}
+          </div>
+        {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="row profile-row">
+      <div class="form-group custom-form">
+        <div class="col-md-2">
+        <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.location.label_tag }}</span></a>
+        </div>
+        <div class="col-md-10">
+        {{ userform.location }}
+        {% if userform.location.errors %}
+          <div class="alert alert-warning" role="alert">
+          {{ userform.location.errors }}
+          </div>
+        {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="row profile-row">
+      <div class="form-group custom-form">
+        <div class="col-md-2">
+        <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.email.label_tag }}</span></a>
+        </div>
+        <div class="col-md-10">
+        {{ userform.email }}
+        {% if userform.email.errors %}
+          <div class="alert alert-warning" role="alert">
+          {{ userform.email.errors }}
+          </div>
+        {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="row profile-row">
+      <div class="form-group custom-form">
+        <div class="col-md-2">
+        <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.phone.label_tag }}</span></a>
+        </div>
+        <div class="col-md-10">
+        {{ userform.phone }}
+        {% if userform.phone.errors %}
+          <div class="alert alert-warning" role="alert">
+          {{ userform.phone.errors }}
+          </div>
+        {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="row profile-row">
+      <div class="form-group custom-form">
+        <div class="col-md-2">
+        <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.website.label_tag }}</span></a>
+        </div>
+        <div class="col-md-10">
+        {{ userform.website }}
+        {% if userform.website.errors %}
+          <div class="alert alert-warning" role="alert">
+          {{ userform.website.errors }}
+          </div>
+        {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="row profile-row">
+      <div class="form-group custom-form">
+        <div class="col-md-2">
+        <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.facebook.label_tag }}</span></a>
+        </div>
+        <div class="col-md-10">
+        {{ userform.facebook }}
+        {% if userform.facebook.errors %}
+          <div class="alert alert-warning" role="alert">
+          {{ userform.facebook.errors }}
+          </div>
+        {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="row profile-row">
+      <div class="form-group custom-form">
+        <div class="col-md-2">
+        <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.twitter.label_tag }}</span></a>
+        </div>
+        <div class="col-md-10">
+        {{ userform.twitter }}
+        {% if userform.twitter.errors %}
+          <div class="alert alert-warning" role="alert">
+          {{ userform.twitter.errors }}
+          </div>
+        {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="row profile-row">
+      <div class="form-group custom-form">
+        <div class="col-md-2">
+        <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.linkedin.label_tag }}</span></a>
+        </div>
+        <div class="col-md-10">
+        {{ userform.linkedin }}
+        {% if userform.linkedin.errors %}
+          <div class="alert alert-warning" role="alert">
+          {{ userform.linkedin.errors }}
+          </div>
+        {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="row profile-row">
+      <div class="form-group custom-form">
+        <div class="col-md-2">
+        <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.instagram.label_tag }}</span></a>
+        </div>
+        <div class="col-md-10">
+        {{ userform.instagram }}
+        {% if userform.instagram.errors %}
+          <div class="alert alert-warning" role="alert">
+          {{ userform.instagram.errors }}
+          </div>
+        {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="row profile-row">
+      <div class="form-group custom-form">
+        <div class="col-md-2">
+        <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.snapchat.label_tag }}</span></a>
+        </div>
+        <div class="col-md-10">
+        {{ userform.snapchat }}
+        {% if userform.snapchat.errors %}
+          <div class="alert alert-warning" role="alert">
+          {{ userform.snapchat.errors }}
+          </div>
+        {% endif %}
+        </div>
+      </div>
+    </div>
+
+    <div class="row profile-row">
+      <div class="form-group custom-form">
+        <div class="col-md-2">
+        <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.vine.label_tag }}</span></a>
+        </div>
+        <div class="col-md-10">
+        {{ userform.vine }}
+        {% if userform.vine.errors %}
+          <div class="alert alert-warning" role="alert">
+          {{ userform.vine.errors }}
+          </div>
+        {% endif %}
+        </div>
+      </div>
+    </div>
+
+</div>
+  <!-- Right Column -->
+  <div class="col-md-6">
+
+    <div class="form-group custom-form">
+      <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.bio.label_tag }}</span></a>
+      {{ userform.bio }}
+      {% if userform.bio.errors %}
+        <div class="alert alert-warning" role="alert">
+        {{ userform.bio.errors }}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="form-group custom-form">
+      <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.expertise.label_tag }}</span></a>
+      {{ userform.expertise }}
+      {% if userform.expertise.errors %}
+        <div class="alert alert-warning" role="alert">
+        {{ userform.expertise.errors }}
+        </div>
+      {% endif %}
+      </div>
+
+    <button id="edit-button" class="btn btn-primary" type="submit">{% trans "Save" %}</button>
+  </div>
 </form>
 
+{% else %}
+<p>You are not authorized to edit this page.</p>
+{% endif %}
 {% endblock %}

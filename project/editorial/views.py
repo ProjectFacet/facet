@@ -329,16 +329,16 @@ def user_edit(request, pk):
     user = get_object_or_404(User, pk=pk)
 
     if request.method == "POST":
-        form = UserProfileForm(data=request.POST, instance=user)
-        if form.is_valid():
-            form.save()
+        userform = UserProfileForm(data=request.POST, instance=user)
+        if userform.is_valid():
+            userform.save()
             return redirect('user_detail', pk = user.id)
     else:
-        form = UserProfileForm(instance=user)
+        userform = UserProfileForm(instance=user)
 
     return render(request, 'editorial/useredit.html', {
             'user': user,
-            'form': form
+            'userform': userform
     })
 
 

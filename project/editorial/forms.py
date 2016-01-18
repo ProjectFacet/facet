@@ -61,8 +61,11 @@ class UserProfileForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'username', 'credit_name', 'title', 'phone', 'bio', 'location',
-                 'expertise', 'facebook', 'twitter', 'linkedin', 'instagram', 'snapchat', 'vine',]
+        fields = ['first_name', 'last_name', 'username', 'credit_name', 'title', 'phone', 'email', 'bio', 'location',
+                 'expertise', 'website', 'facebook', 'twitter', 'linkedin', 'instagram', 'snapchat', 'vine',]
+        widgets = {
+            'expertise': Textarea(attrs={'rows':2}),
+        }
 
 # ------------------------------ #
 #      Organization Forms        #

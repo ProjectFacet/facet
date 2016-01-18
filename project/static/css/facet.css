@@ -656,3 +656,11 @@ div.vertical-line{
 #vf_content_ifr {
   height: 500px !important;
 }
+
+input {
+  border-bottom: 1px solid #54657E;
+}
+
+.profile-row {
+  margin-top: 10px;
+}
