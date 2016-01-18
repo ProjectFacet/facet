@@ -169,7 +169,7 @@ def discussion(request):
     return render(request, 'editorial/discussion.html', {
         'comments': comments,
         'private_messages_received': private_messages_received,
-        'private_messages_sent': private_messages_sent
+        'private_messages_sent': private_messages_sent,
     })
 
 #----------------------------------------------------------------------#

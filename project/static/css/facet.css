@@ -399,6 +399,27 @@ input {
   margin-right: -10;
 }
 
+.subtract-right-75 {
+  margin-right: -75px;
+}
+
+.subtract-right-50 {
+  margin-right: -50px;
+}
+
+.subtract-right-25 {
+  margin-right: -25px;
+}
+
+.content-bottom-10 {
+  margin-bottom: 10px;
+}
+
+.content-bottom-25 {
+  margin-bottom: 25px;
+}
+
+
 .pad-5 {
   padding-top: 5px !important;
 }
@@ -705,4 +726,23 @@ textarea {
 .glyphicon-calendar {
   background-color: transparent !important;
   color: #54657E;
+}
+
+/* ----------------------------*/
+/*           Inbox             */
+/* ----------------------------*/
+
+.inbox-panel-body {
+  background-color: transparent;
+  color: #fff;
+}
+
+.inbox-panel {
+  background-color: transparent;
+  color: #fff;
+}
+
+.inbox-tab {
+  border-bottom: 1px solid #54657E;
+  border-top: 1px solid #54657E;
 }
