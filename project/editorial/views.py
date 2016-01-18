@@ -4,6 +4,7 @@ from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.utils import timezone
 from django.views.generic import TemplateView , UpdateView, DetailView
+from django.views.decorators.csrf import csrf_exempt
 import datetime
 import json
 
@@ -1079,7 +1080,7 @@ def send_network_invite(request):
     print "ORG: ", organization
     message_subject = "Invitation for {organization} to join {network}".format(organization = organization.name, network=network.name)
     print "MESSAGE SUBJECT", message_subject
-    message_text = '<form action="/network/invitation/accept/" method="POST" class="post-form">{csrf}<input type="hidden" name="network" value="{network}" /><button type="submit" class="btn btn-primary">Accept Invitation</button></form>'.format(network=network.id, csrf='{\\% \\csrf %}')
+    message_text = '<form action="/network/invitation/accept/" method="POST" class="post-form"><input type="hidden" name="network" value="{network}" /><button type="submit" class="btn btn-primary">Accept Invitation</button></form>'.format(network=network.id)
     print "MESSAGE TEXT: ", message_text
     discussion = Discussion.objects.create_discussion('PRI')
     invitation_message = PrivateMessage.objects.create_private_message(user=request.user, recipient=user, discussion=discussion, subject=message_subject, text=message_text)
@@ -1087,14 +1088,15 @@ def send_network_invite(request):
     return redirect('network_detail', pk=network.pk)
 
 
+@csrf_exempt
 def confirm_network_invite(request):
     """ Receive confirmed networkwork invitation and create new NetworkOrganization
     connection."""
 
-    network = request.POST.get('network')
-    network = get_object_or_404(Network, id=network)
+    network_id = request.POST.get('network')
+    network = get_object_or_404(Network, id=network_id)
     organization = request.user.organization
-    new_connection = NetworkOrganization.objects.create(network=network, organization=owner_org)
+    new_connection = NetworkOrganization.objects.create(network=network, organization=organization)
     print "Successfully joined Network!"
     return redirect('network_detail', pk=network.pk)
 
