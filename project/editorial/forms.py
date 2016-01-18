@@ -137,10 +137,17 @@ class StoryForm(forms.ModelForm):
             attrs={'id': 'story-embargo-picker'})
     )
 
+    share_with_date = forms.DateTimeField(
+        required=False,
+        widget=DateTimePicker(
+            options={'format': 'YYYY-MM-DD HH:mm'},
+            attrs={'id': 'story-share-picker'})
+    )
+
 
     class Meta:
         model = Story
-        fields = ['name', 'story_description', 'series', 'collaborate', 'collaborate_with','team', 'embargo', 'embargo_datetime', 'sensitive', 'share', 'ready_to_share', 'share_with', 'archived' ]
+        fields = ['name', 'story_description', 'series', 'collaborate', 'collaborate_with','team', 'embargo', 'embargo_datetime', 'sensitive', 'share', 'ready_to_share', 'share_with', 'share_with_date', 'archived' ]
         widgets = {
             'team': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select', 'id':'story-team'}),
             'collaborate_with': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select', 'id':'collaborate-with'}),

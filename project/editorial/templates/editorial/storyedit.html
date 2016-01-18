@@ -85,6 +85,15 @@
           {% endif %}
         </div>
         <div class="form-group custom-form">
+          <a href="#" data-toggle="tooltip" title="{{ storyform.share_with_date.help_text }}"><span class="field-label">{{ storyform.share_with_date.label_tag }}</span></a>
+          {{ storyform.share_with_date }}
+          {% if storyform.share_with_date.errors %}
+            <div class="alert alert-warning" role="alert">
+            {{ storyform.share_with_date.errors }}
+            </div>
+          {% endif %}
+        </div>
+        <div class="form-group custom-form">
           <a href="#" data-toggle="tooltip" title="{{ storyform.collaborate.help_text }}"><span class="field-label">{{ storyform.collaborate.label_tag }}</span></a>
           {{ storyform.collaborate }}
           {% if storyform.collaborate.errors %}
@@ -143,10 +152,8 @@
       </div>
 
 
-
     <button type="submit" class="save btn btn-default">Save</button>
     </form>
-
 
     </div>
   </div>

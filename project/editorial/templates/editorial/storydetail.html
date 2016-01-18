@@ -97,18 +97,18 @@
                 <!-- <a href="#" data-toggle="tooltip" title="Story Details"><label class="field-label">Details</label></a> -->
                 <div class="row">
                   <div class="col-md-12">
-                    <h5>Story</h5>
-                    {{ story.name }}{% if request.user.organization == story.organization %}<a href="{% url 'story_edit' pk=story.id %}"><i class="fa fa-pencil sameline"></i></a>{% endif %}
+                    <h5>Story {% if request.user.organization == story.organization %}<a href="{% url 'story_edit' pk=story.id %}"> <i class="fa fa-pencil sameline"></i></a>{% endif %}</h5>
+                    {{ story.name }}
                     <h5>Description</h5>
                     {{ story.story_description }}
                   <hr>
                   </div>
                   <div class="col-md-6">
+                    <h5>Series: <span class="sameline bright">{% if story.series %}{{ story.series.name }}{% else %} <span class="tiny-text">Not currently part of a series</span>{% endif %}</h5>
                     <h5>Original: <span class="sameline bright">{% if story.original_story == True %} <i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</span></h5>
                     {% if story.original_story == False %}
-                    <h5>Origin: <span class="sameline bright">{{ story.}}</span></h5>
+                    <h5>Origin: <span class="sameline bright">Original Org</span></h5>
                     {% endif %}
-                    {{ story.original_story_organization.name }}
                     <h5>Embargo: <span class="sameline bright">{% if story.embargo == True %} <i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</span></h5>
                     {% if story.embargo %}
                       <p>Embargo until {{ story.embargo_datetime|date:'D M j g:i a' }}</p>
@@ -146,7 +146,7 @@
                         </div>
                       </div>
                       <div class="col-md-6">
-                        <h5>Collaboration: <span class="sameline bright">{% if facet.story.collaborate == True %} <i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</span></h5>
+                        <h5>Collaboration: <span class="sameline bright">{% if story.collaborate == True %} <i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</span></h5>
                         <h5>Collaborating With:</h5>
                         {% for collaborator in story.collaborate_with.all %}
                         <p>{{ collaborator }}</p>
@@ -163,7 +163,7 @@
                   <a href="#" data-toggle="modal" data-target="#addStoryNote" title="Add Story Note"><i class="fa fa-plus sameline dark"></i></a>
                 </div>
               <div class="storynotes">
-                  <div class="row">
+                  <div class="row" data-toggle="slimScroll" style="height:525px" data-color="#5D9CEC" data-allow-page-scroll="false">
                       {% for note in storynotes %}
                       <!-- MODAL TRIGGER -->
                         <a href="#" data-toggle="modal" data-target="#addNote{{note.id}}">
