@@ -23,7 +23,7 @@
           <th>Title</th>
           <th>Credit</th>
           <th>Organization</th>
-          <th>Edit Date</th>
+          <th>Available</th>
         </tr>
       </thead>
       <tbody>
@@ -37,7 +37,7 @@
               <td><a href="#" data-toggle="tooltip" title="{{ facet.wf_description }}">{{ facet.title }}</a></td>
               <td>{{ facet.owner.credit_name }}</td>
               <td>{{ facet.organization.name }}</td>
-              <td>{{ facet.due_edit|date:'n/j, g:i a'}}</td>
+              <td>{{ facet.story.share_with_date|date:'n/j, g:i a'}}</td>
             </tr>
           {% endfor %}
           {% for facet in story.printfacetstory.all %}
@@ -47,7 +47,7 @@
               <td><a href="#" data-toggle="tooltip" title="{{ facet.pf_description }}">{{ facet.title }}</a></td>
               <td>{{ facet.owner.credit_name }}</td>
               <td>{{ facet.organization.name }}</td>
-              <td>{{ facet.due_edit|date:'n/j, g:i a'}}</td>
+              <td>{{ facet.story.share_with_date|date:'n/j, g:i a'}}</td>
             </tr>
           {% endfor %}
           {% for facet in story.audiofacetstory.all %}
@@ -57,7 +57,7 @@
               <td><a href="#" data-toggle="tooltip" title="{{ facet.af_description }}">{{ facet.title }}</a></td>
               <td>{{ facet.owner.credit_name }}</td>
               <td>{{ facet.organization.name }}</td>
-              <td>{{ facet.due_edit|date:'n/j, g:i a'}}</td>
+              <td>{{ facet.story.share_with_date|date:'n/j, g:i a'}}</td>
             </tr>
           {% endfor %}
           {% for facet in story.videofacetstory.all %}
@@ -67,7 +67,7 @@
               <td><a href="#" data-toggle="tooltip" title="{{ facet.vf_description }}">{{ facet.title }}</a></td>
               <td>{{ facet.owner.credit_name }}</td>
               <td>{{ facet.organization.name }}</td>
-              <td>{{ facet.due_edit|date:'n/j, g:i a'}}</td>
+              <td>{{ facet.story.share_with_date|date:'n/j, g:i a'}}</td>
             </tr>
           {% endfor %}
         {% else %}
@@ -77,7 +77,7 @@
               <td><i class="tiny-text">No Facets Currently</i></td>
               <td>{{ story.owner.credit_name }}</td>
               <td>{{ story.organization.name }}</td>
-              <td></td>
+              <td>{{ story.share_with_date|date:'n/j, g:i a'}}</td>
             </tr>
         {% endif %}
 
