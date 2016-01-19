@@ -407,14 +407,11 @@ class Network(models.Model):
         """ Return list of all organizations that are part of a network. """
 
         network_organizations = NetworkOrganization.objects.filter(network=self)
-        print "NETWORK ORGANIZATIONS: ", network_organizations
         return network_organizations
 
 
     def get_network_shared_stories(self):
         """ Return list of stories shared with a network. """
-
-        # network_orgs = get_network_organizations(self)
 
         network_stories = Story.objects.filter(share_with = self.id)
         return network_stories
@@ -732,7 +729,7 @@ class Story(models.Model):
         story_copy.save()
         # clear relationships if they exist
         if story_copy.series:
-            story_copy.series.clear()
+            story_copy.Series.clear()
         if story_copy.share_with:
             story_copy.share_with.clear()
         if story_copy.collaborate_with:
@@ -1727,7 +1724,7 @@ class WebFacetCopyDetailManager(models.Manager):
     def create_webfacet_copy_record(self, original_org, partner, original_webfacet, partner_webfacet):
         """Method for quick creation of webfacet copy detail record."""
         webfacet_copy_detail=self.create(original_org=original_org, partner=partner, original_webfacet=original_webfacet, partner_webfacet=partner_webfacet)
-        return create_webfacet_copy_record
+        return webfacet_copy_detail
 
 
 class WebFacetCopyDetail(models.Model):
@@ -1777,7 +1774,7 @@ class PrintFacetCopyDetailManager(models.Manager):
     def create_printfacet_copy_record(self, original_org, partner, original_printfacet, partner_printfacet):
         """Method for quick creation of printfacet copy detail record."""
         printfacet_copy_detail=self.create(original_org=original_org, partner=partner, original_printfacet=original_printfacet, partner_printfacet=partner_printfacet)
-        return create_printfacet_copy_record
+        return printfacet_copy_detail
 
 
 class PrintFacetCopyDetail(models.Model):
@@ -1827,7 +1824,7 @@ class AudioFacetCopyDetailManager(models.Manager):
     def create_audiofacet_copy_record(self, original_org, partner, original_audiofacet, partner_audiofacet):
         """Method for quick creation of audiofacet copy detail record."""
         audiofacet_copy_detail=self.create(original_org=original_org, partner=partner, original_audiofacet=original_audiofacet, partner_audiofacet=partner_audiofacet)
-        return create_audiofacet_copy_record
+        return audiofacet_copy_detail
 
 
 class AudioFacetCopyDetail(models.Model):
@@ -1877,7 +1874,7 @@ class VideoFacetCopyDetailManager(models.Manager):
     def create_videofacet_copy_record(self, original_org, partner, original_videofacet, partner_videofacet):
         """Method for quick creation of videofacet copy detail record."""
         videofacet_copy_detail=self.create(original_org=original_org, partner=partner, original_videofacet=original_videofacet, partner_videofacet=partner_videofacet)
-        return create_videofacet_copy_record
+        return videofacet_copy_detail
 
 
 class VideoFacetCopyDetail(models.Model):

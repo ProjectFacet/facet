@@ -1190,7 +1190,6 @@ def network_stories(request):
     organization = get_object_or_404(Organization, id=org_id)
 
     networks = Organization.get_org_networks(organization)
-    print "NETWORKS: ", networks
 
     shared_networkstories = []
     for network in networks:
@@ -1198,8 +1197,6 @@ def network_stories(request):
         shared_networkstories.extend(stories)
 
     networkstories = set(shared_networkstories)
-
-    print "NETWORKSTORIES: ", networkstories
 
     return render(request, 'editorial/networkstories.html', {
         'networkstories': networkstories,
@@ -1238,7 +1235,7 @@ def copy_network_story(request, pk):
         print "Story Copied"
 
         # Create copy of facets if they exist
-        if original_webfacet[0]:
+        if original_webfacet:
             print original_webfacet[0]
             copied_webfacet = WebFacet.copy_webfacet(original_webfacet[0])
             copied_webfacet.story = partner_story
@@ -1254,7 +1251,7 @@ def copy_network_story(request, pk):
             )
             print "Webfacet Copied"
 
-        if original_printfacet[0]:
+        if original_printfacet:
             print original_printfacet[0]
             copied_printfacet = PrintFacet.copy_printfacet(original_printfacet[0])
             copied_printfacet.story = partner_story
@@ -1270,7 +1267,7 @@ def copy_network_story(request, pk):
             )
             print "Printfacet Copied"
 
-        if original_audiofacet[0]:
+        if original_audiofacet:
             print original_audiofacet[0]
             copied_audiofacet = AudioFacet.copy_audiofacet(original_audiofacet[0])
             copied_audiofacet.story = partner_story
@@ -1286,7 +1283,7 @@ def copy_network_story(request, pk):
             )
             print "Audiofacet Copied"
 
-        if original_videofacet[0]:
+        if original_videofacet:
             print original_videofacet[0]
             copied_videofacet = VideoFacet.copy_videofacet(original_videofacet[0])
             copied_videofacet.story = partner_story
