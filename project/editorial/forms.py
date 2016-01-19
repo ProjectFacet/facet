@@ -1,5 +1,6 @@
-import datetime
+""" Forms for editorial app."""
 
+import datetime
 from bootstrap3_datetime.widgets import DateTimePicker
 from django import forms
 from django.utils.safestring import mark_safe
@@ -542,7 +543,7 @@ class VideoFacetCommentForm(forms.ModelForm):
         }
 
 # ------------------------------ #
-#         Note Forms          #
+#           Note Forms           #
 # ------------------------------ #
 
 class NetworkNoteForm(forms.ModelForm):

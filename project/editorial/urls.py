@@ -1,3 +1,5 @@
+""" Forms for editorial app. """
+
 from django.conf.urls import url, include
 
 from . import views
@@ -5,7 +7,7 @@ from . import views
 
 urlpatterns = [
     #----------------------------------------------------------------------#
-    #   Test URLS
+    #   Test URL - Used for non-destructive testing of templates/queries
     #----------------------------------------------------------------------#
     url(r'^test$', views.test, name='test'),
     #----------------------------------------------------------------------#

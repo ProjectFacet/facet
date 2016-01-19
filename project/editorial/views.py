@@ -1,3 +1,5 @@
+""" Views for editorial app."""
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
 from django.core.mail import send_mail
@@ -82,11 +84,9 @@ def index(request):
 #   Test View
 #----------------------------------------------------------------------#
 def test(request):
-    """ User for rapid testing of new pages."""
-
+    """ Use for rapid testing of new pages."""
 
     return render(request, 'editorial/test.html', {
-
         }
     )
 
@@ -108,7 +108,6 @@ def dashboard(request):
     recent_comments = User.recent_comments(request.user)
     # if no new comments, display 10 most recent older comments
     older_comments = User.inbox_comments(request.user)[:10]
-    print older_comments
     # query for any new content created since last_login
     new_stories = Story.objects.filter(creation_date__gte=request.user.last_login)[:8]
     # if no new stories, display 10 most recent stories
@@ -565,7 +564,6 @@ def story_detail(request, pk):
     webcommentform=WebFacetCommentForm()
 
     try:
-        print "WF Try"
         webfacet = get_object_or_404(WebFacet, story=story)
         print "WEBFACET CREDIT", webfacet.credit.all()
 
