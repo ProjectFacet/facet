@@ -190,11 +190,11 @@ def org_new(request):
     they regularly contribute to.
     """
 
-    form = CreateOrganization()
+    orgform = CreateOrganization()
     if request.method == "POST":
-        form = CreateOrganization(request.POST or None)
-        if form.is_valid():
-            organization = form.save(commit=False)
+        orgform = CreateOrganization(request.POST or None)
+        if orgform.is_valid():
+            organization = orgform.save(commit=False)
             organization.owner = request.user
             organization.creation_date = timezone.now()
             discussion = Discussion.objects.create_discussion("ORG")
@@ -207,7 +207,9 @@ def org_new(request):
             return redirect('org_detail', pk=organization.pk)
     else:
         form = CreateOrganization()
-    return render(request, 'editorial/organizationnew.html', {'form': form})
+    return render(request, 'editorial/organizationnew.html', {
+            'orgform': orgform,
+            })
 
 
 def org_detail(request, pk):
@@ -240,16 +242,16 @@ def org_edit(request, pk):
     organization = get_object_or_404(Organization, pk=pk)
 
     if request.method == "POST":
-        form = CreateOrganization(data=request.POST, instance=organization)
-        if form.is_valid():
-            form.save()
+        orgform = CreateOrganization(data=request.POST, instance=organization)
+        if orgform.is_valid():
+            orgform.save()
             return redirect('org_detail', pk=organization.id)
     else:
-        form = CreateOrganization(instance=organization)
+        orgform = CreateOrganization(instance=organization)
 
     return render(request, 'editorial/organizationedit.html', {
             'organization': organization,
-            'form': form,
+            'orgform': orgform,
     })
 
 
@@ -437,16 +439,16 @@ def series_edit(request, pk):
     series = get_object_or_404(Series, pk=pk)
 
     if request.method =="POST":
-        form = SeriesForm(data=request.POST, instance=series)
-        if form.is_valid():
-            form.save()
+        seriesform = SeriesForm(data=request.POST, instance=series)
+        if seriesform.is_valid():
+            seriesform.save()
             return redirect('series_detail', pk=series.id)
     else:
-        form = SeriesForm(instance=series)
+        seriesform = SeriesForm(instance=series)
 
     return render(request, 'editorial/seriesedit.html', {
         'series': series,
-        'form': form,
+        'seriesform': seriesform,
         })
 
 def series_notes(request, pk):
@@ -1039,24 +1041,24 @@ def collaborations(request):
 def network_new(request):
     """ Create a new network. """
 
-    form = NetworkForm()
+    networkform = NetworkForm()
     owner_org = request.user.organization
     if request.method == "POST":
-        form = NetworkForm(request.POST or None)
-        if form.is_valid():
-            network = form.save(commit=False)
+        networkform = NetworkForm(request.POST or None)
+        if networkform.is_valid():
+            network = networkform.save(commit=False)
             network.owner_organization = owner_org
             network.creation_date = timezone.now()
             discussion = Discussion.objects.create_discussion("NET")
             network.discussion = discussion
             network.save()
             owner_membership = NetworkOrganization.objects.create(network=network, organization=owner_org)
-            print "added owner to membership"
-            print "Members: ", network.members.all()
             return redirect('network_detail', pk=network.pk)
     else:
-        form = NetworkForm()
-    return render(request, 'editorial/networknew.html', {'form': form})
+        networkform = NetworkForm()
+    return render(request, 'editorial/networknew.html', {
+            'networkform': networkform
+        })
 
 
 def delete_network(request, pk):
@@ -1147,16 +1149,16 @@ def network_edit(request, pk):
     network = get_object_or_404(Network, pk=pk)
 
     if request.method == "POST":
-        form = NetworkForm(data=request.POST, instance=network)
-        if form.is_valid():
-            form.save()
+        networkform = NetworkForm(data=request.POST, instance=network)
+        if networkform.is_valid():
+            networkform.save()
             return redirect('network_detail', pk=network.id)
     else:
-        form = NetworkForm(instance=network)
+        networkform = NetworkForm(instance=network)
 
     return render(request, 'editorial/networkedit.html', {
             'network': network,
-            'form': form,
+            'networkform': networkform,
         })
 
 

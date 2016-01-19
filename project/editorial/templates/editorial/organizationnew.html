@@ -3,6 +3,10 @@
 {% load i18n %}
 {% load bootstrap3 %}
 
+{% block head %}
+{{ orgform.media }}
+{% endblock %}
+
 {% block content %}
 
 <div class="row particles" id="user-hero">
@@ -13,11 +17,40 @@
   </div>
 </div>
 
+<div class="row content-lower-25">
+  <div class="col-md-12">
+    <div class="row">
     <form method="POST" class="post-form">{% csrf_token %}
+      <!-- Left Side -->
+      <div class="col-md-8 col-md-offset-2">
+        <div class="form-group custom-form">
+          <a href="#" data-toggle="tooltip" title="{{ seriesform.name.help_text }}"><span class="field-label">{{ orgform.name.label_tag }}</span></a>
+          {{ orgform.name }}
+          {% if orgform.name.errors %}
+            <div class="alert alert-warning" role="alert">
+            {{ orgform.name.errors }}
+            </div>
+          {% endif %}
+        </div>
+        <div class="form-group custom-form">
+          <a href="#" data-toggle="tooltip" title="{{ seriesform.series_description.help_text }}"><span class="field-label">{{ orgform.org_description.label_tag }}</span></a>
+          {{ orgform.org_description }}
+          {% if orgform.org_description.errors %}
+            <div class="alert alert-warning" role="alert">
+            {{ orgform.org_description.errors }}
+            </div>
+          {% endif %}
+        </div>
+        <button type="submit" class="save btn btn-default">Save</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
 
-{% bootstrap_form form %}
-<button type="submit" class="save btn btn-default">Save</button>
-</form>
 
+<script>
+$(".chosen-select").chosen()
+</script>
 
 {% endblock %}

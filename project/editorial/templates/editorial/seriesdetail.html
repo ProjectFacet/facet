@@ -28,7 +28,7 @@
                     <p class="tiny-text">{{ comment.date|date:'D M j g:i a' }}</p>
                   </div>
                   <div class="col-md-2">
-                    <img class="media-object img-circle" width="32" src="/static/media/profile/{{ user.first_name}}{{user.id}}.jpg" alt="user">
+                    <img class="media-object img-circle" width="32" src="/static/media/profile/{{ comment.user.first_name}}{{ comment.user.id}}.jpg" alt="user">
                     <p class="tiny-text">{{ comment.user.first_name }}</p>
                   </div>
                 {% endfor %}

@@ -4,17 +4,82 @@
 {% load bootstrap3 %}
 
 {% block head %}
-{{ form.media }}
+{{ seriesform.media }}
 {% endblock %}
 
 {% block content %}
 
-<h1 class="center">Edit Series</h1>
-    <form method="POST" class="post-form">{% csrf_token %}
+<div class="row particles" id="user-hero">
+  <div class="upper-content">
+    <div class="col-lg-12 content-upper-75">
+      <h1 class="media-heading text-light center thin uppercase spread-025">Edit Series: {{ series.name }}</h1>
+    </div>
+  </div>
+</div>
 
-{% bootstrap_form form %}
-<button type="submit" class="save btn btn-default">Save</button>
-</form>
+<div class="row content-lower-25">
+  <div class="col-md-12">
+    <div class="row">
+    <form method="POST" class="post-form">{% csrf_token %}
+      <!-- Left Side -->
+      <div class="col-md-6">
+        <div class="form-group custom-form">
+          <a href="#" data-toggle="tooltip" title="{{ seriesform.name.help_text }}"><span class="field-label">{{ seriesform.name.label_tag }}</span></a>
+          {{ seriesform.name }}
+          {% if seriesform.name.errors %}
+            <div class="alert alert-warning" role="alert">
+            {{ seriesform.name.errors }}
+            </div>
+          {% endif %}
+        </div>
+        <div class="form-group custom-form">
+          <a href="#" data-toggle="tooltip" title="{{ seriesform.series_description.help_text }}"><span class="field-label">{{ seriesform.series_description.label_tag }}</span></a>
+          {{ seriesform.series_description }}
+          {% if seriesform.series_description.errors %}
+            <div class="alert alert-warning" role="alert">
+            {{ seriesform.series_description.errors }}
+            </div>
+          {% endif %}
+        </div>
+      </div>
+      <!-- Right Side -->
+      <div class="col-md-6">
+        <div class="form-group custom-form">
+          <a href="#" data-toggle="tooltip" title="{{ seriesform.team.help_text }}"><span class="field-label">{{ seriesform.team.label_tag }}</span></a>
+          {{ seriesform.team }}
+          {% if seriesform.team.errors %}
+            <div class="alert alert-warning" role="alert">
+            {{ seriesform.team.errors }}
+            </div>
+          {% endif %}
+        </div>
+        <div class="form-group custom-form">
+          <a href="#" data-toggle="tooltip" title="{{ seriesform.collaborate.help_text }}"><span class="field-label">{{ seriesform.collaborate.label_tag }}</span></a>
+          {{ seriesform.collaborate }}
+          {% if seriesform.collaborate.errors %}
+            <div class="alert alert-warning" role="alert">
+            {{ seriesform.collaborate.errors }}
+            </div>
+          {% endif %}
+        </div>
+        <div class="form-group custom-form">
+          <a href="#" data-toggle="tooltip" title="{{ seriesform.collaborate_with.help_text }}"><span class="field-label">{{ seriesform.collaborate_with.label_tag }}</span></a>
+          {{ seriesform.collaborate_with }}
+          {% if seriesform.collaborate_with.errors %}
+            <div class="alert alert-warning" role="alert">
+            {{ seriesform.collaborate_with.errors }}
+            </div>
+          {% endif %}
+        </div>
+
+        <button type="submit" class="save btn btn-default">Save</button>
+      </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+
 
 <script>
 $(".chosen-select").chosen()
