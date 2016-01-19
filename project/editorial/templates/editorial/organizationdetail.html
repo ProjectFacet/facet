@@ -40,7 +40,7 @@
                   <p class="tiny-text">{{ comment.date|date:'D M j g:i a' }}</p>
                 </div>
                 <div class="col-md-1">
-                  <img class="media-object img-circle" width="32" src="/static/media/profile/{{ user.first_name}}{{user.id}}.jpg" alt="user">
+                  <img class="media-object img-circle" width="32" src="/static/media/profile/{{ comment.user.first_name}}{{ comment.user.id}}.jpg" alt="user">
                   <p class="tiny-text">{{ comment.user.first_name }}</p>
                 </div>
             </div>
@@ -132,9 +132,9 @@
   </div>
   <!-- Right column -->
   <div class="col-md-2">
-    <div class="team">
+    <a href="#" data-toggle="tooltip" title="{{ organization.name }} Team Members"><label class="field-label" id="team-label">Team</label></a>
+    <div class="team" data-toggle="slimScroll" style="height:520px" data-color="#5D9CEC" data-allow-page-scroll="false">
       <div class="row">
-        <a href="#" data-toggle="tooltip" title="{{ organization.name }} Team Members"><label class="field-label" id="team-label">Team</label></a>
         {% for user in organization.user_set.all %}
         <a href="{% url 'user_detail' pk=request.user.id %}">
         <div class="col-lg-12 col-md-12 col-sm-12">

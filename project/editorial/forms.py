@@ -76,7 +76,7 @@ class CreateOrganization(forms.ModelForm):
 
     class Meta:
         model = Organization
-        fields = ['name', 'org_description']
+        fields = ['name', 'org_description', 'location']
 
 
 class EditOrganization(forms.ModelForm):
@@ -84,7 +84,7 @@ class EditOrganization(forms.ModelForm):
 
     class Meta:
         model = Organization
-        fields = ['name', 'org_description']
+        fields = ['name', 'org_description', 'location']
 
 # ------------------------------ #
 #         Network Forms          #

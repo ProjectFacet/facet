@@ -108,7 +108,7 @@ def dashboard(request):
     recent_comments = User.recent_comments(request.user)
     # if no new comments, display 10 most recent older comments
     older_comments = User.inbox_comments(request.user)[:10]
-
+    print older_comments
     # query for any new content created since last_login
     new_stories = Story.objects.filter(creation_date__gte=request.user.last_login)[:8]
     # if no new stories, display 10 most recent stories
@@ -277,7 +277,7 @@ def create_organization_note(request):
             organizationnote.owner = request.user
             organizationnote.organization = organization
             organizationnote.save()
-            return redirect('organization_notes', pk=organization.id)
+            return redirect('organization_detail', pk=organization.id)
 
 #----------------------------------------------------------------------#
 #   User Views
@@ -1187,16 +1187,19 @@ def network_stories(request):
     """
 
     org_id = request.user.organization_id
+    organization = get_object_or_404(Organization, id=org_id)
 
-    networks = NetworkOrganization.objects.filter(organization_id=org_id)
+    networks = Organization.get_org_networks(organization)
+    print "NETWORKS: ", networks
 
-    networkstories = []
+    shared_networkstories = []
     for network in networks:
-        shared_stories = Story.objects.filter(share_with = network.id).exclude(archived=True).exclude(organization=request.user.organization)
-        for story in shared_stories:
-            story = Story.objects.get(id = story.id)
-            if story not in networkstories:
-                networkstories.append(story)
+        stories = Network.get_network_shared_stories(network)
+        shared_networkstories.extend(stories)
+
+    networkstories = set(shared_networkstories)
+
+    print "NETWORKSTORIES: ", networkstories
 
     return render(request, 'editorial/networkstories.html', {
         'networkstories': networkstories,

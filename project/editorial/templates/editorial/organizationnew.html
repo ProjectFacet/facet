@@ -24,7 +24,7 @@
       <!-- Left Side -->
       <div class="col-md-8 col-md-offset-2">
         <div class="form-group custom-form">
-          <a href="#" data-toggle="tooltip" title="{{ seriesform.name.help_text }}"><span class="field-label">{{ orgform.name.label_tag }}</span></a>
+          <a href="#" data-toggle="tooltip" title="{{ orgform.name.help_text }}"><span class="field-label">{{ orgform.name.label_tag }}</span></a>
           {{ orgform.name }}
           {% if orgform.name.errors %}
             <div class="alert alert-warning" role="alert">
@@ -33,7 +33,16 @@
           {% endif %}
         </div>
         <div class="form-group custom-form">
-          <a href="#" data-toggle="tooltip" title="{{ seriesform.series_description.help_text }}"><span class="field-label">{{ orgform.org_description.label_tag }}</span></a>
+          <a href="#" data-toggle="tooltip" title="{{ orgform.name.help_text }}"><span class="field-label">{{ orgform.location.label_tag }}</span></a>
+          {{ orgform.location }}
+          {% if orgform.location.errors %}
+            <div class="alert alert-warning" role="alert">
+            {{ orgform.location.errors }}
+            </div>
+          {% endif %}
+        </div>
+        <div class="form-group custom-form">
+          <a href="#" data-toggle="tooltip" title="{{ orgform.series_description.help_text }}"><span class="field-label">{{ orgform.org_description.label_tag }}</span></a>
           {{ orgform.org_description }}
           {% if orgform.org_description.errors %}
             <div class="alert alert-warning" role="alert">

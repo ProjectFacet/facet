@@ -414,14 +414,9 @@ class Network(models.Model):
     def get_network_shared_stories(self):
         """ Return list of stories shared with a network. """
 
-        network_orgs = get_network_organizations(self)
+        # network_orgs = get_network_organizations(self)
 
-        network_stories = []
-        for network in network_orgs:
-            shared_stories = Story.objects.filter(share_with = self.id)
-            print "SHARED STORIES: ", shared_stories
-            network_stories.extend(shared_stories)
-
+        network_stories = Story.objects.filter(share_with = self.id)
         return network_stories
 
     @property
