@@ -213,7 +213,6 @@ class WebFacetForm(forms.ModelForm):
             'due_edit',
             'run_date',
             'share_note',
-            'captions',
             'editor',
             'credit',
         ]
@@ -275,7 +274,6 @@ class PrintFacetForm(forms.ModelForm):
             'due_edit',
             'run_date',
             'share_note',
-            'captions',
             'editor',
             'credit',
         ]
@@ -337,7 +335,6 @@ class AudioFacetForm(forms.ModelForm):
             'due_edit',
             'run_date',
             'share_note',
-            'captions',
             'editor',
             'credit',
         ]
@@ -399,7 +396,6 @@ class VideoFacetForm(forms.ModelForm):
             'due_edit',
             'run_date',
             'share_note',
-            'captions',
             'editor',
             'credit',
         ]

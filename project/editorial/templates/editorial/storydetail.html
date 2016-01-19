@@ -68,6 +68,7 @@
                 </div>
                 <div class="comment">
                     <div class="row">
+                      <div class="comment-ui">
                       <form action="/storycomment/new" method="POST" class="post-form" role="form">
                         <div class="col-md-10">
                             {% csrf_token %}
@@ -83,13 +84,14 @@
                         </div>
                         <div class="col-md-2">
                             <div class="form-group">
-                              <button type="submit" class="btn btn-default btn-sm" name="storycommentform">
+                              <button type="submit" class="btn btn-default btn-lg comment-button" name="storycommentform">
                                   <i class="fa fa-paper-plane"></i>
                               </button>
                             </div>
                             <!-- <input type="submit" name="webcommentform" value="Post Comment"/> -->
                         </div>
                       </form>
+                    </div>
                     </div>
                   </div>
               </div>
@@ -290,11 +292,11 @@
                       {% endif %}
                     </div>
                     <div class="form-group custom-form">
-                      <a href="#" data-toggle="tooltip" title="{{ webform.captions.help_text }}"><span class="field-label">{{ webform.captions.label_tag }}</span></a>
-                      {{ webform.captions }}
-                      {% if webform.captions.errors %}
+                      <a href="#" data-toggle="tooltip" title="{{ webform.share_note.help_text }}"><span class="field-label">{{ webform.share_note.label_tag }}</span></a>
+                      {{ webform.share_note }}
+                      {% if webform.share_note.errors %}
                         <div class="alert alert-warning" role="alert">
-                        {{ webform.captions.errors }}
+                        {{ webform.share_note.errors }}
                         </div>
                       {% endif %}
                     </div>
@@ -329,16 +331,32 @@
                   <!-- Right Column -->
                   <div class="col-md-2">
 
+                  <div class="save-button">
+                    <button type="submit" class="btn btn-default btn-primary" name="webform">Save Web Story</button>
+                    <!-- <input type="submit" name="webform" value="Save Web Story" /> -->
+                  </div>
+
+                  <div class="row">
                     <div class="form-group custom-form">
-                      <a href="#" data-toggle="tooltip" title="{{ webform.status.help_text }}"><span class="field-label">{{ webform.status.label_tag }}</span></a> {{ webform.status }}
+                      <div class="col-md-3">
+                      <a href="#" data-toggle="tooltip" title="{{ webform.status.help_text }}"><span class="field-label">{{ webform.status.label_tag }}</span></a>
+                      </div>
+                      <div class="col-md-9">
+                      {{ webform.status }}
                       {% if webform.status.errors %}
                         <div class="alert alert-warning" role="alert">
                         {{ webform.status.errors }}
                         </div>
                       {% endif %}
+                      </div>
                     </div>
+                  </div>
+                  <div class="row profile-row">
                     <div class="form-group custom-form">
+                      <div class="col-md-3">
                       <a href="#" data-toggle="tooltip" title="{{ webform.due_edit.help_text }}"><span class="field-label">{{ webform.due_edit.label_tag }}</span></a>
+                      </div>
+                      <div class="col-md-9">
                       {{ webform.due_edit }}
                       {% if webform.due_edit.errors %}
                         <div class="alert alert-warning" role="alert">
@@ -346,17 +364,25 @@
                         </div>
                       {% endif %}
                     </div>
-                    <div class="form-group custom-form">
-                      <a href="#" data-toggle="tooltip" title="{{ webform.run_date.help_text }}"><span class="field-label">{{ webform.run_date.label_tag }}</span></a>
-                      {{ webform.run_date }}
-                      {% if webform.run_date.errors %}
-                        <div class="alert alert-warning" role="alert">
-                        {{ webform.run_date.errors }}
-                        </div>
-                      {% endif %}
                     </div>
+                  </div>
+                  <div class="row profile-row">
+                    <div class="form-group custom-form">
+                      <div class="col-md-3">
+                      <a href="#" data-toggle="tooltip" title="{{ webform.run_date.help_text }}"><span class="field-label">{{ webform.run_date.label_tag }}</span></a>
+                      </div>
+                      <div class="col-md-9">
+                        {{ webform.run_date }}
+                        {% if webform.run_date.errors %}
+                          <div class="alert alert-warning" role="alert">
+                          {{ webform.run_date.errors }}
+                          </div>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
                     <!-- End of WebFacet form -->
-                    <input type="submit" name="webform" value="Submit" />
+                    <!-- <input type="submit" name="webform" value="Save Web Story" /> -->
                     </form>
 
                     <div class="discussion">
@@ -369,7 +395,7 @@
                                 <p class="tiny-text">{{ comment.date|date:'D M j g:i a' }}</p>
                               </div>
                               <div class="col-md-2">
-                                <img class="media-object img-circle" width="32" src="/static/media/profile/{{ user.first_name}}{{user.id}}.jpg" alt="user">
+                                <img class="media-object img-circle" width="32" src="/static/media/profile/{{ comment.user.first_name }}{{ comment.user.id }}.jpg" alt="user">
                                 <p class="tiny-text">{{ comment.user.first_name }}</p>
                               </div>
                             {% endfor %}
@@ -407,7 +433,7 @@
                     <div class="edit-history">
                       {% if webhistory %}
                         {% for entry in webhistory %}
-                        <p>{{ entry.history_date }}
+                        <p class="tiny-text">{{ entry.history_date }}
                         {% endfor %}
                       {% endif %}
                     </div>
@@ -492,11 +518,11 @@
                       {% endif %}
                     </div>
                     <div class="form-group custom-form">
-                      <a href="#" data-toggle="tooltip" title="{{ printform.captions.help_text }}"><span class="field-label">{{ printform.captions.label_tag }}</span></a>
-                      {{ printform.captions }}
-                      {% if printform.captions.errors %}
+                      <a href="#" data-toggle="tooltip" title="{{ printform.share_note.help_text }}"><span class="field-label">{{ printform.share_note.label_tag }}</span></a>
+                      {{ printform.share_note }}
+                      {% if printform.share_note.errors %}
                         <div class="alert alert-warning" role="alert">
-                        {{ printform.captions.errors }}
+                        {{ printform.share_note.errors }}
                         </div>
                       {% endif %}
                     </div>
@@ -531,6 +557,11 @@
                   <!-- Right Column -->
                   <div class="col-md-2">
 
+                    <div class="save-button">
+                      <button type="submit" class="btn btn-default btn-primary" name="printform">Save Print Story</button>
+                      <!-- <input type="submit" name="printform" value="Save Print Story" /> -->
+                    </div>
+
                     <div class="form-group custom-form">
                       <a href="#" data-toggle="tooltip" title="{{ printform.status.help_text }}"><span class="field-label">{{ printform.status.label_tag }}</span></a>
                       {{ printform.status }}
@@ -559,7 +590,7 @@
                       {% endif %}
                     </div>
                 <!-- End of PrintFacet Form -->
-                <input type="submit" name="printform" value="Submit" />
+                <!-- <input type="submit" name="printform" value="Save Print Story" /> -->
                 </form>
 
                     <div class="discussion">
@@ -572,7 +603,7 @@
                             <p class="tiny-text">{{ comment.date|date:'D M j g:i a' }}</p>
                           </div>
                           <div class="col-md-2">
-                            <img class="media-object img-circle" width="32" src="/static/media/profile/{{ user.first_name}}{{user.id}}.jpg" alt="user">
+                            <img class="media-object img-circle" width="32" src="/static/media/profile/{{ comment.user.first_name}}{{comment.user.id}}.jpg" alt="user">
                             <p class="tiny-text">{{ comment.user.first_name }}</p>
                           </div>
                         {% endfor %}
@@ -610,7 +641,7 @@
                     <div class="edit-history">
                       {% if printhistory %}
                         {% for entry in printhistory %}
-                        <p>{{ entry.history_date }}
+                        <p class="tiny-text">{{ entry.history_date }}
                         {% endfor %}
                       {% endif %}
                     </div>
@@ -698,11 +729,11 @@
                       {% endif %}
                     </div>
                     <div class="form-group custom-form">
-                      <a href="#" data-toggle="tooltip" title="{{ audioform.captions.help_text }}"><span class="field-label">{{ audioform.captions.label_tag }}</span></a>
-                      {{ audioform.captions }}
-                      {% if audioform.captions.errors %}
+                      <a href="#" data-toggle="tooltip" title="{{ audioform.share_note.help_text }}"><span class="field-label">{{ audioform.share_note.label_tag }}</span></a>
+                      {{ audioform.share_note }}
+                      {% if audioform.share_note.errors %}
                         <div class="alert alert-warning" role="alert">
-                        {{ audioform.captions.errors }}
+                        {{ audioform.share_note.errors }}
                         </div>
                       {% endif %}
                     </div>
@@ -737,6 +768,11 @@
                   <!-- Right Column -->
                   <div class="col-md-2">
 
+                    <div class="save-button">
+                      <button type="submit" class="btn btn-default btn-primary" name="audioform">Save Audio Story</button>
+                      <!-- <input type="submit" name="audioform" value="Save Audio Story" /> -->
+                    </div>
+
                     <div class="form-group custom-form">
                       <a href="#" data-toggle="tooltip" title="{{ audioform.status.help_text }}"><span class="field-label">{{ audioform.status.label_tag }}</span></a>
                       {{ audioform.status }}
@@ -765,7 +801,7 @@
                       {% endif %}
                     </div>
                     <!-- End of AudioFacet form -->
-                    <input type="submit" name="audioform" value="Submit" />
+                    <!-- <input type="submit" name="audioform" value="Save Audio Story" /> -->
                     </form>
 
                     <div class="discussion">
@@ -778,7 +814,7 @@
                             <p class="tiny-text">{{ comment.date|date:'D M j g:i a' }}</p>
                           </div>
                           <div class="col-md-2">
-                            <img class="media-object img-circle" width="32" src="/static/media/profile/{{ user.first_name}}{{user.id}}.jpg" alt="user">
+                            <img class="media-object img-circle" width="32" src="/static/media/profile/{{ comment.user.first_name}}{{ comment.user.id}}.jpg" alt="user">
                             <p class="tiny-text">{{ comment.user.first_name }}</p>
                           </div>
                         {% endfor %}
@@ -816,7 +852,7 @@
                     <div class="edit-history">
                       {% if audiohistory %}
                         {% for entry in audiohistory %}
-                        <p>{{ entry.history_date }}
+                        <p class="tiny-text">{{ entry.history_date }}
                         {% endfor %}
                       {% endif %}
                     </div>
@@ -902,11 +938,11 @@
                       {% endif %}
                     </div>
                     <div class="form-group custom-form">
-                      <a href="#" data-toggle="tooltip" title="{{ videoform.captions.help_text }}"><span class="field-label">{{ videoform.captions.label_tag }}</span></a>
-                      {{ videoform.captions }}
-                      {% if videoform.captions.errors %}
+                      <a href="#" data-toggle="tooltip" title="{{ videoform.share_note.help_text }}"><span class="field-label">{{ videoform.share_note.label_tag }}</span></a>
+                      {{ videoform.share_note }}
+                      {% if videoform.share_note.errors %}
                         <div class="alert alert-warning" role="alert">
-                        {{ videoform.captions.errors }}
+                        {{ videoform.share_note.errors }}
                         </div>
                       {% endif %}
                     </div>
@@ -941,6 +977,11 @@
                   <!-- Right Column -->
                   <div class="col-md-2">
 
+                    <div class="save-button">
+                      <button type="submit" class="btn btn-default btn-primary" name="videoform">Save Video Story</button>
+                      <!-- <input type="submit" name="videoform" value="Save Video Story" /> -->
+                    </div>
+
                     <div class="form-group custom-form">
                       <a href="#" data-toggle="tooltip" title="{{ videoform.status.help_text }}"><span class="field-label">{{ videoform.status.label_tag }}</span></a>
                       {{ videoform.status }}
@@ -969,7 +1010,7 @@
                       {% endif %}
                     </div>
                     <!-- End of VideoFacet Form -->
-                    <input type="submit" name="videoform" value="Submit" />
+                    <!-- <input type="submit" name="videoform" value="Save Video Story" /> -->
                   </form>
 
                   <div class="discussion">
@@ -982,7 +1023,7 @@
                             <p class="tiny-text">{{ comment.date|date:'D M j g:i a' }}</p>
                           </div>
                           <div class="col-md-2">
-                            <img class="media-object img-circle" width="32" src="/static/media/profile/{{ user.first_name}}{{user.id}}.jpg" alt="user">
+                            <img class="media-object img-circle" width="32" src="/static/media/profile/{{ comment.user.first_name}}{{comment.user.id}}.jpg" alt="user">
                             <p class="tiny-text">{{ comment.user.first_name }}</p>
                           </div>
                         {% endfor %}
@@ -1020,7 +1061,7 @@
                     <div class="edit-history">
                       {% if videohistory %}
                         {% for entry in videohistory %}
-                        <p>{{ entry.history_date }}
+                        <p class="tiny-text">{{ entry.history_date }}
                         {% endfor %}
                       {% endif %}
                     </div>

@@ -17,7 +17,7 @@ a:hover {
 .btn-default:focus {
   color: #333;
   text-shadow: none; /* Prevent inheritence from `body` */
-  background-color: #fff;
+  background-color: #ADB9CA;
   border: 1px solid #fff;
 }
 
@@ -423,6 +423,7 @@ label {
   color: #C5E1A6;
 }
 
+
 /* ---------------------------------------*/
 /*              Modal Styles              */
 /* ---------------------------------------*/
@@ -431,11 +432,45 @@ label {
   color: #3D4D65;
 }
 
-
 /* ---------------------------------------*/
 /*              Button Styles             */
 /* ---------------------------------------*/
 
+.btn-primary {
+  background-color: #8493A8;
+  color: #fff;
+  border: none;
+}
+
+.btn-default {
+  background-color: #90a4ad;
+  color: #fff;
+  border: none;
+}
+
+.btn-success {
+  background-color: #80c783;
+  color: #fff;
+  border: none;
+}
+
+.btn-info {
+  background-color: #64b5f6;
+  color: #fff;
+  border: none;
+}
+
+.btn-warning {
+  background-color: #e57373;
+  color: #fff;
+  border: none;
+}
+
+.btn-danger {
+  background-color: #c62827;
+  color: #fff;
+  border: none;
+}
 
 /* ---------------------------------------*/
 /*           Avatar/Image Styles          */
@@ -494,26 +529,37 @@ label {
 }
 
 .chosen-choices {
-  width: 200px !important;
+  width: 225px !important;
+  border: 1px solid #54657E !important;
+}
+
+.chosen-container-multi .chosen-choices {
+
 }
 
 /* ---------------------------------------*/
 /*           Datepicker Styles            */
 /* ---------------------------------------*/
 
-#story-embargo-picker_picker {
-  color: #333;
-}
-
-#story-embargo-picker {
-  background-image: none !important;
-  background-color: transparent !important;
-  border: 1px solid #54657E;
+#story-embargo-picker_picker,
+#pf_rundate_picker_picker,
+#wf_rundate_picker_picker,
+#af_rundate_picker_picker,
+#vf_rundate_picker_picker,
+#pf_dueedit_picker_picker,
+#wf_dueedit_picker_picker,
+#af_dueedit_picker_picker,
+#vf_dueedit_picker_picker {
+  color: #374355;
 }
 
 .glyphicon-calendar {
   background-color: transparent !important;
   color: #54657E;
+}
+
+.bootstrap-datetimepicker-widget, .input-group-addon, .input-group .date {
+  color: #374355 !important;
 }
 
 /* ---------------------------------------*/
@@ -695,6 +741,20 @@ th {
 
 .discussion, .orgnotes {
   padding-right: -10px;
+}
+
+/*Comment input and icon*/
+
+#story-comment {
+  background-color: #CAD3DF;
+  /*border: 1px solid #54657E;*/
+}
+
+.comment-button {
+  background-color: transparent;
+  color: inherit;
+  margin-left: -25px;
+  margin-top: 10px;
 }
 
 /* ---------------------------------------*/
