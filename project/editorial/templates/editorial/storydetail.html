@@ -22,7 +22,7 @@
       <div class="col-md-3"> </div>
 
       <div class="col-md-6" id="facettabs">
-        <ul class="nav nav-tabs" role="tablist">
+        <ul class="nav nav-tabs thin uppercase" role="tablist">
           <li role="presentation" class="active"><a href="#storydetail" aria-controls="storydetail" role="tab" data-toggle="tab">Story Detail <i class="fa fa-angle-down"></i></a></li>
           <li role="presentation"><a href="#web" aria-controls="web" role="tab" data-toggle="tab">Web</a></li>
           <li role="presentation"><a href="#print" aria-controls="print" role="tab" data-toggle="tab">Print</a></li>
@@ -106,7 +106,7 @@
                   <hr>
                   </div>
                   <div class="col-md-6">
-                    <h5>Series: <span class="sameline bright">{% if story.series %}{{ story.series.name }}{% else %} <span class="tiny-text">Not currently part of a series</span>{% endif %}</h5>
+                    <h5>Series: <span class="sameline bright">{% if story.series %}<a href="{% url 'series_detail' pk=story.series.id %}" title="View Series: {{story.series.name}}">{{ story.series.name }}</a>{% else %} <span class="tiny-text">Not currently part of a series</span>{% endif %}</h5>
                     <h5>Original: <span class="sameline bright">{% if story.original_story == True %} <i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</span></h5>
                     {% if story.original_story == False %}
                     <h5>Origin: <span class="sameline bright">Original Org</span></h5>
@@ -124,7 +124,8 @@
                       <div class="row">
                       {% for user in story.team.all %}
                       <div class="col-md-4">
-                        <p><a href="{% url 'user_detail' pk=user.id %}">{{ user.credit_name }}</a></p>
+                        <img class="media-object img-circle" width="32" src="/static/media/profile/{{ user.first_name}}{{ user.id }}.jpg" alt="user">
+                        <p class="tiny-text">{{ user.first_name }}</p>
                       </div>
                       {% endfor %}
                       </div>
@@ -332,11 +333,11 @@
                   <div class="col-md-2">
 
                   <div class="save-button">
-                    <button type="submit" class="btn btn-default btn-primary" name="webform">Save Web Story</button>
+                    <button type="submit" class="btn btn-info content-bottom-10" name="webform">Save Web Story</button>
                     <!-- <input type="submit" name="webform" value="Save Web Story" /> -->
                   </div>
 
-                  <div class="row">
+                  <div class="row profile-row">
                     <div class="form-group custom-form">
                       <div class="col-md-3">
                       <a href="#" data-toggle="tooltip" title="{{ webform.status.help_text }}"><span class="field-label">{{ webform.status.label_tag }}</span></a>
@@ -351,6 +352,7 @@
                       </div>
                     </div>
                   </div>
+
                   <div class="row profile-row">
                     <div class="form-group custom-form">
                       <div class="col-md-3">
@@ -366,6 +368,7 @@
                     </div>
                     </div>
                   </div>
+
                   <div class="row profile-row">
                     <div class="form-group custom-form">
                       <div class="col-md-3">
@@ -558,37 +561,58 @@
                   <div class="col-md-2">
 
                     <div class="save-button">
-                      <button type="submit" class="btn btn-default btn-primary" name="printform">Save Print Story</button>
+                      <button type="submit" class="btn btn-info content-bottom-10" name="printform">Save Print Story</button>
                       <!-- <input type="submit" name="printform" value="Save Print Story" /> -->
                     </div>
 
-                    <div class="form-group custom-form">
-                      <a href="#" data-toggle="tooltip" title="{{ printform.status.help_text }}"><span class="field-label">{{ printform.status.label_tag }}</span></a>
-                      {{ printform.status }}
-                      {% if printform.status.errors %}
-                        <div class="alert alert-warning" role="alert">
-                        {{ printform.status.errors }}
+                    <div class="row profile-row">
+                      <div class="form-group custom-form">
+                        <div class="col-md-3">
+                          <a href="#" data-toggle="tooltip" title="{{ printform.status.help_text }}"><span class="field-label">{{ printform.status.label_tag }}</span></a>
                         </div>
-                      {% endif %}
-                    </div>
-                    <div class="form-group custom-form">
-                      <a href="#" data-toggle="tooltip" title="{{ printform.due_edit.help_text }}"><span class="field-label">{{ printform.due_edit.label_tag }}</span></a>
-                      {{ printform.due_edit }}
-                      {% if printform.due_edit.errors %}
-                        <div class="alert alert-warning" role="alert">
-                        {{ printform.due_edit.errors }}
+                        <div class="col-md-9">
+                          {{ printform.status }}
+                          {% if printform.status.errors %}
+                            <div class="alert alert-warning" role="alert">
+                            {{ printform.status.errors }}
+                            </div>
+                          {% endif %}
                         </div>
-                      {% endif %}
+                      </div>
                     </div>
-                    <div class="form-group custom-form">
-                      <a href="#" data-toggle="tooltip" title="{{ printform.run_date.help_text }}"><span class="field-label">{{ printform.run_date.label_tag }}</span></a>
-                      {{ printform.run_date }}
-                      {% if printform.run_date.errors %}
-                        <div class="alert alert-warning" role="alert">
-                        {{ printform.run_date.errors }}
+
+                    <div class="row profile-row">
+                      <div class="form-group custom-form">
+                        <div class="col-md-3">
+                          <a href="#" data-toggle="tooltip" title="{{ printform.due_edit.help_text }}"><span class="field-label">{{ printform.due_edit.label_tag }}</span></a>
                         </div>
-                      {% endif %}
+                        <div class="col-md-9">
+                          {{ printform.due_edit }}
+                          {% if printform.due_edit.errors %}
+                            <div class="alert alert-warning" role="alert">
+                            {{ printform.due_edit.errors }}
+                            </div>
+                          {% endif %}
+                        </div>
+                      </div>
                     </div>
+
+                    <div class="row profile-row">
+                      <div class="form-group custom-form">
+                        <div class="col-md-3">
+                          <a href="#" data-toggle="tooltip" title="{{ printform.run_date.help_text }}"><span class="field-label">{{ printform.run_date.label_tag }}</span></a>
+                        </div>
+                        <div class="col-md-9">
+                        {{ printform.run_date }}
+                        {% if printform.run_date.errors %}
+                          <div class="alert alert-warning" role="alert">
+                          {{ printform.run_date.errors }}
+                          </div>
+                        {% endif %}
+                        </div>
+                      </div>
+                    </div>
+
                 <!-- End of PrintFacet Form -->
                 <!-- <input type="submit" name="printform" value="Save Print Story" /> -->
                 </form>
@@ -769,36 +793,56 @@
                   <div class="col-md-2">
 
                     <div class="save-button">
-                      <button type="submit" class="btn btn-default btn-primary" name="audioform">Save Audio Story</button>
+                      <button type="submit" class="btn btn-info content-bottom-10" name="audioform">Save Audio Story</button>
                       <!-- <input type="submit" name="audioform" value="Save Audio Story" /> -->
                     </div>
 
-                    <div class="form-group custom-form">
-                      <a href="#" data-toggle="tooltip" title="{{ audioform.status.help_text }}"><span class="field-label">{{ audioform.status.label_tag }}</span></a>
-                      {{ audioform.status }}
-                      {% if audioform.status.errors %}
-                        <div class="alert alert-warning" role="alert">
-                        {{ audioform.status.errors }}
+                    <div class="row profile-row">
+                      <div class="form-group custom-form">
+                        <div class="col-md-3">
+                          <a href="#" data-toggle="tooltip" title="{{ audioform.status.help_text }}"><span class="field-label">{{ audioform.status.label_tag }}</span></a>
                         </div>
-                      {% endif %}
+                        <div class="col-md-9">
+                        {{ audioform.status }}
+                        {% if audioform.status.errors %}
+                          <div class="alert alert-warning" role="alert">
+                          {{ audioform.status.errors }}
+                          </div>
+                        {% endif %}
+                        </div>
+                      </div>
                     </div>
-                    <div class="form-group custom-form">
-                      <a href="#" data-toggle="tooltip" title="{{ audioform.due_edit.help_text }}"><span class="field-label">{{ audioform.due_edit.label_tag }}</span></a>
-                      {{ audioform.due_edit }}
-                      {% if audioform.due_edit.errors %}
-                        <div class="alert alert-warning" role="alert">
-                        {{ audioform.due_edit.errors }}
+
+                    <div class="row profile-row">
+                      <div class="form-group custom-form">
+                        <div class="col-md-3">
+                        <a href="#" data-toggle="tooltip" title="{{ audioform.due_edit.help_text }}"><span class="field-label">{{ audioform.due_edit.label_tag }}</span></a>
                         </div>
-                      {% endif %}
+                        <div class="col-md-9">
+                          {{ audioform.due_edit }}
+                          {% if audioform.due_edit.errors %}
+                            <div class="alert alert-warning" role="alert">
+                            {{ audioform.due_edit.errors }}
+                            </div>
+                          {% endif %}
+                        </div>
+                      </div>
                     </div>
-                    <div class="form-group custom-form">
-                      <a href="#" data-toggle="tooltip" title="{{ audioform.run_date.help_text }}"><span class="field-label">{{ audioform.run_date.label_tag }}</span></a>
-                      {{ audioform.run_date }}
-                      {% if audioform.run_date.errors %}
-                        <div class="alert alert-warning" role="alert">
-                        {{ audioform.run_date.errors }}
+
+                    <div class="row profile-row">
+                      <div class="form-group custom-form">
+                        <div class="col-md-3">
+                        <a href="#" data-toggle="tooltip" title="{{ audioform.due_edit.help_text }}"><span class="field-label">{{ audioform.run_date.label_tag }}</span></a>
                         </div>
-                      {% endif %}
+                        <div class="col-md-9">
+                          {{ audioform.run_date }}
+                          {% if audioform.run_date.errors %}
+                            <div class="alert alert-warning" role="alert">
+                            {{ audioform.run_date.errors }}
+                            </div>
+                          {% endif %}
+                        </div>
+                      </div>
                     </div>
                     <!-- End of AudioFacet form -->
                     <!-- <input type="submit" name="audioform" value="Save Audio Story" /> -->
@@ -978,36 +1022,56 @@
                   <div class="col-md-2">
 
                     <div class="save-button">
-                      <button type="submit" class="btn btn-default btn-primary" name="videoform">Save Video Story</button>
+                      <button type="submit" class="btn btn-info content-bottom-10" name="videoform">Save Video Story</button>
                       <!-- <input type="submit" name="videoform" value="Save Video Story" /> -->
                     </div>
 
-                    <div class="form-group custom-form">
-                      <a href="#" data-toggle="tooltip" title="{{ videoform.status.help_text }}"><span class="field-label">{{ videoform.status.label_tag }}</span></a>
-                      {{ videoform.status }}
-                      {% if videoform.status.errors %}
-                        <div class="alert alert-warning" role="alert">
-                        {{ videoform.status.errors }}
+                    <div class="row profile-row">
+                      <div class="form-group custom-form">
+                        <div class="col-md-3">
+                          <a href="#" data-toggle="tooltip" title="{{ videoform.status.help_text }}"><span class="field-label">{{ videoform.status.label_tag }}</span></a>
                         </div>
-                      {% endif %}
+                        <div class="col-md-9">
+                          {{ videoform.status }}
+                          {% if videoform.status.errors %}
+                            <div class="alert alert-warning" role="alert">
+                            {{ videoform.status.errors }}
+                            </div>
+                          {% endif %}
+                        </div>
+                      </div>
                     </div>
-                    <div class="form-group custom-form">
-                      <a href="#" data-toggle="tooltip" title="{{ videoform.due_edit.help_text }}"><span class="field-label">{{ videoform.due_edit.label_tag }}</span></a>
-                      {{ videoform.due_edit }}
-                      {% if videoform.due_edit.errors %}
-                        <div class="alert alert-warning" role="alert">
-                        {{ videoform.due_edit.errors }}
+
+                    <div class="row profile-row">
+                      <div class="form-group custom-form">
+                        <div class="col-md-3">
+                          <a href="#" data-toggle="tooltip" title="{{ videoform.due_edit.help_text }}"><span class="field-label">{{ videoform.due_edit.label_tag }}</span></a>
                         </div>
-                      {% endif %}
+                        <div class="col-md-9">
+                          {{ videoform.due_edit }}
+                          {% if videoform.due_edit.errors %}
+                            <div class="alert alert-warning" role="alert">
+                            {{ videoform.due_edit.errors }}
+                            </div>
+                          {% endif %}
+                        </div>
+                      </div>
                     </div>
-                    <div class="form-group custom-form">
-                      <a href="#" data-toggle="tooltip" title="{{ videoform.run_date.help_text }}"><span class="field-label">{{ videoform.run_date.label_tag }}</span></a>
-                      {{ videoform.run_date }}
-                      {% if videoform.run_date.errors %}
-                        <div class="alert alert-warning" role="alert">
-                        {{ videoform.run_date.errors }}
+
+                    <div class="row profile-row">
+                      <div class="form-group custom-form">
+                        <div class="col-md-3">
+                          <a href="#" data-toggle="tooltip" title="{{ videoform.run_date.help_text }}"><span class="field-label">{{ videoform.run_date.label_tag }}</span></a>
                         </div>
-                      {% endif %}
+                        <div class="col-md-9">
+                          {{ videoform.run_date }}
+                          {% if videoform.run_date.errors %}
+                            <div class="alert alert-warning" role="alert">
+                            {{ videoform.run_date.errors }}
+                            </div>
+                          {% endif %}
+                        </div>
+                      </div>
                     </div>
                     <!-- End of VideoFacet Form -->
                     <!-- <input type="submit" name="videoform" value="Save Video Story" /> -->

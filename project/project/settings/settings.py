@@ -59,7 +59,7 @@ MIDDLEWARE_CLASSES = (
 TINYMCE_JS_ROOT = '/static/scripts/tiny_mce/'
 TINYMCE_JS_URL = os.path.join(STATIC_URL, 'scripts/tiny_mce/tinymce.min.js')
 TINYMCE_DEFAULT_CONFIG = {
-    'plugins': "spellchecker,paste,searchreplace",
+    'plugins': "spellchecker,paste,searchreplace,wordcount",
     'invalid_styles': 'position',
     'theme': "modern",
 }

@@ -350,7 +350,7 @@ def user_notes(request,pk):
     """ Display all of the notes for a user. """
 
     usernotes = UserNote.objects.filter(owner_id=request.user)
-    return render(request, 'editorial/user_detail.html', {
+    return render(request, 'editorial/userdetail.html', {
         'usernotes': usernotes,
     })
 

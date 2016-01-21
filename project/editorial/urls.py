@@ -30,6 +30,7 @@ urlpatterns = [
     #----------------------------------------------------------------------#
     #   Discussion URLS
     #----------------------------------------------------------------------#
+    # Labeled as Inbox in navigation
     url(r'^discussion$', views.discussion, name='discussion'),
     #----------------------------------------------------------------------#
     #   Private Message URLS

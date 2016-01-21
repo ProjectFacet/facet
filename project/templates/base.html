@@ -109,11 +109,11 @@
                 </ul>
             </li>
             <li><a href="{% url 'team_list' %}">Teams</a></li>
-            <li><a href="{% url 'discussion' %}">Discussions</a></li>
+            <li><a href="{% url 'discussion' %}">Inbox</a></li>
 
 
             <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" title="Temporary Links for Convenience">Add New</a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" title="Temporary Links for Convenience">Create New Content</a>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
               <li><a href="{% url 'series_new' %}">Series</a></li>
               <li><a href="{% url 'story_new' %}">Story</a></li>
@@ -148,7 +148,7 @@
                   <a aria-label="More" class="btn btn-icon navbar-btn dropdown-toggle" data-toggle="dropdown" href="#">
                     <i class="fa fa-ellipsis-v"></i>
                   </a>
-                  <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                  <ul class="dropdown-menu dropdown-menu-right thin" role="menu">
                     <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'user_edit' pk=request.user.id %}"><span class="pull-right"><i class="fa fa-user text-muted"></i></span>Profile</a></li>
                     <li class="divider"></li>
                     {% if request.user.organization %}
@@ -164,8 +164,8 @@
                   </ul>
                 </div><!-- /.dropdown -->
               {% else %}
-                <li><a href="/accounts/signup/" class="pull-right">Signup</a></li>
-                <li><a href="/accounts/login/" class="pull-right">Login</a></li>
+                <li><a href="/accounts/signup/" class="pull-right thin">Signup</a></li>
+                <li><a href="/accounts/login/" class="pull-right thin">Login</a></li>
               {% endif %}
           </ul>
         </div>
@@ -243,15 +243,7 @@
     </div>
 
 
-
-
-
-
     <!-- End of Modal Windows -->
-
-
-
-
 
   </main><!--/#wrapper-->
 

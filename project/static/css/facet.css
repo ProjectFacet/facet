@@ -128,7 +128,19 @@ hr {
 }
 
 .nav-tabs li a {
-  color: #CAD3DF !important;
+  color: #fff !important;
+}
+
+.nav-tabs li.active {
+  border-color: #64b5f6;
+}
+
+.nav-tabs li.active a:hover {
+  border-color: #64b5f6;
+}
+
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:focus, .nav-tabs > li.active > a:hover {
+  border-color: #64b5f6;
 }
 
 #facettabs {
@@ -376,6 +388,22 @@ hr {
   padding-top: 5px !important;
 }
 
+.space-tb-10 {
+  margin: 10px 0px 10px 0px;
+}
+
+.space-10 {
+  margin: 10px;
+}
+
+.space-tb-25 {
+  margin: 25px 0px 25px 0px;
+}
+
+.space-25 {
+  margin: 25px;
+}
+
 /*Specific Spacing Styles*/
 
 .team {
@@ -471,6 +499,7 @@ label {
   color: #fff;
   border: none;
 }
+
 
 /* ---------------------------------------*/
 /*           Avatar/Image Styles          */
@@ -585,6 +614,11 @@ label {
 
 #vf_content_ifr {
   height: 500px !important;
+}
+
+.mce-label {
+  font-size: 12px !important;
+  color: #374355;
 }
 
 /* ---------------------------------------*/
