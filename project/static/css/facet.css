@@ -419,7 +419,7 @@ hr {
 /* ---------------------------------------*/
 
 input {
-  border-bottom: 1px solid #54657E;
+  border-bottom: 1px solid #54657E !important;
   background-color: transparent;
   color: #fff;
   border: none;

@@ -183,7 +183,6 @@ def discussion(request):
 
 def org_new(request):
     """ A user can create an organization after signing up.
-
     Ex. A member of a news organization creates an organization account for the newsroom.
     Ex. A freelancer can create their own organization to form a network with any newsroom
     they regularly contribute to.
@@ -191,11 +190,13 @@ def org_new(request):
 
     orgform = CreateOrganization()
     if request.method == "POST":
-        orgform = CreateOrganization(request.POST or None)
+        import pdb; pdb.set_trace()
+        orgform = CreateOrganization(request.POST, request.FILES)
         if orgform.is_valid():
             organization = orgform.save(commit=False)
             organization.owner = request.user
             organization.creation_date = timezone.now()
+            organization.logo = request.FILES['logo']
             discussion = Discussion.objects.create_discussion("ORG")
             organization.discussion = discussion
             organization.save()
