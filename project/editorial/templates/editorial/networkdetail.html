@@ -39,7 +39,7 @@
       </div>
       <div class="post-comment">
             <div class="row">
-              <form action="/networkcomment/new" method="POST" class="post-form" role="form">
+              <form action="{% url 'create_networkcomment' %}" method="POST" class="post-form" role="form">
                 <div class="col-md-11">
                     {% csrf_token %}
                     <div class="form-group">
@@ -168,7 +168,7 @@
         <h4 class="modal-title" id="addUserModalLabel">Add a note for this network</h4>
       </div>
       <div class="modal-body">
-        <form action="/network/note/new/" method="POST" class="post-form">
+        <form action="{% url 'create_network_note' %}" method="POST" class="post-form">
         {% csrf_token %}
         {% bootstrap_form networknoteform %}
         <input type="hidden" name="network" value="{{ network.pk }}" />
@@ -190,7 +190,7 @@
         <h4 class="modal-title" id="inviteOrgToNetworkModalLabel">Invite an organization to join {{ network.name }}</h4>
       </div>
       <div class="modal-body">
-        <form action="/network/invitation/" method="POST" class="post-form">
+        <form action="{% url 'send_network_invite' %}" method="POST" class="post-form">
         {% csrf_token %}
         {% bootstrap_form networkinvitationform %}
         <input type="hidden" name="network" value="{{ network.pk }}" />

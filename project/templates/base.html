@@ -209,7 +209,7 @@
             <h4 class="modal-title" id="sendPrivateMessageLabel">Send a private message</h4>
           </div>
           <div class="modal-body">
-            <form action="privatemessage/new/" method="POST" class="post-form">
+            <form action="{% url 'private_message_new' %}" method="POST" class="post-form">
             {% csrf_token %}
             {% bootstrap_form privatemessageform %}
             <button type="submit" class="btn btn-primary">Send Message</button>
@@ -230,7 +230,7 @@
             <h4 class="modal-title" id="addUserNoteLabel">Create a note</h4>
           </div>
           <div class="modal-body">
-            <form action="user/note/new/" method="POST" class="post-form">
+            <form action="{% url 'create_user_note' %}" method="POST" class="post-form">
             {% csrf_token %}
             {% bootstrap_form usernoteform %}
             <button type="submit" class="btn btn-primary">Create Note</button>

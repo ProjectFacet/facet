@@ -113,7 +113,7 @@
             <h4 class="modal-title" id="addUserModalLabel">Add a note for this user</h4>
           </div>
           <div class="modal-body">
-            <form action="/user/note/new/" method="POST" class="post-form">
+            <form action="{% url 'create_user_note' %}" method="POST" class="post-form">
             {% csrf_token %}
             {% bootstrap_form usernoteform %}
             <input type="hidden" name="user" value="{{ user.pk }}" />

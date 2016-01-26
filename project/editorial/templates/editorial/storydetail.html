@@ -69,7 +69,7 @@
                 <div class="comment">
                     <div class="row">
                       <div class="comment-ui">
-                      <form action="/storycomment/new" method="POST" class="post-form" role="form">
+                      <form action="{% url 'create_storycomment' %}" method="POST" class="post-form" role="form">
                         <div class="col-md-10">
                             {% csrf_token %}
                             <div class="form-group">
@@ -407,7 +407,7 @@
                     </div>
                     <div class="comment">
                         <div class="row">
-                          <form action="/webcomment/new" method="POST" class="post-form" role="form">
+                          <form action="{% url 'create_webcomment' %}" method="POST" class="post-form" role="form">
                             <div class="col-md-10">
                                 {% csrf_token %}
                                 <div class="form-group">
@@ -636,7 +636,7 @@
                     </div>
                     <div class="comment">
                         <div class="row">
-                          <form action="/printcomment/new" method="POST" class="post-form" role="form">
+                          <form action="{% url 'create_printcomment' %}" method="POST" class="post-form" role="form">
                             <div class="col-md-10">
                                 {% csrf_token %}
                                 <div class="form-group">
@@ -867,7 +867,7 @@
                     </div>
                     <div class="comment">
                         <div class="row">
-                          <form action="/audiocomment/new" method="POST" class="post-form" role="form">
+                          <form action="{% url 'create_audiocomment' %}" method="POST" class="post-form" role="form">
                             <div class="col-md-10">
                                 {% csrf_token %}
                                 <div class="form-group">
@@ -1096,7 +1096,7 @@
                     </div>
                     <div class="comment">
                         <div class="row">
-                          <form action="/videocomment/new" method="POST" class="post-form" role="form">
+                          <form action="{% url 'create_videocomment' %}" method="POST" class="post-form" role="form">
                             <div class="col-md-10">
                                 {% csrf_token %}
                                 <div class="form-group">
@@ -1149,7 +1149,7 @@
             <h5 class="modal-title" id="addStoryNoteLabel">Add a note for this story</h5>
           </div>
           <div class="modal-body">
-            <form action="/story/note/new/" method="POST" class="post-form">
+            <form action="{% url 'create_story_note' %}" method="POST" class="post-form">
             {% csrf_token %}
             {% bootstrap_form storynoteform %}
             <input type="hidden" name="story" value="{{ story.pk }}" />

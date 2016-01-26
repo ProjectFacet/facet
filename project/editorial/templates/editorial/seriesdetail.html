@@ -40,7 +40,7 @@
         <div class="comment">
           <hr>
           <div class="row">
-            <form action="/seriescomment/new" method="POST" class="post-form" role="form">
+            <form action="{% url 'create_seriescomment' %}" method="POST" class="post-form" role="form">
               <div class="col-md-10">
                   {% csrf_token %}
                   <div class="form-group">
@@ -208,7 +208,7 @@
         <h5 class="modal-title" id="addUserModalLabel">Add a note for this series</h5>
       </div>
       <div class="modal-body">
-        <form action="/series/note/new/" method="POST" class="post-form">
+        <form action="{% url 'create_series_note' %}" method="POST" class="post-form">
         {% csrf_token %}
         {% bootstrap_form seriesnoteform %}
         <input type="hidden" name="series" value="{{ series.pk }}" />
