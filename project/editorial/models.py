@@ -25,7 +25,8 @@ from django.contrib.postgres.fields import ArrayField
 from simple_history.models import HistoricalRecords
 from model_utils.models import TimeStampedModel
 from datetime import timedelta
-from imagekit.models import ProcessedImageField
+from imagekit.models import ProcessedImageField, ImageSpecField
+from pilkit.processors import ResizeToFit, SmartResize
 from django.contrib.auth.models import AbstractUser
 from django.utils.encoding import python_2_unicode_compatible
 from django.core.urlresolvers import reverse
@@ -112,10 +113,15 @@ class User(AbstractUser):
         blank=True,
     )
 
-    # FK to an asset?
-    profile_photo = models.ImageField(
+    photo = models.ImageField(
         upload_to="users",
         blank=True,
+    )
+
+    display_photo = ImageSpecField(
+        source='',
+        processors=[SmartResize(300,300)],
+        format='JPEG',
     )
 
     facebook = models.CharField(
@@ -256,6 +262,17 @@ class Organization(models.Model):
         blank=True,
     )
 
+    logo = models.ImageField(
+        upload_to="logos",
+        blank=True,
+    )
+
+    display_logo = ImageSpecField(
+        source='',
+        processors=[SmartResize(300,300)],
+        format='JPEG',
+    )
+
     location = models.CharField(
         max_length='255',
         blank=True,
@@ -377,8 +394,14 @@ class Network(models.Model):
     )
 
     logo = models.ImageField(
-        upload_to="organizations",
+        upload_to="logos",
         blank=True,
+    )
+
+    display_logo = ImageSpecField(
+        source='',
+        processors=[SmartResize(300,300)],
+        format='JPEG',
     )
 
     members = models.ManyToManyField(
