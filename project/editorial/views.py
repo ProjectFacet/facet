@@ -241,7 +241,7 @@ def org_edit(request, pk):
     organization = get_object_or_404(Organization, pk=pk)
 
     if request.method == "POST":
-        orgform = CreateOrganization(data=request.POST, instance=organization)
+        orgform = CreateOrganization(request.POST, request.FILES, instance=organization)
         if orgform.is_valid():
             orgform.save()
             return redirect('org_detail', pk=organization.id)

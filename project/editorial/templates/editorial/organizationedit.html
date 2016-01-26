@@ -16,7 +16,7 @@
 <div class="row content-lower-25">
   <div class="col-md-12">
     <div class="row">
-    <form method="POST" class="post-form">{% csrf_token %}
+    <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
       <!-- Left Side -->
       <div class="col-md-8 col-md-offset-2">
         <div class="form-group custom-form">
@@ -34,6 +34,15 @@
           {% if orgform.location.errors %}
             <div class="alert alert-warning" role="alert">
             {{ orgform.location.errors }}
+            </div>
+          {% endif %}
+        </div>
+        <div class="form-group custom-form">
+          <a href="#" data-toggle="tooltip" title="{{ orgform.name.help_text }}"><span class="field-label">{{ orgform.logo.label_tag }}</span></a>
+          {{ orgform.logo }}
+          {% if orgform.logo.errors %}
+            <div class="alert alert-warning" role="alert">
+            {{ orgform.logo.errors }}
             </div>
           {% endif %}
         </div>

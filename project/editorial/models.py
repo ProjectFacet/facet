@@ -71,8 +71,6 @@ class User(AbstractUser):
         help_text='Type of user.'
     )
 
-
-
     credit_name = models.CharField(
         max_length=75,
         help_text='Full name of user as listed as a credit on content.',
@@ -119,7 +117,7 @@ class User(AbstractUser):
     )
 
     display_photo = ImageSpecField(
-        source='',
+        source='photo',
         processors=[SmartResize(300,300)],
         format='JPEG',
     )
@@ -268,7 +266,7 @@ class Organization(models.Model):
     )
 
     display_logo = ImageSpecField(
-        source='',
+        source='logo',
         processors=[SmartResize(300,300)],
         format='JPEG',
     )
