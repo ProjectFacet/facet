@@ -24,7 +24,10 @@
           <div class="media">
             <div class="media-left content-right-10">
               <div class="kit-avatar kit-avatar-42 kit-avatar-square no-border big-team-panel-avatar">
-                <img class="media-object" src="/static/media/profile/{{ user.first_name}}{{user.id}}.jpg" alt="profile image">
+                {% if user.display_photo %}
+                <img class="media-object" src="{{ user.display_photo.url }}" alt="profile image">
+                {% else %}
+                {% endif %}
               </div>
             </div>
             <div class="media-body">
@@ -78,7 +81,11 @@
                               <div class="media">
                                 <div class="media-left">
                                   <div class="kit-avatar kit-avatar-42 kit-avatar-square no-border team-panel-avatar">
-                                    <img class="media-object" src="/static/media/profile/{{ user.first_name}}{{user.id}}.jpg" alt="project brand">
+                                    {% if user.display_photo %}
+                                    <img class="media-object" src="{{ user.display_photo.url }}" alt="project brand">
+                                    {% else %}
+
+                                    {% endif %}
                                   </div>
                                 </div>
                                 <div class="media-body">

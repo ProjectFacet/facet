@@ -53,7 +53,13 @@
                   <p>
                   </td>
                 <!-- <td><p class="tiny-text"> {{ comment.date|date:'n/j' }}<br/>{{ comment.date|date:'g:i a' }}</p></td> -->
-                <td><a href="{% url 'user_detail' pk=comment.user.id %}"><img class="media-object img-circle" width="32" src="/static/media/profile/{{ comment.user.first_name}}{{ comment.user.id}}.jpg" alt="user"></a><p class="tiny-text">{{ comment.user.first_name }}</p></td>
+                <td>
+                  {% if comment.user.display_photo %}
+                  <img class="media-object img-circle" width="32" src="{{ comment.user.display_photo.url }}" alt="user">
+                  {% else %}
+                  {% endif %}
+                  <p class="tiny-text">{{ comment.user.first_name }}</p>
+                </td>
               </tr>
               {% endfor %}
             </tbody>

@@ -42,7 +42,10 @@
               {% for message in private_messages_received %}
               <div class="row profile-row">
                   <div class="col-md-1 subtract-right-25">
-                    <a href="{% url 'user_detail' pk=message.user.id %}"><img class="media-object img-circle" width="32" src="/static/media/profile/{{ message.user.first_name }}{{ message.user.id }}.jpg" alt="user">
+                    {% if message.user.display_photo %}
+                    <a href="{% url 'user_detail' pk=message.user.id %}"><img class="media-object img-circle" width="32" src="{{ message.user.display_photo.url }}" alt="user">
+                    {% else %}
+                    {% endif %}
                     <p class="tiny-text bright">{{ message.user.first_name }}</p></a>
                     <p class="tiny-text pad-5 content-upper-10 content-lower-25">
                       {{ message.date|date:'D, M j' }} <br> {{ message.date|date:'g:i a' }}<p>
@@ -69,7 +72,10 @@
               {% for message in private_messages_sent %}
                 <div class="row profile-row">
                     <div class="col-md-1 subtract-right-25">
-                      <a href="{% url 'user_detail' pk=message.recipient.id %}"><img class="media-object img-circle" width="32" src="/static/media/profile/{{ message.recipient.first_name }}{{ message.recipient.id }}.jpg" alt="user">
+                      {% if message.recipient.display_photo %}
+                      <a href="{% url 'user_detail' pk=message.recipient.id %}"><img class="media-object img-circle" width="32" src="{{ message.recipient.display_photo.url }}" alt="user">
+                      {% else %}
+                      {% endif %}
                       <p class="tiny-text bright">{{ message.recipient.first_name }}</p></a>
                       <p class="tiny-text pad-5 content-upper-10 content-lower-25">
                         {{ message.date|date:'D, M j' }} <br> {{ message.date|date:'g:i a' }}<p>
@@ -97,7 +103,10 @@
               {% for comment in comments %}
                 <div class="row profile-row">
                     <div class="col-md-1 subtract-right-50">
-                      <a href="{% url 'user_detail' pk=comment.user.id %}"><img class="media-object img-circle" width="32" src="/static/media/profile/{{ comment.user.first_name}}{{ comment.user.id}}.jpg" alt="user">
+                      {% if comment.user.display_photo %}
+                      <a href="{% url 'user_detail' pk=comment.user.id %}"><img class="media-object img-circle" width="32" src="{{ comment.user.display_photo.url }}" alt="user">
+                      {% else %}
+                      {% endif %}
                       <p class="tiny-text bright">{{ comment.user.first_name }}</p></a>
                     </div>
                     <div class="col-md-11">

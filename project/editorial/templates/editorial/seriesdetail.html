@@ -28,7 +28,10 @@
                     <p class="tiny-text">{{ comment.date|date:'D M j g:i a' }}</p>
                   </div>
                   <div class="col-md-2">
-                    <img class="media-object img-circle" width="32" src="/static/media/profile/{{ comment.user.first_name}}{{ comment.user.id}}.jpg" alt="user">
+                    {% if comment.user.display_photo %}
+                    <img class="media-object img-circle" width="32" src="{{ comment.user.display_photo.url }}" alt="user">
+                    {% else %}
+                    {% endif %}
                     <p class="tiny-text">{{ comment.user.first_name }}</p>
                   </div>
                 {% endfor %}
@@ -85,9 +88,17 @@
           <div class="col-md-12">
           <hr>
           <h5>Team: </h5>
+          <div class="row">
           {% for user in series.team.all %}
-            <p><a href="{% url 'user_detail' pk=user.id %}">{{ user.credit_name }}</a></p>
+          <div class="col-md-1">
+            {% if user.display_photo %}
+            <img class="media-object img-circle" width="32" src="{{ user.display_photo.url }}" alt="user">
+            {% else %}
+            {% endif %}
+            <p class="tiny-text">{{ user.first_name }}</p>
+          </div>
           {% endfor %}
+          </div>
           </div>
         </div>
       </div>
