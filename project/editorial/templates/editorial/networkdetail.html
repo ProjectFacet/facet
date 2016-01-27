@@ -133,7 +133,12 @@
               <div class="media">
                 <div class="media-left">
                   <div class="kit-avatar kit-avatar-42 kit-avatar-square no-border team-panel-avatar">
-                    <img class="media-object" src="/media/organizations/{{ org.name|lower }}.jpg" alt="organization logo">
+                    {% if org.logo %}
+                    <img class="media-object" src="{{ org.display_logo.url }}" alt="organization logo">
+                    {% else %}
+                    <!-- <img class="media-object" src="/organizations/blank_logo.jpg" alt="organization logo"> -->
+                    {% endif %}
+                    <!-- <img class="media-object" src="/organizations/blank_logo.jpg" alt="organization logo"> -->
                   </div>
                 </div>
                 <div class="media-body">
