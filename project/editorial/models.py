@@ -1941,17 +1941,17 @@ class VideoFacetCopyDetail(models.Model):
 #----------------------------------------------------------------------#
 
 class Asset(models.Model):
-    """ Assets for all the content contained in a series.
-
-    Because series are an organizational container for all content, whether
-    there is one or more stories, making the asset associated with the series,
-    makes it easily available to all content associated with it, rather than the
-    assets either be attached to a story or to a series.
-    """
+    """ Assets for all media uploaded. """
 
     owner = models.ForeignKey(
         User,
         related_name='asset_owner',
+    )
+
+    asset_title = models.CharField(
+        max_length=200,
+        help_text='Text for file name. Name it intuitively.',
+        blank=True,
     )
 
     asset_description = models.TextField(
