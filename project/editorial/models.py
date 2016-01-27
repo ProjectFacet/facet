@@ -112,7 +112,7 @@ class User(AbstractUser):
     )
 
     photo = models.ImageField(
-        upload_to="users",
+        upload_to='users',
         blank=True,
     )
 
@@ -261,7 +261,7 @@ class Organization(models.Model):
     )
 
     logo = models.ImageField(
-        upload_to="logos",
+        upload_to='organizations',
         blank=True,
     )
 
@@ -278,11 +278,6 @@ class Organization(models.Model):
 
     creation_date = models.DateTimeField(
         auto_now_add=True
-    )
-
-    logo = models.ImageField(
-        upload_to="organizations",
-        blank=True,
     )
 
     facebook = models.CharField(
@@ -392,12 +387,12 @@ class Network(models.Model):
     )
 
     logo = models.ImageField(
-        upload_to="logos",
+        upload_to='networks',
         blank=True,
     )
 
     display_logo = ImageSpecField(
-        source='',
+        source='logo',
         processors=[SmartResize(300,300)],
         format='JPEG',
     )

@@ -334,7 +334,7 @@ def user_edit(request, pk):
     user = get_object_or_404(User, pk=pk)
 
     if request.method == "POST":
-        userform = UserProfileForm(data=request.POST, instance=user)
+        userform = UserProfileForm(request.POST, request.FILES, instance=user)
         if userform.is_valid():
             userform.save()
             return redirect('user_detail', pk = user.id)

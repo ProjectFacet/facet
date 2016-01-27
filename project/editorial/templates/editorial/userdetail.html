@@ -7,7 +7,11 @@
 <div class="row particles" id="user-hero">
   <div class="upper-content">
   <div class="col-md-2 col-lg-2 col-sm-1">
-    <img alt="cover" class="profile-page-pic no-padding border-white content-upper-75" src="/static/media/profile/{{ user.first_name}}{{user.id}}.jpg">
+    {% if user.display_photo %}
+    <img alt="cover" class="profile-page-pic no-padding border-white content-upper-75" src="{{ user.display_photo.url }}">
+    {% else %}
+    <!-- <img alt="cover" class="profile-page-pic no-padding border-white content-upper-75" src="nophoto.jpg"> -->
+    {% endif %}
   </div>
   <div class="col-lg-10 content-upper-75">
     <h1 class="media-heading text-light thin uppercase spread-025">{{ user.credit_name }}</h1>

@@ -63,7 +63,7 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'username', 'credit_name', 'title', 'phone', 'email', 'bio', 'location',
-                 'expertise', 'website', 'facebook', 'github', 'twitter', 'linkedin', 'instagram', 'snapchat', 'vine',]
+                 'expertise', 'website', 'facebook', 'github', 'twitter', 'linkedin', 'instagram', 'snapchat', 'vine', 'photo']
         widgets = {
             'expertise': Textarea(attrs={'rows':2}),
         }
@@ -96,7 +96,7 @@ class NetworkForm(forms.ModelForm):
 
     class Meta:
         model = Network
-        fields = ['name', 'network_description']
+        fields = ['name', 'network_description', 'logo']
 
 
 class AddToNetworkForm(forms.ModelForm):

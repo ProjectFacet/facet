@@ -21,7 +21,7 @@
 </div>
 </div>
 
-<form class="post-form" method="POST">{% csrf_token %}
+<form class="post-form" method="POST" enctype="multipart/form-data">{% csrf_token %}
 
 <div class="row profile-row">
   <!-- Left Column -->
@@ -305,7 +305,16 @@
         {{ userform.expertise.errors }}
         </div>
       {% endif %}
-      </div>
+    </div>
+    <div class="form-group custom-form">
+      <a href="#" data-toggle="tooltip" title="{{ userform.photo.help_text }}"><span class="field-label">{{ userform.photo.label_tag }}</span></a>
+      {{ userform.photo }}
+      {% if userform.photo.errors %}
+        <div class="alert alert-warning" role="alert">
+        {{ userform.photo.errors }}
+        </div>
+      {% endif %}
+    </div>
 
     <button id="edit-button" class="btn btn-primary" type="submit">{% trans "Save" %}</button>
   </div>
