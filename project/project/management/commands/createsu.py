@@ -1,5 +1,6 @@
 from django.core.management.base import BaseCommand
 from editorial.models import User
+import os
 
 class Command(BaseCommand):
 
