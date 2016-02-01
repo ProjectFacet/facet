@@ -556,9 +556,9 @@ class Series(models.Model):
     )
 
     collaborate_with = models.ManyToManyField(
-        Network,
-        related_name='series_collaborated_with_network',
-        help_text='Network ids that a series is open to collaboration with.',
+        Organization,
+        related_name='series_collaborated_with_organization',
+        help_text='Organization ids that a series is open to collaboration with.',
         blank=True,
     )
 
@@ -701,11 +701,10 @@ class Story(models.Model):
     )
 
     collaborate_with = models.ManyToManyField(
-        Network,
-        related_name='story_collaborated_with_network',
-        help_text='Network ids that a story is open to collaboration with.',
+        Organization,
+        related_name='story_collaborated_with_organization',
+        help_text='Organization ids that a series is open to collaboration with.',
         blank=True,
-        null=True,
     )
 
     archived = models.BooleanField(
