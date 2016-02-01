@@ -22,7 +22,7 @@ unset_secrets = False
 if 'SECRET_KEY' in os.environ:
     SECRET_KEY = os.environ['SECRET_KEY']
 else:
-    print "You haven't set your Django SECRET_KEY"
+    print "You haven't set your Django SECRET_KEY. Use `$ python manage.py generatekey` to generate one. "
     unset_secrets = True
 
 if 'AWS_STORAGE_BUCKET_NAME' in os.environ:
