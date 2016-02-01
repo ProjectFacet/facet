@@ -1,6 +1,10 @@
-""" Django settings for project project. """
+""" Base settings for Facet. Development and Production inherit from this. """
 
 import os
+
+# -------------------------------------------------------------- #
+# DIRECTORIES
+# -------------------------------------------------------------- #
 
 SETTINGS_DIR = os.path.dirname(__file__)
 PROJECT_DIR = os.path.abspath(SETTINGS_DIR + "/../..")
@@ -10,9 +14,14 @@ STATIC_ROOT = GIT_DIR + "/static/"
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = "/static/"
 STATICFILES_DIRS = [os.path.join(PROJECT_DIR, "static")]
+
+# -------------------------------------------------------------- #
+# EMAIL #
+# -------------------------------------------------------------- #
+
 # SECURITY WARNING: keep the secret key used in production secret!
 # Dev purposes only, will be replaced...
-SECRET_KEY = 'w+1bk&e^ud@@&4delnj!da47%$yi+9*u#*v$t*jrtn7muk23ja'
+SECRET_KEY = os.environ['SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -95,6 +104,10 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = False
 ACCOUNT_AUTHENTICATION_METHOD = "email"
 
+# -------------------------------------------------------------- #
+# EMAIL #
+# -------------------------------------------------------------- #
+
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 EMAIL_USE_TLS = True
@@ -103,6 +116,10 @@ EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
 EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+
+SERVER_EMAIL = os.environ['EMAIL_HOST_USER']
+DEFAULT_FROM_EMAIL = os.environ['EMAIL_HOST_USER']
+
 
 LOGIN_REDIRECT_URL = '/dashboard'
 
