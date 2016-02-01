@@ -157,6 +157,10 @@ class StoryForm(forms.ModelForm):
             options={'format': 'YYYY-MM-DD HH:mm'},
             attrs={'id': 'story-share-picker'})
     )
+    # 
+    # collaborate_with = forms.ModelChoiceField(
+    #     queryset=Organizations.objects.filter()
+    # )
 
 
     class Meta:

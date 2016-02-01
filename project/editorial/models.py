@@ -323,23 +323,18 @@ class Organization(models.Model):
     def get_org_networks(self):
         """ Return list of all the networks that an organization is owner of or member of."""
 
-        # organization_networks = {}
-        # organization_networks['organization'] = self
-        # organization_networks['network_owner'] = Network.objects.filter(owner_organization=self)
-        # organization_networks['network_member'] = []
-        # network_orgs = NetworkOrganization.objects.filter(organization = self)
+        all_organization_networks = Network.objects.filter(Q(Q(owner_organization=self) | Q(organizations=self)))
+        organization_networks = set(all_organization_networks)
+        # print "ALL NETWORKS: ", all_organization_networks
+        # print "SET ALL NETWORKS: ", organization_networks
+        # organization_networks = []
+        # owned_networks = Network.objects.filter(owner_organization=self)
+        # organization_networks.extend(owned_networks)
+        # network_orgs = NetworkOrganization.objects.filter(organization=self)
         # for item in network_orgs:
         #     network = item.network
-        #     organization_networks['network_member'].append(network)
-
-        organization_networks = []
-        owned_networks = Network.objects.filter(owner_organization=self)
-        organization_networks.extend(owned_networks)
-        network_orgs = NetworkOrganization.objects.filter(organization = self)
-        for item in network_orgs:
-            network = item.network
-            if network not in organization_networks:
-                organization_networks.append(network)
+        #     if network not in organization_networks:
+        #         organization_networks.append(network)
 
         return organization_networks
 
@@ -397,7 +392,7 @@ class Network(models.Model):
         format='JPEG',
     )
 
-    members = models.ManyToManyField(
+    organizations = models.ManyToManyField(
         Organization,
         through='NetworkOrganization',
         related_name='network_organization',
@@ -422,7 +417,11 @@ class Network(models.Model):
     def get_network_organizations(self):
         """ Return list of all organizations that are part of a network. """
 
-        network_organizations = NetworkOrganization.objects.filter(network=self)
+        network_org_objects = NetworkOrganization.objects.filter(network=self)
+        network_organizations = []
+        for item in network_org_objects:
+            organization = item.organization
+            network_organizations.append(organization)
         return network_organizations
 
 
