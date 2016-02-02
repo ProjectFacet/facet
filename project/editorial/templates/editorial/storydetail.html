@@ -311,6 +311,19 @@
                       <a href="#" data-toggle="tooltip" title="Image"><label class="field-label">Images</label></a>
                       <a href="#" data-toggle="modal" data-target="#addWebFacetImage" title="Add Image"><i class="fa fa-picture-o sameline dark"></i></a>
                     </div>
+                    <div class="imageasset-thumbs">
+                      <div class="row">
+                      {% for webfacet in story.webfacetstory.all %}
+                        {% for image in webfacet.image_assets.all %}
+                          {% if image.display_photo %}
+                          <div class="col-md-4">
+                            <a href="#" class="thumbnail"><img src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}"></a>
+                          </div>
+                          {% endif %}
+                        {% endfor %}
+                      {% endfor %}
+                      </div>
+                    </div>
 
 
                   </div>

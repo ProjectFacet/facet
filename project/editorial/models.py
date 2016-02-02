@@ -1984,7 +1984,7 @@ class ImageAsset(models.Model):
 
     display_photo = ImageSpecField(
         source='photo',
-        processors=[SmartResize(300,300)],
+        processors=[SmartResize(600,600)],
         format='JPEG',
     )
 

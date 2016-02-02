@@ -871,13 +871,14 @@ def upload_webfacet_image(request):
         imageform=ImageAssetForm(request.POST, request.FILES)
         if imageform.is_valid():
             webimage = imageform.save(commit=False)
+            # retrieve the webfacet the image should be associated with
             webfacet_id = request.POST.get('webfacet')
-            print "WEBFACETid: ", webfacet_id
             webfacet = get_object_or_404(WebFacet, id=webfacet_id)
+            # set request based attributes
             webimage.owner = request.user
             webimage.organization = request.user.organization
             webimage.save()
-            # add image asset to webfacet assets
+            # add image asset to webfacet image_assets
             webfacet.image_assets.add(webimage)
             webfacet.save()
     return redirect('story_detail', pk=webfacet.story.id)
