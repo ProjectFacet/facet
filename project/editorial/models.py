@@ -1932,12 +1932,31 @@ class VideoFacetCopyDetail(models.Model):
 #   - Associations: None
 #----------------------------------------------------------------------#
 
+class ImageAssetManager(models.Manager):
+    """Custom manager for ImageAsset."""
+
+    def create_imageasset(self, owner, organization, asset_title, asset_description, asset_attribution, photo, image_type, keywords):
+        """Method for quick creation of videofacet copy detail record."""
+        imageasset=self.create(owner=owner, organization=organization, asset_title=asset_title, asset_description=asset_description, asset_attribution=asset_attribution, photo=photo, image_type=image_type, keywords=keywords)
+        return imageasset
+
+
 class ImageAsset(models.Model):
     """ Assets for all media uploaded. """
 
     owner = models.ForeignKey(
         User,
-        related_name='asset_owner',
+        related_name='image_asset_owner',
+    )
+
+    organization = models.ForeignKey(
+        Organization,
+        related_name='image_asset_organization'
+    )
+
+    original = models.BooleanField(
+        default=True,
+        help_text='This content originally belonged to this organization.'
     )
 
     asset_title = models.CharField(
@@ -1973,14 +1992,14 @@ class ImageAsset(models.Model):
     PHOTO = 'PIC'
     GRAPHIC = 'GRAPH'
 
-    ASSET_TYPE_CHOICES = (
+    IMAGE_TYPE_CHOICES = (
         (PHOTO, 'Photograph'),
         (GRAPHIC, 'Graphic'),
     )
 
     image_type = models.CharField(
         max_length=20,
-        choices = ASSET_TYPE_CHOICES,
+        choices = IMAGE_TYPE_CHOICES,
         help_text='What kind of image.'
     )
 
@@ -1992,18 +2011,21 @@ class ImageAsset(models.Model):
     keywords = ArrayField(
         models.CharField(max_length=100),
         default=list,
-        help_text='List of keywords for search.'
+        help_text='List of keywords for search.',
+        blank=True,
     )
 
+    objects = ImageAssetManager()
+
     def __str__(self):
-        return "Asset: {asset} is a {asset_type}".format(
+        return "Asset: {asset} is a {image_type}".format(
                                 asset=self.id,
-                                asset_type=self.asset_type,
+                                image_type=self.image_type,
                                 )
 
     @property
     def type(self):
-        return "{asset_type} Asset". format(asset_type=self.asset_type)
+        return "{image_type} Asset". format(image_type=self.image_type)
 
 
 class Note(models.Model):

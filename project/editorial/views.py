@@ -866,7 +866,21 @@ def create_story_note(request):
 
 def upload_webfacet_image(request):
     """ Add image to a webfacet."""
-    pass
+
+    if request.method == 'POST':
+        imageform=ImageAssetForm(request.POST, request.FILES)
+        if imageform.is_valid():
+            webimage = imageform.save(commit=False)
+            webfacet_id = request.POST.get('webfacet')
+            print "WEBFACETid: ", webfacet_id
+            webfacet = get_object_or_404(WebFacet, id=webfacet_id)
+            webimage.owner = request.user
+            webimage.organization = request.user.organization
+            webimage.save()
+            # add image asset to webfacet assets
+            webfacet.image_assets.add(webimage)
+            webfacet.save()
+    return redirect('story_detail', pk=webfacet.story.id)
 
 def upload_printfacet_image(request):
     """ Add image to a printfacet."""

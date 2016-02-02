@@ -1151,7 +1151,7 @@
             <h5 class="modal-title" id="addWebFacetImageLabel">Add an image to this webfacet.</h5>
           </div>
           <div class="modal-body">
-            <form action="{% url 'upload_webfacet_image' %}" method="POST" class="post-form">
+            <form action="{% url 'upload_webfacet_image' %}" method="POST" class="post-form" enctype="multipart/form-data">
             {% csrf_token %}
             {% bootstrap_form webfacet_imageform %}
             {% for webfacet in story.webfacetstory.all %}
@@ -1175,7 +1175,7 @@
             <h5 class="modal-title" id="addPrintFacetImageLabel">Add an image to this printfacet.</h5>
           </div>
           <div class="modal-body">
-            <form action="{% url 'upload_printfacet_image' %}" method="POST" class="post-form">
+            <form action="{% url 'upload_printfacet_image' %}" method="POST" class="post-form" enctype="multipart/form-data">
             {% csrf_token %}
             {% bootstrap_form printfacet_imageform %}
             {% for printfacet in story.printfacetstory.all %}
@@ -1199,7 +1199,7 @@
             <h5 class="modal-title" id="addAudioFacetImageLabel">Add an image to this audiofacet.</h5>
           </div>
           <div class="modal-body">
-            <form action="{% url 'upload_audiofacet_image' %}" method="POST" class="post-form">
+            <form action="{% url 'upload_audiofacet_image' %}" method="POST" class="post-form" enctype="multipart/form-data">
             {% csrf_token %}
             {% bootstrap_form audiofacet_imageform %}
             {% for audiofacet in story.audiofacetstory.all %}
@@ -1223,7 +1223,7 @@
             <h5 class="modal-title" id="addVideoFacetImageLabel">Add an image to this videofacet.</h5>
           </div>
           <div class="modal-body">
-            <form action="{% url 'upload_videofacet_image' %}" method="POST" class="post-form">
+            <form action="{% url 'upload_videofacet_image' %}" method="POST" class="post-form" enctype="multipart/form-data">
             {% csrf_token %}
             {% bootstrap_form videofacet_imageform %}
             {% for videofacet in story.videofacetstory.all %}
