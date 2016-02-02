@@ -1,2 +1,2 @@
--r base.text
+-r base.txt
 django-debug-toolbar==1.4

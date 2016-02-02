@@ -1,1 +1,4 @@
 -r base.txt
+awsebcli
+django-storages
+boto
