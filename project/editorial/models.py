@@ -317,7 +317,6 @@ class Organization(models.Model):
         organization_users = {}
         organization_users['organization'] = self
         organization_users['users'] = User.objects.filter(organization=self)
-
         return organization_users
 
     def get_org_networks(self):
@@ -325,18 +324,19 @@ class Organization(models.Model):
 
         all_organization_networks = Network.objects.filter(Q(Q(owner_organization=self) | Q(organizations=self)))
         organization_networks = set(all_organization_networks)
-        # print "ALL NETWORKS: ", all_organization_networks
-        # print "SET ALL NETWORKS: ", organization_networks
-        # organization_networks = []
-        # owned_networks = Network.objects.filter(owner_organization=self)
-        # organization_networks.extend(owned_networks)
-        # network_orgs = NetworkOrganization.objects.filter(organization=self)
-        # for item in network_orgs:
-        #     network = item.network
-        #     if network not in organization_networks:
-        #         organization_networks.append(network)
-
         return organization_networks
+
+    def get_org_collaborators(self):
+        """ Return list of all organizations that are members of the same networks as self."""
+
+        networks = Organization.get_org_networks(self)
+        collaborators = []
+        for network in networks:
+            orgs = Network.get_network_organizations(network)
+            collaborators.extend(orgs)
+        unique_collaborators = set(collaborators)
+        return unique_collaborators
+
 
     @property
     def description(self):

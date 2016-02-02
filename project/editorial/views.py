@@ -13,7 +13,7 @@ import json
 from .forms import (
     AddUserForm,
     UserProfileForm,
-    CreateOrganization,
+    OrganizationForm,
     NetworkForm,
     SeriesForm,
     StoryForm,
@@ -85,6 +85,11 @@ def index(request):
 #----------------------------------------------------------------------#
 def test(request):
     """ Use for rapid testing of new pages."""
+
+    organization = request.user.organization
+    print "ORG: ", organization
+    test = Organization.get_org_collaborators(organization)
+    print "TEST: ", test
 
     return render(request, 'editorial/test.html', {
         }
@@ -188,10 +193,10 @@ def org_new(request):
     they regularly contribute to.
     """
 
-    orgform = CreateOrganization()
+    orgform = OrganizationForm()
     if request.method == "POST":
         import pdb; pdb.set_trace()
-        orgform = CreateOrganization(request.POST, request.FILES)
+        orgform = OrganizationForm(request.POST, request.FILES)
         if orgform.is_valid():
             organization = orgform.save(commit=False)
             organization.owner = request.user
@@ -206,7 +211,7 @@ def org_new(request):
             current_user.save()
             return redirect('org_detail', pk=organization.pk)
     else:
-        form = CreateOrganization()
+        form = OrganizationForm()
     return render(request, 'editorial/organizationnew.html', {
             'orgform': orgform,
             })
@@ -242,12 +247,12 @@ def org_edit(request, pk):
     organization = get_object_or_404(Organization, pk=pk)
 
     if request.method == "POST":
-        orgform = CreateOrganization(request.POST, request.FILES, instance=organization)
+        orgform = OrganizationForm(request.POST, request.FILES, instance=organization)
         if orgform.is_valid():
             orgform.save()
             return redirect('org_detail', pk=organization.id)
     else:
-        orgform = CreateOrganization(instance=organization)
+        orgform = OrganizationForm(instance=organization)
 
     return render(request, 'editorial/organizationedit.html', {
             'organization': organization,
@@ -505,15 +510,15 @@ def story_new(request):
     if request.method == "POST":
         storyform = StoryForm(request.POST or None)
         #import pdb; pdb.set_trace()
-    if storyform.is_valid():
-        story = storyform.save(commit=False)
-        story.owner = request.user
-        story.organization = request.user.organization
-        discussion = Discussion.objects.create_discussion("STO")
-        story.discussion = discussion
-        story.save()
-        storyform.save_m2m()
-        return redirect('story_detail', pk=story.pk)
+        if storyform.is_valid():
+            story = storyform.save(commit=False)
+            story.owner = request.user
+            story.organization = request.user.organization
+            discussion = Discussion.objects.create_discussion("STO")
+            story.discussion = discussion
+            story.save()
+            storyform.save_m2m()
+            return redirect('story_detail', pk=story.pk)
     else:
         storyform = StoryForm()
     return render(request, 'editorial/storynew.html', {

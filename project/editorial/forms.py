@@ -72,20 +72,13 @@ class UserProfileForm(forms.ModelForm):
 #      Organization Forms        #
 # ------------------------------ #
 
-class CreateOrganization(forms.ModelForm):
+class OrganizationForm(forms.ModelForm):
     """ Create an Organization. """
 
     class Meta:
         model = Organization
         fields = ['name', 'org_description', 'location', 'logo']
 
-
-class EditOrganization(forms.ModelForm):
-    """ Edit an Organization. """
-
-    class Meta:
-        model = Organization
-        fields = ['name', 'org_description', 'location', 'logo']
 
 # ------------------------------ #
 #         Network Forms          #
@@ -157,9 +150,9 @@ class StoryForm(forms.ModelForm):
             options={'format': 'YYYY-MM-DD HH:mm'},
             attrs={'id': 'story-share-picker'})
     )
-    # 
+
     # collaborate_with = forms.ModelChoiceField(
-    #     queryset=Organizations.objects.filter()
+    #     queryset=Organization.get_org_collaborators(organization)
     # )
 
 
