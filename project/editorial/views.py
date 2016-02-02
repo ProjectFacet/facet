@@ -51,7 +51,7 @@ from models import (
     VideoFacet,
     SeriesNote,
     StoryNote,
-    Asset,
+    ImageAsset,
     Comment,
     PrivateMessage,
     Discussion,

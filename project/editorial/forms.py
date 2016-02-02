@@ -27,6 +27,7 @@ from editorial.models import (
     UserNote,
     SeriesNote,
     StoryNote,
+    ImageAsset,
     )
 
 # ------------------------------ #
@@ -417,6 +418,19 @@ class VideoFacetForm(forms.ModelForm):
          '/static/scripts/jquery.datetimepicker.js',
          '/static/scripts/bootstrap-datetimepicker.js',
          '/static/scripts/tiny_mce/tinymce.min.js',)
+
+
+# ------------------------------ #
+#          Asset Forms           #
+# ------------------------------ #
+
+class ImageAssetForm(forms.ModelForm):
+    """Upload image to a facet."""
+
+    class Meta:
+        model = ImageAsset
+        fields = ['asset_title', 'asset_description', 'attribution']
+
 
 # ------------------------------ #
 #         Comment Forms          #

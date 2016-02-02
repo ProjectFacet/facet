@@ -573,12 +573,6 @@ class Series(models.Model):
         null=True,
     )
 
-    assets = models.ManyToManyField(
-        'Asset',
-        blank=True,
-        help_text='',
-    )
-
     class Meta:
         verbose_name = 'Series'
         verbose_name_plural = "Series"
@@ -912,8 +906,8 @@ class WebFacet(models.Model):
         blank=True,
     )
 
-    assets = models.ManyToManyField(
-        'Asset',
+    image_assets = models.ManyToManyField(
+        'ImageAsset',
         blank=True,
     )
 
@@ -1100,8 +1094,8 @@ class PrintFacet(models.Model):
         blank=True,
     )
 
-    assets = models.ManyToManyField(
-        'Asset',
+    image_assets = models.ManyToManyField(
+        'ImageAsset',
         blank=True,
     )
 
@@ -1290,8 +1284,8 @@ class AudioFacet(models.Model):
         blank=True,
     )
 
-    assets = models.ManyToManyField(
-        'Asset',
+    image_assets = models.ManyToManyField(
+        'ImageAsset',
         blank=True,
     )
 
@@ -1479,8 +1473,8 @@ class VideoFacet(models.Model):
         blank=True,
     )
 
-    assets = models.ManyToManyField(
-        'Asset',
+    image_assets = models.ManyToManyField(
+        'ImageAsset',
         blank=True,
     )
 
@@ -1933,12 +1927,12 @@ class VideoFacetCopyDetail(models.Model):
 
 #----------------------------------------------------------------------#
 #   MetaMaterials:
-#   - Main Tables:  Asset, Note, UserNote, SeriesNote, StoryNote, Comment
+#   - Main Tables:  ImageAsset, Note, UserNote, SeriesNote, StoryNote, Comment
 #                   CommentReadStatus, Discussion, PrivateDiscussion,
 #   - Associations: None
 #----------------------------------------------------------------------#
 
-class Asset(models.Model):
+class ImageAsset(models.Model):
     """ Assets for all media uploaded. """
 
     owner = models.ForeignKey(
@@ -1964,30 +1958,30 @@ class Asset(models.Model):
         blank=True,
     )
 
-    s3_link = models.URLField(
-        max_length=300,
-        help_text='The item on S3.'
+    photo = models.ImageField(
+        upload_to='photos',
+        blank=True,
+    )
+
+    display_photo = ImageSpecField(
+        source='photo',
+        processors=[SmartResize(300,300)],
+        format='JPEG',
     )
 
     #Choices for Asset type
     PHOTO = 'PIC'
     GRAPHIC = 'GRAPH'
-    AUDIO = 'AUD'
-    VIDEO = 'VID'
-    DOCUMENT = 'DOC'
 
     ASSET_TYPE_CHOICES = (
         (PHOTO, 'Photograph'),
         (GRAPHIC, 'Graphic'),
-        (AUDIO, 'Audio'),
-        (VIDEO, 'Video'),
-        (DOCUMENT, 'Document'),
     )
 
-    asset_type = models.CharField(
+    image_type = models.CharField(
         max_length=20,
         choices = ASSET_TYPE_CHOICES,
-        help_text='What kind is the asset.'
+        help_text='What kind of image.'
     )
 
     creation_date = models.DateTimeField(
