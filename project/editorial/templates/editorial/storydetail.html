@@ -324,14 +324,6 @@
                       {% endfor %}
                       </div>
                     </div>
-                    <script>
-                      $('#webimage-thumbs').magnificPopup({
-                        delegate: 'a',
-                        type: 'image',
-                        gallery: {enabled:true}
-                      });
-                    </script>
-
 
                   </div>
                   <!-- End of Left Column -->
@@ -556,6 +548,19 @@
                     <div class="section-title">
                       <a href="#" data-toggle="tooltip" title="Image"><label class="field-label">Images</label></a>
                       <a href="#" data-toggle="modal" data-target="#addPrintFacetImage" title="Add Image"><i class="fa fa-picture-o sameline dark"></i></a>
+                    </div>
+                    <div id="printimage-thumbs">
+                      <div class="row">
+                      {% for printfacet in story.printfacetstory.all %}
+                        {% for image in printfacet.image_assets.all %}
+                          {% if image.display_photo %}
+                          <div class="col-md-4">
+                            <a href="{{ image.display_photo.url }}" class="thumbnail"><img src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}"></a>
+                          </div>
+                          {% endif %}
+                        {% endfor %}
+                      {% endfor %}
+                      </div>
                     </div>
 
 
@@ -787,6 +792,19 @@
                       <a href="#" data-toggle="tooltip" title="Image"><label class="field-label">Images</label></a>
                       <a href="#" data-toggle="modal" data-target="#addAudioFacetImage" title="Add Image"><i class="fa fa-picture-o sameline dark"></i></a>
                     </div>
+                    <div id="audioimage-thumbs">
+                      <div class="row">
+                      {% for audiofacet in story.audiofacetstory.all %}
+                        {% for image in audiofacet.image_assets.all %}
+                          {% if image.display_photo %}
+                          <div class="col-md-4">
+                            <a href="{{ image.display_photo.url }}" class="thumbnail"><img src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}"></a>
+                          </div>
+                          {% endif %}
+                        {% endfor %}
+                      {% endfor %}
+                      </div>
+                    </div>
 
 
                   </div>
@@ -1013,6 +1031,19 @@
                     <div class="section-title">
                       <a href="#" data-toggle="tooltip" title="Image"><label class="field-label">Images</label></a>
                       <a href="#" data-toggle="modal" data-target="#addVideoFacetImage" title="Add Image"><i class="fa fa-picture-o sameline dark"></i></a>
+                    </div>
+                    <div id="videoimage-thumbs">
+                      <div class="row">
+                      {% for videofacet in story.videofacetstory.all %}
+                        {% for image in videofacet.image_assets.all %}
+                          {% if image.display_photo %}
+                          <div class="col-md-4">
+                            <a href="{{ image.display_photo.url }}" class="thumbnail"><img src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}"></a>
+                          </div>
+                          {% endif %}
+                        {% endfor %}
+                      {% endfor %}
+                      </div>
                     </div>
 
 
@@ -1285,6 +1316,30 @@
 
   <script>
     $(".chosen-select").chosen()
+
+    $('#webimage-thumbs').magnificPopup({
+      delegate: 'a',
+      type: 'image',
+      gallery: {enabled:true}
+    });
+
+    $('#printimage-thumbs').magnificPopup({
+      delegate: 'a',
+      type: 'image',
+      gallery: {enabled:true}
+    });
+
+    $('#audioimage-thumbs').magnificPopup({
+      delegate: 'a',
+      type: 'image',
+      gallery: {enabled:true}
+    });
+
+    $('#videoimage-thumbs').magnificPopup({
+      delegate: 'a',
+      type: 'image',
+      gallery: {enabled:true}
+    });
   </script>
 
 {% endblock %}

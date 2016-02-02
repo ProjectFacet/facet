@@ -885,15 +885,60 @@ def upload_webfacet_image(request):
 
 def upload_printfacet_image(request):
     """ Add image to a printfacet."""
-    pass
+
+    if request.method == 'POST':
+        imageform=ImageAssetForm(request.POST, request.FILES)
+        if imageform.is_valid():
+            printimage = imageform.save(commit=False)
+            # retrieve the printfacet the image should be associated with
+            printfacet_id = request.POST.get('printfacet')
+            printfacet = get_object_or_404(PrintFacet, id=printfacet_id)
+            # set request based attributes
+            printimage.owner = request.user
+            printimage.organization = request.user.organization
+            printimage.save()
+            # add image asset to printfacet image_assets
+            printfacet.image_assets.add(printimage)
+            printfacet.save()
+    return redirect('story_detail', pk=printfacet.story.id)
 
 def upload_audiofacet_image(request):
     """ Add image to a audiofacet."""
-    pass
+
+    if request.method == 'POST':
+        imageform=ImageAssetForm(request.POST, request.FILES)
+        if imageform.is_valid():
+            audioimage = imageform.save(commit=False)
+            # retrieve the audiofacet the image should be associated with
+            audiofacet_id = request.POST.get('audiofacet')
+            audiofacet = get_object_or_404(AudioFacet, id=audiofacet_id)
+            # set request based attributes
+            audioimage.owner = request.user
+            audioimage.organization = request.user.organization
+            audioimage.save()
+            # add image asset to audiofacet image_assets
+            audiofacet.image_assets.add(audioimage)
+            audiofacet.save()
+    return redirect('story_detail', pk=audiofacet.story.id)
 
 def upload_videofacet_image(request):
     """ Add image to a videofacet."""
-    pass
+
+    if request.method == 'POST':
+        imageform=ImageAssetForm(request.POST, request.FILES)
+        if imageform.is_valid():
+            videoimage = imageform.save(commit=False)
+            # retrieve the videofacet the image should be associated with
+            videofacet_id = request.POST.get('videofacet')
+            videofacet = get_object_or_404(VideoFacet, id=videofacet_id)
+            # set request based attributes
+            videoimage.owner = request.user
+            videoimage.organization = request.user.organization
+            videoimage.save()
+            # add image asset to videofacet image_assets
+            videofacet.image_assets.add(videoimage)
+            videofacet.save()
+    return redirect('story_detail', pk=videofacet.story.id)
 
 
 #----------------------------------------------------------------------#
