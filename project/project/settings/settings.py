@@ -48,9 +48,6 @@ INSTALLED_APPS = (
     'allauth.socialaccount',
     'bootstrap3_datetime',
     'tinymce',
-    'debug_toolbar',
-    'project', # for custom management commands
-    'storages', # for use with S3
 )
 
 SITE_ID = 1

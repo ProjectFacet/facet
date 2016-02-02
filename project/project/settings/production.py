@@ -41,6 +41,15 @@ if unset_secrets:
     raise KeyError, "There are unset keys. Use `$ eb setenv KEY=value` to set."
 
 # -------------------------------------------------------------- #
+# MODULES #
+# -------------------------------------------------------------- #
+
+INSTALLED_APPS = INSTALLED_APPS + (
+    'project', # for custom management commands
+    'storages', # for use with S3
+)
+
+# -------------------------------------------------------------- #
 # DEBUGGING #
 # -------------------------------------------------------------- #
 
