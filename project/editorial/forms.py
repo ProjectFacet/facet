@@ -429,7 +429,19 @@ class ImageAssetForm(forms.ModelForm):
 
     class Meta:
         model = ImageAsset
-        fields = ['asset_title', 'asset_description', 'attribution']
+        fields = [
+            'asset_title',
+            'asset_description',
+            'attribution',
+            'photo',
+            'image_type',
+            'keywords',
+        ]
+        widgets = {
+            'asset_description': Textarea(attrs={'rows':3}),
+            'attribution': Textarea(attrs={'rows':3}),
+            'image_type': Select(attrs={'class': 'form-control'}),
+        }
 
 
 # ------------------------------ #

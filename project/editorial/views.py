@@ -21,6 +21,7 @@ from .forms import (
     PrintFacetForm,
     AudioFacetForm,
     VideoFacetForm,
+    ImageAssetForm,
     AddToNetworkForm,
     InviteToNetworkForm,
     PrivateMessageForm,
@@ -568,6 +569,7 @@ def story_detail(request, pk):
     # create these here for efficiency
     webform=WebFacetForm()
     webcommentform=WebFacetCommentForm()
+    webfacet_imageform=ImageAssetForm()
 
     try:
         webfacet = get_object_or_404(WebFacet, story=story)
@@ -629,6 +631,7 @@ def story_detail(request, pk):
     # create these here for efficiency
     printform=PrintFacetForm()
     printcommentform=PrintFacetCommentForm()
+    printfacet_imageform=ImageAssetForm()
 
     try:
         print "PF Try"
@@ -688,6 +691,7 @@ def story_detail(request, pk):
     # create these here for efficiency
     audioform=AudioFacetForm()
     audiocommentform=AudioFacetCommentForm()
+    audiofacet_imageform=ImageAssetForm()
 
     try:
         print "AF Try"
@@ -748,6 +752,7 @@ def story_detail(request, pk):
     # create these here for efficiency
     videoform=VideoFacetForm()
     videocommentform=VideoFacetCommentForm()
+    videofacet_imageform=ImageAssetForm()
 
     try:
         print "VF Try"
@@ -822,6 +827,10 @@ def story_detail(request, pk):
         'videocomments': videocomments,
         'videohistory': videohistory,
         'videocommentform': videocommentform,
+        'webfacet_imageform': webfacet_imageform,
+        'printfacet_imageform': printfacet_imageform,
+        'audiofacet_imageform': audiofacet_imageform,
+        'videofacet_imageform': videofacet_imageform,
         })
 
 
@@ -849,6 +858,28 @@ def create_story_note(request):
             storynote.story = story
             storynote.save()
             return redirect('story_detail', pk=story.id)
+
+
+#----------------------------------------------------------------------#
+#   Upload Asset Views
+#----------------------------------------------------------------------#
+
+def upload_webfacet_image(request):
+    """ Add image to a webfacet."""
+    pass
+
+def upload_printfacet_image(request):
+    """ Add image to a printfacet."""
+    pass
+
+def upload_audiofacet_image(request):
+    """ Add image to a audiofacet."""
+    pass
+
+def upload_videofacet_image(request):
+    """ Add image to a videofacet."""
+    pass
+
 
 #----------------------------------------------------------------------#
 #   Comments Views
