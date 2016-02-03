@@ -1206,6 +1206,7 @@
           </div>
           <div class="modal-body">
             <div class="tab-content">
+              <!-- UPLOAD PANEL -->
               <div role="tabpanel" class="tab-pane active" id="upload">
                 <form action="{% url 'upload_webfacet_image' %}" method="POST" class="post-form" enctype="multipart/form-data">
                 {% csrf_token %}
@@ -1216,18 +1217,33 @@
                 <button type="submit" class="btn btn-primary">Save Image</button>
                 </form>
               </div>
+              <!-- END UPLOAD PANEL -->
+              <!-- LIBRARY PANEL -->
               <div role="tabpanel" class="tab-pane" id="library">
                 <div class="imagelibrary" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
-                {% for image in images %}
-                  <div class="col-md-2">
-                    <a href="#" class="thumbnail"><img src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}"></a>
-                  </div>
-                {% endfor %}
+                  <form action="{% url 'test' %}" method="POST" class="post-form" name="addwebimage">
+                    {% csrf_token %}
+                    <div class="image-library">
+                    {% for image in images %}
+                      <div class="col-md-2">
+                        <label>
+                          <img class="img-responsive img-thumbnail" src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}">
+                          <input type="checkbox" name="images" value="{{ image.id }}">
+                        </label>
+                      </div>
+                    {% endfor %}
+                    </div>
+                    {% for webfacet in story.webfacetstory.all %}
+                    <input type="hidden" name="webfacet" value="{{ webfacet.pk }}" />
+                    {% endfor %}
+                  </form>
                 </div>
               </div>
+              <!-- END LIBRARY PANEL -->
             </div>
           </div>
           <div class="modal-footer">
+            <button type="submit" class="btn btn-primary" name="addwebimage">Add Images</button>
           </div>
         </div>
       </div>

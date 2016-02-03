@@ -451,6 +451,13 @@ class AddImageForm(forms.Form):
         super(AddImageForm, self).__init__(*args, **kwargs)
         self.fields['images'].queryset = Organization.get_org_image_library(self.request.user.organization)
 
+    def label_from_instance(obj):
+        """Show an image with the label."""
+
+        image = conditional_escape(obj.display_photo.url)
+        title = conditional_escape(obj.title)
+        return mark_safe(label)
+
     images = forms.ModelMultipleChoiceField(
         widget=CheckboxSelectMultiple,
         queryset = ImageAsset.objects.all()

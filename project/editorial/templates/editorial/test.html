@@ -13,27 +13,22 @@
   </div>
 </div>
 
-<div class="row">
-  <div class="col-md-8 col-md-offset-2">
-    <form action="{% url 'test' %}" method="POST" class="post-form">
-    {% csrf_token %}
-    {% bootstrap_form add_image_form %}
-    <input type="hidden" name="network" value="{{ network.pk }}" />
-    <button type="submit" class="btn btn-primary">Add Images</button>
-    </form>
-  </div>
-</div>
 
-<!-- <div class="row">
-  <div class="form-group custom-form">
-    <a href="#" data-toggle="tooltip" title="{{ webform.length.help_text }}"><span class="field-label">{{ add_image_form.images.label_tag }}</span></a>
-    {{ add_image_form.images }}
-    {% if add_image_form.images.errors %}
-      <div class="alert alert-warning" role="alert">
-      {{ add_image_form.images.errors }}
+<div class="row">
+    <form action="{% url 'test' %}" method="POST" class="post-form" name="addwebimage">
+      {% csrf_token %}
+      <div class="image-library">
+      {% for image in images %}
+        <div class="col-md-1">
+          <label>
+            <img class="img-responsive img-thumbnail" src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}">
+            <input type="checkbox" name="images" value="{{ image.id }}">
+          </label>
+        </div>
+      {% endfor %}
       </div>
-    {% endif %}
-  </div>
-</div> -->
+      <button type="submit" class="btn btn-primary" name="addwebimage">Add Images</button>
+    </form>
+</div>
 
 {% endblock %}

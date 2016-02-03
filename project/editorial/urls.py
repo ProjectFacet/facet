@@ -81,12 +81,16 @@ urlpatterns = [
     url(r'^story/(?P<pk>[0-9]+)/edit/$', views.story_edit, name='story_edit'),
     url(r'^story/note/new/$', views.create_story_note, name='create_story_note'),
     #----------------------------------------------------------------------#
-    #   Asset Upload URLS
+    #   Asset URLS
     #----------------------------------------------------------------------#
     url(r'^webfacet/image/new/$', views.upload_webfacet_image, name='upload_webfacet_image'),
     url(r'^printfacet/image/new/$', views.upload_printfacet_image, name='upload_printfacet_image'),
     url(r'^audiofacet/image/new/$', views.upload_audiofacet_image, name='upload_audiofacet_image'),
     url(r'^videofacet/image/new/$', views.upload_videofacet_image, name='upload_videofacet_image'),
+    url(r'^webfacet/image/add/$', views.add_webfacet_image, name='add_webfacet_image'),
+    # url(r'^printfacet/image/add/$', views.add_printfacet_image, name='add_printfacet_image'),
+    # url(r'^audiofacet/image/add/$', views.add_audiofacet_image, name='add_audiofacet_image'),
+    # url(r'^videofacet/image/add/$', views.add_videofacet_image, name='add_videofacet_image'),
     #----------------------------------------------------------------------#
     #   Network URLS
     #----------------------------------------------------------------------#
