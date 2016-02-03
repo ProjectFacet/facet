@@ -966,12 +966,73 @@ def add_webfacet_image(request):
         add_image_form = AddImageForm(request.POST, request=request)
         if add_image_form.is_valid():
             webfacet_id = request.POST.get('webfacet')
+            print "WEBFACETid: ", webfacet_id
             webfacet = get_object_or_404(WebFacet, id=webfacet_id)
             images = request.POST.getlist('images')
             print "IMAGES: ", images
-            # webfacet.image_assets.add(images)
-            # webfacet.save()
+            for image in images:
+                img_ins = get_object_or_404(ImageAsset, id=image)
+                print "IMGins: ", img_ins
+                webfacet.image_assets.add(img_ins)
+            webfacet.save()
     return redirect('story_detail', pk=webfacet.story.id)
+
+
+def add_printfacet_image(request):
+    """ Add existing image(s) in the library to another printfacet."""
+
+    if request.method == "POST":
+        add_image_form = AddImageForm(request.POST, request=request)
+        if add_image_form.is_valid():
+            printfacet_id = request.POST.get('printfacet')
+            print "printFACETid: ", printfacet_id
+            printfacet = get_object_or_404(PrintFacet, id=printfacet_id)
+            images = request.POST.getlist('images')
+            print "IMAGES: ", images
+            for image in images:
+                img_ins = get_object_or_404(ImageAsset, id=image)
+                print "IMGins: ", img_ins
+                printfacet.image_assets.add(img_ins)
+            printfacet.save()
+    return redirect('story_detail', pk=printfacet.story.id)
+
+
+def add_audiofacet_image(request):
+    """ Add existing image(s) in the library to another audiofacet."""
+
+    if request.method == "POST":
+        add_image_form = AddImageForm(request.POST, request=request)
+        if add_image_form.is_valid():
+            audiofacet_id = request.POST.get('audiofacet')
+            print "audioFACETid: ", audiofacet_id
+            audiofacet = get_object_or_404(AudioFacet, id=audiofacet_id)
+            images = request.POST.getlist('images')
+            print "IMAGES: ", images
+            for image in images:
+                img_ins = get_object_or_404(ImageAsset, id=image)
+                print "IMGins: ", img_ins
+                audiofacet.image_assets.add(img_ins)
+            audiofacet.save()
+    return redirect('story_detail', pk=audiofacet.story.id)
+
+
+def add_videofacet_image(request):
+    """ Add existing image(s) in the library to another videofacet."""
+
+    if request.method == "POST":
+        add_image_form = AddImageForm(request.POST, request=request)
+        if add_image_form.is_valid():
+            videofacet_id = request.POST.get('videofacet')
+            print "videoFACETid: ", videofacet_id
+            videofacet = get_object_or_404(VideoFacet, id=videofacet_id)
+            images = request.POST.getlist('images')
+            print "IMAGES: ", images
+            for image in images:
+                img_ins = get_object_or_404(ImageAsset, id=image)
+                print "IMGins: ", img_ins
+                videofacet.image_assets.add(img_ins)
+            videofacet.save()
+    return redirect('story_detail', pk=videofacet.story.id)
 
 
 #----------------------------------------------------------------------#

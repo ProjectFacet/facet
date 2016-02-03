@@ -1200,14 +1200,15 @@
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <ul class="nav nav-tabs" role="imagelist">
-              <li role="presentation" class="active"><a href="#upload" aria-controls="home" role="tab" data-toggle="tab" class="darker">Upload a Photo</a></li>
-              <li role="presentation"><a href="#library" aria-controls="profile" role="tab" data-toggle="tab" class="darker">Select From Library</a></li>
+              <li role="presentation" class="active"><a href="#uploadweb" aria-controls="home" role="tab" data-toggle="tab" class="darker">Upload a Photo</a></li>
+              <li role="presentation"><a href="#libraryweb" aria-controls="profile" role="tab" data-toggle="tab" class="darker">Select From Library</a></li>
             </ul>
           </div>
           <div class="modal-body">
             <div class="tab-content">
               <!-- UPLOAD PANEL -->
-              <div role="tabpanel" class="tab-pane active" id="upload">
+              <div role="tabpanel" class="tab-pane active" id="uploadweb">
+                <div class="uploadpanel" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
                 <form action="{% url 'upload_webfacet_image' %}" method="POST" class="post-form" enctype="multipart/form-data">
                 {% csrf_token %}
                 {% bootstrap_form webfacet_imageform %}
@@ -1216,12 +1217,13 @@
                 {% endfor %}
                 <button type="submit" class="btn btn-primary">Save Image</button>
                 </form>
+                </div>
               </div>
               <!-- END UPLOAD PANEL -->
               <!-- LIBRARY PANEL -->
-              <div role="tabpanel" class="tab-pane" id="library">
+              <div role="tabpanel" class="tab-pane" id="libraryweb">
                 <div class="imagelibrary" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
-                  <form action="{% url 'test' %}" method="POST" class="post-form" name="addwebimage">
+                  <form action="{% url 'add_webfacet_image' %}" method="POST" class="post-form" name="addwebimage">
                     {% csrf_token %}
                     <div class="image-library">
                     {% for image in images %}
@@ -1236,6 +1238,7 @@
                     {% for webfacet in story.webfacetstory.all %}
                     <input type="hidden" name="webfacet" value="{{ webfacet.pk }}" />
                     {% endfor %}
+                    <button type="submit" class="btn btn-primary" name="addwebimage">Add Images</button>
                   </form>
                 </div>
               </div>
@@ -1243,7 +1246,6 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="submit" class="btn btn-primary" name="addwebimage">Add Images</button>
           </div>
         </div>
       </div>
@@ -1251,21 +1253,55 @@
 
     <!-- Add PrintFacet Image Modal -->
     <div class="modal fade" id="addPrintFacetImage" tabindex="-1" role="dialog" aria-labelledby="addPrintFacetImageLabel">
-      <div class="modal-dialog" role="document">
+      <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h5 class="modal-title" id="addPrintFacetImageLabel">Add an image to this printfacet.</h5>
+            <ul class="nav nav-tabs" role="imagelist">
+              <li role="presentation" class="active"><a href="#uploadprint" aria-controls="home" role="tab" data-toggle="tab" class="darker">Upload a Photo</a></li>
+              <li role="presentation"><a href="#libraryprint" aria-controls="profile" role="tab" data-toggle="tab" class="darker">Select From Library</a></li>
+            </ul>
           </div>
           <div class="modal-body">
-            <form action="{% url 'upload_printfacet_image' %}" method="POST" class="post-form" enctype="multipart/form-data">
-            {% csrf_token %}
-            {% bootstrap_form printfacet_imageform %}
-            {% for printfacet in story.printfacetstory.all %}
-            <input type="hidden" name="printfacet" value="{{ printfacet.pk }}" />
-            {% endfor %}
-            <button type="submit" class="btn btn-primary">Save Image</button>
-            </form>
+            <div class="tab-content">
+              <!-- UPLOAD PANEL -->
+              <div role="tabpanel" class="tab-pane active" id="uploadprint">
+                <div class="uploadpanel" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
+                  <form action="{% url 'upload_printfacet_image' %}" method="POST" class="post-form" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  {% bootstrap_form printfacet_imageform %}
+                  {% for printfacet in story.printfacetstory.all %}
+                  <input type="hidden" name="printfacet" value="{{ printfacet.pk }}" />
+                  {% endfor %}
+                  <button type="submit" class="btn btn-primary">Save Image</button>
+                  </form>
+                </div>
+              </div>
+              <!-- END UPLOAD PANEL -->
+              <!-- LIBRARY PANEL -->
+              <div role="tabpanel" class="tab-pane" id="libraryprint">
+                <div class="imagelibrary" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
+                  <form action="{% url 'add_printfacet_image' %}" method="POST" class="post-form" name="addprintimage">
+                    {% csrf_token %}
+                    <div class="image-library">
+                    {% for image in images %}
+                      <div class="col-md-2">
+                        <label>
+                          <img class="img-responsive img-thumbnail" src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}">
+                          <input type="checkbox" name="images" value="{{ image.id }}">
+                        </label>
+                      </div>
+                    {% endfor %}
+                    </div>
+                    {% for printfacet in story.printfacetstory.all %}
+                    <input type="hidden" name="printfacet" value="{{ printfacet.pk }}" />
+                    {% endfor %}
+                    <button type="submit" class="btn btn-primary" name="addprintimage">Add Images</button>
+                  </form>
+                </div>
+              </div>
+              <!-- END LIBRARY PANEL -->
+            </div>
           </div>
           <div class="modal-footer">
           </div>
@@ -1275,21 +1311,55 @@
 
     <!-- Add AudioFacet Image Modal -->
     <div class="modal fade" id="addAudioFacetImage" tabindex="-1" role="dialog" aria-labelledby="addAudioFacetImageLabel">
-      <div class="modal-dialog" role="document">
+      <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h5 class="modal-title" id="addAudioFacetImageLabel">Add an image to this audiofacet.</h5>
+            <ul class="nav nav-tabs" role="imagelist">
+              <li role="presentation" class="active"><a href="#uploadaudio" aria-controls="home" role="tab" data-toggle="tab" class="darker">Upload a Photo</a></li>
+              <li role="presentation"><a href="#libraryaudio" aria-controls="profile" role="tab" data-toggle="tab" class="darker">Select From Library</a></li>
+            </ul>
           </div>
           <div class="modal-body">
-            <form action="{% url 'upload_audiofacet_image' %}" method="POST" class="post-form" enctype="multipart/form-data">
-            {% csrf_token %}
-            {% bootstrap_form audiofacet_imageform %}
-            {% for audiofacet in story.audiofacetstory.all %}
-            <input type="hidden" name="audiofacet" value="{{ audiofacet.pk }}" />
-            {% endfor %}
-            <button type="submit" class="btn btn-primary">Save Image</button>
-            </form>
+            <div class="tab-content">
+              <!-- UPLOAD PANEL -->
+              <div role="tabpanel" class="tab-pane active" id="uploadaudio">
+                <div class="uploadpanel" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
+                  <form action="{% url 'upload_audiofacet_image' %}" method="POST" class="post-form" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  {% bootstrap_form audiofacet_imageform %}
+                  {% for audiofacet in story.audiofacetstory.all %}
+                  <input type="hidden" name="audiofacet" value="{{ audiofacet.pk }}" />
+                  {% endfor %}
+                  <button type="submit" class="btn btn-primary">Save Image</button>
+                  </form>
+                </div>
+              </div>
+              <!-- END UPLOAD PANEL -->
+              <!-- LIBRARY PANEL -->
+              <div role="tabpanel" class="tab-pane" id="libraryaudio">
+                <div class="imagelibrary" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
+                  <form action="{% url 'add_audiofacet_image' %}" method="POST" class="post-form" name="addaudioimage">
+                    {% csrf_token %}
+                    <div class="image-library">
+                    {% for image in images %}
+                      <div class="col-md-2">
+                        <label>
+                          <img class="img-responsive img-thumbnail" src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}">
+                          <input type="checkbox" name="images" value="{{ image.id }}">
+                        </label>
+                      </div>
+                    {% endfor %}
+                    </div>
+                    {% for audiofacet in story.audiofacetstory.all %}
+                    <input type="hidden" name="audiofacet" value="{{ audiofacet.pk }}" />
+                    {% endfor %}
+                    <button type="submit" class="btn btn-primary" name="addaudioimage">Add Images</button>
+                  </form>
+                </div>
+              </div>
+              <!-- END LIBRARY PANEL -->
+            </div>
           </div>
           <div class="modal-footer">
           </div>
@@ -1299,21 +1369,55 @@
 
     <!-- Add VideoFacet Image Modal -->
     <div class="modal fade" id="addVideoFacetImage" tabindex="-1" role="dialog" aria-labelledby="addVideoFacetImageLabel">
-      <div class="modal-dialog" role="document">
+      <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h5 class="modal-title" id="addVideoFacetImageLabel">Add an image to this videofacet.</h5>
+            <ul class="nav nav-tabs" role="imagelist">
+              <li role="presentation" class="active"><a href="#upload" aria-controls="home" role="tab" data-toggle="tab" class="darker">Upload a Photo</a></li>
+              <li role="presentation"><a href="#library" aria-controls="profile" role="tab" data-toggle="tab" class="darker">Select From Library</a></li>
+            </ul>
           </div>
           <div class="modal-body">
-            <form action="{% url 'upload_videofacet_image' %}" method="POST" class="post-form" enctype="multipart/form-data">
-            {% csrf_token %}
-            {% bootstrap_form videofacet_imageform %}
-            {% for videofacet in story.videofacetstory.all %}
-            <input type="hidden" name="videofacet" value="{{ videofacet.pk }}" />
-            {% endfor %}
-            <button type="submit" class="btn btn-primary">Save Image</button>
-            </form>
+            <div class="tab-content">
+              <!-- UPLOAD PANEL -->
+              <div role="tabpanel" class="tab-pane active" id="uploadvideo">
+                <div class="uploadpanel" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
+                  <form action="{% url 'upload_videofacet_image' %}" method="POST" class="post-form" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  {% bootstrap_form videofacet_imageform %}
+                  {% for videofacet in story.videofacetstory.all %}
+                  <input type="hidden" name="videofacet" value="{{ videofacet.pk }}" />
+                  {% endfor %}
+                  <button type="submit" class="btn btn-primary">Save Image</button>
+                  </form>
+                </div>
+              </div>
+              <!-- END UPLOAD PANEL -->
+              <!-- LIBRARY PANEL -->
+              <div role="tabpanel" class="tab-pane" id="libraryvideo">
+                <div class="imagelibrary" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
+                  <form action="{% url 'add_videofacet_image' %}" method="POST" class="post-form" name="addvideoimage">
+                    {% csrf_token %}
+                    <div class="image-library">
+                    {% for image in images %}
+                      <div class="col-md-2">
+                        <label>
+                          <img class="img-responsive img-thumbnail" src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}">
+                          <input type="checkbox" name="images" value="{{ image.id }}">
+                        </label>
+                      </div>
+                    {% endfor %}
+                    </div>
+                    {% for videofacet in story.videofacetstory.all %}
+                    <input type="hidden" name="videofacet" value="{{ videofacet.pk }}" />
+                    {% endfor %}
+                    <button type="submit" class="btn btn-primary" name="addvideoimage">Add Images</button>
+                  </form>
+                </div>
+              </div>
+              <!-- END LIBRARY PANEL -->
+            </div>
           </div>
           <div class="modal-footer">
           </div>
