@@ -5,7 +5,7 @@ from bootstrap3_datetime.widgets import DateTimePicker
 from django import forms
 from django.utils.safestring import mark_safe
 from django.contrib.auth import get_user_model
-from django.forms import Textarea, TextInput, RadioSelect, Select, NumberInput, CheckboxInput
+from django.forms import Textarea, TextInput, RadioSelect, Select, NumberInput, CheckboxInput, CheckboxSelectMultiple
 from datetimewidget.widgets import DateTimeWidget
 from tinymce.widgets import TinyMCE
 
@@ -443,6 +443,18 @@ class ImageAssetForm(forms.ModelForm):
             'image_type': Select(attrs={'class': 'form-control'}),
         }
 
+class AddImageForm(forms.Form):
+    """ Add existing image(s) to a facet."""
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request")
+        super(AddImageForm, self).__init__(*args, **kwargs)
+        self.fields['images'].queryset = Organization.get_org_image_library(self.request.user.organization)
+
+    images = forms.ModelMultipleChoiceField(
+        widget=CheckboxSelectMultiple,
+        queryset = ImageAsset.objects.all()
+    )
 
 # ------------------------------ #
 #         Comment Forms          #

@@ -22,6 +22,7 @@ from .forms import (
     AudioFacetForm,
     VideoFacetForm,
     ImageAssetForm,
+    AddImageForm,
     AddToNetworkForm,
     InviteToNetworkForm,
     PrivateMessageForm,
@@ -84,17 +85,22 @@ def index(request):
 #----------------------------------------------------------------------#
 #   Test View
 #----------------------------------------------------------------------#
+
 def test(request):
     """ Use for rapid testing of new pages."""
 
-    organization = request.user.organization
-    print "ORG: ", organization
-    test = Organization.get_org_collaborators(organization)
-    print "TEST: ", test
-
-    return render(request, 'editorial/test.html', {
-        }
-    )
+    if request.method == "POST":
+        add_image_form = AddImageForm(request.POST, request=request)
+        if form.is_valid():
+            webfacet_id = request.POST.get('webfacet')
+            webfacet = get_object_or_404(WebFacet, id=webfacet_id)
+            images = request.POST.getlist('images')
+            webfacet.image_assets.add(images)
+            webfacet.save()
+        return redirect('story_detail', pk=webfacet.story.id)
+    else:
+        add_image_form = AddImageForm(request=request)
+        return render(request, 'editorial/test.html', {'add_image_form': add_image_form})
 
 #----------------------------------------------------------------------#
 #   Dashboard View
@@ -284,6 +290,7 @@ def create_organization_note(request):
             organizationnote.organization = organization
             organizationnote.save()
             return redirect('organization_detail', pk=organization.id)
+
 
 #----------------------------------------------------------------------#
 #   User Views
@@ -561,6 +568,7 @@ def story_detail(request, pk):
     storydiscussion = get_object_or_404(Discussion, id=story.discussion.id)
     storycomments = Comment.objects.filter(discussion=storydiscussion).order_by('-date')
     notes = StoryNote.objects.filter(story=story)
+    images = Organization.get_org_image_library(request.user.organization)
 
 # ------------------------------ #
 #           webfacet             #
@@ -831,6 +839,7 @@ def story_detail(request, pk):
         'printfacet_imageform': printfacet_imageform,
         'audiofacet_imageform': audiofacet_imageform,
         'videofacet_imageform': videofacet_imageform,
+        'images': images,
         })
 
 
@@ -939,6 +948,24 @@ def upload_videofacet_image(request):
             videofacet.image_assets.add(videoimage)
             videofacet.save()
     return redirect('story_detail', pk=videofacet.story.id)
+
+
+#----------------------------------------------------------------------#
+#   Add Asset Views
+#----------------------------------------------------------------------#
+
+def add_webfacet_image(request):
+    """ Add existing image(s) in the library to another webfacet."""
+
+    if request.method == "POST":
+        add_image_form = AddImageForm(request.POST, request=request)
+        if form.is_valid():
+            webfacet_id = request.POST.get('webfacet')
+            webfacet = get_object_or_404(WebFacet, id=webfacet_id)
+            images = request.POST.getlist('images')
+            webfacet.image_assets.add(images)
+            webfacet.save()
+    return redirect('story_detail', pk=webfacet.story.id)
 
 
 #----------------------------------------------------------------------#

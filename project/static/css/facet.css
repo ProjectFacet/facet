@@ -460,6 +460,14 @@ label {
   color: #3D4D65;
 }
 
+.modal-header {
+  background-color: #2c333f;
+}
+
+.modal-body, .modal-footer {
+  background-color: #374355;
+}
+
 /* ---------------------------------------*/
 /*              Button Styles             */
 /* ---------------------------------------*/

@@ -337,6 +337,12 @@ class Organization(models.Model):
         unique_collaborators = set(collaborators)
         return unique_collaborators
 
+    def get_org_image_library(self):
+        """ Return list of all images associated with an organization. """
+
+        images = ImageAsset.objects.filter(organization=self)
+        return images
+
 
     @property
     def description(self):
@@ -423,7 +429,6 @@ class Network(models.Model):
             organization = item.organization
             network_organizations.append(organization)
         return network_organizations
-
 
     def get_network_shared_stories(self):
         """ Return list of stories shared with a network. """
@@ -1984,7 +1989,7 @@ class ImageAsset(models.Model):
 
     display_photo = ImageSpecField(
         source='photo',
-        processors=[SmartResize(600,600)],
+        processors=[SmartResize(600, 600)],
         format='JPEG',
     )
 

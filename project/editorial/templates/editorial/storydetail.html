@@ -1195,21 +1195,37 @@
 
     <!-- Add WebFacet Image Modal -->
     <div class="modal fade" id="addWebFacetImage" tabindex="-1" role="dialog" aria-labelledby="addWebFacetImageLabel">
-      <div class="modal-dialog" role="document">
+      <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h5 class="modal-title" id="addWebFacetImageLabel">Add an image to this webfacet.</h5>
+            <ul class="nav nav-tabs" role="imagelist">
+              <li role="presentation" class="active"><a href="#upload" aria-controls="home" role="tab" data-toggle="tab" class="darker">Upload a Photo</a></li>
+              <li role="presentation"><a href="#library" aria-controls="profile" role="tab" data-toggle="tab" class="darker">Select From Library</a></li>
+            </ul>
           </div>
           <div class="modal-body">
-            <form action="{% url 'upload_webfacet_image' %}" method="POST" class="post-form" enctype="multipart/form-data">
-            {% csrf_token %}
-            {% bootstrap_form webfacet_imageform %}
-            {% for webfacet in story.webfacetstory.all %}
-            <input type="hidden" name="webfacet" value="{{ webfacet.pk }}" />
-            {% endfor %}
-            <button type="submit" class="btn btn-primary">Save Image</button>
-            </form>
+            <div class="tab-content">
+              <div role="tabpanel" class="tab-pane active" id="upload">
+                <form action="{% url 'upload_webfacet_image' %}" method="POST" class="post-form" enctype="multipart/form-data">
+                {% csrf_token %}
+                {% bootstrap_form webfacet_imageform %}
+                {% for webfacet in story.webfacetstory.all %}
+                <input type="hidden" name="webfacet" value="{{ webfacet.pk }}" />
+                {% endfor %}
+                <button type="submit" class="btn btn-primary">Save Image</button>
+                </form>
+              </div>
+              <div role="tabpanel" class="tab-pane" id="library">
+                <div class="imagelibrary" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
+                {% for image in images %}
+                  <div class="col-md-2">
+                    <a href="#" class="thumbnail"><img src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}"></a>
+                  </div>
+                {% endfor %}
+                </div>
+              </div>
+            </div>
           </div>
           <div class="modal-footer">
           </div>
@@ -1340,6 +1356,13 @@
       type: 'image',
       gallery: {enabled:true}
     });
+
+    $('.image-library').magnificPopup({
+      delegate: 'a',
+      type: 'image',
+      gallery: {enabled:true}
+    });
+
   </script>
 
 {% endblock %}
