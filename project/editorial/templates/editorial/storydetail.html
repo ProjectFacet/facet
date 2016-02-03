@@ -1211,11 +1211,82 @@
                 <div class="uploadpanel" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
                 <form action="{% url 'upload_webfacet_image' %}" method="POST" class="post-form" enctype="multipart/form-data">
                 {% csrf_token %}
-                {% bootstrap_form webfacet_imageform %}
+                <!-- Left Col -->
+                <div class="col-md-6">
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ webfacet_imageform.photo.help_text }}"><span class="field-label">{{ webfacet_imageform.photo.label_tag }}</span></a>
+                    {{ webfacet_imageform.photo }}
+                    {% if webfacet_imageform.photo.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ webfacet_imageform.photo.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ webfacet_imageform.asset_title.help_text }}"><span class="field-label">{{ webfacet_imageform.asset_title.label_tag }}</span></a>
+                    {{ webfacet_imageform.asset_title }}
+                    {% if webfacet_imageform.asset_title.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ webfacet_imageform.asset_title.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ webfacet_imageform.image_type.help_text }}"><span class="field-label">{{ webfacet_imageform.image_type.label_tag }}</span></a>
+                    {{ webfacet_imageform.image_type }}
+                    {% if webfacet_imageform.image_type.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ webfacet_imageform.image_type.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ webfacet_imageform.keywords.help_text }}"><span class="field-label">{{ webfacet_imageform.keywords.label_tag }}</span></a>
+                    {{ webfacet_imageform.keywords }}
+                    {% if webfacet_imageform.keywords.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ webfacet_imageform.keywords.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                </div>
+                <!-- End Left Col -->
+                <!-- Right Col -->
+                <div class="col-md-6">
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ webfacet_imageform.asset_description.help_text }}"><span class="field-label">{{ webfacet_imageform.asset_description.label_tag }}</span></a>
+                    {{ webfacet_imageform.asset_description }}
+                    {% if webfacet_imageform.asset_description.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ webfacet_imageform.asset_description.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ webfacet_imageform.attribution.help_text }}"><span class="field-label">{{ webfacet_imageform.attribution.label_tag }}</span></a>
+                    {{ webfacet_imageform.attribution }}
+                    {% if webfacet_imageform.attribution.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ webfacet_imageform.attribution.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                </div>
+                <!-- End Right Col -->
                 {% for webfacet in story.webfacetstory.all %}
                 <input type="hidden" name="webfacet" value="{{ webfacet.pk }}" />
                 {% endfor %}
+                <div>
                 <button type="submit" class="btn btn-primary">Save Image</button>
+                </div>
                 </form>
                 </div>
               </div>
@@ -1269,11 +1340,82 @@
                 <div class="uploadpanel" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
                   <form action="{% url 'upload_printfacet_image' %}" method="POST" class="post-form" enctype="multipart/form-data">
                   {% csrf_token %}
-                  {% bootstrap_form printfacet_imageform %}
+                  <!-- Left Col -->
+                  <div class="col-md-6">
+
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ printfacet_imageform.photo.help_text }}"><span class="field-label">{{ printfacet_imageform.photo.label_tag }}</span></a>
+                      {{ printfacet_imageform.photo }}
+                      {% if printfacet_imageform.photo.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ printfacet_imageform.photo.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ printfacet_imageform.asset_title.help_text }}"><span class="field-label">{{ printfacet_imageform.asset_title.label_tag }}</span></a>
+                      {{ printfacet_imageform.asset_title }}
+                      {% if printfacet_imageform.asset_title.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ printfacet_imageform.asset_title.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ printfacet_imageform.image_type.help_text }}"><span class="field-label">{{ printfacet_imageform.image_type.label_tag }}</span></a>
+                      {{ printfacet_imageform.image_type }}
+                      {% if printfacet_imageform.image_type.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ printfacet_imageform.image_type.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ printfacet_imageform.keywords.help_text }}"><span class="field-label">{{ printfacet_imageform.keywords.label_tag }}</span></a>
+                      {{ printfacet_imageform.keywords }}
+                      {% if printfacet_imageform.keywords.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ printfacet_imageform.keywords.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+
+                  </div>
+                  <!-- End Left Col -->
+                  <!-- Right Col -->
+                  <div class="col-md-6">
+
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ printfacet_imageform.asset_description.help_text }}"><span class="field-label">{{ printfacet_imageform.asset_description.label_tag }}</span></a>
+                      {{ printfacet_imageform.asset_description }}
+                      {% if printfacet_imageform.asset_description.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ printfacet_imageform.asset_description.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ printfacet_imageform.attribution.help_text }}"><span class="field-label">{{ printfacet_imageform.attribution.label_tag }}</span></a>
+                      {{ printfacet_imageform.attribution }}
+                      {% if printfacet_imageform.attribution.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ printfacet_imageform.attribution.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+
+                  </div>
+                  <!-- End Right Col -->
                   {% for printfacet in story.printfacetstory.all %}
                   <input type="hidden" name="printfacet" value="{{ printfacet.pk }}" />
                   {% endfor %}
-                  <button type="submit" class="btn btn-primary">Save Image</button>
+                  <div>
+                    <button type="submit" class="btn btn-primary">Save Image</button>
+                  </div>
                   </form>
                 </div>
               </div>
@@ -1327,11 +1469,82 @@
                 <div class="uploadpanel" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
                   <form action="{% url 'upload_audiofacet_image' %}" method="POST" class="post-form" enctype="multipart/form-data">
                   {% csrf_token %}
-                  {% bootstrap_form audiofacet_imageform %}
+                  <!-- Left Col -->
+                  <div class="col-md-6">
+
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ audiofacet_imageform.photo.help_text }}"><span class="field-label">{{ audiofacet_imageform.photo.label_tag }}</span></a>
+                      {{ audiofacet_imageform.photo }}
+                      {% if audiofacet_imageform.photo.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ audiofacet_imageform.photo.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ audiofacet_imageform.asset_title.help_text }}"><span class="field-label">{{ audiofacet_imageform.asset_title.label_tag }}</span></a>
+                      {{ audiofacet_imageform.asset_title }}
+                      {% if audiofacet_imageform.asset_title.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ audiofacet_imageform.asset_title.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ audiofacet_imageform.image_type.help_text }}"><span class="field-label">{{ audiofacet_imageform.image_type.label_tag }}</span></a>
+                      {{ audiofacet_imageform.image_type }}
+                      {% if audiofacet_imageform.image_type.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ audiofacet_imageform.image_type.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ audiofacet_imageform.keywords.help_text }}"><span class="field-label">{{ audiofacet_imageform.keywords.label_tag }}</span></a>
+                      {{ audiofacet_imageform.keywords }}
+                      {% if audiofacet_imageform.keywords.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ audiofacet_imageform.keywords.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+
+                  </div>
+                  <!-- End Left Col -->
+                  <!-- Right Col -->
+                  <div class="col-md-6">
+
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ audiofacet_imageform.asset_description.help_text }}"><span class="field-label">{{ audiofacet_imageform.asset_description.label_tag }}</span></a>
+                      {{ audiofacet_imageform.asset_description }}
+                      {% if audiofacet_imageform.asset_description.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ audiofacet_imageform.asset_description.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ audiofacet_imageform.attribution.help_text }}"><span class="field-label">{{ audiofacet_imageform.attribution.label_tag }}</span></a>
+                      {{ audiofacet_imageform.attribution }}
+                      {% if audiofacet_imageform.attribution.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ audiofacet_imageform.attribution.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+
+                  </div>
+                  <!-- End Right Col -->
                   {% for audiofacet in story.audiofacetstory.all %}
                   <input type="hidden" name="audiofacet" value="{{ audiofacet.pk }}" />
                   {% endfor %}
-                  <button type="submit" class="btn btn-primary">Save Image</button>
+                  <div>
+                    <button type="submit" class="btn btn-primary">Save Image</button>
+                  </div>
                   </form>
                 </div>
               </div>
@@ -1385,11 +1598,82 @@
                 <div class="uploadpanel" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
                   <form action="{% url 'upload_videofacet_image' %}" method="POST" class="post-form" enctype="multipart/form-data">
                   {% csrf_token %}
-                  {% bootstrap_form videofacet_imageform %}
+                  <!-- Left Col -->
+                  <div class="col-md-6">
+
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ videofacet_imageform.photo.help_text }}"><span class="field-label">{{ videofacet_imageform.photo.label_tag }}</span></a>
+                      {{ videofacet_imageform.photo }}
+                      {% if videofacet_imageform.photo.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ videofacet_imageform.photo.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ videofacet_imageform.asset_title.help_text }}"><span class="field-label">{{ videofacet_imageform.asset_title.label_tag }}</span></a>
+                      {{ videofacet_imageform.asset_title }}
+                      {% if videofacet_imageform.asset_title.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ videofacet_imageform.asset_title.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ videofacet_imageform.image_type.help_text }}"><span class="field-label">{{ videofacet_imageform.image_type.label_tag }}</span></a>
+                      {{ videofacet_imageform.image_type }}
+                      {% if videofacet_imageform.image_type.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ videofacet_imageform.image_type.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ videofacet_imageform.keywords.help_text }}"><span class="field-label">{{ videofacet_imageform.keywords.label_tag }}</span></a>
+                      {{ videofacet_imageform.keywords }}
+                      {% if videofacet_imageform.keywords.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ videofacet_imageform.keywords.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+
+                  </div>
+                  <!-- End Left Col -->
+                  <!-- Right Col -->
+                  <div class="col-md-6">
+
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ videofacet_imageform.asset_description.help_text }}"><span class="field-label">{{ videofacet_imageform.asset_description.label_tag }}</span></a>
+                      {{ videofacet_imageform.asset_description }}
+                      {% if videofacet_imageform.asset_description.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ videofacet_imageform.asset_description.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ videofacet_imageform.attribution.help_text }}"><span class="field-label">{{ videofacet_imageform.attribution.label_tag }}</span></a>
+                      {{ videofacet_imageform.attribution }}
+                      {% if videofacet_imageform.attribution.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ videofacet_imageform.attribution.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+
+                  </div>
+                  <!-- End Right Col -->
                   {% for videofacet in story.videofacetstory.all %}
                   <input type="hidden" name="videofacet" value="{{ videofacet.pk }}" />
                   {% endfor %}
-                  <button type="submit" class="btn btn-primary">Save Image</button>
+                  <div>
+                    <button type="submit" class="btn btn-primary">Save Image</button>
+                  </div>
                   </form>
                 </div>
               </div>
