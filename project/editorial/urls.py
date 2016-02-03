@@ -4,34 +4,42 @@ from django.conf.urls import url, include
 
 from . import views
 # from views import HomeView
+# from views import generalviews, scheduleviews, organizationviews, userviews, networkviews, seriesviews, storyviews, assetviews, communicationviews, noteviews
+
 
 urlpatterns = [
     #----------------------------------------------------------------------#
     #   Test URL - Used for non-destructive testing of templates/queries
     #----------------------------------------------------------------------#
     url(r'^test$', views.test, name='test'),
+    # url(r'^test$', generalviews.test, name='test'),
     #----------------------------------------------------------------------#
     #   Homepage URLS
     #----------------------------------------------------------------------#
     url(r'^$', views.index, name='index'),
+    # url(r'^$', generalviews.index, name='index'),
     # url(r'^$', HomeView.as_view(), name='index'),
     #----------------------------------------------------------------------#
     #   Dashboard URLS
     #----------------------------------------------------------------------#
     url(r'^dashboard$', views.dashboard, name='dashboard'),
+    # url(r'^dashboard$', generalviews.dashboard, name='dashboard'),
     #----------------------------------------------------------------------#
     #   Collaborations URLS
     #----------------------------------------------------------------------#
     url(r'^collaborations$', views.collaborations, name='collaborations'),
+    # url(r'^collaborations$', generalviews.collaborations, name='collaborations'),
     #----------------------------------------------------------------------#
     #   Team URLS
     #----------------------------------------------------------------------#
     url(r'^team$', views.team_list, name='team_list'),
+    # url(r'^team$', generalviews.team_list, name='team_list'),
     #----------------------------------------------------------------------#
     #   Discussion URLS
     #----------------------------------------------------------------------#
     # Labeled as Inbox in navigation
     url(r'^discussion$', views.discussion, name='discussion'),
+    # url(r'^discussion$', generalviews.discussion, name='discussion'),
     #----------------------------------------------------------------------#
     #   Private Message URLS
     #----------------------------------------------------------------------#
