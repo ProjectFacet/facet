@@ -63,11 +63,13 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 
 # -------------------------------------------------------------- #
-# ??? #
+# APPLICATION DEFINITION? #
 # -------------------------------------------------------------- #
 
-ALLOWED_HOSTS = ["facet-katie-dev.us-west-1.elasticbeanstalk.com"]
-# Application definition
+ALLOWED_HOSTS = [
+    "facet-katie-dev.us-west-1.elasticbeanstalk.com",
+    "facet-dev.us-west-1.elasticbeanstalk.com",
+    ]
 
 # -------------------------------------------------------------- #
 # DATABASE #
@@ -85,7 +87,7 @@ DATABASES = {
 }
 
 # Are these RDS_* keys predetermined by Amazon?
-
+# TODO remove below once above is answered
 
 # DATABASES = {
 #     'default': {

@@ -95,9 +95,7 @@ Deploy
 - commit any changes
 - `$ eb deploy`, but wait!
 
-The first time, this might raise a helpful KeyError. If you would like to avoid that, use this command:
-
-- `$ eb setenv SECRET_KEY='XXX' AWS_STORAGE_BUCKET_NAME='XXX' AWS_ACCESS_KEY_ID='XXX' AWS_SECRET_ACCESS_KEY='XXX'`
+The first time, this might raise a KeyError. Set your keys using `$ eb setenv KEY="VALUE"`
 
 You can generate a new SECRET_KEY using `$ python manage.py generatekey`
 Insert the BUCKET_NAME you found using the AWS console
@@ -112,5 +110,16 @@ Delete Everything
 If you want to start over, use
 
 - `$ eb terminate --all` and confirm the name of your project environment
+
+
+Troubleshooting
+---------------
+
+If you get a Bad Request (400) error, make sure your domain name is listed under
+ALLOWED_HOSTS in your production settings.
+
+If you get a permission denied error for your static files, make sure link is relative
+to static diredtory from staticfiles. This is dynamic and will find s3 if you're
+using it (if storages is set up correctly).
 
 
