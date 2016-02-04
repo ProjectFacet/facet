@@ -48,6 +48,7 @@ INSTALLED_APPS = (
     'allauth.socialaccount',
     'bootstrap3_datetime',
     'tinymce',
+    'project'
 )
 
 SITE_ID = 1

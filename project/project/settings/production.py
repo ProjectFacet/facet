@@ -45,7 +45,6 @@ if unset_secrets:
 # -------------------------------------------------------------- #
 
 INSTALLED_APPS = INSTALLED_APPS + (
-    'project', # for custom management commands
     'storages', # for use with S3
 )
 
