@@ -1,0 +1,82 @@
+[
+{
+  "fields": {
+    "website": "",
+    "name": "Criterion News",
+    "twitter": "",
+    "creation_date": "2016-01-17T19:56:27.005Z",
+    "org_description": "Criterion News covers the topics that matter to bring audiences indepth coverage for an informed world.",
+    "facebook": "",
+    "location": "Seattle, WA",
+    "owner": 1,
+    "logo": "organizations/Criterion_News-logo.jpg",
+    "discussion": 1
+  },
+  "model": "editorial.organization",
+  "pk": 1
+},
+{
+  "fields": {
+    "website": "",
+    "name": "Wolf Media",
+    "twitter": "",
+    "creation_date": "2016-01-17T20:52:33.985Z",
+    "org_description": "Online news team covering national and international issues from a data perspective.",
+    "facebook": "",
+    "location": "New York City",
+    "owner": 10,
+    "logo": "organizations/Wolf_Media-logo.jpg",
+    "discussion": 2
+  },
+  "model": "editorial.organization",
+  "pk": 2
+},
+{
+  "fields": {
+    "website": "",
+    "name": "International Times",
+    "twitter": "",
+    "creation_date": "2016-01-17T21:47:12.795Z",
+    "org_description": "The world informed.",
+    "facebook": "",
+    "location": "London, England",
+    "owner": 18,
+    "logo": "organizations/International_Times-logo.jpg",
+    "discussion": 3
+  },
+  "model": "editorial.organization",
+  "pk": 3
+},
+{
+  "fields": {
+    "website": "",
+    "name": "Arctic Times",
+    "twitter": "",
+    "creation_date": "2016-01-17T21:51:09.863Z",
+    "org_description": "Covering climate change and arctic issues.",
+    "facebook": "",
+    "location": "Oslo, Norway",
+    "owner": 19,
+    "logo": "organizations/Arctic_Times-logo.jpg",
+    "discussion": 4
+  },
+  "model": "editorial.organization",
+  "pk": 4
+},
+{
+  "fields": {
+    "website": "",
+    "name": "ColdSnap",
+    "twitter": "",
+    "creation_date": "2016-01-26T23:15:14.819Z",
+    "org_description": "ColdSnap is an online only publication that tells the stories of polar science.",
+    "facebook": "",
+    "location": "Vancouver, BC",
+    "owner": 40,
+    "logo": "organizations/coldsnap.jpg",
+    "discussion": 50
+  },
+  "model": "editorial.organization",
+  "pk": 7
+}
+]

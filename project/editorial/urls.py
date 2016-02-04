@@ -4,7 +4,8 @@ from django.conf.urls import url, include
 
 from . import views
 # from views import HomeView
-# from views import generalviews, scheduleviews, organizationviews, userviews, networkviews, seriesviews, storyviews, assetviews, communicationviews, noteviews
+# from views import generalviews
+#scheduleviews, organizationviews, userviews, networkviews, seriesviews, storyviews, assetviews, communicationviews, noteviews
 
 
 urlpatterns = [

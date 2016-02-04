@@ -335,6 +335,9 @@ class Organization(models.Model):
             orgs = Network.get_network_organizations(network)
             collaborators.extend(orgs)
         unique_collaborators = set(collaborators)
+
+        # partners = Organization.network
+
         return unique_collaborators
 
     def get_org_image_library(self):

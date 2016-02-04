@@ -132,6 +132,12 @@ class SeriesForm(forms.ModelForm):
 class StoryForm(forms.ModelForm):
     """ Form to create a new story. """
 
+    # def __init__(self, *args, **kwargs):
+    #     self.request = kwargs.pop("request")
+    #     super(StoryForm, self).__init__(*args, **kwargs)
+    #     self.fields['collaborate_with'].queryset = Organization.get_org_collaborators(self.request.user.organization)
+
+
     series = forms.ModelChoiceField(
         queryset=Series.objects.all(),
         widget=forms.Select,
@@ -151,11 +157,6 @@ class StoryForm(forms.ModelForm):
             options={'format': 'YYYY-MM-DD HH:mm'},
             attrs={'id': 'story-share-picker'})
     )
-
-    # collaborate_with = forms.ModelChoiceField(
-    #     queryset=Organization.get_org_collaborators(organization)
-    # )
-
 
     class Meta:
         model = Story
@@ -450,13 +451,6 @@ class AddImageForm(forms.Form):
         self.request = kwargs.pop("request")
         super(AddImageForm, self).__init__(*args, **kwargs)
         self.fields['images'].queryset = Organization.get_org_image_library(self.request.user.organization)
-
-    def label_from_instance(obj):
-        """Show an image with the label."""
-
-        image = conditional_escape(obj.display_photo.url)
-        title = conditional_escape(obj.title)
-        return mark_safe(label)
 
     images = forms.ModelMultipleChoiceField(
         widget=CheckboxSelectMultiple,
