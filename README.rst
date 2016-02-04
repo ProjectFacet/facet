@@ -111,7 +111,6 @@ If you want to start over, use
 
 - `$ eb terminate --all` and confirm the name of your project environment
 
-
 Troubleshooting
 ---------------
 
@@ -121,5 +120,4 @@ ALLOWED_HOSTS in your production settings.
 If you get a permission denied error for your static files, make sure link is relative
 to static diredtory from staticfiles. This is dynamic and will find s3 if you're
 using it (if storages is set up correctly).
-
 
