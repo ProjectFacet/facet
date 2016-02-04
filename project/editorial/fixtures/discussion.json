@@ -1,0 +1,331 @@
+[
+{
+  "fields": {
+    "discussion_type": "ORG"
+  },
+  "model": "editorial.discussion",
+  "pk": 1
+},
+{
+  "fields": {
+    "discussion_type": "ORG"
+  },
+  "model": "editorial.discussion",
+  "pk": 2
+},
+{
+  "fields": {
+    "discussion_type": "ORG"
+  },
+  "model": "editorial.discussion",
+  "pk": 3
+},
+{
+  "fields": {
+    "discussion_type": "ORG"
+  },
+  "model": "editorial.discussion",
+  "pk": 4
+},
+{
+  "fields": {
+    "discussion_type": "NET"
+  },
+  "model": "editorial.discussion",
+  "pk": 5
+},
+{
+  "fields": {
+    "discussion_type": "NET"
+  },
+  "model": "editorial.discussion",
+  "pk": 6
+},
+{
+  "fields": {
+    "discussion_type": "NET"
+  },
+  "model": "editorial.discussion",
+  "pk": 7
+},
+{
+  "fields": {
+    "discussion_type": "NET"
+  },
+  "model": "editorial.discussion",
+  "pk": 8
+},
+{
+  "fields": {
+    "discussion_type": "PRI"
+  },
+  "model": "editorial.discussion",
+  "pk": 11
+},
+{
+  "fields": {
+    "discussion_type": "SER"
+  },
+  "model": "editorial.discussion",
+  "pk": 12
+},
+{
+  "fields": {
+    "discussion_type": "SER"
+  },
+  "model": "editorial.discussion",
+  "pk": 13
+},
+{
+  "fields": {
+    "discussion_type": "STO"
+  },
+  "model": "editorial.discussion",
+  "pk": 14
+},
+{
+  "fields": {
+    "discussion_type": "WF"
+  },
+  "model": "editorial.discussion",
+  "pk": 15
+},
+{
+  "fields": {
+    "discussion_type": "WF"
+  },
+  "model": "editorial.discussion",
+  "pk": 16
+},
+{
+  "fields": {
+    "discussion_type": "PRI"
+  },
+  "model": "editorial.discussion",
+  "pk": 17
+},
+{
+  "fields": {
+    "discussion_type": "PRI"
+  },
+  "model": "editorial.discussion",
+  "pk": 18
+},
+{
+  "fields": {
+    "discussion_type": "PRI"
+  },
+  "model": "editorial.discussion",
+  "pk": 19
+},
+{
+  "fields": {
+    "discussion_type": "STO"
+  },
+  "model": "editorial.discussion",
+  "pk": 20
+},
+{
+  "fields": {
+    "discussion_type": "WF"
+  },
+  "model": "editorial.discussion",
+  "pk": 21
+},
+{
+  "fields": {
+    "discussion_type": "PRI"
+  },
+  "model": "editorial.discussion",
+  "pk": 22
+},
+{
+  "fields": {
+    "discussion_type": "STO"
+  },
+  "model": "editorial.discussion",
+  "pk": 23
+},
+{
+  "fields": {
+    "discussion_type": "WF"
+  },
+  "model": "editorial.discussion",
+  "pk": 24
+},
+{
+  "fields": {
+    "discussion_type": "STO"
+  },
+  "model": "editorial.discussion",
+  "pk": 25
+},
+{
+  "fields": {
+    "discussion_type": "PRI"
+  },
+  "model": "editorial.discussion",
+  "pk": 26
+},
+{
+  "fields": {
+    "discussion_type": "SER"
+  },
+  "model": "editorial.discussion",
+  "pk": 27
+},
+{
+  "fields": {
+    "discussion_type": "STO"
+  },
+  "model": "editorial.discussion",
+  "pk": 28
+},
+{
+  "fields": {
+    "discussion_type": "WF"
+  },
+  "model": "editorial.discussion",
+  "pk": 29
+},
+{
+  "fields": {
+    "discussion_type": "STO"
+  },
+  "model": "editorial.discussion",
+  "pk": 30
+},
+{
+  "fields": {
+    "discussion_type": "WF"
+  },
+  "model": "editorial.discussion",
+  "pk": 31
+},
+{
+  "fields": {
+    "discussion_type": "STO"
+  },
+  "model": "editorial.discussion",
+  "pk": 32
+},
+{
+  "fields": {
+    "discussion_type": "WF"
+  },
+  "model": "editorial.discussion",
+  "pk": 33
+},
+{
+  "fields": {
+    "discussion_type": "STO"
+  },
+  "model": "editorial.discussion",
+  "pk": 34
+},
+{
+  "fields": {
+    "discussion_type": "WF"
+  },
+  "model": "editorial.discussion",
+  "pk": 35
+},
+{
+  "fields": {
+    "discussion_type": "STO"
+  },
+  "model": "editorial.discussion",
+  "pk": 36
+},
+{
+  "fields": {
+    "discussion_type": "WF"
+  },
+  "model": "editorial.discussion",
+  "pk": 37
+},
+{
+  "fields": {
+    "discussion_type": "VF"
+  },
+  "model": "editorial.discussion",
+  "pk": 38
+},
+{
+  "fields": {
+    "discussion_type": "STO"
+  },
+  "model": "editorial.discussion",
+  "pk": 39
+},
+{
+  "fields": {
+    "discussion_type": "WF"
+  },
+  "model": "editorial.discussion",
+  "pk": 40
+},
+{
+  "fields": {
+    "discussion_type": "STO"
+  },
+  "model": "editorial.discussion",
+  "pk": 41
+},
+{
+  "fields": {
+    "discussion_type": "WF"
+  },
+  "model": "editorial.discussion",
+  "pk": 42
+},
+{
+  "fields": {
+    "discussion_type": "PRI"
+  },
+  "model": "editorial.discussion",
+  "pk": 43
+},
+{
+  "fields": {
+    "discussion_type": "PRI"
+  },
+  "model": "editorial.discussion",
+  "pk": 44
+},
+{
+  "fields": {
+    "discussion_type": "PRI"
+  },
+  "model": "editorial.discussion",
+  "pk": 45
+},
+{
+  "fields": {
+    "discussion_type": "PRI"
+  },
+  "model": "editorial.discussion",
+  "pk": 46
+},
+{
+  "fields": {
+    "discussion_type": "PRI"
+  },
+  "model": "editorial.discussion",
+  "pk": 47
+},
+{
+  "fields": {
+    "discussion_type": "ORG"
+  },
+  "model": "editorial.discussion",
+  "pk": 50
+},
+{
+  "fields": {
+    "discussion_type": "PRI"
+  },
+  "model": "editorial.discussion",
+  "pk": 51
+}
+]

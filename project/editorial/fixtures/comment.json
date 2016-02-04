@@ -1,0 +1,352 @@
+[
+{
+  "fields": {
+    "date": "2016-01-18T06:11:16.827Z",
+    "text": "Welcome to the new Coastal Network everybody!",
+    "discussion": 5,
+    "user": 1
+  },
+  "model": "editorial.comment",
+  "pk": 1
+},
+{
+  "fields": {
+    "date": "2016-01-18T19:20:26.394Z",
+    "text": "Add anyone else to the team that needs to be here.",
+    "discussion": 13,
+    "user": 1
+  },
+  "model": "editorial.comment",
+  "pk": 2
+},
+{
+  "fields": {
+    "date": "2016-01-18T19:30:15.743Z",
+    "text": "First Draft up and ready for editing. ",
+    "discussion": 15,
+    "user": 9
+  },
+  "model": "editorial.comment",
+  "pk": 3
+},
+{
+  "fields": {
+    "date": "2016-01-18T19:32:35.700Z",
+    "text": "Going shorter on the print version for now.",
+    "discussion": 16,
+    "user": 9
+  },
+  "model": "editorial.comment",
+  "pk": 4
+},
+{
+  "fields": {
+    "date": "2016-01-18T19:33:05.190Z",
+    "text": "I've added web copy and the start of the print story that will run.",
+    "discussion": 14,
+    "user": 9
+  },
+  "model": "editorial.comment",
+  "pk": 5
+},
+{
+  "fields": {
+    "date": "2016-01-19T04:36:14.072Z",
+    "text": "I'm currently working on the plans for the Election Team. DM me if you're interested or have any pitches.",
+    "discussion": 1,
+    "user": 1
+  },
+  "model": "editorial.comment",
+  "pk": 6
+},
+{
+  "fields": {
+    "date": "2016-01-19T04:46:18.595Z",
+    "text": "I'll get the web post up shortly. Christina said she'll handle the audio editing for the podcast.",
+    "discussion": 20,
+    "user": 9
+  },
+  "model": "editorial.comment",
+  "pk": 7
+},
+{
+  "fields": {
+    "date": "2016-01-19T05:19:25.165Z",
+    "text": "Yep! Should have the actualities edited by end of day and will add the script then.",
+    "discussion": 20,
+    "user": 8
+  },
+  "model": "editorial.comment",
+  "pk": 8
+},
+{
+  "fields": {
+    "date": "2016-01-19T05:25:59.643Z",
+    "text": "Adding print version now.",
+    "discussion": 23,
+    "user": 6
+  },
+  "model": "editorial.comment",
+  "pk": 9
+},
+{
+  "fields": {
+    "date": "2016-01-19T05:29:03.874Z",
+    "text": "I have a few contacts that might be helpful on this.",
+    "discussion": 14,
+    "user": 6
+  },
+  "model": "editorial.comment",
+  "pk": 10
+},
+{
+  "fields": {
+    "date": "2016-01-19T05:30:32.669Z",
+    "text": "Nice job with this Abe. I've made a few changes to tighten it up a little, but looking good.",
+    "discussion": 24,
+    "user": 1
+  },
+  "model": "editorial.comment",
+  "pk": 11
+},
+{
+  "fields": {
+    "date": "2016-01-19T05:33:23.158Z",
+    "text": "Excited for this new collaboration.",
+    "discussion": 5,
+    "user": 6
+  },
+  "model": "editorial.comment",
+  "pk": 12
+},
+{
+  "fields": {
+    "date": "2016-01-19T05:36:00.457Z",
+    "text": "Added a note on graphics options.",
+    "discussion": 13,
+    "user": 7
+  },
+  "model": "editorial.comment",
+  "pk": 13
+},
+{
+  "fields": {
+    "date": "2016-01-19T05:36:57.787Z",
+    "text": "I've added the photos you needed to the shared drive.",
+    "discussion": 14,
+    "user": 7
+  },
+  "model": "editorial.comment",
+  "pk": 14
+},
+{
+  "fields": {
+    "date": "2016-01-19T05:37:10.836Z",
+    "text": "The embed is ready when you need it.",
+    "discussion": 23,
+    "user": 7
+  },
+  "model": "editorial.comment",
+  "pk": 15
+},
+{
+  "fields": {
+    "date": "2016-01-19T05:37:34.205Z",
+    "text": "I found those maps you were looking for Kristjan.",
+    "discussion": 20,
+    "user": 7
+  },
+  "model": "editorial.comment",
+  "pk": 16
+},
+{
+  "fields": {
+    "date": "2016-01-19T05:43:56.889Z",
+    "text": "TBD on segments. ",
+    "discussion": 25,
+    "user": 7
+  },
+  "model": "editorial.comment",
+  "pk": 17
+},
+{
+  "fields": {
+    "date": "2016-01-19T05:47:48.339Z",
+    "text": "Added a series for local roundups.",
+    "discussion": 1,
+    "user": 4
+  },
+  "model": "editorial.comment",
+  "pk": 18
+},
+{
+  "fields": {
+    "date": "2016-01-19T05:49:14.248Z",
+    "text": "Looking forward to working together.",
+    "discussion": 5,
+    "user": 4
+  },
+  "model": "editorial.comment",
+  "pk": 19
+},
+{
+  "fields": {
+    "date": "2016-01-19T05:57:13.409Z",
+    "text": "Thanks for putting this together.",
+    "discussion": 5,
+    "user": 19
+  },
+  "model": "editorial.comment",
+  "pk": 20
+},
+{
+  "fields": {
+    "date": "2016-01-19T06:03:04.298Z",
+    "text": "Really excited about this story.",
+    "discussion": 28,
+    "user": 36
+  },
+  "model": "editorial.comment",
+  "pk": 21
+},
+{
+  "fields": {
+    "date": "2016-01-19T06:08:21.676Z",
+    "text": "Just shared a story on native storytelling in film.",
+    "discussion": 5,
+    "user": 36
+  },
+  "model": "editorial.comment",
+  "pk": 22
+},
+{
+  "fields": {
+    "date": "2016-01-19T15:44:20.300Z",
+    "text": "First of maybe several stories on the Arctic Symposium posted",
+    "discussion": 6,
+    "user": 19
+  },
+  "model": "editorial.comment",
+  "pk": 23
+},
+{
+  "fields": {
+    "date": "2016-01-19T15:44:32.686Z",
+    "text": "First of maybe several stories on the Arctic Symposium posted",
+    "discussion": 5,
+    "user": 19
+  },
+  "model": "editorial.comment",
+  "pk": 24
+},
+{
+  "fields": {
+    "date": "2016-01-19T15:47:15.663Z",
+    "text": "Web copy posted",
+    "discussion": 36,
+    "user": 32
+  },
+  "model": "editorial.comment",
+  "pk": 25
+},
+{
+  "fields": {
+    "date": "2016-01-19T15:47:48.002Z",
+    "text": "Maren, can you take a look at these quotes? Let me know if you think any are too long.",
+    "discussion": 37,
+    "user": 32
+  },
+  "model": "editorial.comment",
+  "pk": 26
+},
+{
+  "fields": {
+    "date": "2016-01-19T17:58:38.152Z",
+    "text": "Election roundups?",
+    "discussion": 1,
+    "user": 1
+  },
+  "model": "editorial.comment",
+  "pk": 27
+},
+{
+  "fields": {
+    "date": "2016-01-19T18:51:31.362Z",
+    "text": "Thanks, will take a look at it this morning.",
+    "discussion": 15,
+    "user": 1
+  },
+  "model": "editorial.comment",
+  "pk": 28
+},
+{
+  "fields": {
+    "date": "2016-01-19T18:55:06.293Z",
+    "text": "Really excited about this idea.",
+    "discussion": 25,
+    "user": 1
+  },
+  "model": "editorial.comment",
+  "pk": 29
+},
+{
+  "fields": {
+    "date": "2016-01-19T22:57:39.004Z",
+    "text": "Thinking about bumping this story up. Would that be possible?",
+    "discussion": 38,
+    "user": 1
+  },
+  "model": "editorial.comment",
+  "pk": 30
+},
+{
+  "fields": {
+    "date": "2016-01-19T23:16:40.879Z",
+    "text": "Web copy posted",
+    "discussion": 39,
+    "user": 18
+  },
+  "model": "editorial.comment",
+  "pk": 31
+},
+{
+  "fields": {
+    "date": "2016-01-19T23:16:50.775Z",
+    "text": "Really excited about this story.",
+    "discussion": 40,
+    "user": 18
+  },
+  "model": "editorial.comment",
+  "pk": 32
+},
+{
+  "fields": {
+    "date": "2016-01-19T23:17:46.747Z",
+    "text": "Just added a great story about an exchange student returning to a war zone from the U.S. Really nice story so we wanted to share it.",
+    "discussion": 6,
+    "user": 18
+  },
+  "model": "editorial.comment",
+  "pk": 33
+},
+{
+  "fields": {
+    "date": "2016-01-19T23:30:06.172Z",
+    "text": "Web story ready to go.",
+    "discussion": 41,
+    "user": 8
+  },
+  "model": "editorial.comment",
+  "pk": 34
+},
+{
+  "fields": {
+    "date": "2016-01-26T17:56:35.297Z",
+    "text": "Wonderful to see stories being shared.",
+    "discussion": 5,
+    "user": 1
+  },
+  "model": "editorial.comment",
+  "pk": 35
+}
+]

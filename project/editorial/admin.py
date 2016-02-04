@@ -5,7 +5,6 @@ from models import (
     User,
     Organization,
     Network,
-    NetworkOrganization,
     Series,
     Story,
     WebFacet,
@@ -28,7 +27,6 @@ class UserAdmin(admin.ModelAdmin):
 admin.site.register(User)
 admin.site.register(Organization)
 admin.site.register(Network)
-admin.site.register(NetworkOrganization)
 admin.site.register(Series)
 admin.site.register(Story)
 admin.site.register(WebFacet)

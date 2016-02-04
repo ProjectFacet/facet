@@ -10,7 +10,7 @@
     "location": "Seattle, WA",
     "owner": 1,
     "logo": "organizations/Criterion_News-logo.jpg",
-    "discussion": 1
+    "discussion": null
   },
   "model": "editorial.organization",
   "pk": 1
@@ -26,7 +26,7 @@
     "location": "New York City",
     "owner": 10,
     "logo": "organizations/Wolf_Media-logo.jpg",
-    "discussion": 2
+    "discussion": null
   },
   "model": "editorial.organization",
   "pk": 2
@@ -42,7 +42,7 @@
     "location": "London, England",
     "owner": 18,
     "logo": "organizations/International_Times-logo.jpg",
-    "discussion": 3
+    "discussion": null
   },
   "model": "editorial.organization",
   "pk": 3
@@ -58,7 +58,7 @@
     "location": "Oslo, Norway",
     "owner": 19,
     "logo": "organizations/Arctic_Times-logo.jpg",
-    "discussion": 4
+    "discussion": null
   },
   "model": "editorial.organization",
   "pk": 4
@@ -74,7 +74,7 @@
     "location": "Vancouver, BC",
     "owner": 40,
     "logo": "organizations/coldsnap.jpg",
-    "discussion": 50
+    "discussion": null
   },
   "model": "editorial.organization",
   "pk": 7
