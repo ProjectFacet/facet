@@ -66,7 +66,7 @@ STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 # ??? #
 # -------------------------------------------------------------- #
 
-ALLOWED_HOSTS = ["facet-dev.elasticbeanstalk.com"]
+ALLOWED_HOSTS = ["facet-katie-dev.us-west-1.elasticbeanstalk.com"]
 # Application definition
 
 # -------------------------------------------------------------- #
