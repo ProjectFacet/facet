@@ -23,7 +23,7 @@ from .forms import (
     VideoFacetForm,
     ImageAssetForm,
     AddImageForm,
-    AddToNetworkForm,
+    # AddToNetworkForm,
     InviteToNetworkForm,
     PrivateMessageForm,
     OrganizationCommentForm,
@@ -44,7 +44,7 @@ from models import (
     User,
     Organization,
     Network,
-    NetworkOrganization,
+    # NetworkOrganization,
     Series,
     Story,
     WebFacet,
@@ -1241,7 +1241,8 @@ def network_new(request):
             discussion = Discussion.objects.create_discussion("NET")
             network.discussion = discussion
             network.save()
-            owner_membership = NetworkOrganization.objects.create(network=network, organization=owner_org)
+            network.organizations.add(owner_org)
+            network.save()
             return redirect('network_detail', pk=network.pk)
     else:
         networkform = NetworkForm()
@@ -1290,7 +1291,9 @@ def confirm_network_invite(request):
     network_id = request.POST.get('network')
     network = get_object_or_404(Network, id=network_id)
     organization = request.user.organization
-    new_connection = NetworkOrganization.objects.create(network=network, organization=organization)
+    #TODO test connection
+    network.organizations.add(organization)
+    network.save()
     print "Successfully joined Network!"
     return redirect('network_detail', pk=network.pk)
 
@@ -1314,7 +1317,7 @@ def network_detail(request, pk):
     """ Public profile of a network. """
 
     network = get_object_or_404(Network, pk=pk)
-    network_members = Network.get_network_organizations(network)
+    network_members = network.organizations.all()
     networknoteform = NetworkNoteForm()
     networkinvitationform = InviteToNetworkForm()
     networknotes = NetworkNote.objects.filter(network=network)

@@ -329,15 +329,15 @@ class Organization(models.Model):
     def get_org_collaborators(self):
         """ Return list of all organizations that are members of the same networks as self."""
 
+        # unique_collaborators =
+
         networks = Organization.get_org_networks(self)
         collaborators = []
         for network in networks:
             orgs = Network.get_network_organizations(network)
             collaborators.extend(orgs)
         unique_collaborators = set(collaborators)
-
         # partners = Organization.network
-
         return unique_collaborators
 
     def get_org_image_library(self):
@@ -345,7 +345,6 @@ class Organization(models.Model):
 
         images = ImageAsset.objects.filter(organization=self)
         return images
-
 
     @property
     def description(self):
@@ -403,7 +402,6 @@ class Network(models.Model):
 
     organizations = models.ManyToManyField(
         Organization,
-        through='NetworkOrganization',
         related_name='network_organization',
     )
 
@@ -423,16 +421,6 @@ class Network(models.Model):
     def __str__(self):
         return self.name
 
-    def get_network_organizations(self):
-        """ Return list of all organizations that are part of a network. """
-
-        network_org_objects = NetworkOrganization.objects.filter(network=self)
-        network_organizations = []
-        for item in network_org_objects:
-            organization = item.organization
-            network_organizations.append(organization)
-        return network_organizations
-
     def get_network_shared_stories(self):
         """ Return list of stories shared with a network. """
 
@@ -449,37 +437,6 @@ class Network(models.Model):
     @property
     def type(self):
         return "Network"
-
-#   Associations
-#   ------------
-
-class NetworkOrganizationManager(models.Manager):
-    """Custom manager for NetworkOrganization."""
-
-    def create_networkorganization(self, network, organization):
-        """ Method for quick creation of network organization relationship."""
-
-        network_organization = self.create(network=network, organization=organization)
-        return network_organization
-
-class NetworkOrganization(models.Model):
-    """ The connection between Organizations and Networks. """
-
-    network = models.ForeignKey(
-        Network,
-    )
-
-    organization = models.ForeignKey(
-        Organization,
-    )
-
-    objects = NetworkOrganizationManager()
-
-    def __str__(self):
-        return "{network}, {organization}".format(
-                                                network=self.network.name,
-                                                organization=self.organization.name
-                                                )
 
 #----------------------------------------------------------------------#
 #   Content:
