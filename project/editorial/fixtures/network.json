@@ -1,0 +1,50 @@
+[
+{
+  "fields": {
+    "name": "Coastal Network",
+    "network_description": "Sharing content and collaborating on stories about coastal issues.",
+    "discussion": 5,
+    "creation_date": "2016-01-18T05:22:37.695Z",
+    "logo": "",
+    "owner_organization": 1
+  },
+  "model": "editorial.network",
+  "pk": 1
+},
+{
+  "fields": {
+    "name": "Northern Alliance",
+    "network_description": "Planning collaborative reporting projects and sharing content focused on Arctic issues.",
+    "discussion": 6,
+    "creation_date": "2016-01-18T05:23:40.308Z",
+    "logo": "",
+    "owner_organization": 4
+  },
+  "model": "editorial.network",
+  "pk": 2
+},
+{
+  "fields": {
+    "name": "Big Apple | Big Ben Partnership",
+    "network_description": "Collaborating and sharing stories on New York City and London of interest to audiences on both sides of the Atlantic.",
+    "discussion": 7,
+    "creation_date": "2016-01-18T05:26:25.781Z",
+    "logo": "",
+    "owner_organization": 2
+  },
+  "model": "editorial.network",
+  "pk": 3
+},
+{
+  "fields": {
+    "name": "European Collaborative Reporting Project",
+    "network_description": "Collaborating on international stories of importance across Europe.",
+    "discussion": 8,
+    "creation_date": "2016-01-18T05:38:08.039Z",
+    "logo": "",
+    "owner_organization": 3
+  },
+  "model": "editorial.network",
+  "pk": 4
+}
+]

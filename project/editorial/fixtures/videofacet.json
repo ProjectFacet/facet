@@ -1,0 +1,31 @@
+[
+{
+  "fields": {
+    "status": "Revision",
+    "image_assets": [],
+    "story": 1,
+    "code": "video-subsistence",
+    "captions": "",
+    "run_date": "2016-01-26T16:00:00Z",
+    "title": "Fisherman speak out following trial",
+    "discussion": 38,
+    "credit": [
+      5
+    ],
+    "excerpt": "\u201cWe intended to challenge it and we did. And today after all those years and all that heartache and all that stress, we finally got a result that we think is right.\u201d",
+    "original_videofacet": true,
+    "creation_date": "2016-01-19T19:48:22.233Z",
+    "vf_content": "<p>&nbsp;&ldquo;We intended to challenge it and we did. And today after all those years and all that heartache and all that stress, we finally got a result that we think is right.&rdquo;</p>",
+    "vf_description": "Video from courthouse steps where defendents talk about the case",
+    "length": 4,
+    "editor": 2,
+    "keywords": "[]",
+    "due_edit": "2016-01-25T23:00:00Z",
+    "owner": 1,
+    "organization": 1,
+    "share_note": "Use as is."
+  },
+  "model": "editorial.videofacet",
+  "pk": 1
+}
+]

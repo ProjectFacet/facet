@@ -1,0 +1,266 @@
+[
+{
+  "fields": {
+    "embargo": false,
+    "archived": false,
+    "collaborate": true,
+    "name": "Alaska Subsistence Trial",
+    "sensitive": false,
+    "series": 2,
+    "discussion": 14,
+    "team": [
+      9
+    ],
+    "share": true,
+    "embargo_datetime": "2016-01-19T08:00:00Z",
+    "creation_date": "2016-01-18T19:24:53.712Z",
+    "share_with_date": "2016-01-22T14:00:00Z",
+    "story_description": "Charges against fisherman that fished despite a fishing ban, have been dismissed.",
+    "collaborate_with": [
+      2
+    ],
+    "share_with": [
+      2
+    ],
+    "original_story": true,
+    "owner": 1,
+    "organization": 1,
+    "ready_to_share": false
+  },
+  "model": "editorial.story",
+  "pk": 1
+},
+{
+  "fields": {
+    "embargo": true,
+    "archived": false,
+    "collaborate": false,
+    "name": "Traditional Names",
+    "sensitive": false,
+    "series": null,
+    "discussion": 20,
+    "team": [
+      8,
+      9
+    ],
+    "share": true,
+    "embargo_datetime": "2016-01-20T14:30:00Z",
+    "creation_date": "2016-01-19T04:45:41.399Z",
+    "share_with_date": "2016-01-22T14:00:00Z",
+    "story_description": "Web and audio piece on how researchers are studying traditional names to better understand the history of places.",
+    "collaborate_with": [],
+    "share_with": [
+      2
+    ],
+    "original_story": true,
+    "owner": 9,
+    "organization": 1,
+    "ready_to_share": true
+  },
+  "model": "editorial.story",
+  "pk": 2
+},
+{
+  "fields": {
+    "embargo": false,
+    "archived": false,
+    "collaborate": false,
+    "name": "Indigenous women's legal guide",
+    "sensitive": false,
+    "series": null,
+    "discussion": 23,
+    "team": [
+      6
+    ],
+    "share": false,
+    "embargo_datetime": null,
+    "creation_date": "2016-01-19T05:25:46.192Z",
+    "share_with_date": null,
+    "story_description": "Web and print story on the effort to educate women on their legal rights.",
+    "collaborate_with": [],
+    "share_with": [],
+    "original_story": true,
+    "owner": 6,
+    "organization": 1,
+    "ready_to_share": false
+  },
+  "model": "editorial.story",
+  "pk": 3
+},
+{
+  "fields": {
+    "embargo": false,
+    "archived": false,
+    "collaborate": false,
+    "name": "Interactive: Redistricting",
+    "sensitive": false,
+    "series": null,
+    "discussion": 25,
+    "team": [
+      7
+    ],
+    "share": true,
+    "embargo_datetime": null,
+    "creation_date": "2016-01-19T05:42:51.116Z",
+    "share_with_date": null,
+    "story_description": "Interactive graphic displaying how voting districts have changed over the years.",
+    "collaborate_with": [],
+    "share_with": [
+      1
+    ],
+    "original_story": true,
+    "owner": 7,
+    "organization": 1,
+    "ready_to_share": true
+  },
+  "model": "editorial.story",
+  "pk": 4
+},
+{
+  "fields": {
+    "embargo": false,
+    "archived": false,
+    "collaborate": false,
+    "name": "Preserving Native Culture through Media",
+    "sensitive": false,
+    "series": null,
+    "discussion": 28,
+    "team": [
+      36
+    ],
+    "share": true,
+    "embargo_datetime": null,
+    "creation_date": "2016-01-19T06:02:34.275Z",
+    "share_with_date": "2016-01-20T20:00:00Z",
+    "story_description": "New art forms are turning into the best way to save historic art forms of native peoples.",
+    "collaborate_with": [],
+    "share_with": [
+      1,
+      2
+    ],
+    "original_story": true,
+    "owner": 36,
+    "organization": 4,
+    "ready_to_share": true
+  },
+  "model": "editorial.story",
+  "pk": 5
+},
+{
+  "fields": {
+    "embargo": true,
+    "archived": false,
+    "collaborate": false,
+    "name": "Traditional Names",
+    "sensitive": false,
+    "series": null,
+    "discussion": 34,
+    "team": [],
+    "share": false,
+    "embargo_datetime": "2016-01-20T14:30:00Z",
+    "creation_date": "2016-01-19T07:04:52.344Z",
+    "share_with_date": "2016-01-22T14:00:00Z",
+    "story_description": "Web and audio piece on how researchers are studying traditional names to better understand the history of places.",
+    "collaborate_with": [],
+    "share_with": [],
+    "original_story": false,
+    "owner": 36,
+    "organization": 4,
+    "ready_to_share": false
+  },
+  "model": "editorial.story",
+  "pk": 10
+},
+{
+  "fields": {
+    "embargo": false,
+    "archived": false,
+    "collaborate": false,
+    "name": "Arctic Symposium",
+    "sensitive": false,
+    "series": null,
+    "discussion": 36,
+    "team": [
+      32
+    ],
+    "share": true,
+    "embargo_datetime": null,
+    "creation_date": "2016-01-19T15:43:10.032Z",
+    "share_with_date": "2016-01-22T21:00:00Z",
+    "story_description": "The third annual Arctic Encounter Symposium runs Friday through Saturday in Seattle.",
+    "collaborate_with": [],
+    "share_with": [
+      1,
+      2
+    ],
+    "original_story": true,
+    "owner": 19,
+    "organization": 4,
+    "ready_to_share": true
+  },
+  "model": "editorial.story",
+  "pk": 11
+},
+{
+  "fields": {
+    "embargo": false,
+    "archived": false,
+    "collaborate": false,
+    "name": "Exchang student in war zone",
+    "sensitive": false,
+    "series": null,
+    "discussion": 39,
+    "team": [
+      23,
+      20
+    ],
+    "share": true,
+    "embargo_datetime": null,
+    "creation_date": "2016-01-19T23:13:40.353Z",
+    "share_with_date": "2016-01-21T18:00:00Z",
+    "story_description": "Exchange student from the United States back in a war zone",
+    "collaborate_with": [],
+    "share_with": [
+      3,
+      1,
+      4
+    ],
+    "original_story": true,
+    "owner": 18,
+    "organization": 3,
+    "ready_to_share": true
+  },
+  "model": "editorial.story",
+  "pk": 12
+},
+{
+  "fields": {
+    "embargo": false,
+    "archived": false,
+    "collaborate": false,
+    "name": "Sharks",
+    "sensitive": false,
+    "series": null,
+    "discussion": 41,
+    "team": [
+      8
+    ],
+    "share": true,
+    "embargo_datetime": null,
+    "creation_date": "2016-01-19T23:29:52.908Z",
+    "share_with_date": "2016-01-20T20:00:00Z",
+    "story_description": "Sharks are associated with warm beaches, but the fish often appear much farther north than most realize",
+    "collaborate_with": [],
+    "share_with": [
+      1,
+      2
+    ],
+    "original_story": true,
+    "owner": 8,
+    "organization": 1,
+    "ready_to_share": true
+  },
+  "model": "editorial.story",
+  "pk": 13
+}
+]

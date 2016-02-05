@@ -1,0 +1,52 @@
+[
+{
+  "fields": {
+    "archived": false,
+    "collaborate": true,
+    "name": "Subsistence",
+    "series_description": "A collection of stories tracking the challenges and experiences of people living subsistence lifestyles.",
+    "share": false,
+    "creation_date": "2016-01-18T19:16:10.818Z",
+    "share_with_date": null,
+    "collaborate_with": [
+      2
+    ],
+    "share_with": [],
+    "team": [
+      6,
+      7,
+      5,
+      9
+    ],
+    "owner": 1,
+    "organization": 1,
+    "sensitivity": false,
+    "discussion": 13
+  },
+  "model": "editorial.series",
+  "pk": 2
+},
+{
+  "fields": {
+    "archived": false,
+    "collaborate": false,
+    "name": "Elections",
+    "series_description": "Local elections previews",
+    "share": false,
+    "creation_date": "2016-01-19T05:47:23.186Z",
+    "share_with_date": null,
+    "collaborate_with": [],
+    "share_with": [],
+    "team": [
+      7,
+      4
+    ],
+    "owner": 4,
+    "organization": 1,
+    "sensitivity": false,
+    "discussion": 27
+  },
+  "model": "editorial.series",
+  "pk": 3
+}
+]

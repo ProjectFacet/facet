@@ -1,0 +1,82 @@
+[
+{
+  "fields": {
+    "asset_title": "celebration_dance",
+    "attribution": "Photo by Heather Bryant.",
+    "image_type": "PIC",
+    "photo": "photos/HMB_9225-ed-rs530.jpg",
+    "asset_description": "Dancers perform at the 2012 Celebration event in Juneau.",
+    "creation_date": "2016-02-02T17:58:33.260Z",
+    "keywords": "[\"Celebration\", \" regalia\", \" native dress\"]",
+    "owner": 1,
+    "organization": 1,
+    "original": true
+  },
+  "model": "editorial.imageasset",
+  "pk": 1
+},
+{
+  "fields": {
+    "asset_title": "celebration_dancer",
+    "attribution": "Photo by Heather Bryant",
+    "image_type": "PIC",
+    "photo": "photos/ktoo_celebration_2014-645-630x417_zPVn624.jpg",
+    "asset_description": "More than 2,000 Southeast Alaska Natives danced their way to Juneau\u2019s Centennial Hall Wednesday evening for Celebration 2014.",
+    "creation_date": "2016-02-02T18:14:43.480Z",
+    "keywords": "[\"Celebration\", \" regalia\", \" native dress\", \" tattoo\"]",
+    "owner": 1,
+    "organization": 1,
+    "original": true
+  },
+  "model": "editorial.imageasset",
+  "pk": 5
+},
+{
+  "fields": {
+    "asset_title": "Dancers",
+    "attribution": "Photo by Heather Bryant",
+    "image_type": "PIC",
+    "photo": "photos/ktoo_celebration_2014-381-650x430.jpg",
+    "asset_description": "Dancers representing groups from all over Southeast Alaska attended the event.",
+    "creation_date": "2016-02-02T18:21:44.562Z",
+    "keywords": "[\"Celebration\", \" regalia\", \" native dress\"]",
+    "owner": 1,
+    "organization": 1,
+    "original": true
+  },
+  "model": "editorial.imageasset",
+  "pk": 6
+},
+{
+  "fields": {
+    "asset_title": "dancers",
+    "attribution": "Photo by Heather Bryant",
+    "image_type": "PIC",
+    "photo": "photos/HMB_9225-ed-rs530_JAU9HMQ.jpg",
+    "asset_description": "dancers at celebration",
+    "creation_date": "2016-02-02T19:08:14.600Z",
+    "keywords": "[\"Celebration\"]",
+    "owner": 1,
+    "organization": 1,
+    "original": true
+  },
+  "model": "editorial.imageasset",
+  "pk": 7
+},
+{
+  "fields": {
+    "asset_title": "salmon shark",
+    "attribution": "Photo by SST Kathy Hough aboard the NOAA Ship Oscar Dyson",
+    "image_type": "PIC",
+    "photo": "photos/salmon-shark_d4NO5hO.jpg",
+    "asset_description": "This salmon shark was released after being freed from the trawl net.",
+    "creation_date": "2016-02-03T06:10:17.335Z",
+    "keywords": "[\"shark\", \" salmon shark\"]",
+    "owner": 1,
+    "organization": 1,
+    "original": true
+  },
+  "model": "editorial.imageasset",
+  "pk": 9
+}
+]

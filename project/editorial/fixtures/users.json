@@ -30,7 +30,7 @@
     "password": "pbkdf2_sha256$20000$sQF1es3sWI9I$cNlZ75X+OLSL0wOR3S2mFvWQrtUoJ910m8ZUGVH9OYo=",
     "github": "",
     "notes": [],
-    "organization": 1
+    "organization": null
   },
   "model": "editorial.user",
   "pk": 1
@@ -66,7 +66,7 @@
     "password": "pbkdf2_sha256$20000$peZDcTiPueqx$afkAOs7I2nnkGizfd5fit/KJy/Zj+VasVOowhr6IklU=",
     "github": "",
     "notes": [],
-    "organization": 1
+    "organization": null
   },
   "model": "editorial.user",
   "pk": 2
@@ -102,7 +102,7 @@
     "password": "pbkdf2_sha256$20000$qUncfseIyi52$dY8WOYmf4bF8DFH3kuqK8TejR3Ua4FekSen9CheBe3Q=",
     "github": "",
     "notes": [],
-    "organization": 1
+    "organization": null
   },
   "model": "editorial.user",
   "pk": 4
@@ -138,7 +138,7 @@
     "password": "pbkdf2_sha256$20000$Ztah1gvmlCO6$oa6Fsi79lLe7NM9q5+V3WpE26asL+9JTnxY815O807s=",
     "github": "",
     "notes": [],
-    "organization": 1
+    "organization": null
   },
   "model": "editorial.user",
   "pk": 5
@@ -174,7 +174,7 @@
     "password": "pbkdf2_sha256$20000$ZAY06sStauvD$KAYBR+0fj9kQFmOLR/nHzdNPxfunbkRBb4H9kmLtEr8=",
     "github": "",
     "notes": [],
-    "organization": 1
+    "organization": null
   },
   "model": "editorial.user",
   "pk": 6
@@ -210,7 +210,7 @@
     "password": "pbkdf2_sha256$20000$Ys0vBJyzRX1U$93/j5ToV55WjfwrHYL6l0sgBfP0sRu4Rv8HZu+9tv/w=",
     "github": "",
     "notes": [],
-    "organization": 1
+    "organization": null
   },
   "model": "editorial.user",
   "pk": 7
@@ -246,7 +246,7 @@
     "password": "pbkdf2_sha256$20000$MnArThnzPUZv$oWW6yIDa4hSm1e6lUaxyF+W0yoQ/TfPf78v7K65FjAk=",
     "github": "",
     "notes": [],
-    "organization": 1
+    "organization": null
   },
   "model": "editorial.user",
   "pk": 8
@@ -282,7 +282,7 @@
     "password": "pbkdf2_sha256$20000$LWllkvj5pzkC$Rd387pDoTceEukZF0OC/WkdXoPKhEhoupK3mPpmCNzM=",
     "github": "",
     "notes": [],
-    "organization": 1
+    "organization": null
   },
   "model": "editorial.user",
   "pk": 9
@@ -318,7 +318,7 @@
     "password": "pbkdf2_sha256$20000$KUGTQnhWZxJU$dp7eRo083fJcJh2WFaAtApEyar3XKscrRdDdw+Yhqio=",
     "github": "",
     "notes": [],
-    "organization": 2
+    "organization": null
   },
   "model": "editorial.user",
   "pk": 10
@@ -354,7 +354,7 @@
     "password": "pbkdf2_sha256$20000$JG9k2U5N0iwX$W2/MoTGPUnpTjtsGRgCKKJQ+oqz0bsyToxo9hx506gA=",
     "github": "",
     "notes": [],
-    "organization": 2
+    "organization": null
   },
   "model": "editorial.user",
   "pk": 11
@@ -390,7 +390,7 @@
     "password": "pbkdf2_sha256$20000$mepBIx5fjicX$mpTLLefauuM9DXOOX8+r8jkp7gjjOUTViX2JtHfyyek=",
     "github": "",
     "notes": [],
-    "organization": 2
+    "organization": null
   },
   "model": "editorial.user",
   "pk": 12
@@ -426,7 +426,7 @@
     "password": "pbkdf2_sha256$20000$IFFv0CGsBK69$VMt4sIWd/YzJjcvWYdNvsNPVS7DguIE6q0cO9yOHYbs=",
     "github": "",
     "notes": [],
-    "organization": 2
+    "organization": null
   },
   "model": "editorial.user",
   "pk": 13
@@ -462,7 +462,7 @@
     "password": "pbkdf2_sha256$20000$j4Idurr1bhs0$mkAFKKjr54+wHykqFNR/Gon08kiDVX6KfFXQbN+wI1g=",
     "github": "",
     "notes": [],
-    "organization": 2
+    "organization": null
   },
   "model": "editorial.user",
   "pk": 14
@@ -498,7 +498,7 @@
     "password": "pbkdf2_sha256$20000$TOyMwZWU173E$OAqQPPkeGrmGUhKtfMWyARzc7A+KkuicfPG2f+nyoVA=",
     "github": "",
     "notes": [],
-    "organization": 2
+    "organization": null
   },
   "model": "editorial.user",
   "pk": 15
@@ -534,7 +534,7 @@
     "password": "pbkdf2_sha256$20000$ihARLTAdjj7S$oS7vuLLuQ8D8lDaPa/qP4fIr3b4LyvoWuCfSRkcfClo=",
     "github": "",
     "notes": [],
-    "organization": 2
+    "organization": null
   },
   "model": "editorial.user",
   "pk": 16
@@ -570,7 +570,7 @@
     "password": "pbkdf2_sha256$20000$r6K0GqQJHOuB$ANc4Oux26F8J5T3EVg2VMpEGEwt2TV7BJ71lQNHMnas=",
     "github": "",
     "notes": [],
-    "organization": 2
+    "organization": null
   },
   "model": "editorial.user",
   "pk": 17
@@ -606,7 +606,7 @@
     "password": "pbkdf2_sha256$20000$WT9FYWr0aLym$LGbEIctK5AF4lg20nRSBP2Zdd4KrNhaQaK/UrYt8jF8=",
     "github": "",
     "notes": [],
-    "organization": 3
+    "organization": null
   },
   "model": "editorial.user",
   "pk": 18
@@ -642,7 +642,7 @@
     "password": "pbkdf2_sha256$20000$oEHcB1FlsSIK$FZvUu57shYCf3nWV1efMWlvmWFl3F7VCmF33i6oppTo=",
     "github": "www.github.com/maren",
     "notes": [],
-    "organization": 4
+    "organization": null
   },
   "model": "editorial.user",
   "pk": 19
@@ -678,7 +678,7 @@
     "password": "pbkdf2_sha256$20000$o7Oto5SKiQiu$CVHc+DsZIMc8fb2+7aF9KwUHhKM9V4gYlk/PJuIjdzI=",
     "github": "",
     "notes": [],
-    "organization": 3
+    "organization": null
   },
   "model": "editorial.user",
   "pk": 20
@@ -714,7 +714,7 @@
     "password": "pbkdf2_sha256$20000$ExzxjO5Ct9bV$P4hbreXDkmovrEZpDXvV1OweqBFksefIQnrSw01Eujg=",
     "github": "",
     "notes": [],
-    "organization": 3
+    "organization": null
   },
   "model": "editorial.user",
   "pk": 21
@@ -750,7 +750,7 @@
     "password": "pbkdf2_sha256$20000$wKTnhBLoH27W$Ls7sdZ91VKqwYW7J61eGO+nkSqswla8OH58PWuGJRRY=",
     "github": "",
     "notes": [],
-    "organization": 3
+    "organization": null
   },
   "model": "editorial.user",
   "pk": 22
@@ -786,7 +786,7 @@
     "password": "pbkdf2_sha256$20000$0Qn03RMhyxyW$EGe6r9bzbFRYtcxwQ1q2tUgkNuWnRjH4CN1/BzAMNSA=",
     "github": "",
     "notes": [],
-    "organization": 3
+    "organization": null
   },
   "model": "editorial.user",
   "pk": 23
@@ -822,7 +822,7 @@
     "password": "pbkdf2_sha256$20000$XxWNUacDmSwr$s1a8iCIjgiuzoulUh/VUO5sK/ttWIMz2ncxZyzHXhjE=",
     "github": "",
     "notes": [],
-    "organization": 3
+    "organization": null
   },
   "model": "editorial.user",
   "pk": 24
@@ -858,7 +858,7 @@
     "password": "pbkdf2_sha256$20000$OhYQKuBlx5Zb$TkCjbrzoRhMGcUNSnJhQ7cKPyrrID44JO6vxY+HSBkQ=",
     "github": "",
     "notes": [],
-    "organization": 3
+    "organization": null
   },
   "model": "editorial.user",
   "pk": 25
@@ -894,7 +894,7 @@
     "password": "pbkdf2_sha256$20000$gsQlEGMFg53f$ptiWv98isZBDi4RV/G+4Qeu/kkkl/no+EgpcwCyI05E=",
     "github": "",
     "notes": [],
-    "organization": 3
+    "organization": null
   },
   "model": "editorial.user",
   "pk": 26
@@ -930,7 +930,7 @@
     "password": "pbkdf2_sha256$20000$NWaEvjr4qa3Y$C0YS1ZHYTjgJm5t1clKdFM7Hh9JwXWx1fUxZIJI5Z08=",
     "github": "",
     "notes": [],
-    "organization": 3
+    "organization": null
   },
   "model": "editorial.user",
   "pk": 27
@@ -966,7 +966,7 @@
     "password": "pbkdf2_sha256$20000$tRnVW5IBc2EO$BydAWvUwHq2vk2td6gyMwhMh1kCPFWVUlDfSE6k2J+A=",
     "github": "",
     "notes": [],
-    "organization": 3
+    "organization": null
   },
   "model": "editorial.user",
   "pk": 28
@@ -1038,7 +1038,7 @@
     "password": "pbkdf2_sha256$20000$kgzoHPp4Sy7Q$63/xnQFrNs9jSpuLiyQuaxbNxNGeUFZU4T/gZdwaPcY=",
     "github": "",
     "notes": [],
-    "organization": 4
+    "organization": null
   },
   "model": "editorial.user",
   "pk": 31
@@ -1074,7 +1074,7 @@
     "password": "pbkdf2_sha256$20000$9FhEo30McHNl$HcsjZReUpSOF6AO9iK30IwlFA4vo4AR1awG2PWv3hiY=",
     "github": "",
     "notes": [],
-    "organization": 4
+    "organization": null
   },
   "model": "editorial.user",
   "pk": 32
@@ -1110,7 +1110,7 @@
     "password": "pbkdf2_sha256$20000$cCZt4OPsx4U7$CnucdO7BZphdhU5igYTOZolv0YAHUmw86RGgAn2qX9w=",
     "github": "",
     "notes": [],
-    "organization": 4
+    "organization": null
   },
   "model": "editorial.user",
   "pk": 33
@@ -1146,7 +1146,7 @@
     "password": "pbkdf2_sha256$20000$3uryuYBkskt1$Un8zXaNtGF319YVVhOI8/puA0gCV8e3eGuVeYeV8KI8=",
     "github": "",
     "notes": [],
-    "organization": 4
+    "organization": null
   },
   "model": "editorial.user",
   "pk": 34
@@ -1182,7 +1182,7 @@
     "password": "pbkdf2_sha256$20000$0DsZQeREFupf$mFCTAdNjrK1HtRbV6ksrhlCda3+qh1dJS2fCCUsVZw4=",
     "github": "",
     "notes": [],
-    "organization": 4
+    "organization": null
   },
   "model": "editorial.user",
   "pk": 35
@@ -1218,7 +1218,7 @@
     "password": "pbkdf2_sha256$20000$2dQ4tdfkuw5K$VNW9xRFGpeppp7fMFkHdexB2u6zgAl1cB2Rkm/WnlL0=",
     "github": "",
     "notes": [],
-    "organization": 4
+    "organization": null
   },
   "model": "editorial.user",
   "pk": 36
@@ -1254,7 +1254,7 @@
     "password": "pbkdf2_sha256$20000$VXqdJ8zBywlm$mvi4pRSuAvCH0mvBCLWrnvtQ3MSmDtv4sSpxMutnJMw=",
     "github": "",
     "notes": [],
-    "organization": 4
+    "organization": null
   },
   "model": "editorial.user",
   "pk": 37
@@ -1290,7 +1290,7 @@
     "password": "pbkdf2_sha256$20000$PnQUucRnegrt$uxigC4/EDYu03rtgzJuFtIjLHb8NLz59TuN9Ck9scxI=",
     "github": "",
     "notes": [],
-    "organization": 7
+    "organization": null
   },
   "model": "editorial.user",
   "pk": 40

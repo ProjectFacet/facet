@@ -1,0 +1,62 @@
+[
+{
+  "fields": {
+    "status": "In Progress",
+    "due_edit": "2016-01-20T18:00:00Z",
+    "story": 1,
+    "code": "p-subsistence0120",
+    "captions": "NA",
+    "run_date": "2016-01-22T14:00:00Z",
+    "title": "Judge drops charges against subsistence fishermen.",
+    "original_printfacet": true,
+    "discussion": 16,
+    "credit": [
+      9
+    ],
+    "excerpt": "The decision could have a major impact on Department of Fish and Game bag limits across the state.",
+    "share_note": "",
+    "creation_date": "2016-01-18T19:32:19.464Z",
+    "keywords": "[]",
+    "length": 1200,
+    "editor": 1,
+    "pf_description": "Print version. Shorter, less quotes.",
+    "owner": 9,
+    "organization": 1,
+    "pf_content": "<p>Charges against three Southeast subsistence fishermen &mdash; including former Sen. Albert Kookesh &mdash; have once again been dismissed. In an <a href=\"http://www.courtrecords.alaska.gov/webdocs/opinions/ops/sp-7062.pdf\">opinion</a> issued Friday, the Alaska Supreme Court found that because the regulation used to cite the men was not created lawfully, it&rsquo;s unenforceable. The decision could have a major impact on Department of Fish and Game bag limits across the state.</p>",
+    "image_assets": [
+      7
+    ]
+  },
+  "model": "editorial.printfacet",
+  "pk": 1
+},
+{
+  "fields": {
+    "status": "Needs Review",
+    "due_edit": "2016-01-18T17:00:00Z",
+    "story": 3,
+    "code": "print-women",
+    "captions": "NA",
+    "run_date": "2016-01-20T13:00:00Z",
+    "title": "Women\u2019s Legal Rights Handbook gets update, publishes online",
+    "original_printfacet": true,
+    "discussion": 24,
+    "credit": [
+      6
+    ],
+    "excerpt": "59 percent of Alaskan women reported experiencing intimate partner violence, sexual violence or both at least once in her lifetime.",
+    "share_note": "",
+    "creation_date": "2016-01-19T05:28:09.387Z",
+    "keywords": "[]",
+    "length": 1300,
+    "editor": 2,
+    "pf_description": "Print story about Alaska Women's Legal Rights handbook",
+    "owner": 6,
+    "organization": 1,
+    "pf_content": "<p>The Alaska Women&rsquo;s Legal Rights handbook was first published more than 30 years ago. The latest edition, which was released last month, is 240 pages long and includes information on victim&rsquo;s rights, employment, reproductive rights, safety planning and more.</p>\r\n<p>&ldquo;It just gives women a broad overview on a broad array of legal topics that they could confront at any time in their life. And it&rsquo;s great that we&rsquo;re able to offer it online now, too, because anyone can access this at any time,&rdquo; says Christine Pate, a legal advocate with the Alaska Network on Domestic Violence and Sexual Assault.</p>\r\n<p>The organization Pate works for published the most recent edition of the handbook. She says the handbook is for anyone in the general public who is affected by domestic violence or sexual assault. But she knows that some people might ask why it is specifically a &ldquo;women&rsquo;s&rdquo; handbook.</p>\r\n<p>In a 2010 survey, 59 percent of Alaskan women reported experiencing intimate partner violence, sexual violence or both at least once in her lifetime.</p>\r\n<p>Anyone can be a victim of domestic violence and the new handbook acknowledges violence in same-sex relationships. Pate says the information in the handbook is useful to any victim, but it is written using female pronouns.</p>\r\n<p>&ldquo;A lot of the issues that are addressed here, women are the primary victims of sexual assault, domestic violence and it&rsquo;s also our experience, and I think research shows that women, especially when there is a legal problem in perhaps a family law case, have less access to resources,&rdquo; Pate says.</p>\r\n<p>In communities off the road system with little or no law enforcement, the hurdles to leave an abusive situation are different. Ariel Herman, a training coordinator at ANDVSA, says that doesn&rsquo;t mean you can&rsquo;t prepare.</p>\r\n<p>&ldquo;It&rsquo;s going to be different contextually depending on if you&rsquo;re in a village or in Juneau or Anchorage but the idea of being ready to leave is something that we can all talk about no matter where our context is,&rdquo; Herman says.</p>\r\n<p>The handbook includes a seven-page outline for creating a safety plan. It includes a section where the victim can write down important telephone numbers to their local police department or district attorney&rsquo;s office.</p>\r\n<p>&ldquo;Where can you go, who can you talk to? Not everyone feels comfortable talking to the police, so who else can they contact? And also we recognize that not every community has police,&rdquo; Herman says. &ldquo;Your kids, do they know how to use the phone or radio in your community to know who to talk to?&rdquo;</p>\r\n<p>There&rsquo;s a checklist for what the victim should consider taking with her before leaving. The list includes practical items such as Social Security cards for herself and her children, birth and marriage certificates, medications, credit cards, a checkbook, a copy of her divorce papers or protective order. There are also things a victim might not think of in an emergency: jewelry, photo albums, a child&rsquo;s favorite blanket or toy, pets.</p>\r\n<p>For a victim whose abuser has left the home, there&rsquo;s another list to prepare her if he returns: Change the locks, install outside lighting and purchase rope ladders to escape from second floor windows. Those are just a few of the safety measures listed. There are also tips on how to protect the privacy of phone and email communications.</p>\r\n<p>&ldquo;The safety plan unfortunately cannot prevent all abuse and that&rsquo;s because the abuse is not in the control of the victim or the victim&rsquo;s advocate,&rdquo; Herman says. &ldquo;It is in the control of the abuser.&rdquo;</p>\r\n<p>The last page of the handbook includes phone numbers for domestic violence and sexual assault programs across the state. Most women&rsquo;s shelters and advocacy organizations have hard copies of the handbook; ANDVSA.org has a digital version.</p>",
+    "image_assets": []
+  },
+  "model": "editorial.printfacet",
+  "pk": 2
+}
+]
