@@ -92,12 +92,11 @@ class NetworkForm(forms.ModelForm):
         fields = ['name', 'network_description', 'logo']
 
 
-# class AddToNetworkForm(forms.ModelForm):
-#     """ Add an organization to a network."""
-#
-#     class Meta:
-#         model = NetworkOrganization
-#         fields = []
+class AddToNetworkForm(forms.Form):
+    """ Add an organization to a network."""
+
+    class Meta:
+        fields = []
 
 class InviteToNetworkForm(forms.Form):
     """ Send private message inviting an organization to a network."""

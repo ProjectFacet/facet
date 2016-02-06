@@ -13,7 +13,19 @@ from django.views.decorators.csrf import csrf_exempt
 import datetime
 import json
 
-from .forms import (
+from django.shortcuts import render, redirect, get_object_or_404
+from django.conf import settings
+from django.core.mail import send_mail
+from django.http import HttpResponse
+from django.utils import timezone
+from django.views.generic import TemplateView , UpdateView, DetailView
+from django.views.decorators.csrf import csrf_exempt
+import datetime
+import json
+
+# All imports are included for use in test view
+
+from editorial.forms import (
     AddUserForm,
     UserProfileForm,
     OrganizationForm,
@@ -43,11 +55,10 @@ from .forms import (
     SeriesNoteForm,
     StoryNoteForm,)
 
-from models import (
+from editorial.models import (
     User,
     Organization,
     Network,
-    NetworkOrganization,
     Series,
     Story,
     WebFacet,

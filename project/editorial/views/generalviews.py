@@ -12,7 +12,7 @@ import json
 
 # All imports are included for use in test view
 
-from .forms import (
+from editorial.forms import (
     AddUserForm,
     UserProfileForm,
     OrganizationForm,
@@ -42,11 +42,10 @@ from .forms import (
     SeriesNoteForm,
     StoryNoteForm,)
 
-from models import (
+from editorial.models import (
     User,
     Organization,
     Network,
-    NetworkOrganization,
     Series,
     Story,
     WebFacet,
