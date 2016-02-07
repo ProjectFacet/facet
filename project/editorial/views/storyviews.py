@@ -107,7 +107,6 @@ def story_new(request):
     """ Create story page. """
 
     series = Series.objects.all()
-    storyform = StoryForm()
     if request.method == "POST":
         storyform = StoryForm(request.POST or None)
         #import pdb; pdb.set_trace()
