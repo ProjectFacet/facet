@@ -202,7 +202,9 @@ class User(AbstractUser):
         """ Return list of comments from discussions the user is a participant in."""
 
         discussion_ids = {cd['discussion_id'] for cd in Comment.objects.filter(user_id=self.id).values('discussion_id')}
-        inbox_comments = Comment.objects.filter(discussion_id__in=discussion_ids)
+        user_comments = Comment.objects.filter(user_id=self.id)
+        all_comments = Comment.objects.filter(discussion_id__in=discussion_ids)
+        inbox_comments = all_comments.exclude(id__in=user_comments)
 
         return inbox_comments
 
@@ -211,7 +213,9 @@ class User(AbstractUser):
         since the user's last login."""
 
         discussion_ids = {cd['discussion_id'] for cd in Comment.objects.filter(user_id=self.id).values('discussion_id')}
-        recent_comments = Comment.objects.filter(discussion_id__in=discussion_ids, date__gte=self.last_login)
+        user_comments = Comment.objects.filter(user_id=self.id)
+        all_comments = Comment.objects.filter(discussion_id__in=discussion_ids, date__gte=self.last_login)
+        recent_comments = all_comments.exclude(id__in=user_comments)
 
         return recent_comments
 
