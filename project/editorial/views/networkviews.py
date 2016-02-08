@@ -13,8 +13,6 @@ from django.views.decorators.csrf import csrf_exempt
 import datetime
 import json
 
-# All imports are included for use in test view
-
 from editorial.forms import (
     AddUserForm,
     UserProfileForm,
@@ -71,6 +69,7 @@ from editorial.models import (
     UserNote,
     SeriesNote,
     StoryNote,)
+
 
 
 #----------------------------------------------------------------------#
