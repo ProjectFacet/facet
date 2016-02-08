@@ -205,7 +205,6 @@ class User(AbstractUser):
         user_comments = Comment.objects.filter(user_id=self.id)
         all_comments = Comment.objects.filter(discussion_id__in=discussion_ids)
         inbox_comments = all_comments.exclude(id__in=user_comments)
-
         return inbox_comments
 
     def recent_comments(self):
@@ -216,7 +215,6 @@ class User(AbstractUser):
         user_comments = Comment.objects.filter(user_id=self.id)
         all_comments = Comment.objects.filter(discussion_id__in=discussion_ids, date__gte=self.last_login)
         recent_comments = all_comments.exclude(id__in=user_comments)
-
         return recent_comments
 
     def private_messages_received(self):
@@ -319,7 +317,6 @@ class Organization(models.Model):
         """ Return queryset of all users in an organization."""
 
         organization_users = User.objects.filter(organization=self)
-
         return organization_users
 
     def get_org_networks(self):
@@ -341,7 +338,6 @@ class Organization(models.Model):
         organizations = all_organizations.exclude(id=self.id)
         # get distinct list of organizations
         unique_collaborators = organizations.distinct()
-
         return unique_collaborators
 
     def get_org_image_library(self):

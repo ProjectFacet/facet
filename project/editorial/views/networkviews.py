@@ -91,7 +91,7 @@ def network_new(request):
             discussion = Discussion.objects.create_discussion("NET")
             network.discussion = discussion
             network.save()
-            network.network_organization.add(owner_org)
+            network.organizations.add(owner_org)
             network.save()
             return redirect('network_detail', pk=network.pk)
     else:
@@ -105,9 +105,9 @@ def delete_network(request, pk):
     """ Delete a network and dependent records."""
 
     if request == "POST":
-        network = get_object_or_404(Network, pk=pk)
+        # network = get_object_or_404(Network, pk=pk)
         # if request.user == network.owner_organization
-        network.delete()
+        #     network.delete()
         return redirect('network_list')
 
 
@@ -115,21 +115,14 @@ def send_network_invite(request):
     """ Send private message with link to join a network."""
 
     network = request.POST.get('network')
-    print "Post Network", network
     network = get_object_or_404(Network, id=network)
     user_email = request.POST.get('invited_user')
-    print "USER EMAIL", user_email
     user = get_object_or_404(User, email=user_email)
-    print "USER: ", user
     organization = get_object_or_404(Organization, id=user.organization_id)
-    print "ORG: ", organization
     message_subject = "Invitation for {organization} to join {network}".format(organization = organization.name, network=network.name)
-    print "MESSAGE SUBJECT", message_subject
     message_text = '<form action="/network/invitation/accept/" method="POST" class="post-form"><input type="hidden" name="network" value="{network}" /><button type="submit" class="btn btn-primary">Accept Invitation</button></form>'.format(network=network.id)
-    print "MESSAGE TEXT: ", message_text
     discussion = Discussion.objects.create_discussion('PRI')
     invitation_message = PrivateMessage.objects.create_private_message(user=request.user, recipient=user, discussion=discussion, subject=message_subject, text=message_text)
-    print "Successfully joined Network!"
     return redirect('network_detail', pk=network.pk)
 
 
@@ -141,7 +134,7 @@ def confirm_network_invite(request):
     network_id = request.POST.get('network')
     network = get_object_or_404(Network, id=network_id)
     organization = request.user.organization
-    network.network_organization.add(organization)
+    network.organizations.add(organization)
     network.save()
     print "Successfully joined Network!"
     return redirect('network_detail', pk=network.pk)
@@ -205,9 +198,7 @@ def network_list(request):
     """ Table of networks your org is member of."""
 
     organization = request.user.organization
-    print "org id: ", organization
     network_list = Organization.get_org_networks(organization)
-    print "network_list: ", network_list
 
     return render(request, 'editorial/networklist.html', {'network_list': network_list})
 
