@@ -70,7 +70,7 @@
               <div id="collapse-{{network.id}}" class="panel-collapse collapse">
                 <div class="panel-body brighter">
 
-                  {% for organization in network.members.all %}
+                  {% for organization in network.organizations.all %}
                     <h4 class="dark">{{ organization.name }}</h4>
                     <div class="row">
 

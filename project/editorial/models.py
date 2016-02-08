@@ -312,11 +312,10 @@ class Organization(models.Model):
         return self.name
 
     def get_org_users(self):
-        """ Return dictionary of all users in an organization."""
+        """ Return queryset of all users in an organization."""
 
-        organization_users = {}
-        organization_users['organization'] = self
-        organization_users['users'] = User.objects.filter(organization=self)
+        organization_users = User.objects.filter(organization=self)
+
         return organization_users
 
     def get_org_networks(self):
