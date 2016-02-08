@@ -90,22 +90,10 @@ def index(request):
 def test(request):
     """ Use for rapid testing of new pages."""
 
-    images = Organization.get_org_image_library(request.user.organization)
-    if request.method == "POST":
-        add_image_form = AddImageForm(request.POST, request=request)
-        if form.is_valid():
-            webfacet_id = request.POST.get('webfacet')
-            webfacet = get_object_or_404(WebFacet, id=webfacet_id)
-            images = request.POST.getlist('images')
-            webfacet.image_assets.add(images)
-            webfacet.save()
-        return redirect('story_detail', pk=webfacet.story.id)
-    else:
-        add_image_form = AddImageForm(request=request)
-        print add_image_form
-        return render(request, 'editorial/test.html', {
-                    'add_image_form': add_image_form,
-                    'images': images,
+    organizations = Organization.get_org_collaborators(request.user.organization)
+
+    return render(request, 'editorial/test.html', {
+
                 })
 
 #----------------------------------------------------------------------#

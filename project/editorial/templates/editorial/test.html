@@ -15,20 +15,7 @@
 
 
 <div class="row">
-    <form action="{% url 'test' %}" method="POST" class="post-form" name="addwebimage">
-      {% csrf_token %}
-      <div class="image-library">
-      {% for image in images %}
-        <div class="col-md-1">
-          <label>
-            <img class="img-responsive img-thumbnail" src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}">
-            <input type="checkbox" name="images" value="{{ image.id }}">
-          </label>
-        </div>
-      {% endfor %}
-      </div>
-      <button type="submit" class="btn btn-primary" name="addwebimage">Add Images</button>
-    </form>
+    
 </div>
 
 {% endblock %}

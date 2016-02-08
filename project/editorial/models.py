@@ -326,21 +326,22 @@ class Organization(models.Model):
         """ Return list of all the networks that an organization is owner of or member of."""
 
         all_organization_networks = Network.objects.filter(Q(Q(owner_organization=self) | Q(organizations=self)))
-        organization_networks = set(all_organization_networks)
+        # not necessary but leaving in for now, check to make sure unique list of networks
+        organization_networks = all_organization_networks.distinct()
         return organization_networks
 
     def get_org_collaborators(self):
         """ Return list of all organizations that are members of the same networks as self."""
 
-        # unique_collaborators =
-
+        # get list of networks that an org is a member of
         networks = Organization.get_org_networks(self)
-        collaborators = []
-        for network in networks:
-            orgs = Network.get_network_organizations(network)
-            collaborators.extend(orgs)
-        unique_collaborators = set(collaborators)
-        # partners = Organization.network
+        # get list of organizations that are members of any of those networks
+        all_organizations = Organization.objects.filter(Q(network_organization=networks))
+        # remove user's organization from queryset
+        organizations = all_organizations.exclude(id=self.id)
+        # get distinct list of organizations
+        unique_collaborators = organizations.distinct()
+
         return unique_collaborators
 
     def get_org_image_library(self):

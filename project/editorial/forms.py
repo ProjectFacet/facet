@@ -129,11 +129,11 @@ class SeriesForm(forms.ModelForm):
 class StoryForm(forms.ModelForm):
     """ Form to create a new story. """
 
-    # def __init__(self, *args, **kwargs):
-    #     self.request = kwargs.pop("request")
-    #     super(StoryForm, self).__init__(*args, **kwargs)
-    #     # self.fields['collaborate_with'].queryset = Organization.get_org_collaborators(self.request.user.organization)
-    #     self.fields['team'].queryset = Organization.get_org_users(self.request.user.organization)
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request")
+        super(StoryForm, self).__init__(*args, **kwargs)
+        self.fields['collaborate_with'].queryset = Organization.get_org_collaborators(self.request.user.organization)
+        self.fields['team'].queryset = Organization.get_org_users(self.request.user.organization)
 
     series = forms.ModelChoiceField(
         queryset=Series.objects.all(),

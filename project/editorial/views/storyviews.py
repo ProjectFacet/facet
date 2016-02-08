@@ -106,7 +106,7 @@ def story_new(request):
 
     series = Series.objects.all()
     if request.method == "POST":
-        storyform = StoryForm(request.POST or None)
+        storyform = StoryForm(request.POST, request=request)
         #import pdb; pdb.set_trace()
         if storyform.is_valid():
             story = storyform.save(commit=False)
@@ -118,7 +118,7 @@ def story_new(request):
             storyform.save_m2m()
             return redirect('story_detail', pk=story.pk)
     else:
-        storyform = StoryForm()
+        storyform = StoryForm(request=request)
     return render(request, 'editorial/storynew.html', {
         'storyform': storyform,
         'series': series
@@ -131,12 +131,12 @@ def story_edit(request, pk):
     story = get_object_or_404(Story, pk=pk)
 
     if request.method == "POST":
-        storyform = StoryForm(data=request.POST, instance=story)
+        storyform = StoryForm(data=request.POST, instance=story, request=request)
         if storyform.is_valid():
             storyform.save()
             return redirect('story_detail', pk=story.id)
     else:
-        storyform = StoryForm(instance=story)
+        storyform = StoryForm(instance=story, request=request)
 
     return render(request, 'editorial/storyedit.html', {
         'story': story,

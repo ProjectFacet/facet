@@ -36,7 +36,7 @@
           </div> -->
           <hr>
           <p class="bright">Managing Organization: {{ network.owner_organization.name }}</p>
-          <p class="bright">Member Organizations: {% for organization in network.members.all %}{{ organization.name }}, {% endfor %}</p>
+          <p class="bright">Member Organizations: {% for organization in network.organizations.all %}{{ organization.name }}, {% endfor %}</p>
         </div><!-- /.media -body-->
       </div><!-- /.media -->
     </div><!-- /.panel-body -->
