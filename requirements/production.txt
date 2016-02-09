@@ -1,4 +1,5 @@
--r base.txt
-awsebcli
-django-storages
-boto
+-r requirements/base.txt
+awsebcli==3.7.3
+boto==2.39.0
+botocore==1.3.23
+django-storages==1.1.8
