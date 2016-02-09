@@ -13,7 +13,7 @@ import json
 from .forms import (
     AddUserForm,
     UserProfileForm,
-    CreateOrganization,
+    OrganizationForm,
     NetworkForm,
     SeriesForm,
     StoryForm,
@@ -21,6 +21,7 @@ from .forms import (
     PrintFacetForm,
     AudioFacetForm,
     VideoFacetForm,
+    ImageAssetForm,
     AddToNetworkForm,
     InviteToNetworkForm,
     PrivateMessageForm,
@@ -51,7 +52,7 @@ from models import (
     VideoFacet,
     SeriesNote,
     StoryNote,
-    Asset,
+    ImageAsset,
     Comment,
     PrivateMessage,
     Discussion,
@@ -85,6 +86,11 @@ def index(request):
 #----------------------------------------------------------------------#
 def test(request):
     """ Use for rapid testing of new pages."""
+
+    organization = request.user.organization
+    print "ORG: ", organization
+    test = Organization.get_org_collaborators(organization)
+    print "TEST: ", test
 
     return render(request, 'editorial/test.html', {
         }
@@ -188,10 +194,10 @@ def org_new(request):
     they regularly contribute to.
     """
 
-    orgform = CreateOrganization()
+    orgform = OrganizationForm()
     if request.method == "POST":
         import pdb; pdb.set_trace()
-        orgform = CreateOrganization(request.POST, request.FILES)
+        orgform = OrganizationForm(request.POST, request.FILES)
         if orgform.is_valid():
             organization = orgform.save(commit=False)
             organization.owner = request.user
@@ -206,7 +212,7 @@ def org_new(request):
             current_user.save()
             return redirect('org_detail', pk=organization.pk)
     else:
-        form = CreateOrganization()
+        form = OrganizationForm()
     return render(request, 'editorial/organizationnew.html', {
             'orgform': orgform,
             })
@@ -242,12 +248,12 @@ def org_edit(request, pk):
     organization = get_object_or_404(Organization, pk=pk)
 
     if request.method == "POST":
-        orgform = CreateOrganization(request.POST, request.FILES, instance=organization)
+        orgform = OrganizationForm(request.POST, request.FILES, instance=organization)
         if orgform.is_valid():
             orgform.save()
             return redirect('org_detail', pk=organization.id)
     else:
-        orgform = CreateOrganization(instance=organization)
+        orgform = OrganizationForm(instance=organization)
 
     return render(request, 'editorial/organizationedit.html', {
             'organization': organization,
@@ -505,15 +511,15 @@ def story_new(request):
     if request.method == "POST":
         storyform = StoryForm(request.POST or None)
         #import pdb; pdb.set_trace()
-    if storyform.is_valid():
-        story = storyform.save(commit=False)
-        story.owner = request.user
-        story.organization = request.user.organization
-        discussion = Discussion.objects.create_discussion("STO")
-        story.discussion = discussion
-        story.save()
-        storyform.save_m2m()
-        return redirect('story_detail', pk=story.pk)
+        if storyform.is_valid():
+            story = storyform.save(commit=False)
+            story.owner = request.user
+            story.organization = request.user.organization
+            discussion = Discussion.objects.create_discussion("STO")
+            story.discussion = discussion
+            story.save()
+            storyform.save_m2m()
+            return redirect('story_detail', pk=story.pk)
     else:
         storyform = StoryForm()
     return render(request, 'editorial/storynew.html', {
@@ -563,6 +569,7 @@ def story_detail(request, pk):
     # create these here for efficiency
     webform=WebFacetForm()
     webcommentform=WebFacetCommentForm()
+    webfacet_imageform=ImageAssetForm()
 
     try:
         webfacet = get_object_or_404(WebFacet, story=story)
@@ -624,6 +631,7 @@ def story_detail(request, pk):
     # create these here for efficiency
     printform=PrintFacetForm()
     printcommentform=PrintFacetCommentForm()
+    printfacet_imageform=ImageAssetForm()
 
     try:
         print "PF Try"
@@ -683,6 +691,7 @@ def story_detail(request, pk):
     # create these here for efficiency
     audioform=AudioFacetForm()
     audiocommentform=AudioFacetCommentForm()
+    audiofacet_imageform=ImageAssetForm()
 
     try:
         print "AF Try"
@@ -743,6 +752,7 @@ def story_detail(request, pk):
     # create these here for efficiency
     videoform=VideoFacetForm()
     videocommentform=VideoFacetCommentForm()
+    videofacet_imageform=ImageAssetForm()
 
     try:
         print "VF Try"
@@ -817,6 +827,10 @@ def story_detail(request, pk):
         'videocomments': videocomments,
         'videohistory': videohistory,
         'videocommentform': videocommentform,
+        'webfacet_imageform': webfacet_imageform,
+        'printfacet_imageform': printfacet_imageform,
+        'audiofacet_imageform': audiofacet_imageform,
+        'videofacet_imageform': videofacet_imageform,
         })
 
 
@@ -844,6 +858,43 @@ def create_story_note(request):
             storynote.story = story
             storynote.save()
             return redirect('story_detail', pk=story.id)
+
+
+#----------------------------------------------------------------------#
+#   Upload Asset Views
+#----------------------------------------------------------------------#
+
+def upload_webfacet_image(request):
+    """ Add image to a webfacet."""
+
+    if request.method == 'POST':
+        imageform=ImageAssetForm(request.POST, request.FILES)
+        if imageform.is_valid():
+            webimage = imageform.save(commit=False)
+            # retrieve the webfacet the image should be associated with
+            webfacet_id = request.POST.get('webfacet')
+            webfacet = get_object_or_404(WebFacet, id=webfacet_id)
+            # set request based attributes
+            webimage.owner = request.user
+            webimage.organization = request.user.organization
+            webimage.save()
+            # add image asset to webfacet image_assets
+            webfacet.image_assets.add(webimage)
+            webfacet.save()
+    return redirect('story_detail', pk=webfacet.story.id)
+
+def upload_printfacet_image(request):
+    """ Add image to a printfacet."""
+    pass
+
+def upload_audiofacet_image(request):
+    """ Add image to a audiofacet."""
+    pass
+
+def upload_videofacet_image(request):
+    """ Add image to a videofacet."""
+    pass
+
 
 #----------------------------------------------------------------------#
 #   Comments Views

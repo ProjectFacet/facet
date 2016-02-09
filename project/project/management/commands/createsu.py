@@ -11,9 +11,7 @@ class Command(BaseCommand):
             if 'ADMIN_PASSWORD' in os.environ:
                 admin_password = os.environ['ADMIN_PASSWORD']
             else:
-                error_string = """You have not set your ADMIN_PASSWORD. 
-Use `$ python manage.py generatepass` to generate one. 
-Use `$ eb setenv KEY=value` to set."""
+                error_string = "You have not set your ADMIN_PASSWORD. Use `$ python manage.py generatepass` to generate one. Use `$ eb setenv KEY=value` to set."
                 raise KeyError, error_string
 
             User.objects.create_superuser('admin', 'admin@admin.com', admin_password)

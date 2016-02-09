@@ -27,6 +27,7 @@ from editorial.models import (
     UserNote,
     SeriesNote,
     StoryNote,
+    ImageAsset,
     )
 
 # ------------------------------ #
@@ -72,20 +73,13 @@ class UserProfileForm(forms.ModelForm):
 #      Organization Forms        #
 # ------------------------------ #
 
-class CreateOrganization(forms.ModelForm):
+class OrganizationForm(forms.ModelForm):
     """ Create an Organization. """
 
     class Meta:
         model = Organization
         fields = ['name', 'org_description', 'location', 'logo']
 
-
-class EditOrganization(forms.ModelForm):
-    """ Edit an Organization. """
-
-    class Meta:
-        model = Organization
-        fields = ['name', 'org_description', 'location', 'logo']
 
 # ------------------------------ #
 #         Network Forms          #
@@ -157,6 +151,10 @@ class StoryForm(forms.ModelForm):
             options={'format': 'YYYY-MM-DD HH:mm'},
             attrs={'id': 'story-share-picker'})
     )
+
+    # collaborate_with = forms.ModelChoiceField(
+    #     queryset=Organization.get_org_collaborators(organization)
+    # )
 
 
     class Meta:
@@ -420,6 +418,31 @@ class VideoFacetForm(forms.ModelForm):
          '/static/scripts/jquery.datetimepicker.js',
          '/static/scripts/bootstrap-datetimepicker.js',
          '/static/scripts/tiny_mce/tinymce.min.js',)
+
+
+# ------------------------------ #
+#          Asset Forms           #
+# ------------------------------ #
+
+class ImageAssetForm(forms.ModelForm):
+    """Upload image to a facet."""
+
+    class Meta:
+        model = ImageAsset
+        fields = [
+            'asset_title',
+            'asset_description',
+            'attribution',
+            'photo',
+            'image_type',
+            'keywords',
+        ]
+        widgets = {
+            'asset_description': Textarea(attrs={'rows':3}),
+            'attribution': Textarea(attrs={'rows':3}),
+            'image_type': Select(attrs={'class': 'form-control'}),
+        }
+
 
 # ------------------------------ #
 #         Comment Forms          #

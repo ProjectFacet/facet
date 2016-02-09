@@ -317,31 +317,26 @@ class Organization(models.Model):
         organization_users = {}
         organization_users['organization'] = self
         organization_users['users'] = User.objects.filter(organization=self)
-
         return organization_users
 
     def get_org_networks(self):
         """ Return list of all the networks that an organization is owner of or member of."""
 
-        # organization_networks = {}
-        # organization_networks['organization'] = self
-        # organization_networks['network_owner'] = Network.objects.filter(owner_organization=self)
-        # organization_networks['network_member'] = []
-        # network_orgs = NetworkOrganization.objects.filter(organization = self)
-        # for item in network_orgs:
-        #     network = item.network
-        #     organization_networks['network_member'].append(network)
-
-        organization_networks = []
-        owned_networks = Network.objects.filter(owner_organization=self)
-        organization_networks.extend(owned_networks)
-        network_orgs = NetworkOrganization.objects.filter(organization = self)
-        for item in network_orgs:
-            network = item.network
-            if network not in organization_networks:
-                organization_networks.append(network)
-
+        all_organization_networks = Network.objects.filter(Q(Q(owner_organization=self) | Q(organizations=self)))
+        organization_networks = set(all_organization_networks)
         return organization_networks
+
+    def get_org_collaborators(self):
+        """ Return list of all organizations that are members of the same networks as self."""
+
+        networks = Organization.get_org_networks(self)
+        collaborators = []
+        for network in networks:
+            orgs = Network.get_network_organizations(network)
+            collaborators.extend(orgs)
+        unique_collaborators = set(collaborators)
+        return unique_collaborators
+
 
     @property
     def description(self):
@@ -397,7 +392,7 @@ class Network(models.Model):
         format='JPEG',
     )
 
-    members = models.ManyToManyField(
+    organizations = models.ManyToManyField(
         Organization,
         through='NetworkOrganization',
         related_name='network_organization',
@@ -422,7 +417,11 @@ class Network(models.Model):
     def get_network_organizations(self):
         """ Return list of all organizations that are part of a network. """
 
-        network_organizations = NetworkOrganization.objects.filter(network=self)
+        network_org_objects = NetworkOrganization.objects.filter(network=self)
+        network_organizations = []
+        for item in network_org_objects:
+            organization = item.organization
+            network_organizations.append(organization)
         return network_organizations
 
 
@@ -556,9 +555,9 @@ class Series(models.Model):
     )
 
     collaborate_with = models.ManyToManyField(
-        Network,
-        related_name='series_collaborated_with_network',
-        help_text='Network ids that a series is open to collaboration with.',
+        Organization,
+        related_name='series_collaborated_with_organization',
+        help_text='Organization ids that a series is open to collaboration with.',
         blank=True,
     )
 
@@ -572,12 +571,6 @@ class Series(models.Model):
         help_text='Id of planning discussion for a series.',
         blank=True,
         null=True,
-    )
-
-    assets = models.ManyToManyField(
-        'Asset',
-        blank=True,
-        help_text='',
     )
 
     class Meta:
@@ -701,11 +694,10 @@ class Story(models.Model):
     )
 
     collaborate_with = models.ManyToManyField(
-        Network,
-        related_name='story_collaborated_with_network',
-        help_text='Network ids that a story is open to collaboration with.',
+        Organization,
+        related_name='story_collaborated_with_organization',
+        help_text='Organization ids that a series is open to collaboration with.',
         blank=True,
-        null=True,
     )
 
     archived = models.BooleanField(
@@ -914,8 +906,8 @@ class WebFacet(models.Model):
         blank=True,
     )
 
-    assets = models.ManyToManyField(
-        'Asset',
+    image_assets = models.ManyToManyField(
+        'ImageAsset',
         blank=True,
     )
 
@@ -1102,8 +1094,8 @@ class PrintFacet(models.Model):
         blank=True,
     )
 
-    assets = models.ManyToManyField(
-        'Asset',
+    image_assets = models.ManyToManyField(
+        'ImageAsset',
         blank=True,
     )
 
@@ -1292,8 +1284,8 @@ class AudioFacet(models.Model):
         blank=True,
     )
 
-    assets = models.ManyToManyField(
-        'Asset',
+    image_assets = models.ManyToManyField(
+        'ImageAsset',
         blank=True,
     )
 
@@ -1481,8 +1473,8 @@ class VideoFacet(models.Model):
         blank=True,
     )
 
-    assets = models.ManyToManyField(
-        'Asset',
+    image_assets = models.ManyToManyField(
+        'ImageAsset',
         blank=True,
     )
 
@@ -1935,17 +1927,36 @@ class VideoFacetCopyDetail(models.Model):
 
 #----------------------------------------------------------------------#
 #   MetaMaterials:
-#   - Main Tables:  Asset, Note, UserNote, SeriesNote, StoryNote, Comment
+#   - Main Tables:  ImageAsset, Note, UserNote, SeriesNote, StoryNote, Comment
 #                   CommentReadStatus, Discussion, PrivateDiscussion,
 #   - Associations: None
 #----------------------------------------------------------------------#
 
-class Asset(models.Model):
+class ImageAssetManager(models.Manager):
+    """Custom manager for ImageAsset."""
+
+    def create_imageasset(self, owner, organization, asset_title, asset_description, asset_attribution, photo, image_type, keywords):
+        """Method for quick creation of videofacet copy detail record."""
+        imageasset=self.create(owner=owner, organization=organization, asset_title=asset_title, asset_description=asset_description, asset_attribution=asset_attribution, photo=photo, image_type=image_type, keywords=keywords)
+        return imageasset
+
+
+class ImageAsset(models.Model):
     """ Assets for all media uploaded. """
 
     owner = models.ForeignKey(
         User,
-        related_name='asset_owner',
+        related_name='image_asset_owner',
+    )
+
+    organization = models.ForeignKey(
+        Organization,
+        related_name='image_asset_organization'
+    )
+
+    original = models.BooleanField(
+        default=True,
+        help_text='This content originally belonged to this organization.'
     )
 
     asset_title = models.CharField(
@@ -1966,30 +1977,30 @@ class Asset(models.Model):
         blank=True,
     )
 
-    s3_link = models.URLField(
-        max_length=300,
-        help_text='The item on S3.'
+    photo = models.ImageField(
+        upload_to='photos',
+        blank=True,
+    )
+
+    display_photo = ImageSpecField(
+        source='photo',
+        processors=[SmartResize(600,600)],
+        format='JPEG',
     )
 
     #Choices for Asset type
     PHOTO = 'PIC'
     GRAPHIC = 'GRAPH'
-    AUDIO = 'AUD'
-    VIDEO = 'VID'
-    DOCUMENT = 'DOC'
 
-    ASSET_TYPE_CHOICES = (
+    IMAGE_TYPE_CHOICES = (
         (PHOTO, 'Photograph'),
         (GRAPHIC, 'Graphic'),
-        (AUDIO, 'Audio'),
-        (VIDEO, 'Video'),
-        (DOCUMENT, 'Document'),
     )
 
-    asset_type = models.CharField(
+    image_type = models.CharField(
         max_length=20,
-        choices = ASSET_TYPE_CHOICES,
-        help_text='What kind is the asset.'
+        choices = IMAGE_TYPE_CHOICES,
+        help_text='What kind of image.'
     )
 
     creation_date = models.DateTimeField(
@@ -2000,18 +2011,21 @@ class Asset(models.Model):
     keywords = ArrayField(
         models.CharField(max_length=100),
         default=list,
-        help_text='List of keywords for search.'
+        help_text='List of keywords for search.',
+        blank=True,
     )
 
+    objects = ImageAssetManager()
+
     def __str__(self):
-        return "Asset: {asset} is a {asset_type}".format(
+        return "Asset: {asset} is a {image_type}".format(
                                 asset=self.id,
-                                asset_type=self.asset_type,
+                                image_type=self.image_type,
                                 )
 
     @property
     def type(self):
-        return "{asset_type} Asset". format(asset_type=self.asset_type)
+        return "{image_type} Asset". format(image_type=self.image_type)
 
 
 class Note(models.Model):

@@ -307,15 +307,30 @@
                         </div>
                       {% endif %}
                     </div>
-                    <div class="form-group custom-form">
-                      <a href="#" data-toggle="tooltip" title="{{ webform.sharenote.help_text }}"><span class="field-label">{{ webform.sharenote.label_tag }}</span></a>
-                      {{ webform.sharenote }}
-                      {% if webform.sharenote.errors %}
-                        <div class="alert alert-warning" role="alert">
-                        {{ webform.sharenote.errors }}
-                        </div>
-                      {% endif %}
+                    <div class="section-title">
+                      <a href="#" data-toggle="tooltip" title="Image"><label class="field-label">Images</label></a>
+                      <a href="#" data-toggle="modal" data-target="#addWebFacetImage" title="Add Image"><i class="fa fa-picture-o sameline dark"></i></a>
                     </div>
+                    <div id="webimage-thumbs">
+                      <div class="row">
+                      {% for webfacet in story.webfacetstory.all %}
+                        {% for image in webfacet.image_assets.all %}
+                          {% if image.display_photo %}
+                          <div class="col-md-4">
+                            <a href="{{ image.display_photo.url }}" class="thumbnail"><img src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}"></a>
+                          </div>
+                          {% endif %}
+                        {% endfor %}
+                      {% endfor %}
+                      </div>
+                    </div>
+                    <script>
+                      $('#webimage-thumbs').magnificPopup({
+                        delegate: 'a',
+                        type: 'image',
+                        gallery: {enabled:true}
+                      });
+                    </script>
 
 
                   </div>
@@ -404,7 +419,10 @@
                                 <p class="tiny-text">{{ comment.date|date:'D M j g:i a' }}</p>
                               </div>
                               <div class="col-md-2">
-                                <img class="media-object img-circle" width="32" src="/static/media/profile/{{ comment.user.first_name }}{{ comment.user.id }}.jpg" alt="user">
+                                {% if comment.user.display_photo %}
+                                <img class="media-object img-circle" width="32" src="{{ comment.user.display_photo.url }}" alt="user">
+                                {% else %}
+                                {% endif %}
                                 <p class="tiny-text">{{ comment.user.first_name }}</p>
                               </div>
                             {% endfor %}
@@ -535,14 +553,9 @@
                         </div>
                       {% endif %}
                     </div>
-                    <div class="form-group custom-form">
-                      <a href="#" data-toggle="tooltip" title="{{ printform.sharenote.help_text }}"><span class="field-label">{{ printform.sharenote.label_tag }}</span></a>
-                      {{ printform.sharenote }}
-                      {% if printform.sharenote.errors %}
-                        <div class="alert alert-warning" role="alert">
-                        {{ printform.sharenote.errors }}
-                        </div>
-                      {% endif %}
+                    <div class="section-title">
+                      <a href="#" data-toggle="tooltip" title="Image"><label class="field-label">Images</label></a>
+                      <a href="#" data-toggle="modal" data-target="#addPrintFacetImage" title="Add Image"><i class="fa fa-picture-o sameline dark"></i></a>
                     </div>
 
 
@@ -633,7 +646,10 @@
                             <p class="tiny-text">{{ comment.date|date:'D M j g:i a' }}</p>
                           </div>
                           <div class="col-md-2">
-                            <img class="media-object img-circle" width="32" src="/static/media/profile/{{ comment.user.first_name}}{{comment.user.id}}.jpg" alt="user">
+                            {% if comment.user.display_photo %}
+                            <img class="media-object img-circle" width="32" src="{{ comment.user.display_photo.url }}" alt="user">
+                            {% else %}
+                            {% endif %}
                             <p class="tiny-text">{{ comment.user.first_name }}</p>
                           </div>
                         {% endfor %}
@@ -767,14 +783,9 @@
                         </div>
                       {% endif %}
                     </div>
-                    <div class="form-group custom-form">
-                      <a href="#" data-toggle="tooltip" title="{{ audioform.sharenote.help_text }}"><span class="field-label">{{ audioform.sharenote.label_tag }}</span></a>
-                      {{ audioform.sharenote }}
-                      {% if audioform.sharenote.errors %}
-                        <div class="alert alert-warning" role="alert">
-                        {{ audioform.sharenote.errors }}
-                        </div>
-                      {% endif %}
+                    <div class="section-title">
+                      <a href="#" data-toggle="tooltip" title="Image"><label class="field-label">Images</label></a>
+                      <a href="#" data-toggle="modal" data-target="#addAudioFacetImage" title="Add Image"><i class="fa fa-picture-o sameline dark"></i></a>
                     </div>
 
 
@@ -864,7 +875,10 @@
                             <p class="tiny-text">{{ comment.date|date:'D M j g:i a' }}</p>
                           </div>
                           <div class="col-md-2">
-                            <img class="media-object img-circle" width="32" src="/static/media/profile/{{ comment.user.first_name}}{{ comment.user.id}}.jpg" alt="user">
+                            {% if comment.user.display_photo %}
+                            <img class="media-object img-circle" width="32" src="{{ comment.user.display_photo.url }}" alt="user">
+                            {% else %}
+                            {% endif %}
                             <p class="tiny-text">{{ comment.user.first_name }}</p>
                           </div>
                         {% endfor %}
@@ -996,14 +1010,9 @@
                         </div>
                       {% endif %}
                     </div>
-                    <div class="form-group custom-form">
-                      <a href="#" data-toggle="tooltip" title="{{ videoform.sharenote.help_text }}"><span class="field-label">{{ videoform.sharenote.label_tag }}</span></a>
-                      {{ videoform.sharenote }}
-                      {% if videoform.sharenote.errors %}
-                        <div class="alert alert-warning" role="alert">
-                        {{ videoform.sharenote.errors }}
-                        </div>
-                      {% endif %}
+                    <div class="section-title">
+                      <a href="#" data-toggle="tooltip" title="Image"><label class="field-label">Images</label></a>
+                      <a href="#" data-toggle="modal" data-target="#addVideoFacetImage" title="Add Image"><i class="fa fa-picture-o sameline dark"></i></a>
                     </div>
 
 
@@ -1093,7 +1102,10 @@
                             <p class="tiny-text">{{ comment.date|date:'D M j g:i a' }}</p>
                           </div>
                           <div class="col-md-2">
-                            <img class="media-object img-circle" width="32" src="/static/media/profile/{{ comment.user.first_name}}{{comment.user.id}}.jpg" alt="user">
+                            {% if comment.user.display_photo %}
+                            <img class="media-object img-circle" width="32" src="{{ comment.user.display_photo.url }}" alt="user">
+                            {% else %}
+                            {% endif %}
                             <p class="tiny-text">{{ comment.user.first_name }}</p>
                           </div>
                         {% endfor %}
@@ -1145,6 +1157,106 @@
         </div><!-- End tab content -->
       </div><!-- End tabs -->
     </div><!-- End row -->
+
+    <!-- ================================================= -->
+                    <!-- MODALS -->
+    <!-- ================================================= -->
+
+    <!-- Add WebFacet Image Modal -->
+    <div class="modal fade" id="addWebFacetImage" tabindex="-1" role="dialog" aria-labelledby="addWebFacetImageLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h5 class="modal-title" id="addWebFacetImageLabel">Add an image to this webfacet.</h5>
+          </div>
+          <div class="modal-body">
+            <form action="{% url 'upload_webfacet_image' %}" method="POST" class="post-form" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% bootstrap_form webfacet_imageform %}
+            {% for webfacet in story.webfacetstory.all %}
+            <input type="hidden" name="webfacet" value="{{ webfacet.pk }}" />
+            {% endfor %}
+            <button type="submit" class="btn btn-primary">Save Image</button>
+            </form>
+          </div>
+          <div class="modal-footer">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add PrintFacet Image Modal -->
+    <div class="modal fade" id="addPrintFacetImage" tabindex="-1" role="dialog" aria-labelledby="addPrintFacetImageLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h5 class="modal-title" id="addPrintFacetImageLabel">Add an image to this printfacet.</h5>
+          </div>
+          <div class="modal-body">
+            <form action="{% url 'upload_printfacet_image' %}" method="POST" class="post-form" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% bootstrap_form printfacet_imageform %}
+            {% for printfacet in story.printfacetstory.all %}
+            <input type="hidden" name="printfacet" value="{{ printfacet.pk }}" />
+            {% endfor %}
+            <button type="submit" class="btn btn-primary">Save Image</button>
+            </form>
+          </div>
+          <div class="modal-footer">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add AudioFacet Image Modal -->
+    <div class="modal fade" id="addAudioFacetImage" tabindex="-1" role="dialog" aria-labelledby="addAudioFacetImageLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h5 class="modal-title" id="addAudioFacetImageLabel">Add an image to this audiofacet.</h5>
+          </div>
+          <div class="modal-body">
+            <form action="{% url 'upload_audiofacet_image' %}" method="POST" class="post-form" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% bootstrap_form audiofacet_imageform %}
+            {% for audiofacet in story.audiofacetstory.all %}
+            <input type="hidden" name="audiofacet" value="{{ audiofacet.pk }}" />
+            {% endfor %}
+            <button type="submit" class="btn btn-primary">Save Image</button>
+            </form>
+          </div>
+          <div class="modal-footer">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add VideoFacet Image Modal -->
+    <div class="modal fade" id="addVideoFacetImage" tabindex="-1" role="dialog" aria-labelledby="addVideoFacetImageLabel">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h5 class="modal-title" id="addVideoFacetImageLabel">Add an image to this videofacet.</h5>
+          </div>
+          <div class="modal-body">
+            <form action="{% url 'upload_videofacet_image' %}" method="POST" class="post-form" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% bootstrap_form videofacet_imageform %}
+            {% for videofacet in story.videofacetstory.all %}
+            <input type="hidden" name="videofacet" value="{{ videofacet.pk }}" />
+            {% endfor %}
+            <button type="submit" class="btn btn-primary">Save Image</button>
+            </form>
+          </div>
+          <div class="modal-footer">
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- Add Note Modal -->
     <div class="modal fade" id="addStoryNote" tabindex="-1" role="dialog" aria-labelledby="addStoryNoteModalLabel">

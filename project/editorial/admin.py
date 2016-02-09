@@ -14,7 +14,7 @@ from models import (
     VideoFacet,
     SeriesNote,
     StoryNote,
-    Asset,
+    ImageAsset,
     Comment,
     Discussion)
 
@@ -37,6 +37,6 @@ admin.site.register(AudioFacet)
 admin.site.register(VideoFacet)
 admin.site.register(SeriesNote)
 admin.site.register(StoryNote)
-admin.site.register(Asset)
+admin.site.register(ImageAsset)
 admin.site.register(Comment)
 admin.site.register(Discussion)

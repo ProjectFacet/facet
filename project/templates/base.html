@@ -1,3 +1,4 @@
+{% load static from staticfiles %}
 <!doctype html>
 <html class="no-js">
 <head>
@@ -12,36 +13,38 @@
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800,300italic,400italic,600italic,700italic,800italic' rel='stylesheet' type='text/css'>
 
   <!-- Bootstrap -->
-  <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/static/css/bootstrap.css">
-  <link rel="stylesheet" href="/static/css/bootstrap-datetimepicker.css">
+  <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+  <link rel="stylesheet" href="{% static 'css/bootstrap-datetimepicker.css' %}">
   <!-- endBootstrap -->
 
   <!-- Dependencies -->
-  <link rel="stylesheet" href="/static/css/dependencies.css">
+  <link rel="stylesheet" href="{% static 'css/dependencies.css' %}">
   <!-- endDependencies -->
 
   <!-- Wrapkit -->
-  <link rel="stylesheet" href="/static/css/wrapkit.css">
+  <link rel="stylesheet" href="{% static 'css/wrapkit.css' %}">
   <!-- endWrapkit -->
 
   <!-- styles & other dependencies -->
+  <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
+  <link rel="stylesheet" href="{% static 'css/components.css' %}">
+  <link rel="stylesheet" href="{% static 'css/demo.css' %}">
+  <link rel="stylesheet" href="{% static 'css/chosen.css' %}">
+  <link rel="stylesheet" href="{% static 'css/facet.css' %}">
 
-  <link rel="stylesheet" href="/static/css/components.css">
-  <link rel="stylesheet" href="/static/css/demo.css">
-  <link rel="stylesheet" href="/static/css/chosen.css">
-  <link rel="stylesheet" href="/static/css/facet.css">
-
-  <script src="/static/scripts/jquery-1.11.3.min.js"></script>
-  <script src="/static/bootstrap/js/bootstrap.min.js"></script>
+  <script src="{% static 'scripts/jquery-1.11.3.min.js' %}"></script>
+  <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
 
   <!-- MULTISELECT FOR ARRAYS  -->
-  <script src="/static/scripts/chosen.jquery.min.js"></script>
+  <script src="{% static 'scripts/chosen.jquery.min.js' %}"></script>
+  <!-- POPUP JS -->
+  <script src="{% static 'scripts/jquery.magnific-popup.min.js' %}"></script>
   <!-- END MULTISELECT FOR ARRAYS  -->
-  <script src="/static/scripts/jquery.dataTables.min.js"></script>
+  <script src="{% static 'scripts/jquery.dataTables.min.js' %}"></script>
   <!-- END DATETIME PICKER JS  -->
-  <script src="/static/scripts/moment.js"></script>
-  <script src="/static/scripts/bootstrap-datetimepicker.js"></script>
+  <script src="{% static 'scripts/moment.js' %}"></script>
+  <script src="{% static 'scripts/bootstrap-datetimepicker.js' %}"></script>
   <!-- END DATETIME PICKER JS  -->
 
   {% block head %}
@@ -81,7 +84,7 @@
           <!-- ================================================= -->
           <div class="pull-left">
             <a class="navbar-brand" href="/dashboard" role="logo">
-              <img src="/static/images/logo/brand-text-light.png" alt="Facet Logo" class="logo">
+              <img src="{% static 'images/logo/brand-text-light.png' %}" alt="Facet Logo" class="logo">
             </a>
           </div>
         </div>
@@ -261,46 +264,46 @@
 
     <!-- VENDORS : jQuery & Bootstrap -->
     <!-- <script src="static/scripts/vendor.js"></script> -->
-    <script type='text/javascript' src='/static/scripts/jquery.particleground.min.js'></script>
-    <script type='text/javascript' src='/static/scripts/particles.js'></script>
+    <script type='text/javascript' src="{% static 'scripts/jquery.particleground.min.js' %}"></script>
+    <script type='text/javascript' src="{% static 'scripts/particles.js' %}"></script>
     <!-- END VENDORS -->
 
     <!-- MAIN JS -->
-    <script src="/static/scripts/facet.js"></script>
+    <script src="{% static 'scripts/facet.js' %}"></script>
     <!-- END MAIN JS -->
 
     <!-- DEPENDENCIES : Required plugins -->
-    <script src="/static/scripts/dependencies.js"></script>
+    <script src="{% static 'scripts/dependencies.js' %}"></script>
     <!-- END DEPENDENCIES -->
 
     <!-- WRAPKIT -->
-    <script src="/static/scripts/wrapkit.js"></script>
+    <script src="{% static 'scripts/wrapkit.js' %}"></script>
     <!-- END WRAPKIT -->
 
     <!-- WRAPKIT SETUPS -->
-    <script src="/static/scripts/wrapkit-setup.js"></script>
+    <script src="{% static 'scripts/wrapkit-setup.js' %}"></script>
     <!-- end WRAPKIT SETUPS -->
 
     <!-- PLUGIN SETUPS: vendors & dependencies setups -->
-    <script src="/static/scripts/plugin-setups.js"></script>
+    <script src="{% static 'scripts/plugin-setups.js' %}"></script>
     <!-- END PLUGIN SETUPS -->
 
     <!-- COMPONENTS -->
-    <script src="/static/scripts/epiceditor.js"></script>
-    <script src="/static/scripts/summernote.js"></script>
+    <script src="{% static 'scripts/epiceditor.js' %}"></script>
+    <script src="{% static 'scripts/summernote.js' %}"></script>
     <!-- END COMPONENTS -->
 
     <!-- MULTISELECT FOR ARRAYS  -->
-    <!-- <script src="/static/scripts/chosen.jquery.min.js"></script> -->
+    <!-- <script src="{% static 'scripts/chosen.jquery.min.js' %}"></script> -->
     <!-- END MULTISELECT FOR ARRAYS  -->
 
     <!-- END DATETIME PICKER JS  -->
-    <!-- <script src="/static/scripts/moment.js"></script> -->
-    <!-- <script src="/static/scripts/bootstrap-datetimepicker.js"></script> -->
+    <!-- <script src="{% static 'scripts/moment.js' %}"></script> -->
+    <!-- <script src="{% static 'scripts/bootstrap-datetimepicker.js' %}"></script> -->
     <!-- END DATETIME PICKER JS  -->
 
     <!-- DUMMY: Use for demo -->
-    <!-- <script src="/static/scripts/demo/frm-editor-demo.js"></script> -->
+    <!-- <script src="{% static 'scripts/demo/frm-editor-demo.js' %}"></script> -->
 
 
 
