@@ -16,7 +16,7 @@ Folks who are currently working or have worked on Facet.
 
 `Katie Lefevre <katielefevre.com>`__
 
-`Rachel Thomas<https://twitter.com/math_rachel>`__
+`Rachel Thomas <https://twitter.com/math_rachel>`__
 
 Acknowledgements
 ----------------
