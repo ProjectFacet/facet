@@ -12,11 +12,11 @@ Team
 ----
 Folks who are currently working or have worked on Facet.
 
-Heather Bryant | Director
+`Heather Bryant | Director <https://twitter.com/HBCompass>`__
 
 Katie Lefevre
 
-Rachel Thomas
+`Rachel Thomas<https://twitter.com/math_rachel>`__
 
 Acknowledgements
 ----------------
