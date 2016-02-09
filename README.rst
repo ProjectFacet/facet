@@ -14,7 +14,7 @@ Folks who are currently working or have worked on Facet.
 
 `Heather Bryant | Director <https://twitter.com/HBCompass>`__
 
-Katie Lefevre
+`Katie Lefevre <katielefevre.com>`__
 
 `Rachel Thomas<https://twitter.com/math_rachel>`__
 
