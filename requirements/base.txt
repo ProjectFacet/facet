@@ -42,3 +42,7 @@ six==1.10.0
 sqlparse==0.1.11
 unicodecsv==0.13.0
 whichcraft==0.1.1
+awsebcli==3.7.3
+boto==2.39.0
+botocore==1.3.23
+django-storages==1.1.8
