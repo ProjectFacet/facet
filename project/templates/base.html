@@ -83,7 +83,7 @@
                                 <!-- LOGO -->
           <!-- ================================================= -->
           <div class="pull-left">
-            <a class="navbar-brand" href="/dashboard" role="logo">
+            <a class="navbar-brand" role="logo">
               <img src="{% static 'images/logo/brand-text-light.png' %}" alt="Facet Logo" class="logo">
             </a>
           </div>
@@ -98,6 +98,7 @@
             {% if request.user.organization %}
             <li id="display_org_name"><a href="{% url 'org_detail' pk=request.user.organization_id %}">{{ request.user.organization.name }}</a></li>
             {% endif %}
+            <li id="dashboard-link"><a href="{% url 'dashboard' %}">Dashboard</a></li>
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" title="Temporary Links for Convenience">Content<span class="caret"></span></a>
                 <ul class="dropdown-menu">
