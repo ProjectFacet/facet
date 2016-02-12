@@ -61,7 +61,7 @@ urlpatterns = [
     #----------------------------------------------------------------------#
     #   Organization URLS
     #----------------------------------------------------------------------#
-    url(r'^/organization/new$', organizationviews.org_new, name="org_new"),
+    url(r'^organization/new$', organizationviews.org_new, name="org_new"),
     url(r'^organization/(?P<pk>[0-9]+)/$', organizationviews.org_detail, name='org_detail'),
     url(r'^organization/(?P<pk>[0-9]+)/edit/$', organizationviews.org_edit, name='org_edit'),
     url(r'^organization/(?P<pk>[0-9]+)/notes/$', noteviews.organization_notes, name='organization_notes'),
