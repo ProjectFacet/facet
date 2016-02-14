@@ -384,8 +384,32 @@ hr {
   margin-bottom: 25px;
 }
 
+.add-left-10 {
+  margin-left: 10px;
+}
+
+.add-left-25 {
+  margin-left: 25px;
+}
+
+.add-left-50 {
+  margin-left: 50px;
+}
+
 .pad-5 {
   padding-top: 5px !important;
+}
+
+.pad-left-10 {
+  padding-left: 10px;
+}
+
+.pad-left-25 {
+  padding-left: 25px;
+}
+
+.pad-left-50 {
+  padding-left: 50px;
 }
 
 .space-tb-10 {
@@ -650,6 +674,18 @@ table {
 
 th {
   color: #8493A8;
+}
+
+tr.border-bottom td {
+  border-bottom: 1px solid #54657E;
+}
+
+tr.comment-rows td {
+  padding-top: 10px;
+}
+
+td h4 {
+  margin-top: 0px;
 }
 
 .comment-td, {
