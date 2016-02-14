@@ -57,8 +57,9 @@ def create_privatecomment_reply(request):
     pass
 
 
+
 #----------------------------------------------------------------------#
-#   Comment Views
+#   Organization Comment Views
 #----------------------------------------------------------------------#
 
 def create_orgcomment(request):
@@ -73,6 +74,18 @@ def create_orgcomment(request):
 
         return redirect('org_detail', pk=organization.id)
 
+def org_comments(request):
+    """ Return JSON of all organization discussion comments."""
+
+    organization = request.user.organization
+    org_comments = {}
+    org_comments[organization.name] = Comment.objects.filter(discussion=organization.discussion).order_by('-date')
+    print org_comments
+    return HttpResponse(json.dumps(org_comments), content_type = "application/json")
+
+#----------------------------------------------------------------------#
+#   Create Comment Views
+#----------------------------------------------------------------------#
 
 def create_networkcomment(request):
     """ Regular form posting method."""

@@ -51,6 +51,7 @@ urlpatterns = [
     #   Comment URLS
     #----------------------------------------------------------------------#
     url(r'^organizationcomment/new$', communicationviews.create_orgcomment, name='create_orgcomment'),
+    url(r'^organization/comments$', communicationviews.org_comments, name='org_comments'),
     url(r'^networkcomment/new$', communicationviews.create_networkcomment, name='create_networkcomment'),
     url(r'^seriescomment/new$', communicationviews.create_seriescomment, name='create_seriescomment'),
     url(r'^storycomment/new$', communicationviews.create_storycomment, name='create_storycomment'),
