@@ -14,63 +14,15 @@ import datetime
 import json
 
 from editorial.forms import (
-    AddUserForm,
-    UserProfileForm,
-    OrganizationForm,
-    NetworkForm,
-    SeriesForm,
-    StoryForm,
-    WebFacetForm,
-    PrintFacetForm,
-    AudioFacetForm,
-    VideoFacetForm,
     ImageAssetForm,
-    AddImageForm,
-    AddToNetworkForm,
-    InviteToNetworkForm,
-    PrivateMessageForm,
-    OrganizationCommentForm,
-    NetworkCommentForm,
-    SeriesCommentForm,
-    StoryCommentForm,
-    WebFacetCommentForm,
-    PrintFacetCommentForm,
-    AudioFacetCommentForm,
-    VideoFacetCommentForm,
-    NetworkNoteForm,
-    OrganizationNoteForm,
-    UserNoteForm,
-    SeriesNoteForm,
-    StoryNoteForm,)
+    AddImageForm,)
 
 from editorial.models import (
-    User,
-    Organization,
-    Network,
-    Series,
-    Story,
     WebFacet,
     PrintFacet,
     AudioFacet,
     VideoFacet,
-    SeriesNote,
-    StoryNote,
-    ImageAsset,
-    Comment,
-    PrivateMessage,
-    Discussion,
-    StoryCopyDetail,
-    WebFacetCopyDetail,
-    PrintFacetCopyDetail,
-    AudioFacetCopyDetail,
-    VideoFacetCopyDetail,
-    NetworkNote,
-    OrganizationNote,
-    UserNote,
-    SeriesNote,
-    StoryNote,)
-
-
+    ImageAsset,)
 
 #----------------------------------------------------------------------#
 #   Upload Image Asset Views

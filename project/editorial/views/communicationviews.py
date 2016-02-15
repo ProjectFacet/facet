@@ -14,38 +14,10 @@ import datetime
 import json
 
 from editorial.forms import (
-    AddUserForm,
-    UserProfileForm,
-    OrganizationForm,
-    NetworkForm,
-    SeriesForm,
-    StoryForm,
-    WebFacetForm,
-    PrintFacetForm,
-    AudioFacetForm,
-    VideoFacetForm,
-    ImageAssetForm,
-    AddImageForm,
-    AddToNetworkForm,
-    InviteToNetworkForm,
-    PrivateMessageForm,
-    OrganizationCommentForm,
-    NetworkCommentForm,
-    SeriesCommentForm,
-    StoryCommentForm,
-    WebFacetCommentForm,
-    PrintFacetCommentForm,
-    AudioFacetCommentForm,
-    VideoFacetCommentForm,
-    NetworkNoteForm,
-    OrganizationNoteForm,
-    UserNoteForm,
-    SeriesNoteForm,
-    StoryNoteForm,)
+    PrivateMessageForm,)
 
 from editorial.models import (
     User,
-    Organization,
     Network,
     Series,
     Story,
@@ -53,22 +25,9 @@ from editorial.models import (
     PrintFacet,
     AudioFacet,
     VideoFacet,
-    SeriesNote,
-    StoryNote,
-    ImageAsset,
     Comment,
     PrivateMessage,
-    Discussion,
-    StoryCopyDetail,
-    WebFacetCopyDetail,
-    PrintFacetCopyDetail,
-    AudioFacetCopyDetail,
-    VideoFacetCopyDetail,
-    NetworkNote,
-    OrganizationNote,
-    UserNote,
-    SeriesNote,
-    StoryNote,)
+    Discussion,)
 
 
 #----------------------------------------------------------------------#
@@ -98,8 +57,9 @@ def create_privatecomment_reply(request):
     pass
 
 
+
 #----------------------------------------------------------------------#
-#   Comment Views
+#   Organization Comment Views
 #----------------------------------------------------------------------#
 
 def create_orgcomment(request):
@@ -114,6 +74,18 @@ def create_orgcomment(request):
 
         return redirect('org_detail', pk=organization.id)
 
+def org_comments(request):
+    """ Return JSON of all organization discussion comments."""
+
+    organization = request.user.organization
+    org_comments = {}
+    org_comments[organization.name] = Comment.objects.filter(discussion=organization.discussion).order_by('-date')
+    print org_comments
+    return HttpResponse(json.dumps(org_comments), content_type = "application/json")
+
+#----------------------------------------------------------------------#
+#   Create Comment Views
+#----------------------------------------------------------------------#
 
 def create_networkcomment(request):
     """ Regular form posting method."""

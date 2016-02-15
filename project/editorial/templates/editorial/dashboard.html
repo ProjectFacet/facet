@@ -6,8 +6,57 @@
 {% block content %}
 
 <div class="row">
-  <!-- LEFT SIDE -->
-  <div class="col-md-6" id="dashboard-left">
+  <!-- RIGHT SIDE -->
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-md-push-6 col-lg-push-6" id="dashboard-right">
+    <a href="#" data-toggle="tooltip" title="Recent Stories"><label class="field-label">Recent Stories</label></a>
+
+    <!-- Full table for md and lg displays -->
+    <table class="table table-condensed hidden-xs hidden-sm visible-md visible-lg">
+      <thead>
+        <tr>
+          <th>Story</th>
+          <th>Series</th>
+          <th>Creator</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for story in old_stories %}
+        <tr>
+          <td><a href="{% url 'story_detail' story.id %}">{{ story.name }}</a></td>
+          <td>{% if story.series %} <a href="{% url 'series_detail' story.series.id %}">{{ story.series.name }}</a>{% endif %}</td>
+          <td>{{ story.owner.credit_name }}</td>
+          <td>{{ story.story_description }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <!-- End full table -->
+
+    <!-- Partial table for xs and sm displays -->
+    <table class="table table-condensed visible-xs visible-sm hidden-md hidden-lg">
+      <thead>
+        <tr>
+          <th>Story</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for story in old_stories %}
+        <tr>
+          <td><a href="{% url 'story_detail' story.id %}">{{ story.name }}</a></td>
+          <td>{{ story.story_description }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <!-- End partial table -->
+
+  </div>
+  <!-- END RIGHT SIDE -->
+
+  <!-- LEFT SIDE ON md/lg -->
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-md-pull-6 col-lg-pull-6" id="dashboard-left">
     <a href="#" data-toggle="tooltip" title="Recent Comments"><label class="field-label">Recent Comments</label></a>
     <div class="dashboard-comments panel-body right-rule">
       <div data-toggle="slimScroll" style="height:565px" data-color="#5D9CEC" data-allow-page-scroll="false">
@@ -72,29 +121,6 @@
 
     </div> -->
   </div>
-  <!-- RIGHT SIDE -->
-  <div class="col-md-6" id="dashboard-right">
-    <a href="#" data-toggle="tooltip" title="Recent Stories"><label class="field-label">Recent Stories</label></a>
-    <table class="table table-condensed">
-      <thead>
-        <tr>
-          <th>Story</th>
-          <th>Series</th>
-          <th>Creator</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for story in old_stories %}
-        <tr>
-          <td><a href="{% url 'story_detail' story.id %}">{{ story.name }}</a></td>
-          <td>{% if story.series %} <a href="{% url 'series_detail' story.series.id %}">{{ story.series.name }}</a>{% endif %}</td>
-          <td>{{ story.owner.credit_name }}</td>
-          <td>{{ story.story_description }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
+  <!-- END LEFT SIDE -->
 
 {% endblock %}

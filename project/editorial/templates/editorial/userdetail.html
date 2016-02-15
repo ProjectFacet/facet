@@ -4,7 +4,8 @@
 
 {% block content %}
 
-<div class="row particles" id="user-hero">
+<!-- Header for lg display -->
+<div class="row particles hidden-xs hidden-sm hidden-md visible-lg" id="user-hero">
   <div class="upper-content">
   <div class="col-md-2 col-lg-2 col-sm-1">
     {% if user.display_photo %}
@@ -28,8 +29,45 @@
   </div>
 </div>
 </div>
+<!-- End header for lg display -->
+
+<!-- Header for xs/xs/md display -->
+<div class="visible-xs visible-sm visible-md hidden-lg">
+
+  <div class="row particles " id="user-hero">
+    <div class="upper-content">
+      <div class="col-lg-12 content-upper-75">
+        <h2 class="media-heading text-light thin uppercase spread-025 center">{{ user.credit_name }}</h2>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-6 col-xs-offset-3 col-sm-4 col-sm-offset-4 col-md-2 col-md-offset-0">
+      {% if user.display_photo %}
+      <img alt="cover" class="no-padding border-white img-thumbnail img-responsive content-lower-25" src="{{ user.display_photo.url }}">
+      {% else %}
+      {% endif %}
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-10 content-lower-25">
+      <p class="mb-4x text-light thin"><span class="mr-2x">{{ user.title }} | {% if request.user.organization %}<a href="{% url 'org_detail' pk=user.organization.id %}">{{ user.organization.name }}</a>{% endif %}</span> <span><i class="fa fa-map-marker fa-fw"></i> {{ user.location }}</span></p>
+      <p>{{ user.phone }} | {{ user.email }}</p>
+      <p>{% if user.twitter %}<a href="{{ user.twitter }}" class="btn btn-sm btn-circle ml-1x" aria-label="twitter"><i class="fa fa-lg fa-twitter"></i></a>{% endif %}
+      {% if user.github %}<a href="{{ user.github }}" class="btn btn-sm btn-circle" aria-label="github"><i class="fa fa-lg fa-github"></i></a>{% endif %}
+      {% if user.instagram %}<a href="{{ user.instagram }}" class="btn btn-sm btn-circle ml-1x" aria-label="instagram"><i class="fa fa-lg fa-instagram"></i></a>{% endif %}
+      {% if user.facebook %}<a href="{{ user.facebook }}" class="btn btn-sm btn-circle ml-1x" aria-label="facebook"><i class="fa fa-lg fa-facebook"></i></a>{% endif %}
+      {% if user.linkedin %}<a href="{{ user.linkedin }}" class="btn btn-sm btn-circle ml-1x" aria-label="linkedin"><i class="fa fa-lg fa-linkedin-square"></i></a>{% endif %}
+      {% if user.vine %}<a href="{{ user.vine }}" class="btn btn-sm btn-circle ml-1x" aria-label="vine"><i class="fa fa-lg fa-vine"></i></a>{% endif %}
+      </p>
+    </div>
+  </div>
+
+</div>
+<!-- End header for xs/xs/md display -->
+
+
 <div class="row">
-    <div class="col-md-10" id="dashboard-left">
+    <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10" id="dashboard-left">
       <!-- <div data-toggle="slimScroll" style="height:350px" data-color="#5D9CEC" data-allow-page-scroll="false"> -->
       <table id="user-stories-list" class="table table-condensed">
         <thead>
@@ -49,9 +87,10 @@
       </table>
     <!-- </div> -->
   </div>
-    <div class="col-md-2 orgnotes" id="dashboard-right">
+    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 orgnotes" id="dashboard-right">
       {% if request.user.id == user.id %}
       <div>
+      <hr class="visible-xs visible-sm">
       <a href="#" data-toggle="tooltip" title="User Notes"><label class="field-label">Notes</label></a>
       <a href="#" data-toggle="modal" data-target="#addUserNote" title="Add User Note"><i class="fa fa-plus sameline dark"></i></a></p>
       </div>
@@ -59,7 +98,7 @@
       {% for note in usernotes %}
       <!-- MODAL TRIGGER -->
         <a href="#" data-toggle="modal" data-target="#displayNote{{note.id}}">
-          <div class="col-lg-12 col-md-12 col-sm-12">
+          <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
             <div class="panel fade in panel-default note-panel" data-init-panel="true">
               <div class="panel-body">
                 <div class="media">

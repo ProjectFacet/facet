@@ -14,29 +14,6 @@ import datetime
 import json
 
 from editorial.forms import (
-    AddUserForm,
-    UserProfileForm,
-    OrganizationForm,
-    NetworkForm,
-    SeriesForm,
-    StoryForm,
-    WebFacetForm,
-    PrintFacetForm,
-    AudioFacetForm,
-    VideoFacetForm,
-    ImageAssetForm,
-    AddImageForm,
-    AddToNetworkForm,
-    InviteToNetworkForm,
-    PrivateMessageForm,
-    OrganizationCommentForm,
-    NetworkCommentForm,
-    SeriesCommentForm,
-    StoryCommentForm,
-    WebFacetCommentForm,
-    PrintFacetCommentForm,
-    AudioFacetCommentForm,
-    VideoFacetCommentForm,
     NetworkNoteForm,
     OrganizationNoteForm,
     UserNoteForm,
@@ -49,21 +26,8 @@ from editorial.models import (
     Network,
     Series,
     Story,
-    WebFacet,
-    PrintFacet,
-    AudioFacet,
-    VideoFacet,
     SeriesNote,
     StoryNote,
-    ImageAsset,
-    Comment,
-    PrivateMessage,
-    Discussion,
-    StoryCopyDetail,
-    WebFacetCopyDetail,
-    PrintFacetCopyDetail,
-    AudioFacetCopyDetail,
-    VideoFacetCopyDetail,
     NetworkNote,
     OrganizationNote,
     UserNote,
@@ -75,21 +39,26 @@ from editorial.models import (
 #   Organization Note Views
 #----------------------------------------------------------------------#
 
-def organization_notes(request, pk):
+def org_notes(request, pk):
     """ Display all of the notes for an organization. """
 
     organization = get_object_or_404(Organization, pk=pk)
     organizationnotes = OrganizationNote.objects.filter(organization_id=organization.id)
+    organizationnoteform = OrganizationNoteForm()
 
     return render(request, 'editorial/organizationnotes.html', {
+        'organization': organization,
+        'organizationnoteform': organizationnoteform,
         'organizationnotes': organizationnotes,
     })
 
 
-def create_organization_note(request):
+def create_org_note(request):
     """ Post a note to an organization."""
 
     organization = request.user.organization
+    print organization
+    print organization.id
     if request.method == "POST":
         form = OrganizationNoteForm(request.POST or None)
         if form.is_valid():
@@ -97,7 +66,7 @@ def create_organization_note(request):
             organizationnote.owner = request.user
             organizationnote.organization = organization
             organizationnote.save()
-            return redirect('organization_detail', pk=organization.id)
+            return redirect('org_detail', pk=organization.id)
 
 
 #----------------------------------------------------------------------#
@@ -107,8 +76,12 @@ def create_organization_note(request):
 def user_notes(request,pk):
     """ Display all of the notes for a user. """
 
+    user = request.user
+    usernoteform = UserNoteForm()
     usernotes = UserNote.objects.filter(owner_id=request.user)
-    return render(request, 'editorial/userdetail.html', {
+    return render(request, 'editorial/usernotes.html', {
+        'user': user,
+        'usernotes': usernotes,
         'usernotes': usernotes,
     })
 
@@ -132,9 +105,12 @@ def series_notes(request, pk):
     """ Display all of the notes for an series. """
 
     series = get_object_or_404(Series, pk=pk)
+    seriesnoteform = SeriesNoteForm()
     seriesnotes = SeriesNote.objects.filter(series_id=series.id)
 
     return render(request, 'editorial/seriesnotes.html', {
+        'series': series,
+        'seriesnoteform': seriesnoteform,
         'seriesnotes': seriesnotes,
     })
 

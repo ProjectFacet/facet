@@ -7,15 +7,17 @@
 
 <div class="row particles" id="user-hero">
   <div class="upper-content">
-    <div class="col-lg-12 content-upper-75">
+    <div class="col-xs-12 content-upper-75">
       <h1 class="media-heading text-light center thin uppercase spread-025">Network Shared Stories</h1>
     </div>
   </div>
 </div>
 
 <div class="row">
-  <div class="col-md-12">
-    <table id="network-stories-list" class="table table-condensed">
+  <div class="col-xs-12">
+
+    <!-- Full table for md and lg displays -->
+    <table id="network-stories-list" class="table table-condensed hidden-xs hidden-sm visible-md visible-lg">
       <thead>
         <tr>
           <th>Story</th>
@@ -84,6 +86,48 @@
       {% endfor %}
       </tbody>
     </table>
+    <!-- End full table -->
+
+    <!-- Partial table for xs and sm displays -->
+    <table class="table table-condensed visible-xs visible-sm hidden-md hidden-lg">
+      <thead>
+        <tr>
+          <th>Story</th>
+          <th>Facet</th>
+          <th>Organization</th>
+          <th>Available</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for story in networkstories %}
+
+          {% if story.webfacetstory.all or story.printfacetstory.all or story.audiofacetstory.all or story.videofacetstory.all %}
+          <tr>
+            <td>{{ story.name }}<form action="/story/copy/{{ facet.story_id }}/" method="POST" class="sameline">{% csrf_token %}<button class="clear" type="submit"><i class="fa fa-clone"></i></button></form></td>
+            <td>
+              {% if story.webfacetstory.all %}<a href="" title="webfacet"><i class="fa fa-laptop dark"></i></a>{% endif %}
+              {% if story.printfacetstory.all %}<a href="" title="printfacet"><i class="fa fa-newspaper-o dark"></i></a>{% endif %}
+              {% if story.audiofacetstory.all %}<a href="" title="audiofacet"><i class="fa fa-headphones dark"></i></a>{% endif %}
+              {% if story.videofacetstory.all %}<a href="" title="videofacet"><i class="fa fa-video-camera dark"></i></a>{% endif %}
+            </td>
+            <td>{{ story.organization.name }}</td>
+            <td>{{ story.share_with_date|date:'n/j, g:i a'}}</td>
+          </tr>
+          {% else %}
+              <tr>
+                <td>{{ story.name }}</td>
+                <td></td>
+                <td>{{ story.organization.name }}</td>
+                <td>{{ story.share_with_date|date:'n/j, g:i a'}}</td>
+              </tr>
+          {% endif %}
+
+        {% endfor %}
+      </tbody>
+    </table>
+    <!-- End partial table -->
+
+
   </div>
 </div>
 

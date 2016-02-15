@@ -6,37 +6,64 @@
 {% block content %}
 {% if request.user.id == user.id or request.user.id == user.organization.owner.id %}
 
-<div class="row particles" id="user-hero">
+<!-- Header for lg display -->
+<div class="row particles hidden-xs hidden-sm hidden-md visible-lg" id="user-hero">
   <div class="upper-content">
-  <div class="col-md-2 col-lg-2 col-sm-1">
-    {% if user.display_photo %}
-    <img alt="cover" class="profile-page-pic no-padding border-white content-upper-75" src="{{ user.display_photo.url }}">
-    {% else %}
-    <!-- <img alt="cover" class="profile-page-pic no-padding border-white content-upper-75" src="nophoto.jpg"> -->
-    {% endif %}
-  </div>
-  <div class="col-lg-10 content-upper-75">
-    <h1 class="media-heading text-light thin uppercase spread-025">{{ user.credit_name }}</h1>
-    <p> &nbsp;</p>
-    <p class="mb-4x text-light">Edit {% if request.user.id == user.id %} your {% else %} {{ user.credit_name }}'s {% endif %}profile and click Save to keep changes.</p>
-    <p> &nbsp;</p>
-    <p> &nbsp;</p>
+    <div class="col-sm-1 col-md-2 col-lg-2">
+      {% if user.display_photo %}
+      <img alt="cover" class="profile-page-pic no-padding border-white content-upper-75" src="{{ user.display_photo.url }}">
+      {% else %}
+      <!-- <img alt="cover" class="profile-page-pic no-padding border-white content-upper-75" src="nophoto.jpg"> -->
+      {% endif %}
+    </div>
+    <div class="col-lg-10 content-upper-75">
+      <h1 class="media-heading text-light thin uppercase spread-025">{{ user.credit_name }}</h1>
+      <p> &nbsp;</p>
+      <p class="mb-4x tiny-text">Edit {% if request.user.id == user.id %} your {% else %} {{ user.credit_name }}'s {% endif %}profile and click Save to keep changes.</p>
+      <p> &nbsp;</p>
+      <p> &nbsp;</p>
+    </div>
   </div>
 </div>
+<!-- End header for lg display -->
+
+<!-- Header for xs/xs/md display -->
+<div class="visible-xs visible-sm visible-md hidden-lg">
+  <div class="row particles " id="user-hero">
+    <div class="upper-content">
+      <div class="col-lg-12 content-upper-75">
+        <h2 class="media-heading text-light thin uppercase spread-025 center">{{ user.credit_name }}</h2>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-6 col-xs-offset-3 col-sm-4 col-sm-offset-4 col-md-2 col-md-offset-0">
+      {% if user.display_photo %}
+      <img alt="cover" class="no-padding border-white img-thumbnail img-responsive content-lower-25" src="{{ user.display_photo.url }}">
+      {% else %}
+      <!-- <img alt="cover" class="profile-page-pic no-padding border-white content-upper-75" src="nophoto.jpg"> -->
+      {% endif %}
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-10 content-lower-25">
+      <p class="mb-4x tiny-text">Edit {% if request.user.id == user.id %} your {% else %} {{ user.credit_name }}'s {% endif %}profile and click Save to keep changes.</p>
+    </div>
+  </div>
 </div>
+<!-- End header for xs/xs/md display -->
 
 <form class="post-form" method="POST" enctype="multipart/form-data">{% csrf_token %}
 
 <div class="row profile-row">
   <!-- Left Column -->
-  <div class="col-md-6">
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
 
     <div class="row profile-row">
       <div class="form-group custom-form">
-        <div class="col-md-2">
+        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
         <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.first_name.label_tag }}</span></a>
         </div>
-        <div class="col-md-10">
+        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
         {{ userform.first_name }}
         {% if userform.first_name.errors %}
           <div class="alert alert-warning" role="alert">
@@ -49,10 +76,10 @@
 
     <div class="row profile-row">
       <div class="form-group custom-form">
-        <div class="col-md-2">
+        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
         <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.last_name.label_tag }}</span></a>
         </div>
-        <div class="col-md-10">
+        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
         {{ userform.last_name }}
         {% if userform.last_name.errors %}
           <div class="alert alert-warning" role="alert">
@@ -65,10 +92,10 @@
 
     <div class="row profile-row">
       <div class="form-group custom-form">
-        <div class="col-md-2">
+        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
         <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.credit_name.label_tag }}</span></a>
         </div>
-        <div class="col-md-10">
+        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
         {{ userform.credit_name }}
         {% if userform.credit_name.errors %}
           <div class="alert alert-warning" role="alert">
@@ -81,10 +108,10 @@
 
     <div class="row profile-row">
       <div class="form-group custom-form">
-        <div class="col-md-2">
+        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
         <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.username.label_tag }}</span></a>
         </div>
-        <div class="col-md-10">
+        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
         {{ userform.username }}
         {% if userform.username.errors %}
           <div class="alert alert-warning" role="alert">
@@ -97,10 +124,10 @@
 
     <div class="row profile-row">
       <div class="form-group custom-form">
-        <div class="col-md-2">
+        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
         <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.title.label_tag }}</span></a>
         </div>
-        <div class="col-md-10">
+        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
         {{ userform.title }}
         {% if userform.title.errors %}
           <div class="alert alert-warning" role="alert">
@@ -113,10 +140,10 @@
 
     <div class="row profile-row">
       <div class="form-group custom-form">
-        <div class="col-md-2">
+        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
         <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.location.label_tag }}</span></a>
         </div>
-        <div class="col-md-10">
+        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
         {{ userform.location }}
         {% if userform.location.errors %}
           <div class="alert alert-warning" role="alert">
@@ -129,10 +156,10 @@
 
     <div class="row profile-row">
       <div class="form-group custom-form">
-        <div class="col-md-2">
+        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
         <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.email.label_tag }}</span></a>
         </div>
-        <div class="col-md-10">
+        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
         {{ userform.email }}
         {% if userform.email.errors %}
           <div class="alert alert-warning" role="alert">
@@ -145,10 +172,10 @@
 
     <div class="row profile-row">
       <div class="form-group custom-form">
-        <div class="col-md-2">
+        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
         <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.phone.label_tag }}</span></a>
         </div>
-        <div class="col-md-10">
+        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
         {{ userform.phone }}
         {% if userform.phone.errors %}
           <div class="alert alert-warning" role="alert">
@@ -161,10 +188,10 @@
 
     <div class="row profile-row">
       <div class="form-group custom-form">
-        <div class="col-md-2">
+        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
         <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.website.label_tag }}</span></a>
         </div>
-        <div class="col-md-10">
+        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
         {{ userform.website }}
         {% if userform.website.errors %}
           <div class="alert alert-warning" role="alert">
@@ -177,10 +204,10 @@
 
     <div class="row profile-row">
       <div class="form-group custom-form">
-        <div class="col-md-2">
+        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
         <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.github.label_tag }}</span></a>
         </div>
-        <div class="col-md-10">
+        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
         {{ userform.github }}
         {% if userform.github.errors %}
           <div class="alert alert-warning" role="alert">
@@ -193,10 +220,10 @@
 
     <div class="row profile-row">
       <div class="form-group custom-form">
-        <div class="col-md-2">
+        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
         <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.facebook.label_tag }}</span></a>
         </div>
-        <div class="col-md-10">
+        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
         {{ userform.facebook }}
         {% if userform.facebook.errors %}
           <div class="alert alert-warning" role="alert">
@@ -209,10 +236,10 @@
 
     <div class="row profile-row">
       <div class="form-group custom-form">
-        <div class="col-md-2">
+        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
         <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.twitter.label_tag }}</span></a>
         </div>
-        <div class="col-md-10">
+        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
         {{ userform.twitter }}
         {% if userform.twitter.errors %}
           <div class="alert alert-warning" role="alert">
@@ -225,10 +252,10 @@
 
     <div class="row profile-row">
       <div class="form-group custom-form">
-        <div class="col-md-2">
+        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
         <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.linkedin.label_tag }}</span></a>
         </div>
-        <div class="col-md-10">
+        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
         {{ userform.linkedin }}
         {% if userform.linkedin.errors %}
           <div class="alert alert-warning" role="alert">
@@ -241,10 +268,10 @@
 
     <div class="row profile-row">
       <div class="form-group custom-form">
-        <div class="col-md-2">
+        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
         <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.instagram.label_tag }}</span></a>
         </div>
-        <div class="col-md-10">
+        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
         {{ userform.instagram }}
         {% if userform.instagram.errors %}
           <div class="alert alert-warning" role="alert">
@@ -257,10 +284,10 @@
 
     <div class="row profile-row">
       <div class="form-group custom-form">
-        <div class="col-md-2">
+        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
         <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.snapchat.label_tag }}</span></a>
         </div>
-        <div class="col-md-10">
+        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
         {{ userform.snapchat }}
         {% if userform.snapchat.errors %}
           <div class="alert alert-warning" role="alert">
@@ -273,10 +300,10 @@
 
     <div class="row profile-row">
       <div class="form-group custom-form">
-        <div class="col-md-2">
+        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
         <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.vine.label_tag }}</span></a>
         </div>
-        <div class="col-md-10">
+        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
         {{ userform.vine }}
         {% if userform.vine.errors %}
           <div class="alert alert-warning" role="alert">
@@ -289,7 +316,7 @@
 
 </div>
   <!-- Right Column -->
-  <div class="col-md-6">
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
 
     <div class="form-group custom-form">
       <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.bio.label_tag }}</span></a>

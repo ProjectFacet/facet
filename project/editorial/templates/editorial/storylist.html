@@ -20,7 +20,8 @@
 <div class="row">
   <div class="col-md-12">
 
-    <table id="stories-list" class="table table-condensed">
+    <!-- Full table for md and lg displays -->
+    <table id="stories-list" class="table table-condensed hidden-xs hidden-sm visible-md visible-lg">
       <thead>
         <tr>
           <th class="dark">Story</th>
@@ -106,6 +107,65 @@
       {% endfor %}
       </tbody>
     </table>
+    <!-- End Full table for md and lg displays -->
+
+    <!-- Partial table for xs and sm displays -->
+    <table id="stories-list" class="table table-condensed table-responsive visible-xs visible-sm hidden-md hidden-lg">
+      <thead>
+        <tr>
+          <th class="dark">Story</th>
+          <th class="dark">Facet</th>
+          <th class="dark">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for story in stories %}
+        {% if story.webfacetstory.all or story.printfacetstory.all or story.audiofacetstory.all or story.videofacetstory.all %}
+          {% for facet in story.webfacetstory.all %}
+            <tr>
+              <td><a href="{% url 'story_detail' pk=facet.story.id %}">{{ facet.story.name }}</a></th>
+              <td>{{ facet.type}}</td>
+              <td>{{ facet.status }}</td>
+            </tr>
+          {% endfor %}
+          {% for facet in story.printfacetstory.all %}
+            <tr>
+              <td><a href="{% url 'story_detail' pk=facet.story.id %}">{{ facet.story.name }}</a></th>
+              <td>{{ facet.type}}</td>
+              <td>{{ facet.status }}</td>
+            </tr>
+          {% endfor %}
+          {% for facet in story.audiofacetstory.all %}
+            <tr>
+              <td><a href="{% url 'story_detail' pk=facet.story.id %}">{{ facet.story.name }}</a></th>
+              <td>{{ facet.type}}</td>
+              <td>{{ facet.status }}</td>
+            </tr>
+          {% endfor %}
+          {% for facet in story.videofacetstory.all %}
+            <tr>
+              <td><a href="{% url 'story_detail' pk=facet.story.id %}">{{ facet.story.name }}</a></td>
+              <td>{{ facet.type}}</td>
+              <td>{{ facet.status }}</td>
+            </tr>
+          {% endfor %}
+        {% else %}
+            <tr>
+              <td><a href="{% url 'story_detail' pk=story.id %}">{{ story.name }}</a></td>
+              <td><i class="tiny-text">Create a facet</i></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+        {% endif %}
+
+      {% endfor %}
+      </tbody>
+    </table>
+    <!-- End partial table for md and lg displays -->
+
+
+
   </div>
 </div>
 
