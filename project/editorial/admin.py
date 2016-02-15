@@ -4,6 +4,7 @@ from django.contrib import admin
 from models import (
     User,
     Organization,
+    OrganizationNote,
     Network,
     Series,
     Story,
@@ -26,6 +27,7 @@ class UserAdmin(admin.ModelAdmin):
 
 admin.site.register(User)
 admin.site.register(Organization)
+admin.site.register(OrganizationNote)
 admin.site.register(Network)
 admin.site.register(Series)
 admin.site.register(Story)

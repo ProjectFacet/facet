@@ -86,7 +86,6 @@ def org_detail(request, pk):
         'organizationcommentform': organizationcommentform,
         })
 
-
 def org_edit(request, pk):
     """ Edit organization page."""
 

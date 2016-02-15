@@ -22,7 +22,7 @@
     <div class="row">
     <form method="POST" class="post-form">{% csrf_token %}
       <!-- Left Side -->
-      <div class="col-md-6">
+      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
         <div class="form-group custom-form">
           <a href="#" data-toggle="tooltip" title="{{ seriesform.name.help_text }}"><span class="field-label">{{ seriesform.name.label_tag }}</span></a>
           {{ seriesform.name }}
@@ -43,7 +43,7 @@
         </div>
       </div>
       <!-- Right Side -->
-      <div class="col-md-6">
+      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
         <div class="form-group custom-form">
           <a href="#" data-toggle="tooltip" title="{{ seriesform.team.help_text }}"><span class="field-label">{{ seriesform.team.label_tag }}</span></a>
           {{ seriesform.team }}
