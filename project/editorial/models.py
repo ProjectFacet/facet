@@ -719,6 +719,16 @@ class Story(models.Model):
 
         return story_copy
 
+    def get_story_downloadables(self):
+        """Retrieve all objects associated with a story for selection in a download form.
+
+        When a user chooses to download a story and its assets they get a window displaying
+        all of the facets and assets associated with that story as a checklist of items.
+        The user can select the all or some of the items they want to download.
+        The form submission creates a zipfile of those objects.
+        """
+        pass
+
 
     @property
     def description(self):

@@ -92,13 +92,10 @@
           <!-- ================================================= -->
                               <!-- MAIN MENU -->
           <!-- ================================================= -->
+
         <div id="navbar" class="navbar-collapse collapse">
           {% if request.user.is_authenticated %}
           <ul class="nav navbar-nav">
-            <li id="display_name"><a href="{% url 'user_detail' pk=request.user.id %}">{{ request.user.credit_name }}</a></li>
-            {% if request.user.organization %}
-            <li id="display_org_name"><a href="{% url 'org_detail' pk=request.user.organization_id %}">{{ request.user.organization.name }}</a></li>
-            {% endif %}
             <li id="dashboard-link"><a href="{% url 'dashboard' %}">Dashboard</a></li>
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" title="Temporary Links for Convenience">Content<span class="caret"></span></a>
@@ -120,7 +117,7 @@
 
 
             <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" title="Temporary Links for Convenience">Create New Content</a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" title="Temporary Links for Convenience">Create New Content<span class="caret"></span></a>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
               <li><a href="{% url 'series_new' %}">Series</a></li>
               <li><a href="{% url 'story_new' %}">Story</a></li>
@@ -130,10 +127,41 @@
           {% endif %}
 
           <div class="pull-right" role="navigation">
+
+            <!-- <div class="user-ident dropdown-ext">
+              {% if request.user.is_authenticated %}
+              <div class="panel clear-panel fade in panel-default" data-init-panel="true">
+                <div class="clear-panel-body">
+                  <div class="media">
+                    <div class="media-left">
+                      <div class="">
+                        {% if user.display_photo %}
+                        <img class="media-object img-circle" width="32" src="{{ user.display_photo.url }}" alt="{{user.credit_name}}">
+                        {% else %}
+                        {% endif %}
+                      </div>
+                    </div>
+                    <div class="media-body">
+                      <a href="{% url 'user_detail' pk=request.user.id %}"><h6 class="media-heading bright">{{ user.credit_name}}</h6></a>
+                      <a href="{% url 'org_detail' pk=request.user.organization_id %}"><p class="help-block tiny-text close-text">{{ user.organization.name }}</p></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% endif %}
+            </div> -->
           <!-- ================================================= -->
                                 <!-- MESSAGING -->
           <!-- ================================================= -->
           {% if request.user.is_authenticated %}
+            <div class="dropdown-ext">
+              <a aria-label="notifications" href="{% url 'user_detail' pk=request.user.id %}" title="">
+                <!-- <img class="media-object img-circle img-responsive" width="32" src="{{ user.display_photo.url }}" alt="{{user.credit_name}}"> -->
+                <a href="{% url 'user_detail' pk=request.user.id %}"><h6 class="media-heading bright">{{ user.credit_name}}</h6></a>
+                <a href="{% url 'org_detail' pk=request.user.organization_id %}"><p class="help-block tiny-text close-text">{{ user.organization.name }}</p></a>
+              </a>
+
+            </div><!-- /.dropdown -->
             <div class="dropdown-ext">
               <a aria-label="notifications" class="btn btn-icon navbar-btn dropdown-toggle" data-toggle="modal" data-target="#addUserNote" href="#" title="Add a note">
                 <i class="fa fa-sticky-note"></i>
@@ -177,6 +205,7 @@
           </ul>
         </div>
       </div>
+
       </div>
     </nav>
     <!-- END NAVIGATION -->

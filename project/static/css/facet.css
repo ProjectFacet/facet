@@ -250,6 +250,11 @@ hr {
   color: #CAD3DF;
 }
 
+.close-text {
+  padding: 0px !important;
+  margin-top: -10px !important;
+}
+
 .center {
   text-align: center;
 }
@@ -350,6 +355,10 @@ hr {
 
 .content-upper-5 {
   margin-top: -5px !important;
+}
+
+.content-lower-5 {
+  margin-top: 5px;
 }
 
 .content-lower-10 {
@@ -857,6 +866,14 @@ td h4 {
 .team-panel {
   height: 9em;
   background-color: #374355;
+}
+
+.clear-panel {
+  height: auto;
+}
+
+.clear-panel-body {
+  background-color: #181D25;
 }
 
 .user-panel-body {
