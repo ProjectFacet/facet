@@ -131,7 +131,7 @@
         </div>
       <!-- END MODAL -->
       {% endfor %}
-      <a href="{% url 'organization_notes' pk=organization.id %}" class="link-text">See all notes...</a>
+      <a href="{% url 'org_notes' pk=organization.id %}" class="link-text">See all notes...</a>
     </div>
     </div>
   </div>
@@ -283,7 +283,7 @@
         </div>
       <!-- END MODAL -->
       {% endfor %}
-      <a href="{% url 'organization_notes' pk=organization.id %}" class="link-text">See all notes...</a>
+      <a href="{% url 'org_notes' pk=organization.id %}" class="link-text">See all notes...</a>
     </div>
     </div>
   </div>
@@ -342,7 +342,7 @@
         <h4 class="modal-title" id="addUserModalLabel">Add a note for this organization</h4>
       </div>
       <div class="modal-body">
-        <form action="{% url 'create_organization_note' %}" method="POST" class="post-form">
+        <form action="{% url 'create_org_note' %}" method="POST" class="post-form">
         {% csrf_token %}
         {% bootstrap_form organizationnoteform %}
         <input type="hidden" name="organization" value="{{ organization.pk }}" />
