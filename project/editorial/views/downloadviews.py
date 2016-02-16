@@ -93,4 +93,4 @@ def create_download(request, pk):
     # elif: #only specific items selected
 
 
-    return render(request, 'editorial/test.html')
+    return render(redirect, 'test.html')
