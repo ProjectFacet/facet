@@ -726,6 +726,9 @@ class Story(models.Model):
         all of the facets and assets associated with that story as a checklist of items.
         The user can select the all or some of the items they want to download.
         The form submission creates a zipfile of those objects.
+
+        Download = txt of story metadata, a txt of each facet metadata,
+        txt of content and each asset associated with any of the facets.
         """
         pass
 
@@ -918,15 +921,12 @@ class WebFacet(models.Model):
 
         return webfacet_copy
 
-    def get_webfacet_downloadables(self):
-        """Retrieve all objects associated with a webfacet for download.
+    def get_webfacet_images(self):
+        """Retrieve all images objects associated with a webfacet."""
 
-        When a user chooses to download a webfacet and its assets they get a window displaying
-        all of the facets and assets associated with that story as a checklist of items.
-        The user can select the all or some of the items they want to download.
-        The form submission creates a zipfile of those objects.
-        """
-        pass
+        webfacet_images = ImageAsset.objects.filter(webfacet=self)
+        return webfacet_images
+
 
     @property
     def description(self):
@@ -1116,15 +1116,11 @@ class PrintFacet(models.Model):
 
         return printfacet_copy
 
-    def get_printfacet_downloadables(self):
-        """Retrieve all objects associated with a printfacet for download.
+    def get_printfacet_images(self):
+        """Retrieve all images objects associated with a printfacet."""
 
-        When a user chooses to download a printfacet and its assets they get a window displaying
-        all of the facets and assets associated with that story as a checklist of items.
-        The user can select the all or some of the items they want to download.
-        The form submission creates a zipfile of those objects.
-        """
-        pass
+        printfacet_images = ImageAsset.objects.filter(printfacet=self)
+        return printfacet_images
 
     @property
     def description(self):
@@ -1315,15 +1311,11 @@ class AudioFacet(models.Model):
 
         return audiofacet_copy
 
-    def get_audiofacet_downloadables(self):
-        """Retrieve all objects associated with a audiofacet for download.
+    def get_audiofacet_images(self):
+        """Retrieve all images objects associated with a audiofacet."""
 
-        When a user chooses to download a audiofacet and its assets they get a window displaying
-        all of the facets and assets associated with that story as a checklist of items.
-        The user can select the all or some of the items they want to download.
-        The form submission creates a zipfile of those objects.
-        """
-        pass
+        audiofacet_images = ImageAsset.objects.filter(audiofacet=self)
+        return audiofacet_images
 
     @property
     def description(self):
@@ -1514,15 +1506,11 @@ class VideoFacet(models.Model):
 
         return videofacet_copy
 
-    def get_videofacet_downloadables(self):
-        """Retrieve all objects associated with a videofacet for download.
+    def get_videofacet_images(self):
+        """Retrieve all images objects associated with a videofacet."""
 
-        When a user chooses to download a videofacet and its assets they get a window displaying
-        all of the facets and assets associated with that story as a checklist of items.
-        The user can select the all or some of the items they want to download.
-        The form submission creates a zipfile of those objects.
-        """
-        pass
+        videofacet_images = ImageAsset.objects.filter(videofacet=self)
+        return videofacet_images
 
     @property
     def description(self):

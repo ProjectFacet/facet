@@ -14,7 +14,8 @@ from views import (
     storyviews,
     assetviews,
     communicationviews,
-    noteviews,)
+    noteviews,
+    downloadviews,)
 
 urlpatterns = [
     #----------------------------------------------------------------------#
@@ -119,4 +120,8 @@ urlpatterns = [
     #   Copy URLS
     #----------------------------------------------------------------------#
     url(r'^story/copy/(?P<pk>[0-9]+)/$', networkviews.copy_network_story, name='copy_network_story'),
+    #----------------------------------------------------------------------#
+    #   Download URLS
+    #----------------------------------------------------------------------#
+    url(r'^story/(?P<pk>[0-9]+)/download/$', downloadviews.create_download, name='create_download'),
 ]
