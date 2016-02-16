@@ -39,7 +39,7 @@
                                   <!-- SELECT ALL -->
                 <!-- ================================================= -->
                 <div class="form-group custom-form">
-                  <a href="#" data-toggle="tooltip" title="{{ storydownloadform.select_all.help_text }}"><label class="field-label">Select All</label></a>
+                  <a href="#" data-toggle="tooltip" title="{{ storydownloadform.select_all.help_text }}"><label class="field-label">Select All Content</label></a>
                   {{ storydownloadform.select_all }}
                   {% if storydownloadform.select_all.errors %}
                     <div class="alert alert-warning" role="alert">
@@ -48,7 +48,7 @@
                   {% endif %}
                 </div>
                 <hr class="dark">
-                <p class="tiny-text dark">Or select specific versions</p>
+                <p class="tiny-text dark">Or select specific versions | <i>(Includes each facet's metadata, content and all assets)</i></p>
               </div>
             </div>
             <!-- ================================================= -->
@@ -59,7 +59,7 @@
               <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
                 <!-- SELECT WEBFACET ALL -->
                 <div class="form-group custom-form">
-                  <a href="#" data-toggle="tooltip" title="{{ storydownloadform.webfacet_sa.help_text }}"><span class="field-label">{{ storydownloadform.webfacet_sa.label_tag }}</span></a>
+                  <a href="#" data-toggle="tooltip" title="{{ storydownloadform.webfacet_sa.help_text }}"><label class="field-label">Complete WebFacet</label></a>
                   {{ storydownloadform.webfacet_sa }}
                   {% if storydownloadform.webfacet_sa.errors %}
                     <div class="alert alert-warning" role="alert">
@@ -73,7 +73,7 @@
               <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
                 <!-- SELECT PRINTFACET ALL -->
                 <div class="form-group custom-form">
-                  <a href="#" data-toggle="tooltip" title="{{ storydownloadform.printfacet_sa.help_text }}"><span class="field-label">{{ storydownloadform.printfacet_sa.label_tag }}</span></a>
+                  <a href="#" data-toggle="tooltip" title="{{ storydownloadform.printfacet_sa.help_text }}"><label class="field-label">Complete PrintFacet</label></a>
                   {{ storydownloadform.printfacet_sa }}
                   {% if storydownloadform.printfacet_sa.errors %}
                     <div class="alert alert-warning" role="alert">
@@ -87,7 +87,7 @@
               <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
                 <!-- SELECT AUDIOFACET ALL -->
                 <div class="form-group custom-form">
-                  <a href="#" data-toggle="tooltip" title="{{ storydownloadform.audiofacet_sa.help_text }}"><span class="field-label">{{ storydownloadform.audiofacet_sa.label_tag }}</span></a>
+                  <a href="#" data-toggle="tooltip" title="{{ storydownloadform.audiofacet_sa.help_text }}"><label class="field-label">Complete AudioFacet</label></a>
                   {{ storydownloadform.audiofacet_sa }}
                   {% if storydownloadform.audiofacet_sa.errors %}
                     <div class="alert alert-warning" role="alert">
@@ -101,7 +101,7 @@
               <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
                 <!-- OR SELECT VIDEOFACET ALL -->
                 <div class="form-group custom-form">
-                  <a href="#" data-toggle="tooltip" title="{{ storydownloadform.videofacet_sa.help_text }}"><span class="field-label">{{ storydownloadform.videofacet_sa.label_tag }}</span></a>
+                  <a href="#" data-toggle="tooltip" title="{{ storydownloadform.videofacet_sa.help_text }}"><label class="field-label">Complete VideoFacet</label></a>
                   {{ storydownloadform.videofacet_sa }}
                   {% if storydownloadform.videofacet_sa.errors %}
                     <div class="alert alert-warning" role="alert">
@@ -127,7 +127,7 @@
             <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
               <!-- SELECT WEBFACET CONTENT -->
               <div class="form-group custom-form">
-                <a href="#" data-toggle="tooltip" title="{{ storydownloadform.webfacet.help_text }}"><span class="field-label">{{ storydownloadform.webfacet.label_tag }}</span></a>
+                <a href="#" data-toggle="tooltip" title="{{ storydownloadform.webfacet.help_text }}"><label class="field-label">WebFacet Content</label></a>
                 {{ storydownloadform.webfacet }}
                 {% if storydownloadform.webfacet.errors %}
                   <div class="alert alert-warning" role="alert">
@@ -155,7 +155,7 @@
             <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
               <!-- SELECT PRINTFACET CONTENT -->
               <div class="form-group custom-form">
-                <a href="#" data-toggle="tooltip" title="{{ storydownloadform.printfacet.help_text }}"><span class="field-label">{{ storydownloadform.printfacet.label_tag }}</span></a>
+                <a href="#" data-toggle="tooltip" title="{{ storydownloadform.printfacet.help_text }}"><label class="field-label">PrintFacet Content</label></a>
                 {{ storydownloadform.printfacet }}
                 {% if storydownloadform.printfacet.errors %}
                   <div class="alert alert-warning" role="alert">
@@ -183,7 +183,7 @@
             <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
               <!-- SELECT AUDIOFACET CONTENT -->
               <div class="form-group custom-form">
-                <a href="#" data-toggle="tooltip" title="{{ storydownloadform.audiofacet.help_text }}"><span class="field-label">{{ storydownloadform.audiofacet.label_tag }}</span></a>
+                <a href="#" data-toggle="tooltip" title="{{ storydownloadform.audiofacet.help_text }}"><label class="field-label">AudioFacet Content</label></a>
                 {{ storydownloadform.audiofacet }}
                 {% if storydownloadform.audiofacet.errors %}
                   <div class="alert alert-warning" role="alert">
@@ -211,7 +211,7 @@
             <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
               <!-- SELECT VIDEOFACET CONTENT -->
               <div class="form-group custom-form">
-                <a href="#" data-toggle="tooltip" title="{{ storydownloadform.videofacet.help_text }}"><span class="field-label">{{ storydownloadform.videofacet.label_tag }}</span></a>
+                <a href="#" data-toggle="tooltip" title="{{ storydownloadform.videofacet.help_text }}"><label class="field-label">VideoFacet Content</label></a>
                 {{ storydownloadform.videofacet }}
                 {% if storydownloadform.videofacet.errors %}
                   <div class="alert alert-warning" role="alert">
