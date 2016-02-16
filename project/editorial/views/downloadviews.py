@@ -74,19 +74,19 @@ def create_download(request, pk):
             d_images.extend(videofacet_images)
         print "DImages: ", d_images
 
-    elif webfacet and webfacet_sa:
+    if webfacet and webfacet_sa:
         webfacet_images = WebFacet.get_webfacet_images(webfacet[0])
         print "webfacet_images", webfacet_images
 
-    elif printfacet and printfacet_sa:
+    if printfacet and printfacet_sa:
         printfacet_images = PrintFacet.get_printfacet_images(printfacet[0])
         print "printfacet_images", printfacet_images
 
-    elif audiofacet and audiofacet_sa:
+    if audiofacet and audiofacet_sa:
         audiofacet_images = AudioFacet.get_audiofacet_images(audiofacet[0])
         print "audiofacet_images", audiofacet_images
 
-    elif videofacet and videofacet_sa:
+    if videofacet and videofacet_sa:
         videofacet_images = VideoFacet.get_videofacet_images(videofacet[0])
         print "videofacet_images", videofacet_images
 
