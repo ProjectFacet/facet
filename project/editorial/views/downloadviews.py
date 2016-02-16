@@ -25,3 +25,15 @@ from editorial.models import (
 #----------------------------------------------------------------------#
 #   Download View
 #----------------------------------------------------------------------#
+
+def create_download(request):
+    """ Process download form to collect objects and create download file."""
+
+    # select_all = request.POST.get('select_all')
+    # webfacet = request.POST.get('webfacet')
+    # printfacet = request.POST.get('printfacet')
+    # audiofacet = request.POST.get('audiofacet')
+    # videofacet = request.POST.get('videofacet')
+    # images = request.POST.getlist('images')
+
+    pass
