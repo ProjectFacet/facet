@@ -15,7 +15,167 @@
 
 
 <div class="row">
-    
+  <form action="{% url 'create_download' pk=1 %}" method="POST" class="post-form" enctype="multipart/form-data">
+  {% csrf_token %}
+
+    <input type="hidden" name="story" value="1" />
+
+    <div class="col-xs-12">
+      <!-- SELECT ALL -->
+      <div class="form-group custom-form">
+        <a href="#" data-toggle="tooltip" title="{{ storydownloadform.select_all.help_text }}"><span class="field-label">{{ storydownloadform.select_all.label_tag }}</span></a>
+        {{ storydownloadform.select_all }}
+        {% if storydownloadform.select_all.errors %}
+          <div class="alert alert-warning" role="alert">
+          {{ storydownloadform.select_all.errors }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+      <!-- SELECT WEBFACET ITEMS HERE -->
+      <div class="form-group custom-form">
+        <a href="#" data-toggle="tooltip" title="{{ storydownloadform.webfacet.help_text }}"><span class="field-label">{{ storydownloadform.webfacet.label_tag }}</span></a>
+        {{ storydownloadform.webfacet }}
+        {% if storydownloadform.webfacet.errors %}
+          <div class="alert alert-warning" role="alert">
+          {{ storydownloadform.webfacet.errors }}
+          </div>
+        {% endif %}
+      </div>
+      <!-- Select Webfacet images -->
+      <div class="image-library">
+      {% for image in webfacet_images %}
+        <div class="col-md-2">
+          <label>
+            <img class="img-responsive img-thumbnail" src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}">
+            <input type="checkbox" name="images" value="{{ image.id }}">
+          </label>
+        </div>
+      {% endfor %}
+      </div>
+      </br>
+      <!-- OR SELECT WEBFACET ALL -->
+      <div class="form-group custom-form">
+        <a href="#" data-toggle="tooltip" title="{{ storydownloadform.webfacet_sa.help_text }}"><span class="field-label">{{ storydownloadform.webfacet_sa.label_tag }}</span></a>
+        {{ storydownloadform.webfacet_sa }}
+        {% if storydownloadform.webfacet_sa.errors %}
+          <div class="alert alert-warning" role="alert">
+          {{ storydownloadform.webfacet_sa.errors }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+      <!-- SELECT PRINTFACET ITEMS HERE -->
+      <div class="form-group custom-form">
+        <a href="#" data-toggle="tooltip" title="{{ storydownloadform.printfacet.help_text }}"><span class="field-label">{{ storydownloadform.printfacet.label_tag }}</span></a>
+        {{ storydownloadform.printfacet }}
+        {% if storydownloadform.printfacet.errors %}
+          <div class="alert alert-warning" role="alert">
+          {{ storydownloadform.printfacet.errors }}
+          </div>
+        {% endif %}
+      </div>
+      <!-- Select printfacet images -->
+      <div class="image-library">
+      {% for image in printfacet_images %}
+        <div class="col-md-2">
+          <label>
+            <img class="img-responsive img-thumbnail" src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}">
+            <input type="checkbox" name="images" value="{{ image.id }}">
+          </label>
+        </div>
+      {% endfor %}
+      </div>
+      </br>
+      <!-- OR SELECT PRINTFACET ALL -->
+      <div class="form-group custom-form">
+        <a href="#" data-toggle="tooltip" title="{{ storydownloadform.printfacet_sa.help_text }}"><span class="field-label">{{ storydownloadform.printfacet_sa.label_tag }}</span></a>
+        {{ storydownloadform.printfacet_sa }}
+        {% if storydownloadform.printfacet_sa.errors %}
+          <div class="alert alert-warning" role="alert">
+          {{ storydownloadform.printfacet_sa.errors }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+      <!-- SELECT AUDIOFACET ITEMS HERE -->
+      <div class="form-group custom-form">
+        <a href="#" data-toggle="tooltip" title="{{ storydownloadform.audiofacet.help_text }}"><span class="field-label">{{ storydownloadform.audiofacet.label_tag }}</span></a>
+        {{ storydownloadform.audiofacet }}
+        {% if storydownloadform.audiofacet.errors %}
+          <div class="alert alert-warning" role="alert">
+          {{ storydownloadform.audiofacet.errors }}
+          </div>
+        {% endif %}
+      </div>
+      <!-- Select audiofacet images -->
+      <div class="image-library">
+      {% for image in audiofacet_images %}
+        <div class="col-md-2">
+          <label>
+            <img class="img-responsive img-thumbnail" src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}">
+            <input type="checkbox" name="images" value="{{ image.id }}">
+          </label>
+        </div>
+      {% endfor %}
+      </div>
+      </br>
+      <!-- OR SELECT AUDIOFACET ALL -->
+      <div class="form-group custom-form">
+        <a href="#" data-toggle="tooltip" title="{{ storydownloadform.audiofacet_sa.help_text }}"><span class="field-label">{{ storydownloadform.audiofacet_sa.label_tag }}</span></a>
+        {{ storydownloadform.audiofacet_sa }}
+        {% if storydownloadform.audiofacet_sa.errors %}
+          <div class="alert alert-warning" role="alert">
+          {{ storydownloadform.audiofacet_sa.errors }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+      <!-- SELECT VIDEOFACET ITEMS HERE -->
+      <div class="form-group custom-form">
+        <a href="#" data-toggle="tooltip" title="{{ storydownloadform.videofacet.help_text }}"><span class="field-label">{{ storydownloadform.videofacet.label_tag }}</span></a>
+        {{ storydownloadform.videofacet }}
+        {% if storydownloadform.videofacet.errors %}
+          <div class="alert alert-warning" role="alert">
+          {{ storydownloadform.videofacet.errors }}
+          </div>
+        {% endif %}
+      </div>
+      <!-- Select videofacet images -->
+      <div class="image-library">
+      {% for image in videofacet_images %}
+        <div class="col-md-2">
+          <label>
+            <img class="img-responsive img-thumbnail" src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}">
+            <input type="checkbox" name="images" value="{{ image.id }}">
+          </label>
+        </div>
+      {% endfor %}
+      </div>
+      </br>
+      <!-- OR SELECT VIDEOFACET ALL -->
+      <div class="form-group custom-form">
+        <a href="#" data-toggle="tooltip" title="{{ storydownloadform.videofacet_sa.help_text }}"><span class="field-label">{{ storydownloadform.videofacet_sa.label_tag }}</span></a>
+        {{ storydownloadform.videofacet_sa }}
+        {% if storydownloadform.videofacet_sa.errors %}
+          <div class="alert alert-warning" role="alert">
+          {{ storydownloadform.videofacet_sa.errors }}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+    <div>
+    <button type="submit" class="btn btn-primary">Download</button>
+    </div>
+  </form>
 </div>
 
 {% endblock %}

@@ -36,7 +36,8 @@ from editorial.forms import (
     PrintFacetCommentForm,
     AudioFacetCommentForm,
     VideoFacetCommentForm,
-    StoryNoteForm,)
+    StoryNoteForm,
+    StoryDownloadForm,)
 
 from editorial.models import (
     Organization,
@@ -131,6 +132,7 @@ def story_detail(request, pk):
     storycomments = Comment.objects.filter(discussion=storydiscussion).order_by('-date')
     notes = StoryNote.objects.filter(story=story)
     images = Organization.get_org_image_library(request.user.organization)
+    storydownloadform = StoryDownloadForm(story=story)
 
 # ------------------------------ #
 #           webfacet             #
@@ -377,6 +379,7 @@ def story_detail(request, pk):
 
     return render(request, 'editorial/storydetail.html', {
         'story': story,
+        'storydownloadform': storydownloadform,
         'storynoteform': storynoteform,
         'storynotes': storynotes,
         'storycommentform': storycommentform,
