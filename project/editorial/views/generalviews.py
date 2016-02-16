@@ -90,8 +90,6 @@ def index(request):
 def test(request):
     """ Use for rapid testing of new pages."""
 
-    organizations = Organization.get_org_collaborators(request.user.organization)
-
     return render(request, 'editorial/test.html', {
 
                 })
