@@ -36,7 +36,7 @@ def create_download(request, pk):
     select_all = request.POST.get('select_all')
     print "select all: ", select_all
 
-    # user can also select to download all items associated with certain facets
+    # user can also select download all items associated with certain facets
     webfacet_sa = request.POST.get('webfacet_sa')
     printfacet_sa = request.POST.get('printfacet_sa')
     audiofacet_sa = request.POST.get('audiofacet_sa')
@@ -93,4 +93,4 @@ def create_download(request, pk):
     # elif: #only specific items selected
 
 
-    return render(redirect, 'test.html')
+    return redirect('story_detail', pk=story.pk)

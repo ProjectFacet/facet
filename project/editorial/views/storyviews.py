@@ -132,7 +132,6 @@ def story_detail(request, pk):
     storycomments = Comment.objects.filter(discussion=storydiscussion).order_by('-date')
     notes = StoryNote.objects.filter(story=story)
     images = Organization.get_org_image_library(request.user.organization)
-    storydownloadform = StoryDownloadForm(story=story)
 
 # ------------------------------ #
 #           webfacet             #
@@ -377,6 +376,31 @@ def story_detail(request, pk):
                     videohistory = videofacet.edit_history.all()[:5]
                     return redirect('story_detail', pk=story.pk)
 
+    # ------------------------------ #
+    #        Download Options        #
+    # ------------------------------ #
+    if story.webfacetstory.all():
+        webfacet = get_object_or_404(WebFacet, story=story)
+        webfacet_images = WebFacet.get_webfacet_images(webfacet)
+    else:
+        webfacet_images = []
+    if story.printfacetstory.all():
+        printfacet = get_object_or_404(PrintFacet, story=story)
+        printfacet_images = PrintFacet.get_printfacet_images(printfacet)
+    else:
+        printfacet_images = []
+    if story.audiofacetstory.all():
+        audiofacet = get_object_or_404(AudioFacet, story=story)
+        audiofacet_images = AudioFacet.get_audiofacet_images(audiofacet)
+    else:
+        audiofacet_images = []
+    if story.videofacetstory.all():
+        videofacet = get_object_or_404(VideoFacet, story=story)
+        videofacet_images = VideoFacet.get_videofacet_images(videofacet)
+    else:
+        videofacet_images =[]
+    storydownloadform = StoryDownloadForm(story=story)
+
     return render(request, 'editorial/storydetail.html', {
         'story': story,
         'storydownloadform': storydownloadform,
@@ -405,4 +429,8 @@ def story_detail(request, pk):
         'audiofacet_imageform': audiofacet_imageform,
         'videofacet_imageform': videofacet_imageform,
         'images': images,
+        'webfacet_images': webfacet_images,
+        'printfacet_images': printfacet_images,
+        'audiofacet_images': audiofacet_images,
+        'videofacet_images': videofacet_images,
         })

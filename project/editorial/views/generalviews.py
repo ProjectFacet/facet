@@ -97,13 +97,11 @@ def test(request):
         webfacet_images = WebFacet.get_webfacet_images(webfacet)
     else:
         webfacet_images = []
-
     if story.printfacetstory.all():
         printfacet = get_object_or_404(PrintFacet, story=story)
         printfacet_images = PrintFacet.get_printfacet_images(printfacet)
     else:
         printfacet_images = []
-
     if story.audiofacetstory.all():
         audiofacet = get_object_or_404(AudioFacet, story=story)
         audiofacet_images = AudioFacet.get_audiofacet_images(audiofacet)
@@ -114,7 +112,6 @@ def test(request):
         videofacet_images = VideoFacet.get_videofacet_images(videofacet)
     else:
         videofacet_images =[]
-
     storydownloadform = StoryDownloadForm(story=story)
 
     return render(request, 'editorial/test.html', {
