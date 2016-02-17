@@ -49,6 +49,10 @@ def create_download(request, pk):
     if videofacet:
         videofacet = videofacet[0]
 
+    # Set up zip file
+    fp = StringIO()
+    z = ZipFile(fp, mode="w")
+
     # ------------------------------ #
     #          IF SELECT ALL         #
     # ------------------------------ #
