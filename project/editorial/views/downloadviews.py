@@ -23,6 +23,8 @@ from editorial.models import (
     ImageAsset,
 )
 
+#TODO Refactor queries for better use of Django query methods
+
 #----------------------------------------------------------------------#
 #   Download View
 #----------------------------------------------------------------------#
@@ -38,6 +40,14 @@ def create_download(request, pk):
     printfacet = story.printfacetstory.all()
     audiofacet = story.audiofacetstory.all()
     videofacet = story.videofacetstory.all()
+    if webfacet:
+        webfacet = webfacet[0]
+    if printfacet:
+        printfacet = printfacet[0]
+    if audiofacet:
+        audiofacet = audiofacet[0]
+    if videofacet:
+        videofacet = videofacet[0]
 
     # ------------------------------ #
     #          IF SELECT ALL         #
@@ -51,18 +61,18 @@ def create_download(request, pk):
         # collect all images
         all_images = []
         if webfacet:
-            webfacet_images = WebFacet.get_webfacet_images(webfacet[0])
+            webfacet_images = WebFacet.get_webfacet_images(webfacet)
             all_images.extend(webfacet_images)
         if printfacet:
-            printfacet_images = PrintFacet.get_printfacet_images(printfacet[0])
+            printfacet_images = PrintFacet.get_printfacet_images(printfacet)
             all_images.extend(printfacet_images)
         if audiofacet:
-            audiofacet_images = AudioFacet.get_audiofacet_images(audiofacet[0])
+            audiofacet_images = AudioFacet.get_audiofacet_images(audiofacet)
             all_images.extend(audiofacet_images)
         if videofacet:
-            videofacet_images = VideoFacet.get_videofacet_images(videofacet[0])
+            videofacet_images = VideoFacet.get_videofacet_images(videofacet)
             all_images.extend(videofacet_images)
-        print "DImages: ", d_images
+        print "ALL Images: ", all_images
 
         # Zip up all facets and assets including story metadata
         #TODO Add zip up here of any items that exist
@@ -82,7 +92,6 @@ def create_download(request, pk):
     print "WSA: ", webfacet_sa
 
     if webfacet_sa:
-        webfacet = webfacet[0]
         webfacet_images = WebFacet.get_webfacet_images(webfacet)
         print "webfacet_images ", webfacet_images
 
@@ -100,7 +109,6 @@ def create_download(request, pk):
     print "PSA: ", printfacet_sa
 
     if printfacet_sa:
-        printfacet = printfacet[0]
         printfacet_images = PrintFacet.get_printfacet_images(printfacet)
         print "printfacet_images: ", printfacet_images
         print "Zip up all printfacet content and assets"
@@ -117,7 +125,6 @@ def create_download(request, pk):
     print "ASA: ", audiofacet_sa
 
     if audiofacet_sa:
-        audiofacet = audiofacet[0]
         audiofacet_images = AudioFacet.get_audiofacet_images(audiofacet)
         print "audiofacet_images: ", audiofacet_images
         print "Zip up all audiofacet content and assets"
@@ -134,7 +141,6 @@ def create_download(request, pk):
     print "VDS: ", videofacet_sa
 
     if videofacet_sa:
-        videofacet = videofacet[0]
         videofacet_images = VideoFacet.get_videofacet_images(videofacet)
         print "videofacet_images", videofacet_images
         print "Zip up all videofacet content and assets"
