@@ -259,6 +259,14 @@ hr {
   text-align: center;
 }
 
+.left {
+  text-align: left;
+}
+
+.right {
+  text-align: right;
+}
+
 .thin {
   font-weight: 300;
 }

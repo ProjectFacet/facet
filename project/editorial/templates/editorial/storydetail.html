@@ -109,7 +109,7 @@
                         <h4 class="thin"><i>{{ story.story_description }}</i></h4>
                       </div>
                       <div class="col-md-2">
-                        {% if request.user.organization == story.organization %}<a href="{% url 'story_edit' pk=story.id %}"><p class="dark"><i class="fa fa-pencil sameline dark"></i> Edit Story<p></a>{% endif %}
+                        {% if request.user.organization == story.organization %}<a href="{% url 'story_edit' pk=story.id %}"><p class="dark"><i class="fa fa-pencil dark"></i> Edit Story<p></a>{% endif %}
                         <a href="#" data-toggle="modal" data-target="#downloadStory" title="Download"><p class="dark"><i class="fa fa-cloud-download dark"></i> Download Story</p></a>
                       </div>
                     </div>
