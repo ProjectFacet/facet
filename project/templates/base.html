@@ -128,6 +128,7 @@
 
           <div class="pull-right" role="navigation">
 
+           {% comment %}
             <!-- <div class="user-ident dropdown-ext">
               {% if request.user.is_authenticated %}
               <div class="panel clear-panel fade in panel-default" data-init-panel="true">
@@ -150,16 +151,23 @@
               </div>
               {% endif %}
             </div> -->
+
+          {% endcomment %}
           <!-- ================================================= -->
                                 <!-- MESSAGING -->
           <!-- ================================================= -->
           {% if request.user.is_authenticated %}
             <div class="dropdown-ext">
               <a aria-label="notifications" href="{% url 'user_detail' pk=request.user.id %}" title="">
+                {% comment %}
                 <!-- <img class="media-object img-circle img-responsive" width="32" src="{{ user.display_photo.url }}" alt="{{user.credit_name}}"> -->
+                {% endcomment %}
                 <a href="{% url 'user_detail' pk=request.user.id %}"><h6 class="media-heading bright">{{ user.credit_name}}</h6></a>
-                <a href="{% url 'org_detail' pk=request.user.organization_id %}"><p class="help-block tiny-text close-text">{{ user.organization.name }}</p></a>
-              </a>
+                {% if request.user.organization %}
+                  <a href="{% url 'org_detail' pk=request.user.organization_id %}"><p class="help-block tiny-text close-text">{{ user.organization.name }}</p></a>
+                  </a>
+                {% endif %}
+
 
             </div><!-- /.dropdown -->
             <div class="dropdown-ext">
