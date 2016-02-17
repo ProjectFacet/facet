@@ -135,15 +135,11 @@
                   <div class="media">
                     <div class="media-left">
                       <div class="">
-                        {% if user.display_photo %}
-                        <img class="media-object img-circle" width="32" src="{{ user.display_photo.url }}" alt="{{user.credit_name}}">
-                        {% else %}
-                        {% endif %}
                       </div>
                     </div>
                     <div class="media-body">
                       <a href="{% url 'user_detail' pk=request.user.id %}"><h6 class="media-heading bright">{{ user.credit_name}}</h6></a>
-                      <a href="{% url 'org_detail' pk=request.user.organization_id %}"><p class="help-block tiny-text close-text">{{ user.organization.name }}</p></a>
+                      {% if user.organization %}<a href="{% url 'org_detail' pk=request.user.organization_id %}"><p class="help-block tiny-text close-text">{{ user.organization.name }}</p></a>{% endif %}
                     </div>
                   </div>
                 </div>
@@ -156,9 +152,8 @@
           {% if request.user.is_authenticated %}
             <div class="dropdown-ext">
               <a aria-label="notifications" href="{% url 'user_detail' pk=request.user.id %}" title="">
-                <!-- <img class="media-object img-circle img-responsive" width="32" src="{{ user.display_photo.url }}" alt="{{user.credit_name}}"> -->
                 <a href="{% url 'user_detail' pk=request.user.id %}"><h6 class="media-heading bright">{{ user.credit_name}}</h6></a>
-                <a href="{% url 'org_detail' pk=request.user.organization_id %}"><p class="help-block tiny-text close-text">{{ user.organization.name }}</p></a>
+                {% if user.organization %}<a href="{% url 'org_detail' pk=request.user.organization_id %}"><p class="help-block tiny-text close-text">{{ user.organization.name }}</p></a>{% endif %}
               </a>
 
             </div><!-- /.dropdown -->
