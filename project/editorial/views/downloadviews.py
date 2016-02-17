@@ -81,7 +81,7 @@ def create_download(request, pk):
     webfacet_sa = request.POST.get('webfacet_sa')
     print "WSA: ", webfacet_sa
 
-    elif webfacet_sa:
+    if webfacet_sa:
         webfacet = webfacet[0]
         webfacet_images = WebFacet.get_webfacet_images(webfacet)
         print "webfacet_images ", webfacet_images
@@ -99,7 +99,7 @@ def create_download(request, pk):
     printfacet_sa = request.POST.get('printfacet_sa')
     print "PSA: ", printfacet_sa
 
-    elif printfacet_sa:
+    if printfacet_sa:
         printfacet = printfacet[0]
         printfacet_images = PrintFacet.get_printfacet_images(printfacet)
         print "printfacet_images: ", printfacet_images
@@ -116,7 +116,7 @@ def create_download(request, pk):
     audiofacet_sa = request.POST.get('audiofacet_sa')
     print "ASA: ", audiofacet_sa
 
-    elif audiofacet_sa:
+    if audiofacet_sa:
         audiofacet = audiofacet[0]
         audiofacet_images = AudioFacet.get_audiofacet_images(audiofacet)
         print "audiofacet_images: ", audiofacet_images
@@ -133,7 +133,7 @@ def create_download(request, pk):
     videofacet_sa = request.POST.get('videofacet_sa')
     print "VDS: ", videofacet_sa
 
-    elif videofacet_sa:
+    if videofacet_sa:
         videofacet = videofacet[0]
         videofacet_images = VideoFacet.get_videofacet_images(videofacet)
         print "videofacet_images", videofacet_images
