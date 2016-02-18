@@ -213,7 +213,7 @@
                                 <h5 class="modal-title" id="addNote{{note.id}}Label">{{ note.title }}</h5>
                               </div>
                               <div class="modal-body dark">
-                                {{ note.text }}
+                                {{ note.text|linebreaksbr }}
                               </div>
                               <div class="modal-footer">
                                 <p class="tiny-text">{{ note.owner }} | {{ note.creation_date|date:'D M j g:i a' }}<p>
