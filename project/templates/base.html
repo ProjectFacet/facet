@@ -154,16 +154,10 @@
           <!-- ================================================= -->
           {% if request.user.is_authenticated %}
             <div class="dropdown-ext">
-              <a aria-label="notifications" href="{% url 'user_detail' pk=request.user.id %}" title="">
-                <a href="{% url 'user_detail' pk=request.user.id %}"><h6 class="media-heading bright">{{ user.credit_name}}</h6></a>
-                {% if user.organization %}<a href="{% url 'org_detail' pk=request.user.organization_id %}"><p class="help-block tiny-text close-text">{{ user.organization.name }}</p></a>{% endif %}
-              </a>
-                <a href="{% url 'user_detail' pk=request.user.id %}"><h6 class="media-heading bright">{{ user.credit_name}}</h6></a>
-                {% if request.user.organization %}
-                  <a href="{% url 'org_detail' pk=request.user.organization_id %}"><p class="help-block tiny-text close-text">{{ user.organization.name }}</p></a>
-                  </a>
-                {% endif %}
-
+              <a href="{% url 'user_detail' pk=request.user.id %}"><h6 class="media-heading bright">{{ user.credit_name}}</h6></a>
+              {% if request.user.organization %}
+                <a href="{% url 'org_detail' pk=request.user.organization_id %}"><p class="help-block tiny-text close-text">{{ user.organization.name }}</p></a>
+              {% endif %}
             </div><!-- /.dropdown -->
             <div class="dropdown-ext">
               <a aria-label="notifications" class="btn btn-icon navbar-btn dropdown-toggle" data-toggle="modal" data-target="#addUserNote" href="#" title="Add a note">
