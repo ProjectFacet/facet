@@ -42,12 +42,14 @@ def create_download(request, pk):
     videofacet = story.videofacetstory.all()
     if webfacet:
         webfacet = webfacet[0]
+        webfacet_txt = WebFacet.get_webfacet_download(webfacet)
     if printfacet:
         printfacet = printfacet[0]
     if audiofacet:
         audiofacet = audiofacet[0]
     if videofacet:
         videofacet = videofacet[0]
+
 
     # Set up zip file
     fp = StringIO()
@@ -87,6 +89,16 @@ def create_download(request, pk):
         # videofacet.txt
         # images.txt
         # image1.jpg
+
+        z.writestr("story.txt", story.name)
+        z.writestr("webstory.txt", webfacet.title)
+        for image in all_images:
+            z.writestr("{image}.jpg".format(image=image.asset_title), image)
+
+        z.close()
+        fp.seek(0)
+        response = HttpResponse(fp, content_type='application/zip')
+        fp.close()
 
     # user can also select download all items associated with certain facets
     # ------------------------------ #
@@ -213,4 +225,4 @@ def create_download(request, pk):
 
 
 
-    return redirect('story_detail', pk=story.pk)
+    return response

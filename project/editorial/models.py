@@ -719,18 +719,56 @@ class Story(models.Model):
 
         return story_copy
 
-    def get_story_downloadables(self):
-        """Retrieve all objects associated with a story for download.
+    def get_story_download(self):
+        """ Return rst formatted string for downloading story meta."""
 
-        When a user chooses to download a story and its assets they get a window displaying
-        all of the facets and assets associated with that story as a checklist of items.
-        The user can select the all or some of the items they want to download.
-        The form submission creates a zipfile of those objects.
+        # loop over m2m and get the values as string
+        team = self.team.all()
+        team = [ user.credit_name for user in team]
+        team = ",".join(team)
 
-        Download = txt of story metadata, a txt of each facet metadata,
-        txt of content and each asset associated with any of the facets.
-        """
-        pass
+        share_with = self.share_with.all()
+        share_with = [ org.name for org in share_with ]
+        share_with = ",".join(share_with)
+
+        collaborate_with = self.share_with.all()
+        collaborate_with = [ org.name for org in collaborate_with ]
+        collaborate_with = ",".join(collaborate_with)
+
+        # verify the text area fields have correct encoding
+        name = self.name.encode('utf-8')
+        description = self.story_description.encode('utf-8')
+
+        story_download = """
+        Story\n
+        ========\n
+        \n
+        {name}\n
+        --------------\n
+        Description: {desc}\n
+        Series: {series}\n
+        Owner: {owner}\n
+        Organization: {organization}\n
+        Original: {original}\n
+        Team: {team}\n
+        Created: {created}\n
+        Sensitive: {sensitive}\n
+        Embargo Status: {embargo}\n
+        Embargo Date/Time: {embargo_dt}\n
+        Share: {share}\n
+        Share Date: {sharedate}\n
+        Shared With: {sharewith}\n
+        Ready for Sharing: {shareready}\n
+        Collaborate: {collaborate}\n
+        Collaborate With: {collaboratewith}\n
+        Archived: {archived}\n
+        """.format(name=name, desc=description, series=self.series.name, owner=self.owner, organization=self.organization,
+        original=self.original_story, team=team, created=self.creation_date, sensitive=self.sensitive,
+        embargo=self.embargo, embargo_dt=self.embargo_datetime, share=self.share,
+        sharedate=self.share_with_date, sharewith=share_with, shareready=self.ready_to_share,
+        collaborate=self.collaborate, collaboratewith=collaborate_with, archived=self.archived)
+
+        return story_download
 
 
     @property
@@ -927,6 +965,61 @@ class WebFacet(models.Model):
         webfacet_images = ImageAsset.objects.filter(webfacet=self)
         return webfacet_images
 
+    def get_webfacet_download(self):
+        """ Return rst formatted string for downloading webfacet and its meta."""
+
+        # loop over m2m and get the values as string
+        credits = self.credit.all()
+        credits = [ user.credit_name for user in credits]
+        credits = ",".join(credits)
+
+        # loop over m2m and get the values as string
+        images = WebFacet.get_webfacet_images(self)
+        images = [image.asset_title for image in images]
+        images = ",".join(images)
+
+        # verify the text area fields have correct encoding
+        title = self.title.encode('utf-8')
+        description = self.wf_description.encode('utf-8')
+        excerpt = self.excerpt.encode('utf-8')
+        share_note = self.share_note.encode('utf-8')
+        content = self.wf_content.encode('utf-8')
+
+        webfacet_download = """
+        WebFacet\n
+        ========\n
+        \n
+        {title}\n
+        --------------\n
+        Description: {desc}\n
+        Story: {story}\n
+        Owner: {owner}\n
+        Organization: {organization}\n
+        Original: {original}\n
+        Editor: {editor}\n
+        Credit: {credit}\n
+        Code: {code}\n
+        Excerpt: {excerpt}\n
+        Length: {length}\n
+        Keywords: {keywords}\n
+        Status: {status}\n
+        Due Edit: {dueedit}\n
+        Run Date: {rundate}\n
+        Share Note: {sharenote}\n
+        Images: {images}\n
+        Captions: {captions}\n
+        \n
+        Content\n
+        -------\n
+        {content}
+        """.format(title=title, desc=description, story=self.story, owner=self.owner,
+        organization=self.organization, original=self.original_webfacet, editor=self.editor,
+        credit=credits, code=self.code, excerpt=excerpt, length=self.length,
+        keywords=self.keywords, status=self.status, dueedit=self.due_edit, rundate=self.run_date,
+        sharenote=share_note, images=images, captions=self.captions, content=content)
+
+        return webfacet_download
+
 
     @property
     def description(self):
@@ -1121,6 +1214,61 @@ class PrintFacet(models.Model):
 
         printfacet_images = ImageAsset.objects.filter(printfacet=self)
         return printfacet_images
+
+    def get_printfacet_download(self):
+        """ Return rst formatted string for downloading printfacet and its meta."""
+
+        # loop over m2m and get the values as string
+        credits = self.credit.all()
+        credits = [ user.credit_name for user in credits]
+        credits = ",".join(credits)
+
+        # loop over m2m and get the values as string
+        images = PrintFacet.get_printfacet_images(self)
+        images = [image.asset_title for image in images]
+        images = ",".join(images)
+
+        # verify the text area fields have correct encoding
+        title = self.title.encode('utf-8')
+        description = self.pf_description.encode('utf-8')
+        excerpt = self.excerpt.encode('utf-8')
+        share_note = self.share_note.encode('utf-8')
+        content = self.pf_content.encode('utf-8')
+
+        printfacet_download = """
+        PrintFacet\n
+        ========\n
+        \n
+        {title}\n
+        --------------\n
+        Description: {desc}\n
+        Story: {story}\n
+        Owner: {owner}\n
+        Organization: {organization}\n
+        Original: {original}\n
+        Editor: {editor}\n
+        Credit: {credit}\n
+        Code: {code}\n
+        Excerpt: {excerpt}\n
+        Length: {length}\n
+        Keywords: {keywords}\n
+        Status: {status}\n
+        Due Edit: {dueedit}\n
+        Run Date: {rundate}\n
+        Share Note: {sharenote}\n
+        Images: {images}\n
+        Captions: {captions}\n
+        \n
+        Content\n
+        -------\n
+        {content}
+        """.format(title=title, desc=description, story=self.story, owner=self.owner,
+        organization=self.organization, original=self.original_printfacet, editor=self.editor,
+        credit=credits, code=self.code, excerpt=excerpt, length=self.length,
+        keywords=self.keywords, status=self.status, dueedit=self.due_edit, rundate=self.run_date,
+        sharenote=share_note, images=images, captions=self.captions, content=content)
+
+        return printfacet_download
 
     @property
     def description(self):
@@ -1317,6 +1465,62 @@ class AudioFacet(models.Model):
         audiofacet_images = ImageAsset.objects.filter(audiofacet=self)
         return audiofacet_images
 
+    def get_audiofacet_download(self):
+        """ Return rst formatted string for downloading audiofacet and its meta."""
+
+        # loop over m2m and get the values as string
+        credits = self.credit.all()
+        credits = [ user.credit_name for user in credits]
+        credits = ",".join(credits)
+
+        # loop over m2m and get the values as string
+        images = AudioFacet.get_audiofacet_images(self)
+        images = [image.asset_title for image in images]
+        images = ",".join(images)
+
+        # verify the text area fields have correct encoding
+        title = self.title.encode('utf-8')
+        description = self.af_description.encode('utf-8')
+        excerpt = self.excerpt.encode('utf-8')
+        share_note = self.share_note.encode('utf-8')
+        content = self.af_content.encode('utf-8')
+
+        audiofacet_download = """
+        AudioFacet\n
+        ========\n
+        \n
+        {title}\n
+        --------------\n
+        Description: {desc}\n
+        Story: {story}\n
+        Owner: {owner}\n
+        Organization: {organization}\n
+        Original: {original}\n
+        Editor: {editor}\n
+        Credit: {credit}\n
+        Code: {code}\n
+        Excerpt: {excerpt}\n
+        Length: {length}\n
+        Keywords: {keywords}\n
+        Status: {status}\n
+        Due Edit: {dueedit}\n
+        Run Date: {rundate}\n
+        Share Note: {sharenote}\n
+        Images: {images}\n
+        Captions: {captions}\n
+        \n
+        Content\n
+        -------\n
+        {content}
+        """.format(title=title, desc=description, story=self.story, owner=self.owner,
+        organization=self.organization, original=self.original_audiofacet, editor=self.editor,
+        credit=credits, code=self.code, excerpt=excerpt, length=self.length,
+        keywords=self.keywords, status=self.status, dueedit=self.due_edit, rundate=self.run_date,
+        sharenote=share_note, images=images, captions=self.captions, content=content)
+
+        return audiofacet_download
+
+
     @property
     def description(self):
         return "Audiofacet: {audiofacet} by {credit}".format(
@@ -1511,6 +1715,61 @@ class VideoFacet(models.Model):
 
         videofacet_images = ImageAsset.objects.filter(videofacet=self)
         return videofacet_images
+
+    def get_videofacet_download(self):
+        """ Return rst formatted string for downloading videofacet and its meta."""
+
+        # loop over m2m and get the values as string
+        credits = self.credit.all()
+        credits = [ user.credit_name for user in credits]
+        credits = ",".join(credits)
+
+        # loop over m2m and get the values as string
+        images = VideoFacet.get_videofacet_images(self)
+        images = [image.asset_title for image in images]
+        images = ",".join(images)
+
+        # verify the text area fields have correct encoding
+        title = self.title.encode('utf-8')
+        description = self.vf_description.encode('utf-8')
+        excerpt = self.excerpt.encode('utf-8')
+        share_note = self.share_note.encode('utf-8')
+        content = self.vf_content.encode('utf-8')
+
+        videofacet_download = """
+        VideoFacet\n
+        ========\n
+        \n
+        {title}\n
+        --------------\n
+        Description: {desc}\n
+        Story: {story}\n
+        Owner: {owner}\n
+        Organization: {organization}\n
+        Original: {original}\n
+        Editor: {editor}\n
+        Credit: {credit}\n
+        Code: {code}\n
+        Excerpt: {excerpt}\n
+        Length: {length}\n
+        Keywords: {keywords}\n
+        Status: {status}\n
+        Due Edit: {dueedit}\n
+        Run Date: {rundate}\n
+        Share Note: {sharenote}\n
+        Images: {images}\n
+        Captions: {captions}\n
+        \n
+        Content\n
+        -------\n
+        {content}
+        """.format(title=title, desc=description, story=self.story, owner=self.owner,
+        organization=self.organization, original=self.original_videofacet, editor=self.editor,
+        credit=credits, code=self.code, excerpt=excerpt, length=self.length,
+        keywords=self.keywords, status=self.status, dueedit=self.due_edit, rundate=self.run_date,
+        sharenote=share_note, images=images, captions=self.captions, content=content)
+
+        return videofacet_download
 
     @property
     def description(self):
