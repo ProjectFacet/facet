@@ -37,6 +37,7 @@ def create_download(request, pk):
     story = get_object_or_404(Story, id=pk)
     story_txt = Story.get_story_download(story)
     select_all_images = []
+    image_txt = ""
 
     if story.webfacetstory.all():
         webfacet = story.webfacetstory.all()[0]
@@ -62,6 +63,8 @@ def create_download(request, pk):
     # Set up zip file
     fp = StringIO()
     z = ZipFile(fp, mode="w")
+    # Always Zip up story meta
+    z.writestr("story.txt", story_txt)
 
     # ------------------------------ #
     #          IF SELECT ALL         #
@@ -72,16 +75,6 @@ def create_download(request, pk):
 
     if select_all:
         # Zip up all facets and assets including story metadata
-        #TODO Add zip up here of any items that exist
-        # storymeta.txt
-        # webfacet.txt
-        # printfacet.txt
-        # audiofacet.txt
-        # videofacet.txt
-        # images.txt
-        # image1.jpg
-
-        z.writestr("story.txt", story_txt)
         if story.webfacetstory.all():
             z.writestr("webstory.txt", webfacet_txt)
         if story.printfacetstory.all():
@@ -92,11 +85,9 @@ def create_download(request, pk):
             z.writestr("videostory.txt", videofacet_txt)
         for image in select_all_images:
             z.writestr("{image}.jpg".format(image=image.asset_title), image.photo.read())
-
-        z.close()
-        fp.seek(0)
-        response = HttpResponse(fp, content_type='application/zip')
-        fp.close()
+            new_info = ImageAsset.get_image_download_info(image)
+            image_txt += new_info
+        z.writestr("image.txt", image_txt)
 
     # user can also select download all items associated with certain facets
     # ------------------------------ #
@@ -106,12 +97,14 @@ def create_download(request, pk):
     print "WSA: ", webfacet_sa
 
     if webfacet_sa:
-        print "Zip up all webfacet content and assets"
-        #TODO Add zip up here
-        # storymeta.txt
-        # webfacet.txt
-        # images.txt
-        # image1.jpg
+        # Zip up story meta, webfacet content and webfacet images
+        if story.webfacetstory.all():
+            z.writestr("webstory.txt", webfacet_txt)
+        for image in webfacet_images:
+            z.writestr("{image}.jpg".format(image=image.asset_title), image.photo.read())
+            new_info = ImageAsset.get_image_download_info(image)
+            image_txt += new_info
+        z.writestr("image.txt", image_txt)
 
     # ------------------------------ #
     #       IF PRINTFACET ALL        #
@@ -120,12 +113,14 @@ def create_download(request, pk):
     print "PSA: ", printfacet_sa
 
     if printfacet_sa:
-        print "Zip up all printfacet content and assets"
-        #TODO Add zip up here
-        # storymeta.txt
-        # printfacet.txt
-        # images.txt
-        # image1.jpg
+        # Zip up story meta, printfacet content and printfacet images
+        if story.printfacetstory.all():
+            z.writestr("printstory.txt", printfacet_txt)
+        for image in printfacet_images:
+            z.writestr("{image}.jpg".format(image=image.asset_title), image.photo.read())
+            new_info = ImageAsset.get_image_download_info(image)
+            image_txt += new_info
+        z.writestr("image.txt", image_txt)
 
     # ------------------------------ #
     #       IF AUDIOFACET ALL        #
@@ -134,12 +129,14 @@ def create_download(request, pk):
     print "ASA: ", audiofacet_sa
 
     if audiofacet_sa:
-        print "Zip up all audiofacet content and assets"
-        #TODO Add zip up here
-        # storymeta.txt
-        # audiofacet.txt
-        # images.txt
-        # image1.jpg
+        # Zip up story meta, audiofacet content and audiofacet images
+        if story.audiofacetstory.all():
+            z.writestr("audiostory.txt", audiofacet_txt)
+            for image in audiofacet_images:
+                z.writestr("{image}.jpg".format(image=image.asset_title), image.photo.read())
+                new_info = ImageAsset.get_image_download_info(image)
+                image_txt += new_info
+            z.writestr("image.txt", image_txt)
 
     # ------------------------------ #
     #       IF VIDEOFACET ALL        #
@@ -148,12 +145,14 @@ def create_download(request, pk):
     print "VDS: ", videofacet_sa
 
     if videofacet_sa:
-        print "Zip up all videofacet content and assets"
-        #TODO Add zip up here
-        # storymeta.txt
-        # videofacet.txt
-        # images.txt
-        # image1.jpg
+        # Zip up story meta, audiofacet content and audiofacet images
+        if story.videofacetstory.all():
+            z.writestr("videostory.txt", videofacet_txt)
+        for image in videofacet_images:
+            z.writestr("{image}.jpg".format(image=image.asset_title), image.photo.read())
+            new_info = ImageAsset.get_image_download_info(image)
+            image_txt += new_info
+        z.writestr("image.txt", image_txt)
 
     else:
     # if not select all OR facet select all, then user chooses the facet and the images
@@ -162,37 +161,29 @@ def create_download(request, pk):
     # ------------------------------ #
         webfacet_only = request.POST.get('webfacet')
         if webfacet_only:
-            print "Zip up webfacet content and meta."
-            #TODO Add zip up here
-            # storymeta.txt
-            # webfacet.txt
+            z.writestr("webstory.txt", webfacet_txt)
+
     # ------------------------------ #
     #    IF PRINTFACET SPECIFIC      #
     # ------------------------------ #
         printfacet_only = request.POST.get('printfacet')
         if printfacet_only:
-            print "Zip up printfacet content and meta."
-            #TODO Add zip up here
-            # storymeta.txt
-            # printfacet.txt
+            z.writestr("printstory.txt", printfacet_txt)
+
     # ------------------------------ #
     #      IF AUDIOFACET SPECIFIC    #
     # ------------------------------ #
         audiofacet_only = request.POST.get('audiofacet')
         if audiofacet_only:
-            print "Zip up audiofacet content and meta."
-            #TODO Add zip up here
-            # storymeta.txt
-            # audiofacet.txt
+            z.writestr("audiostory.txt", audiofacet_txt)
+
     # ------------------------------ #
     #      IF VIDEOFACET SPECIFIC    #
     # ------------------------------ #
         videofacet_only = request.POST.get('videofacet')
         if videofacet_only:
-            print "Zip up videofacet content and meta."
-            #TODO Add zip up here
-            # storymeta.txt
-            # videofacet.txt
+            z.writestr("videostory.txt", videofacet_txt)
+
     # ------------------------------ #
     #       IF SPECIFIC IMAGES       #
     # ------------------------------ #
@@ -201,17 +192,20 @@ def create_download(request, pk):
         images = ImageAsset.objects.filter(pk__in=images)
         print "Images: ", images
         if images:
-            print "Zip up images and image meta."
-            #TODO Add zip up here
-            # imagemeta.txt
-            # image1.jpg
-            #image2.jpg
+            for image in images:
+                z.writestr("{image}.jpg".format(image=image.asset_title), image.photo.read())
+                new_info = ImageAsset.get_image_download_info(image)
+                image_txt += new_info
+            z.writestr("image.txt", image_txt)
 
     # ------------------------------ #
     #         Create download        #
     # ------------------------------ #
 
-
+    z.close()
+    fp.seek(0)
+    response = HttpResponse(fp, content_type='application/zip')
+    fp.close()
 
 
     return response

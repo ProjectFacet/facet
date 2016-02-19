@@ -746,29 +746,28 @@ class Story(models.Model):
             series_name = ""
 
         story_download = """
-        Story\n
-        ========\n
-        \n
-        {name}\n
-        --------------\n
-        Description: {desc}\n
-        Series: {series}\n
-        Owner: {owner}\n
-        Organization: {organization}\n
-        Original: {original}\n
-        Team: {team}\n
-        Created: {created}\n
-        Sensitive: {sensitive}\n
-        Embargo Status: {embargo}\n
-        Embargo Date/Time: {embargo_dt}\n
-        Share: {share}\n
-        Share Date: {sharedate}\n
-        Shared With: {sharewith}\n
-        Ready for Sharing: {shareready}\n
-        Collaborate: {collaborate}\n
-        Collaborate With: {collaboratewith}\n
-        Archived: {archived}\n
-        """.format(name=name, desc=description, series=series_name, owner=self.owner, organization=self.organization,
+        Story
+        ========
+        {name}
+        --------------
+        Description: {desc}
+        Series: {series}
+        Owner: {owner}
+        Organization: {organization}
+        Original: {original}
+        Team: {team}
+        Created: {created}
+        Sensitive: {sensitive}
+        Embargo Status: {embargo}
+        Embargo Date/Time: {embargo_dt}
+        Share: {share}
+        Share Date: {sharedate}
+        Shared With: {sharewith}
+        Ready for Sharing: {shareready}
+        Collaborate: {collaborate}
+        Collaborate With: {collaboratewith}
+        Archived: {archived}
+        """.format(name=name, desc=description, series=series_name, owner=self.owner, organization=self.organization.name,
         original=self.original_story, team=team, created=self.creation_date, sensitive=self.sensitive,
         embargo=self.embargo, embargo_dt=self.embargo_datetime, share=self.share,
         sharedate=self.share_with_date, sharewith=share_with, shareready=self.ready_to_share,
@@ -992,11 +991,10 @@ class WebFacet(models.Model):
         content = self.wf_content.encode('utf-8')
 
         webfacet_download = """
-        WebFacet\n
-        ========\n
-        \n
-        {title}\n
-        --------------\n
+        WebFacet
+        ========
+        {title}
+        --------------
         Description: {desc}\n
         Story: {story}\n
         Owner: {owner}\n
@@ -1016,10 +1014,10 @@ class WebFacet(models.Model):
         Captions: {captions}\n
         \n
         Content\n
-        -------\n
+        -------
         {content}
         """.format(title=title, desc=description, story=self.story, owner=self.owner,
-        organization=self.organization, original=self.original_webfacet, editor=self.editor,
+        organization=self.organization.name, original=self.original_webfacet, editor=self.editor,
         credit=credits, code=self.code, excerpt=excerpt, length=self.length,
         keywords=self.keywords, status=self.status, dueedit=self.due_edit, rundate=self.run_date,
         sharenote=share_note, images=images, captions=self.captions, content=content)
@@ -1242,11 +1240,10 @@ class PrintFacet(models.Model):
         content = self.pf_content.encode('utf-8')
 
         printfacet_download = """
-        PrintFacet\n
-        ========\n
-        \n
-        {title}\n
-        --------------\n
+        PrintFacet
+        ========
+        {title}
+        --------------
         Description: {desc}\n
         Story: {story}\n
         Owner: {owner}\n
@@ -1269,7 +1266,7 @@ class PrintFacet(models.Model):
         -------\n
         {content}
         """.format(title=title, desc=description, story=self.story, owner=self.owner,
-        organization=self.organization, original=self.original_printfacet, editor=self.editor,
+        organization=self.organization.name, original=self.original_printfacet, editor=self.editor,
         credit=credits, code=self.code, excerpt=excerpt, length=self.length,
         keywords=self.keywords, status=self.status, dueedit=self.due_edit, rundate=self.run_date,
         sharenote=share_note, images=images, captions=self.captions, content=content)
@@ -1492,9 +1489,8 @@ class AudioFacet(models.Model):
         content = self.af_content.encode('utf-8')
 
         audiofacet_download = """
-        AudioFacet\n
-        ========\n
-        \n
+        AudioFacet
+        ========
         {title}\n
         --------------\n
         Description: {desc}\n
@@ -1519,7 +1515,7 @@ class AudioFacet(models.Model):
         -------\n
         {content}
         """.format(title=title, desc=description, story=self.story, owner=self.owner,
-        organization=self.organization, original=self.original_audiofacet, editor=self.editor,
+        organization=self.organization.name, original=self.original_audiofacet, editor=self.editor,
         credit=credits, code=self.code, excerpt=excerpt, length=self.length,
         keywords=self.keywords, status=self.status, dueedit=self.due_edit, rundate=self.run_date,
         sharenote=share_note, images=images, captions=self.captions, content=content)
@@ -1743,11 +1739,10 @@ class VideoFacet(models.Model):
         content = self.vf_content.encode('utf-8')
 
         videofacet_download = """
-        VideoFacet\n
-        ========\n
-        \n
-        {title}\n
-        --------------\n
+        VideoFacet
+        ========
+        {title}
+        --------------
         Description: {desc}\n
         Story: {story}\n
         Owner: {owner}\n
@@ -1770,7 +1765,7 @@ class VideoFacet(models.Model):
         -------\n
         {content}
         """.format(title=title, desc=description, story=self.story, owner=self.owner,
-        organization=self.organization, original=self.original_videofacet, editor=self.editor,
+        organization=self.organization.name, original=self.original_videofacet, editor=self.editor,
         credit=credits, code=self.code, excerpt=excerpt, length=self.length,
         keywords=self.keywords, status=self.status, dueedit=self.due_edit, rundate=self.run_date,
         sharenote=share_note, images=images, captions=self.captions, content=content)
@@ -2283,6 +2278,32 @@ class ImageAsset(models.Model):
     )
 
     objects = ImageAssetManager()
+
+    def get_image_download_info(self):
+        """Return rst of image information for download."""
+
+        title = self.asset_title.encode('utf-8')
+        description = self.asset_description.encode('utf-8')
+        attribution = self.attribution.encode('utf-8')
+
+        image_info="""
+        Image
+        =======
+        {title}.jpg
+        Description: {description}
+        Attribution: {attribution}
+        Type: {type}
+        Creation Date: {date}
+        Owner: {owner}
+        Organization: {organization}
+        Original: {original}
+        Keywords: {keywords}
+        """.format(title=title, description=description, attribution=attribution,
+        type=self.image_type, date=self.creation_date, owner=self.owner,
+        organization=self.organization.name, original=self.original,
+        keywords=self.keywords)
+
+        return image_info
 
     def __str__(self):
         return "Asset: {asset} is a {image_type}".format(
