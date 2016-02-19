@@ -737,7 +737,13 @@ class Story(models.Model):
 
         # verify the text area fields have correct encoding
         name = self.name.encode('utf-8')
+        print "NAME: ", name
         description = self.story_description.encode('utf-8')
+
+        if self.series:
+            series_name = self.series.name
+        else:
+            series_name = ""
 
         story_download = """
         Story\n
@@ -762,7 +768,7 @@ class Story(models.Model):
         Collaborate: {collaborate}\n
         Collaborate With: {collaboratewith}\n
         Archived: {archived}\n
-        """.format(name=name, desc=description, series=self.series.name, owner=self.owner, organization=self.organization,
+        """.format(name=name, desc=description, series=series_name, owner=self.owner, organization=self.organization,
         original=self.original_story, team=team, created=self.creation_date, sensitive=self.sensitive,
         embargo=self.embargo, embargo_dt=self.embargo_datetime, share=self.share,
         sharedate=self.share_with_date, sharewith=share_with, shareready=self.ready_to_share,

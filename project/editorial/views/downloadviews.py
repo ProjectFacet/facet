@@ -36,22 +36,27 @@ def create_download(request, pk):
     story_id = request.POST.get('story')
     story = get_object_or_404(Story, id=pk)
     story_txt = Story.get_story_download(story)
+    select_all_images = []
 
     if story.webfacetstory.all():
         webfacet = story.webfacetstory.all()[0]
         webfacet_images = WebFacet.get_webfacet_images(webfacet)
+        select_all_images.extend(webfacet_images)
         webfacet_txt = WebFacet.get_webfacet_download(webfacet)
     if story.printfacetstory.all():
         printfacet = story.printfacetstory.all()[0]
         printfacet_images = PrintFacet.get_printfacet_images(printfacet)
+        select_all_images.extend(printfacet_images)
         printfacet_txt = PrintFacet.get_printfacet_download(printfacet)
     if story.audiofacetstory.all():
         audiofacet = story.audiofacetstory.all()[0]
         audiofacet_images = AudioFacet.get_audiofacet_images(audiofacet)
+        select_all_images.extend(audiofacet_images)
         audiofacet_txt = AudioFacet.get_audiofacet_download(audio)
     if story.videofacetstory.all():
         videofacet = story.videofacetstory.all()[0]
         videofacet_images = VideoFacet.get_videofacet_images(videofacet)
+        select_all_images.extend(videofacet_images)
         videofacet_txt = VideoFacet.get_videofacet_download(videofacet)
 
     # Set up zip file
@@ -77,16 +82,16 @@ def create_download(request, pk):
         # image1.jpg
 
         z.writestr("story.txt", story_txt)
-        if webfacet:
+        if story.webfacetstory.all():
             z.writestr("webstory.txt", webfacet_txt)
-        if printfacet:
+        if story.printfacetstory.all():
             z.writestr("printstory.txt", printfacet_txt)
-        if audiofacet:
+        if story.audiofacetstory.all():
             z.writestr("audiostory.txt", audiofacet_txt)
-        if videofacet:
+        if story.videofacetstory.all():
             z.writestr("videostory.txt", videofacet_txt)
-        # for image in all_images:
-        #     z.writestr("{image}.jpg".format(image=image.asset_title), image)
+        for image in select_all_images:
+            z.writestr("{image}.jpg".format(image=image.asset_title), image.photo.read())
 
         z.close()
         fp.seek(0)
