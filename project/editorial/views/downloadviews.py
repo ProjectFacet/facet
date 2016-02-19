@@ -87,7 +87,6 @@ def create_download(request, pk):
             z.writestr("{image}.jpg".format(image=image.asset_title), image.photo.read())
             new_info = ImageAsset.get_image_download_info(image)
             image_txt += new_info
-        z.writestr("image.txt", image_txt)
 
     # user can also select download all items associated with certain facets
     # ------------------------------ #
@@ -104,7 +103,6 @@ def create_download(request, pk):
             z.writestr("{image}.jpg".format(image=image.asset_title), image.photo.read())
             new_info = ImageAsset.get_image_download_info(image)
             image_txt += new_info
-        z.writestr("image.txt", image_txt)
 
     # ------------------------------ #
     #       IF PRINTFACET ALL        #
@@ -120,7 +118,6 @@ def create_download(request, pk):
             z.writestr("{image}.jpg".format(image=image.asset_title), image.photo.read())
             new_info = ImageAsset.get_image_download_info(image)
             image_txt += new_info
-        z.writestr("image.txt", image_txt)
 
     # ------------------------------ #
     #       IF AUDIOFACET ALL        #
@@ -136,7 +133,6 @@ def create_download(request, pk):
                 z.writestr("{image}.jpg".format(image=image.asset_title), image.photo.read())
                 new_info = ImageAsset.get_image_download_info(image)
                 image_txt += new_info
-            z.writestr("image.txt", image_txt)
 
     # ------------------------------ #
     #       IF VIDEOFACET ALL        #
@@ -152,55 +148,54 @@ def create_download(request, pk):
             z.writestr("{image}.jpg".format(image=image.asset_title), image.photo.read())
             new_info = ImageAsset.get_image_download_info(image)
             image_txt += new_info
-        z.writestr("image.txt", image_txt)
 
-    else:
     # if not select all OR facet select all, then user chooses the facet and the images
     # ------------------------------ #
     #      IF WEBFACET SPECIFIC      #
     # ------------------------------ #
-        webfacet_only = request.POST.get('webfacet')
-        if webfacet_only:
-            z.writestr("webstory.txt", webfacet_txt)
+    webfacet_only = request.POST.get('webfacet')
+    if webfacet_only:
+        z.writestr("webstory.txt", webfacet_txt)
 
     # ------------------------------ #
     #    IF PRINTFACET SPECIFIC      #
     # ------------------------------ #
-        printfacet_only = request.POST.get('printfacet')
-        if printfacet_only:
-            z.writestr("printstory.txt", printfacet_txt)
+    printfacet_only = request.POST.get('printfacet')
+    if printfacet_only:
+        z.writestr("printstory.txt", printfacet_txt)
 
     # ------------------------------ #
     #      IF AUDIOFACET SPECIFIC    #
     # ------------------------------ #
-        audiofacet_only = request.POST.get('audiofacet')
-        if audiofacet_only:
-            z.writestr("audiostory.txt", audiofacet_txt)
+    audiofacet_only = request.POST.get('audiofacet')
+    if audiofacet_only:
+        z.writestr("audiostory.txt", audiofacet_txt)
 
     # ------------------------------ #
     #      IF VIDEOFACET SPECIFIC    #
     # ------------------------------ #
-        videofacet_only = request.POST.get('videofacet')
-        if videofacet_only:
-            z.writestr("videostory.txt", videofacet_txt)
+    videofacet_only = request.POST.get('videofacet')
+    if videofacet_only:
+        z.writestr("videostory.txt", videofacet_txt)
 
     # ------------------------------ #
     #       IF SPECIFIC IMAGES       #
     # ------------------------------ #
-        # if not select all, then user chooses the facet and the images
-        images = request.POST.getlist('images')
-        images = ImageAsset.objects.filter(pk__in=images)
-        print "Images: ", images
-        if images:
-            for image in images:
-                z.writestr("{image}.jpg".format(image=image.asset_title), image.photo.read())
-                new_info = ImageAsset.get_image_download_info(image)
-                image_txt += new_info
-            z.writestr("image.txt", image_txt)
+    # if not select all or by facet, then user chooses specific images
+    images = request.POST.getlist('images')
+    images = ImageAsset.objects.filter(pk__in=images)
+    print "Images: ", images
+    if images:
+        for image in images:
+            z.writestr("{image}.jpg".format(image=image.asset_title), image.photo.read())
+            new_info = ImageAsset.get_image_download_info(image)
+            image_txt += new_info
 
     # ------------------------------ #
     #         Create download        #
     # ------------------------------ #
+    #Take the final version of image_txt and write it.
+    z.writestr("image.txt", image_txt)
 
     z.close()
     fp.seek(0)
