@@ -237,6 +237,7 @@ class User(AbstractUser):
                                         )
 
 
+@python_2_unicode_compatible
 class Organization(models.Model):
     """ Media Organization.
 
@@ -358,6 +359,7 @@ class Organization(models.Model):
         return "Organization"
 
 
+@python_2_unicode_compatible
 class Network(models.Model):
     """ A group of organizations.
 
@@ -449,6 +451,7 @@ class Network(models.Model):
 
 # A Facet is always part of a story, even if there is only one facet.
 
+@python_2_unicode_compatible
 class Series(models.Model):
     """ A specific series.
 
@@ -558,7 +561,7 @@ class Series(models.Model):
         return "Series"
 
 
-
+@python_2_unicode_compatible
 class Story(models.Model):
     """ The unit of a story.
 
@@ -788,6 +791,7 @@ class Story(models.Model):
         return "Story"
 
 
+@python_2_unicode_compatible
 class WebFacet(models.Model):
     """ Regularly published web content.
 
@@ -1037,6 +1041,7 @@ class WebFacet(models.Model):
         return "WebFacet"
 
 
+@python_2_unicode_compatible
 class PrintFacet(models.Model):
     """ The print version of a story.
 
@@ -1285,6 +1290,7 @@ class PrintFacet(models.Model):
         return "PrintFacet"
 
 
+@python_2_unicode_compatible
 class AudioFacet(models.Model):
     """ Scheduled radio programming.
 
@@ -1535,6 +1541,7 @@ class AudioFacet(models.Model):
         return "AudioFacet"
 
 
+@python_2_unicode_compatible
 class VideoFacet(models.Model):
     """ Scheduled television programming.
 
@@ -1787,6 +1794,7 @@ class VideoFacet(models.Model):
 #   Associations
 #   ------------
 
+@python_2_unicode_compatible
 class WebFacetContributor(models.Model):
     """ Which users are participating in creating the WebFacet. """
 
@@ -1810,6 +1818,7 @@ class WebFacetContributor(models.Model):
                                         )
 
 
+@python_2_unicode_compatible
 class PrintFacetContributor(models.Model):
     """ Which users are participating in creating the PrintFacet. """
 
@@ -1833,6 +1842,7 @@ class PrintFacetContributor(models.Model):
                                         )
 
 
+@python_2_unicode_compatible
 class AudioFacetContributor(models.Model):
     """ Which users are participating in creating the AudioFacet. """
 
@@ -1856,6 +1866,7 @@ class AudioFacetContributor(models.Model):
                                         )
 
 
+@python_2_unicode_compatible
 class VideoFacetContributor(models.Model):
     """ Which users are participating in creating the VideoFacet. """
 
@@ -1888,6 +1899,7 @@ class SeriesCopyDetailManager(models.Manager):
         return story_copy_detail
 
 
+@python_2_unicode_compatible
 class SeriesCopyDetail(models.Model):
     """ The details of each copy of a series.
 
@@ -1943,6 +1955,7 @@ class StoryCopyDetailManager(models.Manager):
         return story_copy_detail
 
 
+@python_2_unicode_compatible
 class StoryCopyDetail(models.Model):
     """ The details of each copy of a story.
 
@@ -1997,6 +2010,7 @@ class WebFacetCopyDetailManager(models.Manager):
         return webfacet_copy_detail
 
 
+@python_2_unicode_compatible
 class WebFacetCopyDetail(models.Model):
     """ The details of a each copy of a webfacet. """
 
@@ -2047,6 +2061,7 @@ class PrintFacetCopyDetailManager(models.Manager):
         return printfacet_copy_detail
 
 
+@python_2_unicode_compatible
 class PrintFacetCopyDetail(models.Model):
     """ The details of a each copy of a printfacet. """
 
@@ -2097,6 +2112,7 @@ class AudioFacetCopyDetailManager(models.Manager):
         return audiofacet_copy_detail
 
 
+@python_2_unicode_compatible
 class AudioFacetCopyDetail(models.Model):
     """ The details of a each copy of a audiofacet. """
 
@@ -2147,6 +2163,7 @@ class VideoFacetCopyDetailManager(models.Manager):
         return videofacet_copy_detail
 
 
+@python_2_unicode_compatible
 class VideoFacetCopyDetail(models.Model):
     """ The details of a each copy of a videofacet. """
 
@@ -2203,6 +2220,7 @@ class ImageAssetManager(models.Manager):
         return imageasset
 
 
+@python_2_unicode_compatible
 class ImageAsset(models.Model):
     """ Assets for all media uploaded. """
 
@@ -2316,6 +2334,7 @@ class ImageAsset(models.Model):
         return "{image_type} Asset". format(image_type=self.image_type)
 
 
+@python_2_unicode_compatible
 class Note(models.Model):
     """ Abstract base class for notes."""
 
@@ -2348,6 +2367,9 @@ class Note(models.Model):
 
     class Meta:
         abstract = True
+
+    def __str__(self):
+        return self.title
 
 
 class NetworkNote(Note):
@@ -2455,6 +2477,7 @@ class DiscussionManager(models.Manager):
         return discussion
 
 
+@python_2_unicode_compatible
 class Discussion(models.Model):
     """ Class for  for related comments. """
 
@@ -2496,6 +2519,7 @@ class Discussion(models.Model):
                                 )
 
 
+@python_2_unicode_compatible
 class PrivateDiscussion(models.Model):
     """ Signifier of private conversations.
 
@@ -2528,6 +2552,7 @@ class PrivateMessageManager(models.Manager):
         return message
 
 
+@python_2_unicode_compatible
 class PrivateMessage(models.Model):
     """ A private message to a specific user.
 
@@ -2566,6 +2591,14 @@ class PrivateMessage(models.Model):
 
     objects = PrivateMessageManager()
 
+    class Meta:
+        verbose_name = 'Private Message'
+        verbose_name_plural = "Private Messages"
+        ordering = ['date']
+
+    def __str__(self):
+        return self.subject
+
     @property
     def type(self):
         return "Private Message"
@@ -2580,6 +2613,7 @@ class CommentManager(models.Manager):
         return comment
 
 
+@python_2_unicode_compatible
 class Comment(models.Model):
     """An individual comment.
 
@@ -2619,6 +2653,7 @@ class Comment(models.Model):
         return "Comment"
 
 
+@python_2_unicode_compatible
 class CommentReadStatus(models.Model):
     """ Tracking if a user involved in a discussion has read the most recent
     comment in order to surface unread comments first.
