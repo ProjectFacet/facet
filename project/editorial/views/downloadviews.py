@@ -53,7 +53,7 @@ def create_download(request, pk):
         audiofacet = story.audiofacetstory.all()[0]
         audiofacet_images = AudioFacet.get_audiofacet_images(audiofacet)
         select_all_images.extend(audiofacet_images)
-        audiofacet_txt = AudioFacet.get_audiofacet_download(audio)
+        audiofacet_txt = AudioFacet.get_audiofacet_download(audiofacet)
     if story.videofacetstory.all():
         videofacet = story.videofacetstory.all()[0]
         videofacet_images = VideoFacet.get_videofacet_images(videofacet)
