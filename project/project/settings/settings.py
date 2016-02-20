@@ -48,6 +48,7 @@ INSTALLED_APPS = (
     'allauth.socialaccount',
     'bootstrap3_datetime',
     'tinymce',
+    'watson',
     'project'
 )
 

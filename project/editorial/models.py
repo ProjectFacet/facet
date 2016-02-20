@@ -170,6 +170,9 @@ class User(AbstractUser):
     def __str__(self):
         return self.credit_name
 
+    def get_absolute_url(self):
+        return reverse('user_detail', kwargs={'pk': self.id})
+
     def get_user_content(self):
         """Return list of all content user is associated with as
         owner, editor, team or credit."""
@@ -187,14 +190,12 @@ class User(AbstractUser):
         user_content.extend(printfacets)
         user_content.extend(audiofacets)
         user_content.extend(videofacets)
-
         return user_content
 
     def get_user_stories(self):
         """Return list of stories that a user is associated with."""
 
         user_stories = Story.objects.filter(Q(Q(owner=self) | Q(team=self)))
-
         return user_stories
 
 
@@ -231,10 +232,15 @@ class User(AbstractUser):
 
     @property
     def description(self):
-        return "{user}, {title}".format(
+        return "{user}, {title}, {org}".format(
                                         user=self.credit_name,
-                                        title=self.title
+                                        title=self.title,
+                                        org=self.organization.name
                                         )
+
+    @property
+    def search_title(self):
+        return self.credit_name
 
 
 @python_2_unicode_compatible
@@ -314,6 +320,9 @@ class Organization(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+      return reverse('org_detail', kwargs={'pk': self.id})
+
     def get_org_users(self):
         """ Return queryset of all users in an organization."""
 
@@ -349,10 +358,11 @@ class Organization(models.Model):
 
     @property
     def description(self):
-        return "{organization}, {description}".format(
-                                                    organization=self.name,
-                                                    description=self.org_description
-                                                    )
+        return "{description}".format(description=self.org_description)
+
+    @property
+    def search_title(self):
+        return self.name
 
     @property
     def type(self):
@@ -423,6 +433,9 @@ class Network(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+      return reverse('network_detail', kwargs={'pk': self.id})
+
     def get_network_shared_stories(self):
         """ Return list of stories shared with a network. """
 
@@ -431,10 +444,11 @@ class Network(models.Model):
 
     @property
     def description(self):
-        return "{network}, {description}".format(
-                                                network=self.name,
-                                                description=self.network_description
-                                                )
+        return "{description}".format(description=self.network_description)
+
+    @property
+    def search_title(self):
+        return self.name
 
     @property
     def type(self):
@@ -549,12 +563,16 @@ class Series(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+      return reverse('series_detail', kwargs={'pk': self.id})
+
     @property
     def description(self):
-        return "{series}, {description}".format(
-                                                series=self.name,
-                                                description=self.series_description
-                                                )
+        return "{description}".format(description=self.series_description)
+
+    @property
+    def search_title(self):
+        return self.name
 
     @property
     def type(self):
@@ -688,6 +706,8 @@ class Story(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+      return reverse('story_detail', kwargs={'pk': self.id})
 
     def copy_story(self):
         """ Create a copy of a story for a partner organization in a network.
@@ -719,7 +739,6 @@ class Story(models.Model):
         story_copy.archived = False
         story_copy.discussion = Discussion.objects.create_discussion("STO")
         story_copy.save()
-
         return story_copy
 
     def get_story_download(self):
@@ -775,16 +794,16 @@ class Story(models.Model):
         embargo=self.embargo, embargo_dt=self.embargo_datetime, share=self.share,
         sharedate=self.share_with_date, sharewith=share_with, shareready=self.ready_to_share,
         collaborate=self.collaborate, collaboratewith=collaborate_with, archived=self.archived)
-
         return story_download
 
 
     @property
     def description(self):
-        return "{story}, {description}".format(
-                                                story=self.name,
-                                                description=self.story_description
-                                                )
+        return "{description}".format(description=self.story_description)
+
+    @property
+    def search_title(self):
+        return self.name
 
     @property
     def type(self):
@@ -949,6 +968,9 @@ class WebFacet(models.Model):
     def __str__(self):
         return self.title
 
+    def get_absolute_url(self):
+      return reverse('story_detail', kwargs={'pk': self.story.id})
+
     def copy_webfacet(self):
         """ Create a copy of a webfacet for a partner organization in a network."""
 
@@ -1031,10 +1053,14 @@ class WebFacet(models.Model):
 
     @property
     def description(self):
-        return "Webfacet: {webfacet} by {credit}".format(
-                                webfacet=self.id,
-                                credit=self.credit,
+        return "Webfacet {facet}: {desc}".format(
+                                facet=self.id,
+                                desc=self.pf_description,
                                 )
+
+    @property
+    def search_title(self):
+        return self.title
 
     @property
     def type(self):
@@ -1199,6 +1225,9 @@ class PrintFacet(models.Model):
     def __str__(self):
         return self.title
 
+    def get_absolute_url(self):
+      return reverse('story_detail', kwargs={'pk': self.story.id})
+
     def copy_printfacet(self):
         """ Create a copy of a printfacet for a partner organization in a network."""
 
@@ -1280,10 +1309,14 @@ class PrintFacet(models.Model):
 
     @property
     def description(self):
-        return "Printfacet: {printfacet} by {credit}".format(
-                                printfacet=self.id,
-                                credit=self.credit,
+        return "Printfacet {facet}: {desc}".format(
+                                facet=self.id,
+                                desc=self.pf_description,
                                 )
+
+    @property
+    def search_title(self):
+        return self.title
 
     @property
     def type(self):
@@ -1449,6 +1482,9 @@ class AudioFacet(models.Model):
     def __str__(self):
         return self.title
 
+    def get_absolute_url(self):
+      return reverse('story_detail', kwargs={'pk': self.story.id})
+
     def copy_audiofacet(self):
         """ Create a copy of a audiofacet for a partner organization in a network."""
 
@@ -1531,10 +1567,14 @@ class AudioFacet(models.Model):
 
     @property
     def description(self):
-        return "Audiofacet: {audiofacet} by {credit}".format(
-                                audiofacet=self.id,
-                                credit=self.credit,
+        return "Audiofacet {facet}: {desc}".format(
+                                facet=self.id,
+                                desc=self.pf_description,
                                 )
+
+    @property
+    def search_title(self):
+        return self.title
 
     @property
     def type(self):
@@ -1700,6 +1740,9 @@ class VideoFacet(models.Model):
     def __str__(self):
         return self.title
 
+    def get_absolute_url(self):
+      return reverse('story_detail', kwargs={'pk': self.story.id})
+
     def copy_videofacet(self):
         """ Create a copy of a videofacet for a partner organization in a network."""
 
@@ -1781,10 +1824,14 @@ class VideoFacet(models.Model):
 
     @property
     def description(self):
-        return "Videofacet: {videofacet} by {credit}".format(
-                                videofacet=self.id,
-                                credit=self.credit,
+        return "Videofacet {facet}: {desc}".format(
+                                facet=self.id,
+                                desc=self.pf_description,
                                 )
+
+    @property
+    def search_title(self):
+        return self.title
 
     @property
     def type(self):
@@ -2297,6 +2344,10 @@ class ImageAsset(models.Model):
 
     objects = ImageAssetManager()
 
+    class Meta:
+        verbose_name = "Image"
+        verbose_name_plural = "Images"
+
     def get_image_download_info(self):
         """Return rst of image information for download."""
 
@@ -2324,10 +2375,18 @@ class ImageAsset(models.Model):
         return image_info
 
     def __str__(self):
-        return "Asset: {asset} is a {image_type}".format(
-                                asset=self.id,
-                                image_type=self.image_type,
-                                )
+        return self.title
+
+    # def get_absolute_url(self):
+    #     return ('image_detail', kwargs={'pk': self.id})
+
+    @property
+    def description(self):
+        return "{desc}".format(desc=self.asset_description)
+
+    @property
+    def search_title(self):
+        return self.asset_title
 
     @property
     def type(self):
@@ -2371,6 +2430,17 @@ class Note(models.Model):
     def __str__(self):
         return self.title
 
+    # not applicable
+    # def get_absolute_url(self):
+    #     return ('image_detail', kwargs={'pk': self.id})
+
+    @property
+    def description(self):
+        return self.keywords
+
+    @property
+    def search_title(self):
+        return self.title
 
 class NetworkNote(Note):
     """ General purpose notes for a network."""
@@ -2384,6 +2454,9 @@ class NetworkNote(Note):
         Network,
         related_name='networknote_network'
     )
+
+    def get_absolute_url(self):
+        return reverse('network_detail', kwargs={'pk': self.network.id})
 
     @property
     def type(self):
@@ -2403,6 +2476,9 @@ class OrganizationNote(Note):
         related_name="orgnote_org"
     )
 
+    def get_absolute_url(self):
+        return reverse('org_detail', kwargs={'pk': self.organization.id})
+
     @property
     def type(self):
         return "Organization Note"
@@ -2415,6 +2491,9 @@ class UserNote(Note):
         User,
         related_name='usernote_owner'
     )
+
+    def get_absolute_url(self):
+        return reverse('user_detail', kwargs={'pk': self.owner.id})
 
     @property
     def type(self):
@@ -2433,6 +2512,9 @@ class SeriesNote(Note):
         Series,
         related_name="seriesnote",
     )
+
+    def get_absolute_url(self):
+        return reverse('series_detail', kwargs={'pk': self.series.id})
 
     def __str__(self):
         return "SeriesNote: {seriesnote} for Series: {series}".format(
@@ -2462,6 +2544,9 @@ class StoryNote(Note):
                                 storynote=self.id,
                                 story=self.story.id,
                                 )
+
+    def get_absolute_url(self):
+        return reverse('story_detail', kwargs={'pk': self.story.id})
 
     @property
     def type(self):
