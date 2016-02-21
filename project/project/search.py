@@ -14,5 +14,10 @@ class SearchAdapter(watson.SearchAdapter):
 
         return obj.description
 
-# class register_watson(app, model_name):
-#     """Register a model with the search."""
+    def get_absolute_url(self, obj):
+        """ Returns url of instance or instance container."""
+
+        return obj.get_absolute_url
+
+class register_watson(app, model_name):
+    """Register a model with the search."""
