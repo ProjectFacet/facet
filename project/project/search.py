@@ -1,5 +1,6 @@
-from watson import search as watson
+"""Search feature via watson."""
 
+from watson import search as watson
 
 class SearchAdapter(watson.SearchAdapter):
 
