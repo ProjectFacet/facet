@@ -10,7 +10,7 @@ class EditorialAppConfig(AppConfig):
     def ready(self):
         """Add models to search."""
 
-        from facet.search import register_watson
+        from project.search import register_watson
 
         for model_name in [
             "Series",
