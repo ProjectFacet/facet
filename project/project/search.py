@@ -21,3 +21,7 @@ class SearchAdapter(watson.SearchAdapter):
 
 class register_watson(app, model_name):
     """Register a model with the search."""
+
+    watson.register(app.get_model(model_name).all(),
+        adapter,
+        exclude=[''],)
