@@ -41,7 +41,6 @@ def org_new(request):
 
     orgform = OrganizationForm()
     if request.method == "POST":
-        import pdb; pdb.set_trace()
         orgform = OrganizationForm(request.POST, request.FILES)
         if orgform.is_valid():
             organization = orgform.save(commit=False)
