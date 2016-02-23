@@ -1055,7 +1055,7 @@ class WebFacet(models.Model):
     def description(self):
         return "Webfacet {facet}: {desc}".format(
                                 facet=self.id,
-                                desc=self.pf_description,
+                                desc=self.wf_description,
                                 )
 
     @property
@@ -1569,7 +1569,7 @@ class AudioFacet(models.Model):
     def description(self):
         return "Audiofacet {facet}: {desc}".format(
                                 facet=self.id,
-                                desc=self.pf_description,
+                                desc=self.af_description,
                                 )
 
     @property
@@ -1826,7 +1826,7 @@ class VideoFacet(models.Model):
     def description(self):
         return "Videofacet {facet}: {desc}".format(
                                 facet=self.id,
-                                desc=self.pf_description,
+                                desc=self.vf_description,
                                 )
 
     @property
@@ -2382,7 +2382,7 @@ class ImageAsset(models.Model):
 
     @property
     def description(self):
-        return "{desc}".format(desc=self.asset_description)
+        return "{desc}".format(desc=self.asset_description.encode('utf-8'))
 
     @property
     def search_title(self):
