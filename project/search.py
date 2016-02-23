@@ -20,8 +20,8 @@ class SearchAdapter(watson.SearchAdapter):
         return obj.get_absolute_url
 
 
-class register_watson(app, model_name):
+def register_watson(app, model_name):
     """Register a model with the search."""
 
-    watson.register(app.get_model(model_name).all(),
-        adapter,)
+    watson.register(app.get_model(model_name),
+        SearchAdapter,)

@@ -1,16 +1,17 @@
 """Configuration for editorial application."""
 
 from django.apps import AppConfig
+from watson import search as watson
 
 class EditorialAppConfig(AppConfig):
     """Configure editorial app."""
 
-    name = 'editorial'
+    name = "editorial"
 
     def ready(self):
         """Add models to search."""
 
-        from project.search import register_watson
+        from search import register_watson
 
         for model_name in [
             "Series",
@@ -21,7 +22,7 @@ class EditorialAppConfig(AppConfig):
             "VideoFacet",
             "ImageAsset",
             "NetworkNote",
-            "OrgNote",
+            "OrganizationNote",
             "UserNote",
             "SeriesNote",
             "StoryNote",

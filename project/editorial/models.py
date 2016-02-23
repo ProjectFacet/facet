@@ -671,7 +671,7 @@ class Story(models.Model):
         related_name='story_shared_with_network',
         help_text='Network ids that a story is shared with.',
         blank=True,
-        null=True,
+        # null=True,
     )
 
     collaborate = models.BooleanField(

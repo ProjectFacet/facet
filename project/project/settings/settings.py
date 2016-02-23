@@ -41,7 +41,6 @@ INSTALLED_APPS = (
     'bootstrap3',
     'imagekit',
     'editorial.apps.EditorialAppConfig',
-    # 'editorial',
     'simple_history',
     'django.contrib.sites',
     'allauth',
