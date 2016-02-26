@@ -40,7 +40,8 @@ from editorial.forms import (
     OrganizationNoteForm,
     UserNoteForm,
     SeriesNoteForm,
-    StoryNoteForm,)
+    StoryNoteForm,
+    StoryDownloadForm,)
 
 from editorial.models import (
     User,
@@ -90,9 +91,8 @@ def index(request):
 def test(request):
     """ Use for rapid testing of new pages."""
 
-    return render(request, 'editorial/test.html', {
+    return render(request, 'editorial/test.html')
 
-                })
 
 #----------------------------------------------------------------------#
 #   Dashboard View

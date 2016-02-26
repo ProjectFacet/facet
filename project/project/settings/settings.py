@@ -39,8 +39,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bootstrap3',
-    'editorial',
     'imagekit',
+    'editorial.apps.EditorialAppConfig',
     'simple_history',
     'django.contrib.sites',
     'allauth',
@@ -48,6 +48,7 @@ INSTALLED_APPS = (
     'allauth.socialaccount',
     'bootstrap3_datetime',
     'tinymce',
+    'watson',
     'project'
 )
 
