@@ -30,6 +30,7 @@ urlpatterns = [
     url(r'^accounts/', include(allauth.urls)),
     url(r'^tinymce/', include('tinymce.urls')),
     url(r"^search/", include("watson.urls", namespace="watson")),
+    url(r'^calendar/', include('django_bootstrap_calendar.urls')),
     # url(r'^activity/', include('actstream.urls')),
     url(r'', include('editorial.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

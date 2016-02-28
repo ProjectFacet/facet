@@ -1,8 +1,7 @@
 env/
 *.pyc
 secrets.sh
-media/*
-
+/media/
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*
