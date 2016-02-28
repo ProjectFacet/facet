@@ -218,6 +218,39 @@ hr {
   }
 }
 
+
+/* ---------------------------------------*/
+/*               Search Styles            */
+/* ---------------------------------------*/
+
+#searchbox {
+  background-color: transparent;
+  border: 1px solid #54657E;
+  color: #54657E;
+}
+ #searchbox .form-input input-lg {
+   color: #54657E;
+ }
+
+ #searchbox input::-webkit-input-placeholder {
+ color: #54657E; !important;
+ }
+
+ #searchbox input:-moz-placeholder { /* Firefox 18- */
+ color: #54657E; !important;
+ }
+
+ #searchbox input::-moz-placeholder {  /* Firefox 19+ */
+ color: #54657E; !important;
+ }
+
+ #searchbox input:-ms-input-placeholder {
+ color: #54657E; !important;
+ }
+
+
+
+
 /* ---------------------------------------*/
 /*             General Styles             */
 /* ---------------------------------------*/
