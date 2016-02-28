@@ -118,7 +118,7 @@ class User(AbstractUser):
 
     display_photo = ImageSpecField(
         source='photo',
-        processors=[SmartResize(300,300)],
+        processors=[SmartResize(500,500)],
         format='JPEG',
     )
 
@@ -276,7 +276,7 @@ class Organization(models.Model):
 
     display_logo = ImageSpecField(
         source='logo',
-        processors=[SmartResize(300,300)],
+        processors=[SmartResize(500,500)],
         format='JPEG',
     )
 
@@ -408,7 +408,7 @@ class Network(models.Model):
 
     display_logo = ImageSpecField(
         source='logo',
-        processors=[SmartResize(300,300)],
+        processors=[SmartResize(500,500)],
         format='JPEG',
     )
 
@@ -2299,7 +2299,6 @@ class ImageAsset(models.Model):
 
     display_photo = ImageSpecField(
         source='photo',
-        processors=[SmartResize(600, 600)],
         format='JPEG',
     )
 
