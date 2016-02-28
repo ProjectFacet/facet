@@ -14,17 +14,69 @@
   </div>
 </div>
 
-<div class="row">
+
+
+<!-- <div class="row">
   <div class="col-xs-6">
-    <h3>Search</h3>
+    <form class="searchresults-searchform" action="{% url 'watson:search' %}">
+      <div class="input-group">
+        <label for="results-searchbox" class="sr-only">Search</label>
+        <input id="results-searchbox" type="text" class="form-control input-lg" placeholder="Search"
+               name="q"
+               value="{{ request.GET.q }}">
+
+        <div class="input-group-btn">
+          <button class="btn btn-default input-lg" type="submit">
+            <i class="glyphicon glyphicon-search">
+              <span class="sr-only">Search</span>
+            </i>
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div> -->
+
+
+<div class="row">
+  <div class="col-xs-12 col-sm-12 col-md-6 col-md-offset-3 col-lg-6 col-lg-offset-3">
+    <h2>Search</h2>
     <form action="{% url 'watson:search' %}">
     <input name="q" value="{{request.GET.q}}">
     <input type="submit" value="Go">
 </form>
   </div>
-  <div class="col-xs-6">
-    <h3>Results</h3>
-    {% search_results search_entry_list %}
+</div>
+
+<div class="row">
+  <div class="col-xs-12">
+    <h2>Results</h2>
+      {% with searchresults=search_results.all %}
+        {% if searchresults %}
+
+
+            {% for result in searchresults %}
+                {% if result.url %}
+                <h4><a href="{{ result.url }}">{{ result.title }}</a><small class="dark"> | {{ result.meta.get_type }} </small></h4>
+                {% else %}
+                <h4>{{ result.title }} <small class="dark"> | {{ result.meta.get_type }}</small></h4>
+                {% endif %}
+                <p> - {{ result.description|safe }}</p>
+                <hr class="subtle">
+            {% endfor %}
+
+
+        {% else %}
+
+          {% if query %}
+            <p><em>No matches have been found.</em></p>
+            <p><em>Try entering a different search term.</em></p>
+          {% else %}
+            <p><em>Please enter a query in the search form.</em></p>
+          {% endif %}
+
+        {% endif %}
+      {% endwith %}
   </div>
 </div>
 {% endblock %}

@@ -19,9 +19,15 @@ class SearchAdapter(watson.SearchAdapter):
 
         return obj.get_absolute_url
 
+    def get_type(self, obj):
+        """ Returns type of object."""
+
+        return obj.type
+
 
 def register_watson(app, model_name):
     """Register a model with the search."""
 
     watson.register(app.get_model(model_name),
-        SearchAdapter,)
+        SearchAdapter,
+        store=['get_type'])
