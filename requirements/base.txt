@@ -11,6 +11,7 @@ django-allauth==0.23.0
 django-appconf==1.0.1
 django-bootstrap3==6.2.2
 django-bootstrap3-datetimepicker==2.2.3
+django-bootstrap-calendar==0.1.0
 django-chosen==0.1
 django-crispy-forms==1.5.2
 django-datetime-widget==0.9.3
@@ -28,6 +29,7 @@ django-watson==1.2.0
 djangorestframework==3.2.4
 future==0.15.2
 Jinja2==2.8
+jsmin==2.2.0
 kombu==3.0.29
 MarkupSafe==0.23
 oauthlib==1.0.3
