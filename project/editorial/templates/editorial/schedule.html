@@ -2,12 +2,9 @@
 
 {% load i18n %}
 {% load bootstrap3 %}
-{% load bootstrap_calendar %}
 
 
 {% block head %}
-
-{% bootstrap_calendar_css %}
 
 {% endblock %}
 
@@ -21,19 +18,10 @@
   </div>
 </div>
 
-{% bootstrap_controls 'optional-css-classes' %}
-{% bootstrap_calendar 'optional-css-classes' %}
 
 <div class="row">
   <div class="col-xs-10 col-xs-offset-1">
   </div>
 </div>
-
-
-
-
-
-{% bootstrap_calendar_js language="template" %}
-{% bootstrap_calendar_init language="template" %}
 
 {% endblock %}

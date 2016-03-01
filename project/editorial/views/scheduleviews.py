@@ -54,8 +54,5 @@ def schedule(request):
 
     stories = Story.objects.filter(organization=request.user.organization).exclude(archived=True)
 
-    content_json = {}
-
-
 
     return render(request, 'editorial/schedule.html', {})

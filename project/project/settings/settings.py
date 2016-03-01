@@ -47,7 +47,6 @@ INSTALLED_APPS = (
     'allauth.account',
     'allauth.socialaccount',
     'bootstrap3_datetime',
-    'django_bootstrap_calendar',
     'tinymce',
     'watson',
     'project',
