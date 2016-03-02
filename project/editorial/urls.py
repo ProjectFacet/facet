@@ -15,7 +15,8 @@ from views import (
     assetviews,
     communicationviews,
     noteviews,
-    downloadviews,)
+    downloadviews,
+    scheduleviews)
 
 urlpatterns = [
     #----------------------------------------------------------------------#
@@ -31,6 +32,10 @@ urlpatterns = [
     #   Dashboard URLS
     #----------------------------------------------------------------------#
     url(r'^dashboard$', generalviews.dashboard, name='dashboard'),
+    #----------------------------------------------------------------------#
+    #   Schedule URLS
+    #----------------------------------------------------------------------#
+    url(r'^schedule$', scheduleviews.schedule, name='schedule'),
     #----------------------------------------------------------------------#
     #   Collaborations URLS
     #----------------------------------------------------------------------#

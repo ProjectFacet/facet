@@ -49,7 +49,7 @@ INSTALLED_APPS = (
     'bootstrap3_datetime',
     'tinymce',
     'watson',
-    'project'
+    'project',
 )
 
 SITE_ID = 1
