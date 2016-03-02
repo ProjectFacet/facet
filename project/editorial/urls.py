@@ -18,6 +18,8 @@ from views import (
     downloadviews,
     scheduleviews)
 
+from views.searchviews import EditorialSearchView
+
 urlpatterns = [
     #----------------------------------------------------------------------#
     #   Test URL - Used for non-destructive testing of templates/queries
@@ -129,4 +131,9 @@ urlpatterns = [
     #   Download URLS
     #----------------------------------------------------------------------#
     url(r'^story/(?P<pk>[0-9]+)/download/$', downloadviews.create_download, name='create_download'),
+    #----------------------------------------------------------------------#
+    #   Search URLS
+    #----------------------------------------------------------------------#
+    url(r"^search/", include("watson.urls", namespace="watson")),
+    # url(r"^search/", EditorialSearchView.as_view()),
 ]
