@@ -1,17 +1,17 @@
 """ A Calendar to display editorial content."""
 
-# from calendar import HTMLCalendar
-# from datetime import date
-# from itertools import groupby
-#
-# from django.utils.html import conditional_escape as esc
-#
-#
-# class EditorialMonthCalendar(HTMLCalendar):
+from calendar import HTMLCalendar
+from datetime import date
+from itertools import groupby
+
+from django.utils.html import conditional_escape as esc
+
+
+# class EditorialCalendar(HTMLCalendar):
 #     """Create a month calendar view of content."""
 #
 #     def __init__(self, content):
-#         super(EditorialMonthCalendar, self).__init__()
+#         super(EditorialCalendar, self).__init__()
 #         self.content = self.group_by_day(content)
 #
 #     def formattime(self, day, time):
@@ -38,7 +38,7 @@
 #
 #     def formatmonth(self, year, month):
 #         self.year, self.month = year, month
-#         return super EditorialMonthCalendar, self).formatmonth(year, month)
+#         return super (EditorialCalendar, self).formatmonth(year, month)
 #
 #     def group_by_day(self, workouts):
 #         field = lambda content: content.due_edit.day

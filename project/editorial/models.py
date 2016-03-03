@@ -2458,13 +2458,9 @@ class Note(models.Model):
     def __str__(self):
         return self.title
 
-    # not applicable
-    # def get_absolute_url(self):
-    #     return ('image_detail', kwargs={'pk': self.id})
-
     @property
     def description(self):
-        return self.keywords
+        return "Keywords: {keywords}".format(keywords = self.keywords)
 
     @property
     def search_title(self):
