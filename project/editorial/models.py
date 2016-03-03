@@ -32,6 +32,7 @@ from django.utils.encoding import python_2_unicode_compatible
 from django.core.urlresolvers import reverse
 from django.utils import timezone
 from django.shortcuts import get_object_or_404
+from itertools import chain
 
 #----------------------------------------------------------------------#
 #   People:
@@ -230,6 +231,13 @@ class User(AbstractUser):
         messages_sent = PrivateMessage.objects.filter(user=self)
         return messages_sent
 
+    def get_user_searchable_content(self):
+        """ Return queryset of user specific content that is searchable."""
+
+        usernotes = UserNote.objects.filter(Q(owner=self))
+
+        return usernotes
+
     @property
     def description(self):
         return "{user}, {title}, {org}".format(
@@ -355,6 +363,39 @@ class Organization(models.Model):
 
         images = ImageAsset.objects.filter(organization=self)
         return images
+
+    def get_org_searchable_content(self):
+        """ Return queryset of all objects that can be searched by a user."""
+
+        #additional required info
+        networks = Organization.get_org_networks(self)
+
+        searchable_objects = []
+
+        series = Series.objects.filter(Q(Q(organization=self) | Q(collaborate_with=self)))
+        stories = Story.objects.filter(Q(Q(organization=self) | Q(collaborate_with=self)))
+        webfacets = WebFacet.objects.filter(Q(organization=self))
+        printfacets = PrintFacet.objects.filter(Q(organization=self))
+        audiofacets = AudioFacet.objects.filter(Q(organization=self))
+        videofacets = VideoFacet.objects.filter(Q(organization=self))
+        imageassets = ImageAsset.objects.filter(Q(organization=self))
+        networknote = NetworkNote.objects.filter(Q(network__in=networks))
+        orgnote = OrganizationNote.objects.filter(Q(organization=self))
+        seriesnote = SeriesNote.objects.filter(Q(organization=self))
+        storynote = StoryNote.objects.filter(Q(organization=self))
+        searchable_objects.append(series)
+        searchable_objects.append(stories)
+        searchable_objects.append(webfacets)
+        searchable_objects.append(printfacets)
+        searchable_objects.append(audiofacets)
+        searchable_objects.append(videofacets)
+        searchable_objects.append(imageassets)
+        searchable_objects.append(networknote)
+        searchable_objects.append(orgnote)
+        searchable_objects.append(seriesnote)
+        searchable_objects.append(storynote)
+
+        return searchable_objects
 
     @property
     def description(self):
@@ -2495,6 +2536,11 @@ class SeriesNote(Note):
         related_name='seriesnote_owner'
     )
 
+    organization=models.ForeignKey(
+        Organization,
+        related_name="seriesnote_org"
+    )
+
     series = models.ForeignKey(
         Series,
         related_name="seriesnote",
@@ -2520,6 +2566,11 @@ class StoryNote(Note):
     owner = models.ForeignKey(
         User,
         related_name='storynote_owner'
+    )
+
+    organization=models.ForeignKey(
+        Organization,
+        related_name="storynote_org"
     )
 
     story = models.ForeignKey(
