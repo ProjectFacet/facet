@@ -134,6 +134,5 @@ urlpatterns = [
     #----------------------------------------------------------------------#
     #   Search URLS
     #----------------------------------------------------------------------#
-    url(r"^search/", include("watson.urls", namespace="watson")),
-    # url(r"^search/", EditorialSearchView.as_view()),
+    url(r"^search/$", EditorialSearchView.as_view(), name="search"),
 ]
