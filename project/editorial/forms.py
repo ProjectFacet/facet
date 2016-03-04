@@ -2,6 +2,7 @@
 
 import datetime
 from bootstrap3_datetime.widgets import DateTimePicker
+from ourwidgets import OurDateTimePicker
 from django import forms
 from django.utils.safestring import mark_safe
 from django.contrib.auth import get_user_model
@@ -143,14 +144,14 @@ class StoryForm(forms.ModelForm):
 
     embargo_datetime = forms.DateTimeField(
         required=False,
-        widget=DateTimePicker(
+        widget=OurDateTimePicker(
             options={'format': 'YYYY-MM-DD HH:mm'},
             attrs={'id': 'story-embargo-picker'})
     )
 
     share_with_date = forms.DateTimeField(
         required=False,
-        widget=DateTimePicker(
+        widget=OurDateTimePicker(
             options={'format': 'YYYY-MM-DD HH:mm'},
             attrs={'id': 'story-share-picker'})
     )
@@ -179,7 +180,7 @@ class WebFacetForm(forms.ModelForm):
 
     due_edit = forms.DateTimeField(
         required=False,
-        widget=DateTimePicker(
+        widget=OurDateTimePicker(
             options={'format': 'YYYY-MM-DD HH:mm'},
             attrs={'id': 'wf_dueedit_picker'}
         )
@@ -187,7 +188,7 @@ class WebFacetForm(forms.ModelForm):
 
     run_date = forms.DateTimeField(
         required=False,
-        widget=DateTimePicker(
+        widget=OurDateTimePicker(
             options={'format': 'YYYY-MM-DD HH:mm'},
             attrs={'id': 'wf_rundate_picker'}
         )
@@ -240,7 +241,7 @@ class PrintFacetForm(forms.ModelForm):
 
     due_edit = forms.DateTimeField(
         required=False,
-        widget=DateTimePicker(
+        widget=OurDateTimePicker(
             options={'format': 'YYYY-MM-DD HH:mm'},
             attrs={'id': 'pf_dueedit_picker'}
         )
@@ -248,7 +249,7 @@ class PrintFacetForm(forms.ModelForm):
 
     run_date = forms.DateTimeField(
         required=False,
-        widget=DateTimePicker(
+        widget=OurDateTimePicker(
             options={'format': 'YYYY-MM-DD HH:mm'},
             attrs={'id': 'pf_rundate_picker'}
         )
@@ -301,7 +302,7 @@ class AudioFacetForm(forms.ModelForm):
 
     due_edit = forms.DateTimeField(
         required=False,
-        widget=DateTimePicker(
+        widget=OurDateTimePicker(
             options={'format': 'YYYY-MM-DD HH:mm'},
             attrs={'id': 'af_dueedit_picker'}
         )
@@ -309,7 +310,7 @@ class AudioFacetForm(forms.ModelForm):
 
     run_date = forms.DateTimeField(
         required=False,
-        widget=DateTimePicker(
+        widget=OurDateTimePicker(
             options={'format': 'YYYY-MM-DD HH:mm'},
             attrs={'id': 'af_rundate_picker'}
         )
@@ -362,7 +363,7 @@ class VideoFacetForm(forms.ModelForm):
 
     due_edit = forms.DateTimeField(
         required=False,
-        widget=DateTimePicker(
+        widget=OurDateTimePicker(
             options={'format': 'YYYY-MM-DD HH:mm'},
             attrs={'id': 'vf_dueedit_picker'}
         )
@@ -370,7 +371,7 @@ class VideoFacetForm(forms.ModelForm):
 
     run_date = forms.DateTimeField(
         required=False,
-        widget=DateTimePicker(
+        widget=OurDateTimePicker(
             options={'format': 'YYYY-MM-DD HH:mm'},
             attrs={'id': 'vf_rundate_picker'}
         )
