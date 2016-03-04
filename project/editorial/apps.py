@@ -11,20 +11,20 @@ class EditorialAppConfig(AppConfig):
     def ready(self):
         """Add models to search."""
 
-        # from search import register_watson
+        from search import register_watson
 
-        # for model_name in [
-        #     "Series",
-        #     "Story",
-        #     "WebFacet",
-        #     "PrintFacet",
-        #     "AudioFacet",
-        #     "VideoFacet",
-        #     "ImageAsset",
-        #     "NetworkNote",
-        #     "OrganizationNote",
-        #     "UserNote",
-        #     "SeriesNote",
-        #     "StoryNote",
-        # ]:
-        #     register_watson(self, model_name)
+        for model_name in [
+            "Series",
+            "Story",
+            "WebFacet",
+            "PrintFacet",
+            "AudioFacet",
+            "VideoFacet",
+            "ImageAsset",
+            "NetworkNote",
+            "OrganizationNote",
+            "UserNote",
+            "SeriesNote",
+            "StoryNote",
+        ]:
+            register_watson(self, model_name)
