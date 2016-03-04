@@ -12,7 +12,7 @@ from django.utils.safestring import mark_safe
 
 import json
 
-# from editorial.editorialcalendar import EditorialMonthCalendar
+# from editorial.editorialcalendar import EditorialCalendar
 
 from editorial.forms import (
     StoryForm,
@@ -55,8 +55,6 @@ def schedule(request):
     Calendar: Longterm view displaying only the name/title of an item with a link-text
     Agenda: Daily in-depth rundown of content for edit/running.
     """
-
     stories = Story.objects.filter(organization=request.user.organization).exclude(archived=True)
-
 
     return render(request, 'editorial/schedule.html', {})
