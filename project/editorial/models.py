@@ -607,6 +607,13 @@ class Series(models.Model):
     def get_absolute_url(self):
       return reverse('series_detail', kwargs={'pk': self.id})
 
+    def get_series_team(self):
+     """Return queryset with org users and users from collaboration orgs for a series."""
+
+     collaborators = self.collaborate_with.all()
+     series_team = User.objects.filter(Q(Q(organization=self.organization) | Q(organization__in=collaborators)))
+     return series_team
+
     @property
     def description(self):
         return "{description}".format(description=self.series_description)

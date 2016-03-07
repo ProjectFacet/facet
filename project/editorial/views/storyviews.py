@@ -15,6 +15,7 @@ import json
 
 from editorial.forms import (
     StoryForm,
+    NewStoryForm,
     WebFacetForm,
     PrintFacetForm,
     AudioFacetForm,
@@ -69,7 +70,7 @@ def story_new(request):
 
     series = Series.objects.all()
     if request.method == "POST":
-        storyform = StoryForm(request.POST, request=request)
+        storyform = NewStoryForm(request.POST, request=request)
         #import pdb; pdb.set_trace()
         if storyform.is_valid():
             story = storyform.save(commit=False)
@@ -81,7 +82,7 @@ def story_new(request):
             storyform.save_m2m()
             return redirect('story_detail', pk=story.pk)
     else:
-        storyform = StoryForm(request=request)
+        storyform = NewStoryForm(request=request)
     return render(request, 'editorial/storynew.html', {
         'storyform': storyform,
         'series': series
