@@ -38,6 +38,7 @@ urlpatterns = [
     #   Schedule URLS
     #----------------------------------------------------------------------#
     url(r'^schedule$', scheduleviews.schedule, name='schedule'),
+    url(r'^schedulecontent$', scheduleviews.schedule_content, name='schedule-content'),
     #----------------------------------------------------------------------#
     #   Collaborations URLS
     #----------------------------------------------------------------------#

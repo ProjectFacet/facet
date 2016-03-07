@@ -7,7 +7,7 @@ from django.http import HttpResponse
 from django.utils import timezone
 from django.views.generic import TemplateView , UpdateView, DetailView
 from django.views.decorators.csrf import csrf_exempt
-import datetime
+import datetime, time
 import json
 
 # All imports are included for use in test view
@@ -90,6 +90,7 @@ def index(request):
 
 def test(request):
     """ Use for rapid testing of new pages."""
+
 
     return render(request, 'editorial/test.html')
 

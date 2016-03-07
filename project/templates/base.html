@@ -18,6 +18,9 @@
   <link rel="stylesheet" href="{% static 'css/bootstrap-datetimepicker.css' %}">
   <!-- endBootstrap -->
 
+  <!-- Bootstrap Calendar -->
+  <link rel="stylesheet" href="{% static 'bootstrap-calendar/css/calendar.css' %}">
+
   <!-- Dependencies -->
   <link rel="stylesheet" href="{% static 'css/dependencies.css' %}">
   <!-- endDependencies -->
@@ -51,12 +54,20 @@
   <script src="{% static 'scripts/jquery.dataTables.min.js' %}"></script>
   <!-- END DATETIME PICKER JS  -->
   <script src="{% static 'scripts/moment.js' %}"></script>
-  <script src="{% static 'scripts/bootstrap-datetimepicker.js' %}"></script>
+  <!-- <script src="{% static 'scripts/bootstrap-datetimepicker.js' %}"></script> -->
   <!-- END DATETIME PICKER JS  -->
+
   <!-- Bootstrap Calendar JS -->
-  <!-- <script src="{% static 'bootstrap-calendar/js/calendar.js' %}"></script>
-  <script src="{% static 'bootstrap-calendar/js/underscore-min.js' %}"></script>
-  <script src="{% static 'bootstrap-calendar/js/app.js' %}"></script> -->
+  <script src="{% static 'bootstrap-calendar/js/calendar.js' %}"></script>
+  <script src="{% static 'scripts/underscore/underscore-min.js' %}"></script>
+  <script>
+    // console.log("HELLO");
+    // var calendar_events = "{% static 'bootstrap-calendar/events.json.php' %}"
+    // var templates = "{% static 'bootstrap-calendar/events.json.php' %}"
+    // console.log("Where the fuck is this stuff?");
+    // console.log(templates);
+  </script>
+  <!-- <script src="{% static 'bootstrap-calendar/js/app.js' %}"></script> -->
 
   {% block head %}
 
@@ -110,6 +121,7 @@
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" title="Temporary Links for Convenience">Content<span class="caret"></span></a>
                 <ul class="dropdown-menu">
+                  <li><a href="{% url 'schedule' %}">Schedule</a></li>
                   <li><a href="{% url 'story_list' %}">Stories</a></li>
                   <li><a href="{% url 'series_list' %}">Series</a></li>
                   <li><a href="{% url 'collaborations' %}">Collaborations</a></li>
