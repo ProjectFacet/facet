@@ -107,38 +107,8 @@ class InviteToNetworkForm(forms.Form):
 #          Series Forms          #
 # ------------------------------ #
 
-class NewSeriesForm(forms.ModelForm):
-    """ Form to create/edit a series. """
-
-    def __init__(self, *args, **kwargs):
-        self.request = kwargs.pop("request")
-        super(NewSeriesForm, self).__init__(*args, **kwargs)
-        self.fields['collaborate_with'].queryset = Organization.get_org_collaborators(self.request.user.organization)
-        self.fields['team'].queryset = Organization.get_org_users(self.request.user.organization)
-
-    class Meta:
-        model = Series
-        fields = ['name', 'series_description', 'collaborate', 'collaborate_with', 'team']
-        widgets = {
-            'team': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select', 'id':'series-team'}),
-            'collaborate_with': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select', 'id':'collaborate-with'}),
-            }
-
-    class Media:
-        css = {'all': ('/static/css/chosen.min.css')
-        }
-        js = ('/static/js/chosen.jquery.min.js')
-
-
 class SeriesForm(forms.ModelForm):
-    """ Form to create/edit a series. """
-
-    def __init__(self, *args, **kwargs):
-        self.request = kwargs.pop("request")
-        self.series = kwargs.pop("series")
-        super(SeriesForm, self).__init__(*args, **kwargs)
-        self.fields['collaborate_with'].queryset = Organization.get_org_collaborators(self.request.user.organization)
-        self.fields['team'].queryset = Series.get_series_team(self.series)
+    """ Form to create a new series. """
 
     class Meta:
         model = Series
@@ -152,67 +122,19 @@ class SeriesForm(forms.ModelForm):
         css = {'all': ('/static/css/chosen.min.css')
         }
         js = ('/static/js/chosen.jquery.min.js')
-
-
 
 # ------------------------------ #
 #          Story Forms           #
 # ------------------------------ #
-
-class NewStoryForm(forms.ModelForm):
-    """ Form to create a new story. """
-
-    def __init__(self, *args, **kwargs):
-        self.request = kwargs.pop("request")
-        super(NewStoryForm, self).__init__(*args, **kwargs)
-        self.fields['collaborate_with'].queryset = Organization.get_org_collaborators(self.request.user.organization)
-        self.fields['team'].queryset = Organization.get_org_users(self.request.user.organization)
-
-    series = forms.ModelChoiceField(
-        queryset=Series.objects.all(),
-        widget=forms.Select,
-        required=False,
-    )
-
-    embargo_datetime = forms.DateTimeField(
-        required=False,
-        widget=OurDateTimePicker(
-            options={'format': 'YYYY-MM-DD HH:mm'},
-            attrs={'id': 'story-embargo-picker'})
-    )
-
-    share_with_date = forms.DateTimeField(
-        required=False,
-        widget=OurDateTimePicker(
-            options={'format': 'YYYY-MM-DD HH:mm'},
-            attrs={'id': 'story-share-picker'})
-    )
-
-    class Meta:
-        model = Story
-        fields = ['name', 'story_description', 'series', 'collaborate', 'collaborate_with','team', 'embargo', 'embargo_datetime', 'sensitive', 'share', 'ready_to_share', 'share_with', 'share_with_date', 'archived' ]
-        widgets = {
-            'team': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select', 'id':'story-team'}),
-            'collaborate_with': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select', 'id':'collaborate-with'}),
-            'share_with': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select', 'id':'share-with'}),
-            'series': Select(attrs={'class': 'form-control'}),
-        }
-
-    class Media:
-        css = {'all': ('/static/css/chosen.min.css')
-        }
-        js = ('/static/js/chosen.jquery.min.js')
-
 
 class StoryForm(forms.ModelForm):
     """ Form to create a new story. """
 
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop("request")
-        self.story = kwargs.pop("story")
         super(StoryForm, self).__init__(*args, **kwargs)
         self.fields['collaborate_with'].queryset = Organization.get_org_collaborators(self.request.user.organization)
-        self.fields['team'].queryset = Story.get_story_team(self.story)
+        self.fields['team'].queryset = Organization.get_org_users(self.request.user.organization)
 
     series = forms.ModelChoiceField(
         queryset=Series.objects.all(),
@@ -255,13 +177,6 @@ class StoryForm(forms.ModelForm):
 
 class WebFacetForm(forms.ModelForm):
     """ Webfacet form. """
-
-    def __init__(self, *args, **kwargs):
-        self.request = kwargs.pop("request")
-        self.story = kwargs.pop("story")
-        super(WebFacetForm, self).__init__(*args, **kwargs)
-        self.fields['credit'].queryset = Story.get_story_team(self.story)
-        self.fields['editor'].queryset = Story.get_story_team(self.story)
 
     due_edit = forms.DateTimeField(
         required=False,
@@ -324,13 +239,6 @@ class WebFacetForm(forms.ModelForm):
 class PrintFacetForm(forms.ModelForm):
     """ Printfacet form. """
 
-    def __init__(self, *args, **kwargs):
-        self.request = kwargs.pop("request")
-        self.story = kwargs.pop("story")
-        super(PrintFacetForm, self).__init__(*args, **kwargs)
-        self.fields['credit'].queryset = Story.get_story_team(self.story)
-        self.fields['editor'].queryset = Story.get_story_team(self.story)
-
     due_edit = forms.DateTimeField(
         required=False,
         widget=OurDateTimePicker(
@@ -392,13 +300,6 @@ class PrintFacetForm(forms.ModelForm):
 class AudioFacetForm(forms.ModelForm):
     """ Audiofacet form. """
 
-    def __init__(self, *args, **kwargs):
-        self.request = kwargs.pop("request")
-        self.story = kwargs.pop("story")
-        super(AudioFacetForm, self).__init__(*args, **kwargs)
-        self.fields['credit'].queryset = Story.get_story_team(self.story)
-        self.fields['editor'].queryset = Story.get_story_team(self.story)
-
     due_edit = forms.DateTimeField(
         required=False,
         widget=OurDateTimePicker(
@@ -459,13 +360,6 @@ class AudioFacetForm(forms.ModelForm):
 
 class VideoFacetForm(forms.ModelForm):
     """ Videofacet form. """
-
-    def __init__(self, *args, **kwargs):
-        self.request = kwargs.pop("request")
-        self.story = kwargs.pop("story")
-        super(VideoFacetForm, self).__init__(*args, **kwargs)
-        self.fields['credit'].queryset = Story.get_story_team(self.story)
-        self.fields['editor'].queryset = Story.get_story_team(self.story)
 
     due_edit = forms.DateTimeField(
         required=False,
