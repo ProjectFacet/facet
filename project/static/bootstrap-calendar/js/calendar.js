@@ -141,25 +141,25 @@ if(!String.prototype.formatNum) {
 		first_day: 2,
 		holidays:  {
 			// January 1
-			'01-01':  "New Year's Day",
+			// '01-01':  "New Year's Day",
 			// Third (+3*) Monday (1) in January (01)
-			'01+3*1': "Birthday of Dr. Martin Luther King, Jr.",
+			// '01+3*1': "Birthday of Dr. Martin Luther King, Jr.",
 			// Third (+3*) Monday (1) in February (02)
-			'02+3*1': "Washington's Birthday",
+			// '02+3*1': "Washington's Birthday",
 			// Last (-1*) Monday (1) in May (05)
-			'05-1*1': "Memorial Day",
+			// '05-1*1': "Memorial Day",
 			// July 4
-			'04-07':  "Independence Day",
+			// '04-07':  "Independence Day",
 			// First (+1*) Monday (1) in September (09)
-			'09+1*1': "Labor Day",
+			// '09+1*1': "Labor Day",
 			// Second (+2*) Monday (1) in October (10)
-			'10+2*1': "Columbus Day",
+			// '10+2*1': "Columbus Day",
 			// November 11
-			'11-11':  "Veterans Day",
+			// '11-11':  "Veterans Day",
 			// Fourth (+4*) Thursday (4) in November (11)
-			'11+4*4': "Thanksgiving Day",
+			// '11+4*4': "Thanksgiving Day",
 			// December 25
-			'25-12':  "Christmas"
+			// '25-12':  "Christmas"
 		}
 	};
 

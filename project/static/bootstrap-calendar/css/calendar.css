@@ -127,6 +127,7 @@
   position: relative;
   display: block;
   width: 100%;
+  color: #8493a8;
 }
 #cal-week-box {
   position: absolute;
@@ -231,9 +232,9 @@
   width: 0;
   height: 0;
   right: 0;
-  border-top: 15px solid #ffffff;
+  border-top: 15px solid #54657E;
   border-left: 8px solid;
-  border-bottom: 15px solid #FFFFFF;
+  border-bottom: 15px solid #54657E;
 }
 .cal-week-box .arrow-before:before {
   content: "";
@@ -243,7 +244,7 @@
   height: 0;
   left: 1px;
   border-top: 15px solid transparent;
-  border-left: 8px solid #FFFFFF;
+  border-left: 8px solid #54657E;
   border-bottom: 15px solid transparent;
 }
 #cal-day-box {
@@ -254,7 +255,7 @@
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
-  border-bottom: thin dashed #e1e1e1;
+  border-bottom: thin solid #54657E;
 }
 #cal-day-box .cal-day-hour .day-highlight {
   height: 30px;
@@ -262,8 +263,13 @@
 #cal-day-box .cal-hours {
   font-weight: bolder;
 }
+
+.cal-hours {
+  color: #fff;
+}
+
 #cal-day-box .cal-day-hour:nth-child(odd) {
-  background-color: #fafafa;
+  background-color: #54657e;
 }
 #cal-day-box #cal-day-panel {
   position: relative;
@@ -286,7 +292,7 @@
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
-  border: 1px solid #c3c3c3;
+  border: 1px solid #54657E;
   margin: 1px 1px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -320,7 +326,7 @@
   -webkit-box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, 0.4);
   box-shadow: inset 0px 0px 5px 0px rgba(0, 0, 0, 0.4);
   border-radius: 8px;
-  border: 1px solid #ffffff;
+  border: 1px solid #54657E;
 }
 .event-block {
   display: block;
@@ -387,26 +393,27 @@
 .cal-row-head [class*="cal-cell"] {
   font-weight: bolder;
   text-align: center;
-  border: 0px solid;
+  border: 0px solid #54657E;
   padding: 5px 0;
+  color: #54657e;
 }
 .cal-row-head [class*="cal-cell"] small {
   font-weight: normal;
 }
 .cal-year-box .row-fluid:hover,
 .cal-row-fluid:hover {
-  background-color: #fafafa;
+  background-color: #3d4d65;
 }
 .cal-month-day {
   height: 100px;
 }
 [class*="cal-cell"]:hover {
-  background-color: #ededed;
+  background-color: #cad3df;
 }
 .cal-year-box [class*="span"],
 .cal-month-box [class*="cal-cell"] {
   min-height: 100px;
-  border-right: 1px solid #e1e1e1;
+  border-right: 1px solid #54657E;
   position: relative;
 }
 .cal-year-box [class*="span"] {
@@ -418,7 +425,7 @@
 }
 .cal-year-box .row-fluid,
 .cal-month-box .cal-row-fluid {
-  border-bottom: 1px solid #e1e1e1;
+  border-bottom: 1px solid #54657E;
   margin-left: 0px;
   margin-right: 0px;
 }
@@ -429,10 +436,10 @@
 .cal-month-box,
 .cal-year-box,
 .cal-week-box {
-  border-top: 1px solid #e1e1e1;
-  border-bottom: 1px solid #e1e1e1;
-  border-right: 1px solid #e1e1e1;
-  border-left: 1px solid #e1e1e1;
+  border-top: 1px solid #54657E;
+  border-bottom: 1px solid #54657E;
+  border-right: 1px solid #54657E;
+  border-left: 1px solid #54657E;
   border-radius: 2px;
 }
 span[data-cal-date] {
@@ -456,41 +463,42 @@ span[data-cal-date]:hover {
   cursor: default;
 }
 .cal-day-today {
-  background-color: #e8fde7;
+  background-color: #8493a8;
 }
 .cal-day-today span[data-cal-date] {
   color: darkgreen;
 }
 .cal-month-box .cal-day-today span[data-cal-date] {
-  font-size: 1.9em;
+  font-size: 1.5em;
 }
 .cal-day-holiday span[data-cal-date] {
   color: #800080;
 }
 .cal-day-weekend span[data-cal-date] {
-  color: darkred;
+  color: #54657e;
 }
 #cal-week-box {
-  border: 1px solid #e1e1e1;
+  border: 1px solid #54657E;
   border-right: 0px;
   border-radius: 5px 0 0 5px;
   background-color: #fafafa;
   text-align: right;
 }
 #cal-day-tick {
-  border: 1px solid #e1e1e1;
+  border: 1px solid #54657E;
   border-top: 0px solid;
   border-radius: 0 0 5px 5px;
   background-color: #ededed;
   text-align: center;
 }
 #cal-slide-box {
-  border-top: 0px solid #8c8c8c;
+  border-top: 0px solid #54657E;
 }
 #cal-slide-content {
   padding: 20px;
   color: #ffffff;
-  background-image: url("../img/dark_wood.png");
+  /*background-image: url("../img/dark_wood.png");*/
+  background-color: #181D25;
   -webkit-box-shadow: inset 0px 0px 15px 0px rgba(0, 0, 0, 0.5);
   box-shadow: inset 0px 0px 15px 0px rgba(0, 0, 0, 0.5);
 }
@@ -516,6 +524,12 @@ a.cal-event-week {
   text-decoration: none;
   color: #151515;
 }
+
+a.cal-event-week:hover {
+  text-decoration: none;
+  color: #2c333f;
+}
+
 .badge-important {
   background-color: #b94a48;
 }
