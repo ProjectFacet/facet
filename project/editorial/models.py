@@ -837,6 +837,12 @@ class Story(models.Model):
         collaborate=self.collaborate, collaboratewith=collaborate_with, archived=self.archived)
         return story_download
 
+    def get_story_team(self):
+        """Return queryset with org users and users from collaboration orgs for a story."""
+
+        collaborators = self.collaborate_with.all()
+        story_team = User.objects.filter(Q(Q(organization=self.organization) | Q(organization__in=collaborators)))
+        return story_team
 
     @property
     def description(self):
