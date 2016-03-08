@@ -6,6 +6,7 @@ from django.conf.urls import url, include
 # from views import HomeView
 from views import (
     generalviews,
+    # assetviews,
     scheduleviews,
     organizationviews,
     userviews,
@@ -40,6 +41,11 @@ urlpatterns = [
     url(r'^schedule$', scheduleviews.schedule, name='schedule'),
     url(r'^schedulecontent$', scheduleviews.schedule_content, name='schedule-content'),
     #----------------------------------------------------------------------#
+    #   Asset Library URLS
+    #----------------------------------------------------------------------#
+    url(r'^assets$', assetviews.asset_library, name='asset_library'),
+    url(r'^asset/(?P<pk>[0-9]+)/$', assetviews.asset_detail, name='asset_detail'),
+    #----------------------------------------------------------------------#
     #   Collaborations URLS
     #----------------------------------------------------------------------#
     url(r'^collaborations$', generalviews.collaborations, name='collaborations'),
@@ -48,14 +54,25 @@ urlpatterns = [
     #----------------------------------------------------------------------#
     url(r'^team$', generalviews.team_list, name='team_list'),
     #----------------------------------------------------------------------#
-    #   Discussion URLS
+    #   Discussion URLS - Labeled as Inbox in navigation
     #----------------------------------------------------------------------#
-    # Labeled as Inbox in navigation
     url(r'^discussion$', generalviews.discussion, name='discussion'),
     #----------------------------------------------------------------------#
     #   Private Message URLS
     #----------------------------------------------------------------------#
     url(r'^privatemessage/new/$', communicationviews.private_message_new, name='private_message_new'),
+    #----------------------------------------------------------------------#
+    #   Copy URLS
+    #----------------------------------------------------------------------#
+    url(r'^story/copy/(?P<pk>[0-9]+)/$', networkviews.copy_network_story, name='copy_network_story'),
+    #----------------------------------------------------------------------#
+    #   Download URLS
+    #----------------------------------------------------------------------#
+    url(r'^story/(?P<pk>[0-9]+)/download/$', downloadviews.create_download, name='create_download'),
+    #----------------------------------------------------------------------#
+    #   Search URLS
+    #----------------------------------------------------------------------#
+    url(r"^search/$", EditorialSearchView.as_view(), name="search"),
     #----------------------------------------------------------------------#
     #   Comment URLS
     #----------------------------------------------------------------------#
@@ -124,16 +141,4 @@ urlpatterns = [
     url(r'^network/stories$', networkviews.network_stories, name='network_stories'),
     url(r'^network/(?P<pk>[0-9]+)/notes/$', noteviews.network_notes, name='network_notes'),
     url(r'^network/note/new/$', noteviews.create_network_note, name='create_network_note'),
-    #----------------------------------------------------------------------#
-    #   Copy URLS
-    #----------------------------------------------------------------------#
-    url(r'^story/copy/(?P<pk>[0-9]+)/$', networkviews.copy_network_story, name='copy_network_story'),
-    #----------------------------------------------------------------------#
-    #   Download URLS
-    #----------------------------------------------------------------------#
-    url(r'^story/(?P<pk>[0-9]+)/download/$', downloadviews.create_download, name='create_download'),
-    #----------------------------------------------------------------------#
-    #   Search URLS
-    #----------------------------------------------------------------------#
-    url(r"^search/$", EditorialSearchView.as_view(), name="search"),
 ]

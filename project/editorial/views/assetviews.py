@@ -24,6 +24,27 @@ from editorial.models import (
     VideoFacet,
     ImageAsset,)
 
+
+#----------------------------------------------------------------------#
+#   Asset Library Views
+#----------------------------------------------------------------------#
+
+def asset_library(request):
+    """ Display media library of all organization assets."""
+
+    images = ImageAsset.objects.filter(organization=request.user.organization)
+
+    return render(request, 'editorial/assets.html')
+
+#----------------------------------------------------------------------#
+#   Asset Detail Views
+#----------------------------------------------------------------------#
+
+def asset_detail(request, pk):
+    """ Display detail information for a specific asset."""
+
+    return render(request, 'editorial/assets.html')
+
 #----------------------------------------------------------------------#
 #   Upload Image Asset Views
 #----------------------------------------------------------------------#
