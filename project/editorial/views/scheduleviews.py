@@ -31,8 +31,6 @@ from editorial.models import (
 #   Schedule Views
 #----------------------------------------------------------------------#
 
-#TODO These views to be implemented
-
 def schedule(request):
     """ Display schedules of upcoming content.
     Calendar: Longterm view displaying only the name/title of an item with a
@@ -47,7 +45,6 @@ def schedule_content(request):
     """ Return JSON of event information."""
 
     stories = Story.objects.filter(organization=request.user.organization).exclude(archived=True)
-    print "STORIES: ", stories
 
     data = {}
     data['success'] = 1
