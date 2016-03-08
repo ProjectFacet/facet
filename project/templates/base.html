@@ -119,33 +119,33 @@
           <ul class="nav navbar-nav">
             <li id="dashboard-link"><a href="{% url 'dashboard' %}">Dashboard</a></li>
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" title="Temporary Links for Convenience">Content<span class="caret"></span></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" title="Content">Content<span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                  <li><a href="{% url 'schedule' %}">Schedule</a></li>
-                  <li><a href="{% url 'story_list' %}">Stories</a></li>
-                  <li><a href="{% url 'series_list' %}">Series</a></li>
-                  <li><a href="{% url 'collaborations' %}">Collaborations</a></li>
+                  <li><a href="{% url 'schedule' %}" title="View Schedule">Schedule</a></li>
+                  <li><a href="{% url 'story_list' %}" title="View Story List">Stories</a></li>
+                  <li><a href="{% url 'series_list' %}" title="View Series List">Series</a></li>
+                  <li><a href="{% url 'collaborations' %}" title="View Content in Collaboration">Collaborations</a></li>
                 </ul>
             </li>
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" title="Temporary Links for Convenience">Networks<span class="caret"></span></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" title="Networks">Networks<span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                  <li><a href="{% url 'network_list' %}">Networks</a></li>
-                  <li><a href="{% url 'network_stories' %}">Network Stories</a></li>
+                  <li><a href="{% url 'network_list' %}" title="View Networks">Networks</a></li>
+                  <li><a href="{% url 'network_stories' %}" title="View Network Content">Network Stories</a></li>
                 </ul>
             </li>
-            <li><a href="{% url 'team_list' %}">Teams</a></li>
-            <li><a href="{% url 'discussion' %}">Inbox</a></li>
+            <li><a href="{% url 'team_list' %}" title="View Teams and Collaborators">Teams</a></li>
+            <li><a href="{% url 'discussion' %}" title="View Inbox">Inbox</a></li>
 
 
             <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" title="Temporary Links for Convenience">Create New Content<span class="caret"></span></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" title="Create Series and Stories">Create New Content<span class="caret"></span></a>
               <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                <li><a href="{% url 'series_new' %}">Series</a></li>
-                <li><a href="{% url 'story_new' %}">Story</a></li>
+                <li><a href="{% url 'series_new' %}" title="Create New Series">Series</a></li>
+                <li><a href="{% url 'story_new' %}" title="Create New Story">Story</a></li>
               </ul>
             </li>
-            <li><a href="{% url 'search' %}">Search</a></li>
+            <li><a href="{% url 'search' %}" title="Search Content">Search</a></li>
           </ul>
           {% endif %}
 
