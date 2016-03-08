@@ -45,6 +45,7 @@ urlpatterns = [
     #----------------------------------------------------------------------#
     url(r'^assets$', assetviews.asset_library, name='asset_library'),
     url(r'^asset/(?P<pk>[0-9]+)/$', assetviews.asset_detail, name='asset_detail'),
+    # url(r'^asset/(?P<pk>[0-9]+)/edit/$', assetviews.asset_edit, name='asset_edit'),    
     #----------------------------------------------------------------------#
     #   Collaborations URLS
     #----------------------------------------------------------------------#
