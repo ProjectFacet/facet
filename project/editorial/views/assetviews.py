@@ -24,6 +24,43 @@ from editorial.models import (
     VideoFacet,
     ImageAsset,)
 
+
+#----------------------------------------------------------------------#
+#   Asset Library Views
+#----------------------------------------------------------------------#
+
+def asset_library(request):
+    """ Display media library of all organization assets."""
+
+    images = ImageAsset.objects.filter(organization=request.user.organization)
+
+    return render(request, 'editorial/assets.html', {
+        'images': images,
+    })
+
+#----------------------------------------------------------------------#
+#   Asset Detail Views
+#----------------------------------------------------------------------#
+
+def asset_detail(request, pk):
+    """ Display detail information for a specific asset."""
+
+    image = get_object_or_404(ImageAsset, id=pk)
+
+    if request.method =="POST":
+        editimageform = ImageAssetForm(data=request.POST, instance=image)
+        if editimageform.is_valid():
+            editimageform.save()
+            return redirect('asset_detail', pk=image.id)
+    else:
+        editimageform = ImageAssetForm(instance=image)
+
+    return render(request, 'editorial/assetdetail.html', {
+        'image': image,
+        'editimageform': editimageform,
+    })
+
+
 #----------------------------------------------------------------------#
 #   Upload Image Asset Views
 #----------------------------------------------------------------------#

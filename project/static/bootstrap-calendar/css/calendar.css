@@ -466,7 +466,7 @@ span[data-cal-date]:hover {
   background-color: #8493a8;
 }
 .cal-day-today span[data-cal-date] {
-  color: darkgreen;
+  color: white;
 }
 .cal-month-box .cal-day-today span[data-cal-date] {
   font-size: 1.5em;
