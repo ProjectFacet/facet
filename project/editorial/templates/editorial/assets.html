@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load bootstrap3 %}
+
+{% block content %}
+
+<div class="row particles" id="user-hero">
+  <div class="upper-content">
+    <div class="col-lg-12 content-upper-75">
+      <h1 class="media-heading text-light center thin uppercase spread-025">Asset Library</h1>
+    </div>
+  </div>
+</div>
+
+<div id="asset-library">
+    <div class="row content-lower-50">
+      {% for image in images %}
+        {% if image.display_photo %}
+        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1">
+          <div class="thumbnail">
+            <a href="{{ image.display_photo.url }}" class="popout"><img src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}"></a>
+            <div class="caption">
+              <h6 class="darker">{{ image.asset_title }}</h6>
+              <p class="tiny-text dark">{{ image.asset_description }}<p>
+              <p><a href="{% url 'asset_detail' pk=image.id %}"><i class="fa fa-info dark"></i></a></p>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+</div>
+
+
+
+<script>
+
+  $('#asset-library').magnificPopup({
+    delegate: '.popout',
+    type: 'image',
+    gallery: {enabled:true}
+  });
+
+</script>
+
+
+{% endblock %}
