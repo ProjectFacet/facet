@@ -2,6 +2,9 @@
 
 from .settings import *
 
+from django.contrib.staticfiles.templatetags.staticfiles import static
+
+
 # -------------------------------------------------------------- #
 # KEYS #
 # -------------------------------------------------------------- #
@@ -47,6 +50,11 @@ if unset_secrets:
 INSTALLED_APPS = INSTALLED_APPS + (
     'storages', # for use with S3
 )
+
+
+TINYMCE_JS_ROOT = static('scripts/tiny_mce/')
+TINYMCE_JS_URL = static('scripts/tiny_mce/tinymce.min.js')
+
 
 # -------------------------------------------------------------- #
 # DEBUGGING #

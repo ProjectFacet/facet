@@ -65,10 +65,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.security.SecurityMiddleware',
     'simple_history.middleware.HistoryRequestMiddleware',
 )
-from django.contrib.staticfiles.templatetags.staticfiles import static
 
-TINYMCE_JS_ROOT = static('scripts/tiny_mce/')
-TINYMCE_JS_URL = static('scripts/tiny_mce/tinymce.min.js')
+TINYMCE_JS_ROOT = '/static/scripts/tiny_mce/'
+TINYMCE_JS_URL = os.path.join(STATIC_URL, 'scripts/tiny_mce/tinymce.min.js')
 TINYMCE_DEFAULT_CONFIG = {
     'plugins': "spellchecker,paste,searchreplace,wordcount",
     'invalid_styles': 'position',
