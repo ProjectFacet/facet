@@ -66,7 +66,7 @@ MIDDLEWARE_CLASSES = (
     'simple_history.middleware.HistoryRequestMiddleware',
 )
 
-TINYMCE_JS_ROOT = '/static/scripts/tiny_mce/'
+TINYMCE_JS_ROOT = os.path.join(STATIC_URL, 'scripts/tiny_mce/')
 TINYMCE_JS_URL = os.path.join(STATIC_URL, 'scripts/tiny_mce/tinymce.min.js')
 TINYMCE_DEFAULT_CONFIG = {
     'plugins': "spellchecker,paste,searchreplace,wordcount",
