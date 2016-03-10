@@ -41,8 +41,7 @@ if unset_secrets:
     raise KeyError, "There are unset keys. Use `$ eb setenv KEY=value` to set."
 
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
-STATICFILES_LOCATION = 'static'
-STATIC_URL = "https://%s/%s" % (AWS_S3_CUSTOM_DOMAIN, STATICFILES_LOCATION)
+STATIC_URL = "https://%s/" % AWS_S3_CUSTOM_DOMAIN
 
 TINYMCE_JS_ROOT = os.path.join(STATIC_URL, 'scripts/tiny_mce/')
 TINYMCE_JS_URL = os.path.join(STATIC_URL, 'scripts/tiny_mce/tinymce.min.js')
