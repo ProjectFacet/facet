@@ -110,6 +110,12 @@ class InviteToNetworkForm(forms.Form):
 class SeriesForm(forms.ModelForm):
     """ Form to create a new series. """
 
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request")
+        super(SeriesForm, self).__init__(*args, **kwargs)
+        self.fields['collaborate_with'].queryset = Organization.get_org_collaborators(self.request.user.organization)
+        self.fields['team'].queryset = Organization.get_org_users(self.request.user.organization)
+
     class Meta:
         model = Series
         fields = ['name', 'series_description', 'collaborate', 'collaborate_with', 'team']

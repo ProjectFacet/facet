@@ -54,7 +54,7 @@ def series_new(request):
 
     seriesform = SeriesForm()
     if request.method == "POST":
-        seriesform = SeriesForm(request.POST or None)
+        seriesform = SeriesForm(request.POST, request=request)
     if seriesform.is_valid():
         series = seriesform.save(commit=False)
         series.owner = request.user
@@ -66,7 +66,7 @@ def series_new(request):
         seriesform.save_m2m()
         return redirect('series_detail', pk=series.pk)
     else:
-        form = SeriesForm()
+        form = SeriesForm(request=request)
     return render(request, 'editorial/seriesnew.html', {'seriesform': seriesform})
 
 
@@ -98,12 +98,12 @@ def series_edit(request, pk):
     series = get_object_or_404(Series, pk=pk)
 
     if request.method =="POST":
-        seriesform = SeriesForm(data=request.POST, instance=series)
+        seriesform = SeriesForm(data=request.POST, instance=series, request=request)
         if seriesform.is_valid():
             seriesform.save()
             return redirect('series_detail', pk=series.id)
     else:
-        seriesform = SeriesForm(instance=series)
+        seriesform = SeriesForm(instance=series, request=request)
 
     return render(request, 'editorial/seriesedit.html', {
         'series': series,
