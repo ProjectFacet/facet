@@ -101,6 +101,12 @@
                 </div>
             </form>
       </div>
+      <div class="row">
+        <h5>Facets where this asset is used.</h5>
+        {% for facet in image_usage %}
+          <p class="small-text">{{ facet.title }}</p>
+        {% endfor %}
+      </div>
     </div>
 </div>
 

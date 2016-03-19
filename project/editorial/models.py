@@ -2389,6 +2389,21 @@ class ImageAsset(models.Model):
         verbose_name = "Image"
         verbose_name_plural = "Images"
 
+    def get_image_usage(self):
+        """Return facets an image is associated with."""
+
+        image_usage = []
+
+        image_webfacets = WebFacet.objects.filter(Q(image_assets=self))
+        image_printfacets = PrintFacet.objects.filter(Q(image_assets=self))
+        image_audiofacets = AudioFacet.objects.filter(Q(image_assets=self))
+        image_videofacets = VideoFacet.objects.filter(Q(image_assets=self))
+        image_usage.extend(image_webfacets)
+        image_usage.extend(image_printfacets)
+        image_usage.extend(image_audiofacets)
+        image_usage.extend(image_videofacets)
+        return image_usage
+
     def get_image_download_info(self):
         """Return rst of image information for download."""
 
