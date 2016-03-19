@@ -128,7 +128,7 @@ def story_detail(request, pk):
 # ------------------------------ #
 
     # create these here for efficiency
-    webform=WebFacetForm()
+    webform=WebFacetForm(request=request, story=story)
     webcommentform=WebFacetCommentForm()
     webfacet_imageform=ImageAssetForm()
 
@@ -138,7 +138,7 @@ def story_detail(request, pk):
 
         # IF WEBFACET EXISTS DO ALL OF THE FOLLOWING
         # rebind webform to include webfacet instance
-        webform = WebFacetForm(instance=webfacet)
+        webform = WebFacetForm(instance=webfacet, request=request, story=story)
         # retrieve discussion and comments
         webfacetdiscussion = get_object_or_404(Discussion, id=webfacet.discussion.id)
         webcomments = Comment.objects.filter(discussion=webfacetdiscussion).order_by('-date')[:3]
@@ -149,7 +149,7 @@ def story_detail(request, pk):
             print "WF Try If Post"
             if 'webform' in request.POST:
                 print "WF Try If Post If webform"
-                webform = WebFacetForm(data=request.POST, instance=webfacet)
+                webform = WebFacetForm(data=request.POST, instance=webfacet, request=request, story=story)
                 #import pdb; pdb.set_trace()
                 if webform.is_valid():
                     print "WF Try If Post If Webform Valid"
@@ -166,7 +166,7 @@ def story_detail(request, pk):
             print "WF Except Post"
             if 'webform' in request.POST:
                 print "WF Except Post If webform"
-                webform = WebFacetForm(request.POST or None)
+                webform = WebFacetForm(data=request.POST, request=request, story=story)
                 if webform.is_valid():
                     # #import pdb; pdb.set_trace()
                     print "WF Except Post If webform Valid"
@@ -190,7 +190,7 @@ def story_detail(request, pk):
 # ------------------------------ #
 
     # create these here for efficiency
-    printform=PrintFacetForm()
+    printform=PrintFacetForm(request=request, story=story)
     printcommentform=PrintFacetCommentForm()
     printfacet_imageform=ImageAssetForm()
 
@@ -198,7 +198,7 @@ def story_detail(request, pk):
         print "PF Try"
         printfacet = get_object_or_404(PrintFacet, story=story)
         # IF PRINTFACET EXISTS DO ALL OF THE FOLLOWING
-        printform = PrintFacetForm(instance=printfacet)
+        printform = PrintFacetForm(instance=printfacet, request=request, story=story)
         # retrieve discussion and comments
         printfacetdiscussion = get_object_or_404(Discussion, id=printfacet.discussion.id)
         printcomments = Comment.objects.filter(discussion=printfacetdiscussion).order_by('-date')[:3]
@@ -210,7 +210,7 @@ def story_detail(request, pk):
             if 'printform' in request.POST:
                 print "PF Try If Post If printform"
                 #import pdb; pdb.set_trace()
-                printform = PrintFacetForm(data=request.POST, instance=printfacet)
+                printform = PrintFacetForm(data=request.POST, instance=printfacet, request=request, story=story)
                 if printform.is_valid():
                     print "PF Try If Post If printform Valid"
                     printform.save()
@@ -227,7 +227,7 @@ def story_detail(request, pk):
             if 'printform' in request.POST:
                 print "PF Except If Post If printform"
                 # #import pdb; pdb.set_trace()
-                printform = PrintFacetForm(request.POST or None)
+                printform = PrintFacetForm(data=request.POST, request=request, story=story)
                 if printform.is_valid():
                     print "PF Except If Post If printform Valid"
                     printfacet = printform.save(commit=False)
@@ -250,16 +250,16 @@ def story_detail(request, pk):
 # ------------------------------ #
 
     # create these here for efficiency
-    audioform=AudioFacetForm()
+    audioform=AudioFacetForm(request=request, story=story)
     audiocommentform=AudioFacetCommentForm()
     audiofacet_imageform=ImageAssetForm()
 
     try:
-        print "AF Try"
         audiofacet = get_object_or_404(AudioFacet, story=story)
         print "AUDIOFACET CREDIT: ", audiofacet.credit.all()
+
         # IF WEBFACET EXISTS DO ALL OF THE FOLLOWING
-        audioform = AudioFacetForm(instance=audiofacet)
+        audioform = AudioFacetForm(instance=audiofacet, request=request, story=story)
         # retrieve discussion and comments
         audiofacetdiscussion = get_object_or_404(Discussion, id=audiofacet.discussion.id)
         audiocomments = Comment.objects.filter(discussion=audiofacetdiscussion).order_by('-date')[:3]
@@ -271,7 +271,7 @@ def story_detail(request, pk):
             if 'audioform' in request.POST:
                 print "AF Try If Post If Audioform"
                 # #import pdb; pdb.set_trace()
-                audioform = AudioFacetForm(data=request.POST, instance=audiofacet)
+                audioform = AudioFacetForm(data=request.POST, instance=audiofacet, request=request, story=story)
                 if audioform.is_valid():
                     print "AF Try If Post If Audioform Valid"
                     audioform.save()
@@ -288,7 +288,7 @@ def story_detail(request, pk):
             if 'audioform' in request.POST:
                 print "AF Except If Post If Audioform"
                 # #import pdb; pdb.set_trace()
-                audioform = AudioFacetForm(request.POST or None)
+                audioform = AudioFacetForm(data=request.POST, request=request, story=story)
                 if audioform.is_valid():
                     print "AF Except If Post If Audioform Valid"
                     audiofacet = audioform.save(commit=False)
@@ -311,7 +311,7 @@ def story_detail(request, pk):
 # ------------------------------ #
 
     # create these here for efficiency
-    videoform=VideoFacetForm()
+    videoform=VideoFacetForm(request=request, story=story)
     videocommentform=VideoFacetCommentForm()
     videofacet_imageform=ImageAssetForm()
 
@@ -319,7 +319,7 @@ def story_detail(request, pk):
         print "VF Try"
         videofacet = get_object_or_404(VideoFacet, story=story)
         # IF WEBFACET EXISTS DO ALL OF THE FOLLOWING
-        videoform = VideoFacetForm(instance=videofacet)
+        videoform = VideoFacetForm(instance=videofacet, request=request, story=story)
         # retrieve discussion and comments
         videofacetdiscussion = get_object_or_404(Discussion, id=videofacet.discussion.id)
         videocomments = Comment.objects.filter(discussion=videofacetdiscussion).order_by('-date')[:3]
@@ -331,7 +331,7 @@ def story_detail(request, pk):
             if 'videoform' in request.POST:
                 print "VF Try If Post If Videoform"
                 # # #import pdb; pdb.set_trace()
-                videoform = VideoFacetForm(data=request.POST, instance=videofacet)
+                videoform = VideoFacetForm(data=request.POST, instance=videofacet, request=request, story=story)
                 if videoform.is_valid():
                     print "VF Try If Post If Videoform Valid"
                     videoform.save()
@@ -347,7 +347,7 @@ def story_detail(request, pk):
             print "VF Except If Post"
             if 'videoform' in request.POST:
                 print "VF Except If Post If Videoform"
-                videoform = VideoFacetForm(request.POST or None)
+                videoform = VideoFacetForm(data=request.POST, request=request, story=story)
                 if videoform.is_valid():
                     # #import pdb; pdb.set_trace()
                     print "VF Except If Post If Videoform Valid"
