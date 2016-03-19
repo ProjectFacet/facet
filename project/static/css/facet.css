@@ -59,6 +59,10 @@ hr {
   border-right: 1px solid #54657E;
 }
 
+.text-fit {
+  font-size: 1em;
+}
+
 /* ---------------------------------------*/
 /*       Nav and Body/Wrapper Styles      */
 /* ---------------------------------------*/
@@ -249,8 +253,6 @@ hr {
  }
 
 
-
-
 /* ---------------------------------------*/
 /*             General Styles             */
 /* ---------------------------------------*/
@@ -270,6 +272,11 @@ hr {
 
 .tiny-text, .tiny-text a {
   font-size: 10px;
+  color: #8493A8 !important;
+}
+
+.small-text, .small-text a {
+  font-size: 12px;
   color: #8493A8 !important;
 }
 
@@ -486,6 +493,29 @@ hr {
 
 #team-label {
   padding-left: 20px;
+}
+
+
+/* ---------------------------------------*/
+/*          Asset Gallery Styles          */
+/* ---------------------------------------*/
+
+.asset_caption {
+  height: 100px;
+  padding: 5px;
+}
+
+.asset_description {
+}
+
+.asset_container {
+  width: 100%;
+  height: 125px;
+  overflow: hidden;
+}
+
+.asset_thumbnail {
+  object-fit: cover;
 }
 
 /* ---------------------------------------*/
