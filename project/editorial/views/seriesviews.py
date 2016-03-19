@@ -52,7 +52,7 @@ def series_new(request):
     series interface.
     """
 
-    seriesform = SeriesForm()
+    seriesform = SeriesForm(request=request)
     if request.method == "POST":
         seriesform = SeriesForm(request.POST, request=request)
     if seriesform.is_valid():
@@ -66,7 +66,7 @@ def series_new(request):
         seriesform.save_m2m()
         return redirect('series_detail', pk=series.pk)
     else:
-        form = SeriesForm(request=request)
+        seriesform = SeriesForm(request=request)
     return render(request, 'editorial/seriesnew.html', {'seriesform': seriesform})
 
 
