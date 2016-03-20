@@ -444,16 +444,19 @@ def add_webfacet_audio(request):
 def upload_webfacet_video(request):
     """ Add video to a webfacet."""
 
-    "IN HERE"
+    print "In the function"
     if request.method == 'POST':
+        print "POST"
         videoform=VideoAssetForm(request.POST, request.FILES)
+        print videoform
+        import pdb; pdb.set_trace()
         if videoform.is_valid():
-            webvideo = videoform.save(commit=False)
             # retrieve the webfacet the video should be associated with
             webfacet_id = request.POST.get('webfacet')
-            print "WID: ", webfacet_id
+            print "WF I: ", webfacet_id
             webfacet = get_object_or_404(WebFacet, id=webfacet_id)
             print "WF: ", webfacet
+            webvideo = videoform.save(commit=False)
             # set request based attributes
             webvideo.owner = request.user
             webvideo.organization = request.user.organization
@@ -461,6 +464,8 @@ def upload_webfacet_video(request):
             # add video asset to webfacet video_assets
             webfacet.video_assets.add(webvideo)
             webfacet.save()
+        else:
+            print "VALID"
     return redirect('story_detail', pk=webfacet.story.id)
 
 #----------------------------------------------------------------------#

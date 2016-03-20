@@ -367,6 +367,7 @@
                       </div>
                     </div>
 
+                    {% comment %}
                     <div class="section-title">
                       <a href="#" data-toggle="tooltip" title="Audio"><label class="field-label">Audio</label></a>
                       <a href="#" data-toggle="modal" data-target="#addWebFacetAudio" title="Add Audio"><i class="fa fa-headphones sameline dark"></i></a>
@@ -414,6 +415,7 @@
                         {% endfor %}
                       </div>
                     </div>
+                    {% endcomment %}
 
                   </div>
                   <!-- End of Left Column -->
@@ -2760,11 +2762,11 @@
                   </div>
 
                   <div class="form-group custom-form">
-                    <a href="#" data-toggle="tooltip" title="{{ webfacet_videoform.doc_type.help_text }}"><span class="field-label">{{ webfacet_videoform.doc_type.label_tag }}</span></a>
-                    {{ webfacet_videoform.doc_type }}
-                    {% if webfacet_videoform.doc_type.errors %}
+                    <a href="#" data-toggle="tooltip" title="{{ webfacet_videoform.video_type.help_text }}"><span class="field-label">{{ webfacet_videoform.video_type.label_tag }}</span></a>
+                    {{ webfacet_videoform.video_type }}
+                    {% if webfacet_videoform.video_type.errors %}
                       <div class="alert alert-warning" role="alert">
-                      {{ webfacet_videoform.doc_type.errors }}
+                      {{ webfacet_videoform.video_type.errors }}
                       </div>
                     {% endif %}
                   </div>
