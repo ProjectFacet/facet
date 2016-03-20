@@ -2196,6 +2196,304 @@
     </div>
 
     <!-- ================================================= -->
+                <!-- ADD AUDIOFACET DOCUMENT MODAL -->
+    <!-- ================================================= -->
+    <div class="modal fade" id="addAudioFacetDocument" tabindex="-1" role="dialog" aria-labelledby="addAudioFacetDocument">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <ul class="nav nav-tabs" role="documentlist">
+              <li role="presentation" class="active"><a href="#documentuploadaudio" aria-controls="home" role="tab" data-toggle="tab" class="darker">Upload a Document</a></li>
+              <li role="presentation"><a href="#documentlibraryaudio" aria-controls="profile" role="tab" data-toggle="tab" class="darker">Select From Document Library</a></li>
+            </ul>
+          </div>
+          <div class="modal-body">
+            <div class="tab-content">
+              <!-- UPLOAD PANEL -->
+              <div role="tabpanel" class="tab-pane active" id="documentuploadaudio">
+                <div class="uploadpanel" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
+                <form action="{% url 'upload_audiofacet_document' %}" method="POST" class="post-form" enctype="multipart/form-data">
+                {% csrf_token %}
+                <!-- Left Col -->
+                <div class="col-md-6">
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ audiofacet_documentform.document.help_text }}"><span class="field-label">{{ audiofacet_documentform.document.label_tag }}</span></a>
+                    {{ audiofacet_documentform.document }}
+                    {% if audiofacet_documentform.document.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ audiofacet_documentform.document.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ audiofacet_documentform.asset_title.help_text }}"><span class="field-label">{{ audiofacet_documentform.asset_title.label_tag }}</span></a>
+                    {{ audiofacet_documentform.asset_title }}
+                    {% if audiofacet_documentform.asset_title.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ audiofacet_documentform.asset_title.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ audiofacet_documentform.doc_type.help_text }}"><span class="field-label">{{ audiofacet_documentform.doc_type.label_tag }}</span></a>
+                    {{ audiofacet_documentform.doc_type }}
+                    {% if audiofacet_documentform.doc_type.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ audiofacet_documentform.doc_type.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ audiofacet_documentform.keywords.help_text }}"><span class="field-label">{{ audiofacet_documentform.keywords.label_tag }}</span></a>
+                    {{ audiofacet_documentform.keywords }}
+                    {% if audiofacet_documentform.keywords.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ audiofacet_documentform.keywords.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                </div>
+                <!-- End Left Col -->
+                <!-- Right Col -->
+                <div class="col-md-6">
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ audiofacet_documentform.asset_description.help_text }}"><span class="field-label">{{ audiofacet_documentform.asset_description.label_tag }}</span></a>
+                    {{ audiofacet_documentform.asset_description }}
+                    {% if audiofacet_documentform.asset_description.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ audiofacet_documentform.asset_description.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ audiofacet_documentform.attribution.help_text }}"><span class="field-label">{{ audiofacet_documentform.attribution.label_tag }}</span></a>
+                    {{ audiofacet_documentform.attribution }}
+                    {% if audiofacet_documentform.attribution.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ audiofacet_documentform.attribution.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                </div>
+                <!-- End Right Col -->
+                {% for audiofacet in story.audiofacetstory.all %}
+                <input type="hidden" name="audiofacet" value="{{ audiofacet.pk }}" />
+                {% endfor %}
+                <div>
+                <button type="submit" class="btn btn-primary">Save Document</button>
+                </div>
+                </form>
+                </div>
+              </div>
+              <!-- END UPLOAD PANEL -->
+              <!-- LIBRARY PANEL -->
+              <div role="tabpanel" class="tab-pane" id="documentlibraryaudio">
+                    <div class="documentlibrary" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
+                      <form action="{% url 'add_audiofacet_document' %}" method="POST" class="post-form" name="addaudiodocument">
+                        {% csrf_token %}
+                        <div class="document-library">
+                        {% for document in documents %}
+                          <div class="col-md-2">
+                            <label>
+                              {% if document.doc_type == 'OTHER' %}
+                              <a href="" title="{{ document.asset_description }}"><h1><i class="fa fa-file-file-o dark"></i></h1></a>
+                              {% endif %}
+                              {% if document.doc_type == 'TEXT' %}
+                              <a href="" title="{{ document.asset_description }}"><h1><i class="fa fa-file-text-o dark"></i></h1></a>
+                              {% endif %}
+                              {% if document.doc_type == 'WORD DOC' %}
+                              <a href="" title="{{ document.asset_description }}"><h1><i class="fa fa-file-word-o dark"></i></h1></a>
+                              {% endif %}
+                              {% if document.doc_type == 'EXCEL' %}
+                              <a href="" title="{{ document.asset_description }}"><h1><i class="fa fa-file-excel-o dark"></i></h1></a>
+                              {% endif %}
+                              {% if document.doc_type == 'PDF' %}
+                              <a href="" title="{{ document.asset_description }}"><h1><i class="fa fa-file-pdf-o dark"></i></h1></a>
+                              {% endif %}
+                              {% if document.doc_type == 'COMMA SEPARATED' %}
+                              <a href="" title="{{ document.asset_description }}"><h1><i class="fa fa-file-o dark"></i></h1></a>
+                              {% endif %}
+                              <p class="tiny-text">{{ document.asset_title }}<br>{{ document.doc_type }}</p>
+                              <input type="checkbox" name="documents" value="{{ document.id }}">
+                            </label>
+                          </div>
+                        {% endfor %}
+                        </div>
+                        {% for audiofacet in story.audiofacetstory.all %}
+                        <input type="hidden" name="audiofacet" value="{{ audiofacet.pk }}" />
+                        {% endfor %}
+                        <button type="submit" class="btn btn-primary" name="addaudiodocument">Add Documents</button>
+                      </form>
+                    </div>
+              </div>
+              <!-- END LIBRARY PANEL -->
+            </div>
+          </div>
+          <div class="modal-footer">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================================================= -->
+                <!-- ADD VIDEOFACET DOCUMENT MODAL -->
+    <!-- ================================================= -->
+    <div class="modal fade" id="addVideoFacetDocument" tabindex="-1" role="dialog" aria-labelledby="addVideoFacetDocument">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <ul class="nav nav-tabs" role="documentlist">
+              <li role="presentation" class="active"><a href="#documentuploadvideo" aria-controls="home" role="tab" data-toggle="tab" class="darker">Upload a Document</a></li>
+              <li role="presentation"><a href="#documentlibraryvideo" aria-controls="profile" role="tab" data-toggle="tab" class="darker">Select From Document Library</a></li>
+            </ul>
+          </div>
+          <div class="modal-body">
+            <div class="tab-content">
+              <!-- UPLOAD PANEL -->
+              <div role="tabpanel" class="tab-pane active" id="documentuploadvideo">
+                <div class="uploadpanel" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
+                <form action="{% url 'upload_videofacet_document' %}" method="POST" class="post-form" enctype="multipart/form-data">
+                {% csrf_token %}
+                <!-- Left Col -->
+                <div class="col-md-6">
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ videofacet_documentform.document.help_text }}"><span class="field-label">{{ videofacet_documentform.document.label_tag }}</span></a>
+                    {{ videofacet_documentform.document }}
+                    {% if videofacet_documentform.document.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ videofacet_documentform.document.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ videofacet_documentform.asset_title.help_text }}"><span class="field-label">{{ videofacet_documentform.asset_title.label_tag }}</span></a>
+                    {{ videofacet_documentform.asset_title }}
+                    {% if videofacet_documentform.asset_title.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ videofacet_documentform.asset_title.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ videofacet_documentform.doc_type.help_text }}"><span class="field-label">{{ videofacet_documentform.doc_type.label_tag }}</span></a>
+                    {{ videofacet_documentform.doc_type }}
+                    {% if videofacet_documentform.doc_type.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ videofacet_documentform.doc_type.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ videofacet_documentform.keywords.help_text }}"><span class="field-label">{{ videofacet_documentform.keywords.label_tag }}</span></a>
+                    {{ videofacet_documentform.keywords }}
+                    {% if videofacet_documentform.keywords.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ videofacet_documentform.keywords.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                </div>
+                <!-- End Left Col -->
+                <!-- Right Col -->
+                <div class="col-md-6">
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ videofacet_documentform.asset_description.help_text }}"><span class="field-label">{{ videofacet_documentform.asset_description.label_tag }}</span></a>
+                    {{ videofacet_documentform.asset_description }}
+                    {% if videofacet_documentform.asset_description.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ videofacet_documentform.asset_description.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ videofacet_documentform.attribution.help_text }}"><span class="field-label">{{ videofacet_documentform.attribution.label_tag }}</span></a>
+                    {{ videofacet_documentform.attribution }}
+                    {% if videofacet_documentform.attribution.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ videofacet_documentform.attribution.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                </div>
+                <!-- End Right Col -->
+                {% for videofacet in story.videofacetstory.all %}
+                <input type="hidden" name="videofacet" value="{{ videofacet.pk }}" />
+                {% endfor %}
+                <div>
+                <button type="submit" class="btn btn-primary">Save Document</button>
+                </div>
+                </form>
+                </div>
+              </div>
+              <!-- END UPLOAD PANEL -->
+              <!-- LIBRARY PANEL -->
+              <div role="tabpanel" class="tab-pane" id="documentlibraryvideo">
+                    <div class="documentlibrary" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
+                      <form action="{% url 'add_videofacet_document' %}" method="POST" class="post-form" name="addvideodocument">
+                        {% csrf_token %}
+                        <div class="document-library">
+                        {% for document in documents %}
+                          <div class="col-md-2">
+                            <label>
+                              {% if document.doc_type == 'OTHER' %}
+                              <a href="" title="{{ document.asset_description }}"><h1><i class="fa fa-file-file-o dark"></i></h1></a>
+                              {% endif %}
+                              {% if document.doc_type == 'TEXT' %}
+                              <a href="" title="{{ document.asset_description }}"><h1><i class="fa fa-file-text-o dark"></i></h1></a>
+                              {% endif %}
+                              {% if document.doc_type == 'WORD DOC' %}
+                              <a href="" title="{{ document.asset_description }}"><h1><i class="fa fa-file-word-o dark"></i></h1></a>
+                              {% endif %}
+                              {% if document.doc_type == 'EXCEL' %}
+                              <a href="" title="{{ document.asset_description }}"><h1><i class="fa fa-file-excel-o dark"></i></h1></a>
+                              {% endif %}
+                              {% if document.doc_type == 'PDF' %}
+                              <a href="" title="{{ document.asset_description }}"><h1><i class="fa fa-file-pdf-o dark"></i></h1></a>
+                              {% endif %}
+                              {% if document.doc_type == 'COMMA SEPARATED' %}
+                              <a href="" title="{{ document.asset_description }}"><h1><i class="fa fa-file-o dark"></i></h1></a>
+                              {% endif %}
+                              <p class="tiny-text">{{ document.asset_title }}<br>{{ document.doc_type }}</p>
+                              <input type="checkbox" name="documents" value="{{ document.id }}">
+                            </label>
+                          </div>
+                        {% endfor %}
+                        </div>
+                        {% for videofacet in story.videofacetstory.all %}
+                        <input type="hidden" name="videofacet" value="{{ videofacet.pk }}" />
+                        {% endfor %}
+                        <button type="submit" class="btn btn-primary" name="addvideodocument">Add Documents</button>
+                      </form>
+                    </div>
+              </div>
+              <!-- END LIBRARY PANEL -->
+            </div>
+          </div>
+          <div class="modal-footer">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================================================= -->
                   <!-- ADD STORYNOTE MODAL -->
     <!-- ================================================= -->
     <div class="modal fade" id="addStoryNote" tabindex="-1" role="dialog" aria-labelledby="addStoryNoteModalLabel">
