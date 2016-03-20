@@ -42,6 +42,7 @@ from django.core.urlresolvers import reverse
 from django.utils import timezone
 from django.shortcuts import get_object_or_404
 from itertools import chain
+from embed_video.fields import EmbedVideoField
 
 #----------------------------------------------------------------------#
 #   People:
@@ -2859,7 +2860,7 @@ class AudioAsset(models.Model):
         blank=True,
     )
 
-    link = models.TextField(
+    link = models.URLField(
         max_length=400,
         help_text='Link to audio file on SoundCloud',
         blank=True,
@@ -3013,7 +3014,7 @@ class VideoAsset(models.Model):
         blank=True,
     )
 
-    link = models.TextField(
+    link = models.URLField(
         max_length=400,
         help_text='Link to video file on YouTube or Vimeo',
         blank=True,

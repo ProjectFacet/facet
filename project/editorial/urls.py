@@ -136,10 +136,28 @@ urlpatterns = [
     url(r'^printfacet/document/new/$', assetviews.upload_printfacet_document, name='upload_printfacet_document'),
     url(r'^audiofacet/document/new/$', assetviews.upload_audiofacet_document, name='upload_audiofacet_document'),
     url(r'^videofacet/document/new/$', assetviews.upload_videofacet_document, name='upload_videofacet_document'),
-    url(r'^webfacet/documentadd/$', assetviews.add_webfacet_document, name='add_webfacet_document'),
+    url(r'^webfacet/document/add/$', assetviews.add_webfacet_document, name='add_webfacet_document'),
     url(r'^printfacet/document/add/$', assetviews.add_printfacet_document, name='add_printfacet_document'),
     url(r'^audiofacet/document/add/$', assetviews.add_audiofacet_document, name='add_audiofacet_document'),
     url(r'^videofacet/document/add/$', assetviews.add_videofacet_document, name='add_videofacet_document'),
+    # Audio
+    url(r'^webfacet/audio/new/$', assetviews.upload_webfacet_audio, name='upload_webfacet_audio'),
+    # url(r'^printfacet/audio/new/$', assetviews.upload_printfacet_audio, name='upload_printfacet_audio'),
+    # url(r'^audiofacet/audio/new/$', assetviews.upload_audiofacet_audio, name='upload_audiofacet_audio'),
+    # url(r'^videofacet/audio/new/$', assetviews.upload_videofacet_audio, name='upload_videofacet_audio'),
+    url(r'^webfacet/audio/add/$', assetviews.add_webfacet_audio, name='add_webfacet_audio'),
+    # url(r'^printfacet/audio/add/$', assetviews.add_printfacet_audio, name='add_printfacet_audio'),
+    # url(r'^audiofacet/audio/add/$', assetviews.add_audiofacet_audio, name='add_audiofacet_audio'),
+    # url(r'^videofacet/audio/add/$', assetviews.add_videofacet_audio, name='add_videofacet_audio'),
+    # Video
+    url(r'^webfacet/video/new/$', assetviews.upload_webfacet_video, name='upload_webfacet_video'),
+    # url(r'^printfacet/video/new/$', assetviews.upload_printfacet_video, name='upload_printfacet_video'),
+    # url(r'^audiofacet/video/new/$', assetviews.upload_audiofacet_video, name='upload_audiofacet_video'),
+    # url(r'^videofacet/video/new/$', assetviews.upload_videofacet_video, name='upload_videofacet_video'),
+    url(r'^webfacet/video/add/$', assetviews.add_webfacet_video, name='add_webfacet_video'),
+    # url(r'^printfacet/video/add/$', assetviews.add_printfacet_video, name='add_printfacet_video'),
+    # url(r'^audiofacet/video/add/$', assetviews.add_audiofacet_video, name='add_audiofacet_video'),
+    # url(r'^videofacet/video/add/$', assetviews.add_videofacet_video, name='add_videofacet_video'),
     #----------------------------------------------------------------------#
     #   Network URLS
     #----------------------------------------------------------------------#

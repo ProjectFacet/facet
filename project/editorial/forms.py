@@ -28,7 +28,9 @@ from editorial.models import (
     SeriesNote,
     StoryNote,
     ImageAsset,
-    DocumentAsset
+    DocumentAsset,
+    AudioAsset,
+    VideoAsset
     )
 
 # ------------------------------ #
@@ -518,6 +520,72 @@ class AddDocumentForm(forms.Form):
     documents = forms.ModelMultipleChoiceField(
         widget=CheckboxSelectMultiple,
         queryset = DocumentAsset.objects.all()
+    )
+
+class AudioAssetForm(forms.ModelForm):
+    """Upload audio to a facet."""
+
+    class Meta:
+        model = AudioAsset
+        fields = [
+            'asset_title',
+            'asset_description',
+            'attribution',
+            'audio',
+            'link',
+            'audio_type',
+            'keywords',
+        ]
+        widgets = {
+            'asset_description': Textarea(attrs={'rows':3}),
+            'attribution': Textarea(attrs={'rows':3}),
+            'audio_type': Select(attrs={'class': 'form-control'}),
+        }
+
+class AddAudioForm(forms.Form):
+    """ Add existing audio to a facet."""
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request")
+        super(AddAudioForm, self).__init__(*args, **kwargs)
+        self.fields['documents'].queryset = Organization.get_org_audio_library(self.request.user.organization)
+
+    audio = forms.ModelMultipleChoiceField(
+        widget=CheckboxSelectMultiple,
+        queryset = AudioAsset.objects.all()
+    )
+
+class VideoAssetForm(forms.ModelForm):
+    """Upload video to a facet."""
+
+    class Meta:
+        model = VideoAsset
+        fields = [
+            'asset_title',
+            'asset_description',
+            'attribution',
+            'video',
+            'link',
+            'video_type',
+            'keywords',
+        ]
+        widgets = {
+            'asset_description': Textarea(attrs={'rows':3}),
+            'attribution': Textarea(attrs={'rows':3}),
+            'video_type': Select(attrs={'class': 'form-control'}),
+        }
+
+class AddVideoForm(forms.Form):
+    """ Add existing video to a facet."""
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request")
+        super(AddVideoForm, self).__init__(*args, **kwargs)
+        self.fields['documents'].queryset = Organization.get_org_video_library(self.request.user.organization)
+
+    video = forms.ModelMultipleChoiceField(
+        widget=CheckboxSelectMultiple,
+        queryset = VideoAsset.objects.all()
     )
 
 

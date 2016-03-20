@@ -17,7 +17,12 @@ from editorial.forms import (
     ImageAssetForm,
     AddImageForm,
     DocumentAssetForm,
-    AddDocumentForm,)
+    AddDocumentForm,
+    AudioAssetForm,
+    AddAudioForm,
+    VideoAssetForm,
+    AddVideoForm,
+    )
 
 from editorial.models import (
     WebFacet,
@@ -238,7 +243,7 @@ def upload_webfacet_document(request):
         documentform=DocumentAssetForm(request.POST, request.FILES)
         if documentform.is_valid():
             webdocument = documentform.save(commit=False)
-            # retrieve the webfacet the image should be associated with
+            # retrieve the webfacet the document should be associated with
             webfacet_id = request.POST.get('webfacet')
             webfacet = get_object_or_404(WebFacet, id=webfacet_id)
             # set request based attributes
@@ -257,7 +262,7 @@ def upload_printfacet_document(request):
         documentform=DocumentAssetForm(request.POST, request.FILES)
         if documentform.is_valid():
             printdocument = documentform.save(commit=False)
-            # retrieve the printfacet the image should be associated with
+            # retrieve the printfacet the document should be associated with
             printfacet_id = request.POST.get('printfacet')
             printfacet = get_object_or_404(PrintFacet, id=printfacet_id)
             # set request based attributes
@@ -276,7 +281,7 @@ def upload_audiofacet_document(request):
         documentform=DocumentAssetForm(request.POST, request.FILES)
         if documentform.is_valid():
             audiodocument = documentform.save(commit=False)
-            # retrieve the audiofacet the image should be associated with
+            # retrieve the audiofacet the document should be associated with
             audiofacet_id = request.POST.get('audiofacet')
             audiofacet = get_object_or_404(AudioFacet, id=audiofacet_id)
             # set request based attributes
@@ -295,7 +300,7 @@ def upload_videofacet_document(request):
         documentform=DocumentAssetForm(request.POST, request.FILES)
         if documentform.is_valid():
             videodocument = documentform.save(commit=False)
-            # retrieve the videofacet the image should be associated with
+            # retrieve the videofacet the document should be associated with
             videofacet_id = request.POST.get('videofacet')
             videofacet = get_object_or_404(VideoFacet, id=videofacet_id)
             # set request based attributes
@@ -385,3 +390,97 @@ def add_videofacet_document(request):
                 videofacet.document_assets.add(doc_ins)
             videofacet.save()
     return redirect('story_detail', pk=videofacet.story.id)
+
+#----------------------------------------------------------------------#
+#   Upload Audio Asset Views
+#----------------------------------------------------------------------#
+
+def upload_webfacet_audio(request):
+    """ Add audio to a webfacet."""
+
+    if request.method == 'POST':
+        audioform=AudioAssetForm(request.POST, request.FILES)
+        if audioform.is_valid():
+            webaudio = audioform.save(commit=False)
+            # retrieve the webfacet the audio should be associated with
+            webfacet_id = request.POST.get('webfacet')
+            webfacet = get_object_or_404(WebFacet, id=webfacet_id)
+            # set request based attributes
+            webaudio.owner = request.user
+            webaudio.organization = request.user.organization
+            webaudio.save()
+            # add audio asset to webfacet audio_assets
+            webfacet.audio_assets.add(webaudio)
+            webfacet.save()
+    return redirect('story_detail', pk=webfacet.story.id)
+
+#----------------------------------------------------------------------#
+#   Add Audio Asset Views
+#----------------------------------------------------------------------#
+
+def add_webfacet_audio(request):
+    """ Add existing audio(s) in the library to another webfacet."""
+
+    if request.method == "POST":
+        add_audio_form = AddAudioForm(request.POST, request=request)
+        if add_audio_form.is_valid():
+            webfacet_id = request.POST.get('webfacet')
+            print "WEBFACETid: ", webfacet_id
+            webfacet = get_object_or_404(WebFacet, id=webfacet_id)
+            audios = request.POST.getlist('audios')
+            print "DOCS: ", audios
+            for audio in audios:
+                audio_ins = get_object_or_404(AudioAsset, id=audio)
+                print "DOCins: ", audio_ins
+                webfacet.audio_assets.add(audio_ins)
+            webfacet.save()
+    return redirect('story_detail', pk=webfacet.story.id)
+
+
+#----------------------------------------------------------------------#
+#   Upload Video Asset Views
+#----------------------------------------------------------------------#
+
+def upload_webfacet_video(request):
+    """ Add video to a webfacet."""
+
+    "IN HERE"
+    if request.method == 'POST':
+        videoform=VideoAssetForm(request.POST, request.FILES)
+        if videoform.is_valid():
+            webvideo = videoform.save(commit=False)
+            # retrieve the webfacet the video should be associated with
+            webfacet_id = request.POST.get('webfacet')
+            print "WID: ", webfacet_id
+            webfacet = get_object_or_404(WebFacet, id=webfacet_id)
+            print "WF: ", webfacet
+            # set request based attributes
+            webvideo.owner = request.user
+            webvideo.organization = request.user.organization
+            webvideo.save()
+            # add video asset to webfacet video_assets
+            webfacet.video_assets.add(webvideo)
+            webfacet.save()
+    return redirect('story_detail', pk=webfacet.story.id)
+
+#----------------------------------------------------------------------#
+#   Add Video Asset Views
+#----------------------------------------------------------------------#
+
+def add_webfacet_video(request):
+    """ Add existing video(s) in the library to another webfacet."""
+
+    if request.method == "POST":
+        add_video_form = AddVideoForm(request.POST, request=request)
+        if add_video_form.is_valid():
+            webfacet_id = request.POST.get('webfacet')
+            print "WEBFACETid: ", webfacet_id
+            webfacet = get_object_or_404(WebFacet, id=webfacet_id)
+            videos = request.POST.getlist('videos')
+            print "DOCS: ", videos
+            for video in videos:
+                video_ins = get_object_or_404(VideoAsset, id=video)
+                print "DOCins: ", video_ins
+                webfacet.video_assets.add(video_ins)
+            webfacet.save()
+    return redirect('story_detail', pk=webfacet.story.id)

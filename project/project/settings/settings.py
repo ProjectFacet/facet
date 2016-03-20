@@ -49,6 +49,7 @@ INSTALLED_APPS = (
     'bootstrap3_datetime',
     'tinymce',
     'watson',
+    'embed_video',
     'project',
 )
 
@@ -86,6 +87,7 @@ TEMPLATES = [
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
+                'django.core.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'project.context_processors.include_private_message_form',
