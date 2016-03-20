@@ -131,42 +131,42 @@ class User(AbstractUser):
         format='JPEG',
     )
 
-    facebook = models.CharField(
+    facebook = models.URLField(
         max_length=250,
         blank=True,
     )
 
-    twitter = models.CharField(
+    twitter = models.URLField(
         max_length=250,
         blank=True,
     )
 
-    github = models.CharField(
+    github = models.URLField(
+        max_length=300,
+        blank=True,
+    )
+
+    linkedin = models.URLField(
         max_length=250,
         blank=True,
     )
 
-    linkedin = models.CharField(
+    instagram = models.URLField(
         max_length=250,
         blank=True,
     )
 
-    instagram = models.CharField(
+    snapchat = models.URLField(
         max_length=250,
         blank=True,
     )
 
-    snapchat = models.CharField(
+    vine = models.URLField(
         max_length=250,
         blank=True,
     )
 
-    vine = models.CharField(
-        max_length=250,
-        blank=True,
-    )
-
-    website = models.CharField(
+    website = models.URLField(
         max_length=250,
         blank=True,
     )
@@ -306,17 +306,17 @@ class Organization(models.Model):
         auto_now_add=True
     )
 
-    facebook = models.CharField(
+    facebook = models.URLField(
         max_length=250,
         blank=True,
     )
 
-    twitter = models.CharField(
+    twitter = models.URLField(
         max_length=250,
         blank=True,
     )
 
-    website = models.CharField(
+    website = models.URLField(
         max_length=250,
         blank=True,
     )
@@ -1036,7 +1036,8 @@ class WebFacet(models.Model):
         blank=True,
     )
 
-    github_link = models.TextField(
+    github_link = models.URLField(
+        max_length=300,
         help_text='Link to code for any custom feature',
         blank=True,
     )
@@ -1332,6 +1333,7 @@ class PrintFacet(models.Model):
     )
 
     github_link = models.TextField(
+        max_length=300,
         help_text='Link to code for any custom feature',
         blank=True,
     )
@@ -1626,7 +1628,8 @@ class AudioFacet(models.Model):
         blank=True,
     )
 
-    github_link = models.TextField(
+    github_link = models.URLField(
+        max_length=300,
         help_text='Link to code for any custom feature',
         blank=True,
     )
@@ -1922,7 +1925,8 @@ class VideoFacet(models.Model):
         blank=True,
     )
 
-    github_link = models.TextField(
+    github_link = models.URLField(
+        max_length=300,
         help_text='Link to code for any custom feature',
         blank=True,
     )
