@@ -346,6 +346,15 @@
                         </div>
                       {% endif %}
                     </div>
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ webform.keywords.help_text }}"><span class="field-label">{{ webform.keywords.label_tag }}</span></a>
+                      {{ webform.keywords }}
+                      {% if webform.keywords.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ webform.keywords.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
 
                   </div>
                   <!-- End of Center Column -->
@@ -582,6 +591,15 @@
                       {% if printform.pf_content.errors %}
                         <div class="alert alert-warning" role="alert">
                         {{ printform.pf_content.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ printform.keywords.help_text }}"><span class="field-label">{{ printform.keywords.label_tag }}</span></a>
+                      {{ printform.keywords }}
+                      {% if printform.keywords.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ printform.keywords.errors }}
                         </div>
                       {% endif %}
                     </div>
@@ -828,6 +846,15 @@
                         </div>
                       {% endif %}
                     </div>
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ audioform.keywords.help_text }}"><span class="field-label">{{ audioform.keywords.label_tag }}</span></a>
+                      {{ audioform.keywords }}
+                      {% if audioform.keywords.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ audioform.keywords.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
 
                   </div>
                   <!-- End of Center Column -->
@@ -1065,6 +1092,15 @@
                       {% if videoform.vf_content.errors %}
                         <div class="alert alert-warning" role="alert">
                         {{ videoform.vf_content.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ videoform.keywords.help_text }}"><span class="field-label">{{ videoform.keywords.label_tag }}</span></a>
+                      {{ videoform.keywords }}
+                      {% if videoform.keywords.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ videoform.keywords.errors }}
                         </div>
                       {% endif %}
                     </div>

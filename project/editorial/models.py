@@ -3,20 +3,29 @@
     Tables
     ---------
     People:
-    - Main Tables: User, Organization, Network
-    - Associations: NetworkOrganization
+    - User, Organization, Network
 
     Content:
-    - Main Tables: Series, Story, WebFacet, PrintFacet, AudioFacet, VideoFacet
-    - Associations: WebFacetContributors, PrintFacetContributors, AudioFacetContributors,
-                    VideoFacetContributors, StoryCopyDetails, SeriesCopyDetails,
-                    WebFacetCopyDetails, PrintFacetCopyDetails, AudioFacetCopyDetails,
-                    VideoFacetCopyDetails
+    - Series, Story, WebFacet, PrintFacet, AudioFacet, VideoFacet
 
-    MetaMaterials:
-    - Main Tables: SeriesPlan, StoryPlan, Asset, Comment, CommentReadStatus,
-                   Discussion, PrivateDiscussion
-    - Associations:
+    Contributor Associations:
+    - WebFacetContributors, PrintFacetContributors, AudioFacetContributors,
+      VideoFacetContributors,
+
+    Copy Details:
+    - StoryCopyDetails, SeriesCopyDetails, WebFacetCopyDetails,
+      PrintFacetCopyDetails, AudioFacetCopyDetails, VideoFacetCopyDetails
+
+    Assets:
+    - ImageAsset, DocumentAsset, AudioAsset, VideoAsset
+
+    Notes:
+    - Note, NetworkNote, OrganizationNote, UserNote, SeriesNote, StoryNote
+
+    Discussion:
+    - Discussion, PrivateDiscussion, PrivateMessage, Comment, CommentReadStatus
+
+
 """
 
 from django.db import models
@@ -36,8 +45,7 @@ from itertools import chain
 
 #----------------------------------------------------------------------#
 #   People:
-#   - Main Tables: User, Organization, Network
-#   - Associations: NetworkOrganization, UserSeries, UserStory
+#   User, Organization, Network
 #----------------------------------------------------------------------#
 
 @python_2_unicode_compatible
@@ -250,6 +258,7 @@ class User(AbstractUser):
     def search_title(self):
         return self.credit_name
 
+#----------------------------------------------------------------------#
 
 @python_2_unicode_compatible
 class Organization(models.Model):
@@ -409,6 +418,7 @@ class Organization(models.Model):
     def type(self):
         return "Organization"
 
+#----------------------------------------------------------------------#
 
 @python_2_unicode_compatible
 class Network(models.Model):
@@ -495,16 +505,12 @@ class Network(models.Model):
     def type(self):
         return "Network"
 
-#----------------------------------------------------------------------#
+#-----------------------------------------------------------------------#
 #   Content:
-#   - Main Tables:  Series, Story, WebFacet, PrintFacet, AudioFacet, VideoFacet
-#   - Associations: WebFacetContributors, PrintFacetContributors,
-#                   AudioFacetContributors, VideoFacetContributors
-#                   StoryCopyDetails, SeriesCopyDetails, WebFacetCopyDetails,
-#                   PrintFacetCopyDetails, AudioFacetCopyDetails, VideoFacetCopyDetails
-#----------------------------------------------------------------------#
+#   Series, Story, WebFacet, PrintFacet, AudioFacet, VideoFacet
+#   (A Facet is always part of a story, even if there is only one facet.)
+#-----------------------------------------------------------------------#
 
-# A Facet is always part of a story, even if there is only one facet.
 
 @python_2_unicode_compatible
 class Series(models.Model):
@@ -626,6 +632,9 @@ class Series(models.Model):
     def type(self):
         return "Series"
 
+#----------------------------------------------------------------------#
+#  STORY
+#----------------------------------------------------------------------#
 
 @python_2_unicode_compatible
 class Story(models.Model):
@@ -865,6 +874,9 @@ class Story(models.Model):
     def type(self):
         return "Story"
 
+#----------------------------------------------------------------------#
+#   WEBFACET
+#----------------------------------------------------------------------#
 
 @python_2_unicode_compatible
 class WebFacet(models.Model):
@@ -1006,10 +1018,30 @@ class WebFacet(models.Model):
         blank=True,
     )
 
+    github_link = models.TextField(
+        help_text='Link to code for any custom feature',
+        blank=True,
+    )
+
     image_assets = models.ManyToManyField(
         'ImageAsset',
         blank=True,
     )
+
+    document_assets = models.ManyToManyField(
+        'DocumentAsset',
+        blank=True,
+    )
+
+    # audio_assets = models.ManyToManyField(
+    #     'AudioAssets',
+    #     blank=True,
+    # )
+    #
+    # video_assets = models.ManyToManyField(
+    #     'VideoAssets',
+    #     blank=True,
+    # )
 
     captions = models.TextField(
         help_text='Captions and credits for any assets in use.',
@@ -1119,6 +1151,9 @@ class WebFacet(models.Model):
     def type(self):
         return "WebFacet"
 
+#----------------------------------------------------------------------#
+#   PRINTFACET
+#----------------------------------------------------------------------#
 
 @python_2_unicode_compatible
 class PrintFacet(models.Model):
@@ -1372,6 +1407,9 @@ class PrintFacet(models.Model):
     def type(self):
         return "PrintFacet"
 
+#----------------------------------------------------------------------#
+#   AUDIOFACET
+#----------------------------------------------------------------------#
 
 @python_2_unicode_compatible
 class AudioFacet(models.Model):
@@ -1627,6 +1665,9 @@ class AudioFacet(models.Model):
     def type(self):
         return "AudioFacet"
 
+#----------------------------------------------------------------------#
+#   VIDEOFACET
+#----------------------------------------------------------------------#
 
 @python_2_unicode_compatible
 class VideoFacet(models.Model):
@@ -1882,8 +1923,11 @@ class VideoFacet(models.Model):
         return "VideoFacet"
 
 
-#   Associations
-#   ------------
+#----------------------------------------------------------------------#
+#   Contributor Associations:
+#   WebFacetContributor, PrintFacetContributor,
+#   AudioFacetContributor, VideoFacetContributor
+#----------------------------------------------------------------------#
 
 @python_2_unicode_compatible
 class WebFacetContributor(models.Model):
@@ -1980,6 +2024,11 @@ class VideoFacetContributor(models.Model):
                                         contributor=self.user.credit_name,
                                         )
 
+#----------------------------------------------------------------------#
+#   CopyDetails:
+#   SeriesCopyDetail, StoryCopyDetail, WebFacetCopyDetail,
+#   PrintFacetCopyDetail, AudioFacetCopyDetail, VideoFacetCopyDetail
+#----------------------------------------------------------------------#
 
 class SeriesCopyDetailManager(models.Manager):
     """Custom manager to create copy records for series. """
@@ -2296,24 +2345,22 @@ class VideoFacetCopyDetail(models.Model):
                                 )
 
 #----------------------------------------------------------------------#
-#   MetaMaterials:
-#   - Main Tables:  ImageAsset, Note, UserNote, SeriesNote, StoryNote, Comment
-#                   CommentReadStatus, Discussion, PrivateDiscussion,
-#   - Associations: None
+#   Assets:
+#   ImageAsset, DocumentAsset, AudioAsset, VideoAsset,
 #----------------------------------------------------------------------#
 
 class ImageAssetManager(models.Manager):
     """Custom manager for ImageAsset."""
 
     def create_imageasset(self, owner, organization, asset_title, asset_description, asset_attribution, photo, image_type, keywords):
-        """Method for quick creation of videofacet copy detail record."""
+        """Method for quick creation of an image asset."""
         imageasset=self.create(owner=owner, organization=organization, asset_title=asset_title, asset_description=asset_description, asset_attribution=asset_attribution, photo=photo, image_type=image_type, keywords=keywords)
         return imageasset
 
 
 @python_2_unicode_compatible
 class ImageAsset(models.Model):
-    """ Assets for all media uploaded. """
+    """ Uploaded Image Asset. """
 
     owner = models.ForeignKey(
         User,
@@ -2435,8 +2482,8 @@ class ImageAsset(models.Model):
     def __str__(self):
         return self.asset_title
 
-    # def get_absolute_url(self):
-    #     return ('image_detail', kwargs={'pk': self.id})
+    def get_absolute_url(self):
+        return reverse('asset_detail', kwargs={'pk': self.id})
 
     @property
     def description(self):
@@ -2449,6 +2496,173 @@ class ImageAsset(models.Model):
     @property
     def type(self):
         return "Image Asset"
+
+#----------------------------------------------------------------------#
+# DocumentAsset
+
+class DocumentAssetManager(models.Manager):
+    """Custom manager for DocumentAsset."""
+
+    def create_imageasset(self, owner, organization, asset_title, asset_description, asset_attribution, document, doc_type, keywords):
+        """Method for quick creation of a document asset."""
+        documentasset=self.create(owner=owner, organization=organization, asset_title=asset_title, asset_description=asset_description, asset_attribution=asset_attribution, document=document, doc_type=doc_type, keywords=keywords)
+        return documentasset
+
+
+@python_2_unicode_compatible
+class DocumentAsset(models.Model):
+    """ Uploaded Document Asset. """
+
+    owner = models.ForeignKey(
+        User,
+        related_name='document_asset_owner',
+    )
+
+    organization = models.ForeignKey(
+        Organization,
+        related_name='document_asset_organization'
+    )
+
+    original = models.BooleanField(
+        default=True,
+        help_text='This content originally belonged to this organization.'
+    )
+
+    asset_title = models.CharField(
+        max_length=200,
+        help_text='Text for file name. Name it intuitively.',
+        blank=True,
+    )
+
+    asset_description = models.TextField(
+        max_length=300,
+        help_text='What is the asset.',
+        blank=True,
+    )
+
+    attribution = models.TextField(
+        max_length=200,
+        help_text='The appropriate information for crediting the asset.',
+        blank=True,
+    )
+
+    document = models.FileField(
+        upload_to='documents',
+        blank=True,
+    )
+
+    #Choices for Asset type
+    PDF = 'PDF'
+    WORD = 'WORD DOC'
+    TXT =  'TEXT'
+    CSV = 'COMMA SEPARATED'
+    XLS = 'EXCEL'
+    OTHER = 'OTHER'
+
+    DOCUMENT_TYPE_CHOICES = (
+        (PDF, 'Adobe PDF'),
+        (WORD, 'Graphic'),
+        (TXT, 'Text File'),
+        (CSV, 'Comma Separated'),
+        (XLS, 'Excel File'),
+        (OTHER, 'Other'),
+    )
+
+    doc_type = models.CharField(
+        max_length=20,
+        choices = DOCUMENT_TYPE_CHOICES,
+        help_text='What kind of image.'
+    )
+
+    creation_date = models.DateTimeField(
+        auto_now_add=True,
+        help_text='When the asset was created.'
+    )
+
+    keywords = ArrayField(
+        models.CharField(max_length=100),
+        default=list,
+        help_text='List of keywords for search.',
+        blank=True,
+    )
+
+    objects = DocumentAssetManager()
+
+    class Meta:
+        verbose_name = "Document"
+        verbose_name_plural = "Documents"
+
+    def get_document_usage(self):
+        """Return facets a document is associated with."""
+
+        document_usage = []
+
+        document_webfacets = WebFacet.objects.filter(Q(document_assets=self))
+        document_printfacets = PrintFacet.objects.filter(Q(document_assets=self))
+        document_audiofacets = AudioFacet.objects.filter(Q(document_assets=self))
+        document_videofacets = VideoFacet.objects.filter(Q(document_assets=self))
+        document_usage.extend(document_webfacets)
+        document_usage.extend(document_printfacets)
+        document_usage.extend(document_audiofacets)
+        document_usage.extend(document_videofacets)
+        return image_usage
+
+    # def get_document_download_info(self):
+    #     """Return rst of document information for download."""
+
+    #     title = self.asset_title.encode('utf-8')
+    #     description = self.asset_description.encode('utf-8')
+    #     attribution = self.attribution.encode('utf-8')
+
+    #     document_info="""
+    #     Ddocument
+    #     =======
+    #     {title}.jpg
+    #     Description: {description}
+    #     Attribution: {attribution}
+    #     Type: {type}
+    #     Creation Date: {date}
+    #     Owner: {owner}
+    #     Organization: {organization}
+    #     Original: {original}
+    #     Keywords: {keywords}
+    #     """.format(title=title, description=description, attribution=attribution,
+    #     type=self.doc_type, date=self.creation_date, owner=self.owner,
+    #     organization=self.organization.name, original=self.original,
+    #     keywords=self.keywords)
+
+    #     return document_info
+
+    def __str__(self):
+        return self.asset_title
+
+    # def get_absolute_url(self):
+    #     return reverse('asset_detail', kwargs={'pk': self.id})
+
+    @property
+    def description(self):
+        return "{desc}".format(desc=self.asset_description.encode('utf-8'))
+
+    @property
+    def search_title(self):
+        return self.asset_title
+
+    @property
+    def type(self):
+        return "Document Asset"
+
+#----------------------------------------------------------------------#
+# AudioAsset
+
+
+#----------------------------------------------------------------------#
+#VideoAsset
+
+
+#----------------------------------------------------------------------#
+#   Notes:
+#   Note, NetworkNote, OrganizationNote, UserNote, SeriesNote, StoryNote
+#----------------------------------------------------------------------#
 
 
 @python_2_unicode_compatible
@@ -2616,6 +2830,10 @@ class StoryNote(Note):
     def type(self):
         return "Story Note"
 
+#----------------------------------------------------------------------#
+#   Discussion:
+#   Discussion, PrivateDiscussion, PrivateMessage, Comment, CommentReadStatus
+#----------------------------------------------------------------------#
 
 class DiscussionManager(models.Manager):
     """ Custom manager for discussions."""
@@ -2829,8 +3047,3 @@ class CommentReadStatus(models.Model):
                                 comment=self.comment.id,
                                 status=self.has_read,
                                 )
-
-#   Associations
-#   ------------
-
-# None
