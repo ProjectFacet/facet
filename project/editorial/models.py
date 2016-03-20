@@ -379,6 +379,18 @@ class Organization(models.Model):
         documents = DocumentAsset.objects.filter(organization=self)
         return documents
 
+    def get_org_audio_library(self):
+        """ Return list of all audio files associated with an organization. """
+
+        audio = AudioAsset.objects.filter(organization=self)
+        return audio
+
+    def get_org_video_library(self):
+        """ Return list of all video files associated with an organization. """
+
+        videos = VideoAsset.objects.filter(organization=self)
+        return videos
+
     def get_org_searchable_content(self):
         """ Return queryset of all objects that can be searched by a user."""
 
@@ -1039,15 +1051,15 @@ class WebFacet(models.Model):
         blank=True,
     )
 
-    # audio_assets = models.ManyToManyField(
-    #     'AudioAssets',
-    #     blank=True,
-    # )
-    #
-    # video_assets = models.ManyToManyField(
-    #     'VideoAssets',
-    #     blank=True,
-    # )
+    audio_assets = models.ManyToManyField(
+        'AudioAsset',
+        blank=True,
+    )
+
+    video_assets = models.ManyToManyField(
+        'VideoAsset',
+        blank=True,
+    )
 
     captions = models.TextField(
         help_text='Captions and credits for any assets in use.',
@@ -1095,6 +1107,18 @@ class WebFacet(models.Model):
 
         webfacet_documents = DocumentAsset.objects.filter(webfacet=self)
         return webfacet_documents
+
+    def get_webfacet_audio(self):
+        """Retrieve all audio objects associated with a webfacet."""
+
+        webfacet_audio = AudioAsset.objects.filter(webfacet=self)
+        return webfacet_audio
+
+    def get_webfacet_video(self):
+        """Retrieve all video objects associated with a webfacet."""
+
+        webfacet_video = AudioAsset.objects.filter(webfacet=self)
+        return webfacet_video
 
     def get_webfacet_download(self):
         """ Return rst formatted string for downloading webfacet and its meta."""
@@ -1322,15 +1346,15 @@ class PrintFacet(models.Model):
         blank=True,
     )
 
-    # audio_assets = models.ManyToManyField(
-    #     'AudioAssets',
-    #     blank=True,
-    # )
-    #
-    # video_assets = models.ManyToManyField(
-    #     'VideoAssets',
-    #     blank=True,
-    # )
+    audio_assets = models.ManyToManyField(
+        'AudioAsset',
+        blank=True,
+    )
+
+    video_assets = models.ManyToManyField(
+        'VideoAsset',
+        blank=True,
+    )
 
     captions = models.TextField(
         help_text='Captions and credits for any assets in use.',
@@ -1378,6 +1402,18 @@ class PrintFacet(models.Model):
 
         printfacet_documents = DocumentAsset.objects.filter(printfacet=self)
         return printfacet_documents
+
+    def get_printfacet_audio(self):
+        """Retrieve all audio objects associated with a printfacet."""
+
+        printfacet_audio = AudioAsset.objects.filter(printfacet=self)
+        return printfacet_audio
+
+    def get_printfacet_video(self):
+        """Retrieve all video objects associated with a printfacet."""
+
+        printfacet_video = AudioAsset.objects.filter(printfacet=self)
+        return printfacet_video
 
     def get_printfacet_download(self):
         """ Return rst formatted string for downloading printfacet and its meta."""
@@ -1605,15 +1641,15 @@ class AudioFacet(models.Model):
         blank=True,
     )
 
-    # audio_assets = models.ManyToManyField(
-    #     'AudioAssets',
-    #     blank=True,
-    # )
-    #
-    # video_assets = models.ManyToManyField(
-    #     'VideoAssets',
-    #     blank=True,
-    # )
+    audio_assets = models.ManyToManyField(
+        'AudioAsset',
+        blank=True,
+    )
+
+    video_assets = models.ManyToManyField(
+        'VideoAsset',
+        blank=True,
+    )
 
     captions = models.TextField(
         help_text='Captions and credits for any assets in use.',
@@ -1661,6 +1697,18 @@ class AudioFacet(models.Model):
 
         audiofacet_documents = DocumentAsset.objects.filter(audiofacet=self)
         return audiofacet_documents
+
+    def get_audiofacet_audio(self):
+        """Retrieve all audio objects associated with a audiofacet."""
+
+        audiofacet_audio = AudioAsset.objects.filter(audiofacet=self)
+        return audiofacet_audio
+
+    def get_audiofacet_video(self):
+        """Retrieve all video objects associated with a audiofacet."""
+
+        audiofacet_video = AudioAsset.objects.filter(audiofacet=self)
+        return audiofacet_video
 
     def get_audiofacet_download(self):
         """ Return rst formatted string for downloading audiofacet and its meta."""
@@ -1889,15 +1937,15 @@ class VideoFacet(models.Model):
         blank=True,
     )
 
-    # audio_assets = models.ManyToManyField(
-    #     'AudioAssets',
-    #     blank=True,
-    # )
-    #
-    # video_assets = models.ManyToManyField(
-    #     'VideoAssets',
-    #     blank=True,
-    # )
+    audio_assets = models.ManyToManyField(
+        'AudioAsset',
+        blank=True,
+    )
+
+    video_assets = models.ManyToManyField(
+        'VideoAsset',
+        blank=True,
+    )
 
     captions = models.TextField(
         help_text='Captions and credits for any assets in use.',
@@ -1945,6 +1993,18 @@ class VideoFacet(models.Model):
 
         videofacet_documents = DocumentAsset.objects.filter(videofacet=self)
         return videofacet_documents
+
+    def get_videofacet_audio(self):
+        """Retrieve all audio objects associated with a videofacet."""
+
+        videofacet_audio = AudioAsset.objects.filter(videofacet=self)
+        return videofacet_audio
+
+    def get_videofacet_video(self):
+        """Retrieve all video objects associated with a videofacet."""
+
+        videofacet_video = AudioAsset.objects.filter(videofacet=self)
+        return videofacet_video
 
     def get_videofacet_download(self):
         """ Return rst formatted string for downloading videofacet and its meta."""
@@ -2507,7 +2567,7 @@ class ImageAsset(models.Model):
     image_type = models.CharField(
         max_length=20,
         choices = IMAGE_TYPE_CHOICES,
-        help_text='What kind of image.'
+        help_text='The kind of image.'
     )
 
     creation_date = models.DateTimeField(
@@ -2661,7 +2721,7 @@ class DocumentAsset(models.Model):
     doc_type = models.CharField(
         max_length=20,
         choices = DOCUMENT_TYPE_CHOICES,
-        help_text='What kind of image.'
+        help_text='The kind of document.'
     )
 
     creation_date = models.DateTimeField(
@@ -2695,7 +2755,7 @@ class DocumentAsset(models.Model):
         document_usage.extend(document_printfacets)
         document_usage.extend(document_audiofacets)
         document_usage.extend(document_videofacets)
-        return image_usage
+        return document_usage
 
     # def get_document_download_info(self):
     #     """Return rst of document information for download."""
@@ -2705,7 +2765,7 @@ class DocumentAsset(models.Model):
     #     attribution = self.attribution.encode('utf-8')
 
     #     document_info="""
-    #     Ddocument
+    #     Document
     #     =======
     #     {title}.jpg
     #     Description: {description}
@@ -2744,9 +2804,310 @@ class DocumentAsset(models.Model):
 #----------------------------------------------------------------------#
 # AudioAsset
 
+class AudioAssetManager(models.Manager):
+    """Custom manager for AudioAsset."""
+
+    def create_audioasset(self, owner, organization, asset_title, asset_description, asset_attribution, audio, audio_type, keywords):
+        """Method for quick creation of a audio asset."""
+        audioasset=self.create(owner=owner, organization=organization, asset_title=asset_title, asset_description=asset_description, asset_attribution=asset_attribution, audio=audio, audio_type=audio_type, keywords=keywords)
+        return audioasset
+
+
+@python_2_unicode_compatible
+class AudioAsset(models.Model):
+    """ Uploaded Audio Asset. """
+
+    owner = models.ForeignKey(
+        User,
+        related_name='audio_asset_owner',
+    )
+
+    organization = models.ForeignKey(
+        Organization,
+        related_name='audio_asset_organization'
+    )
+
+    original = models.BooleanField(
+        default=True,
+        help_text='This content originally belonged to this organization.'
+    )
+
+    asset_title = models.CharField(
+        max_length=200,
+        help_text='Text for file name. Name it intuitively.',
+        blank=True,
+    )
+
+    asset_description = models.TextField(
+        max_length=300,
+        help_text='What is the asset.',
+        blank=True,
+    )
+
+    attribution = models.TextField(
+        max_length=200,
+        help_text='The appropriate information for crediting the asset.',
+        blank=True,
+    )
+
+    audio = models.FileField(
+        upload_to='audio',
+        blank=True,
+    )
+
+    link = models.TextField(
+        max_length=400,
+        help_text='Link to audio file on SoundCloud',
+        blank=True,
+    )
+
+    #Choices for Asset type
+    MP3 = 'MP3'
+    WAV = 'WAV'
+    SOUNDCLOUD = 'SC'
+
+    AUDIO_TYPE_CHOICES = (
+        (MP3, 'mp3'),
+        (WAV, 'wav'),
+        (SOUNDCLOUD, 'SoundCloud')
+    )
+
+    audio_type = models.CharField(
+        max_length=20,
+        choices = AUDIO_TYPE_CHOICES,
+        help_text='The kind of audio.'
+    )
+
+    creation_date = models.DateTimeField(
+        auto_now_add=True,
+        help_text='When the asset was created.'
+    )
+
+    keywords = ArrayField(
+        models.CharField(max_length=100),
+        default=list,
+        help_text='List of keywords for search.',
+        blank=True,
+    )
+
+    objects = AudioAssetManager()
+
+    class Meta:
+        verbose_name = "Audio Asset"
+        verbose_name_plural = "Audio Assets"
+
+    def get_audio_usage(self):
+        """Return facets an audio file is associated with."""
+
+        audio_usage = []
+
+        audio_webfacets = WebFacet.objects.filter(Q(audio_assets=self))
+        audio_printfacets = PrintFacet.objects.filter(Q(audio_assets=self))
+        audio_audiofacets = AudioFacet.objects.filter(Q(audio_assets=self))
+        audio_videofacets = VideoFacet.objects.filter(Q(audio_assets=self))
+        audio_usage.extend(audio_webfacets)
+        audio_usage.extend(audio_printfacets)
+        audio_usage.extend(audio_audiofacets)
+        audio_usage.extend(audio_videofacets)
+        return audio_usage
+
+    # def get_audio_download_info(self):
+    #     """Return rst of audio information for download."""
+
+    #     title = self.asset_title.encode('utf-8')
+    #     description = self.asset_description.encode('utf-8')
+    #     attribution = self.attribution.encode('utf-8')
+
+    #     audio_info="""
+    #     Audio
+    #     =======
+    #     {title}.jpg
+    #     Description: {description}
+    #     Attribution: {attribution}
+    #     Type: {type}
+    #     Creation Date: {date}
+    #     Owner: {owner}
+    #     Organization: {organization}
+    #     Original: {original}
+    #     Keywords: {keywords}
+    #     """.format(title=title, description=description, attribution=attribution,
+    #     type=self.doc_type, date=self.creation_date, owner=self.owner,
+    #     organization=self.organization.name, original=self.original,
+    #     keywords=self.keywords)
+
+    #     return audio_info
+
+    def __str__(self):
+        return self.asset_title
+
+    # def get_absolute_url(self):
+    #     return reverse('asset_detail', kwargs={'pk': self.id})
+
+    @property
+    def description(self):
+        return "{desc}".format(desc=self.asset_description.encode('utf-8'))
+
+    @property
+    def search_title(self):
+        return self.asset_title
+
+    @property
+    def type(self):
+        return "Audio Asset"
 
 #----------------------------------------------------------------------#
 #VideoAsset
+
+class VideoAssetManager(models.Manager):
+    """Custom manager for VideoAsset."""
+
+    def create_videoasset(self, owner, organization, asset_title, asset_description, asset_attribution, video, video_type, keywords):
+        """Method for quick creation of a video asset."""
+        videoasset=self.create(owner=owner, organization=organization, asset_title=asset_title, asset_description=asset_description, asset_attribution=asset_attribution, video=video, video_type=video_type, keywords=keywords)
+        return videoasset
+
+
+@python_2_unicode_compatible
+class VideoAsset(models.Model):
+    """ Uploaded Video Asset. """
+
+    owner = models.ForeignKey(
+        User,
+        related_name='video_asset_owner',
+    )
+
+    organization = models.ForeignKey(
+        Organization,
+        related_name='video_asset_organization'
+    )
+
+    original = models.BooleanField(
+        default=True,
+        help_text='This content originally belonged to this organization.'
+    )
+
+    asset_title = models.CharField(
+        max_length=200,
+        help_text='Text for file name. Name it intuitively.',
+        blank=True,
+    )
+
+    asset_description = models.TextField(
+        max_length=300,
+        help_text='What is the asset.',
+        blank=True,
+    )
+
+    attribution = models.TextField(
+        max_length=200,
+        help_text='The appropriate information for crediting the asset.',
+        blank=True,
+    )
+
+    video = models.FileField(
+        upload_to='videos',
+        blank=True,
+    )
+
+    link = models.TextField(
+        max_length=400,
+        help_text='Link to video file on YouTube or Vimeo',
+        blank=True,
+    )
+
+    #Choices for Asset type
+    MP4 = 'MP4'
+    YT = 'YOUTUBE'
+    VIM = 'VIMEO'
+
+    VIDEO_TYPE_CHOICES = (
+        (MP4, 'mp4'),
+        (YT, 'YouTube'),
+        (VIM, 'Vimeo')
+    )
+
+    video_type = models.CharField(
+        max_length=20,
+        choices = VIDEO_TYPE_CHOICES,
+        help_text='The kind of video.'
+    )
+
+    creation_date = models.DateTimeField(
+        auto_now_add=True,
+        help_text='When the asset was created.'
+    )
+
+    keywords = ArrayField(
+        models.CharField(max_length=100),
+        default=list,
+        help_text='List of keywords for search.',
+        blank=True,
+    )
+
+    objects = VideoAssetManager()
+
+    class Meta:
+        verbose_name = "Video Asset"
+        verbose_name_plural = "Video Assets"
+
+    def get_video_usage(self):
+        """Return facets an video file is associated with."""
+
+        video_usage = []
+
+        video_webfacets = WebFacet.objects.filter(Q(video_assets=self))
+        video_printfacets = PrintFacet.objects.filter(Q(video_assets=self))
+        video_videofacets = VideoFacet.objects.filter(Q(video_assets=self))
+        video_videofacets = VideoFacet.objects.filter(Q(video_assets=self))
+        video_usage.extend(video_webfacets)
+        video_usage.extend(video_printfacets)
+        video_usage.extend(video_videofacets)
+        video_usage.extend(video_videofacets)
+        return video_usage
+
+    # def get_video_download_info(self):
+    #     """Return rst of video information for download."""
+
+    #     title = self.asset_title.encode('utf-8')
+    #     description = self.asset_description.encode('utf-8')
+    #     attribution = self.attribution.encode('utf-8')
+
+    #     video_info="""
+    #     Video
+    #     =======
+    #     {title}.jpg
+    #     Description: {description}
+    #     Attribution: {attribution}
+    #     Type: {type}
+    #     Creation Date: {date}
+    #     Owner: {owner}
+    #     Organization: {organization}
+    #     Original: {original}
+    #     Keywords: {keywords}
+    #     """.format(title=title, description=description, attribution=attribution,
+    #     type=self.doc_type, date=self.creation_date, owner=self.owner,
+    #     organization=self.organization.name, original=self.original,
+    #     keywords=self.keywords)
+
+    #     return video_info
+
+    def __str__(self):
+        return self.asset_title
+
+    # def get_absolute_url(self):
+    #     return reverse('asset_detail', kwargs={'pk': self.id})
+
+    @property
+    def description(self):
+        return "{desc}".format(desc=self.asset_description.encode('utf-8'))
+
+    @property
+    def search_title(self):
+        return self.asset_title
+
+    @property
+    def type(self):
+        return "Video Asset"
 
 
 #----------------------------------------------------------------------#
