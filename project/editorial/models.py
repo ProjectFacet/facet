@@ -1025,7 +1025,7 @@ class WebFacet(models.Model):
         return self.title
 
     def get_absolute_url(self):
-      return reverse('story_detail', kwargs={'pk': self.story.id})
+        return reverse('story_detail', kwargs={'pk': self.story.id})
 
     def copy_webfacet(self):
         """ Create a copy of a webfacet for a partner organization in a network."""
