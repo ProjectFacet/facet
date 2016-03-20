@@ -28,6 +28,7 @@ from editorial.models import (
     SeriesNote,
     StoryNote,
     ImageAsset,
+    DocumentAsset
     )
 
 # ------------------------------ #
@@ -486,6 +487,39 @@ class AddImageForm(forms.Form):
         widget=CheckboxSelectMultiple,
         queryset = ImageAsset.objects.all()
     )
+
+class DocumentAssetForm(forms.ModelForm):
+    """Upload document to a facet."""
+
+    class Meta:
+        model = DocumentAsset
+        fields = [
+            'asset_title',
+            'asset_description',
+            'attribution',
+            'document',
+            'doc_type',
+            'keywords',
+        ]
+        widgets = {
+            'asset_description': Textarea(attrs={'rows':3}),
+            'attribution': Textarea(attrs={'rows':3}),
+            'doc_type': Select(attrs={'class': 'form-control'}),
+        }
+
+class AddDocumentForm(forms.Form):
+    """ Add existing document(s) to a facet."""
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request")
+        super(AddDocumentForm, self).__init__(*args, **kwargs)
+        self.fields['documents'].queryset = Organization.get_org_document_library(self.request.user.organization)
+
+    documents = forms.ModelMultipleChoiceField(
+        widget=CheckboxSelectMultiple,
+        queryset = DocumentAsset.objects.all()
+    )
+
 
 # ------------------------------ #
 #         Comment Forms          #

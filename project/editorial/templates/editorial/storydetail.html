@@ -314,6 +314,7 @@
                         </div>
                       {% endif %}
                     </div>
+
                     <div class="section-title">
                       <a href="#" data-toggle="tooltip" title="Image"><label class="field-label">Images</label></a>
                       <a href="#" data-toggle="modal" data-target="#addWebFacetImage" title="Add Image"><i class="fa fa-picture-o sameline dark"></i></a>
@@ -329,6 +330,39 @@
                           {% endif %}
                         {% endfor %}
                       {% endfor %}
+                      </div>
+                    </div>
+
+                    <div class="section-title">
+                      <a href="#" data-toggle="tooltip" title="Document"><label class="field-label">Documents</label></a>
+                      <a href="#" data-toggle="modal" data-target="#addWebFacetDocument" title="Add Document"><i class="fa fa-file sameline dark"></i></a>
+                    </div>
+                    <div id="webfacet-docs">
+                      <div class="row">
+                        {% for document in webfacet_documents %}
+                          <div class="col-md-1">
+                              <label>
+                                  {% if document.doc_type == 'OTHER' %}
+                                  <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-file-o dark"></i></h3></a>
+                                  {% endif %}
+                                  {% if document.doc_type == 'TEXT' %}
+                                  <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-text-o dark"></i></h3></a>
+                                  {% endif %}
+                                  {% if document.doc_type == 'WORD DOC' %}
+                                  <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-word-o dark"></i></h3></a>
+                                  {% endif %}
+                                  {% if document.doc_type == 'EXCEL' %}
+                                  <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-excel-o dark"></i></h3></a>
+                                  {% endif %}
+                                  {% if document.doc_type == 'PDF' %}
+                                  <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-pdf-o dark"></i></h3></a>
+                                  {% endif %}
+                                  {% if document.doc_type == 'COMMA SEPARATED' %}
+                                  <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-o dark"></i></h3></a>
+                                  {% endif %}
+                                </label>
+                          </div>
+                        {% endfor %}
                       </div>
                     </div>
 
@@ -1247,14 +1281,14 @@
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <ul class="nav nav-tabs" role="imagelist">
-              <li role="presentation" class="active"><a href="#uploadweb" aria-controls="home" role="tab" data-toggle="tab" class="darker">Upload a Photo</a></li>
-              <li role="presentation"><a href="#libraryweb" aria-controls="profile" role="tab" data-toggle="tab" class="darker">Select From Library</a></li>
+              <li role="presentation" class="active"><a href="#uploadimageweb" aria-controls="home" role="tab" data-toggle="tab" class="darker">Upload a Photo</a></li>
+              <li role="presentation"><a href="#imagelibraryweb" aria-controls="profile" role="tab" data-toggle="tab" class="darker">Select From Library</a></li>
             </ul>
           </div>
           <div class="modal-body">
             <div class="tab-content">
               <!-- UPLOAD PANEL -->
-              <div role="tabpanel" class="tab-pane active" id="uploadweb">
+              <div role="tabpanel" class="tab-pane active" id="uploadimageweb">
                 <div class="uploadpanel" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
                 <form action="{% url 'upload_webfacet_image' %}" method="POST" class="post-form" enctype="multipart/form-data">
                 {% csrf_token %}
@@ -1339,7 +1373,7 @@
               </div>
               <!-- END UPLOAD PANEL -->
               <!-- LIBRARY PANEL -->
-              <div role="tabpanel" class="tab-pane" id="libraryweb">
+              <div role="tabpanel" class="tab-pane" id="imagelibraryweb">
                 <div class="imagelibrary" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
                   <form action="{% url 'add_webfacet_image' %}" method="POST" class="post-form" name="addwebimage">
                     {% csrf_token %}
@@ -1752,6 +1786,155 @@
                     <button type="submit" class="btn btn-primary" name="addvideoimage">Add Images</button>
                   </form>
                 </div>
+              </div>
+              <!-- END LIBRARY PANEL -->
+            </div>
+          </div>
+          <div class="modal-footer">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================================================= -->
+                <!-- ADD WEBFACET DOCUMENT MODAL -->
+    <!-- ================================================= -->
+    <div class="modal fade" id="addWebFacetDocument" tabindex="-1" role="dialog" aria-labelledby="addWebFacetDocument">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <ul class="nav nav-tabs" role="documentlist">
+              <li role="presentation" class="active"><a href="#documentuploadweb" aria-controls="home" role="tab" data-toggle="tab" class="darker">Upload a Document</a></li>
+              <li role="presentation"><a href="#documentlibraryweb" aria-controls="profile" role="tab" data-toggle="tab" class="darker">Select From Document Library</a></li>
+            </ul>
+          </div>
+          <div class="modal-body">
+            <div class="tab-content">
+              <!-- UPLOAD PANEL -->
+              <div role="tabpanel" class="tab-pane active" id="documentuploadweb">
+                <div class="uploadpanel" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
+                <form action="{% url 'upload_webfacet_document' %}" method="POST" class="post-form" enctype="multipart/form-data">
+                {% csrf_token %}
+                <!-- Left Col -->
+                <div class="col-md-6">
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ webfacet_documentform.document.help_text }}"><span class="field-label">{{ webfacet_documentform.document.label_tag }}</span></a>
+                    {{ webfacet_documentform.document }}
+                    {% if webfacet_documentform.document.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ webfacet_documentform.document.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ webfacet_documentform.asset_title.help_text }}"><span class="field-label">{{ webfacet_documentform.asset_title.label_tag }}</span></a>
+                    {{ webfacet_documentform.asset_title }}
+                    {% if webfacet_documentform.asset_title.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ webfacet_documentform.asset_title.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ webfacet_documentform.doc_type.help_text }}"><span class="field-label">{{ webfacet_documentform.doc_type.label_tag }}</span></a>
+                    {{ webfacet_documentform.doc_type }}
+                    {% if webfacet_documentform.doc_type.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ webfacet_documentform.doc_type.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ webfacet_documentform.keywords.help_text }}"><span class="field-label">{{ webfacet_documentform.keywords.label_tag }}</span></a>
+                    {{ webfacet_documentform.keywords }}
+                    {% if webfacet_documentform.keywords.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ webfacet_documentform.keywords.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                </div>
+                <!-- End Left Col -->
+                <!-- Right Col -->
+                <div class="col-md-6">
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ webfacet_documentform.asset_description.help_text }}"><span class="field-label">{{ webfacet_documentform.asset_description.label_tag }}</span></a>
+                    {{ webfacet_documentform.asset_description }}
+                    {% if webfacet_documentform.asset_description.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ webfacet_documentform.asset_description.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ webfacet_documentform.attribution.help_text }}"><span class="field-label">{{ webfacet_documentform.attribution.label_tag }}</span></a>
+                    {{ webfacet_documentform.attribution }}
+                    {% if webfacet_documentform.attribution.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ webfacet_documentform.attribution.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                </div>
+                <!-- End Right Col -->
+                {% for webfacet in story.webfacetstory.all %}
+                <input type="hidden" name="webfacet" value="{{ webfacet.pk }}" />
+                {% endfor %}
+                <div>
+                <button type="submit" class="btn btn-primary">Save Document</button>
+                </div>
+                </form>
+                </div>
+              </div>
+              <!-- END UPLOAD PANEL -->
+              <!-- LIBRARY PANEL -->
+              <div role="tabpanel" class="tab-pane" id="documentlibraryweb">
+                    <div class="documentlibrary" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
+                      <form action="{% url 'add_webfacet_document' %}" method="POST" class="post-form" name="addwebdocument">
+                        {% csrf_token %}
+                        <div class="document-library">
+                        {% for document in documents %}
+                          <div class="col-md-2">
+                            <label>
+                              {% if document.doc_type == 'OTHER' %}
+                              <a href="" title="{{ document.asset_description }}"><h1><i class="fa fa-file-file-o dark"></i></h1></a>
+                              {% endif %}
+                              {% if document.doc_type == 'TEXT' %}
+                              <a href="" title="{{ document.asset_description }}"><h1><i class="fa fa-file-text-o dark"></i></h1></a>
+                              {% endif %}
+                              {% if document.doc_type == 'WORD DOC' %}
+                              <a href="" title="{{ document.asset_description }}"><h1><i class="fa fa-file-word-o dark"></i></h1></a>
+                              {% endif %}
+                              {% if document.doc_type == 'EXCEL' %}
+                              <a href="" title="{{ document.asset_description }}"><h1><i class="fa fa-file-excel-o dark"></i></h1></a>
+                              {% endif %}
+                              {% if document.doc_type == 'PDF' %}
+                              <a href="" title="{{ document.asset_description }}"><h1><i class="fa fa-file-pdf-o dark"></i></h1></a>
+                              {% endif %}
+                              {% if document.doc_type == 'COMMA SEPARATED' %}
+                              <a href="" title="{{ document.asset_description }}"><h1><i class="fa fa-file-o dark"></i></h1></a>
+                              {% endif %}
+                              <p class="tiny-text">{{ document.asset_title }}<br>{{ document.doc_type }}</p>
+                              <input type="checkbox" name="documents" value="{{ document.id }}">
+                            </label>
+                          </div>
+                        {% endfor %}
+                        </div>
+                        {% for webfacet in story.webfacetstory.all %}
+                        <input type="hidden" name="webfacet" value="{{ webfacet.pk }}" />
+                        {% endfor %}
+                        <button type="submit" class="btn btn-primary" name="addwebdocument">Add Documents</button>
+                      </form>
+                    </div>
               </div>
               <!-- END LIBRARY PANEL -->
             </div>

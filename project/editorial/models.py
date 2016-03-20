@@ -373,6 +373,12 @@ class Organization(models.Model):
         images = ImageAsset.objects.filter(organization=self)
         return images
 
+    def get_org_document_library(self):
+        """ Return list of all documents associated with an organization. """
+
+        documents = DocumentAsset.objects.filter(organization=self)
+        return documents
+
     def get_org_searchable_content(self):
         """ Return queryset of all objects that can be searched by a user."""
 
@@ -1084,6 +1090,12 @@ class WebFacet(models.Model):
         webfacet_images = ImageAsset.objects.filter(webfacet=self)
         return webfacet_images
 
+    def get_webfacet_documents(self):
+        """Retrieve all documents objects associated with a webfacet."""
+
+        webfacet_documents = DocumentAsset.objects.filter(webfacet=self)
+        return webfacet_documents
+
     def get_webfacet_download(self):
         """ Return rst formatted string for downloading webfacet and its meta."""
 
@@ -1295,10 +1307,30 @@ class PrintFacet(models.Model):
         blank=True,
     )
 
+    github_link = models.TextField(
+        help_text='Link to code for any custom feature',
+        blank=True,
+    )
+
     image_assets = models.ManyToManyField(
         'ImageAsset',
         blank=True,
     )
+
+    document_assets = models.ManyToManyField(
+        'DocumentAsset',
+        blank=True,
+    )
+
+    # audio_assets = models.ManyToManyField(
+    #     'AudioAssets',
+    #     blank=True,
+    # )
+    #
+    # video_assets = models.ManyToManyField(
+    #     'VideoAssets',
+    #     blank=True,
+    # )
 
     captions = models.TextField(
         help_text='Captions and credits for any assets in use.',
@@ -1340,6 +1372,12 @@ class PrintFacet(models.Model):
 
         printfacet_images = ImageAsset.objects.filter(printfacet=self)
         return printfacet_images
+
+    def get_printfacet_documents(self):
+        """Retrieve all documents objects associated with a printfacet."""
+
+        printfacet_documents = DocumentAsset.objects.filter(printfacet=self)
+        return printfacet_documents
 
     def get_printfacet_download(self):
         """ Return rst formatted string for downloading printfacet and its meta."""
@@ -1552,10 +1590,30 @@ class AudioFacet(models.Model):
         blank=True,
     )
 
+    github_link = models.TextField(
+        help_text='Link to code for any custom feature',
+        blank=True,
+    )
+
     image_assets = models.ManyToManyField(
         'ImageAsset',
         blank=True,
     )
+
+    document_assets = models.ManyToManyField(
+        'DocumentAsset',
+        blank=True,
+    )
+
+    # audio_assets = models.ManyToManyField(
+    #     'AudioAssets',
+    #     blank=True,
+    # )
+    #
+    # video_assets = models.ManyToManyField(
+    #     'VideoAssets',
+    #     blank=True,
+    # )
 
     captions = models.TextField(
         help_text='Captions and credits for any assets in use.',
@@ -1597,6 +1655,12 @@ class AudioFacet(models.Model):
 
         audiofacet_images = ImageAsset.objects.filter(audiofacet=self)
         return audiofacet_images
+
+    def get_audiofacet_documents(self):
+        """Retrieve all documents objects associated with an audiofacet."""
+
+        audiofacet_documents = DocumentAsset.objects.filter(audiofacet=self)
+        return audiofacet_documents
 
     def get_audiofacet_download(self):
         """ Return rst formatted string for downloading audiofacet and its meta."""
@@ -1810,10 +1874,30 @@ class VideoFacet(models.Model):
         blank=True,
     )
 
+    github_link = models.TextField(
+        help_text='Link to code for any custom feature',
+        blank=True,
+    )
+
     image_assets = models.ManyToManyField(
         'ImageAsset',
         blank=True,
     )
+
+    document_assets = models.ManyToManyField(
+        'DocumentAsset',
+        blank=True,
+    )
+
+    # audio_assets = models.ManyToManyField(
+    #     'AudioAssets',
+    #     blank=True,
+    # )
+    #
+    # video_assets = models.ManyToManyField(
+    #     'VideoAssets',
+    #     blank=True,
+    # )
 
     captions = models.TextField(
         help_text='Captions and credits for any assets in use.',
@@ -1855,6 +1939,12 @@ class VideoFacet(models.Model):
 
         videofacet_images = ImageAsset.objects.filter(videofacet=self)
         return videofacet_images
+
+    def get_videofacet_documents(self):
+        """Retrieve all documents objects associated with a videofacet."""
+
+        videofacet_documents = DocumentAsset.objects.filter(videofacet=self)
+        return videofacet_documents
 
     def get_videofacet_download(self):
         """ Return rst formatted string for downloading videofacet and its meta."""
@@ -2561,7 +2651,7 @@ class DocumentAsset(models.Model):
 
     DOCUMENT_TYPE_CHOICES = (
         (PDF, 'Adobe PDF'),
-        (WORD, 'Graphic'),
+        (WORD, 'Word Doc'),
         (TXT, 'Text File'),
         (CSV, 'Comma Separated'),
         (XLS, 'Excel File'),

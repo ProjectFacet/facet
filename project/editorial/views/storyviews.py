@@ -21,6 +21,8 @@ from editorial.forms import (
     VideoFacetForm,
     ImageAssetForm,
     AddImageForm,
+    DocumentAssetForm,
+    AddDocumentForm,
     StoryCommentForm,
     WebFacetCommentForm,
     PrintFacetCommentForm,
@@ -122,6 +124,7 @@ def story_detail(request, pk):
     storycomments = Comment.objects.filter(discussion=storydiscussion).order_by('-date')
     notes = StoryNote.objects.filter(story=story)
     images = Organization.get_org_image_library(request.user.organization)
+    documents = Organization.get_org_document_library(request.user.organization)
 
 # ------------------------------ #
 #           webfacet             #
@@ -131,6 +134,7 @@ def story_detail(request, pk):
     webform=WebFacetForm(request=request, story=story)
     webcommentform=WebFacetCommentForm()
     webfacet_imageform=ImageAssetForm()
+    webfacet_documentform=DocumentAssetForm()
 
     try:
         webfacet = get_object_or_404(WebFacet, story=story)
@@ -193,6 +197,7 @@ def story_detail(request, pk):
     printform=PrintFacetForm(request=request, story=story)
     printcommentform=PrintFacetCommentForm()
     printfacet_imageform=ImageAssetForm()
+    printfacet_documentform=DocumentAssetForm()
 
     try:
         print "PF Try"
@@ -253,6 +258,7 @@ def story_detail(request, pk):
     audioform=AudioFacetForm(request=request, story=story)
     audiocommentform=AudioFacetCommentForm()
     audiofacet_imageform=ImageAssetForm()
+    audiofacet_documentform=DocumentAssetForm()
 
     try:
         audiofacet = get_object_or_404(AudioFacet, story=story)
@@ -314,6 +320,7 @@ def story_detail(request, pk):
     videoform=VideoFacetForm(request=request, story=story)
     videocommentform=VideoFacetCommentForm()
     videofacet_imageform=ImageAssetForm()
+    videofacet_documentform=DocumentAssetForm()
 
     try:
         print "VF Try"
@@ -372,23 +379,31 @@ def story_detail(request, pk):
     if story.webfacetstory.all():
         webfacet = get_object_or_404(WebFacet, story=story)
         webfacet_images = WebFacet.get_webfacet_images(webfacet)
+        webfacet_documents = WebFacet.get_webfacet_documents(webfacet)
     else:
         webfacet_images = []
+        webfacet_documents = []
     if story.printfacetstory.all():
         printfacet = get_object_or_404(PrintFacet, story=story)
         printfacet_images = PrintFacet.get_printfacet_images(printfacet)
+        printfacet_documents = PrintFacet.get_printfacet_documents(printfacet)
     else:
         printfacet_images = []
+        printfacet_documents = []
     if story.audiofacetstory.all():
         audiofacet = get_object_or_404(AudioFacet, story=story)
         audiofacet_images = AudioFacet.get_audiofacet_images(audiofacet)
+        audiofacet_documents = AudioFacet.get_audiofacet_documents(audiofacet)
     else:
         audiofacet_images = []
+        audiofacet_documents = []
     if story.videofacetstory.all():
         videofacet = get_object_or_404(VideoFacet, story=story)
         videofacet_images = VideoFacet.get_videofacet_images(videofacet)
+        videofacet_documents = VideoFacet.get_videofacet_documents(videofacet)
     else:
-        videofacet_images =[]
+        videofacet_images = []
+        videofacet_documents = []
     storydownloadform = StoryDownloadForm(story=story)
 
     return render(request, 'editorial/storydetail.html', {
@@ -423,4 +438,13 @@ def story_detail(request, pk):
         'printfacet_images': printfacet_images,
         'audiofacet_images': audiofacet_images,
         'videofacet_images': videofacet_images,
+        'webfacet_documentform' : webfacet_documentform,
+        'printfacet_documentform' : printfacet_documentform,
+        'audiofacet_documentform' : audiofacet_documentform,
+        'videofacet_documentform' : videofacet_documentform,
+        'documents': documents,
+        'webfacet_documents': webfacet_documents,
+        'printfacet_documents': printfacet_documents,
+        'audiofacet_documents': audiofacet_documents,
+        'videofacet_documents': videofacet_documents,
         })

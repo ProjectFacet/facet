@@ -24,6 +24,7 @@ from editorial.forms import (
     AudioFacetForm,
     VideoFacetForm,
     ImageAssetForm,
+    DocumentAssetForm,
     AddImageForm,
     AddToNetworkForm,
     InviteToNetworkForm,
@@ -90,6 +91,7 @@ def index(request):
 
 def test(request):
     """ Use for rapid testing of new pages."""
+
 
 
     return render(request, 'editorial/test.html')

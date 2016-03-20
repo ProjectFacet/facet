@@ -15,14 +15,17 @@ import json
 
 from editorial.forms import (
     ImageAssetForm,
-    AddImageForm,)
+    AddImageForm,
+    DocumentAssetForm,
+    AddDocumentForm,)
 
 from editorial.models import (
     WebFacet,
     PrintFacet,
     AudioFacet,
     VideoFacet,
-    ImageAsset,)
+    ImageAsset,
+    DocumentAsset)
 
 
 #----------------------------------------------------------------------#
@@ -221,5 +224,164 @@ def add_videofacet_image(request):
                 img_ins = get_object_or_404(ImageAsset, id=image)
                 print "IMGins: ", img_ins
                 videofacet.image_assets.add(img_ins)
+            videofacet.save()
+    return redirect('story_detail', pk=videofacet.story.id)
+
+#----------------------------------------------------------------------#
+#   Upload Document Asset Views
+#----------------------------------------------------------------------#
+
+def upload_webfacet_document(request):
+    """ Add document to a webfacet."""
+
+    if request.method == 'POST':
+        documentform=DocumentAssetForm(request.POST, request.FILES)
+        if documentform.is_valid():
+            webdocument = documentform.save(commit=False)
+            # retrieve the webfacet the image should be associated with
+            webfacet_id = request.POST.get('webfacet')
+            webfacet = get_object_or_404(WebFacet, id=webfacet_id)
+            # set request based attributes
+            webdocument.owner = request.user
+            webdocument.organization = request.user.organization
+            webdocument.save()
+            # add document asset to webfacet document_assets
+            webfacet.document_assets.add(webdocument)
+            webfacet.save()
+    return redirect('story_detail', pk=webfacet.story.id)
+
+def upload_printfacet_document(request):
+    """ Add document to a printfacet."""
+
+    if request.method == 'POST':
+        documentform=DocumentAssetForm(request.POST, request.FILES)
+        if documentform.is_valid():
+            printdocument = documentform.save(commit=False)
+            # retrieve the printfacet the image should be associated with
+            printfacet_id = request.POST.get('printfacet')
+            printfacet = get_object_or_404(PrintFacet, id=printfacet_id)
+            # set request based attributes
+            printdocument.owner = request.user
+            printdocument.organization = request.user.organization
+            printdocument.save()
+            # add document asset to printfacet document_assets
+            printfacet.document_assets.add(printdocument)
+            printfacet.save()
+    return redirect('story_detail', pk=printfacet.story.id)
+
+def upload_audiofacet_document(request):
+    """ Add document to a audiofacet."""
+
+    if request.method == 'POST':
+        documentform=DocumentAssetForm(request.POST, request.FILES)
+        if documentform.is_valid():
+            audiodocument = documentform.save(commit=False)
+            # retrieve the audiofacet the image should be associated with
+            audiofacet_id = request.POST.get('audiofacet')
+            audiofacet = get_object_or_404(AudioFacet, id=audiofacet_id)
+            # set request based attributes
+            audiodocument.owner = request.user
+            audiodocument.organization = request.user.organization
+            audiodocument.save()
+            # add document asset to audiofacet document_assets
+            audiofacet.document_assets.add(audiodocument)
+            audiofacet.save()
+    return redirect('story_detail', pk=audiofacet.story.id)
+
+def upload_videofacet_document(request):
+    """ Add document to a videofacet."""
+
+    if request.method == 'POST':
+        documentform=DocumentAssetForm(request.POST, request.FILES)
+        if documentform.is_valid():
+            videodocument = documentform.save(commit=False)
+            # retrieve the videofacet the image should be associated with
+            videofacet_id = request.POST.get('videofacet')
+            videofacet = get_object_or_404(VideoFacet, id=videofacet_id)
+            # set request based attributes
+            videodocument.owner = request.user
+            videodocument.organization = request.user.organization
+            videodocument.save()
+            # add document asset to videofacet document_assets
+            videofacet.document_assets.add(videodocument)
+            videofacet.save()
+    return redirect('story_detail', pk=videofacet.story.id)
+
+#----------------------------------------------------------------------#
+#   Add Document Asset Views
+#----------------------------------------------------------------------#
+
+def add_webfacet_document(request):
+    """ Add existing document(s) in the library to another webfacet."""
+
+    if request.method == "POST":
+        add_document_form = AddDocumentForm(request.POST, request=request)
+        if add_document_form.is_valid():
+            webfacet_id = request.POST.get('webfacet')
+            print "WEBFACETid: ", webfacet_id
+            webfacet = get_object_or_404(WebFacet, id=webfacet_id)
+            documents = request.POST.getlist('documents')
+            print "DOCS: ", documents
+            for document in documents:
+                doc_ins = get_object_or_404(DocumentAsset, id=document)
+                print "DOCins: ", doc_ins
+                webfacet.document_assets.add(doc_ins)
+            webfacet.save()
+    return redirect('story_detail', pk=webfacet.story.id)
+
+
+def add_printfacet_document(request):
+    """ Add existing document(s) in the library to another printfacet."""
+
+    if request.method == "POST":
+        add_document_form = AddDocumentForm(request.POST, request=request)
+        if add_document_form.is_valid():
+            printfacet_id = request.POST.get('printfacet')
+            print "printFACETid: ", printfacet_id
+            printfacet = get_object_or_404(PrintFacet, id=printfacet_id)
+            documents = request.POST.getlist('documents')
+            print "IMAGES: ", documents
+            for document in documents:
+                doc_ins = get_object_or_404(DocumentAsset, id=document)
+                print "docins: ", doc_ins
+                printfacet.document_assets.add(doc_ins)
+            printfacet.save()
+    return redirect('story_detail', pk=printfacet.story.id)
+
+
+def add_audiofacet_document(request):
+    """ Add existing document(s) in the library to another audiofacet."""
+
+    if request.method == "POST":
+        add_document_form = AddDocumentForm(request.POST, request=request)
+        if add_document_form.is_valid():
+            audiofacet_id = request.POST.get('audiofacet')
+            print "audioFACETid: ", audiofacet_id
+            audiofacet = get_object_or_404(AudioFacet, id=audiofacet_id)
+            documents = request.POST.getlist('documents')
+            print "IMAGES: ", documents
+            for document in documents:
+                doc_ins = get_object_or_404(DocumentAsset, id=document)
+                print "docins: ", doc_ins
+                audiofacet.document_assets.add(doc_ins)
+            audiofacet.save()
+    return redirect('story_detail', pk=audiofacet.story.id)
+
+
+def add_videofacet_document(request):
+    """ Add existing document(s) in the library to another videofacet."""
+
+    if request.method == "POST":
+        add_document_form = AddDocumentForm(request.POST, request=request)
+        if add_document_form.is_valid():
+            videofacet_id = request.POST.get('videofacet')
+            print "videoFACETid: ", videofacet_id
+            videofacet = get_object_or_404(VideoFacet, id=videofacet_id)
+            documents = request.POST.getlist('documents')
+            print "IMAGES: ", documents
+            for document in documents:
+                doc_ins = get_object_or_404(DocumentAsset, id=document)
+                print "docins: ", doc_ins
+                videofacet.document_assets.add(doc_ins)
             videofacet.save()
     return redirect('story_detail', pk=videofacet.story.id)

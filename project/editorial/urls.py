@@ -45,7 +45,7 @@ urlpatterns = [
     #----------------------------------------------------------------------#
     url(r'^assets$', assetviews.asset_library, name='asset_library'),
     url(r'^asset/(?P<pk>[0-9]+)/$', assetviews.asset_detail, name='asset_detail'),
-    # url(r'^asset/(?P<pk>[0-9]+)/edit/$', assetviews.asset_edit, name='asset_edit'),    
+    # url(r'^asset/(?P<pk>[0-9]+)/edit/$', assetviews.asset_edit, name='asset_edit'),
     #----------------------------------------------------------------------#
     #   Collaborations URLS
     #----------------------------------------------------------------------#
@@ -122,6 +122,7 @@ urlpatterns = [
     #----------------------------------------------------------------------#
     #   Asset URLS
     #----------------------------------------------------------------------#
+    # Images
     url(r'^webfacet/image/new/$', assetviews.upload_webfacet_image, name='upload_webfacet_image'),
     url(r'^printfacet/image/new/$', assetviews.upload_printfacet_image, name='upload_printfacet_image'),
     url(r'^audiofacet/image/new/$', assetviews.upload_audiofacet_image, name='upload_audiofacet_image'),
@@ -130,6 +131,15 @@ urlpatterns = [
     url(r'^printfacet/image/add/$', assetviews.add_printfacet_image, name='add_printfacet_image'),
     url(r'^audiofacet/image/add/$', assetviews.add_audiofacet_image, name='add_audiofacet_image'),
     url(r'^videofacet/image/add/$', assetviews.add_videofacet_image, name='add_videofacet_image'),
+    # Documents
+    url(r'^webfacet/document/new/$', assetviews.upload_webfacet_document, name='upload_webfacet_document'),
+    url(r'^printfacet/document/new/$', assetviews.upload_printfacet_document, name='upload_printfacet_document'),
+    url(r'^audiofacet/document/new/$', assetviews.upload_audiofacet_document, name='upload_audiofacet_document'),
+    url(r'^videofacet/document/new/$', assetviews.upload_videofacet_document, name='upload_videofacet_document'),
+    url(r'^webfacet/documentadd/$', assetviews.add_webfacet_document, name='add_webfacet_document'),
+    url(r'^printfacet/document/add/$', assetviews.add_printfacet_document, name='add_printfacet_document'),
+    url(r'^audiofacet/document/add/$', assetviews.add_audiofacet_document, name='add_audiofacet_document'),
+    url(r'^videofacet/document/add/$', assetviews.add_videofacet_document, name='add_videofacet_document'),
     #----------------------------------------------------------------------#
     #   Network URLS
     #----------------------------------------------------------------------#
