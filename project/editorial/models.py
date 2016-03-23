@@ -392,6 +392,17 @@ class Organization(models.Model):
         videos = VideoAsset.objects.filter(organization=self)
         return videos
 
+    def get_org_collaborative_content(self):
+        """ Return list of all content that an org is a collaborator on."""
+
+        org_collaborative_content = []
+        external_stories = Story.objects.filter(Q(collaborate_with=self))
+        internal_stories = Story.objects.filter(organization=self).filter(collaborate=True)
+        org_collaborative_content.extend(external_stories)
+        org_collaborative_content.extend(internal_stories)
+
+        return org_collaborative_content
+
     def get_org_searchable_content(self):
         """ Return queryset of all objects that can be searched by a user."""
 
