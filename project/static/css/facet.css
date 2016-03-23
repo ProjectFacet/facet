@@ -340,6 +340,10 @@ hr {
   margin-left: 10px;
 }
 
+.move-right {
+  float: right;
+}
+
 /* ---------------------------------------*/
 /*          Color Adjustment Styles       */
 /* ---------------------------------------*/
