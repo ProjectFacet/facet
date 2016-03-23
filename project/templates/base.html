@@ -18,6 +18,9 @@
   <link rel="stylesheet" href="{% static 'css/bootstrap-datetimepicker.css' %}">
   <!-- endBootstrap -->
 
+  <!-- Bootstrap Calendar -->
+  <link rel="stylesheet" href="{% static 'bootstrap-calendar/css/calendar.css' %}">
+
   <!-- Dependencies -->
   <link rel="stylesheet" href="{% static 'css/dependencies.css' %}">
   <!-- endDependencies -->
@@ -26,8 +29,14 @@
   <link rel="stylesheet" href="{% static 'css/wrapkit.css' %}">
   <!-- endWrapkit -->
 
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <!-- <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}"> -->
+
+  <!-- Bootstrap Calendar CSS -->
+  <!-- <link rel="stylesheet" href="{% static 'bootstrap-calendar/css/calendar.css' %}"> -->
+
   <!-- styles & other dependencies -->
-  <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}">
   <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
   <link rel="stylesheet" href="{% static 'css/components.css' %}">
   <link rel="stylesheet" href="{% static 'css/demo.css' %}">
@@ -45,8 +54,20 @@
   <script src="{% static 'scripts/jquery.dataTables.min.js' %}"></script>
   <!-- END DATETIME PICKER JS  -->
   <script src="{% static 'scripts/moment.js' %}"></script>
-  <script src="{% static 'scripts/bootstrap-datetimepicker.js' %}"></script>
+  <!-- <script src="{% static 'scripts/bootstrap-datetimepicker.js' %}"></script> -->
   <!-- END DATETIME PICKER JS  -->
+
+  <!-- Bootstrap Calendar JS -->
+  <script src="{% static 'bootstrap-calendar/js/calendar.js' %}"></script>
+  <script src="{% static 'scripts/underscore/underscore-min.js' %}"></script>
+  <script>
+    // console.log("HELLO");
+    // var calendar_events = "{% static 'bootstrap-calendar/events.json.php' %}"
+    // var templates = "{% static 'bootstrap-calendar/events.json.php' %}"
+    // console.log("Where the fuck is this stuff?");
+    // console.log(templates);
+  </script>
+  <!-- <script src="{% static 'bootstrap-calendar/js/app.js' %}"></script> -->
 
   {% block head %}
 
@@ -100,6 +121,7 @@
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" title="Temporary Links for Convenience">Content<span class="caret"></span></a>
                 <ul class="dropdown-menu">
+                  <li><a href="{% url 'schedule' %}">Schedule</a></li>
                   <li><a href="{% url 'story_list' %}">Stories</a></li>
                   <li><a href="{% url 'series_list' %}">Series</a></li>
                   <li><a href="{% url 'collaborations' %}">Collaborations</a></li>
@@ -118,16 +140,18 @@
 
             <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" title="Temporary Links for Convenience">Create New Content<span class="caret"></span></a>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-              <li><a href="{% url 'series_new' %}">Series</a></li>
-              <li><a href="{% url 'story_new' %}">Story</a></li>
-            </ul>
-          </li>
+              <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                <li><a href="{% url 'series_new' %}">Series</a></li>
+                <li><a href="{% url 'story_new' %}">Story</a></li>
+              </ul>
+            </li>
+            <li><a href="{% url 'search' %}">Search</a></li>
           </ul>
           {% endif %}
 
           <div class="pull-right" role="navigation">
 
+           {% comment %}
             <!-- <div class="user-ident dropdown-ext">
               {% if request.user.is_authenticated %}
               <div class="panel clear-panel fade in panel-default" data-init-panel="true">
@@ -135,32 +159,28 @@
                   <div class="media">
                     <div class="media-left">
                       <div class="">
-                        {% if user.display_photo %}
-                        <img class="media-object img-circle" width="32" src="{{ user.display_photo.url }}" alt="{{user.credit_name}}">
-                        {% else %}
-                        {% endif %}
                       </div>
                     </div>
                     <div class="media-body">
                       <a href="{% url 'user_detail' pk=request.user.id %}"><h6 class="media-heading bright">{{ user.credit_name}}</h6></a>
-                      <a href="{% url 'org_detail' pk=request.user.organization_id %}"><p class="help-block tiny-text close-text">{{ user.organization.name }}</p></a>
+                      {% if user.organization %}<a href="{% url 'org_detail' pk=request.user.organization_id %}"><p class="help-block tiny-text close-text">{{ user.organization.name }}</p></a>{% endif %}
                     </div>
                   </div>
                 </div>
               </div>
               {% endif %}
             </div> -->
+
+          {% endcomment %}
           <!-- ================================================= -->
                                 <!-- MESSAGING -->
           <!-- ================================================= -->
           {% if request.user.is_authenticated %}
             <div class="dropdown-ext">
-              <a aria-label="notifications" href="{% url 'user_detail' pk=request.user.id %}" title="">
-                <!-- <img class="media-object img-circle img-responsive" width="32" src="{{ user.display_photo.url }}" alt="{{user.credit_name}}"> -->
-                <a href="{% url 'user_detail' pk=request.user.id %}"><h6 class="media-heading bright">{{ user.credit_name}}</h6></a>
+              <a href="{% url 'user_detail' pk=request.user.id %}"><h6 class="media-heading bright">{{ user.credit_name}}</h6></a>
+              {% if request.user.organization %}
                 <a href="{% url 'org_detail' pk=request.user.organization_id %}"><p class="help-block tiny-text close-text">{{ user.organization.name }}</p></a>
-              </a>
-
+              {% endif %}
             </div><!-- /.dropdown -->
             <div class="dropdown-ext">
               <a aria-label="notifications" class="btn btn-icon navbar-btn dropdown-toggle" data-toggle="modal" data-target="#addUserNote" href="#" title="Add a note">

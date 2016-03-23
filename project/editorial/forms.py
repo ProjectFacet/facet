@@ -2,6 +2,7 @@
 
 import datetime
 from bootstrap3_datetime.widgets import DateTimePicker
+from ourwidgets import OurDateTimePicker
 from django import forms
 from django.utils.safestring import mark_safe
 from django.contrib.auth import get_user_model
@@ -106,8 +107,14 @@ class InviteToNetworkForm(forms.Form):
 #          Series Forms          #
 # ------------------------------ #
 
-class SeriesForm(forms.ModelForm):
-    """ Form to create a new series. """
+class NewSeriesForm(forms.ModelForm):
+    """ Form to create/edit a series. """
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request")
+        super(NewSeriesForm, self).__init__(*args, **kwargs)
+        self.fields['collaborate_with'].queryset = Organization.get_org_collaborators(self.request.user.organization)
+        self.fields['team'].queryset = Organization.get_org_users(self.request.user.organization)
 
     class Meta:
         model = Series
@@ -122,16 +129,42 @@ class SeriesForm(forms.ModelForm):
         }
         js = ('/static/js/chosen.jquery.min.js')
 
+
+class SeriesForm(forms.ModelForm):
+    """ Form to create/edit a series. """
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request")
+        self.series = kwargs.pop("series")
+        super(SeriesForm, self).__init__(*args, **kwargs)
+        self.fields['collaborate_with'].queryset = Organization.get_org_collaborators(self.request.user.organization)
+        self.fields['team'].queryset = Series.get_series_team(self.series)
+
+    class Meta:
+        model = Series
+        fields = ['name', 'series_description', 'collaborate', 'collaborate_with', 'team']
+        widgets = {
+            'team': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select', 'id':'series-team'}),
+            'collaborate_with': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select', 'id':'collaborate-with'}),
+            }
+
+    class Media:
+        css = {'all': ('/static/css/chosen.min.css')
+        }
+        js = ('/static/js/chosen.jquery.min.js')
+
+
+
 # ------------------------------ #
 #          Story Forms           #
 # ------------------------------ #
 
-class StoryForm(forms.ModelForm):
+class NewStoryForm(forms.ModelForm):
     """ Form to create a new story. """
 
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop("request")
-        super(StoryForm, self).__init__(*args, **kwargs)
+        super(NewStoryForm, self).__init__(*args, **kwargs)
         self.fields['collaborate_with'].queryset = Organization.get_org_collaborators(self.request.user.organization)
         self.fields['team'].queryset = Organization.get_org_users(self.request.user.organization)
 
@@ -143,14 +176,60 @@ class StoryForm(forms.ModelForm):
 
     embargo_datetime = forms.DateTimeField(
         required=False,
-        widget=DateTimePicker(
+        widget=OurDateTimePicker(
             options={'format': 'YYYY-MM-DD HH:mm'},
             attrs={'id': 'story-embargo-picker'})
     )
 
     share_with_date = forms.DateTimeField(
         required=False,
-        widget=DateTimePicker(
+        widget=OurDateTimePicker(
+            options={'format': 'YYYY-MM-DD HH:mm'},
+            attrs={'id': 'story-share-picker'})
+    )
+
+    class Meta:
+        model = Story
+        fields = ['name', 'story_description', 'series', 'collaborate', 'collaborate_with','team', 'embargo', 'embargo_datetime', 'sensitive', 'share', 'ready_to_share', 'share_with', 'share_with_date', 'archived' ]
+        widgets = {
+            'team': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select', 'id':'story-team'}),
+            'collaborate_with': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select', 'id':'collaborate-with'}),
+            'share_with': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select', 'id':'share-with'}),
+            'series': Select(attrs={'class': 'form-control'}),
+        }
+
+    class Media:
+        css = {'all': ('/static/css/chosen.min.css')
+        }
+        js = ('/static/js/chosen.jquery.min.js')
+
+
+class StoryForm(forms.ModelForm):
+    """ Form to create a new story. """
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request")
+        self.story = kwargs.pop("story")
+        super(StoryForm, self).__init__(*args, **kwargs)
+        self.fields['collaborate_with'].queryset = Organization.get_org_collaborators(self.request.user.organization)
+        self.fields['team'].queryset = Story.get_story_team(self.story)
+
+    series = forms.ModelChoiceField(
+        queryset=Series.objects.all(),
+        widget=forms.Select,
+        required=False,
+    )
+
+    embargo_datetime = forms.DateTimeField(
+        required=False,
+        widget=OurDateTimePicker(
+            options={'format': 'YYYY-MM-DD HH:mm'},
+            attrs={'id': 'story-embargo-picker'})
+    )
+
+    share_with_date = forms.DateTimeField(
+        required=False,
+        widget=OurDateTimePicker(
             options={'format': 'YYYY-MM-DD HH:mm'},
             attrs={'id': 'story-share-picker'})
     )
@@ -177,9 +256,16 @@ class StoryForm(forms.ModelForm):
 class WebFacetForm(forms.ModelForm):
     """ Webfacet form. """
 
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request")
+        self.story = kwargs.pop("story")
+        super(WebFacetForm, self).__init__(*args, **kwargs)
+        self.fields['credit'].queryset = Story.get_story_team(self.story)
+        self.fields['editor'].queryset = Story.get_story_team(self.story)
+
     due_edit = forms.DateTimeField(
         required=False,
-        widget=DateTimePicker(
+        widget=OurDateTimePicker(
             options={'format': 'YYYY-MM-DD HH:mm'},
             attrs={'id': 'wf_dueedit_picker'}
         )
@@ -187,7 +273,7 @@ class WebFacetForm(forms.ModelForm):
 
     run_date = forms.DateTimeField(
         required=False,
-        widget=DateTimePicker(
+        widget=OurDateTimePicker(
             options={'format': 'YYYY-MM-DD HH:mm'},
             attrs={'id': 'wf_rundate_picker'}
         )
@@ -238,9 +324,16 @@ class WebFacetForm(forms.ModelForm):
 class PrintFacetForm(forms.ModelForm):
     """ Printfacet form. """
 
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request")
+        self.story = kwargs.pop("story")
+        super(PrintFacetForm, self).__init__(*args, **kwargs)
+        self.fields['credit'].queryset = Story.get_story_team(self.story)
+        self.fields['editor'].queryset = Story.get_story_team(self.story)
+
     due_edit = forms.DateTimeField(
         required=False,
-        widget=DateTimePicker(
+        widget=OurDateTimePicker(
             options={'format': 'YYYY-MM-DD HH:mm'},
             attrs={'id': 'pf_dueedit_picker'}
         )
@@ -248,7 +341,7 @@ class PrintFacetForm(forms.ModelForm):
 
     run_date = forms.DateTimeField(
         required=False,
-        widget=DateTimePicker(
+        widget=OurDateTimePicker(
             options={'format': 'YYYY-MM-DD HH:mm'},
             attrs={'id': 'pf_rundate_picker'}
         )
@@ -299,9 +392,16 @@ class PrintFacetForm(forms.ModelForm):
 class AudioFacetForm(forms.ModelForm):
     """ Audiofacet form. """
 
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request")
+        self.story = kwargs.pop("story")
+        super(AudioFacetForm, self).__init__(*args, **kwargs)
+        self.fields['credit'].queryset = Story.get_story_team(self.story)
+        self.fields['editor'].queryset = Story.get_story_team(self.story)
+
     due_edit = forms.DateTimeField(
         required=False,
-        widget=DateTimePicker(
+        widget=OurDateTimePicker(
             options={'format': 'YYYY-MM-DD HH:mm'},
             attrs={'id': 'af_dueedit_picker'}
         )
@@ -309,7 +409,7 @@ class AudioFacetForm(forms.ModelForm):
 
     run_date = forms.DateTimeField(
         required=False,
-        widget=DateTimePicker(
+        widget=OurDateTimePicker(
             options={'format': 'YYYY-MM-DD HH:mm'},
             attrs={'id': 'af_rundate_picker'}
         )
@@ -360,9 +460,16 @@ class AudioFacetForm(forms.ModelForm):
 class VideoFacetForm(forms.ModelForm):
     """ Videofacet form. """
 
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request")
+        self.story = kwargs.pop("story")
+        super(VideoFacetForm, self).__init__(*args, **kwargs)
+        self.fields['credit'].queryset = Story.get_story_team(self.story)
+        self.fields['editor'].queryset = Story.get_story_team(self.story)
+
     due_edit = forms.DateTimeField(
         required=False,
-        widget=DateTimePicker(
+        widget=OurDateTimePicker(
             options={'format': 'YYYY-MM-DD HH:mm'},
             attrs={'id': 'vf_dueedit_picker'}
         )
@@ -370,7 +477,7 @@ class VideoFacetForm(forms.ModelForm):
 
     run_date = forms.DateTimeField(
         required=False,
-        widget=DateTimePicker(
+        widget=OurDateTimePicker(
             options={'format': 'YYYY-MM-DD HH:mm'},
             attrs={'id': 'vf_rundate_picker'}
         )
@@ -652,3 +759,84 @@ class UserNoteForm(forms.ModelForm):
                 attrs={'id':'un-text', 'required': True, 'placeholder': 'Note', 'class': 'form-control', 'rows':10}
             ),
         }
+
+# ------------------------------ #
+#        Download Form           #
+# ------------------------------ #
+
+class StoryDownloadForm(forms.Form):
+    """ Select content and assets to download."""
+
+    def __init__(self, *args, **kwargs):
+        self.story = kwargs.pop('story')
+        super(StoryDownloadForm, self).__init__(*args, **kwargs)
+
+        if self.story.webfacetstory.all():
+            webfacet = self.story.webfacetstory.all()[0]
+            self.fields['webfacet_images'].queryset = WebFacet.get_webfacet_images(webfacet)
+        if self.story.printfacetstory.all():
+            printfacet = self.story.printfacetstory.all()[0]
+            self.fields['printfacet_images'].queryset = PrintFacet.get_printfacet_images(printfacet)
+        if self.story.audiofacetstory.all():
+            audiofacet = self.story.audiofacetstory.all()[0]
+            self.fields['audiofacet_images'].queryset = AudioFacet.get_audiofacet_images(audiofacet)
+        if self.story.videofacetstory.all():
+            videofacet = self.story.videofacetstory.all()[0]
+            self.fields['videofacet_images'].queryset = VideoFacet.get_videofacet_images(videofacet)
+
+    select_all = forms.BooleanField(
+        widget=CheckboxInput,
+    )
+
+    webfacet = forms.BooleanField(
+        widget=CheckboxInput,
+    )
+
+    printfacet = forms.BooleanField(
+        widget=CheckboxInput,
+    )
+
+    audiofacet = forms.BooleanField(
+        widget=CheckboxInput,
+    )
+
+    videofacet = forms.BooleanField(
+        widget=CheckboxInput,
+    )
+
+
+    webfacet_sa = forms.BooleanField(
+        widget=CheckboxInput,
+    )
+
+    printfacet_sa = forms.BooleanField(
+        widget=CheckboxInput,
+    )
+
+    audiofacet_sa = forms.BooleanField(
+        widget=CheckboxInput,
+    )
+
+    videofacet_sa = forms.BooleanField(
+        widget=CheckboxInput,
+    )
+
+    webfacet_images = forms.ModelMultipleChoiceField(
+        widget=CheckboxSelectMultiple,
+        queryset = ImageAsset.objects.all()
+    )
+
+    printfacet_images = forms.ModelMultipleChoiceField(
+        widget=CheckboxSelectMultiple,
+        queryset = ImageAsset.objects.all()
+    )
+
+    audiofacet_images = forms.ModelMultipleChoiceField(
+        widget=CheckboxSelectMultiple,
+        queryset = ImageAsset.objects.all()
+    )
+
+    videofacet_images = forms.ModelMultipleChoiceField(
+        widget=CheckboxSelectMultiple,
+        queryset = ImageAsset.objects.all()
+    )

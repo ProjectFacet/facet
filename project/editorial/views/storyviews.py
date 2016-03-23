@@ -13,18 +13,9 @@ from django.views.decorators.csrf import csrf_exempt
 import datetime
 import json
 
-from django.shortcuts import render, redirect, get_object_or_404
-from django.conf import settings
-from django.core.mail import send_mail
-from django.http import HttpResponse
-from django.utils import timezone
-from django.views.generic import TemplateView , UpdateView, DetailView
-from django.views.decorators.csrf import csrf_exempt
-import datetime
-import json
-
 from editorial.forms import (
     StoryForm,
+    NewStoryForm,
     WebFacetForm,
     PrintFacetForm,
     AudioFacetForm,
@@ -36,7 +27,8 @@ from editorial.forms import (
     PrintFacetCommentForm,
     AudioFacetCommentForm,
     VideoFacetCommentForm,
-    StoryNoteForm,)
+    StoryNoteForm,
+    StoryDownloadForm,)
 
 from editorial.models import (
     Organization,
@@ -78,7 +70,7 @@ def story_new(request):
 
     series = Series.objects.all()
     if request.method == "POST":
-        storyform = StoryForm(request.POST, request=request)
+        storyform = NewStoryForm(request.POST, request=request)
         #import pdb; pdb.set_trace()
         if storyform.is_valid():
             story = storyform.save(commit=False)
@@ -90,7 +82,7 @@ def story_new(request):
             storyform.save_m2m()
             return redirect('story_detail', pk=story.pk)
     else:
-        storyform = StoryForm(request=request)
+        storyform = NewStoryForm(request=request)
     return render(request, 'editorial/storynew.html', {
         'storyform': storyform,
         'series': series
@@ -103,12 +95,12 @@ def story_edit(request, pk):
     story = get_object_or_404(Story, pk=pk)
 
     if request.method == "POST":
-        storyform = StoryForm(data=request.POST, instance=story, request=request)
+        storyform = StoryForm(data=request.POST, instance=story, request=request, story=story)
         if storyform.is_valid():
             storyform.save()
             return redirect('story_detail', pk=story.id)
     else:
-        storyform = StoryForm(instance=story, request=request)
+        storyform = StoryForm(instance=story, request=request, story=story)
 
     return render(request, 'editorial/storyedit.html', {
         'story': story,
@@ -137,7 +129,7 @@ def story_detail(request, pk):
 # ------------------------------ #
 
     # create these here for efficiency
-    webform=WebFacetForm()
+    webform=WebFacetForm(request=request, story=story)
     webcommentform=WebFacetCommentForm()
     webfacet_imageform=ImageAssetForm()
 
@@ -147,7 +139,7 @@ def story_detail(request, pk):
 
         # IF WEBFACET EXISTS DO ALL OF THE FOLLOWING
         # rebind webform to include webfacet instance
-        webform = WebFacetForm(instance=webfacet)
+        webform = WebFacetForm(instance=webfacet, request=request, story=story)
         # retrieve discussion and comments
         webfacetdiscussion = get_object_or_404(Discussion, id=webfacet.discussion.id)
         webcomments = Comment.objects.filter(discussion=webfacetdiscussion).order_by('-date')[:3]
@@ -175,7 +167,7 @@ def story_detail(request, pk):
             print "WF Except Post"
             if 'webform' in request.POST:
                 print "WF Except Post If webform"
-                webform = WebFacetForm(request.POST or None)
+                webform = WebFacetForm(request.POST, request=request)
                 if webform.is_valid():
                     # #import pdb; pdb.set_trace()
                     print "WF Except Post If webform Valid"
@@ -199,7 +191,7 @@ def story_detail(request, pk):
 # ------------------------------ #
 
     # create these here for efficiency
-    printform=PrintFacetForm()
+    printform=PrintFacetForm(request=request, story=story)
     printcommentform=PrintFacetCommentForm()
     printfacet_imageform=ImageAssetForm()
 
@@ -207,7 +199,7 @@ def story_detail(request, pk):
         print "PF Try"
         printfacet = get_object_or_404(PrintFacet, story=story)
         # IF PRINTFACET EXISTS DO ALL OF THE FOLLOWING
-        printform = PrintFacetForm(instance=printfacet)
+        printform = PrintFacetForm(instance=printfacet, request=request, story=story)
         # retrieve discussion and comments
         printfacetdiscussion = get_object_or_404(Discussion, id=printfacet.discussion.id)
         printcomments = Comment.objects.filter(discussion=printfacetdiscussion).order_by('-date')[:3]
@@ -236,7 +228,7 @@ def story_detail(request, pk):
             if 'printform' in request.POST:
                 print "PF Except If Post If printform"
                 # #import pdb; pdb.set_trace()
-                printform = PrintFacetForm(request.POST or None)
+                printform = PrintFacetForm(request.POST, request=request)
                 if printform.is_valid():
                     print "PF Except If Post If printform Valid"
                     printfacet = printform.save(commit=False)
@@ -259,7 +251,7 @@ def story_detail(request, pk):
 # ------------------------------ #
 
     # create these here for efficiency
-    audioform=AudioFacetForm()
+    audioform=AudioFacetForm(request=request, story=story)
     audiocommentform=AudioFacetCommentForm()
     audiofacet_imageform=ImageAssetForm()
 
@@ -268,7 +260,7 @@ def story_detail(request, pk):
         audiofacet = get_object_or_404(AudioFacet, story=story)
         print "AUDIOFACET CREDIT: ", audiofacet.credit.all()
         # IF WEBFACET EXISTS DO ALL OF THE FOLLOWING
-        audioform = AudioFacetForm(instance=audiofacet)
+        audioform = AudioFacetForm(instance=audiofacet, request=request, story=story)
         # retrieve discussion and comments
         audiofacetdiscussion = get_object_or_404(Discussion, id=audiofacet.discussion.id)
         audiocomments = Comment.objects.filter(discussion=audiofacetdiscussion).order_by('-date')[:3]
@@ -297,7 +289,7 @@ def story_detail(request, pk):
             if 'audioform' in request.POST:
                 print "AF Except If Post If Audioform"
                 # #import pdb; pdb.set_trace()
-                audioform = AudioFacetForm(request.POST or None)
+                audioform = AudioFacetForm(request.POST, request=request)
                 if audioform.is_valid():
                     print "AF Except If Post If Audioform Valid"
                     audiofacet = audioform.save(commit=False)
@@ -320,7 +312,7 @@ def story_detail(request, pk):
 # ------------------------------ #
 
     # create these here for efficiency
-    videoform=VideoFacetForm()
+    videoform=VideoFacetForm(request=request, story=story)
     videocommentform=VideoFacetCommentForm()
     videofacet_imageform=ImageAssetForm()
 
@@ -328,7 +320,7 @@ def story_detail(request, pk):
         print "VF Try"
         videofacet = get_object_or_404(VideoFacet, story=story)
         # IF WEBFACET EXISTS DO ALL OF THE FOLLOWING
-        videoform = VideoFacetForm(instance=videofacet)
+        videoform = VideoFacetForm(instance=videofacet, request=request, story=story)
         # retrieve discussion and comments
         videofacetdiscussion = get_object_or_404(Discussion, id=videofacet.discussion.id)
         videocomments = Comment.objects.filter(discussion=videofacetdiscussion).order_by('-date')[:3]
@@ -356,7 +348,7 @@ def story_detail(request, pk):
             print "VF Except If Post"
             if 'videoform' in request.POST:
                 print "VF Except If Post If Videoform"
-                videoform = VideoFacetForm(request.POST or None)
+                videoform = VideoFacetForm(request.POST, request=request)
                 if videoform.is_valid():
                     # #import pdb; pdb.set_trace()
                     print "VF Except If Post If Videoform Valid"
@@ -375,8 +367,34 @@ def story_detail(request, pk):
                     videohistory = videofacet.edit_history.all()[:5]
                     return redirect('story_detail', pk=story.pk)
 
+    # ------------------------------ #
+    #        Download Options        #
+    # ------------------------------ #
+    if story.webfacetstory.all():
+        webfacet = get_object_or_404(WebFacet, story=story)
+        webfacet_images = WebFacet.get_webfacet_images(webfacet)
+    else:
+        webfacet_images = []
+    if story.printfacetstory.all():
+        printfacet = get_object_or_404(PrintFacet, story=story)
+        printfacet_images = PrintFacet.get_printfacet_images(printfacet)
+    else:
+        printfacet_images = []
+    if story.audiofacetstory.all():
+        audiofacet = get_object_or_404(AudioFacet, story=story)
+        audiofacet_images = AudioFacet.get_audiofacet_images(audiofacet)
+    else:
+        audiofacet_images = []
+    if story.videofacetstory.all():
+        videofacet = get_object_or_404(VideoFacet, story=story)
+        videofacet_images = VideoFacet.get_videofacet_images(videofacet)
+    else:
+        videofacet_images =[]
+    storydownloadform = StoryDownloadForm(story=story)
+
     return render(request, 'editorial/storydetail.html', {
         'story': story,
+        'storydownloadform': storydownloadform,
         'storynoteform': storynoteform,
         'storynotes': storynotes,
         'storycommentform': storycommentform,
@@ -402,4 +420,8 @@ def story_detail(request, pk):
         'audiofacet_imageform': audiofacet_imageform,
         'videofacet_imageform': videofacet_imageform,
         'images': images,
+        'webfacet_images': webfacet_images,
+        'printfacet_images': printfacet_images,
+        'audiofacet_images': audiofacet_images,
+        'videofacet_images': videofacet_images,
         })

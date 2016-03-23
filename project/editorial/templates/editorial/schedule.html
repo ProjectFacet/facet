@@ -1,0 +1,184 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load bootstrap3 %}
+{% load static from staticfiles %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block content %}
+
+<div class="row particles" id="user-hero">
+  <div class="upper-content">
+    <div class="col-lg-12 content-upper-75">
+      <h1 class="media-heading text-light center thin uppercase spread-025">Schedule</h1>
+    </div>
+  </div>
+</div>
+
+
+<div class="row">
+  <div class="col-xs-12">
+    <div class="row">
+      <div class="col-xs-10 col-xs-offset-1">
+        <div class="page-header">
+          <div class="pull-right form-inline">
+            <div class="btn-group">
+              <button class="btn btn-primary" data-calendar-nav="prev"><i class="fa fa-long-arrow-left"></i> Prev</button>
+              <button class="btn btn-default" data-calendar-nav="today">Current</button>
+              <button class="btn btn-primary" data-calendar-nav="next">Next <i class="fa fa-long-arrow-right"></i></button>
+            </div>
+            <div class="btn-group">
+              <button class="btn btn-primary" data-calendar-view="year">Year</button>
+              <button class="btn btn-default" data-calendar-view="month">Month</button>
+              <button class="btn btn-primary" data-calendar-view="week">Week</button>
+              <!-- <button class="btn btn-primary" data-calendar-view="day">Day</button> -->
+            </div>
+          </div>
+          <h3 class="thin"></h3>
+        </div>
+      </div>
+    </div>
+
+  <div class="row">
+    <div class="col-xs-10 col-xs-offset-1">
+      <div id="calendar"></div>
+    </div>
+    <div class="col-xs-10 col-xs-offset-1">
+      <div class="row content-lower-25">
+        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <select id="first_day" class="form-control">
+          <option value="2">First day of week is Sunday</option>
+          <option value="1">First day of week is Monday</option>
+        </select>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+        <label class="checkbox">
+          <input type="checkbox" value="#events-modal" id="events-in-modal"> Open events in modal window
+        </label>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+        <label class="checkbox">
+          <input type="checkbox" id="format-12-hours"> 12 Hour format
+        </label>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+        <label class="checkbox">
+          <input type="checkbox" id="show_wb" checked> Show week box
+        </label>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+        <label class="checkbox">
+          <input type="checkbox" id="show_wbn" checked> Show week box number
+        </label>
+      </div>
+      </div>
+      </div>
+
+      <!-- <div class="col-xs-10 col-xs-offset-1">
+      <h4>Events</h4>
+      <small>This list is populated with events dynamically</small>
+      <ul id="eventlist" class="nav nav-list"></ul>
+      </div> -->
+    </div>
+  </div>
+
+  <div class="modal fade" id="events-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h3 class="modal-title">Event</h3>
+        </div>
+        <div class="modal-body" style="height: 400px">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  </div>
+</div>
+
+
+<script type="text/javascript">
+(function($) {
+	"use strict";
+
+	var options = {
+		events_source: "{% url 'schedule-content' %}",
+		view: 'month',
+		tmpl_path: "{% static 'bootstrap-calendar/tmpls/' %}",
+		tmpl_cache: false,
+		// day: '2013-03-12',
+		onAfterEventsLoad: function(events) {
+			if(!events) {
+				return;
+			}
+			var list = $('#eventlist');
+			list.html('');
+
+			$.each(events, function(key, val) {
+				$(document.createElement('li'))
+					.html('<a href="' + val.url + '">' + val.title + '</a>')
+					.appendTo(list);
+			});
+		},
+		onAfterViewLoad: function(view) {
+			$('.page-header h3').text(this.getTitle());
+			$('.btn-group button').removeClass('active');
+			$('button[data-calendar-view="' + view + '"]').addClass('active');
+		},
+		classes: {
+			months: {
+				general: 'label'
+			}
+		}
+	};
+
+	var calendar = $('#calendar').calendar(options);
+
+	$('.btn-group button[data-calendar-nav]').each(function() {
+		var $this = $(this);
+		$this.click(function() {
+			calendar.navigate($this.data('calendar-nav'));
+		});
+	});
+
+	$('.btn-group button[data-calendar-view]').each(function() {
+		var $this = $(this);
+		$this.click(function() {
+			calendar.view($this.data('calendar-view'));
+		});
+	});
+
+	$('#first_day').change(function(){
+		var value = $(this).val();
+		value = value.length ? parseInt(value) : null;
+		calendar.setOptions({first_day: value});
+		calendar.view();
+	});
+
+	$('#language').change(function(){
+		calendar.setLanguage($(this).val());
+		calendar.view();
+	});
+
+	$('#events-in-modal').change(function(){
+		var val = $(this).is(':checked') ? $(this).val() : null;
+		calendar.setOptions({modal: val});
+	});
+	$('#events-modal .modal-header, #events-modal .modal-footer').click(function(e){
+		//e.preventDefault();
+		//e.stopPropagation();
+	});
+}(jQuery));
+
+</script>
+
+{% endblock %}

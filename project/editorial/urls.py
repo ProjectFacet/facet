@@ -15,7 +15,10 @@ from views import (
     assetviews,
     communicationviews,
     noteviews,
-    downloadviews,)
+    downloadviews,
+    scheduleviews)
+
+from views.searchviews import EditorialSearchView
 
 urlpatterns = [
     #----------------------------------------------------------------------#
@@ -31,6 +34,11 @@ urlpatterns = [
     #   Dashboard URLS
     #----------------------------------------------------------------------#
     url(r'^dashboard$', generalviews.dashboard, name='dashboard'),
+    #----------------------------------------------------------------------#
+    #   Schedule URLS
+    #----------------------------------------------------------------------#
+    url(r'^schedule$', scheduleviews.schedule, name='schedule'),
+    url(r'^schedulecontent$', scheduleviews.schedule_content, name='schedule-content'),
     #----------------------------------------------------------------------#
     #   Collaborations URLS
     #----------------------------------------------------------------------#
@@ -124,4 +132,8 @@ urlpatterns = [
     #   Download URLS
     #----------------------------------------------------------------------#
     url(r'^story/(?P<pk>[0-9]+)/download/$', downloadviews.create_download, name='create_download'),
+    #----------------------------------------------------------------------#
+    #   Search URLS
+    #----------------------------------------------------------------------#
+    url(r"^search/$", EditorialSearchView.as_view(), name="search"),
 ]

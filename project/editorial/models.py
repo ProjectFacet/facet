@@ -32,6 +32,7 @@ from django.utils.encoding import python_2_unicode_compatible
 from django.core.urlresolvers import reverse
 from django.utils import timezone
 from django.shortcuts import get_object_or_404
+from itertools import chain
 
 #----------------------------------------------------------------------#
 #   People:
@@ -118,7 +119,7 @@ class User(AbstractUser):
 
     display_photo = ImageSpecField(
         source='photo',
-        processors=[SmartResize(300,300)],
+        processors=[SmartResize(500,500)],
         format='JPEG',
     )
 
@@ -170,6 +171,9 @@ class User(AbstractUser):
     def __str__(self):
         return self.credit_name
 
+    def get_absolute_url(self):
+        return reverse('user_detail', kwargs={'pk': self.id})
+
     def get_user_content(self):
         """Return list of all content user is associated with as
         owner, editor, team or credit."""
@@ -187,14 +191,12 @@ class User(AbstractUser):
         user_content.extend(printfacets)
         user_content.extend(audiofacets)
         user_content.extend(videofacets)
-
         return user_content
 
     def get_user_stories(self):
         """Return list of stories that a user is associated with."""
 
         user_stories = Story.objects.filter(Q(Q(owner=self) | Q(team=self)))
-
         return user_stories
 
 
@@ -229,14 +231,27 @@ class User(AbstractUser):
         messages_sent = PrivateMessage.objects.filter(user=self)
         return messages_sent
 
+    def get_user_searchable_content(self):
+        """ Return queryset of user specific content that is searchable."""
+
+        usernotes = UserNote.objects.filter(Q(owner=self))
+
+        return usernotes
+
     @property
     def description(self):
-        return "{user}, {title}".format(
+        return "{user}, {title}, {org}".format(
                                         user=self.credit_name,
-                                        title=self.title
+                                        title=self.title,
+                                        org=self.organization.name
                                         )
 
+    @property
+    def search_title(self):
+        return self.credit_name
 
+
+@python_2_unicode_compatible
 class Organization(models.Model):
     """ Media Organization.
 
@@ -269,7 +284,7 @@ class Organization(models.Model):
 
     display_logo = ImageSpecField(
         source='logo',
-        processors=[SmartResize(300,300)],
+        processors=[SmartResize(500,500)],
         format='JPEG',
     )
 
@@ -313,6 +328,9 @@ class Organization(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+      return reverse('org_detail', kwargs={'pk': self.id})
+
     def get_org_users(self):
         """ Return queryset of all users in an organization."""
 
@@ -346,18 +364,53 @@ class Organization(models.Model):
         images = ImageAsset.objects.filter(organization=self)
         return images
 
+    def get_org_searchable_content(self):
+        """ Return queryset of all objects that can be searched by a user."""
+
+        #additional required info
+        networks = Organization.get_org_networks(self)
+
+        searchable_objects = []
+
+        series = Series.objects.filter(Q(Q(organization=self) | Q(collaborate_with=self)))
+        stories = Story.objects.filter(Q(Q(organization=self) | Q(collaborate_with=self)))
+        webfacets = WebFacet.objects.filter(Q(organization=self))
+        printfacets = PrintFacet.objects.filter(Q(organization=self))
+        audiofacets = AudioFacet.objects.filter(Q(organization=self))
+        videofacets = VideoFacet.objects.filter(Q(organization=self))
+        imageassets = ImageAsset.objects.filter(Q(organization=self))
+        networknote = NetworkNote.objects.filter(Q(network__in=networks))
+        orgnote = OrganizationNote.objects.filter(Q(organization=self))
+        seriesnote = SeriesNote.objects.filter(Q(organization=self))
+        storynote = StoryNote.objects.filter(Q(organization=self))
+        searchable_objects.append(series)
+        searchable_objects.append(stories)
+        searchable_objects.append(webfacets)
+        searchable_objects.append(printfacets)
+        searchable_objects.append(audiofacets)
+        searchable_objects.append(videofacets)
+        searchable_objects.append(imageassets)
+        searchable_objects.append(networknote)
+        searchable_objects.append(orgnote)
+        searchable_objects.append(seriesnote)
+        searchable_objects.append(storynote)
+
+        return searchable_objects
+
     @property
     def description(self):
-        return "{organization}, {description}".format(
-                                                    organization=self.name,
-                                                    description=self.org_description
-                                                    )
+        return "{description}".format(description=self.org_description)
+
+    @property
+    def search_title(self):
+        return self.name
 
     @property
     def type(self):
         return "Organization"
 
 
+@python_2_unicode_compatible
 class Network(models.Model):
     """ A group of organizations.
 
@@ -396,7 +449,7 @@ class Network(models.Model):
 
     display_logo = ImageSpecField(
         source='logo',
-        processors=[SmartResize(300,300)],
+        processors=[SmartResize(500,500)],
         format='JPEG',
     )
 
@@ -421,6 +474,9 @@ class Network(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+      return reverse('network_detail', kwargs={'pk': self.id})
+
     def get_network_shared_stories(self):
         """ Return list of stories shared with a network. """
 
@@ -429,10 +485,11 @@ class Network(models.Model):
 
     @property
     def description(self):
-        return "{network}, {description}".format(
-                                                network=self.name,
-                                                description=self.network_description
-                                                )
+        return "{description}".format(description=self.network_description)
+
+    @property
+    def search_title(self):
+        return self.name
 
     @property
     def type(self):
@@ -449,6 +506,7 @@ class Network(models.Model):
 
 # A Facet is always part of a story, even if there is only one facet.
 
+@python_2_unicode_compatible
 class Series(models.Model):
     """ A specific series.
 
@@ -546,19 +604,30 @@ class Series(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+      return reverse('series_detail', kwargs={'pk': self.id})
+
+    def get_series_team(self):
+     """Return queryset with org users and users from collaboration orgs for a series."""
+
+     collaborators = self.collaborate_with.all()
+     series_team = User.objects.filter(Q(Q(organization=self.organization) | Q(organization__in=collaborators)))
+     return series_team
+
     @property
     def description(self):
-        return "{series}, {description}".format(
-                                                series=self.name,
-                                                description=self.series_description
-                                                )
+        return "{description}".format(description=self.series_description)
+
+    @property
+    def search_title(self):
+        return self.name
 
     @property
     def type(self):
         return "Series"
 
 
-
+@python_2_unicode_compatible
 class Story(models.Model):
     """ The unit of a story.
 
@@ -650,7 +719,7 @@ class Story(models.Model):
         related_name='story_shared_with_network',
         help_text='Network ids that a story is shared with.',
         blank=True,
-        null=True,
+        # null=True,
     )
 
     collaborate = models.BooleanField(
@@ -685,6 +754,8 @@ class Story(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+      return reverse('story_detail', kwargs={'pk': self.id})
 
     def copy_story(self):
         """ Create a copy of a story for a partner organization in a network.
@@ -716,35 +787,84 @@ class Story(models.Model):
         story_copy.archived = False
         story_copy.discussion = Discussion.objects.create_discussion("STO")
         story_copy.save()
-
         return story_copy
 
-    def get_story_downloadables(self):
-        """Retrieve all objects associated with a story for download.
+    def get_story_download(self):
+        """ Return rst formatted string for downloading story meta."""
 
-        When a user chooses to download a story and its assets they get a window displaying
-        all of the facets and assets associated with that story as a checklist of items.
-        The user can select the all or some of the items they want to download.
-        The form submission creates a zipfile of those objects.
+        # loop over m2m and get the values as string
+        team = self.team.all()
+        team = [ user.credit_name for user in team]
+        team = ",".join(team)
 
-        Download = txt of story metadata, a txt of each facet metadata,
-        txt of content and each asset associated with any of the facets.
-        """
-        pass
+        share_with = self.share_with.all()
+        share_with = [ org.name for org in share_with ]
+        share_with = ",".join(share_with)
 
+        collaborate_with = self.share_with.all()
+        collaborate_with = [ org.name for org in collaborate_with ]
+        collaborate_with = ",".join(collaborate_with)
+
+        # verify the text area fields have correct encoding
+        name = self.name.encode('utf-8')
+        print "NAME: ", name
+        description = self.story_description.encode('utf-8')
+
+        if self.series:
+            series_name = self.series.name
+        else:
+            series_name = ""
+
+        story_download = """
+        Story
+        ========
+        {name}
+        --------------
+        Description: {desc}
+        Series: {series}
+        Owner: {owner}
+        Organization: {organization}
+        Original: {original}
+        Team: {team}
+        Created: {created}
+        Sensitive: {sensitive}
+        Embargo Status: {embargo}
+        Embargo Date/Time: {embargo_dt}
+        Share: {share}
+        Share Date: {sharedate}
+        Shared With: {sharewith}
+        Ready for Sharing: {shareready}
+        Collaborate: {collaborate}
+        Collaborate With: {collaboratewith}
+        Archived: {archived}
+        """.format(name=name, desc=description, series=series_name, owner=self.owner, organization=self.organization.name,
+        original=self.original_story, team=team, created=self.creation_date, sensitive=self.sensitive,
+        embargo=self.embargo, embargo_dt=self.embargo_datetime, share=self.share,
+        sharedate=self.share_with_date, sharewith=share_with, shareready=self.ready_to_share,
+        collaborate=self.collaborate, collaboratewith=collaborate_with, archived=self.archived)
+        return story_download
+
+    def get_story_team(self):
+        """Return queryset with org users and users from collaboration orgs for a story."""
+
+        collaborators = self.collaborate_with.all()
+        story_team = User.objects.filter(Q(Q(organization=self.organization) | Q(organization__in=collaborators)))
+        return story_team
 
     @property
     def description(self):
-        return "{story}, {description}".format(
-                                                story=self.name,
-                                                description=self.story_description
-                                                )
+        return "{description}".format(description=self.story_description)
+
+    @property
+    def search_title(self):
+        return self.name
 
     @property
     def type(self):
         return "Story"
 
 
+@python_2_unicode_compatible
 class WebFacet(models.Model):
     """ Regularly published web content.
 
@@ -902,6 +1022,9 @@ class WebFacet(models.Model):
     def __str__(self):
         return self.title
 
+    def get_absolute_url(self):
+      return reverse('story_detail', kwargs={'pk': self.story.id})
+
     def copy_webfacet(self):
         """ Create a copy of a webfacet for a partner organization in a network."""
 
@@ -927,19 +1050,75 @@ class WebFacet(models.Model):
         webfacet_images = ImageAsset.objects.filter(webfacet=self)
         return webfacet_images
 
+    def get_webfacet_download(self):
+        """ Return rst formatted string for downloading webfacet and its meta."""
+
+        # loop over m2m and get the values as string
+        credits = self.credit.all()
+        credits = [ user.credit_name for user in credits]
+        credits = ",".join(credits)
+
+        # loop over m2m and get the values as string
+        images = WebFacet.get_webfacet_images(self)
+        images = [image.asset_title for image in images]
+        images = ",".join(images)
+
+        # verify the text area fields have correct encoding
+        title = self.title.encode('utf-8')
+        description = self.wf_description.encode('utf-8')
+        excerpt = self.excerpt.encode('utf-8')
+        share_note = self.share_note.encode('utf-8')
+        content = self.wf_content.encode('utf-8')
+
+        webfacet_download = """
+        WebFacet
+        ========
+        {title}
+        --------------
+        Description: {desc}\n
+        Story: {story}\n
+        Owner: {owner}\n
+        Organization: {organization}\n
+        Original: {original}\n
+        Editor: {editor}\n
+        Credit: {credit}\n
+        Code: {code}\n
+        Excerpt: {excerpt}\n
+        Length: {length}\n
+        Keywords: {keywords}\n
+        Status: {status}\n
+        Due Edit: {dueedit}\n
+        Run Date: {rundate}\n
+        Share Note: {sharenote}\n
+        Images: {images}\n
+        Captions: {captions}\n
+        \n
+        Content\n
+        -------
+        {content}
+        """.format(title=title, desc=description, story=self.story, owner=self.owner,
+        organization=self.organization.name, original=self.original_webfacet, editor=self.editor,
+        credit=credits, code=self.code, excerpt=excerpt, length=self.length,
+        keywords=self.keywords, status=self.status, dueedit=self.due_edit, rundate=self.run_date,
+        sharenote=share_note, images=images, captions=self.captions, content=content)
+
+        return webfacet_download
+
 
     @property
     def description(self):
-        return "Webfacet: {webfacet} by {credit}".format(
-                                webfacet=self.id,
-                                credit=self.credit,
-                                )
+        return "{desc}".format(desc=self.wf_description)
+
+    @property
+    def search_title(self):
+        return self.title
 
     @property
     def type(self):
         return "WebFacet"
 
 
+@python_2_unicode_compatible
 class PrintFacet(models.Model):
     """ The print version of a story.
 
@@ -1097,6 +1276,9 @@ class PrintFacet(models.Model):
     def __str__(self):
         return self.title
 
+    def get_absolute_url(self):
+      return reverse('story_detail', kwargs={'pk': self.story.id})
+
     def copy_printfacet(self):
         """ Create a copy of a printfacet for a partner organization in a network."""
 
@@ -1122,18 +1304,74 @@ class PrintFacet(models.Model):
         printfacet_images = ImageAsset.objects.filter(printfacet=self)
         return printfacet_images
 
+    def get_printfacet_download(self):
+        """ Return rst formatted string for downloading printfacet and its meta."""
+
+        # loop over m2m and get the values as string
+        credits = self.credit.all()
+        credits = [ user.credit_name for user in credits]
+        credits = ",".join(credits)
+
+        # loop over m2m and get the values as string
+        images = PrintFacet.get_printfacet_images(self)
+        images = [image.asset_title for image in images]
+        images = ",".join(images)
+
+        # verify the text area fields have correct encoding
+        title = self.title.encode('utf-8')
+        description = self.pf_description.encode('utf-8')
+        excerpt = self.excerpt.encode('utf-8')
+        share_note = self.share_note.encode('utf-8')
+        content = self.pf_content.encode('utf-8')
+
+        printfacet_download = """
+        PrintFacet
+        ========
+        {title}
+        --------------
+        Description: {desc}\n
+        Story: {story}\n
+        Owner: {owner}\n
+        Organization: {organization}\n
+        Original: {original}\n
+        Editor: {editor}\n
+        Credit: {credit}\n
+        Code: {code}\n
+        Excerpt: {excerpt}\n
+        Length: {length}\n
+        Keywords: {keywords}\n
+        Status: {status}\n
+        Due Edit: {dueedit}\n
+        Run Date: {rundate}\n
+        Share Note: {sharenote}\n
+        Images: {images}\n
+        Captions: {captions}\n
+        \n
+        Content\n
+        -------\n
+        {content}
+        """.format(title=title, desc=description, story=self.story, owner=self.owner,
+        organization=self.organization.name, original=self.original_printfacet, editor=self.editor,
+        credit=credits, code=self.code, excerpt=excerpt, length=self.length,
+        keywords=self.keywords, status=self.status, dueedit=self.due_edit, rundate=self.run_date,
+        sharenote=share_note, images=images, captions=self.captions, content=content)
+
+        return printfacet_download
+
     @property
     def description(self):
-        return "Printfacet: {printfacet} by {credit}".format(
-                                printfacet=self.id,
-                                credit=self.credit,
-                                )
+        return "{desc}".format(desc=self.pf_description)
+
+    @property
+    def search_title(self):
+        return self.title
 
     @property
     def type(self):
         return "PrintFacet"
 
 
+@python_2_unicode_compatible
 class AudioFacet(models.Model):
     """ Scheduled radio programming.
 
@@ -1292,6 +1530,9 @@ class AudioFacet(models.Model):
     def __str__(self):
         return self.title
 
+    def get_absolute_url(self):
+      return reverse('story_detail', kwargs={'pk': self.story.id})
+
     def copy_audiofacet(self):
         """ Create a copy of a audiofacet for a partner organization in a network."""
 
@@ -1317,18 +1558,75 @@ class AudioFacet(models.Model):
         audiofacet_images = ImageAsset.objects.filter(audiofacet=self)
         return audiofacet_images
 
+    def get_audiofacet_download(self):
+        """ Return rst formatted string for downloading audiofacet and its meta."""
+
+        # loop over m2m and get the values as string
+        credits = self.credit.all()
+        credits = [ user.credit_name for user in credits]
+        credits = ",".join(credits)
+
+        # loop over m2m and get the values as string
+        images = AudioFacet.get_audiofacet_images(self)
+        images = [image.asset_title for image in images]
+        images = ",".join(images)
+
+        # verify the text area fields have correct encoding
+        title = self.title.encode('utf-8')
+        description = self.af_description.encode('utf-8')
+        excerpt = self.excerpt.encode('utf-8')
+        share_note = self.share_note.encode('utf-8')
+        content = self.af_content.encode('utf-8')
+
+        audiofacet_download = """
+        AudioFacet
+        ========
+        {title}\n
+        --------------\n
+        Description: {desc}\n
+        Story: {story}\n
+        Owner: {owner}\n
+        Organization: {organization}\n
+        Original: {original}\n
+        Editor: {editor}\n
+        Credit: {credit}\n
+        Code: {code}\n
+        Excerpt: {excerpt}\n
+        Length: {length}\n
+        Keywords: {keywords}\n
+        Status: {status}\n
+        Due Edit: {dueedit}\n
+        Run Date: {rundate}\n
+        Share Note: {sharenote}\n
+        Images: {images}\n
+        Captions: {captions}\n
+        \n
+        Content\n
+        -------\n
+        {content}
+        """.format(title=title, desc=description, story=self.story, owner=self.owner,
+        organization=self.organization.name, original=self.original_audiofacet, editor=self.editor,
+        credit=credits, code=self.code, excerpt=excerpt, length=self.length,
+        keywords=self.keywords, status=self.status, dueedit=self.due_edit, rundate=self.run_date,
+        sharenote=share_note, images=images, captions=self.captions, content=content)
+
+        return audiofacet_download
+
+
     @property
     def description(self):
-        return "Audiofacet: {audiofacet} by {credit}".format(
-                                audiofacet=self.id,
-                                credit=self.credit,
-                                )
+        return "{desc}".format(desc=self.af_description)
+
+    @property
+    def search_title(self):
+        return self.title
 
     @property
     def type(self):
         return "AudioFacet"
 
 
+@python_2_unicode_compatible
 class VideoFacet(models.Model):
     """ Scheduled television programming.
 
@@ -1487,6 +1785,9 @@ class VideoFacet(models.Model):
     def __str__(self):
         return self.title
 
+    def get_absolute_url(self):
+      return reverse('story_detail', kwargs={'pk': self.story.id})
+
     def copy_videofacet(self):
         """ Create a copy of a videofacet for a partner organization in a network."""
 
@@ -1512,12 +1813,67 @@ class VideoFacet(models.Model):
         videofacet_images = ImageAsset.objects.filter(videofacet=self)
         return videofacet_images
 
+    def get_videofacet_download(self):
+        """ Return rst formatted string for downloading videofacet and its meta."""
+
+        # loop over m2m and get the values as string
+        credits = self.credit.all()
+        credits = [ user.credit_name for user in credits]
+        credits = ",".join(credits)
+
+        # loop over m2m and get the values as string
+        images = VideoFacet.get_videofacet_images(self)
+        images = [image.asset_title for image in images]
+        images = ",".join(images)
+
+        # verify the text area fields have correct encoding
+        title = self.title.encode('utf-8')
+        description = self.vf_description.encode('utf-8')
+        excerpt = self.excerpt.encode('utf-8')
+        share_note = self.share_note.encode('utf-8')
+        content = self.vf_content.encode('utf-8')
+
+        videofacet_download = """
+        VideoFacet
+        ========
+        {title}
+        --------------
+        Description: {desc}\n
+        Story: {story}\n
+        Owner: {owner}\n
+        Organization: {organization}\n
+        Original: {original}\n
+        Editor: {editor}\n
+        Credit: {credit}\n
+        Code: {code}\n
+        Excerpt: {excerpt}\n
+        Length: {length}\n
+        Keywords: {keywords}\n
+        Status: {status}\n
+        Due Edit: {dueedit}\n
+        Run Date: {rundate}\n
+        Share Note: {sharenote}\n
+        Images: {images}\n
+        Captions: {captions}\n
+        \n
+        Content\n
+        -------\n
+        {content}
+        """.format(title=title, desc=description, story=self.story, owner=self.owner,
+        organization=self.organization.name, original=self.original_videofacet, editor=self.editor,
+        credit=credits, code=self.code, excerpt=excerpt, length=self.length,
+        keywords=self.keywords, status=self.status, dueedit=self.due_edit, rundate=self.run_date,
+        sharenote=share_note, images=images, captions=self.captions, content=content)
+
+        return videofacet_download
+
     @property
     def description(self):
-        return "Videofacet: {videofacet} by {credit}".format(
-                                videofacet=self.id,
-                                credit=self.credit,
-                                )
+        return "{desc}".format(desc=self.vf_description)
+
+    @property
+    def search_title(self):
+        return self.title
 
     @property
     def type(self):
@@ -1527,6 +1883,7 @@ class VideoFacet(models.Model):
 #   Associations
 #   ------------
 
+@python_2_unicode_compatible
 class WebFacetContributor(models.Model):
     """ Which users are participating in creating the WebFacet. """
 
@@ -1550,6 +1907,7 @@ class WebFacetContributor(models.Model):
                                         )
 
 
+@python_2_unicode_compatible
 class PrintFacetContributor(models.Model):
     """ Which users are participating in creating the PrintFacet. """
 
@@ -1573,6 +1931,7 @@ class PrintFacetContributor(models.Model):
                                         )
 
 
+@python_2_unicode_compatible
 class AudioFacetContributor(models.Model):
     """ Which users are participating in creating the AudioFacet. """
 
@@ -1596,6 +1955,7 @@ class AudioFacetContributor(models.Model):
                                         )
 
 
+@python_2_unicode_compatible
 class VideoFacetContributor(models.Model):
     """ Which users are participating in creating the VideoFacet. """
 
@@ -1628,6 +1988,7 @@ class SeriesCopyDetailManager(models.Manager):
         return story_copy_detail
 
 
+@python_2_unicode_compatible
 class SeriesCopyDetail(models.Model):
     """ The details of each copy of a series.
 
@@ -1683,6 +2044,7 @@ class StoryCopyDetailManager(models.Manager):
         return story_copy_detail
 
 
+@python_2_unicode_compatible
 class StoryCopyDetail(models.Model):
     """ The details of each copy of a story.
 
@@ -1737,6 +2099,7 @@ class WebFacetCopyDetailManager(models.Manager):
         return webfacet_copy_detail
 
 
+@python_2_unicode_compatible
 class WebFacetCopyDetail(models.Model):
     """ The details of a each copy of a webfacet. """
 
@@ -1787,6 +2150,7 @@ class PrintFacetCopyDetailManager(models.Manager):
         return printfacet_copy_detail
 
 
+@python_2_unicode_compatible
 class PrintFacetCopyDetail(models.Model):
     """ The details of a each copy of a printfacet. """
 
@@ -1837,6 +2201,7 @@ class AudioFacetCopyDetailManager(models.Manager):
         return audiofacet_copy_detail
 
 
+@python_2_unicode_compatible
 class AudioFacetCopyDetail(models.Model):
     """ The details of a each copy of a audiofacet. """
 
@@ -1887,6 +2252,7 @@ class VideoFacetCopyDetailManager(models.Manager):
         return videofacet_copy_detail
 
 
+@python_2_unicode_compatible
 class VideoFacetCopyDetail(models.Model):
     """ The details of a each copy of a videofacet. """
 
@@ -1943,6 +2309,7 @@ class ImageAssetManager(models.Manager):
         return imageasset
 
 
+@python_2_unicode_compatible
 class ImageAsset(models.Model):
     """ Assets for all media uploaded. """
 
@@ -1986,7 +2353,6 @@ class ImageAsset(models.Model):
 
     display_photo = ImageSpecField(
         source='photo',
-        processors=[SmartResize(600, 600)],
         format='JPEG',
     )
 
@@ -2019,17 +2385,56 @@ class ImageAsset(models.Model):
 
     objects = ImageAssetManager()
 
+    class Meta:
+        verbose_name = "Image"
+        verbose_name_plural = "Images"
+
+    def get_image_download_info(self):
+        """Return rst of image information for download."""
+
+        title = self.asset_title.encode('utf-8')
+        description = self.asset_description.encode('utf-8')
+        attribution = self.attribution.encode('utf-8')
+
+        image_info="""
+        Image
+        =======
+        {title}.jpg
+        Description: {description}
+        Attribution: {attribution}
+        Type: {type}
+        Creation Date: {date}
+        Owner: {owner}
+        Organization: {organization}
+        Original: {original}
+        Keywords: {keywords}
+        """.format(title=title, description=description, attribution=attribution,
+        type=self.image_type, date=self.creation_date, owner=self.owner,
+        organization=self.organization.name, original=self.original,
+        keywords=self.keywords)
+
+        return image_info
+
     def __str__(self):
-        return "Asset: {asset} is a {image_type}".format(
-                                asset=self.id,
-                                image_type=self.image_type,
-                                )
+        return self.asset_title
+
+    # def get_absolute_url(self):
+    #     return ('image_detail', kwargs={'pk': self.id})
+
+    @property
+    def description(self):
+        return "{desc}".format(desc=self.asset_description.encode('utf-8'))
+
+    @property
+    def search_title(self):
+        return self.asset_title
 
     @property
     def type(self):
-        return "{image_type} Asset". format(image_type=self.image_type)
+        return "Image Asset"
 
 
+@python_2_unicode_compatible
 class Note(models.Model):
     """ Abstract base class for notes."""
 
@@ -2063,6 +2468,16 @@ class Note(models.Model):
     class Meta:
         abstract = True
 
+    def __str__(self):
+        return self.title
+
+    @property
+    def description(self):
+        return "Keywords: {keywords}".format(keywords = self.keywords)
+
+    @property
+    def search_title(self):
+        return self.title
 
 class NetworkNote(Note):
     """ General purpose notes for a network."""
@@ -2076,6 +2491,9 @@ class NetworkNote(Note):
         Network,
         related_name='networknote_network'
     )
+
+    def get_absolute_url(self):
+        return reverse('network_detail', kwargs={'pk': self.network.id})
 
     @property
     def type(self):
@@ -2095,6 +2513,9 @@ class OrganizationNote(Note):
         related_name="orgnote_org"
     )
 
+    def get_absolute_url(self):
+        return reverse('org_detail', kwargs={'pk': self.organization.id})
+
     @property
     def type(self):
         return "Organization Note"
@@ -2107,6 +2528,9 @@ class UserNote(Note):
         User,
         related_name='usernote_owner'
     )
+
+    def get_absolute_url(self):
+        return reverse('user_detail', kwargs={'pk': self.owner.id})
 
     @property
     def type(self):
@@ -2121,10 +2545,18 @@ class SeriesNote(Note):
         related_name='seriesnote_owner'
     )
 
+    organization=models.ForeignKey(
+        Organization,
+        related_name="seriesnote_org"
+    )
+
     series = models.ForeignKey(
         Series,
         related_name="seriesnote",
     )
+
+    def get_absolute_url(self):
+        return reverse('series_detail', kwargs={'pk': self.series.id})
 
     def __str__(self):
         return "SeriesNote: {seriesnote} for Series: {series}".format(
@@ -2145,6 +2577,11 @@ class StoryNote(Note):
         related_name='storynote_owner'
     )
 
+    organization=models.ForeignKey(
+        Organization,
+        related_name="storynote_org"
+    )
+
     story = models.ForeignKey(
         Story,
     )
@@ -2154,6 +2591,9 @@ class StoryNote(Note):
                                 storynote=self.id,
                                 story=self.story.id,
                                 )
+
+    def get_absolute_url(self):
+        return reverse('story_detail', kwargs={'pk': self.story.id})
 
     @property
     def type(self):
@@ -2169,6 +2609,7 @@ class DiscussionManager(models.Manager):
         return discussion
 
 
+@python_2_unicode_compatible
 class Discussion(models.Model):
     """ Class for  for related comments. """
 
@@ -2210,6 +2651,7 @@ class Discussion(models.Model):
                                 )
 
 
+@python_2_unicode_compatible
 class PrivateDiscussion(models.Model):
     """ Signifier of private conversations.
 
@@ -2242,6 +2684,7 @@ class PrivateMessageManager(models.Manager):
         return message
 
 
+@python_2_unicode_compatible
 class PrivateMessage(models.Model):
     """ A private message to a specific user.
 
@@ -2280,6 +2723,14 @@ class PrivateMessage(models.Model):
 
     objects = PrivateMessageManager()
 
+    class Meta:
+        verbose_name = 'Private Message'
+        verbose_name_plural = "Private Messages"
+        ordering = ['date']
+
+    def __str__(self):
+        return self.subject
+
     @property
     def type(self):
         return "Private Message"
@@ -2294,6 +2745,7 @@ class CommentManager(models.Manager):
         return comment
 
 
+@python_2_unicode_compatible
 class Comment(models.Model):
     """An individual comment.
 
@@ -2333,6 +2785,7 @@ class Comment(models.Model):
         return "Comment"
 
 
+@python_2_unicode_compatible
 class CommentReadStatus(models.Model):
     """ Tracking if a user involved in a discussion has read the most recent
     comment in order to surface unread comments first.
