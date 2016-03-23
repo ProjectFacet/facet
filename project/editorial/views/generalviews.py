@@ -191,6 +191,6 @@ def collaborations(request):
     story_collaborations = Organization.get_org_collaborative_content(request.user.organization)
 
     return render(request, 'editorial/collaborations.html', {
-        'series_collaorations': series_collaborations,
+        'series_collaborations': series_collaborations,
         'story_collaborations': story_collaborations,
     })
