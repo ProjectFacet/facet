@@ -24,6 +24,7 @@ from editorial.forms import (
     AudioFacetForm,
     VideoFacetForm,
     ImageAssetForm,
+    DocumentAssetForm,
     AddImageForm,
     AddToNetworkForm,
     InviteToNetworkForm,
@@ -90,6 +91,7 @@ def index(request):
 
 def test(request):
     """ Use for rapid testing of new pages."""
+
 
 
     return render(request, 'editorial/test.html')
@@ -185,10 +187,10 @@ def collaborations(request):
     """ Return dashboard of series and stories that are part of a collaboration.
     """
 
-    series_collaorations = Series.objects.filter(collaborate=True)
-    story_collaborations = Story.objects.filter(collaborate=True)
+    series_collaborations = Series.objects.filter(collaborate=True)
+    story_collaborations = Organization.get_org_collaborative_content(request.user.organization)
 
     return render(request, 'editorial/collaborations.html', {
-        'series_collaorations': series_collaorations,
+        'series_collaborations': series_collaborations,
         'story_collaborations': story_collaborations,
     })

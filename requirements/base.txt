@@ -14,6 +14,7 @@ django-bootstrap3-datetimepicker==2.2.3
 django-chosen==0.1
 django-crispy-forms==1.5.2
 django-datetime-widget==0.9.3
+django-embed-video==1.1.0
 django-filebrowser==3.6.1
 django-filter==0.11.0
 django-grappelli==2.7.1

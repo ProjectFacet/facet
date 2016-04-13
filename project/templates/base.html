@@ -54,19 +54,20 @@
   <script src="{% static 'scripts/jquery.dataTables.min.js' %}"></script>
   <!-- END DATETIME PICKER JS  -->
   <script src="{% static 'scripts/moment.js' %}"></script>
-  <!-- <script src="{% static 'scripts/bootstrap-datetimepicker.js' %}"></script> -->
+  <script src="{% static 'scripts/bootstrap-datetimepicker.js' %}"></script>
   <!-- END DATETIME PICKER JS  -->
 
   <!-- Bootstrap Calendar JS -->
   <script src="{% static 'bootstrap-calendar/js/calendar.js' %}"></script>
   <script src="{% static 'scripts/underscore/underscore-min.js' %}"></script>
-  <script>
-    // console.log("HELLO");
-    // var calendar_events = "{% static 'bootstrap-calendar/events.json.php' %}"
-    // var templates = "{% static 'bootstrap-calendar/events.json.php' %}"
-    // console.log("Where the fuck is this stuff?");
-    // console.log(templates);
-  </script>
+  <script src="{% static 'scripts/tiny_mce/tinymce.min.js' %}"></script>
+
+  <!-- jQuery Dot Dot -->
+  <script src="{% static 'scripts/jquery.dotdotdot.js' %}"></script>
+
+  <!-- jQuery Sticky Tabs -->
+  <script src="{% static 'scripts/jquery.stickytabs.js' %}"></script>
+
   <!-- <script src="{% static 'bootstrap-calendar/js/app.js' %}"></script> -->
 
   {% block head %}
@@ -119,33 +120,34 @@
           <ul class="nav navbar-nav">
             <li id="dashboard-link"><a href="{% url 'dashboard' %}">Dashboard</a></li>
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" title="Temporary Links for Convenience">Content<span class="caret"></span></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" title="Content">Content<span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                  <li><a href="{% url 'schedule' %}">Schedule</a></li>
-                  <li><a href="{% url 'story_list' %}">Stories</a></li>
-                  <li><a href="{% url 'series_list' %}">Series</a></li>
-                  <li><a href="{% url 'collaborations' %}">Collaborations</a></li>
+                  <li><a href="{% url 'schedule' %}" title="View Schedule">Schedule</a></li>
+                  <li><a href="{% url 'story_list' %}" title="View Story List">Stories</a></li>
+                  <li><a href="{% url 'series_list' %}" title="View Series List">Series</a></li>
+                  <li><a href="{% url 'collaborations' %}" title="View Content in Collaboration">Collaborations</a></li>
+                  <li><a href="{% url 'asset_library' %}" title="View Asset Library">Assets</a></li>
                 </ul>
             </li>
             <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" title="Temporary Links for Convenience">Networks<span class="caret"></span></a>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" title="Networks">Networks<span class="caret"></span></a>
                 <ul class="dropdown-menu">
-                  <li><a href="{% url 'network_list' %}">Networks</a></li>
-                  <li><a href="{% url 'network_stories' %}">Network Stories</a></li>
+                  <li><a href="{% url 'network_list' %}" title="View Networks">Networks</a></li>
+                  <li><a href="{% url 'network_stories' %}" title="View Network Content">Network Stories</a></li>
                 </ul>
             </li>
-            <li><a href="{% url 'team_list' %}">Teams</a></li>
-            <li><a href="{% url 'discussion' %}">Inbox</a></li>
+            <li><a href="{% url 'team_list' %}" title="View Teams and Collaborators">Teams</a></li>
+            <li><a href="{% url 'discussion' %}" title="View Inbox">Inbox</a></li>
 
 
             <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" title="Temporary Links for Convenience">Create New Content<span class="caret"></span></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" title="Create Series and Stories">Create New Content<span class="caret"></span></a>
               <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                <li><a href="{% url 'series_new' %}">Series</a></li>
-                <li><a href="{% url 'story_new' %}">Story</a></li>
+                <li><a href="{% url 'series_new' %}" title="Create New Series">Series</a></li>
+                <li><a href="{% url 'story_new' %}" title="Create New Story">Story</a></li>
               </ul>
             </li>
-            <li><a href="{% url 'search' %}">Search</a></li>
+            <li><a href="{% url 'search' %}" title="Search Content">Search</a></li>
           </ul>
           {% endif %}
 
@@ -177,9 +179,9 @@
           <!-- ================================================= -->
           {% if request.user.is_authenticated %}
             <div class="dropdown-ext">
-              <a href="{% url 'user_detail' pk=request.user.id %}"><h6 class="media-heading bright">{{ user.credit_name}}</h6></a>
+              <a href="{% url 'user_detail' pk=request.user.id %}"><h6 class="media-heading bright">{{ request.user.credit_name}}</h6></a>
               {% if request.user.organization %}
-                <a href="{% url 'org_detail' pk=request.user.organization_id %}"><p class="help-block tiny-text close-text">{{ user.organization.name }}</p></a>
+                <a href="{% url 'org_detail' pk=request.user.organization_id %}"><p class="help-block tiny-text close-text">{{ request.user.organization.name }}</p></a>
               {% endif %}
             </div><!-- /.dropdown -->
             <div class="dropdown-ext">
@@ -212,7 +214,7 @@
                     {% if request.user.organization.owner = request.user %}
                     <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'org_edit' pk=request.user.organization.id %}"><span class="pull-right"><i class="fa fa-pencil text-muted"></i></span>Edit Organization</a></li>
                     {% endif %}
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'org_new' %}"><span class="pull-right"><i class="fa fa-users text-muted"></i></span>New Organization</a></li>
+                    <!-- <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'org_new' %}"><span class="pull-right"><i class="fa fa-users text-muted"></i></span>New Organization</a></li> -->
                     <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'network_new' %}"><span class="pull-right"><i class="fa fa-users text-muted"></i></span>New Network</a></li>
                     <li class="divider"></li>
                     <li role="presentation"><a role="menuitem" tabindex="-1" href="/accounts/logout"><span class="pull-right"><i class="fa fa-sign-out text-muted"></i></span> Sign out</a></li>

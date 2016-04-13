@@ -28,6 +28,9 @@ from editorial.models import (
     SeriesNote,
     StoryNote,
     ImageAsset,
+    DocumentAsset,
+    AudioAsset,
+    VideoAsset
     )
 
 # ------------------------------ #
@@ -107,12 +110,12 @@ class InviteToNetworkForm(forms.Form):
 #          Series Forms          #
 # ------------------------------ #
 
-class NewSeriesForm(forms.ModelForm):
-    """ Form to create/edit a series. """
+class SeriesForm(forms.ModelForm):
+    """ Form to create a new series. """
 
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop("request")
-        super(NewSeriesForm, self).__init__(*args, **kwargs)
+        super(SeriesForm, self).__init__(*args, **kwargs)
         self.fields['collaborate_with'].queryset = Organization.get_org_collaborators(self.request.user.organization)
         self.fields['team'].queryset = Organization.get_org_users(self.request.user.organization)
 
@@ -127,92 +130,21 @@ class NewSeriesForm(forms.ModelForm):
     class Media:
         css = {'all': ('/static/css/chosen.min.css')
         }
-        js = ('/static/js/chosen.jquery.min.js')
-
-
-class SeriesForm(forms.ModelForm):
-    """ Form to create/edit a series. """
-
-    def __init__(self, *args, **kwargs):
-        self.request = kwargs.pop("request")
-        self.series = kwargs.pop("series")
-        super(SeriesForm, self).__init__(*args, **kwargs)
-        self.fields['collaborate_with'].queryset = Organization.get_org_collaborators(self.request.user.organization)
-        self.fields['team'].queryset = Series.get_series_team(self.series)
-
-    class Meta:
-        model = Series
-        fields = ['name', 'series_description', 'collaborate', 'collaborate_with', 'team']
-        widgets = {
-            'team': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select', 'id':'series-team'}),
-            'collaborate_with': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select', 'id':'collaborate-with'}),
-            }
-
-    class Media:
-        css = {'all': ('/static/css/chosen.min.css')
-        }
-        js = ('/static/js/chosen.jquery.min.js')
-
-
+        js = ('/static/scripts/chosen.jquery.min.js')
 
 # ------------------------------ #
 #          Story Forms           #
 # ------------------------------ #
-
-class NewStoryForm(forms.ModelForm):
-    """ Form to create a new story. """
-
-    def __init__(self, *args, **kwargs):
-        self.request = kwargs.pop("request")
-        super(NewStoryForm, self).__init__(*args, **kwargs)
-        self.fields['collaborate_with'].queryset = Organization.get_org_collaborators(self.request.user.organization)
-        self.fields['team'].queryset = Organization.get_org_users(self.request.user.organization)
-
-    series = forms.ModelChoiceField(
-        queryset=Series.objects.all(),
-        widget=forms.Select,
-        required=False,
-    )
-
-    embargo_datetime = forms.DateTimeField(
-        required=False,
-        widget=OurDateTimePicker(
-            options={'format': 'YYYY-MM-DD HH:mm'},
-            attrs={'id': 'story-embargo-picker'})
-    )
-
-    share_with_date = forms.DateTimeField(
-        required=False,
-        widget=OurDateTimePicker(
-            options={'format': 'YYYY-MM-DD HH:mm'},
-            attrs={'id': 'story-share-picker'})
-    )
-
-    class Meta:
-        model = Story
-        fields = ['name', 'story_description', 'series', 'collaborate', 'collaborate_with','team', 'embargo', 'embargo_datetime', 'sensitive', 'share', 'ready_to_share', 'share_with', 'share_with_date', 'archived' ]
-        widgets = {
-            'team': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select', 'id':'story-team'}),
-            'collaborate_with': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select', 'id':'collaborate-with'}),
-            'share_with': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select', 'id':'share-with'}),
-            'series': Select(attrs={'class': 'form-control'}),
-        }
-
-    class Media:
-        css = {'all': ('/static/css/chosen.min.css')
-        }
-        js = ('/static/js/chosen.jquery.min.js')
-
 
 class StoryForm(forms.ModelForm):
     """ Form to create a new story. """
 
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop("request")
-        self.story = kwargs.pop("story")
         super(StoryForm, self).__init__(*args, **kwargs)
+        self.fields['share_with'].queryset = Organization.get_org_networks(self.request.user.organization)
         self.fields['collaborate_with'].queryset = Organization.get_org_collaborators(self.request.user.organization)
-        self.fields['team'].queryset = Story.get_story_team(self.story)
+        self.fields['team'].queryset = Organization.get_org_users(self.request.user.organization)
 
     series = forms.ModelChoiceField(
         queryset=Series.objects.all(),
@@ -247,7 +179,7 @@ class StoryForm(forms.ModelForm):
     class Media:
         css = {'all': ('/static/css/chosen.min.css')
         }
-        js = ('/static/js/chosen.jquery.min.js')
+        js = ('/static/scripts/chosen.jquery.min.js')
 
 # ------------------------------ #
 #          Facet Forms           #
@@ -262,6 +194,7 @@ class WebFacetForm(forms.ModelForm):
         super(WebFacetForm, self).__init__(*args, **kwargs)
         self.fields['credit'].queryset = Story.get_story_team(self.story)
         self.fields['editor'].queryset = Story.get_story_team(self.story)
+
 
     due_edit = forms.DateTimeField(
         required=False,
@@ -312,13 +245,12 @@ class WebFacetForm(forms.ModelForm):
 
     class Media:
         css = {
-            'all': ('static/css/bootstrap-datetimepicker.css', '/static/css/chosen.min.css')
+            'all': ('css/bootstrap-datetimepicker.css', '/static/css/chosen.min.css')
         }
-        js = ('/static/js/chosen.jquery.min.js',
+        js = ('/static/scripts/chosen.jquery.min.js',
          '/static/scripts/moment.js',
          '/static/scripts/jquery.datetimepicker.js',
-         '/static/scripts/bootstrap-datetimepicker.js',
-         '/static/scripts/tiny_mce/tinymce.min.js',)
+         '/static/scripts/bootstrap-datetimepicker.js',)
 
 
 class PrintFacetForm(forms.ModelForm):
@@ -380,13 +312,12 @@ class PrintFacetForm(forms.ModelForm):
 
     class Media:
         css = {
-            'all': ('static/css/bootstrap-datetimepicker.css', '/static/css/chosen.min.css')
+            'all': ('css/bootstrap-datetimepicker.css', '/static/css/chosen.min.css')
         }
-        js = ('/static/js/chosen.jquery.min.js',
+        js = ('/static/scripts/chosen.jquery.min.js',
          '/static/scripts/moment.js',
          '/static/scripts/jquery.datetimepicker.js',
-         '/static/scripts/bootstrap-datetimepicker.js',
-         '/static/scripts/tiny_mce/tinymce.min.js',)
+         '/static/scripts/bootstrap-datetimepicker.js',)
 
 
 class AudioFacetForm(forms.ModelForm):
@@ -448,13 +379,12 @@ class AudioFacetForm(forms.ModelForm):
 
     class Media:
         css = {
-            'all': ('static/css/bootstrap-datetimepicker.css', '/static/css/chosen.min.css')
+            'all': ('css/bootstrap-datetimepicker.css', '/static/css/chosen.min.css')
         }
-        js = ('/static/js/chosen.jquery.min.js',
+        js = ('/static/scripts/chosen.jquery.min.js',
          '/static/scripts/moment.js',
          '/static/scripts/jquery.datetimepicker.js',
-         '/static/scripts/bootstrap-datetimepicker.js',
-         '/static/scripts/tiny_mce/tinymce.min.js',)
+         '/static/scripts/bootstrap-datetimepicker.js',)
 
 
 class VideoFacetForm(forms.ModelForm):
@@ -516,13 +446,12 @@ class VideoFacetForm(forms.ModelForm):
 
     class Media:
         css = {
-            'all': ('static/css/bootstrap-datetimepicker.css', '/static/css/chosen.min.css')
+            'all': ('css/bootstrap-datetimepicker.css', '/static/css/chosen.min.css')
         }
-        js = ('/static/js/chosen.jquery.min.js',
+        js = ('/static/scripts/chosen.jquery.min.js',
          '/static/scripts/moment.js',
          '/static/scripts/jquery.datetimepicker.js',
-         '/static/scripts/bootstrap-datetimepicker.js',
-         '/static/scripts/tiny_mce/tinymce.min.js',)
+         '/static/scripts/bootstrap-datetimepicker.js',)
 
 
 # ------------------------------ #
@@ -560,6 +489,105 @@ class AddImageForm(forms.Form):
         widget=CheckboxSelectMultiple,
         queryset = ImageAsset.objects.all()
     )
+
+class DocumentAssetForm(forms.ModelForm):
+    """Upload document to a facet."""
+
+    class Meta:
+        model = DocumentAsset
+        fields = [
+            'asset_title',
+            'asset_description',
+            'attribution',
+            'document',
+            'doc_type',
+            'keywords',
+        ]
+        widgets = {
+            'asset_description': Textarea(attrs={'rows':3}),
+            'attribution': Textarea(attrs={'rows':3}),
+            'doc_type': Select(attrs={'class': 'form-control'}),
+        }
+
+class AddDocumentForm(forms.Form):
+    """ Add existing document(s) to a facet."""
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request")
+        super(AddDocumentForm, self).__init__(*args, **kwargs)
+        self.fields['documents'].queryset = Organization.get_org_document_library(self.request.user.organization)
+
+    documents = forms.ModelMultipleChoiceField(
+        widget=CheckboxSelectMultiple,
+        queryset = DocumentAsset.objects.all()
+    )
+
+class AudioAssetForm(forms.ModelForm):
+    """Upload audio to a facet."""
+
+    class Meta:
+        model = AudioAsset
+        fields = [
+            'asset_title',
+            'asset_description',
+            'attribution',
+            'audio',
+            'link',
+            'audio_type',
+            'keywords',
+        ]
+        widgets = {
+            'asset_description': Textarea(attrs={'rows':3}),
+            'attribution': Textarea(attrs={'rows':3}),
+            'audio_type': Select(attrs={'class': 'form-control'}),
+        }
+
+class AddAudioForm(forms.Form):
+    """ Add existing audio to a facet."""
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request")
+        super(AddAudioForm, self).__init__(*args, **kwargs)
+        self.fields['documents'].queryset = Organization.get_org_audio_library(self.request.user.organization)
+
+    audio = forms.ModelMultipleChoiceField(
+        widget=CheckboxSelectMultiple,
+        queryset = AudioAsset.objects.all()
+    )
+
+class VideoAssetForm(forms.ModelForm):
+    """Upload video to a facet."""
+
+    class Meta:
+        model = VideoAsset
+        fields = [
+            'asset_title',
+            'asset_description',
+            'attribution',
+            'video',
+            'link',
+            'video_type',
+            'keywords',
+        ]
+        widgets = {
+            'asset_description': Textarea(attrs={'rows':3}),
+            'attribution': Textarea(attrs={'rows':3}),
+            'video_type': Select(attrs={'class': 'form-control'}),
+        }
+
+class AddVideoForm(forms.Form):
+    """ Add existing video to a facet."""
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request")
+        super(AddVideoForm, self).__init__(*args, **kwargs)
+        self.fields['documents'].queryset = Organization.get_org_video_library(self.request.user.organization)
+
+    video = forms.ModelMultipleChoiceField(
+        widget=CheckboxSelectMultiple,
+        queryset = VideoAsset.objects.all()
+    )
+
 
 # ------------------------------ #
 #         Comment Forms          #

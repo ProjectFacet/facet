@@ -15,13 +15,18 @@ import json
 
 from editorial.forms import (
     StoryForm,
-    NewStoryForm,
     WebFacetForm,
     PrintFacetForm,
     AudioFacetForm,
     VideoFacetForm,
     ImageAssetForm,
     AddImageForm,
+    DocumentAssetForm,
+    AddDocumentForm,
+    AudioAssetForm,
+    AddAudioForm,
+    VideoAssetForm,
+    AddVideoForm,
     StoryCommentForm,
     WebFacetCommentForm,
     PrintFacetCommentForm,
@@ -70,7 +75,7 @@ def story_new(request):
 
     series = Series.objects.all()
     if request.method == "POST":
-        storyform = NewStoryForm(request.POST, request=request)
+        storyform = StoryForm(request.POST, request=request)
         #import pdb; pdb.set_trace()
         if storyform.is_valid():
             story = storyform.save(commit=False)
@@ -82,7 +87,7 @@ def story_new(request):
             storyform.save_m2m()
             return redirect('story_detail', pk=story.pk)
     else:
-        storyform = NewStoryForm(request=request)
+        storyform = StoryForm(request=request)
     return render(request, 'editorial/storynew.html', {
         'storyform': storyform,
         'series': series
@@ -95,12 +100,12 @@ def story_edit(request, pk):
     story = get_object_or_404(Story, pk=pk)
 
     if request.method == "POST":
-        storyform = StoryForm(data=request.POST, instance=story, request=request, story=story)
+        storyform = StoryForm(data=request.POST, instance=story, request=request)
         if storyform.is_valid():
             storyform.save()
             return redirect('story_detail', pk=story.id)
     else:
-        storyform = StoryForm(instance=story, request=request, story=story)
+        storyform = StoryForm(instance=story, request=request)
 
     return render(request, 'editorial/storyedit.html', {
         'story': story,
@@ -123,6 +128,9 @@ def story_detail(request, pk):
     storycomments = Comment.objects.filter(discussion=storydiscussion).order_by('-date')
     notes = StoryNote.objects.filter(story=story)
     images = Organization.get_org_image_library(request.user.organization)
+    documents = Organization.get_org_document_library(request.user.organization)
+    audio = Organization.get_org_audio_library(request.user.organization)
+    video = Organization.get_org_video_library(request.user.organization)
 
 # ------------------------------ #
 #           webfacet             #
@@ -132,6 +140,9 @@ def story_detail(request, pk):
     webform=WebFacetForm(request=request, story=story)
     webcommentform=WebFacetCommentForm()
     webfacet_imageform=ImageAssetForm()
+    webfacet_documentform=DocumentAssetForm()
+    webfacet_audioform=AudioAssetForm()
+    webfacet_videoform=VideoAssetForm()
 
     try:
         webfacet = get_object_or_404(WebFacet, story=story)
@@ -150,7 +161,7 @@ def story_detail(request, pk):
             print "WF Try If Post"
             if 'webform' in request.POST:
                 print "WF Try If Post If webform"
-                webform = WebFacetForm(data=request.POST, instance=webfacet)
+                webform = WebFacetForm(data=request.POST, instance=webfacet, request=request, story=story)
                 #import pdb; pdb.set_trace()
                 if webform.is_valid():
                     print "WF Try If Post If Webform Valid"
@@ -167,7 +178,7 @@ def story_detail(request, pk):
             print "WF Except Post"
             if 'webform' in request.POST:
                 print "WF Except Post If webform"
-                webform = WebFacetForm(request.POST, request=request)
+                webform = WebFacetForm(data=request.POST, request=request, story=story)
                 if webform.is_valid():
                     # #import pdb; pdb.set_trace()
                     print "WF Except Post If webform Valid"
@@ -194,6 +205,7 @@ def story_detail(request, pk):
     printform=PrintFacetForm(request=request, story=story)
     printcommentform=PrintFacetCommentForm()
     printfacet_imageform=ImageAssetForm()
+    printfacet_documentform=DocumentAssetForm()
 
     try:
         print "PF Try"
@@ -211,7 +223,7 @@ def story_detail(request, pk):
             if 'printform' in request.POST:
                 print "PF Try If Post If printform"
                 #import pdb; pdb.set_trace()
-                printform = PrintFacetForm(data=request.POST, instance=printfacet)
+                printform = PrintFacetForm(data=request.POST, instance=printfacet, request=request, story=story)
                 if printform.is_valid():
                     print "PF Try If Post If printform Valid"
                     printform.save()
@@ -228,7 +240,7 @@ def story_detail(request, pk):
             if 'printform' in request.POST:
                 print "PF Except If Post If printform"
                 # #import pdb; pdb.set_trace()
-                printform = PrintFacetForm(request.POST, request=request)
+                printform = PrintFacetForm(data=request.POST, request=request, story=story)
                 if printform.is_valid():
                     print "PF Except If Post If printform Valid"
                     printfacet = printform.save(commit=False)
@@ -254,11 +266,12 @@ def story_detail(request, pk):
     audioform=AudioFacetForm(request=request, story=story)
     audiocommentform=AudioFacetCommentForm()
     audiofacet_imageform=ImageAssetForm()
+    audiofacet_documentform=DocumentAssetForm()
 
     try:
-        print "AF Try"
         audiofacet = get_object_or_404(AudioFacet, story=story)
         print "AUDIOFACET CREDIT: ", audiofacet.credit.all()
+
         # IF WEBFACET EXISTS DO ALL OF THE FOLLOWING
         audioform = AudioFacetForm(instance=audiofacet, request=request, story=story)
         # retrieve discussion and comments
@@ -272,7 +285,7 @@ def story_detail(request, pk):
             if 'audioform' in request.POST:
                 print "AF Try If Post If Audioform"
                 # #import pdb; pdb.set_trace()
-                audioform = AudioFacetForm(data=request.POST, instance=audiofacet)
+                audioform = AudioFacetForm(data=request.POST, instance=audiofacet, request=request, story=story)
                 if audioform.is_valid():
                     print "AF Try If Post If Audioform Valid"
                     audioform.save()
@@ -289,7 +302,7 @@ def story_detail(request, pk):
             if 'audioform' in request.POST:
                 print "AF Except If Post If Audioform"
                 # #import pdb; pdb.set_trace()
-                audioform = AudioFacetForm(request.POST, request=request)
+                audioform = AudioFacetForm(data=request.POST, request=request, story=story)
                 if audioform.is_valid():
                     print "AF Except If Post If Audioform Valid"
                     audiofacet = audioform.save(commit=False)
@@ -315,6 +328,7 @@ def story_detail(request, pk):
     videoform=VideoFacetForm(request=request, story=story)
     videocommentform=VideoFacetCommentForm()
     videofacet_imageform=ImageAssetForm()
+    videofacet_documentform=DocumentAssetForm()
 
     try:
         print "VF Try"
@@ -332,7 +346,7 @@ def story_detail(request, pk):
             if 'videoform' in request.POST:
                 print "VF Try If Post If Videoform"
                 # # #import pdb; pdb.set_trace()
-                videoform = VideoFacetForm(data=request.POST, instance=videofacet)
+                videoform = VideoFacetForm(data=request.POST, instance=videofacet, request=request, story=story)
                 if videoform.is_valid():
                     print "VF Try If Post If Videoform Valid"
                     videoform.save()
@@ -348,7 +362,7 @@ def story_detail(request, pk):
             print "VF Except If Post"
             if 'videoform' in request.POST:
                 print "VF Except If Post If Videoform"
-                videoform = VideoFacetForm(request.POST, request=request)
+                videoform = VideoFacetForm(data=request.POST, request=request, story=story)
                 if videoform.is_valid():
                     # #import pdb; pdb.set_trace()
                     print "VF Except If Post If Videoform Valid"
@@ -373,23 +387,51 @@ def story_detail(request, pk):
     if story.webfacetstory.all():
         webfacet = get_object_or_404(WebFacet, story=story)
         webfacet_images = WebFacet.get_webfacet_images(webfacet)
+        webfacet_documents = WebFacet.get_webfacet_documents(webfacet)
+        webfacet_audio = WebFacet.get_webfacet_audio(webfacet)
+        webfacet_video = WebFacet.get_webfacet_video(webfacet)
     else:
         webfacet_images = []
+        webfacet_documents = []
+        webfacet_audio = []
+        webfacet_video = []
+
     if story.printfacetstory.all():
         printfacet = get_object_or_404(PrintFacet, story=story)
         printfacet_images = PrintFacet.get_printfacet_images(printfacet)
+        printfacet_documents = PrintFacet.get_printfacet_documents(printfacet)
+        printfacet_audio = PrintFacet.get_printfacet_audio(printfacet)
+        printfacet_video = PrintFacet.get_printfacet_video(printfacet)
     else:
         printfacet_images = []
+        printfacet_documents = []
+        printfacet_audio = []
+        printfacet_video = []
+
     if story.audiofacetstory.all():
         audiofacet = get_object_or_404(AudioFacet, story=story)
         audiofacet_images = AudioFacet.get_audiofacet_images(audiofacet)
+        audiofacet_documents = AudioFacet.get_audiofacet_documents(audiofacet)
+        audiofacet_audio = AudioFacet.get_audiofacet_audio(audiofacet)
+        audiofacet_video = AudioFacet.get_audiofacet_video(audiofacet)
     else:
         audiofacet_images = []
+        audiofacet_documents = []
+        audiofacet_audio = []
+        audiofacet_video = []
+
     if story.videofacetstory.all():
         videofacet = get_object_or_404(VideoFacet, story=story)
         videofacet_images = VideoFacet.get_videofacet_images(videofacet)
+        videofacet_documents = VideoFacet.get_videofacet_documents(videofacet)
+        videofacet_audio = VideoFacet.get_videofacet_audio(videofacet)
+        videofacet_video = VideoFacet.get_videofacet_video(videofacet)
     else:
-        videofacet_images =[]
+        videofacet_images = []
+        videofacet_documents = []
+        videofacet_audio = []
+        videofacet_video = []
+
     storydownloadform = StoryDownloadForm(story=story)
 
     return render(request, 'editorial/storydetail.html', {
@@ -424,4 +466,17 @@ def story_detail(request, pk):
         'printfacet_images': printfacet_images,
         'audiofacet_images': audiofacet_images,
         'videofacet_images': videofacet_images,
+        'webfacet_documentform' : webfacet_documentform,
+        'printfacet_documentform' : printfacet_documentform,
+        'audiofacet_documentform' : audiofacet_documentform,
+        'videofacet_documentform' : videofacet_documentform,
+        'documents': documents,
+        'webfacet_documents': webfacet_documents,
+        'printfacet_documents': printfacet_documents,
+        'audiofacet_documents': audiofacet_documents,
+        'videofacet_documents': videofacet_documents,
+        'webfacet_audioform': webfacet_audioform,
+        'webfacet_audio': webfacet_audio,
+        'webfacet_videoform': webfacet_videoform,
+        'webfacet_video': webfacet_video,
         })

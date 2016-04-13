@@ -6,6 +6,7 @@ from django.conf.urls import url, include
 # from views import HomeView
 from views import (
     generalviews,
+    # assetviews,
     scheduleviews,
     organizationviews,
     userviews,
@@ -40,6 +41,12 @@ urlpatterns = [
     url(r'^schedule$', scheduleviews.schedule, name='schedule'),
     url(r'^schedulecontent$', scheduleviews.schedule_content, name='schedule-content'),
     #----------------------------------------------------------------------#
+    #   Asset Library URLS
+    #----------------------------------------------------------------------#
+    url(r'^assets$', assetviews.asset_library, name='asset_library'),
+    url(r'^asset/(?P<pk>[0-9]+)/$', assetviews.asset_detail, name='asset_detail'),
+    # url(r'^asset/(?P<pk>[0-9]+)/edit/$', assetviews.asset_edit, name='asset_edit'),
+    #----------------------------------------------------------------------#
     #   Collaborations URLS
     #----------------------------------------------------------------------#
     url(r'^collaborations$', generalviews.collaborations, name='collaborations'),
@@ -48,14 +55,25 @@ urlpatterns = [
     #----------------------------------------------------------------------#
     url(r'^team$', generalviews.team_list, name='team_list'),
     #----------------------------------------------------------------------#
-    #   Discussion URLS
+    #   Discussion URLS - Labeled as Inbox in navigation
     #----------------------------------------------------------------------#
-    # Labeled as Inbox in navigation
     url(r'^discussion$', generalviews.discussion, name='discussion'),
     #----------------------------------------------------------------------#
     #   Private Message URLS
     #----------------------------------------------------------------------#
     url(r'^privatemessage/new/$', communicationviews.private_message_new, name='private_message_new'),
+    #----------------------------------------------------------------------#
+    #   Copy URLS
+    #----------------------------------------------------------------------#
+    url(r'^story/copy/(?P<pk>[0-9]+)/$', networkviews.copy_network_story, name='copy_network_story'),
+    #----------------------------------------------------------------------#
+    #   Download URLS
+    #----------------------------------------------------------------------#
+    url(r'^story/(?P<pk>[0-9]+)/download/$', downloadviews.create_download, name='create_download'),
+    #----------------------------------------------------------------------#
+    #   Search URLS
+    #----------------------------------------------------------------------#
+    url(r"^search/$", EditorialSearchView.as_view(), name="search"),
     #----------------------------------------------------------------------#
     #   Comment URLS
     #----------------------------------------------------------------------#
@@ -104,6 +122,7 @@ urlpatterns = [
     #----------------------------------------------------------------------#
     #   Asset URLS
     #----------------------------------------------------------------------#
+    # Images
     url(r'^webfacet/image/new/$', assetviews.upload_webfacet_image, name='upload_webfacet_image'),
     url(r'^printfacet/image/new/$', assetviews.upload_printfacet_image, name='upload_printfacet_image'),
     url(r'^audiofacet/image/new/$', assetviews.upload_audiofacet_image, name='upload_audiofacet_image'),
@@ -112,6 +131,33 @@ urlpatterns = [
     url(r'^printfacet/image/add/$', assetviews.add_printfacet_image, name='add_printfacet_image'),
     url(r'^audiofacet/image/add/$', assetviews.add_audiofacet_image, name='add_audiofacet_image'),
     url(r'^videofacet/image/add/$', assetviews.add_videofacet_image, name='add_videofacet_image'),
+    # Documents
+    url(r'^webfacet/document/new/$', assetviews.upload_webfacet_document, name='upload_webfacet_document'),
+    url(r'^printfacet/document/new/$', assetviews.upload_printfacet_document, name='upload_printfacet_document'),
+    url(r'^audiofacet/document/new/$', assetviews.upload_audiofacet_document, name='upload_audiofacet_document'),
+    url(r'^videofacet/document/new/$', assetviews.upload_videofacet_document, name='upload_videofacet_document'),
+    url(r'^webfacet/document/add/$', assetviews.add_webfacet_document, name='add_webfacet_document'),
+    url(r'^printfacet/document/add/$', assetviews.add_printfacet_document, name='add_printfacet_document'),
+    url(r'^audiofacet/document/add/$', assetviews.add_audiofacet_document, name='add_audiofacet_document'),
+    url(r'^videofacet/document/add/$', assetviews.add_videofacet_document, name='add_videofacet_document'),
+    # Audio
+    url(r'^webfacet/audio/new/$', assetviews.upload_webfacet_audio, name='upload_webfacet_audio'),
+    # url(r'^printfacet/audio/new/$', assetviews.upload_printfacet_audio, name='upload_printfacet_audio'),
+    # url(r'^audiofacet/audio/new/$', assetviews.upload_audiofacet_audio, name='upload_audiofacet_audio'),
+    # url(r'^videofacet/audio/new/$', assetviews.upload_videofacet_audio, name='upload_videofacet_audio'),
+    url(r'^webfacet/audio/add/$', assetviews.add_webfacet_audio, name='add_webfacet_audio'),
+    # url(r'^printfacet/audio/add/$', assetviews.add_printfacet_audio, name='add_printfacet_audio'),
+    # url(r'^audiofacet/audio/add/$', assetviews.add_audiofacet_audio, name='add_audiofacet_audio'),
+    # url(r'^videofacet/audio/add/$', assetviews.add_videofacet_audio, name='add_videofacet_audio'),
+    # Video
+    url(r'^webfacet/video/new/$', assetviews.upload_webfacet_video, name='upload_webfacet_video'),
+    # url(r'^printfacet/video/new/$', assetviews.upload_printfacet_video, name='upload_printfacet_video'),
+    # url(r'^audiofacet/video/new/$', assetviews.upload_audiofacet_video, name='upload_audiofacet_video'),
+    # url(r'^videofacet/video/new/$', assetviews.upload_videofacet_video, name='upload_videofacet_video'),
+    url(r'^webfacet/video/add/$', assetviews.add_webfacet_video, name='add_webfacet_video'),
+    # url(r'^printfacet/video/add/$', assetviews.add_printfacet_video, name='add_printfacet_video'),
+    # url(r'^audiofacet/video/add/$', assetviews.add_audiofacet_video, name='add_audiofacet_video'),
+    # url(r'^videofacet/video/add/$', assetviews.add_videofacet_video, name='add_videofacet_video'),
     #----------------------------------------------------------------------#
     #   Network URLS
     #----------------------------------------------------------------------#
@@ -124,16 +170,4 @@ urlpatterns = [
     url(r'^network/stories$', networkviews.network_stories, name='network_stories'),
     url(r'^network/(?P<pk>[0-9]+)/notes/$', noteviews.network_notes, name='network_notes'),
     url(r'^network/note/new/$', noteviews.create_network_note, name='create_network_note'),
-    #----------------------------------------------------------------------#
-    #   Copy URLS
-    #----------------------------------------------------------------------#
-    url(r'^story/copy/(?P<pk>[0-9]+)/$', networkviews.copy_network_story, name='copy_network_story'),
-    #----------------------------------------------------------------------#
-    #   Download URLS
-    #----------------------------------------------------------------------#
-    url(r'^story/(?P<pk>[0-9]+)/download/$', downloadviews.create_download, name='create_download'),
-    #----------------------------------------------------------------------#
-    #   Search URLS
-    #----------------------------------------------------------------------#
-    url(r"^search/$", EditorialSearchView.as_view(), name="search"),
 ]
