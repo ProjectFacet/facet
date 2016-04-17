@@ -846,7 +846,7 @@ class Story(models.Model):
 
         # verify the text area fields have correct encoding
         name = self.name.encode('utf-8')
-        print "NAME: ", name
+        # print "NAME: ", name
         description = self.story_description.encode('utf-8')
 
         if self.series:

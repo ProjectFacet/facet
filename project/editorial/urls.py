@@ -109,6 +109,7 @@ urlpatterns = [
     url(r'^series$', seriesviews.series_list, name='series_list'),
     url(r'^series/(?P<pk>[0-9]+)/$', seriesviews.series_detail, name='series_detail'),
     url(r'^series/(?P<pk>[0-9]+)/edit/$', seriesviews.series_edit, name='series_edit'),
+    url(r'^series/(?P<pk>[0-9]+)/delete/$', seriesviews.series_delete, name='series_delete'),
     url(r'^series/(?P<pk>[0-9]+)/notes/$', noteviews.series_notes, name='series_notes'),
     url(r'^series/note/new/$', noteviews.create_series_note, name='create_series_note'),
     #----------------------------------------------------------------------#
@@ -118,6 +119,7 @@ urlpatterns = [
     url(r'^stories$', storyviews.story_list, name='story_list'),
     url(r'^story/(?P<pk>[0-9]+)/$', storyviews.story_detail, name='story_detail'),
     url(r'^story/(?P<pk>[0-9]+)/edit/$', storyviews.story_edit, name='story_edit'),
+    url(r'^story/(?P<pk>[0-9]+)/delete/$', storyviews.story_delete, name='story_delete'),
     url(r'^story/note/new/$', noteviews.create_story_note, name='create_story_note'),
     #----------------------------------------------------------------------#
     #   Asset URLS
