@@ -188,33 +188,37 @@
           <a href="{% url 'story_detail' pk=story.id %}">
             <div class="col-md-6 col-lg-6">
               <div class="panel fade in panel-default" data-init-panel="true">
-                <div class="panel-bod story-panel">
-                  <div class="media">
-                    <div class="media-left">
-                      <!-- Place icon or image here -->
-                    </div>
-                    <div class="media-body">
-                      <h5 class="brighter">{{ story.name }}</h5>
-                      <p class="tiny-text">{{ story.creation_date }}</p>
-                      {% if story.webfacetstory.all or story.printfacetstory.all or story.audiofacetstory.all or story.videofacetstory.all %}
-                      <p class="dark">
-                      {% for facet in story.webfacetstory.all %}
-                      <i class="fa fa-laptop"></i>
-                      {% endfor %}
-                      {% for facet in story.printfacetstory.all %}
-                      <i class="fa fa-newspaper-o"></i>
-                      {% endfor %}
-                      {% for facet in story.audiofacetstory.all %}
-                      <i class="fa fa-microphone"></i>
-                      {% endfor %}
-                      {% for facet in story.videofacetstory.all %}
-                      <i class="fa fa-film"></i>
-                      {% endfor %}
-                      </p>
-                      {% endif %}
-                    </div><!-- /.media -body-->
-                  </div><!-- /.media -->
-                </div><!-- /.panel-body -->
+                {% if story_images %}
+                  <div class="panel-bod story-panel" style="background-image: url({{ image.display_photo.url }}); height: 200px; width: 400px;">
+                {% else %}
+                  <div class="panel-bod story-panel">
+                {% endif %}
+                    <div class="media">
+                      <div class="media-left">
+                        <!-- Place icon or image here -->
+                      </div>
+                      <div class="media-body">
+                        <h5 class="brighter">{{ story.name }}</h5>
+                        <p class="tiny-text">{{ story.creation_date }}</p>
+                        {% if story.webfacetstory.all or story.printfacetstory.all or story.audiofacetstory.all or story.videofacetstory.all %}
+                        <p class="dark">
+                        {% for facet in story.webfacetstory.all %}
+                        <i class="fa fa-laptop"></i>
+                        {% endfor %}
+                        {% for facet in story.printfacetstory.all %}
+                        <i class="fa fa-newspaper-o"></i>
+                        {% endfor %}
+                        {% for facet in story.audiofacetstory.all %}
+                        <i class="fa fa-microphone"></i>
+                        {% endfor %}
+                        {% for facet in story.videofacetstory.all %}
+                        <i class="fa fa-film"></i>
+                        {% endfor %}
+                        </p>
+                        {% endif %}
+                      </div><!-- /.media -body-->
+                    </div><!-- /.media -->
+                  </div><!-- /.panel-body -->
                 <div class="progress progress-xs no-radius no-margin">
                   <div class="progress-bar bg-grd-blue" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
                   </div>

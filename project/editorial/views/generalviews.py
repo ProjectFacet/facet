@@ -92,8 +92,6 @@ def index(request):
 def test(request):
     """ Use for rapid testing of new pages."""
 
-
-
     return render(request, 'editorial/test.html')
 
 
