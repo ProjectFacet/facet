@@ -111,14 +111,14 @@ ACCOUNT_AUTHENTICATION_METHOD = "email"
 # EMAIL #
 # -------------------------------------------------------------- #
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django_smtp_ssl.SSLEmailBackend'
 
+EMAIL_HOST = 'email-smtp.us-west-2.amazonaws.com'
+EMAIL_HOST_USER = os.environ['AWS_EMAIL_HOST_USER']
+EMAIL_HOST_PASSWORD = os.environ['AWS_EMAIL_HOST_PASSWORD']
+EMAIL_PORT = 465
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
-EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+AWS_SES_REGION_ENDPOINT = 'email-smtp.us-west-2.amazonaws.com'
 
 SERVER_EMAIL = os.environ['EMAIL_HOST_USER']
 DEFAULT_FROM_EMAIL = os.environ['EMAIL_HOST_USER']

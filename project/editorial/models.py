@@ -846,7 +846,7 @@ class Story(models.Model):
 
         # verify the text area fields have correct encoding
         name = self.name.encode('utf-8')
-        print "NAME: ", name
+        # print "NAME: ", name
         description = self.story_description.encode('utf-8')
 
         if self.series:
@@ -891,6 +891,25 @@ class Story(models.Model):
         collaborators = self.collaborate_with.all()
         story_team = User.objects.filter(Q(Q(organization=self.organization) | Q(organization__in=collaborators)))
         return story_team
+
+    def get_story_images(self):
+        """Return all the images associated with a story."""
+
+        story_images = []
+        webfacet = self.webfacetstory.all()[0]
+        webfacet_images = WebFacet.get_webfacet_images(webfacet)
+        printfacet = self.printfacetstory.all()[0]
+        printfacet_images = PrintFacet.get_printfacet_images(printfacet)
+        audiofacet = self.audiofacetstory.all()[0]
+        audiofacet_images = AudioFacet.get_audiofacet_images(audiofacet)
+        videofacet = self.videofacetstory.all()[0]
+        videofacet_images = VideoFacet.get_videofacet_images(videofacet)
+        story_images.extend(webfacet_images)
+        story_images.extend(printfacet_images)
+        story_images.extend(audiofacet_images)
+        story_images.extend(videofacet_images)
+
+        return story_images
 
     @property
     def description(self):

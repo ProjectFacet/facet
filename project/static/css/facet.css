@@ -556,6 +556,18 @@ label {
   color: #C5E1A6;
 }
 
+.fa-input {
+  font-family: FontAwesome, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  text-decoration: none !important;
+  border_border-bottom: none !important;
+  margin-left: 0;
+  padding-left: 0;
+}
+
+.delete_icon {
+  border: none !important;
+}
+
 
 /* ---------------------------------------*/
 /*              Modal Styles              */

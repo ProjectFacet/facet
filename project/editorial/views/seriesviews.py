@@ -109,3 +109,13 @@ def series_edit(request, pk):
         'series': series,
         'seriesform': seriesform,
         })
+
+
+def series_delete(request, pk):
+    """Delete a series and its related objects then redirect user to series list."""
+
+    if request.method == "POST":
+        series = get_object_or_404(Series, pk=pk)
+        series.delete()
+
+    return redirect('series_list')
