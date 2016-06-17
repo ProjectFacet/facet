@@ -141,9 +141,10 @@ class SeriesForm(forms.ModelForm):
             }
 
     class Media:
-        css = {'all': (static('css/chosen.min.css'))
+        css = {
+            'all': (static('css/bootstrap-datetimepicker.css'), static('css/chosen.min.css'))
         }
-        js = (static('scripts/chosen.jquery.min.js'))
+        js = (static('scripts/chosen.jquery.min.js'),)
 
 # ------------------------------ #
 #          Story Forms           #
@@ -190,9 +191,10 @@ class StoryForm(forms.ModelForm):
         }
 
     class Media:
-        css = {'all': (static('css/chosen.min.css'))
+        css = {
+            'all': (static('css/bootstrap-datetimepicker.css'), static('css/chosen.min.css'))
         }
-        js = (static('scripts/chosen.jquery.min.js'))
+        js = (static('scripts/chosen.jquery.min.js'),)
 
 # ------------------------------ #
 #          Facet Forms           #
