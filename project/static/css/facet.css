@@ -320,6 +320,10 @@ hr {
   text-transform: uppercase;
 }
 
+.lowercase {
+  text-transform: lowercase;
+}
+
 .spread-01 {
   letter-spacing: .1em;
 }

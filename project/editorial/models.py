@@ -911,6 +911,45 @@ class Story(models.Model):
 
         return story_images
 
+    def get_story_documents(self):
+        """Return all documents associated with a story."""
+
+        story_documents = []
+        webfacet = self.webfacetstory.all()[0]
+        webfacet_documents = WebFacet.get_webfacet_documents(webfacet)
+        printfacet = self.printfacetstory.all()[0]
+        printfacet_documents = PrintFacet.get_printfacet_documents(printfacet)
+        audiofacet = self.audiofacetstory.all()[0]
+        audiofacet_documents = AudioFacet.get_audiofacet_documents(audiofacet)
+        videofacet = self.videofacetstory.all()[0]
+        videofacet_documents = VideoFacet.get_videofacet_documents(videofacet)
+        story_documents.extend(webfacet_documents)
+        story_documents.extend(printfacet_documents)
+        story_documents.extend(audiofacet_documents)
+        story_documents.extend(videofacet_documents)
+
+        return story_documents
+
+    def get_story_audio(self):
+        """Return all documents associated with a story."""
+
+        story_audio = []
+        webfacet = self.webfacetstory.all()[0]
+        webfacet_audio = WebFacet.get_webfacet_audio(webfacet)
+        printfacet = self.printfacetstory.all()[0]
+        printfacet_audio = PrintFacet.get_printfacet_audio(printfacet)
+        audiofacet = self.audiofacetstory.all()[0]
+        audiofacet_audio = AudioFacet.get_audiofacet_audio(audiofacet)
+        videofacet = self.videofacetstory.all()[0]
+        videofacet_audio = VideoFacet.get_videofacet_audio(videofacet)
+        story_documents.extend(webfacet_audio)
+        story_documents.extend(printfacet_audio)
+        story_documents.extend(audiofacet_audio)
+        story_documents.extend(videofacet_audio)
+
+        return story_audio
+
+
     @property
     def description(self):
         return "{description}".format(description=self.story_description)
@@ -1165,6 +1204,16 @@ class WebFacet(models.Model):
         images = [image.asset_title for image in images]
         images = ",".join(images)
 
+        # loop over m2m and get the values as string
+        documents = WebFacet.get_webfacet_documents(self)
+        documents = [document.asset_title for document in documents]
+        documents = ",".join(documents)
+
+        # loop over m2m and get the values as string
+        audiofiles = WebFacet.get_webfacet_audio(self)
+        audiofiles = [audiofile.asset_title for audiofile in audiofiles]
+        audiofiles = ",".join(audiofiles)
+
         # verify the text area fields have correct encoding
         title = self.title.encode('utf-8')
         description = self.wf_description.encode('utf-8')
@@ -1194,6 +1243,8 @@ class WebFacet(models.Model):
         Share Note: {sharenote}\n
         Images: {images}\n
         Captions: {captions}\n
+        Documents: {documents}\n
+        AudioFiles: {audiofiles}\n
         \n
         Content\n
         -------
@@ -1202,7 +1253,8 @@ class WebFacet(models.Model):
         organization=self.organization.name, original=self.original_webfacet, editor=self.editor,
         credit=credits, code=self.code, excerpt=excerpt, length=self.length,
         keywords=self.keywords, status=self.status, dueedit=self.due_edit, rundate=self.run_date,
-        sharenote=share_note, images=images, captions=self.captions, content=content)
+        sharenote=share_note, images=images, captions=self.captions, documents=documents,
+        audiofiles=audiofiles, content=content)
 
         return webfacet_download
 
@@ -1461,6 +1513,16 @@ class PrintFacet(models.Model):
         images = [image.asset_title for image in images]
         images = ",".join(images)
 
+        # loop over m2m and get the values as string
+        documents = PrintFacet.get_printfacet_documents(self)
+        documents = [document.asset_title for document in documents]
+        documents = ",".join(documents)
+
+        # loop over m2m and get the values as string
+        audiofiles = PrintFacet.get_printfacet_audio(self)
+        audiofiles = [audiofile.asset_title for audiofile in audiofiles]
+        audiofiles = ",".join(audiofiles)
+
         # verify the text area fields have correct encoding
         title = self.title.encode('utf-8')
         description = self.pf_description.encode('utf-8')
@@ -1490,6 +1552,8 @@ class PrintFacet(models.Model):
         Share Note: {sharenote}\n
         Images: {images}\n
         Captions: {captions}\n
+        Documents: {documents}\n
+        AudioFiles: {audiofiles}\n
         \n
         Content\n
         -------\n
@@ -1498,7 +1562,8 @@ class PrintFacet(models.Model):
         organization=self.organization.name, original=self.original_printfacet, editor=self.editor,
         credit=credits, code=self.code, excerpt=excerpt, length=self.length,
         keywords=self.keywords, status=self.status, dueedit=self.due_edit, rundate=self.run_date,
-        sharenote=share_note, images=images, captions=self.captions, content=content)
+        sharenote=share_note, images=images, captions=self.captions, documents=documents,
+        audiofiles=audiofiles, content=content)
 
         return printfacet_download
 
@@ -1757,6 +1822,16 @@ class AudioFacet(models.Model):
         images = [image.asset_title for image in images]
         images = ",".join(images)
 
+        # loop over m2m and get the values as string
+        documents = AudioFacet.get_audiofacet_documents(self)
+        documents = [document.asset_title for document in documents]
+        documents = ",".join(documents)
+
+        # loop over m2m and get the values as string
+        audiofiles = AudioFacet.get_audiofacet_audio(self)
+        audiofiles = [audiofile.asset_title for audiofile in audiofiles]
+        audiofiles = ",".join(audiofiles)
+
         # verify the text area fields have correct encoding
         title = self.title.encode('utf-8')
         description = self.af_description.encode('utf-8')
@@ -1786,6 +1861,8 @@ class AudioFacet(models.Model):
         Share Note: {sharenote}\n
         Images: {images}\n
         Captions: {captions}\n
+        Documents: {documents}\n
+        AudioFiles: {audiofiles}\n
         \n
         Content\n
         -------\n
@@ -1794,7 +1871,8 @@ class AudioFacet(models.Model):
         organization=self.organization.name, original=self.original_audiofacet, editor=self.editor,
         credit=credits, code=self.code, excerpt=excerpt, length=self.length,
         keywords=self.keywords, status=self.status, dueedit=self.due_edit, rundate=self.run_date,
-        sharenote=share_note, images=images, captions=self.captions, content=content)
+        sharenote=share_note, images=images, captions=self.captions, documents=documents,
+        audiofiles=audiofiles, content=content)
 
         return audiofacet_download
 
@@ -2054,6 +2132,16 @@ class VideoFacet(models.Model):
         images = [image.asset_title for image in images]
         images = ",".join(images)
 
+        # loop over m2m and get the values as string
+        documents = VideoFacet.get_videofacet_documents(self)
+        documents = [document.asset_title for document in documents]
+        documents = ",".join(documents)
+
+        # loop over m2m and get the values as string
+        audiofiles = VideoFacet.get_videofacet_audio(self)
+        audiofiles = [audiofile.asset_title for audiofile in audiofiles]
+        audiofiles = ",".join(audiofiles)
+
         # verify the text area fields have correct encoding
         title = self.title.encode('utf-8')
         description = self.vf_description.encode('utf-8')
@@ -2083,6 +2171,8 @@ class VideoFacet(models.Model):
         Share Note: {sharenote}\n
         Images: {images}\n
         Captions: {captions}\n
+        Documents: {documents}\n
+        AudioFiles: {audiofiles}\n
         \n
         Content\n
         -------\n
@@ -2091,7 +2181,8 @@ class VideoFacet(models.Model):
         organization=self.organization.name, original=self.original_videofacet, editor=self.editor,
         credit=credits, code=self.code, excerpt=excerpt, length=self.length,
         keywords=self.keywords, status=self.status, dueedit=self.due_edit, rundate=self.run_date,
-        sharenote=share_note, images=images, captions=self.captions, content=content)
+        sharenote=share_note, images=images, captions=self.captions, documents=documents,
+        audiofiles=audiofiles, content=content)
 
         return videofacet_download
 
@@ -2688,7 +2779,7 @@ class ImageAsset(models.Model):
 class DocumentAssetManager(models.Manager):
     """Custom manager for DocumentAsset."""
 
-    def create_imageasset(self, owner, organization, asset_title, asset_description, asset_attribution, document, doc_type, keywords):
+    def create_documentasset(self, owner, organization, asset_title, asset_description, asset_attribution, document, doc_type, keywords):
         """Method for quick creation of a document asset."""
         documentasset=self.create(owner=owner, organization=organization, asset_title=asset_title, asset_description=asset_description, asset_attribution=asset_attribution, document=document, doc_type=doc_type, keywords=keywords)
         return documentasset
@@ -2792,31 +2883,31 @@ class DocumentAsset(models.Model):
         document_usage.extend(document_videofacets)
         return document_usage
 
-    # def get_document_download_info(self):
-    #     """Return rst of document information for download."""
+    def get_document_download_info(self):
+        """Return rst of document information for download."""
 
-    #     title = self.asset_title.encode('utf-8')
-    #     description = self.asset_description.encode('utf-8')
-    #     attribution = self.attribution.encode('utf-8')
+        title = self.asset_title.encode('utf-8')
+        description = self.asset_description.encode('utf-8')
+        attribution = self.attribution.encode('utf-8')
 
-    #     document_info="""
-    #     Document
-    #     =======
-    #     {title}.jpg
-    #     Description: {description}
-    #     Attribution: {attribution}
-    #     Type: {type}
-    #     Creation Date: {date}
-    #     Owner: {owner}
-    #     Organization: {organization}
-    #     Original: {original}
-    #     Keywords: {keywords}
-    #     """.format(title=title, description=description, attribution=attribution,
-    #     type=self.doc_type, date=self.creation_date, owner=self.owner,
-    #     organization=self.organization.name, original=self.original,
-    #     keywords=self.keywords)
+        document_info="""
+        Document
+        =======
+        {title}.jpg
+        Description: {description}
+        Attribution: {attribution}
+        Type: {type}
+        Creation Date: {date}
+        Owner: {owner}
+        Organization: {organization}
+        Original: {original}
+        Keywords: {keywords}
+        """.format(title=title, description=description, attribution=attribution,
+        type=self.doc_type, date=self.creation_date, owner=self.owner,
+        organization=self.organization.name, original=self.original,
+        keywords=self.keywords)
 
-    #     return document_info
+        return document_info
 
     def __str__(self):
         return self.asset_title
@@ -2946,31 +3037,31 @@ class AudioAsset(models.Model):
         audio_usage.extend(audio_videofacets)
         return audio_usage
 
-    # def get_audio_download_info(self):
-    #     """Return rst of audio information for download."""
+    def get_audio_download_info(self):
+        """Return rst of audio information for download."""
 
-    #     title = self.asset_title.encode('utf-8')
-    #     description = self.asset_description.encode('utf-8')
-    #     attribution = self.attribution.encode('utf-8')
+        title = self.asset_title.encode('utf-8')
+        description = self.asset_description.encode('utf-8')
+        attribution = self.attribution.encode('utf-8')
 
-    #     audio_info="""
-    #     Audio
-    #     =======
-    #     {title}.jpg
-    #     Description: {description}
-    #     Attribution: {attribution}
-    #     Type: {type}
-    #     Creation Date: {date}
-    #     Owner: {owner}
-    #     Organization: {organization}
-    #     Original: {original}
-    #     Keywords: {keywords}
-    #     """.format(title=title, description=description, attribution=attribution,
-    #     type=self.doc_type, date=self.creation_date, owner=self.owner,
-    #     organization=self.organization.name, original=self.original,
-    #     keywords=self.keywords)
+        audio_info="""
+        Audio
+        =======
+        {title}.jpg
+        Description: {description}
+        Attribution: {attribution}
+        Type: {type}
+        Creation Date: {date}
+        Owner: {owner}
+        Organization: {organization}
+        Original: {original}
+        Keywords: {keywords}
+        """.format(title=title, description=description, attribution=attribution,
+        type=self.audio_type, date=self.creation_date, owner=self.owner,
+        organization=self.organization.name, original=self.original,
+        keywords=self.keywords)
 
-    #     return audio_info
+        return audio_info
 
     def __str__(self):
         return self.asset_title
