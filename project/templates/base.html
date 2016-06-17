@@ -216,14 +216,14 @@
                   <a aria-label="More" class="btn btn-icon navbar-btn dropdown-toggle" data-toggle="dropdown" href="#">
                     <i class="fa fa-ellipsis-v"></i>
                   </a>
-                  <ul class="dropdown-menu dropdown-menu-right thin" role="menu">
+                  <ul class="dropdown-menu dropdown-menu-right thin" role="menu" id="settings-dropdown">
                     <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'user_edit' pk=request.user.id %}"><span class="pull-right"><i class="fa fa-user text-muted"></i></span>Profile</a></li>
                     <li class="divider"></li>
                     {% if request.user.organization %}
                     <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'org_detail' pk=request.user.organization.id %}"><span class="pull-right"><i class="fa fa-home text-muted"></i></span>Organization</a></li>
                     {% endif %}
                     {% if request.user.organization.owner = request.user %}
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'org_edit' pk=request.user.organization.id %}"><span class="pull-right"><i class="fa fa-pencil text-muted"></i></span>Edit Organization</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'org_edit' pk=request.user.organization.id %}"><span class="pull-right"><i class="fa fa-pencil text-muted"></i></span>Manage Organization</a></li>
                     {% endif %}
                     <!-- <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'org_new' %}"><span class="pull-right"><i class="fa fa-users text-muted"></i></span>New Organization</a></li> -->
                     <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'network_new' %}"><span class="pull-right"><i class="fa fa-users text-muted"></i></span>New Network</a></li>

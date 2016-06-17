@@ -102,6 +102,8 @@ urlpatterns = [
     url(r'^user/(?P<pk>[0-9]+)/edit/$', userviews.user_edit, name='user_edit'),
     url(r'^user/(?P<pk>[0-9]+)/notes/$', noteviews.user_notes, name='user_notes'),
     url(r'^user/note/new/$', noteviews.create_user_note, name='create_user_note'),
+    url(r'^user/deactivate/$', userviews.user_deactivate, name='user_deactivate'),
+    url(r'^user/activate/$', userviews.user_activate, name='user_activate'),
     #----------------------------------------------------------------------#
     #   Series URLS
     #----------------------------------------------------------------------#

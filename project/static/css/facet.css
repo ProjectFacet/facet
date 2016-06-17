@@ -69,6 +69,11 @@ hr {
 
 /*Navigation*/
 
+#settings-dropdown {
+  width: 225px;
+}
+
+
 .masthead-brand {
   margin-top: 10px;
   margin-bottom: 10px;

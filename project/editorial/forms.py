@@ -73,6 +73,18 @@ class UserProfileForm(forms.ModelForm):
             'expertise': Textarea(attrs={'rows':2}),
         }
 
+class FullUserEditForm(forms.ModelForm):
+    """Form for organization owner or a user to edit a user's full profile."""
+
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'username', 'credit_name', 'title', 'phone', 'email', 'password', 'bio', 'location',
+                 'expertise', 'website', 'facebook', 'github', 'twitter', 'linkedin', 'instagram', 'snapchat', 'vine', 'photo',
+                 'is_superuser', 'is_staff', 'user_type']
+        widgets = {
+            'expertise': Textarea(attrs={'rows':2}),
+        }
+
 # ------------------------------ #
 #      Organization Forms        #
 # ------------------------------ #
