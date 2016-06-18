@@ -6,7 +6,7 @@
 from editorial.forms import PrivateMessageForm, UserNoteForm
 
 def include_private_message_form(request):
-    privatemessageform = PrivateMessageForm()
+    privatemessageform = PrivateMessageForm(request=request)
     usernoteform = UserNoteForm()
     return {'privatemessageform': privatemessageform, 'usernoteform': usernoteform}
 

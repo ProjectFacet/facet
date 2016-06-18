@@ -762,6 +762,7 @@ label {
 .slimScrollBar {
   background: #54657E none repeat scroll 0% 0% !important;
   width: 6px;
+  z-index: 40 !important;
 }
 
 /* ---------------------------------------*/

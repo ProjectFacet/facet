@@ -228,6 +228,18 @@ class User(AbstractUser):
         recent_comments = all_comments.exclude(id__in=user_comments)
         return recent_comments
 
+    def get_user_contact_list(self):
+        """ Return queryset containing all users a specific user can contact.
+        This includes any user that's a member of an organization in network.
+        """
+
+        organization = self.organization
+        org_collaborators = Organization.get_org_collaborators(organization)
+        contact_list = User.objects.filter(Q(Q(organization=org_collaborators) | Q(organization=organization)))
+        print "Contact List: ", contact_list
+        return contact_list
+
+
     def private_messages_received(self):
         """ Return all private messages a user is a recipient of."""
 

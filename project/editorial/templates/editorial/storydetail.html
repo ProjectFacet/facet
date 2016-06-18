@@ -390,7 +390,7 @@
                               </audio>
                               {% endif %}
                               {% if audio.audio_type == 'SC' %}
-                              <a href="" title="{{ audio.asset_description }}" target="_blank"><i class="fa fa-soundcloud sameline"></i> <span class="small-text dark sameline">{{ audio.asset_title }}</span></a>
+                              <a href="{{ audio.link }}" title="{{ audio.asset_description }}" target="_blank"><i class="fa fa-soundcloud sameline"></i> <span class="small-text dark sameline">{{ audio.asset_title }}</span></a>
                               {% endif %}
                           </div>
                         {% endfor %}

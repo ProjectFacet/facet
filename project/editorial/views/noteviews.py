@@ -168,8 +168,11 @@ def network_notes(request, pk):
 
     network = get_object_or_404(Network, pk=pk)
     networknotes = NetworkNote.objects.filter(network_id=network.id)
+    networknoteform = NetworkNoteForm()
     return render(request, 'editorial/networknotes.html', {
+        'network': network,
         'networknotes': networknotes,
+        'networknoteform': networknoteform,
     })
 
 

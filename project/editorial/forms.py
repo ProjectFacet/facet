@@ -611,6 +611,12 @@ class AddVideoForm(forms.Form):
 class PrivateMessageForm(forms.ModelForm):
     """ Message form for private messages. """
 
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request")
+        super(PrivateMessageForm, self).__init__(*args, **kwargs)
+        self.fields['recipient'].queryset = User.get_user_contact_list(self.request.user)
+
+
     class Meta:
         model = PrivateMessage
         fields = ['recipient', 'subject', 'text']
