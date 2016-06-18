@@ -184,7 +184,6 @@ def network_stories(request):
     """
 
     organization = request.user.organization
-
     networks = Organization.get_org_networks(organization)
 
     shared_networkstories = []
@@ -192,8 +191,6 @@ def network_stories(request):
         stories = Network.get_network_shared_stories(network)
         shared_networkstories.extend(stories)
     shared_networkstories = [story for story in shared_networkstories if story.organization != organization]
-    print "LC: ", shared_networkstories
-
     networkstories = set(shared_networkstories)
 
     return render(request, 'editorial/networkstories.html', {
