@@ -183,8 +183,7 @@ def network_stories(request):
     it once it becomes available.)
     """
 
-    org_id = request.user.organization_id
-    organization = get_object_or_404(Organization, id=org_id)
+    organization = request.user.organization
 
     networks = Organization.get_org_networks(organization)
 
@@ -192,6 +191,8 @@ def network_stories(request):
     for network in networks:
         stories = Network.get_network_shared_stories(network)
         shared_networkstories.extend(stories)
+    shared_networkstories = [story for story in shared_networkstories if story.organization != organization]
+    print "LC: ", shared_networkstories
 
     networkstories = set(shared_networkstories)
 
