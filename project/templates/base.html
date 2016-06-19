@@ -277,11 +277,13 @@
             <h4 class="modal-title" id="sendPrivateMessageLabel">Send a private message</h4>
           </div>
           <div class="modal-body">
+            {% if privatemessageform %}
             <form action="{% url 'private_message_new' %}" method="POST" class="post-form">
             {% csrf_token %}
             {% bootstrap_form privatemessageform %}
             <button type="submit" class="btn btn-primary">Send Message</button>
             </form>
+            {% endif %}
           </div>
           <div class="modal-footer">
           </div>
@@ -298,11 +300,13 @@
             <h4 class="modal-title" id="addUserNoteLabel">Create a note</h4>
           </div>
           <div class="modal-body">
+            {% if usernoteform %}
             <form action="{% url 'create_user_note' %}" method="POST" class="post-form">
             {% csrf_token %}
             {% bootstrap_form usernoteform %}
             <button type="submit" class="btn btn-primary">Create Note</button>
             </form>
+            {% endif %}
           </div>
           <div class="modal-footer">
           </div>

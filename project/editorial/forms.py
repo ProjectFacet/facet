@@ -614,7 +614,8 @@ class PrivateMessageForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop("request")
         super(PrivateMessageForm, self).__init__(*args, **kwargs)
-        self.fields['recipient'].queryset = User.get_user_contact_list(self.request.user)
+        if self.request.user.organization:
+            self.fields['recipient'].queryset = User.get_user_contact_list(self.request.user)
 
 
     class Meta:
