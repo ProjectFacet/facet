@@ -800,6 +800,18 @@ td h4 {
   color: #8493A8 !important;
 }
 
+.paginate_button.previous.disabled {
+  padding-right: 10px;
+  color: #8493A8;
+  font-size: 12px;
+}
+
+.paginate_button.next.disabled {
+  padding-left: 10px;
+  color: #8493A8;
+  font-size: 12px;
+}
+
 #user-stories-list_length {
   display: none;
 }
