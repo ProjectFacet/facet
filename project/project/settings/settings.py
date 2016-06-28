@@ -45,6 +45,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'allauth',
     'allauth.account',
+    'rest_framework',
     'allauth.socialaccount',
     'bootstrap3_datetime',
     'tinymce',
@@ -122,6 +123,23 @@ AWS_SES_REGION_ENDPOINT = 'email-smtp.us-west-2.amazonaws.com'
 
 SERVER_EMAIL = os.environ['EMAIL_HOST_USER']
 DEFAULT_FROM_EMAIL = os.environ['EMAIL_HOST_USER']
+
+
+# -------------------------------------------------------------- #
+# DJANGO REST FRAMEWORK #
+# -------------------------------------------------------------- #
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
+
+# -------------------------------------------------------------- #
+# OTHER SETTINGS #
+# -------------------------------------------------------------- #
 
 
 LOGIN_REDIRECT_URL = '/dashboard'

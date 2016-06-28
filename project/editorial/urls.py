@@ -19,6 +19,8 @@ from views import (
     downloadviews,
     scheduleviews)
 
+from . import api
+
 from views.searchviews import EditorialSearchView
 
 urlpatterns = [
@@ -26,6 +28,10 @@ urlpatterns = [
     #   Test URL - Used for non-destructive testing of templates/queries
     #----------------------------------------------------------------------#
     url(r'^test$', generalviews.test, name='test'),
+    #----------------------------------------------------------------------#
+    #   API URL - Used API endpoints
+    #----------------------------------------------------------------------#
+    url('^api/', include(api.router.urls)),
     #----------------------------------------------------------------------#
     #   Homepage URLS
     #----------------------------------------------------------------------#
