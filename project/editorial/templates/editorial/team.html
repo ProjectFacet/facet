@@ -34,7 +34,7 @@
               <h3 class="brighter content-upper-10"><a href="{% url 'user_detail' user.id %}">{{ user.credit_name }}</a></h3>
               <p class="help-block bright">{{ user.title }}</p>
               <hr>
-              <p class="bright">{{ user.phone }} | {{ user.email }}</p>
+              <p class="bright">{{ user.phone }} | {{ user.email }} {% if request.user.id == user.id or request.user.id == user.organization.owner.id %}<a href="{% url 'user_edit' pk=user.id %}"><i class="fa fa-pencil sameline dark move-right"></i></a>{% endif %}</p>
             </div><!-- /.media -body-->
           </div><!-- /.media -->
         </div><!-- /.panel-body -->
@@ -110,7 +110,7 @@
             </div><!-- /panel -->
 
           {% endfor %}
-        </div><!-- /panel-group --
+        </div><!-- /panel-group -->
 </div>
 
 

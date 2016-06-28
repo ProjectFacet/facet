@@ -12,14 +12,16 @@
     <div class="col-md-5">
       <h1>{% trans "Sign Up" %}</h1>
 
-      <p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
+      <p>After signup you will be directed to create an organization. If your organization already exists, request a login from your organization's account owner.
+      <p>{% blocktrans %}Already have an sign in? Then please <a href="{{ login_url }}">log in here</a>.{% endblocktrans %}</p>
 
       <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
         {% csrf_token %}
         {% bootstrap_form form %}
-        {% if redirect_field_value %}
+        <!-- {% if redirect_field_value %}
         <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-        {% endif %}
+        {% endif %} -->
+        <input type="hidden" name="{{ redirect_field_name }}" value="{% url 'org_new' %}" />
         <button id="sign-up-button" class="btn btn-primary" type="submit">{% trans "Sign Up" %} &raquo;</button>
       </form>
     </div>

@@ -120,7 +120,7 @@
                 <h4 class="modal-title" id="addNote{{note.id}}Label">{{ note.title }}</h4>
               </div>
               <div class="modal-body dark">
-                {{ note.text }}
+                {{ note.text|linebreaksbr }}
               </div>
               <div class="modal-footer">
                 <p class="tiny-text">{{ note.owner }} | {{ note.creation_date|date:'D M j g:i a' }}<p>
@@ -131,7 +131,7 @@
         </div>
       <!-- END MODAL -->
       {% endfor %}
-      <a href="{% url 'organization_notes' pk=organization.id %}" class="link-text">See all notes...</a>
+      <a href="{% url 'org_notes' pk=organization.id %}" class="link-text">See all notes...</a>
     </div>
     </div>
   </div>
@@ -272,7 +272,7 @@
                 <h4 class="modal-title" id="addNote{{note.id}}Label">{{ note.title }}</h4>
               </div>
               <div class="modal-body dark">
-                {{ note.text }}
+                {{ note.text|linebreaksbr }}
               </div>
               <div class="modal-footer">
                 <p class="tiny-text">{{ note.owner }} | {{ note.creation_date|date:'D M j g:i a' }}<p>
@@ -283,7 +283,7 @@
         </div>
       <!-- END MODAL -->
       {% endfor %}
-      <a href="{% url 'organization_notes' pk=organization.id %}" class="link-text">See all notes...</a>
+      <a href="{% url 'org_notes' pk=organization.id %}" class="link-text">See all notes...</a>
     </div>
     </div>
   </div>
@@ -342,7 +342,7 @@
         <h4 class="modal-title" id="addUserModalLabel">Add a note for this organization</h4>
       </div>
       <div class="modal-body">
-        <form action="{% url 'create_organization_note' %}" method="POST" class="post-form">
+        <form action="{% url 'create_org_note' %}" method="POST" class="post-form">
         {% csrf_token %}
         {% bootstrap_form organizationnoteform %}
         <input type="hidden" name="organization" value="{{ organization.pk }}" />

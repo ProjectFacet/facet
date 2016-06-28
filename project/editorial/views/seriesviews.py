@@ -13,16 +13,6 @@ from django.views.decorators.csrf import csrf_exempt
 import datetime
 import json
 
-from django.shortcuts import render, redirect, get_object_or_404
-from django.conf import settings
-from django.core.mail import send_mail
-from django.http import HttpResponse
-from django.utils import timezone
-from django.views.generic import TemplateView , UpdateView, DetailView
-from django.views.decorators.csrf import csrf_exempt
-import datetime
-import json
-
 from editorial.forms import (
     SeriesForm,
     SeriesCommentForm,
@@ -62,9 +52,9 @@ def series_new(request):
     series interface.
     """
 
-    seriesform = SeriesForm()
+    seriesform = SeriesForm(request=request)
     if request.method == "POST":
-        seriesform = SeriesForm(request.POST or None)
+        seriesform = SeriesForm(request.POST, request=request)
     if seriesform.is_valid():
         series = seriesform.save(commit=False)
         series.owner = request.user
@@ -76,7 +66,7 @@ def series_new(request):
         seriesform.save_m2m()
         return redirect('series_detail', pk=series.pk)
     else:
-        form = SeriesForm()
+        seriesform = SeriesForm(request=request)
     return render(request, 'editorial/seriesnew.html', {'seriesform': seriesform})
 
 
@@ -108,14 +98,24 @@ def series_edit(request, pk):
     series = get_object_or_404(Series, pk=pk)
 
     if request.method =="POST":
-        seriesform = SeriesForm(data=request.POST, instance=series)
+        seriesform = SeriesForm(data=request.POST, instance=series, request=request)
         if seriesform.is_valid():
             seriesform.save()
             return redirect('series_detail', pk=series.id)
     else:
-        seriesform = SeriesForm(instance=series)
+        seriesform = SeriesForm(instance=series, request=request)
 
     return render(request, 'editorial/seriesedit.html', {
         'series': series,
         'seriesform': seriesform,
         })
+
+
+def series_delete(request, pk):
+    """Delete a series and its related objects then redirect user to series list."""
+
+    if request.method == "POST":
+        series = get_object_or_404(Series, pk=pk)
+        series.delete()
+
+    return redirect('series_list')

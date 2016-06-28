@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% load bootstrap3 %}
+{% load embed_video_tags %}
 
 {% block head %}
 {{ webform.media }}
@@ -22,7 +23,7 @@
       <div class="col-md-3"> </div>
 
       <div class="col-md-6" id="facettabs">
-        <ul class="nav nav-tabs thin uppercase" role="tablist">
+        <ul class="nav nav-tabs nav-tabs-sticky thin uppercase" role="tablist">
           <li role="presentation" class="active"><a href="#storydetail" aria-controls="storydetail" role="tab" data-toggle="tab">Story Detail <i class="fa fa-angle-down"></i></a></li>
           <li role="presentation"><a href="#web" aria-controls="web" role="tab" data-toggle="tab">Web</a></li>
           <li role="presentation"><a href="#print" aria-controls="print" role="tab" data-toggle="tab">Print</a></li>
@@ -102,11 +103,18 @@
                 <!-- <a href="#" data-toggle="tooltip" title="Story Details"><label class="field-label">Details</label></a> -->
                 <div class="row">
                   <div class="col-md-12">
-                    <h5>Story {% if request.user.organization == story.organization %}<a href="{% url 'story_edit' pk=story.id %}"> <i class="fa fa-pencil sameline"></i></a>{% endif %}</h5>
-                    {{ story.name }}
-                    <h5>Description</h5>
-                    {{ story.story_description }}
-                  <hr>
+                    <div class="row">
+                      <div class="col-md-10">
+                        <h3 class="thin">{{ story.name }}</h3>
+                        <p class="tiny-text">Description</p>
+                        <h4 class="thin"><i>{{ story.story_description }}</i></h4>
+                      </div>
+                      <div class="col-md-2">
+                        {% if request.user.organization == story.organization %}<a href="{% url 'story_edit' pk=story.id %}"><p class="dark"><i class="fa fa-pencil dark"></i> Edit Story<p></a>{% endif %}
+                        <a href="#" data-toggle="modal" data-target="#downloadStory" title="Download"><p class="dark"><i class="fa fa-cloud-download dark"></i> Download Story</p></a>
+                      </div>
+                    </div>
+                    <hr>
                   </div>
                   <div class="col-md-6">
                     <h5>Series: <span class="sameline bright">{% if story.series %}<a href="{% url 'series_detail' pk=story.series.id %}" title="View Series: {{story.series.name}}">{{ story.series.name }}</a>{% else %} <span class="tiny-text">Not currently part of a series</span>{% endif %}</h5>
@@ -206,7 +214,7 @@
                                 <h5 class="modal-title" id="addNote{{note.id}}Label">{{ note.title }}</h5>
                               </div>
                               <div class="modal-body dark">
-                                {{ note.text }}
+                                {{ note.text|linebreaksbr }}
                               </div>
                               <div class="modal-footer">
                                 <p class="tiny-text">{{ note.owner }} | {{ note.creation_date|date:'D M j g:i a' }}<p>
@@ -307,6 +315,9 @@
                         </div>
                       {% endif %}
                     </div>
+
+
+                    <!-- Webfacet Images -->
                     <div class="section-title">
                       <a href="#" data-toggle="tooltip" title="Image"><label class="field-label">Images</label></a>
                       <a href="#" data-toggle="modal" data-target="#addWebFacetImage" title="Add Image"><i class="fa fa-picture-o sameline dark"></i></a>
@@ -325,6 +336,94 @@
                       </div>
                     </div>
 
+                    <!-- Webfacet Documents -->
+                    <div class="section-title">
+                      <a href="#" data-toggle="tooltip" title="Document"><label class="field-label">Documents</label></a>
+                      <a href="#" data-toggle="modal" data-target="#addWebFacetDocument" title="Add Document"><i class="fa fa-file sameline dark"></i></a>
+                    </div>
+                    <div id="webfacet-docs">
+                      <div class="row">
+                        {% for document in webfacet_documents %}
+                          <div class="col-md-1">
+                              <label>
+                                  {% if document.doc_type == 'OTHER' %}
+                                  <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-file-o dark"></i></h3></a>
+                                  {% endif %}
+                                  {% if document.doc_type == 'TEXT' %}
+                                  <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-text-o dark"></i></h3></a>
+                                  {% endif %}
+                                  {% if document.doc_type == 'WORD DOC' %}
+                                  <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-word-o dark"></i></h3></a>
+                                  {% endif %}
+                                  {% if document.doc_type == 'EXCEL' %}
+                                  <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-excel-o dark"></i></h3></a>
+                                  {% endif %}
+                                  {% if document.doc_type == 'PDF' %}
+                                  <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-pdf-o dark"></i></h3></a>
+                                  {% endif %}
+                                  {% if document.doc_type == 'COMMA SEPARATED' %}
+                                  <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-o dark"></i></h3></a>
+                                  {% endif %}
+                                </label>
+                          </div>
+                        {% endfor %}
+                      </div>
+                    </div>
+
+                    <!-- Webfacet Audio -->
+                    <div class="section-title">
+                      <a href="#" data-toggle="tooltip" title="Audio"><label class="field-label">Audio</label></a>
+                      <a href="#" data-toggle="modal" data-target="#addWebFacetAudio" title="Add Audio"><i class="fa fa-headphones sameline dark"></i></a>
+                    </div>
+                    <div id="webfacet-audio">
+                      <div class="row">
+                        {% for audio in webfacet_audio %}
+                          <div class="col-xs-12">
+                              {% if audio.audio_type == 'MP3' %}
+                              <a href="" title="{{ audio.asset_description }}" target="_blank"><i class="fa fa-play sameline"></i> <span class="small-text dark sameline">{{ audio.asset_title }}</span></a>
+                              {% endif %}
+                              {% if audio.audio_type == 'WAV' %}
+                              <!-- <i class="fa fa-play sameline"></i> <span class="small-text dark sameline">{{ audio.asset_title }}</span> -->
+                              <audio id="{{ audio.asset_title }}" controls="controls" preload="metadata">
+                                <source src="{{ audio.audio.url }}" type="audio/wav"/>
+                                Your browser does not support the audioplayer.
+                              </audio>
+                              {% endif %}
+                              {% if audio.audio_type == 'SC' %}
+                              <a href="{{ audio.link }}" title="{{ audio.asset_description }}" target="_blank"><i class="fa fa-soundcloud sameline"></i> <span class="small-text dark sameline">{{ audio.asset_title }}</span></a>
+                              {% endif %}
+                          </div>
+                        {% endfor %}
+                      </div>
+                    </div>
+
+                    {% comment %}
+                    <!-- Webfacet Video -->
+                    <div class="section-title">
+                      <a href="#" data-toggle="tooltip" title="Video"><label class="field-label">Video</label></a>
+                      <a href="#" data-toggle="modal" data-target="#addWebFacetVideo" title="Add Video"><i class="fa fa-play sameline dark"></i></a>
+                    </div>
+                    <div id="webfacet-video">
+                      <div class="row">
+                        {% for video in webfacet_video %}
+                          <div class="col-md-1">
+                              <label>
+                                  {% if video.video_type == 'MP4' %}
+                                  <a href="" title="{{ video.asset_description }}" target="_blank"><h3><i class="fa fa-video-camera dark"></i></h3></a>
+                                  {% endif %}
+                                  {% if video.video_type == 'YT' %}
+                                  <a href="" title="{{ video.asset_description }}" target="_blank"><h3><i class="fa fa-youtube-play dark"></i></h3></a>
+                                  {% endif %}
+                                  {% if video.video_type == 'VIM' %}
+                                  <a href="" title="{{ video.asset_description }}" target="_blank"><h3><i class="fa fa-vimeo-square dark"></i></h3></a>
+                                  {% endif %}
+                                </label>
+                          </div>
+                        {% endfor %}
+                      </div>
+                    </div>
+                    {% endcomment %}
+
                   </div>
                   <!-- End of Left Column -->
 
@@ -336,6 +435,15 @@
                       {% if webform.wf_content.errors %}
                         <div class="alert alert-warning" role="alert">
                         {{ webform.wf_content.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ webform.keywords.help_text }}"><span class="field-label">{{ webform.keywords.label_tag }}</span></a>
+                      {{ webform.keywords }}
+                      {% if webform.keywords.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ webform.keywords.errors }}
                         </div>
                       {% endif %}
                     </div>
@@ -545,6 +653,8 @@
                         </div>
                       {% endif %}
                     </div>
+
+                    <!-- PrintFacet Images -->
                     <div class="section-title">
                       <a href="#" data-toggle="tooltip" title="Image"><label class="field-label">Images</label></a>
                       <a href="#" data-toggle="modal" data-target="#addPrintFacetImage" title="Add Image"><i class="fa fa-picture-o sameline dark"></i></a>
@@ -563,6 +673,67 @@
                       </div>
                     </div>
 
+                    <!-- PrintFacet Documents -->
+                    <div class="section-title">
+                      <a href="#" data-toggle="tooltip" title="Document"><label class="field-label">Documents</label></a>
+                      <a href="#" data-toggle="modal" data-target="#addPrintFacetDocument" title="Add Document"><i class="fa fa-file sameline dark"></i></a>
+                    </div>
+                    <div id="printfacet-docs">
+                      <div class="row">
+                        {% for document in printfacet_documents %}
+                          <div class="col-md-1">
+                              <label>
+                                  {% if document.doc_type == 'OTHER' %}
+                                  <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-file-o dark"></i></h3></a>
+                                  {% endif %}
+                                  {% if document.doc_type == 'TEXT' %}
+                                  <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-text-o dark"></i></h3></a>
+                                  {% endif %}
+                                  {% if document.doc_type == 'WORD DOC' %}
+                                  <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-word-o dark"></i></h3></a>
+                                  {% endif %}
+                                  {% if document.doc_type == 'EXCEL' %}
+                                  <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-excel-o dark"></i></h3></a>
+                                  {% endif %}
+                                  {% if document.doc_type == 'PDF' %}
+                                  <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-pdf-o dark"></i></h3></a>
+                                  {% endif %}
+                                  {% if document.doc_type == 'COMMA SEPARATED' %}
+                                  <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-o dark"></i></h3></a>
+                                  {% endif %}
+                                </label>
+                          </div>
+                        {% endfor %}
+                      </div>
+                    </div>
+
+                    <!-- PrintFacet Audio -->
+                    <div class="section-title">
+                      <a href="#" data-toggle="tooltip" title="Audio"><label class="field-label">Audio</label></a>
+                      <a href="#" data-toggle="modal" data-target="#addPrintFacetAudio" title="Add Audio"><i class="fa fa-headphones sameline dark"></i></a>
+                    </div>
+                    <div id="printfacet-audio">
+                      <div class="row">
+                        {% for audio in printfacet_audio %}
+                          <div class="col-xs-12">
+                              {% if audio.audio_type == 'MP3' %}
+                              <a href="" title="{{ audio.asset_description }}" target="_blank"><i class="fa fa-play sameline"></i> <span class="small-text dark sameline">{{ audio.asset_title }}</span></a>
+                              {% endif %}
+                              {% if audio.audio_type == 'WAV' %}
+                              <!-- <i class="fa fa-play sameline"></i> <span class="small-text dark sameline">{{ audio.asset_title }}</span> -->
+                              <audio id="{{ audio.asset_title }}" controls="controls" preload="metadata">
+                                <source src="{{ audio.audio.url }}" type="audio/wav"/>
+                                Your browser does not support the audioplayer.
+                              </audio>
+                              {% endif %}
+                              {% if audio.audio_type == 'SC' %}
+                              <a href="" title="{{ audio.asset_description }}" target="_blank"><i class="fa fa-soundcloud sameline"></i> <span class="small-text dark sameline">{{ audio.asset_title }}</span></a>
+                              {% endif %}
+                          </div>
+                        {% endfor %}
+                      </div>
+                    </div>
+
 
                   </div>
                   <!-- End of Left Column -->
@@ -575,6 +746,15 @@
                       {% if printform.pf_content.errors %}
                         <div class="alert alert-warning" role="alert">
                         {{ printform.pf_content.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ printform.keywords.help_text }}"><span class="field-label">{{ printform.keywords.label_tag }}</span></a>
+                      {{ printform.keywords }}
+                      {% if printform.keywords.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ printform.keywords.errors }}
                         </div>
                       {% endif %}
                     </div>
@@ -788,6 +968,8 @@
                         </div>
                       {% endif %}
                     </div>
+
+                    <!-- AudioFacet Images -->
                     <div class="section-title">
                       <a href="#" data-toggle="tooltip" title="Image"><label class="field-label">Images</label></a>
                       <a href="#" data-toggle="modal" data-target="#addAudioFacetImage" title="Add Image"><i class="fa fa-picture-o sameline dark"></i></a>
@@ -806,6 +988,67 @@
                       </div>
                     </div>
 
+                    <!-- AudioFacet Documents -->
+                    <div class="section-title">
+                      <a href="#" data-toggle="tooltip" title="Document"><label class="field-label">Documents</label></a>
+                      <a href="#" data-toggle="modal" data-target="#addAudioFacetDocument" title="Add Document"><i class="fa fa-file sameline dark"></i></a>
+                    </div>
+                    <div id="audiofacet-docs">
+                      <div class="row">
+                        {% for document in audiofacet_documents %}
+                          <div class="col-md-1">
+                              <label>
+                                  {% if document.doc_type == 'OTHER' %}
+                                  <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-file-o dark"></i></h3></a>
+                                  {% endif %}
+                                  {% if document.doc_type == 'TEXT' %}
+                                  <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-text-o dark"></i></h3></a>
+                                  {% endif %}
+                                  {% if document.doc_type == 'WORD DOC' %}
+                                  <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-word-o dark"></i></h3></a>
+                                  {% endif %}
+                                  {% if document.doc_type == 'EXCEL' %}
+                                  <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-excel-o dark"></i></h3></a>
+                                  {% endif %}
+                                  {% if document.doc_type == 'PDF' %}
+                                  <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-pdf-o dark"></i></h3></a>
+                                  {% endif %}
+                                  {% if document.doc_type == 'COMMA SEPARATED' %}
+                                  <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-o dark"></i></h3></a>
+                                  {% endif %}
+                                </label>
+                          </div>
+                        {% endfor %}
+                      </div>
+                    </div>
+
+                    <!-- AudioFacet Audio -->
+                    <div class="section-title">
+                      <a href="#" data-toggle="tooltip" title="Audio"><label class="field-label">Audio</label></a>
+                      <a href="#" data-toggle="modal" data-target="#addAudioFacetAudio" title="Add Audio"><i class="fa fa-headphones sameline dark"></i></a>
+                    </div>
+                    <div id="audiofacet-audio">
+                      <div class="row">
+                        {% for audio in audiofacet_audio %}
+                          <div class="col-xs-12">
+                              {% if audio.audio_type == 'MP3' %}
+                              <a href="" title="{{ audio.asset_description }}" target="_blank"><i class="fa fa-play sameline"></i> <span class="small-text dark sameline">{{ audio.asset_title }}</span></a>
+                              {% endif %}
+                              {% if audio.audio_type == 'WAV' %}
+                              <!-- <i class="fa fa-play sameline"></i> <span class="small-text dark sameline">{{ audio.asset_title }}</span> -->
+                              <audio id="{{ audio.asset_title }}" controls="controls" preload="metadata">
+                                <source src="{{ audio.audio.url }}" type="audio/wav"/>
+                                Your browser does not support the audioplayer.
+                              </audio>
+                              {% endif %}
+                              {% if audio.audio_type == 'SC' %}
+                              <a href="" title="{{ audio.asset_description }}" target="_blank"><i class="fa fa-soundcloud sameline"></i> <span class="small-text dark sameline">{{ audio.asset_title }}</span></a>
+                              {% endif %}
+                          </div>
+                        {% endfor %}
+                      </div>
+                    </div>
+
 
                   </div>
                   <!-- End of Left Column -->
@@ -818,6 +1061,15 @@
                       {% if audioform.af_content.errors %}
                         <div class="alert alert-warning" role="alert">
                         {{ audioform.af_content.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ audioform.keywords.help_text }}"><span class="field-label">{{ audioform.keywords.label_tag }}</span></a>
+                      {{ audioform.keywords }}
+                      {% if audioform.keywords.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ audioform.keywords.errors }}
                         </div>
                       {% endif %}
                     </div>
@@ -1028,6 +1280,8 @@
                         </div>
                       {% endif %}
                     </div>
+
+                    <!-- VideoFacet Images -->
                     <div class="section-title">
                       <a href="#" data-toggle="tooltip" title="Image"><label class="field-label">Images</label></a>
                       <a href="#" data-toggle="modal" data-target="#addVideoFacetImage" title="Add Image"><i class="fa fa-picture-o sameline dark"></i></a>
@@ -1046,6 +1300,67 @@
                       </div>
                     </div>
 
+                    <!-- VideoFacet Documents -->
+                    <div class="section-title">
+                      <a href="#" data-toggle="tooltip" title="Document"><label class="field-label">Documents</label></a>
+                      <a href="#" data-toggle="modal" data-target="#addVideoFacetDocument" title="Add Document"><i class="fa fa-file sameline dark"></i></a>
+                    </div>
+                    <div id="videofacet-docs">
+                      <div class="row">
+                        {% for document in videofacet_documents %}
+                          <div class="col-md-1">
+                              <label>
+                                  {% if document.doc_type == 'OTHER' %}
+                                  <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-file-o dark"></i></h3></a>
+                                  {% endif %}
+                                  {% if document.doc_type == 'TEXT' %}
+                                  <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-text-o dark"></i></h3></a>
+                                  {% endif %}
+                                  {% if document.doc_type == 'WORD DOC' %}
+                                  <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-word-o dark"></i></h3></a>
+                                  {% endif %}
+                                  {% if document.doc_type == 'EXCEL' %}
+                                  <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-excel-o dark"></i></h3></a>
+                                  {% endif %}
+                                  {% if document.doc_type == 'PDF' %}
+                                  <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-pdf-o dark"></i></h3></a>
+                                  {% endif %}
+                                  {% if document.doc_type == 'COMMA SEPARATED' %}
+                                  <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-o dark"></i></h3></a>
+                                  {% endif %}
+                                </label>
+                          </div>
+                        {% endfor %}
+                      </div>
+                    </div>
+
+                    <!-- VideoFacet Audio -->
+                    <div class="section-title">
+                      <a href="#" data-toggle="tooltip" title="Audio"><label class="field-label">Audio</label></a>
+                      <a href="#" data-toggle="modal" data-target="#addVideoFacetAudio" title="Add Audio"><i class="fa fa-headphones sameline dark"></i></a>
+                    </div>
+                    <div id="videofacet-audio">
+                      <div class="row">
+                        {% for audio in videofacet_audio %}
+                          <div class="col-xs-12">
+                              {% if audio.audio_type == 'MP3' %}
+                              <a href="" title="{{ audio.asset_description }}" target="_blank"><i class="fa fa-play sameline"></i> <span class="small-text dark sameline">{{ audio.asset_title }}</span></a>
+                              {% endif %}
+                              {% if audio.audio_type == 'WAV' %}
+                              <!-- <i class="fa fa-play sameline"></i> <span class="small-text dark sameline">{{ audio.asset_title }}</span> -->
+                              <audio id="{{ audio.asset_title }}" controls="controls" preload="metadata">
+                                <source src="{{ audio.audio.url }}" type="audio/wav"/>
+                                Your browser does not support the audioplayer.
+                              </audio>
+                              {% endif %}
+                              {% if audio.audio_type == 'SC' %}
+                              <a href="" title="{{ audio.asset_description }}" target="_blank"><i class="fa fa-soundcloud sameline"></i> <span class="small-text dark sameline">{{ audio.asset_title }}</span></a>
+                              {% endif %}
+                          </div>
+                        {% endfor %}
+                      </div>
+                    </div>
+
 
                   </div>
                   <!-- End of Left Column -->
@@ -1058,6 +1373,15 @@
                       {% if videoform.vf_content.errors %}
                         <div class="alert alert-warning" role="alert">
                         {{ videoform.vf_content.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ videoform.keywords.help_text }}"><span class="field-label">{{ videoform.keywords.label_tag }}</span></a>
+                      {{ videoform.keywords }}
+                      {% if videoform.keywords.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ videoform.keywords.errors }}
                         </div>
                       {% endif %}
                     </div>
@@ -1190,24 +1514,28 @@
     </div><!-- End row -->
 
     <!-- ================================================= -->
+    <!-- ================================================= -->
                     <!-- MODALS -->
     <!-- ================================================= -->
+    <!-- ================================================= -->
 
-    <!-- Add WebFacet Image Modal -->
+    <!-- ================================================= -->
+                <!-- ADD WEBFACET IMAGE MODAL -->
+    <!-- ================================================= -->
     <div class="modal fade" id="addWebFacetImage" tabindex="-1" role="dialog" aria-labelledby="addWebFacetImageLabel">
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <ul class="nav nav-tabs" role="imagelist">
-              <li role="presentation" class="active"><a href="#uploadweb" aria-controls="home" role="tab" data-toggle="tab" class="darker">Upload a Photo</a></li>
-              <li role="presentation"><a href="#libraryweb" aria-controls="profile" role="tab" data-toggle="tab" class="darker">Select From Library</a></li>
+              <li role="presentation" class="active"><a href="#uploadimageweb" aria-controls="home" role="tab" data-toggle="tab" class="darker">Upload a Photo</a></li>
+              <li role="presentation"><a href="#imagelibraryweb" aria-controls="profile" role="tab" data-toggle="tab" class="darker">Select From Library</a></li>
             </ul>
           </div>
           <div class="modal-body">
             <div class="tab-content">
               <!-- UPLOAD PANEL -->
-              <div role="tabpanel" class="tab-pane active" id="uploadweb">
+              <div role="tabpanel" class="tab-pane active" id="uploadimageweb">
                 <div class="uploadpanel" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
                 <form action="{% url 'upload_webfacet_image' %}" method="POST" class="post-form" enctype="multipart/form-data">
                 {% csrf_token %}
@@ -1280,19 +1608,20 @@
                   </div>
 
                 </div>
+
                 <!-- End Right Col -->
                 {% for webfacet in story.webfacetstory.all %}
                 <input type="hidden" name="webfacet" value="{{ webfacet.pk }}" />
                 {% endfor %}
                 <div>
-                <button type="submit" class="btn btn-primary">Save Image</button>
+                  <button type="submit" class="btn btn-primary">Save Image</button>
                 </div>
                 </form>
                 </div>
               </div>
               <!-- END UPLOAD PANEL -->
               <!-- LIBRARY PANEL -->
-              <div role="tabpanel" class="tab-pane" id="libraryweb">
+              <div role="tabpanel" class="tab-pane" id="imagelibraryweb">
                 <div class="imagelibrary" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
                   <form action="{% url 'add_webfacet_image' %}" method="POST" class="post-form" name="addwebimage">
                     {% csrf_token %}
@@ -1322,7 +1651,9 @@
       </div>
     </div>
 
-    <!-- Add PrintFacet Image Modal -->
+    <!-- ================================================= -->
+                <!-- ADD PRINTFACET IMAGE MODAL -->
+    <!-- ================================================= -->
     <div class="modal fade" id="addPrintFacetImage" tabindex="-1" role="dialog" aria-labelledby="addPrintFacetImageLabel">
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -1451,7 +1782,9 @@
       </div>
     </div>
 
-    <!-- Add AudioFacet Image Modal -->
+    <!-- ================================================= -->
+                <!-- ADD AUDIOFACET IMAGE MODAL -->
+    <!-- ================================================= -->
     <div class="modal fade" id="addAudioFacetImage" tabindex="-1" role="dialog" aria-labelledby="addAudioFacetImageLabel">
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -1580,7 +1913,9 @@
       </div>
     </div>
 
-    <!-- Add VideoFacet Image Modal -->
+    <!-- ================================================= -->
+                <!-- ADD VIDEOFACET IMAGE MODAL -->
+    <!-- ================================================= -->
     <div class="modal fade" id="addVideoFacetImage" tabindex="-1" role="dialog" aria-labelledby="addVideoFacetImageLabel">
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -1709,7 +2044,1407 @@
       </div>
     </div>
 
-    <!-- Add Note Modal -->
+    <!-- ================================================= -->
+                <!-- ADD WEBFACET DOCUMENT MODAL -->
+    <!-- ================================================= -->
+    <div class="modal fade" id="addWebFacetDocument" tabindex="-1" role="dialog" aria-labelledby="addWebFacetDocument">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <ul class="nav nav-tabs" role="documentlist">
+              <li role="presentation" class="active"><a href="#documentuploadweb" aria-controls="home" role="tab" data-toggle="tab" class="darker">Upload a Document</a></li>
+              <li role="presentation"><a href="#documentlibraryweb" aria-controls="profile" role="tab" data-toggle="tab" class="darker">Select From Document Library</a></li>
+            </ul>
+          </div>
+          <div class="modal-body">
+            <div class="tab-content">
+              <!-- UPLOAD PANEL -->
+              <div role="tabpanel" class="tab-pane active" id="documentuploadweb">
+                <div class="uploadpanel" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
+                <form action="{% url 'upload_webfacet_document' %}" method="POST" class="post-form" enctype="multipart/form-data">
+                {% csrf_token %}
+                <!-- Left Col -->
+                <div class="col-md-6">
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ webfacet_documentform.document.help_text }}"><span class="field-label">{{ webfacet_documentform.document.label_tag }}</span></a>
+                    {{ webfacet_documentform.document }}
+                    {% if webfacet_documentform.document.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ webfacet_documentform.document.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ webfacet_documentform.asset_title.help_text }}"><span class="field-label">{{ webfacet_documentform.asset_title.label_tag }}</span></a>
+                    {{ webfacet_documentform.asset_title }}
+                    {% if webfacet_documentform.asset_title.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ webfacet_documentform.asset_title.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ webfacet_documentform.doc_type.help_text }}"><span class="field-label">{{ webfacet_documentform.doc_type.label_tag }}</span></a>
+                    {{ webfacet_documentform.doc_type }}
+                    {% if webfacet_documentform.doc_type.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ webfacet_documentform.doc_type.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ webfacet_documentform.keywords.help_text }}"><span class="field-label">{{ webfacet_documentform.keywords.label_tag }}</span></a>
+                    {{ webfacet_documentform.keywords }}
+                    {% if webfacet_documentform.keywords.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ webfacet_documentform.keywords.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                </div>
+                <!-- End Left Col -->
+                <!-- Right Col -->
+                <div class="col-md-6">
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ webfacet_documentform.asset_description.help_text }}"><span class="field-label">{{ webfacet_documentform.asset_description.label_tag }}</span></a>
+                    {{ webfacet_documentform.asset_description }}
+                    {% if webfacet_documentform.asset_description.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ webfacet_documentform.asset_description.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ webfacet_documentform.attribution.help_text }}"><span class="field-label">{{ webfacet_documentform.attribution.label_tag }}</span></a>
+                    {{ webfacet_documentform.attribution }}
+                    {% if webfacet_documentform.attribution.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ webfacet_documentform.attribution.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                </div>
+                <!-- End Right Col -->
+                {% for webfacet in story.webfacetstory.all %}
+                <input type="hidden" name="webfacet" value="{{ webfacet.pk }}" />
+                {% endfor %}
+                <div>
+                <button type="submit" class="btn btn-primary">Save Document</button>
+                </div>
+                </form>
+                </div>
+              </div>
+              <!-- END UPLOAD PANEL -->
+              <!-- LIBRARY PANEL -->
+              <div role="tabpanel" class="tab-pane" id="documentlibraryweb">
+                    <div class="documentlibrary" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
+                      <form action="{% url 'add_webfacet_document' %}" method="POST" class="post-form" name="addwebdocument">
+                        {% csrf_token %}
+                        <div class="document-library">
+                        {% for document in documents %}
+                          <div class="col-md-2">
+                            <label>
+                              {% if document.doc_type == 'OTHER' %}
+                              <a href="" title="{{ document.asset_description }}"><h1><i class="fa fa-file-file-o dark"></i></h1></a>
+                              {% endif %}
+                              {% if document.doc_type == 'TEXT' %}
+                              <a href="" title="{{ document.asset_description }}"><h1><i class="fa fa-file-text-o dark"></i></h1></a>
+                              {% endif %}
+                              {% if document.doc_type == 'WORD DOC' %}
+                              <a href="" title="{{ document.asset_description }}"><h1><i class="fa fa-file-word-o dark"></i></h1></a>
+                              {% endif %}
+                              {% if document.doc_type == 'EXCEL' %}
+                              <a href="" title="{{ document.asset_description }}"><h1><i class="fa fa-file-excel-o dark"></i></h1></a>
+                              {% endif %}
+                              {% if document.doc_type == 'PDF' %}
+                              <a href="" title="{{ document.asset_description }}"><h1><i class="fa fa-file-pdf-o dark"></i></h1></a>
+                              {% endif %}
+                              {% if document.doc_type == 'COMMA SEPARATED' %}
+                              <a href="" title="{{ document.asset_description }}"><h1><i class="fa fa-file-o dark"></i></h1></a>
+                              {% endif %}
+                              <p class="tiny-text">{{ document.asset_title }}<br>{{ document.doc_type }}</p>
+                              <input type="checkbox" name="documents" value="{{ document.id }}">
+                            </label>
+                          </div>
+                        {% endfor %}
+                        </div>
+                        {% for webfacet in story.webfacetstory.all %}
+                        <input type="hidden" name="webfacet" value="{{ webfacet.pk }}" />
+                        {% endfor %}
+                        <button type="submit" class="btn btn-primary" name="addwebdocument">Add Documents</button>
+                      </form>
+                    </div>
+              </div>
+              <!-- END LIBRARY PANEL -->
+            </div>
+          </div>
+          <div class="modal-footer">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================================================= -->
+                <!-- ADD PRINTFACET DOCUMENT MODAL -->
+    <!-- ================================================= -->
+    <div class="modal fade" id="addPrintFacetDocument" tabindex="-1" role="dialog" aria-labelledby="addPrintFacetDocument">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <ul class="nav nav-tabs" role="documentlist">
+              <li role="presentation" class="active"><a href="#documentuploadprint" aria-controls="home" role="tab" data-toggle="tab" class="darker">Upload a Document</a></li>
+              <li role="presentation"><a href="#documentlibraryprint" aria-controls="profile" role="tab" data-toggle="tab" class="darker">Select From Document Library</a></li>
+            </ul>
+          </div>
+          <div class="modal-body">
+            <div class="tab-content">
+              <!-- UPLOAD PANEL -->
+              <div role="tabpanel" class="tab-pane active" id="documentuploadprint">
+                <div class="uploadpanel" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
+                <form action="{% url 'upload_printfacet_document' %}" method="POST" class="post-form" enctype="multipart/form-data">
+                {% csrf_token %}
+                <!-- Left Col -->
+                <div class="col-md-6">
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ printfacet_documentform.document.help_text }}"><span class="field-label">{{ printfacet_documentform.document.label_tag }}</span></a>
+                    {{ printfacet_documentform.document }}
+                    {% if printfacet_documentform.document.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ printfacet_documentform.document.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ printfacet_documentform.asset_title.help_text }}"><span class="field-label">{{ printfacet_documentform.asset_title.label_tag }}</span></a>
+                    {{ printfacet_documentform.asset_title }}
+                    {% if printfacet_documentform.asset_title.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ printfacet_documentform.asset_title.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ printfacet_documentform.doc_type.help_text }}"><span class="field-label">{{ printfacet_documentform.doc_type.label_tag }}</span></a>
+                    {{ printfacet_documentform.doc_type }}
+                    {% if printfacet_documentform.doc_type.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ printfacet_documentform.doc_type.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ printfacet_documentform.keywords.help_text }}"><span class="field-label">{{ printfacet_documentform.keywords.label_tag }}</span></a>
+                    {{ printfacet_documentform.keywords }}
+                    {% if printfacet_documentform.keywords.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ printfacet_documentform.keywords.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                </div>
+                <!-- End Left Col -->
+                <!-- Right Col -->
+                <div class="col-md-6">
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ printfacet_documentform.asset_description.help_text }}"><span class="field-label">{{ printfacet_documentform.asset_description.label_tag }}</span></a>
+                    {{ printfacet_documentform.asset_description }}
+                    {% if printfacet_documentform.asset_description.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ printfacet_documentform.asset_description.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ printfacet_documentform.attribution.help_text }}"><span class="field-label">{{ printfacet_documentform.attribution.label_tag }}</span></a>
+                    {{ printfacet_documentform.attribution }}
+                    {% if printfacet_documentform.attribution.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ printfacet_documentform.attribution.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                </div>
+                <!-- End Right Col -->
+                {% for printfacet in story.printfacetstory.all %}
+                <input type="hidden" name="printfacet" value="{{ printfacet.pk }}" />
+                {% endfor %}
+                <div>
+                <button type="submit" class="btn btn-primary">Save Document</button>
+                </div>
+                </form>
+                </div>
+              </div>
+              <!-- END UPLOAD PANEL -->
+              <!-- LIBRARY PANEL -->
+              <div role="tabpanel" class="tab-pane" id="documentlibraryprint">
+                    <div class="documentlibrary" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
+                      <form action="{% url 'add_printfacet_document' %}" method="POST" class="post-form" name="addprintdocument">
+                        {% csrf_token %}
+                        <div class="document-library">
+                        {% for document in documents %}
+                          <div class="col-md-2">
+                            <label>
+                              {% if document.doc_type == 'OTHER' %}
+                              <a href="" title="{{ document.asset_description }}"><h1><i class="fa fa-file-file-o dark"></i></h1></a>
+                              {% endif %}
+                              {% if document.doc_type == 'TEXT' %}
+                              <a href="" title="{{ document.asset_description }}"><h1><i class="fa fa-file-text-o dark"></i></h1></a>
+                              {% endif %}
+                              {% if document.doc_type == 'WORD DOC' %}
+                              <a href="" title="{{ document.asset_description }}"><h1><i class="fa fa-file-word-o dark"></i></h1></a>
+                              {% endif %}
+                              {% if document.doc_type == 'EXCEL' %}
+                              <a href="" title="{{ document.asset_description }}"><h1><i class="fa fa-file-excel-o dark"></i></h1></a>
+                              {% endif %}
+                              {% if document.doc_type == 'PDF' %}
+                              <a href="" title="{{ document.asset_description }}"><h1><i class="fa fa-file-pdf-o dark"></i></h1></a>
+                              {% endif %}
+                              {% if document.doc_type == 'COMMA SEPARATED' %}
+                              <a href="" title="{{ document.asset_description }}"><h1><i class="fa fa-file-o dark"></i></h1></a>
+                              {% endif %}
+                              <p class="tiny-text">{{ document.asset_title }}<br>{{ document.doc_type }}</p>
+                              <input type="checkbox" name="documents" value="{{ document.id }}">
+                            </label>
+                          </div>
+                        {% endfor %}
+                        </div>
+                        {% for printfacet in story.printfacetstory.all %}
+                        <input type="hidden" name="printfacet" value="{{ printfacet.pk }}" />
+                        {% endfor %}
+                        <button type="submit" class="btn btn-primary" name="addprintdocument">Add Documents</button>
+                      </form>
+                    </div>
+              </div>
+              <!-- END LIBRARY PANEL -->
+            </div>
+          </div>
+          <div class="modal-footer">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================================================= -->
+                <!-- ADD AUDIOFACET DOCUMENT MODAL -->
+    <!-- ================================================= -->
+    <div class="modal fade" id="addAudioFacetDocument" tabindex="-1" role="dialog" aria-labelledby="addAudioFacetDocument">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <ul class="nav nav-tabs" role="documentlist">
+              <li role="presentation" class="active"><a href="#documentuploadaudio" aria-controls="home" role="tab" data-toggle="tab" class="darker">Upload a Document</a></li>
+              <li role="presentation"><a href="#documentlibraryaudio" aria-controls="profile" role="tab" data-toggle="tab" class="darker">Select From Document Library</a></li>
+            </ul>
+          </div>
+          <div class="modal-body">
+            <div class="tab-content">
+              <!-- UPLOAD PANEL -->
+              <div role="tabpanel" class="tab-pane active" id="documentuploadaudio">
+                <div class="uploadpanel" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
+                <form action="{% url 'upload_audiofacet_document' %}" method="POST" class="post-form" enctype="multipart/form-data">
+                {% csrf_token %}
+                <!-- Left Col -->
+                <div class="col-md-6">
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ audiofacet_documentform.document.help_text }}"><span class="field-label">{{ audiofacet_documentform.document.label_tag }}</span></a>
+                    {{ audiofacet_documentform.document }}
+                    {% if audiofacet_documentform.document.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ audiofacet_documentform.document.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ audiofacet_documentform.asset_title.help_text }}"><span class="field-label">{{ audiofacet_documentform.asset_title.label_tag }}</span></a>
+                    {{ audiofacet_documentform.asset_title }}
+                    {% if audiofacet_documentform.asset_title.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ audiofacet_documentform.asset_title.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ audiofacet_documentform.doc_type.help_text }}"><span class="field-label">{{ audiofacet_documentform.doc_type.label_tag }}</span></a>
+                    {{ audiofacet_documentform.doc_type }}
+                    {% if audiofacet_documentform.doc_type.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ audiofacet_documentform.doc_type.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ audiofacet_documentform.keywords.help_text }}"><span class="field-label">{{ audiofacet_documentform.keywords.label_tag }}</span></a>
+                    {{ audiofacet_documentform.keywords }}
+                    {% if audiofacet_documentform.keywords.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ audiofacet_documentform.keywords.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                </div>
+                <!-- End Left Col -->
+                <!-- Right Col -->
+                <div class="col-md-6">
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ audiofacet_documentform.asset_description.help_text }}"><span class="field-label">{{ audiofacet_documentform.asset_description.label_tag }}</span></a>
+                    {{ audiofacet_documentform.asset_description }}
+                    {% if audiofacet_documentform.asset_description.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ audiofacet_documentform.asset_description.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ audiofacet_documentform.attribution.help_text }}"><span class="field-label">{{ audiofacet_documentform.attribution.label_tag }}</span></a>
+                    {{ audiofacet_documentform.attribution }}
+                    {% if audiofacet_documentform.attribution.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ audiofacet_documentform.attribution.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                </div>
+                <!-- End Right Col -->
+                {% for audiofacet in story.audiofacetstory.all %}
+                <input type="hidden" name="audiofacet" value="{{ audiofacet.pk }}" />
+                {% endfor %}
+                <div>
+                <button type="submit" class="btn btn-primary">Save Document</button>
+                </div>
+                </form>
+                </div>
+              </div>
+              <!-- END UPLOAD PANEL -->
+              <!-- LIBRARY PANEL -->
+              <div role="tabpanel" class="tab-pane" id="documentlibraryaudio">
+                    <div class="documentlibrary" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
+                      <form action="{% url 'add_audiofacet_document' %}" method="POST" class="post-form" name="addaudiodocument">
+                        {% csrf_token %}
+                        <div class="document-library">
+                        {% for document in documents %}
+                          <div class="col-md-2">
+                            <label>
+                              {% if document.doc_type == 'OTHER' %}
+                              <a href="" title="{{ document.asset_description }}"><h1><i class="fa fa-file-file-o dark"></i></h1></a>
+                              {% endif %}
+                              {% if document.doc_type == 'TEXT' %}
+                              <a href="" title="{{ document.asset_description }}"><h1><i class="fa fa-file-text-o dark"></i></h1></a>
+                              {% endif %}
+                              {% if document.doc_type == 'WORD DOC' %}
+                              <a href="" title="{{ document.asset_description }}"><h1><i class="fa fa-file-word-o dark"></i></h1></a>
+                              {% endif %}
+                              {% if document.doc_type == 'EXCEL' %}
+                              <a href="" title="{{ document.asset_description }}"><h1><i class="fa fa-file-excel-o dark"></i></h1></a>
+                              {% endif %}
+                              {% if document.doc_type == 'PDF' %}
+                              <a href="" title="{{ document.asset_description }}"><h1><i class="fa fa-file-pdf-o dark"></i></h1></a>
+                              {% endif %}
+                              {% if document.doc_type == 'COMMA SEPARATED' %}
+                              <a href="" title="{{ document.asset_description }}"><h1><i class="fa fa-file-o dark"></i></h1></a>
+                              {% endif %}
+                              <p class="tiny-text">{{ document.asset_title }}<br>{{ document.doc_type }}</p>
+                              <input type="checkbox" name="documents" value="{{ document.id }}">
+                            </label>
+                          </div>
+                        {% endfor %}
+                        </div>
+                        {% for audiofacet in story.audiofacetstory.all %}
+                        <input type="hidden" name="audiofacet" value="{{ audiofacet.pk }}" />
+                        {% endfor %}
+                        <button type="submit" class="btn btn-primary" name="addaudiodocument">Add Documents</button>
+                      </form>
+                    </div>
+              </div>
+              <!-- END LIBRARY PANEL -->
+            </div>
+          </div>
+          <div class="modal-footer">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================================================= -->
+                <!-- ADD VIDEOFACET DOCUMENT MODAL -->
+    <!-- ================================================= -->
+    <div class="modal fade" id="addVideoFacetDocument" tabindex="-1" role="dialog" aria-labelledby="addVideoFacetDocument">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <ul class="nav nav-tabs" role="documentlist">
+              <li role="presentation" class="active"><a href="#documentuploadvideo" aria-controls="home" role="tab" data-toggle="tab" class="darker">Upload a Document</a></li>
+              <li role="presentation"><a href="#documentlibraryvideo" aria-controls="profile" role="tab" data-toggle="tab" class="darker">Select From Document Library</a></li>
+            </ul>
+          </div>
+          <div class="modal-body">
+            <div class="tab-content">
+              <!-- UPLOAD PANEL -->
+              <div role="tabpanel" class="tab-pane active" id="documentuploadvideo">
+                <div class="uploadpanel" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
+                <form action="{% url 'upload_videofacet_document' %}" method="POST" class="post-form" enctype="multipart/form-data">
+                {% csrf_token %}
+                <!-- Left Col -->
+                <div class="col-md-6">
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ videofacet_documentform.document.help_text }}"><span class="field-label">{{ videofacet_documentform.document.label_tag }}</span></a>
+                    {{ videofacet_documentform.document }}
+                    {% if videofacet_documentform.document.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ videofacet_documentform.document.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ videofacet_documentform.asset_title.help_text }}"><span class="field-label">{{ videofacet_documentform.asset_title.label_tag }}</span></a>
+                    {{ videofacet_documentform.asset_title }}
+                    {% if videofacet_documentform.asset_title.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ videofacet_documentform.asset_title.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ videofacet_documentform.doc_type.help_text }}"><span class="field-label">{{ videofacet_documentform.doc_type.label_tag }}</span></a>
+                    {{ videofacet_documentform.doc_type }}
+                    {% if videofacet_documentform.doc_type.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ videofacet_documentform.doc_type.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ videofacet_documentform.keywords.help_text }}"><span class="field-label">{{ videofacet_documentform.keywords.label_tag }}</span></a>
+                    {{ videofacet_documentform.keywords }}
+                    {% if videofacet_documentform.keywords.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ videofacet_documentform.keywords.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                </div>
+                <!-- End Left Col -->
+                <!-- Right Col -->
+                <div class="col-md-6">
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ videofacet_documentform.asset_description.help_text }}"><span class="field-label">{{ videofacet_documentform.asset_description.label_tag }}</span></a>
+                    {{ videofacet_documentform.asset_description }}
+                    {% if videofacet_documentform.asset_description.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ videofacet_documentform.asset_description.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ videofacet_documentform.attribution.help_text }}"><span class="field-label">{{ videofacet_documentform.attribution.label_tag }}</span></a>
+                    {{ videofacet_documentform.attribution }}
+                    {% if videofacet_documentform.attribution.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ videofacet_documentform.attribution.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                </div>
+                <!-- End Right Col -->
+                {% for videofacet in story.videofacetstory.all %}
+                <input type="hidden" name="videofacet" value="{{ videofacet.pk }}" />
+                {% endfor %}
+                <div>
+                <button type="submit" class="btn btn-primary">Save Document</button>
+                </div>
+                </form>
+                </div>
+              </div>
+              <!-- END UPLOAD PANEL -->
+              <!-- LIBRARY PANEL -->
+              <div role="tabpanel" class="tab-pane" id="documentlibraryvideo">
+                    <div class="documentlibrary" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
+                      <form action="{% url 'add_videofacet_document' %}" method="POST" class="post-form" name="addvideodocument">
+                        {% csrf_token %}
+                        <div class="document-library">
+                        {% for document in documents %}
+                          <div class="col-md-2">
+                            <label>
+                              {% if document.doc_type == 'OTHER' %}
+                              <a href="" title="{{ document.asset_description }}"><h1><i class="fa fa-file-file-o dark"></i></h1></a>
+                              {% endif %}
+                              {% if document.doc_type == 'TEXT' %}
+                              <a href="" title="{{ document.asset_description }}"><h1><i class="fa fa-file-text-o dark"></i></h1></a>
+                              {% endif %}
+                              {% if document.doc_type == 'WORD DOC' %}
+                              <a href="" title="{{ document.asset_description }}"><h1><i class="fa fa-file-word-o dark"></i></h1></a>
+                              {% endif %}
+                              {% if document.doc_type == 'EXCEL' %}
+                              <a href="" title="{{ document.asset_description }}"><h1><i class="fa fa-file-excel-o dark"></i></h1></a>
+                              {% endif %}
+                              {% if document.doc_type == 'PDF' %}
+                              <a href="" title="{{ document.asset_description }}"><h1><i class="fa fa-file-pdf-o dark"></i></h1></a>
+                              {% endif %}
+                              {% if document.doc_type == 'COMMA SEPARATED' %}
+                              <a href="" title="{{ document.asset_description }}"><h1><i class="fa fa-file-o dark"></i></h1></a>
+                              {% endif %}
+                              <p class="tiny-text">{{ document.asset_title }}<br>{{ document.doc_type }}</p>
+                              <input type="checkbox" name="documents" value="{{ document.id }}">
+                            </label>
+                          </div>
+                        {% endfor %}
+                        </div>
+                        {% for videofacet in story.videofacetstory.all %}
+                        <input type="hidden" name="videofacet" value="{{ videofacet.pk }}" />
+                        {% endfor %}
+                        <button type="submit" class="btn btn-primary" name="addvideodocument">Add Documents</button>
+                      </form>
+                    </div>
+              </div>
+              <!-- END LIBRARY PANEL -->
+            </div>
+          </div>
+          <div class="modal-footer">
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ================================================= -->
+                <!-- ADD WEBFACET AUDIO MODAL -->
+    <!-- ================================================= -->
+    <div class="modal fade" id="addWebFacetAudio" tabindex="-1" role="dialog" aria-labelledby="addWebFacetAudio">
+      <div class="modal-dialog modal-lg" role="audio">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <ul class="nav nav-tabs" role="audiolist">
+              <li role="presentation" class="active"><a href="#audiouploadweb" aria-controls="home" role="tab" data-toggle="tab" class="darker">Upload Audio</a></li>
+              <li role="presentation"><a href="#audiolibraryweb" aria-controls="profile" role="tab" data-toggle="tab" class="darker">Select From Audio Library</a></li>
+            </ul>
+          </div>
+          <div class="modal-body">
+            <div class="tab-content">
+              <!-- UPLOAD PANEL -->
+              <div role="tabpanel" class="tab-pane active" id="audiouploadweb">
+                <div class="uploadpanel" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
+                <form action="{% url 'upload_webfacet_audio' %}" method="POST" class="post-form" enctype="multipart/form-data">
+                {% csrf_token %}
+                <!-- Left Col -->
+                <div class="col-md-6">
+
+                  <p class="tiny-text bright"><i class="fa fa-asterisk"></i> Select an mp3 or wav file.</p>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ webfacet_audioform.audio.help_text }}"><span class="field-label">{{ webfacet_audioform.audio.label_tag }}</span></a>
+                    {{ webfacet_audioform.audio }}
+                    {% if webfacet_audioform.audio.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ webfacet_audioform.audio.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <p class="tiny-text bright"><i class="fa fa-asterisk"></i> Or add a link to a SoundCloud file. </p>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ webfacet_audioform.link.help_text }}"><span class="field-label">{{ webfacet_audioform.link.label_tag }}</span></a>
+                    {{ webfacet_audioform.link }}
+                    {% if webfacet_audioform.link.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ webfacet_audioform.link.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <br>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ webfacet_audioform.asset_title.help_text }}"><span class="field-label">{{ webfacet_audioform.asset_title.label_tag }}</span></a>
+                    {{ webfacet_audioform.asset_title }}
+                    {% if webfacet_audioform.asset_title.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ webfacet_audioform.asset_title.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ webfacet_audioform.audio_type.help_text }}"><span class="field-label">{{ webfacet_audioform.audio_type.label_tag }}</span></a>
+                    {{ webfacet_audioform.audio_type }}
+                    {% if webfacet_audioform.audio_type.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ webfacet_audioform.audio_type.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ webfacet_audioform.keywords.help_text }}"><span class="field-label">{{ webfacet_audioform.keywords.label_tag }}</span></a>
+                    {{ webfacet_audioform.keywords }}
+                    {% if webfacet_audioform.keywords.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ webfacet_audioform.keywords.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                </div>
+                <!-- End Left Col -->
+                <!-- Right Col -->
+                <div class="col-md-6">
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ webfacet_audioform.asset_description.help_text }}"><span class="field-label">{{ webfacet_audioform.asset_description.label_tag }}</span></a>
+                    {{ webfacet_audioform.asset_description }}
+                    {% if webfacet_audioform.asset_description.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ webfacet_audioform.asset_description.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ webfacet_audioform.attribution.help_text }}"><span class="field-label">{{ webfacet_audioform.attribution.label_tag }}</span></a>
+                    {{ webfacet_audioform.attribution }}
+                    {% if webfacet_audioform.attribution.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ webfacet_audioform.attribution.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                </div>
+                <!-- End Right Col -->
+                {% for webfacet in story.webfacetstory.all %}
+                <input type="hidden" name="webfacet" value="{{ webfacet.pk }}" />
+                {% endfor %}
+                <div>
+                <button type="submit" class="btn btn-primary">Save Audio</button>
+                </div>
+                </form>
+                </div>
+              </div>
+              <!-- END UPLOAD PANEL -->
+              <!-- LIBRARY PANEL -->
+              <div role="tabpanel" class="tab-pane" id="audiolibraryweb">
+                    <div class="audiolibrary" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
+                      <form action="{% url 'add_webfacet_audio' %}" method="POST" class="post-form" name="addwebaudio">
+                        {% csrf_token %}
+                        <div class="audio-library">
+                        {% for audio in audios %}
+                          <div class="col-md-2">
+                            <label>
+                              {% if audio.audio_type == 'MP3' %}
+                              <a href="" title="{{ audio.asset_description }}" target="_blank"><h3><i class="fa fa-file-audio-o dark"></i></h3></a>
+                              {% endif %}
+                              {% if audio.audio_type == 'WAV' %}
+                              <a href="" title="{{ audio.asset_description }}" target="_blank"><h3><i class="fa fa-file-audio-o dark"></i></h3></a>
+                              {% endif %}
+                              {% if audio.audio_type == 'SC' %}
+                              <a href="" title="{{ audio.asset_description }}" target="_blank"><h3><i class="fa fa-soundcloud dark"></i></h3></a>
+                              {% endif %}
+                              <p class="tiny-text">{{ audio.asset_title }}<br>{{ audio.doc_type }}</p>
+                              <input type="checkbox" name="audios" value="{{ audio.id }}">
+                            </label>
+                          </div>
+                        {% endfor %}
+                        </div>
+                        {% for webfacet in story.webfacetstory.all %}
+                        <input type="hidden" name="webfacet" value="{{ webfacet.pk }}" />
+                        {% endfor %}
+                        <button type="submit" class="btn btn-primary" name="addwebaudio">Add Audio</button>
+                      </form>
+                    </div>
+              </div>
+              <!-- END LIBRARY PANEL -->
+            </div>
+          </div>
+          <div class="modal-footer">
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ================================================= -->
+                <!-- ADD PRINTFACET AUDIO MODAL -->
+    <!-- ================================================= -->
+    <div class="modal fade" id="addPrintFacetAudio" tabindex="-1" role="dialog" aria-labelledby="addPrintFacetAudio">
+      <div class="modal-dialog modal-lg" role="audio">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <ul class="nav nav-tabs" role="audiolist">
+              <li role="presentation" class="active"><a href="#audiouploadweb" aria-controls="home" role="tab" data-toggle="tab" class="darker">Upload Audio</a></li>
+              <li role="presentation"><a href="#audiolibraryweb" aria-controls="profile" role="tab" data-toggle="tab" class="darker">Select From Audio Library</a></li>
+            </ul>
+          </div>
+          <div class="modal-body">
+            <div class="tab-content">
+              <!-- UPLOAD PANEL -->
+              <div role="tabpanel" class="tab-pane active" id="audiouploadweb">
+                <div class="uploadpanel" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
+                <form action="{% url 'upload_printfacet_audio' %}" method="POST" class="post-form" enctype="multipart/form-data">
+                {% csrf_token %}
+                <!-- Left Col -->
+                <div class="col-md-6">
+
+                  <p class="tiny-text bright"><i class="fa fa-asterisk"></i> Select an mp3 or wav file.</p>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ printfacet_audioform.audio.help_text }}"><span class="field-label">{{ printfacet_audioform.audio.label_tag }}</span></a>
+                    {{ printfacet_audioform.audio }}
+                    {% if printfacet_audioform.audio.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ printfacet_audioform.audio.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <p class="tiny-text bright"><i class="fa fa-asterisk"></i> Or add a link to a SoundCloud file. </p>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ printfacet_audioform.link.help_text }}"><span class="field-label">{{ printfacet_audioform.link.label_tag }}</span></a>
+                    {{ printfacet_audioform.link }}
+                    {% if printfacet_audioform.link.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ printfacet_audioform.link.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <br>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ printfacet_audioform.asset_title.help_text }}"><span class="field-label">{{ printfacet_audioform.asset_title.label_tag }}</span></a>
+                    {{ printfacet_audioform.asset_title }}
+                    {% if printfacet_audioform.asset_title.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ printfacet_audioform.asset_title.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ printfacet_audioform.audio_type.help_text }}"><span class="field-label">{{ printfacet_audioform.audio_type.label_tag }}</span></a>
+                    {{ printfacet_audioform.audio_type }}
+                    {% if printfacet_audioform.audio_type.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ printfacet_audioform.audio_type.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ printfacet_audioform.keywords.help_text }}"><span class="field-label">{{ printfacet_audioform.keywords.label_tag }}</span></a>
+                    {{ printfacet_audioform.keywords }}
+                    {% if printfacet_audioform.keywords.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ printfacet_audioform.keywords.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                </div>
+                <!-- End Left Col -->
+                <!-- Right Col -->
+                <div class="col-md-6">
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ printfacet_audioform.asset_description.help_text }}"><span class="field-label">{{ printfacet_audioform.asset_description.label_tag }}</span></a>
+                    {{ printfacet_audioform.asset_description }}
+                    {% if printfacet_audioform.asset_description.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ printfacet_audioform.asset_description.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ printfacet_audioform.attribution.help_text }}"><span class="field-label">{{ printfacet_audioform.attribution.label_tag }}</span></a>
+                    {{ printfacet_audioform.attribution }}
+                    {% if printfacet_audioform.attribution.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ printfacet_audioform.attribution.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                </div>
+                <!-- End Right Col -->
+                {% for printfacet in story.printfacetstory.all %}
+                <input type="hidden" name="printfacet" value="{{ printfacet.pk }}" />
+                {% endfor %}
+                <div>
+                <button type="submit" class="btn btn-primary">Save Audio</button>
+                </div>
+                </form>
+                </div>
+              </div>
+              <!-- END UPLOAD PANEL -->
+              <!-- LIBRARY PANEL -->
+              <div role="tabpanel" class="tab-pane" id="audiolibraryweb">
+                    <div class="audiolibrary" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
+                      <form action="{% url 'add_printfacet_audio' %}" method="POST" class="post-form" name="addwebaudio">
+                        {% csrf_token %}
+                        <div class="audio-library">
+                        {% for audio in audios %}
+                          <div class="col-md-2">
+                            <label>
+                              {% if audio.audio_type == 'MP3' %}
+                              <a href="" title="{{ audio.asset_description }}" target="_blank"><h3><i class="fa fa-file-audio-o dark"></i></h3></a>
+                              {% endif %}
+                              {% if audio.audio_type == 'WAV' %}
+                              <a href="" title="{{ audio.asset_description }}" target="_blank"><h3><i class="fa fa-file-audio-o dark"></i></h3></a>
+                              {% endif %}
+                              {% if audio.audio_type == 'SC' %}
+                              <a href="" title="{{ audio.asset_description }}" target="_blank"><h3><i class="fa fa-soundcloud dark"></i></h3></a>
+                              {% endif %}
+                              <p class="tiny-text">{{ audio.asset_title }}<br>{{ audio.doc_type }}</p>
+                              <input type="checkbox" name="audios" value="{{ audio.id }}">
+                            </label>
+                          </div>
+                        {% endfor %}
+                        </div>
+                        {% for printfacet in story.printfacetstory.all %}
+                        <input type="hidden" name="printfacet" value="{{ printfacet.pk }}" />
+                        {% endfor %}
+                        <button type="submit" class="btn btn-primary" name="addwebaudio">Add Audio</button>
+                      </form>
+                    </div>
+              </div>
+              <!-- END LIBRARY PANEL -->
+            </div>
+          </div>
+          <div class="modal-footer">
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+    <!-- ================================================= -->
+                <!-- ADD AUDIOFACET AUDIO MODAL -->
+    <!-- ================================================= -->
+    <div class="modal fade" id="addAudioFacetAudio" tabindex="-1" role="dialog" aria-labelledby="addAudioFacetAudio">
+      <div class="modal-dialog modal-lg" role="audio">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <ul class="nav nav-tabs" role="audiolist">
+              <li role="presentation" class="active"><a href="#audiouploadweb" aria-controls="home" role="tab" data-toggle="tab" class="darker">Upload Audio</a></li>
+              <li role="presentation"><a href="#audiolibraryweb" aria-controls="profile" role="tab" data-toggle="tab" class="darker">Select From Audio Library</a></li>
+            </ul>
+          </div>
+          <div class="modal-body">
+            <div class="tab-content">
+              <!-- UPLOAD PANEL -->
+              <div role="tabpanel" class="tab-pane active" id="audiouploadweb">
+                <div class="uploadpanel" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
+                <form action="{% url 'upload_audiofacet_audio' %}" method="POST" class="post-form" enctype="multipart/form-data">
+                {% csrf_token %}
+                <!-- Left Col -->
+                <div class="col-md-6">
+
+                  <p class="tiny-text bright"><i class="fa fa-asterisk"></i> Select an mp3 or wav file.</p>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ audiofacet_audioform.audio.help_text }}"><span class="field-label">{{ audiofacet_audioform.audio.label_tag }}</span></a>
+                    {{ audiofacet_audioform.audio }}
+                    {% if audiofacet_audioform.audio.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ audiofacet_audioform.audio.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <p class="tiny-text bright"><i class="fa fa-asterisk"></i> Or add a link to a SoundCloud file. </p>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ audiofacet_audioform.link.help_text }}"><span class="field-label">{{ audiofacet_audioform.link.label_tag }}</span></a>
+                    {{ audiofacet_audioform.link }}
+                    {% if audiofacet_audioform.link.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ audiofacet_audioform.link.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <br>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ audiofacet_audioform.asset_title.help_text }}"><span class="field-label">{{ audiofacet_audioform.asset_title.label_tag }}</span></a>
+                    {{ audiofacet_audioform.asset_title }}
+                    {% if audiofacet_audioform.asset_title.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ audiofacet_audioform.asset_title.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ audiofacet_audioform.audio_type.help_text }}"><span class="field-label">{{ audiofacet_audioform.audio_type.label_tag }}</span></a>
+                    {{ audiofacet_audioform.audio_type }}
+                    {% if audiofacet_audioform.audio_type.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ audiofacet_audioform.audio_type.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ audiofacet_audioform.keywords.help_text }}"><span class="field-label">{{ audiofacet_audioform.keywords.label_tag }}</span></a>
+                    {{ audiofacet_audioform.keywords }}
+                    {% if audiofacet_audioform.keywords.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ audiofacet_audioform.keywords.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                </div>
+                <!-- End Left Col -->
+                <!-- Right Col -->
+                <div class="col-md-6">
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ audiofacet_audioform.asset_description.help_text }}"><span class="field-label">{{ audiofacet_audioform.asset_description.label_tag }}</span></a>
+                    {{ audiofacet_audioform.asset_description }}
+                    {% if audiofacet_audioform.asset_description.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ audiofacet_audioform.asset_description.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ audiofacet_audioform.attribution.help_text }}"><span class="field-label">{{ audiofacet_audioform.attribution.label_tag }}</span></a>
+                    {{ audiofacet_audioform.attribution }}
+                    {% if audiofacet_audioform.attribution.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ audiofacet_audioform.attribution.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                </div>
+                <!-- End Right Col -->
+                {% for audiofacet in story.audiofacetstory.all %}
+                <input type="hidden" name="audiofacet" value="{{ audiofacet.pk }}" />
+                {% endfor %}
+                <div>
+                <button type="submit" class="btn btn-primary">Save Audio</button>
+                </div>
+                </form>
+                </div>
+              </div>
+              <!-- END UPLOAD PANEL -->
+              <!-- LIBRARY PANEL -->
+              <div role="tabpanel" class="tab-pane" id="audiolibraryweb">
+                    <div class="audiolibrary" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
+                      <form action="{% url 'add_audiofacet_audio' %}" method="POST" class="post-form" name="addwebaudio">
+                        {% csrf_token %}
+                        <div class="audio-library">
+                        {% for audio in audios %}
+                          <div class="col-md-2">
+                            <label>
+                              {% if audio.audio_type == 'MP3' %}
+                              <a href="" title="{{ audio.asset_description }}" target="_blank"><h3><i class="fa fa-file-audio-o dark"></i></h3></a>
+                              {% endif %}
+                              {% if audio.audio_type == 'WAV' %}
+                              <a href="" title="{{ audio.asset_description }}" target="_blank"><h3><i class="fa fa-file-audio-o dark"></i></h3></a>
+                              {% endif %}
+                              {% if audio.audio_type == 'SC' %}
+                              <a href="" title="{{ audio.asset_description }}" target="_blank"><h3><i class="fa fa-soundcloud dark"></i></h3></a>
+                              {% endif %}
+                              <p class="tiny-text">{{ audio.asset_title }}<br>{{ audio.doc_type }}</p>
+                              <input type="checkbox" name="audios" value="{{ audio.id }}">
+                            </label>
+                          </div>
+                        {% endfor %}
+                        </div>
+                        {% for audiofacet in story.audiofacetstory.all %}
+                        <input type="hidden" name="audiofacet" value="{{ audiofacet.pk }}" />
+                        {% endfor %}
+                        <button type="submit" class="btn btn-primary" name="addwebaudio">Add Audio</button>
+                      </form>
+                    </div>
+              </div>
+              <!-- END LIBRARY PANEL -->
+            </div>
+          </div>
+          <div class="modal-footer">
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ================================================= -->
+                <!-- ADD VIDEOFACET AUDIO MODAL -->
+    <!-- ================================================= -->
+    <div class="modal fade" id="addVideoFacetAudio" tabindex="-1" role="dialog" aria-labelledby="addVideoFacetAudio">
+      <div class="modal-dialog modal-lg" role="audio">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <ul class="nav nav-tabs" role="audiolist">
+              <li role="presentation" class="active"><a href="#audiouploadweb" aria-controls="home" role="tab" data-toggle="tab" class="darker">Upload Audio</a></li>
+              <li role="presentation"><a href="#audiolibraryweb" aria-controls="profile" role="tab" data-toggle="tab" class="darker">Select From Audio Library</a></li>
+            </ul>
+          </div>
+          <div class="modal-body">
+            <div class="tab-content">
+              <!-- UPLOAD PANEL -->
+              <div role="tabpanel" class="tab-pane active" id="audiouploadweb">
+                <div class="uploadpanel" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
+                <form action="{% url 'upload_videofacet_audio' %}" method="POST" class="post-form" enctype="multipart/form-data">
+                {% csrf_token %}
+                <!-- Left Col -->
+                <div class="col-md-6">
+
+                  <p class="tiny-text bright"><i class="fa fa-asterisk"></i> Select an mp3 or wav file.</p>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ videofacet_audioform.audio.help_text }}"><span class="field-label">{{ videofacet_audioform.audio.label_tag }}</span></a>
+                    {{ videofacet_audioform.audio }}
+                    {% if videofacet_audioform.audio.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ videofacet_audioform.audio.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <p class="tiny-text bright"><i class="fa fa-asterisk"></i> Or add a link to a SoundCloud file. </p>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ videofacet_audioform.link.help_text }}"><span class="field-label">{{ videofacet_audioform.link.label_tag }}</span></a>
+                    {{ videofacet_audioform.link }}
+                    {% if videofacet_audioform.link.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ videofacet_audioform.link.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <br>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ videofacet_audioform.asset_title.help_text }}"><span class="field-label">{{ videofacet_audioform.asset_title.label_tag }}</span></a>
+                    {{ videofacet_audioform.asset_title }}
+                    {% if videofacet_audioform.asset_title.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ videofacet_audioform.asset_title.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ videofacet_audioform.audio_type.help_text }}"><span class="field-label">{{ videofacet_audioform.audio_type.label_tag }}</span></a>
+                    {{ videofacet_audioform.audio_type }}
+                    {% if videofacet_audioform.audio_type.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ videofacet_audioform.audio_type.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ videofacet_audioform.keywords.help_text }}"><span class="field-label">{{ videofacet_audioform.keywords.label_tag }}</span></a>
+                    {{ videofacet_audioform.keywords }}
+                    {% if videofacet_audioform.keywords.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ videofacet_audioform.keywords.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                </div>
+                <!-- End Left Col -->
+                <!-- Right Col -->
+                <div class="col-md-6">
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ videofacet_audioform.asset_description.help_text }}"><span class="field-label">{{ videofacet_audioform.asset_description.label_tag }}</span></a>
+                    {{ videofacet_audioform.asset_description }}
+                    {% if videofacet_audioform.asset_description.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ videofacet_audioform.asset_description.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ videofacet_audioform.attribution.help_text }}"><span class="field-label">{{ videofacet_audioform.attribution.label_tag }}</span></a>
+                    {{ videofacet_audioform.attribution }}
+                    {% if videofacet_audioform.attribution.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ videofacet_audioform.attribution.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                </div>
+                <!-- End Right Col -->
+                {% for videofacet in story.videofacetstory.all %}
+                <input type="hidden" name="videofacet" value="{{ videofacet.pk }}" />
+                {% endfor %}
+                <div>
+                <button type="submit" class="btn btn-primary">Save Audio</button>
+                </div>
+                </form>
+                </div>
+              </div>
+              <!-- END UPLOAD PANEL -->
+              <!-- LIBRARY PANEL -->
+              <div role="tabpanel" class="tab-pane" id="audiolibraryweb">
+                    <div class="audiolibrary" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
+                      <form action="{% url 'add_videofacet_audio' %}" method="POST" class="post-form" name="addwebaudio">
+                        {% csrf_token %}
+                        <div class="audio-library">
+                        {% for audio in audios %}
+                          <div class="col-md-2">
+                            <label>
+                              {% if audio.audio_type == 'MP3' %}
+                              <a href="" title="{{ audio.asset_description }}" target="_blank"><h3><i class="fa fa-file-audio-o dark"></i></h3></a>
+                              {% endif %}
+                              {% if audio.audio_type == 'WAV' %}
+                              <a href="" title="{{ audio.asset_description }}" target="_blank"><h3><i class="fa fa-file-audio-o dark"></i></h3></a>
+                              {% endif %}
+                              {% if audio.audio_type == 'SC' %}
+                              <a href="" title="{{ audio.asset_description }}" target="_blank"><h3><i class="fa fa-soundcloud dark"></i></h3></a>
+                              {% endif %}
+                              <p class="tiny-text">{{ audio.asset_title }}<br>{{ audio.doc_type }}</p>
+                              <input type="checkbox" name="audios" value="{{ audio.id }}">
+                            </label>
+                          </div>
+                        {% endfor %}
+                        </div>
+                        {% for videofacet in story.videofacetstory.all %}
+                        <input type="hidden" name="videofacet" value="{{ videofacet.pk }}" />
+                        {% endfor %}
+                        <button type="submit" class="btn btn-primary" name="addwebaudio">Add Audio</button>
+                      </form>
+                    </div>
+              </div>
+              <!-- END LIBRARY PANEL -->
+            </div>
+          </div>
+          <div class="modal-footer">
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ================================================= -->
+                <!-- ADD WEBFACET VIDEO MODAL -->
+    <!-- ================================================= -->
+    <div class="modal fade" id="addWebFacetVideo" tabindex="-1" role="dialog" aria-labelledby="addWebFacetVideo">
+      <div class="modal-dialog modal-lg" role="video">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <ul class="nav nav-tabs" role="videolist">
+              <li role="presentation" class="active"><a href="#videouploadweb" aria-controls="home" role="tab" data-toggle="tab" class="darker">Upload a Video</a></li>
+              <li role="presentation"><a href="#videolibraryweb" aria-controls="profile" role="tab" data-toggle="tab" class="darker">Select From Video Library</a></li>
+            </ul>
+          </div>
+          <div class="modal-body">
+            <div class="tab-content">
+              <!-- UPLOAD PANEL -->
+              <div role="tabpanel" class="tab-pane active" id="videouploadweb">
+                <div class="uploadpanel" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
+                <form action="{% url 'upload_webfacet_video' %}" method="POST" class="post-form" enctype="multipart/form-data">
+                {% csrf_token %}
+                <!-- Left Col -->
+                <div class="col-md-6">
+
+                  <p class="tiny-text bright"><i class="fa fa-asterisk"></i> Select an mp4 file.</p>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ webfacet_videoform.video.help_text }}"><span class="field-label">{{ webfacet_videoform.video.label_tag }}</span></a>
+                    {{ webfacet_videoform.video }}
+                    {% if webfacet_videoform.video.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ webfacet_videoform.video.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <p class="tiny-text bright"><i class="fa fa-asterisk"></i> Link to a YouTube or Vimeo video.</p>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ webfacet_videoform.link.help_text }}"><span class="field-label">{{ webfacet_videoform.link.label_tag }}</span></a>
+                    {{ webfacet_videoform.link }}
+                    {% if webfacet_videoform.link.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ webfacet_videoform.link.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <br>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ webfacet_videoform.asset_title.help_text }}"><span class="field-label">{{ webfacet_videoform.asset_title.label_tag }}</span></a>
+                    {{ webfacet_videoform.asset_title }}
+                    {% if webfacet_videoform.asset_title.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ webfacet_videoform.asset_title.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ webfacet_videoform.video_type.help_text }}"><span class="field-label">{{ webfacet_videoform.video_type.label_tag }}</span></a>
+                    {{ webfacet_videoform.video_type }}
+                    {% if webfacet_videoform.video_type.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ webfacet_videoform.video_type.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ webfacet_videoform.keywords.help_text }}"><span class="field-label">{{ webfacet_videoform.keywords.label_tag }}</span></a>
+                    {{ webfacet_videoform.keywords }}
+                    {% if webfacet_videoform.keywords.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ webfacet_videoform.keywords.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                </div>
+                <!-- End Left Col -->
+                <!-- Right Col -->
+                <div class="col-md-6">
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ webfacet_videoform.asset_description.help_text }}"><span class="field-label">{{ webfacet_videoform.asset_description.label_tag }}</span></a>
+                    {{ webfacet_videoform.asset_description }}
+                    {% if webfacet_videoform.asset_description.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ webfacet_videoform.asset_description.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ webfacet_videoform.attribution.help_text }}"><span class="field-label">{{ webfacet_videoform.attribution.label_tag }}</span></a>
+                    {{ webfacet_videoform.attribution }}
+                    {% if webfacet_videoform.attribution.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ webfacet_videoform.attribution.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                </div>
+                <!-- End Right Col -->
+                {% for webfacet in story.webfacetstory.all %}
+                <input type="hidden" name="webfacet" value="{{ webfacet.pk }}" />
+                {% endfor %}
+                <div>
+                <button type="submit" class="btn btn-primary">Save Video</button>
+                </div>
+                </form>
+                </div>
+              </div>
+              <!-- END UPLOAD PANEL -->
+              <!-- LIBRARY PANEL -->
+              <div role="tabpanel" class="tab-pane" id="videolibraryweb">
+                    <div class="videolibrary" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
+                      <form action="{% url 'add_webfacet_video' %}" method="POST" class="post-form" name="addwebvideo">
+                        {% csrf_token %}
+                        <div class="video-library">
+                        {% for video in videos %}
+                          <div class="col-md-2">
+                            <label>
+                              {% if video.video_type == 'MP4' %}
+                              <a href="" title="{{ video.asset_description }}" target="_blank"><h3><i class="fa fa-video-camera dark"></i></h3></a>
+                              {% endif %}
+                              {% if video.video_type == 'YT' %}
+                              <a href="" title="{{ video.asset_description }}" target="_blank"><h3><i class="fa fa-youtube-play dark"></i></h3></a>
+                              {% endif %}
+                              {% if video.video_type == 'VIM' %}
+                              <a href="" title="{{ video.asset_description }}" target="_blank"><h3><i class="fa fa-vimeo-square dark"></i></h3></a>
+                              {% endif %}
+                              <p class="tiny-text">{{ video.asset_title }}<br>{{ video.doc_type }}</p>
+                              <input type="checkbox" name="videos" value="{{ video.id }}">
+                            </label>
+                          </div>
+                        {% endfor %}
+                        </div>
+                        {% for webfacet in story.webfacetstory.all %}
+                        <input type="hidden" name="webfacet" value="{{ webfacet.pk }}" />
+                        {% endfor %}
+                        <button type="submit" class="btn btn-primary" name="addwebvideo">Add Video</button>
+                      </form>
+                    </div>
+              </div>
+              <!-- END LIBRARY PANEL -->
+            </div>
+          </div>
+          <div class="modal-footer">
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- ================================================= -->
+                  <!-- ADD STORYNOTE MODAL -->
+    <!-- ================================================= -->
     <div class="modal fade" id="addStoryNote" tabindex="-1" role="dialog" aria-labelledby="addStoryNoteModalLabel">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -1732,7 +3467,364 @@
     </div>
 
 
+    <!-- ================================================= -->
+                    <!-- DOWNLOAD MODAL -->
+    <!-- ================================================= -->
+    <div class="modal fade" id="downloadStory" tabindex="-1" role="dialog" aria-labelledby="downloadStory">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4>Select items to download <i class="fa fa-cloud-download dark"></i><h4>
+          </div> <!--Close modal header -->
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-xs-12">
+              <form action="{% url 'create_download' pk=story.id %}" method="POST" class="post-form" enctype="multipart/form-data">
+              {% csrf_token %}
 
+                <input type="hidden" name="story" value="{{ story.id }}" />
+
+                <div class="row">
+                  <div class="col-xs-12">
+                    <!-- ================================================= -->
+                                      <!-- SELECT ALL -->
+                    <!-- ================================================= -->
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ storydownloadform.select_all.help_text }}"><label class="field-label">Select All Content</label></a>
+                      {{ storydownloadform.select_all }}
+                      {% if storydownloadform.select_all.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ storydownloadform.select_all.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                    <hr class="dark">
+                    <p class="tiny-text dark">Or select specific versions | <i>(Includes each facet's metadata, content and all assets)</i></p>
+                  </div>
+                </div>
+                <!-- ================================================= -->
+                            <!-- SELECT FACET - ALL ITEMS -->
+                <!-- ================================================= -->
+                <div class="row">
+                  {% if story.webfacetstory.all %}
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                    <!-- SELECT WEBFACET ALL -->
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ storydownloadform.webfacet_sa.help_text }}"><label class="field-label">Complete WebFacet</label></a>
+                      {{ storydownloadform.webfacet_sa }}
+                      {% if storydownloadform.webfacet_sa.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ storydownloadform.webfacet_sa.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                  </div>
+                  {% endif %}
+                  {% if story.printfacetstory.all %}
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                    <!-- SELECT PRINTFACET ALL -->
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ storydownloadform.printfacet_sa.help_text }}"><label class="field-label">Complete PrintFacet</label></a>
+                      {{ storydownloadform.printfacet_sa }}
+                      {% if storydownloadform.printfacet_sa.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ storydownloadform.printfacet_sa.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                  </div>
+                  {% endif %}
+                  {% if story.audiofacetstory.all %}
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                    <!-- SELECT AUDIOFACET ALL -->
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ storydownloadform.audiofacet_sa.help_text }}"><label class="field-label">Complete AudioFacet</label></a>
+                      {{ storydownloadform.audiofacet_sa }}
+                      {% if storydownloadform.audiofacet_sa.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ storydownloadform.audiofacet_sa.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                  </div>
+                  {% endif %}
+                  {% if story.videofacetstory.all %}
+                  <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+                    <!-- OR SELECT VIDEOFACET ALL -->
+                    <div class="form-group custom-form">
+                      <a href="#" data-toggle="tooltip" title="{{ storydownloadform.videofacet_sa.help_text }}"><label class="field-label">Complete VideoFacet</label></a>
+                      {{ storydownloadform.videofacet_sa }}
+                      {% if storydownloadform.videofacet_sa.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ storydownloadform.videofacet_sa.errors }}
+                        </div>
+                      {% endif %}
+                    </div>
+                  </div>
+                  {% endif %}
+                </div>
+
+
+                <!-- ================================================= -->
+                            <!-- SELECT SPECIFIC ITEMS -->
+                <!-- ================================================= -->
+                <div class="row">
+                <div class="col-xs-12">
+                  <hr class="dark">
+                  <p class="tiny-text dark">Or select specific content</p>
+                </div>
+                {% if story.webfacetstory.all %}
+                <!-- ================    WEBFACET   ================== -->
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+                  <!-- SELECT WEBFACET CONTENT -->
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ storydownloadform.webfacet.help_text }}"><label class="field-label">WebFacet Content</label></a>
+                    {{ storydownloadform.webfacet }}
+                    {% if storydownloadform.webfacet.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ storydownloadform.webfacet.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+                  <!-- SELECT WEBFACET IMAGES -->
+                  <div class="image-library">
+                    <div class="row">
+                      {% for image in webfacet_images %}
+                        <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
+                          <label>
+                            <img class="img-responsive img-thumbnail" src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}">
+                            <input type="checkbox" name="images" value="{{ image.id }}">
+                          </label>
+                        </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                  </br>
+                  <!-- SELECT WEBFACET DOCUMENTS -->
+                  <div class="document-library">
+                    <div class="row">
+                      {% for document in webfacet_documents %}
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                          <label>
+                            <i class="fa fa-file sameline" aria-hidden="true"></i> <span class="sameline">{{ document.asset_title }}</span>
+                            <input type="checkbox" name="documents" value="{{ document.id }}">
+                          </label>
+                        </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                  </br>
+                  <!-- SELECT WEBFACET AUDIO -->
+                  <div class="audio-library">
+                    <div class="row">
+                      {% for audio in webfacet_audio %}
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                          <label>
+                            <i class="fa fa-play sameline" aria-hidden="true"></i> <span class="sameline">{{ audio.asset_title }}</span>
+                            <input type="checkbox" name="audiofiles" value="{{ audio.id }}">
+                          </label>
+                        </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                  </br>
+                  <!-- SELECT WEBFACET VIDEO -->
+                  <!-- ToBeAdded -->
+                </div>
+                {% endif %}
+
+                {% if story.printfacetstory.all %}
+                <!-- ==============    PRINTFACET   ================ -->
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+                  <!-- SELECT PRINTFACET CONTENT -->
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ storydownloadform.printfacet.help_text }}"><label class="field-label">PrintFacet Content</label></a>
+                    {{ storydownloadform.printfacet }}
+                    {% if storydownloadform.printfacet.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ storydownloadform.printfacet.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+                  <!-- SELECT PRINTFACET IMAGES -->
+                  <div class="image-library">
+                  {% for image in printfacet_images %}
+                    <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
+                      <label>
+                        <img class="img-responsive img-thumbnail" src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}">
+                        <input type="checkbox" name="images" value="{{ image.id }}">
+                      </label>
+                    </div>
+                  {% endfor %}
+                  </div>
+                  </br>
+                  <!-- SELECT PRINTFACET DOCUMENTS -->
+                  <div class="document-library">
+                    <div class="row">
+                      {% for document in printfacet_documents %}
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                          <label>
+                            <i class="fa fa-file sameline" aria-hidden="true"></i> <span class="sameline">{{ document.asset_title }}</span>
+                            <input type="checkbox" name="documents" value="{{ document.id }}">
+                          </label>
+                        </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                  </br>
+                  <!-- SELECT PRINTFACET AUDIO -->
+                  <div class="audio-library">
+                    <div class="row">
+                      {% for audio in printfacet_audio %}
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                          <label>
+                            <i class="fa fa-play sameline" aria-hidden="true"></i> <span class="sameline">{{ audio.asset_title }}</span>
+                            <input type="checkbox" name="audiofiles" value="{{ audio.id }}">
+                          </label>
+                        </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                  </br>
+                  <!-- SELECT PRINTFACET VIDEO -->
+                  <!-- ToBeAdded -->
+                </div>
+                {% endif %}
+
+                {% if story.audiofacetstory.all %}
+                <!-- ==============    AUDIOFACET   ================ -->
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+                  <!-- SELECT AUDIOFACET CONTENT -->
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ storydownloadform.audiofacet.help_text }}"><label class="field-label">AudioFacet Content</label></a>
+                    {{ storydownloadform.audiofacet }}
+                    {% if storydownloadform.audiofacet.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ storydownloadform.audiofacet.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+                  <!-- SELECT AUDIOFACET IMAGES -->
+                  <div class="image-library">
+                  {% for image in audiofacet_images %}
+                    <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
+                      <label>
+                        <img class="img-responsive img-thumbnail" src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}">
+                        <input type="checkbox" name="images" value="{{ image.id }}">
+                      </label>
+                    </div>
+                  {% endfor %}
+                  </div>
+                  </br>
+                  <!-- SELECT AUDIOFACET DOCUMENTS -->
+                  <div class="document-library">
+                    <div class="row">
+                      {% for document in audiofacet_documents %}
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                          <label>
+                            <i class="fa fa-file sameline" aria-hidden="true"></i> <span class="sameline">{{ document.asset_title }}</span>
+                            <input type="checkbox" name="documents" value="{{ document.id }}">
+                          </label>
+                        </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                  </br>
+                  <!-- SELECT AUDIOFACET AUDIO -->
+                  <div class="audio-library">
+                    <div class="row">
+                      {% for audio in audiofacet_audio %}
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                          <label>
+                            <i class="fa fa-play sameline" aria-hidden="true"></i> <span class="sameline">{{ audio.asset_title }}</span>
+                            <input type="checkbox" name="audiofiles" value="{{ audio.id }}">
+                          </label>
+                        </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                  </br>
+                  <!-- SELECT AUDIOFACET VIDEO -->
+                  <!-- ToBeAdded -->
+                </div>
+                {% endif %}
+
+                {% if story.videofacetstory.all %}
+                <!-- ==============    VIDEOFACET   ================ -->
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+                  <!-- SELECT VIDEOFACET CONTENT -->
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ storydownloadform.videofacet.help_text }}"><label class="field-label">VideoFacet Content</label></a>
+                    {{ storydownloadform.videofacet }}
+                    {% if storydownloadform.videofacet.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ storydownloadform.videofacet.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+                  <!-- SELECT VIDEOFACET IMAGES -->
+                  <div class="image-library">
+                  {% for image in videofacet_images %}
+                    <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
+                      <label>
+                        <img class="img-responsive img-thumbnail" src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}">
+                        <input type="checkbox" name="images" value="{{ image.id }}">
+                      </label>
+                    </div>
+                  {% endfor %}
+                  </div>
+                  </br>
+                  <!-- SELECT VIDEOFACET DOCUMENTS -->
+                  <div class="document-library">
+                    <div class="row">
+                      {% for document in videofacet_documents %}
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                          <label>
+                            <i class="fa fa-file sameline" aria-hidden="true"></i> <span class="sameline">{{ document.asset_title }}</span>
+                            <input type="checkbox" name="documents" value="{{ document.id }}">
+                          </label>
+                        </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                  </br>
+                  <!-- SELECT VIDEOFACET AUDIO -->
+                  <div class="audio-library">
+                    <div class="row">
+                      {% for audio in videofacet_audio %}
+                        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                          <label>
+                            <i class="fa fa-play sameline" aria-hidden="true"></i> <span class="sameline">{{ audio.asset_title }}</span>
+                            <input type="checkbox" name="audiofiles" value="{{ audio.id }}">
+                          </label>
+                        </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                  </br>
+                  <!-- SELECT VIDEOFACET VIDEO -->
+                  <!-- ToBeAdded -->
+                </div>
+                {% endif %}
+              </div>
+              <div class="col-xs-2 col-md-offset-5">
+                <button type="submit" class="btn btn-primary">Download</button>
+              </div>
+              </form>
+            </div>
+            </div>
+          </div> <!--Close modal body -->
+          <div class="modal-footer">
+          </div>
+        </div> <!-- Close modal content -->
+      </div> <!-- Close modal dialog -->
+    </div> <!-- Close modal -->
+
+
+  <script>
+    $('.nav-tabs-sticky').stickyTabs();
+  </script>
 
   <script>
     $(".chosen-select").chosen()

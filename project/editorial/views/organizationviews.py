@@ -89,6 +89,7 @@ def org_edit(request, pk):
     """ Edit organization page."""
 
     organization = get_object_or_404(Organization, pk=pk)
+    team_members = Organization.get_org_users(organization)
 
     if request.method == "POST":
         orgform = OrganizationForm(request.POST, request.FILES, instance=organization)
@@ -101,4 +102,5 @@ def org_edit(request, pk):
     return render(request, 'editorial/organizationedit.html', {
             'organization': organization,
             'orgform': orgform,
+            'team': team_members,
     })

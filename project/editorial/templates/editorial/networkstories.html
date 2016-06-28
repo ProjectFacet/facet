@@ -34,7 +34,7 @@
         {% if story.webfacetstory.all or story.printfacetstory.all or story.audiofacetstory.all or story.videofacetstory.all %}
           {% for facet in story.webfacetstory.all %}
             <tr>
-              <td>{{ facet.story.name }}<form action="/story/copy/{{ facet.story_id }}/" method="POST" class="sameline">{% csrf_token %}<button class="clear" type="submit"><i class="fa fa-clone"></i></button></form></td>
+              <td>{{ facet.story.name }}{% if facet.story.ready_to_share %}<form action="/story/copy/{{ facet.story_id }}/" method="POST" class="sameline">{% csrf_token %}<button class="clear" type="submit"><i class="fa fa-clone"></i></button></form>{% endif %}</td>
               <td>{{ facet.type}}</td>
               <td><a href="#" data-toggle="tooltip" title="{{ facet.wf_description }}">{{ facet.title }}</a></td>
               <td>{{ facet.owner.credit_name }}</td>
@@ -74,7 +74,7 @@
           {% endfor %}
         {% else %}
             <tr>
-              <td>{{ story.name }}</td>
+              <td>{{ story.name }}{% if story.ready_to_share %}<form action="/story/copy/{{ facet.story_id }}/" method="POST" class="sameline">{% csrf_token %}<button class="clear" type="submit"><i class="fa fa-clone"></i></button></form>{% endif %}</td>
               <td></td>
               <td><i class="tiny-text">No Facets Currently</i></td>
               <td>{{ story.owner.credit_name }}</td>

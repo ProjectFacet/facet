@@ -108,7 +108,7 @@
                 <h4 class="modal-title" id="addNote{{note.id}}Label">{{ note.title }}</h4>
               </div>
               <div class="modal-body dark">
-                {{ note.text }}
+                {{ note.text|linebreaksbr }}
               </div>
               <div class="modal-footer">
                 <p class="tiny-text">{{ note.owner }} | {{ note.creation_date|date:'D M j g:i a' }}<p>
@@ -202,7 +202,7 @@
         {% csrf_token %}
         {% bootstrap_form networkinvitationform %}
         <input type="hidden" name="network" value="{{ network.pk }}" />
-        <button type="submit" class="btn btn-primary">Post Note</button>
+        <button type="submit" class="btn btn-primary">Invite Organization</button>
         </form>
       </div>
       <div class="modal-footer">

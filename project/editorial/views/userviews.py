@@ -16,7 +16,8 @@ import json
 from editorial.forms import (
     AddUserForm,
     UserProfileForm,
-    UserNoteForm,)
+    UserNoteForm,
+    FullUserEditForm,)
 
 from editorial.models import (
     User,
@@ -78,14 +79,47 @@ def user_edit(request, pk):
     user = get_object_or_404(User, pk=pk)
 
     if request.method == "POST":
-        userform = UserProfileForm(request.POST, request.FILES, instance=user)
+        userform = FullUserEditForm(request.POST, request.FILES, instance=user)
         if userform.is_valid():
             userform.save()
             return redirect('user_detail', pk = user.id)
     else:
-        userform = UserProfileForm(instance=user)
+        userform = FullUserEditForm(instance=user)
 
     return render(request, 'editorial/useredit.html', {
             'user': user,
             'userform': userform
     })
+
+
+@csrf_exempt
+def user_deactivate(request):
+    """ Deactivate a user."""
+
+    if request.method == "POST":
+        user_id = request.POST.get('user_id')
+        user = get_object_or_404(User, pk=user_id)
+        print "USER ID: ", user_id
+        user.is_active = False
+        print "User Status: ", user.is_active
+        user.save()
+        print "This user has been deactivated."
+
+    return redirect('org_edit', pk=user.organization.id)
+
+
+@csrf_exempt
+def user_activate(request):
+    """ Activate a user."""
+
+    if request.method == "POST":
+        user_id = request.POST.get('user_id')
+        user = get_object_or_404(User, pk=user_id)
+        print "USER ID: ", user_id
+        user.is_active = True
+        print "User Status: ", user.is_active
+        user.save()
+        print "This user has been activated."
+
+    return redirect('org_edit', pk=user.organization.id)
+    

@@ -59,11 +59,20 @@ hr {
   border-right: 1px solid #54657E;
 }
 
+.text-fit {
+  font-size: 1em;
+}
+
 /* ---------------------------------------*/
 /*       Nav and Body/Wrapper Styles      */
 /* ---------------------------------------*/
 
 /*Navigation*/
+
+#settings-dropdown {
+  width: 225px;
+}
+
 
 .masthead-brand {
   margin-top: 10px;
@@ -218,6 +227,37 @@ hr {
   }
 }
 
+
+/* ---------------------------------------*/
+/*               Search Styles            */
+/* ---------------------------------------*/
+
+#searchbox {
+  background-color: transparent;
+  border: 1px solid #54657E;
+  color: #54657E;
+}
+ #searchbox .form-input input-lg {
+   color: #54657E;
+ }
+
+ #searchbox input::-webkit-input-placeholder {
+ color: #54657E; !important;
+ }
+
+ #searchbox input:-moz-placeholder { /* Firefox 18- */
+ color: #54657E; !important;
+ }
+
+ #searchbox input::-moz-placeholder {  /* Firefox 19+ */
+ color: #54657E; !important;
+ }
+
+ #searchbox input:-ms-input-placeholder {
+ color: #54657E; !important;
+ }
+
+
 /* ---------------------------------------*/
 /*             General Styles             */
 /* ---------------------------------------*/
@@ -240,6 +280,11 @@ hr {
   color: #8493A8 !important;
 }
 
+.small-text, .small-text a {
+  font-size: 12px;
+  color: #8493A8 !important;
+}
+
 .alert-text, .alert-text a {
   font-size: 10px;
   color: #0082D5 !important;
@@ -250,8 +295,21 @@ hr {
   color: #CAD3DF;
 }
 
+.close-text {
+  padding: 0px !important;
+  margin-top: -10px !important;
+}
+
 .center {
   text-align: center;
+}
+
+.left {
+  text-align: left;
+}
+
+.right {
+  text-align: right;
 }
 
 .thin {
@@ -260,6 +318,10 @@ hr {
 
 .uppercase {
   text-transform: uppercase;
+}
+
+.lowercase {
+  text-transform: lowercase;
 }
 
 .spread-01 {
@@ -285,6 +347,10 @@ hr {
 .sameline {
   display: inline;
   margin-left: 10px;
+}
+
+.move-right {
+  float: right;
 }
 
 /* ---------------------------------------*/
@@ -350,6 +416,10 @@ hr {
 
 .content-upper-5 {
   margin-top: -5px !important;
+}
+
+.content-lower-5 {
+  margin-top: 5px;
 }
 
 .content-lower-10 {
@@ -438,6 +508,26 @@ hr {
   padding-left: 20px;
 }
 
+
+/* ---------------------------------------*/
+/*          Asset Gallery Styles          */
+/* ---------------------------------------*/
+
+.asset_caption {
+  height: 100px;
+  padding: 5px;
+}
+
+.asset_container {
+  width: 100%;
+  height: 125px;
+  overflow: hidden;
+}
+
+.asset_thumbnail {
+  object-fit: cover;
+}
+
 /* ---------------------------------------*/
 /*           Form & Input Styles          */
 /* ---------------------------------------*/
@@ -473,6 +563,18 @@ label {
 /*Icons*/
 .fa-check-square-o {
   color: #C5E1A6;
+}
+
+.fa-input {
+  font-family: FontAwesome, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  text-decoration: none !important;
+  border_border-bottom: none !important;
+  margin-left: 0;
+  padding-left: 0;
+}
+
+.delete_icon {
+  border: none !important;
 }
 
 
@@ -660,6 +762,7 @@ label {
 .slimScrollBar {
   background: #54657E none repeat scroll 0% 0% !important;
   width: 6px;
+  z-index: 40 !important;
 }
 
 /* ---------------------------------------*/
@@ -695,6 +798,18 @@ td h4 {
 .dataTables_info {
   font-size: 10px;
   color: #8493A8 !important;
+}
+
+.paginate_button.previous.disabled {
+  padding-right: 10px;
+  color: #8493A8;
+  font-size: 12px;
+}
+
+.paginate_button.next.disabled {
+  padding-left: 10px;
+  color: #8493A8;
+  font-size: 12px;
 }
 
 #user-stories-list_length {
@@ -857,6 +972,14 @@ td h4 {
 .team-panel {
   height: 9em;
   background-color: #374355;
+}
+
+.clear-panel {
+  height: auto;
+}
+
+.clear-panel-body {
+  background-color: #181D25;
 }
 
 .user-panel-body {

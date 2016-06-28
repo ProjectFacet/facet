@@ -7,7 +7,7 @@ from django.http import HttpResponse
 from django.utils import timezone
 from django.views.generic import TemplateView , UpdateView, DetailView
 from django.views.decorators.csrf import csrf_exempt
-import datetime
+import datetime, time
 import json
 
 # All imports are included for use in test view
@@ -24,6 +24,7 @@ from editorial.forms import (
     AudioFacetForm,
     VideoFacetForm,
     ImageAssetForm,
+    DocumentAssetForm,
     AddImageForm,
     AddToNetworkForm,
     InviteToNetworkForm,
@@ -40,7 +41,8 @@ from editorial.forms import (
     OrganizationNoteForm,
     UserNoteForm,
     SeriesNoteForm,
-    StoryNoteForm,)
+    StoryNoteForm,
+    StoryDownloadForm,)
 
 from editorial.models import (
     User,
@@ -90,11 +92,8 @@ def index(request):
 def test(request):
     """ Use for rapid testing of new pages."""
 
-    organizations = Organization.get_org_collaborators(request.user.organization)
+    return render(request, 'editorial/test.html')
 
-    return render(request, 'editorial/test.html', {
-
-                })
 
 #----------------------------------------------------------------------#
 #   Dashboard View
@@ -186,10 +185,10 @@ def collaborations(request):
     """ Return dashboard of series and stories that are part of a collaboration.
     """
 
-    series_collaorations = Series.objects.filter(collaborate=True)
-    story_collaborations = Story.objects.filter(collaborate=True)
+    series_collaborations = Series.objects.filter(collaborate=True)
+    story_collaborations = Organization.get_org_collaborative_content(request.user.organization)
 
     return render(request, 'editorial/collaborations.html', {
-        'series_collaorations': series_collaorations,
+        'series_collaborations': series_collaborations,
         'story_collaborations': story_collaborations,
     })
