@@ -73,6 +73,9 @@ def story_list(request):
 def story_new(request):
     """ Create story page. """
 
+    organization = request.user.organization
+    org_partners = Organization.get_org_networks(organization)
+
     series = Series.objects.all()
     if request.method == "POST":
         storyform = StoryForm(request.POST, request=request)
@@ -90,12 +93,16 @@ def story_new(request):
         storyform = StoryForm(request=request)
     return render(request, 'editorial/storynew.html', {
         'storyform': storyform,
-        'series': series
+        'series': series,
+        'org_partners': org_partners,
         })
 
 
 def story_edit(request, pk):
     """ Edit story page. """
+
+    organization = request.user.organization
+    org_partners = Organization.get_org_networks(organization)
 
     story = get_object_or_404(Story, pk=pk)
 
@@ -110,6 +117,7 @@ def story_edit(request, pk):
     return render(request, 'editorial/storyedit.html', {
         'story': story,
         'storyform': storyform,
+        'org_partners': org_partners,
     })
 
 
