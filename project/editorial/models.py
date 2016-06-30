@@ -1148,6 +1148,13 @@ class WebFacet(models.Model):
         blank=True,
     )
 
+    #push to CMS history
+    pushed_to_wp = models.BooleanField(
+        default=False,
+        help_text='Whether the webfacet has been pushed to the organization WordPress site.',
+    )
+
+
     class Meta:
         verbose_name = 'Webfacet'
         verbose_name_plural = 'Webfacets'

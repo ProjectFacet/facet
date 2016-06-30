@@ -14,6 +14,7 @@ from views import (
     seriesviews,
     storyviews,
     assetviews,
+    pushcontentviews,
     communicationviews,
     noteviews,
     downloadviews,
@@ -32,6 +33,11 @@ urlpatterns = [
     #   API URL - Used API endpoints
     #----------------------------------------------------------------------#
     url('^api/', include(api.router.urls)),
+    #----------------------------------------------------------------------#
+    #   WebFacet to WordPress URL - On demand pushing
+    #----------------------------------------------------------------------#
+    url(r'^webfacet/json/$', pushcontentviews.webfacet_json, name='webfacet_json'),
+    # url(r'^webfacet/wordpress/$', pushcontentviews.push_webfacet_wp, name='push_webfacet_wp'),
     #----------------------------------------------------------------------#
     #   Homepage URLS
     #----------------------------------------------------------------------#

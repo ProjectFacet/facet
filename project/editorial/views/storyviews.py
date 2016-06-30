@@ -45,6 +45,9 @@ from editorial.models import (
     VideoFacet,
     StoryNote,
     ImageAsset,
+    DocumentAsset,
+    AudioAsset,
+    VideoAsset,
     Comment,
     Discussion,
     StoryNote,)
