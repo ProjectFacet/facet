@@ -63,6 +63,12 @@ hr {
   font-size: 1em;
 }
 
+.clear-button {
+  background: none;
+  padding: 0px;
+  border: none;
+}
+
 /* ---------------------------------------*/
 /*       Nav and Body/Wrapper Styles      */
 /* ---------------------------------------*/
@@ -362,8 +368,16 @@ hr {
   text-decoration: none;
 }
 
+.medium-dark, .medium-dark a {
+  color: #4C5561 !important;
+}
+
 .darker, .darker a {
   color: #374355 !important;
+}
+
+.greyed {
+  color: #666666 !important;
 }
 
 .bright, .bright a {

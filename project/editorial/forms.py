@@ -9,7 +9,7 @@ from django.contrib.auth import get_user_model
 from django.forms import Textarea, TextInput, RadioSelect, Select, NumberInput, CheckboxInput, CheckboxSelectMultiple
 from datetimewidget.widgets import DateTimeWidget
 from tinymce.widgets import TinyMCE
-from django.contrib.staticfiles.templatetags.staticfiles import static
+# from django.contrib.staticfiles.templatetags.staticfiles import static
 
 from editorial.models import (
     User,
@@ -140,11 +140,11 @@ class SeriesForm(forms.ModelForm):
             'collaborate_with': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select', 'id':'collaborate-with'}),
             }
 
-    class Media:
-        css = {
-            'all': (static('css/bootstrap-datetimepicker.css'), static('css/chosen.min.css'))
-        }
-        js = (static('scripts/chosen.jquery.min.js'),)
+    # class Media:
+    #     css = {
+    #         'all': ('css/bootstrap-datetimepicker.css', 'css/chosen.min.css')
+    #     }
+    #     js = ('scripts/chosen.jquery.min.js',)
 
 # ------------------------------ #
 #          Story Forms           #
@@ -190,11 +190,11 @@ class StoryForm(forms.ModelForm):
             'series': Select(attrs={'class': 'form-control'}),
         }
 
-    class Media:
-        css = {
-            'all': (static('css/bootstrap-datetimepicker.css'), static('css/chosen.min.css'))
-        }
-        js = (static('scripts/chosen.jquery.min.js'),)
+    # class Media:
+    #     css = {
+    #         'all': ('css/bootstrap-datetimepicker.css', 'css/chosen.min.css')
+    #     }
+    #     js = ('scripts/chosen.jquery.min.js',)
 
 # ------------------------------ #
 #          Facet Forms           #
@@ -258,14 +258,14 @@ class WebFacetForm(forms.ModelForm):
             'length': NumberInput(attrs={'class': 'form-control'}),
         }
 
-    class Media:
-        css = {
-            'all': (static('css/bootstrap-datetimepicker.css'), static('css/chosen.min.css'))
-        }
-        js = (static('scripts/chosen.jquery.min.js'),
-         static('scripts/moment.js'),
-         static('scripts/jquery.datetimepicker.js'),
-         static('scripts/bootstrap-datetimepicker.js'),)
+    # class Media:
+    #     css = {
+    #         'all': ('css/bootstrap-datetimepicker.css', 'css/chosen.min.css')
+    #     }
+    #     js = ('scripts/chosen.jquery.min.js',
+    #      'scripts/moment.js',
+    #      'scripts/jquery.datetimepicker.js',
+    #      'scripts/bootstrap-datetimepicker.js',)
 
 
 class PrintFacetForm(forms.ModelForm):
@@ -325,14 +325,14 @@ class PrintFacetForm(forms.ModelForm):
             'length': NumberInput(attrs={'class': 'form-control'}),
         }
 
-    class Media:
-        css = {
-            'all': (static('css/bootstrap-datetimepicker.css'), static('css/chosen.min.css'))
-        }
-        js = (static('scripts/chosen.jquery.min.js'),
-         static('scripts/moment.js'),
-         static('scripts/jquery.datetimepicker.js'),
-         static('scripts/bootstrap-datetimepicker.js'),)
+    # class Media:
+    #     css = {
+    #         'all': ('css/bootstrap-datetimepicker.css', 'css/chosen.min.css')
+    #     }
+    #     js = ('scripts/chosen.jquery.min.js',
+    #      'scripts/moment.js',
+    #      'scripts/jquery.datetimepicker.js',
+    #      'scripts/bootstrap-datetimepicker.js',)
 
 
 class AudioFacetForm(forms.ModelForm):
@@ -392,14 +392,14 @@ class AudioFacetForm(forms.ModelForm):
             'length': NumberInput(attrs={'class': 'form-control'}),
         }
 
-    class Media:
-        css = {
-            'all': (static('css/bootstrap-datetimepicker.css'), static('css/chosen.min.css'))
-        }
-        js = (static('scripts/chosen.jquery.min.js'),
-         static('scripts/moment.js'),
-         static('scripts/jquery.datetimepicker.js'),
-         static('scripts/bootstrap-datetimepicker.js'),)
+    # class Media:
+    #     css = {
+    #         'all': ('css/bootstrap-datetimepicker.css', 'css/chosen.min.css')
+    #     }
+    #     js = ('scripts/chosen.jquery.min.js',
+    #      'scripts/moment.js',
+    #      'scripts/jquery.datetimepicker.js',
+    #      'scripts/bootstrap-datetimepicker.js',)
 
 
 class VideoFacetForm(forms.ModelForm):
@@ -459,14 +459,14 @@ class VideoFacetForm(forms.ModelForm):
             'length': NumberInput(attrs={'class': 'form-control'}),
         }
 
-    class Media:
-        css = {
-            'all': (static('css/bootstrap-datetimepicker.css'), static('css/chosen.min.css'))
-        }
-        js = (static('scripts/chosen.jquery.min.js'),
-         static('scripts/moment.js'),
-         static('scripts/jquery.datetimepicker.js'),
-         static('scripts/bootstrap-datetimepicker.js'),)
+    # class Media:
+    #     css = {
+    #         'all': ('css/bootstrap-datetimepicker.css', 'css/chosen.min.css')
+    #     }
+    #     js = ('scripts/chosen.jquery.min.js',
+    #      'scripts/moment.js',
+    #      'scripts/jquery.datetimepicker.js',
+    #      'scripts/bootstrap-datetimepicker.js',)
 
 
 # ------------------------------ #

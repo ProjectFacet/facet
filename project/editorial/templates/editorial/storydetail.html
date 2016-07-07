@@ -109,9 +109,27 @@
                         <p class="tiny-text">Description</p>
                         <h4 class="thin"><i>{{ story.story_description }}</i></h4>
                       </div>
-                      <div class="col-md-2">
+                      <div class="col-md-2" id="story-commands">
                         {% if request.user.organization == story.organization %}<a href="{% url 'story_edit' pk=story.id %}"><p class="dark"><i class="fa fa-pencil dark"></i> Edit Story<p></a>{% endif %}
                         <a href="#" data-toggle="modal" data-target="#downloadStory" title="Download"><p class="dark"><i class="fa fa-cloud-download dark"></i> Download Story</p></a>
+                        {% for webfacet in story.webfacetstory.all %}
+                          {% if webfacet.status == "Ready" and webfacet.pushed_to_wp == False %}
+                          <form action="{% url 'webfacet_json' %}" method="POST" class="post-form" role="form" id="wordpress-form-false">
+                            <input type="hidden" id="wf_id-field" name="webfacet_id" value="{{ webfacet.pk }}" />
+                            <button type="submit" class="clear-button" id="push-webfacet-button">
+                              <p class="dark" id="push-webfacet-text"><i class="fa fa-wordpress dark" id="push-webfacet-icon"></i> Push WebFacet</p>
+                            </button>
+                          </form>
+                          {% endif %}
+                          {% if webfacet.status == "Ready" and webfacet.pushed_to_wp == True %}
+                          <form action="{% url 'webfacet_json' %}" method="POST" class="post-form" role="form" id="wordpress-form-true">
+                            <input type="hidden" id="wf_id-field" name="webfacet_id" value="{{ webfacet.pk }}" />
+                            <button type="submit" class="clear-button" id="push-webfacet-button">
+                              <p class="medium-dark" id="push-webfacet-text"><i class="fa fa-wordpress medium-dark" id="push-webfacet-icon"></i> Push WebFacet</p>
+                            </button>
+                          </form>
+                          {% endif %}
+                        {% endfor %}
                       </div>
                     </div>
                     <hr>
@@ -546,7 +564,7 @@
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
-                                  <button type="submit" class="btn btn-default btn-sm" name="webcommentform">
+                                  <button type="submit" class="btn btn-default btn-sm" id="webcomment-submit" name="webcommentform">
                                       <i class="fa fa-paper-plane"></i>
                                   </button>
                                 </div>
@@ -858,7 +876,7 @@
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
-                                  <button type="submit" class="btn btn-default btn-sm" name="printcommentform">
+                                  <button type="submit" class="btn btn-default btn-sm" id="printcomment-submit"name="printcommentform">
                                       <i class="fa fa-paper-plane"></i>
                                   </button>
                                 </div>
@@ -1172,7 +1190,7 @@
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
-                                  <button type="submit" class="btn btn-default btn-sm" name="audiocommentform">
+                                  <button type="submit" class="btn btn-default btn-sm" id="audiocomment-submit" name="audiocommentform">
                                       <i class="fa fa-paper-plane"></i>
                                   </button>
                                 </div>
@@ -1484,7 +1502,7 @@
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
-                                  <button type="submit" class="btn btn-default btn-sm" name="videocommentform">
+                                  <button type="submit" class="btn btn-default btn-sm" id="videocomment-submit" name="videocommentform">
                                       <i class="fa fa-paper-plane"></i>
                                   </button>
                                 </div>
@@ -3860,5 +3878,40 @@
     });
 
   </script>
+
+
+  <script>
+    function pushToWordPress(evt) {
+      evt.preventDefault();
+      var formInputs = {
+        "webfacet_id": $("#wf_id-field").val()
+      };
+      $.post("{% url 'webfacet_json' %}",
+          formInputs
+      );
+    }
+
+    $("#wordpress-form-false").on("submit", pushToWordPress);
+  </script>
+
+
+  <!-- <script>
+    function pushToWordPress(evt) {
+
+      if(confirm('This webfacet has already been pushed to your WordPress site. Are you sure you want to push it again?')) {
+        evt.preventDefault();
+        var formInputs = {
+          "webfacet_id": $("#wf_id-field").val()
+        };
+        $.post("{% url 'webfacet_json' %}",
+            formInputs
+        );
+      }
+    }
+
+    $("#wordpress-form-true").on("submit", pushToWordPress);
+  </script> -->
+
+
 
 {% endblock %}
