@@ -148,6 +148,6 @@ def schedule_content(request):
                 run_event_dict['end'] = (time.mktime(videofacet.run_date.timetuple()) * 1000) + 60
                 data['result'].append(run_event_dict)
 
-    print "DATA: ", data
+    # print "DATA: ", data
 
     return HttpResponse(json.dumps(data), content_type='application/json')

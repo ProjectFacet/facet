@@ -9,6 +9,7 @@ from django.contrib.auth import get_user_model
 from django.forms import Textarea, TextInput, RadioSelect, Select, NumberInput, CheckboxInput, CheckboxSelectMultiple
 from datetimewidget.widgets import DateTimeWidget
 from tinymce.widgets import TinyMCE
+# from django.contrib.staticfiles.templatetags.staticfiles import static
 
 from editorial.models import (
     User,
@@ -28,6 +29,9 @@ from editorial.models import (
     SeriesNote,
     StoryNote,
     ImageAsset,
+    DocumentAsset,
+    AudioAsset,
+    VideoAsset
     )
 
 # ------------------------------ #
@@ -65,6 +69,18 @@ class UserProfileForm(forms.ModelForm):
         model = User
         fields = ['first_name', 'last_name', 'username', 'credit_name', 'title', 'phone', 'email', 'bio', 'location',
                  'expertise', 'website', 'facebook', 'github', 'twitter', 'linkedin', 'instagram', 'snapchat', 'vine', 'photo']
+        widgets = {
+            'expertise': Textarea(attrs={'rows':2}),
+        }
+
+class FullUserEditForm(forms.ModelForm):
+    """Form for organization owner or a user to edit a user's full profile."""
+
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'username', 'credit_name', 'title', 'phone', 'email', 'password', 'bio', 'location',
+                 'expertise', 'website', 'facebook', 'github', 'twitter', 'linkedin', 'instagram', 'snapchat', 'vine', 'photo',
+                 'is_superuser', 'is_staff', 'user_type']
         widgets = {
             'expertise': Textarea(attrs={'rows':2}),
         }
@@ -110,6 +126,12 @@ class InviteToNetworkForm(forms.Form):
 class SeriesForm(forms.ModelForm):
     """ Form to create a new series. """
 
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request")
+        super(SeriesForm, self).__init__(*args, **kwargs)
+        self.fields['collaborate_with'].queryset = Organization.get_org_collaborators(self.request.user.organization)
+        self.fields['team'].queryset = Organization.get_org_users(self.request.user.organization)
+
     class Meta:
         model = Series
         fields = ['name', 'series_description', 'collaborate', 'collaborate_with', 'team']
@@ -123,6 +145,7 @@ class SeriesForm(forms.ModelForm):
     #     }
     #     js = ('/static/js/chosen.jquery.min.js')
 
+
 # ------------------------------ #
 #          Story Forms           #
 # ------------------------------ #
@@ -133,6 +156,7 @@ class StoryForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop("request")
         super(StoryForm, self).__init__(*args, **kwargs)
+        self.fields['share_with'].queryset = Organization.get_org_networks(self.request.user.organization)
         self.fields['collaborate_with'].queryset = Organization.get_org_collaborators(self.request.user.organization)
         self.fields['team'].queryset = Organization.get_org_users(self.request.user.organization)
 
@@ -171,12 +195,21 @@ class StoryForm(forms.ModelForm):
     #     }
     #     js = ('/static/js/chosen.jquery.min.js')
 
+
 # ------------------------------ #
 #          Facet Forms           #
 # ------------------------------ #
 
 class WebFacetForm(forms.ModelForm):
     """ Webfacet form. """
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request")
+        self.story = kwargs.pop("story")
+        super(WebFacetForm, self).__init__(*args, **kwargs)
+        self.fields['credit'].queryset = Story.get_story_team(self.story)
+        self.fields['editor'].queryset = Story.get_story_team(self.story)
+
 
     due_edit = forms.DateTimeField(
         required=False,
@@ -236,8 +269,16 @@ class WebFacetForm(forms.ModelForm):
     #      '/static/scripts/tiny_mce/tinymce.min.js',)
 
 
+
 class PrintFacetForm(forms.ModelForm):
     """ Printfacet form. """
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request")
+        self.story = kwargs.pop("story")
+        super(PrintFacetForm, self).__init__(*args, **kwargs)
+        self.fields['credit'].queryset = Story.get_story_team(self.story)
+        self.fields['editor'].queryset = Story.get_story_team(self.story)
 
     due_edit = forms.DateTimeField(
         required=False,
@@ -300,6 +341,13 @@ class PrintFacetForm(forms.ModelForm):
 class AudioFacetForm(forms.ModelForm):
     """ Audiofacet form. """
 
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request")
+        self.story = kwargs.pop("story")
+        super(AudioFacetForm, self).__init__(*args, **kwargs)
+        self.fields['credit'].queryset = Story.get_story_team(self.story)
+        self.fields['editor'].queryset = Story.get_story_team(self.story)
+
     due_edit = forms.DateTimeField(
         required=False,
         widget=OurDateTimePicker(
@@ -358,8 +406,16 @@ class AudioFacetForm(forms.ModelForm):
     #      '/static/scripts/tiny_mce/tinymce.min.js',)
 
 
+
 class VideoFacetForm(forms.ModelForm):
     """ Videofacet form. """
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request")
+        self.story = kwargs.pop("story")
+        super(VideoFacetForm, self).__init__(*args, **kwargs)
+        self.fields['credit'].queryset = Story.get_story_team(self.story)
+        self.fields['editor'].queryset = Story.get_story_team(self.story)
 
     due_edit = forms.DateTimeField(
         required=False,
@@ -455,12 +511,118 @@ class AddImageForm(forms.Form):
         queryset = ImageAsset.objects.all()
     )
 
+class DocumentAssetForm(forms.ModelForm):
+    """Upload document to a facet."""
+
+    class Meta:
+        model = DocumentAsset
+        fields = [
+            'asset_title',
+            'asset_description',
+            'attribution',
+            'document',
+            'doc_type',
+            'keywords',
+        ]
+        widgets = {
+            'asset_description': Textarea(attrs={'rows':3}),
+            'attribution': Textarea(attrs={'rows':3}),
+            'doc_type': Select(attrs={'class': 'form-control'}),
+        }
+
+class AddDocumentForm(forms.Form):
+    """ Add existing document(s) to a facet."""
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request")
+        super(AddDocumentForm, self).__init__(*args, **kwargs)
+        self.fields['documents'].queryset = Organization.get_org_document_library(self.request.user.organization)
+
+    documents = forms.ModelMultipleChoiceField(
+        widget=CheckboxSelectMultiple,
+        queryset = DocumentAsset.objects.all()
+    )
+
+class AudioAssetForm(forms.ModelForm):
+    """Upload audio to a facet."""
+
+    class Meta:
+        model = AudioAsset
+        fields = [
+            'asset_title',
+            'asset_description',
+            'attribution',
+            'audio',
+            'link',
+            'audio_type',
+            'keywords',
+        ]
+        widgets = {
+            'asset_description': Textarea(attrs={'rows':3}),
+            'attribution': Textarea(attrs={'rows':3}),
+            'audio_type': Select(attrs={'class': 'form-control'}),
+        }
+
+class AddAudioForm(forms.Form):
+    """ Add existing audio to a facet."""
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request")
+        super(AddAudioForm, self).__init__(*args, **kwargs)
+        self.fields['documents'].queryset = Organization.get_org_audio_library(self.request.user.organization)
+
+    audio = forms.ModelMultipleChoiceField(
+        widget=CheckboxSelectMultiple,
+        queryset = AudioAsset.objects.all()
+    )
+
+class VideoAssetForm(forms.ModelForm):
+    """Upload video to a facet."""
+
+    class Meta:
+        model = VideoAsset
+        fields = [
+            'asset_title',
+            'asset_description',
+            'attribution',
+            'video',
+            'link',
+            'video_type',
+            'keywords',
+        ]
+        widgets = {
+            'asset_description': Textarea(attrs={'rows':3}),
+            'attribution': Textarea(attrs={'rows':3}),
+            'video_type': Select(attrs={'class': 'form-control'}),
+        }
+
+class AddVideoForm(forms.Form):
+    """ Add existing video to a facet."""
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request")
+        super(AddVideoForm, self).__init__(*args, **kwargs)
+        self.fields['documents'].queryset = Organization.get_org_video_library(self.request.user.organization)
+
+    video = forms.ModelMultipleChoiceField(
+        widget=CheckboxSelectMultiple,
+        queryset = VideoAsset.objects.all()
+    )
+
+
 # ------------------------------ #
 #         Comment Forms          #
 # ------------------------------ #
 
 class PrivateMessageForm(forms.ModelForm):
     """ Message form for private messages. """
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request")
+        super(PrivateMessageForm, self).__init__(*args, **kwargs)
+        if self.request.user.organization:
+            self.fields['recipient'].queryset = User.get_user_contact_list(self.request.user)
+
 
     class Meta:
         model = PrivateMessage

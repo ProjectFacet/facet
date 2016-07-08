@@ -2,8 +2,9 @@
 
 {% load i18n %}
 {% load bootstrap3 %}
+
 {% block head %}
-{{ form.media }}
+
 {% endblock %}
 
 {% block content %}
@@ -63,6 +64,7 @@
             </div>
           {% endif %}
         </div>
+        {% if org_partners %}
         <div class="form-group custom-form">
           <a href="#" data-toggle="tooltip" title="{{ storyform.share.help_text }}"><span class="field-label">{{ storyform.share.label_tag }}</span></a>
           {{ storyform.share }}
@@ -117,6 +119,10 @@
             </div>
           {% endif %}
         </div>
+        {% else %}
+        <span class="field-label">Sharing | Collaboration</span>
+        <p class="tiny-text dark">Start or join a network to enable sharing or collaboration.</p>
+        {% endif %}
         <div class="form-group custom-form">
           <a href="#" data-toggle="tooltip" title="{{ storyform.embargo.help_text }}"><span class="field-label">{{ storyform.embargo.label_tag }}</span></a>
           {{ storyform.embargo }}

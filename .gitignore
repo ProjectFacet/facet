@@ -2,6 +2,7 @@ env/
 *.pyc
 secrets.sh
 /media/
+.DS_Store
 
 # Elastic Beanstalk Files
 .elasticbeanstalk/*

@@ -7,67 +7,80 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   <meta name="viewport" content="initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,width=device-width,height=device-height,target-densitydpi=device-dpi,user-scalable=yes" />
 
-  <!-- favicon and touch icons -->
+  <!-- ================================================= -->
+                <!--     Styles & Fonts     -->
+  <!-- ================================================= -->
+  <!-- Favicon -->
+  <link rel="icon" href="{% static 'images/favicons/facet_favicon-64x64.png' %}"/>
 
-  <!-- font -->
+  <!-- Fonts -->
   <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800,300italic,400italic,600italic,700italic,800italic' rel='stylesheet' type='text/css'>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <!-- <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}"> -->
 
   <!-- Bootstrap -->
   <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
   <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
   <link rel="stylesheet" href="{% static 'css/bootstrap-datetimepicker.css' %}">
-  <!-- endBootstrap -->
 
   <!-- Bootstrap Calendar -->
   <link rel="stylesheet" href="{% static 'bootstrap-calendar/css/calendar.css' %}">
 
   <!-- Dependencies -->
   <link rel="stylesheet" href="{% static 'css/dependencies.css' %}">
-  <!-- endDependencies -->
 
   <!-- Wrapkit -->
   <link rel="stylesheet" href="{% static 'css/wrapkit.css' %}">
-  <!-- endWrapkit -->
 
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-  <!-- <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}"> -->
-
-  <!-- Bootstrap Calendar CSS -->
-  <!-- <link rel="stylesheet" href="{% static 'bootstrap-calendar/css/calendar.css' %}"> -->
-
-  <!-- styles & other dependencies -->
+  <!-- STYLES -->
   <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
   <link rel="stylesheet" href="{% static 'css/components.css' %}">
   <link rel="stylesheet" href="{% static 'css/demo.css' %}">
   <link rel="stylesheet" href="{% static 'css/chosen.css' %}">
   <link rel="stylesheet" href="{% static 'css/facet.css' %}">
 
+  <!-- ================================================= -->
+                  <!--     JS       -->
+  <!-- ================================================= -->
+
+  <!-- Dependencies -->
   <script src="{% static 'scripts/jquery-1.11.3.min.js' %}"></script>
   <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+  <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script> -->
 
-  <!-- MULTISELECT FOR ARRAYS  -->
+  <!-- Multiselect for Arrays  -->
   <script src="{% static 'scripts/chosen.jquery.min.js' %}"></script>
-  <!-- POPUP JS -->
+
+  <!-- Popup JS -->
   <script src="{% static 'scripts/jquery.magnific-popup.min.js' %}"></script>
-  <!-- END MULTISELECT FOR ARRAYS  -->
+
+  <!-- Content Tables -->
   <script src="{% static 'scripts/jquery.dataTables.min.js' %}"></script>
-  <!-- END DATETIME PICKER JS  -->
+
+  <!-- Datetime Picker JS  -->
   <script src="{% static 'scripts/moment.js' %}"></script>
+  <script src="{% static 'scripts/jquery.datetimepicker.js' %}"></script>
   <script src="{% static 'scripts/bootstrap-datetimepicker.js' %}"></script>
-  <!-- END DATETIME PICKER JS  -->
 
   <!-- Bootstrap Calendar JS -->
   <script src="{% static 'bootstrap-calendar/js/calendar.js' %}"></script>
   <script src="{% static 'scripts/underscore/underscore-min.js' %}"></script>
-  <script>
-    // console.log("HELLO");
-    // var calendar_events = "{% static 'bootstrap-calendar/events.json.php' %}"
-    // var templates = "{% static 'bootstrap-calendar/events.json.php' %}"
-    // console.log("Where the fuck is this stuff?");
-    // console.log(templates);
-  </script>
+
   <!-- <script src="{% static 'bootstrap-calendar/js/app.js' %}"></script> -->
+
+  <!-- Text Editor JS -->
+  <script src="{% static 'scripts/tiny_mce/tinymce.min.js' %}"></script>
+
+  <!-- jQuery Dot Dot -->
+  <!-- Truncates text so it fits into containers and ends with an ellipsis and a link -->
+  <script src="{% static 'scripts/jquery.dotdotdot.js' %}"></script>
+
+  <!-- jQuery Sticky Tabs -->
+  <!-- Allows for direct linking to bootstrap tabs -->
+  <script src="{% static 'scripts/jquery.stickytabs.js' %}"></script>
+
 
   {% block head %}
 
@@ -178,9 +191,9 @@
           <!-- ================================================= -->
           {% if request.user.is_authenticated %}
             <div class="dropdown-ext">
-              <a href="{% url 'user_detail' pk=request.user.id %}"><h6 class="media-heading bright">{{ user.credit_name}}</h6></a>
+              <a href="{% url 'user_detail' pk=request.user.id %}"><h6 class="media-heading bright">{{ request.user.credit_name}}</h6></a>
               {% if request.user.organization %}
-                <a href="{% url 'org_detail' pk=request.user.organization_id %}"><p class="help-block tiny-text close-text">{{ user.organization.name }}</p></a>
+                <a href="{% url 'org_detail' pk=request.user.organization_id %}"><p class="help-block tiny-text close-text">{{ request.user.organization.name }}</p></a>
               {% endif %}
             </div><!-- /.dropdown -->
             <div class="dropdown-ext">
@@ -204,16 +217,16 @@
                   <a aria-label="More" class="btn btn-icon navbar-btn dropdown-toggle" data-toggle="dropdown" href="#">
                     <i class="fa fa-ellipsis-v"></i>
                   </a>
-                  <ul class="dropdown-menu dropdown-menu-right thin" role="menu">
+                  <ul class="dropdown-menu dropdown-menu-right thin" role="menu" id="settings-dropdown">
                     <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'user_edit' pk=request.user.id %}"><span class="pull-right"><i class="fa fa-user text-muted"></i></span>Profile</a></li>
                     <li class="divider"></li>
                     {% if request.user.organization %}
                     <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'org_detail' pk=request.user.organization.id %}"><span class="pull-right"><i class="fa fa-home text-muted"></i></span>Organization</a></li>
                     {% endif %}
                     {% if request.user.organization.owner = request.user %}
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'org_edit' pk=request.user.organization.id %}"><span class="pull-right"><i class="fa fa-pencil text-muted"></i></span>Edit Organization</a></li>
+                    <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'org_edit' pk=request.user.organization.id %}"><span class="pull-right"><i class="fa fa-pencil text-muted"></i></span>Manage Organization</a></li>
                     {% endif %}
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'org_new' %}"><span class="pull-right"><i class="fa fa-users text-muted"></i></span>New Organization</a></li>
+                    <!-- <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'org_new' %}"><span class="pull-right"><i class="fa fa-users text-muted"></i></span>New Organization</a></li> -->
                     <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'network_new' %}"><span class="pull-right"><i class="fa fa-users text-muted"></i></span>New Network</a></li>
                     <li class="divider"></li>
                     <li role="presentation"><a role="menuitem" tabindex="-1" href="/accounts/logout"><span class="pull-right"><i class="fa fa-sign-out text-muted"></i></span> Sign out</a></li>
@@ -266,11 +279,13 @@
             <h4 class="modal-title" id="sendPrivateMessageLabel">Send a private message</h4>
           </div>
           <div class="modal-body">
+            {% if privatemessageform %}
             <form action="{% url 'private_message_new' %}" method="POST" class="post-form">
             {% csrf_token %}
             {% bootstrap_form privatemessageform %}
             <button type="submit" class="btn btn-primary">Send Message</button>
             </form>
+            {% endif %}
           </div>
           <div class="modal-footer">
           </div>
@@ -287,11 +302,13 @@
             <h4 class="modal-title" id="addUserNoteLabel">Create a note</h4>
           </div>
           <div class="modal-body">
+            {% if usernoteform %}
             <form action="{% url 'create_user_note' %}" method="POST" class="post-form">
             {% csrf_token %}
             {% bootstrap_form usernoteform %}
             <button type="submit" class="btn btn-primary">Create Note</button>
             </form>
+            {% endif %}
           </div>
           <div class="modal-footer">
           </div>
@@ -306,60 +323,27 @@
 
     <!-- ================================================= -->
     <!-- ================================================= -->
-                    <!-- JS LINKS -->
+                      <!--     JS       -->
     <!-- ================================================= -->
     <!-- ================================================= -->
 
-    <!-- Latest compiled and minified JavaScript -->
-    <!-- <script src="//code.jquery.com/jquery-1.11.3.min.js"></script> -->
-    <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script> -->
-
-    <!-- VENDORS : jQuery & Bootstrap -->
+    <!-- Particles jQuery -->
     <!-- <script src="static/scripts/vendor.js"></script> -->
     <script type='text/javascript' src="{% static 'scripts/jquery.particleground.min.js' %}"></script>
     <script type='text/javascript' src="{% static 'scripts/particles.js' %}"></script>
-    <!-- END VENDORS -->
 
-    <!-- MAIN JS -->
+    <!-- Main JS -->
     <script src="{% static 'scripts/facet.js' %}"></script>
-    <!-- END MAIN JS -->
 
     <!-- DEPENDENCIES : Required plugins -->
     <script src="{% static 'scripts/dependencies.js' %}"></script>
-    <!-- END DEPENDENCIES -->
 
-    <!-- WRAPKIT -->
+    <!-- Wrapkit -->
     <script src="{% static 'scripts/wrapkit.js' %}"></script>
-    <!-- END WRAPKIT -->
-
-    <!-- WRAPKIT SETUPS -->
     <script src="{% static 'scripts/wrapkit-setup.js' %}"></script>
-    <!-- end WRAPKIT SETUPS -->
 
-    <!-- PLUGIN SETUPS: vendors & dependencies setups -->
+    <!-- Plugin Setups: vendors & dependencies setups -->
     <script src="{% static 'scripts/plugin-setups.js' %}"></script>
-    <!-- END PLUGIN SETUPS -->
-
-    <!-- COMPONENTS -->
-    <!-- <script src="{% static 'scripts/epiceditor.js' %}"></script> -->
-    <!-- <script src="{% static 'scripts/summernote.js' %}"></script> -->
-    <!-- END COMPONENTS -->
-
-    <!-- MULTISELECT FOR ARRAYS  -->
-    <!-- <script src="{% static 'scripts/chosen.jquery.min.js' %}"></script> -->
-    <!-- END MULTISELECT FOR ARRAYS  -->
-
-    <!-- END DATETIME PICKER JS  -->
-    <script src="{% static 'scripts/moment.js' %}"></script>
-    <script src="{% static 'scripts/bootstrap-datetimepicker.js' %}"></script>
-    <!-- END DATETIME PICKER JS  -->
-
-    <script src="{% static 'scripts/tiny_mce/tinymce.min.js' %}"></script>
-    
-
-    <!-- DUMMY: Use for demo -->
-    <!-- <script src="{% static 'scripts/demo/frm-editor-demo.js' %}"></script> -->
-
 
 
 </body>

@@ -45,10 +45,12 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'allauth',
     'allauth.account',
+    'rest_framework',
     'allauth.socialaccount',
     'bootstrap3_datetime',
     'tinymce',
     'watson',
+    'embed_video',
     'project',
 )
 
@@ -66,6 +68,8 @@ MIDDLEWARE_CLASSES = (
     'simple_history.middleware.HistoryRequestMiddleware',
 )
 
+
+# TINYMCE_JS_ROOT = '/static/scripts/tiny_mce/'
 TINYMCE_JS_ROOT = os.path.join(STATIC_URL, 'scripts/tiny_mce/')
 TINYMCE_JS_URL = os.path.join(STATIC_URL, 'scripts/tiny_mce/tinymce.min.js')
 TINYMCE_DEFAULT_CONFIG = {
@@ -86,6 +90,7 @@ TEMPLATES = [
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
+                'django.core.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'project.context_processors.include_private_message_form',
@@ -109,17 +114,34 @@ ACCOUNT_AUTHENTICATION_METHOD = "email"
 # EMAIL #
 # -------------------------------------------------------------- #
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django_smtp_ssl.SSLEmailBackend'
 
+EMAIL_HOST = 'email-smtp.us-west-2.amazonaws.com'
+EMAIL_HOST_USER = os.environ['AWS_EMAIL_HOST_USER']
+EMAIL_HOST_PASSWORD = os.environ['AWS_EMAIL_HOST_PASSWORD']
+EMAIL_PORT = 465
 EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
-EMAIL_HOST_PASSWORD = os.environ['EMAIL_HOST_PASSWORD']
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+AWS_SES_REGION_ENDPOINT = 'email-smtp.us-west-2.amazonaws.com'
 
 SERVER_EMAIL = os.environ['EMAIL_HOST_USER']
 DEFAULT_FROM_EMAIL = os.environ['EMAIL_HOST_USER']
+
+
+# -------------------------------------------------------------- #
+# DJANGO REST FRAMEWORK #
+# -------------------------------------------------------------- #
+
+REST_FRAMEWORK = {
+    # Use Django's standard `django.contrib.auth` permissions,
+    # or allow read-only access for unauthenticated users.
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
+    ]
+}
+
+# -------------------------------------------------------------- #
+# OTHER SETTINGS #
+# -------------------------------------------------------------- #
 
 
 LOGIN_REDIRECT_URL = '/dashboard'

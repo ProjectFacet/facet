@@ -17,13 +17,15 @@
     <div class="row content-lower-50">
       {% for image in images %}
         {% if image.display_photo %}
-        <div class="col-xs-4 col-sm-3 col-md-2 col-lg-1">
+        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-2">
           <div class="thumbnail">
-            <a href="{{ image.display_photo.url }}" class="popout"><img src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}"></a>
-            <div class="caption">
-              <h6 class="darker">{{ image.asset_title }}</h6>
-              <p class="tiny-text dark">{{ image.asset_description }}<p>
-              <p><a href="{% url 'asset_detail' pk=image.id %}"><i class="fa fa-info dark"></i></a></p>
+            <div class="asset_container">
+              <a href="{{ image.display_photo.url }}" class="popout asset_thumbnail"><img src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}"></a>
+            </div>
+            <div class="asset_caption">
+              <!-- <p class="darker text-fit">{{ image.asset_title }}</p> -->
+              <p class="small-text dark asset_description"><a href="{% url 'asset_detail' pk=image.id %}"><i class="fa fa-info-circle"></i> {{ image.asset_description }}</a><p>
+              <!-- <p><a href="{% url 'asset_detail' pk=image.id %}"><i class="fa fa-info dark"></i></a></p> -->
             </div>
           </div>
         </div>
@@ -42,6 +44,11 @@
     gallery: {enabled:true}
   });
 
+</script>
+<script>
+$(document).ready(function() {
+  $(".asset_caption").dotdotdot();
+});
 </script>
 
 

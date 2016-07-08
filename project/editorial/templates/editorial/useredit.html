@@ -347,7 +347,44 @@
       {% endif %}
     </div>
 
-    <button id="edit-button" class="btn btn-primary" type="submit">{% trans "Save" %}</button>
+    <!-- User status -->
+
+    {% if request.user.id == user.organization.owner.id %}
+
+    <div class="form-group custom-form">
+      <a href="#" data-toggle="tooltip" title="{{ userform.is_superuser.help_text }}"><span class="field-label">{{ userform.is_superuser.label_tag }}</span></a>
+      {{ userform.is_superuser }}
+      {% if userform.is_superuser.errors %}
+        <div class="alert alert-warning" role="alert">
+        {{ userform.is_superuser.errors }}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="form-group custom-form">
+      <a href="#" data-toggle="tooltip" title="{{ userform.is_staff.help_text }}"><span class="field-label">{{ userform.is_staff.label_tag }}</span></a>
+      {{ userform.is_staff }}
+      {% if userform.is_staff.errors %}
+        <div class="alert alert-warning" role="alert">
+        {{ userform.is_staff.errors }}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="form-group custom-form">
+      <a href="#" data-toggle="tooltip" title="{{ userform.user_type.help_text }}"><span class="field-label">{{ userform.user_type.label_tag }}</span></a>
+      {{ userform.user_type }}
+      {% if userform.user_type.errors %}
+        <div class="alert alert-warning" role="alert">
+        {{ userform.user_type.errors }}
+        </div>
+      {% endif %}
+    </div>
+
+    {% endif %}
+
+
+    <button id="edit-button" class="btn btn-primary" type="submit">{% trans "Save" %}</button> <a href="{% url 'user_detail' user.id %}"><button type="submit" class="btn btn-default">Cancel</button></a>
   </div>
 </form>
 
