@@ -78,9 +78,9 @@ class FullUserEditForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'username', 'credit_name', 'title', 'phone', 'email', 'password', 'bio', 'location',
+        fields = ['first_name', 'last_name', 'username', 'credit_name', 'title', 'phone', 'email', 'bio', 'location',
                  'expertise', 'website', 'facebook', 'github', 'twitter', 'linkedin', 'instagram', 'snapchat', 'vine', 'photo',
-                 'is_superuser', 'is_staff', 'user_type']
+                 'password', 'is_superuser', 'is_staff', 'user_type']
         widgets = {
             'expertise': Textarea(attrs={'rows':2}),
         }

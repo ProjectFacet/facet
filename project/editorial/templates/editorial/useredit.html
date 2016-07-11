@@ -52,9 +52,10 @@
 </div>
 <!-- End header for xs/xs/md display -->
 
-<form class="post-form" method="POST" enctype="multipart/form-data">{% csrf_token %}
+
 
 <div class="row profile-row">
+  <form class="post-form" method="POST" enctype="multipart/form-data">{% csrf_token %}
   <!-- Left Column -->
   <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
 
@@ -348,7 +349,7 @@
     </div>
 
     <!-- User status -->
-
+    {% comment %}
     {% if request.user.id == user.organization.owner.id %}
 
     <div class="form-group custom-form">
@@ -382,11 +383,13 @@
     </div>
 
     {% endif %}
+    {% endcomment %}
 
-
-    <button id="edit-button" class="btn btn-primary" type="submit">{% trans "Save" %}</button> <a href="{% url 'user_detail' user.id %}"><button type="submit" class="btn btn-default">Cancel</button></a>
+    <button id="edit-button" class="btn btn-primary" type="submit">{% trans "Save" %}</button></a>
+    </form>
+    <a href="{% url 'user_detail' user.id %}"><button type="submit" class="btn btn-default">Cancel</button>
   </div>
-</form>
+
 
 {% else %}
 <p>You are not authorized to edit this page.</p>
