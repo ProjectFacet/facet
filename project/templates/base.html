@@ -67,6 +67,7 @@
   <!-- Bootstrap Calendar JS -->
   <script src="{% static 'bootstrap-calendar/js/calendar.js' %}"></script>
   <script src="{% static 'scripts/underscore/underscore-min.js' %}"></script>
+
   <!-- <script src="{% static 'bootstrap-calendar/js/app.js' %}"></script> -->
 
   <!-- Text Editor JS -->
@@ -232,6 +233,7 @@
                   </ul>
                 </div><!-- /.dropdown -->
               {% else %}
+                <li><a href="/accounts/signup/" class="pull-right thin">Signup</a></li>
                 <li><a href="/accounts/login/" class="pull-right thin">Login</a></li>
               {% endif %}
           </ul>

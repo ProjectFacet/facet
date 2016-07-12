@@ -141,10 +141,10 @@ class SeriesForm(forms.ModelForm):
             }
 
     # class Media:
-    #     css = {
-    #         'all': ('css/bootstrap-datetimepicker.css', 'css/chosen.min.css')
+    #     css = {'all': ('/static/css/chosen.min.css')
     #     }
-    #     js = ('scripts/chosen.jquery.min.js',)
+    #     js = ('/static/js/chosen.jquery.min.js')
+
 
 # ------------------------------ #
 #          Story Forms           #
@@ -191,10 +191,10 @@ class StoryForm(forms.ModelForm):
         }
 
     # class Media:
-    #     css = {
-    #         'all': ('css/bootstrap-datetimepicker.css', 'css/chosen.min.css')
+    #     css = {'all': ('/static/css/chosen.min.css')
     #     }
-    #     js = ('scripts/chosen.jquery.min.js',)
+    #     js = ('/static/js/chosen.jquery.min.js')
+
 
 # ------------------------------ #
 #          Facet Forms           #
@@ -260,12 +260,14 @@ class WebFacetForm(forms.ModelForm):
 
     # class Media:
     #     css = {
-    #         'all': ('css/bootstrap-datetimepicker.css', 'css/chosen.min.css')
+    #         'all': ('/static/css/bootstrap-datetimepicker.css', '/static/css/chosen.min.css')
     #     }
-    #     js = ('scripts/chosen.jquery.min.js',
-    #      'scripts/moment.js',
-    #      'scripts/jquery.datetimepicker.js',
-    #      'scripts/bootstrap-datetimepicker.js',)
+    #     js = ('/static/js/chosen.jquery.min.js',
+    #      '/static/scripts/moment.js',
+    #      '/static/scripts/jquery.datetimepicker.js',
+    #      '/static/scripts/bootstrap-datetimepicker.js',
+    #      '/static/scripts/tiny_mce/tinymce.min.js',)
+
 
 
 class PrintFacetForm(forms.ModelForm):
@@ -327,12 +329,13 @@ class PrintFacetForm(forms.ModelForm):
 
     # class Media:
     #     css = {
-    #         'all': ('css/bootstrap-datetimepicker.css', 'css/chosen.min.css')
+    #         'all': ('/static/css/bootstrap-datetimepicker.css', '/static/css/chosen.min.css')
     #     }
-    #     js = ('scripts/chosen.jquery.min.js',
-    #      'scripts/moment.js',
-    #      'scripts/jquery.datetimepicker.js',
-    #      'scripts/bootstrap-datetimepicker.js',)
+    #     js = ('/static/scripts/chosen.jquery.min.js',
+    #      '/static/scripts/moment.js',
+    #      '/static/scripts/jquery.datetimepicker.js',
+    #      '/static/scripts/bootstrap-datetimepicker.js',
+    #      '/static/scripts/tiny_mce/tinymce.min.js',)
 
 
 class AudioFacetForm(forms.ModelForm):
@@ -394,12 +397,14 @@ class AudioFacetForm(forms.ModelForm):
 
     # class Media:
     #     css = {
-    #         'all': ('css/bootstrap-datetimepicker.css', 'css/chosen.min.css')
+    #         'all': ('/static/css/bootstrap-datetimepicker.css', '/static/css/chosen.min.css')
     #     }
-    #     js = ('scripts/chosen.jquery.min.js',
-    #      'scripts/moment.js',
-    #      'scripts/jquery.datetimepicker.js',
-    #      'scripts/bootstrap-datetimepicker.js',)
+    #     js = ('/static/js/chosen.jquery.min.js',
+    #      '/static/scripts/moment.js',
+    #      '/static/scripts/jquery.datetimepicker.js',
+    #      '/static/scripts/bootstrap-datetimepicker.js',
+    #      '/static/scripts/tiny_mce/tinymce.min.js',)
+
 
 
 class VideoFacetForm(forms.ModelForm):
@@ -461,12 +466,13 @@ class VideoFacetForm(forms.ModelForm):
 
     # class Media:
     #     css = {
-    #         'all': ('css/bootstrap-datetimepicker.css', 'css/chosen.min.css')
+    #         'all': ('/static/css/bootstrap-datetimepicker.css', '/static/css/chosen.min.css')
     #     }
-    #     js = ('scripts/chosen.jquery.min.js',
-    #      'scripts/moment.js',
-    #      'scripts/jquery.datetimepicker.js',
-    #      'scripts/bootstrap-datetimepicker.js',)
+    #     js = ('/static/scripts/chosen.jquery.min.js',
+    #      '/static/scripts/moment.js',
+    #      '/static/scripts/jquery.datetimepicker.js',
+    #      '/static/scripts/bootstrap-datetimepicker.js',
+    #      '/static/scripts/tiny_mce/tinymce.min.js',)
 
 
 # ------------------------------ #
