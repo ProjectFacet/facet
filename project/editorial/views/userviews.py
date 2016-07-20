@@ -16,7 +16,8 @@ import json
 from editorial.forms import (
     AddUserForm,
     UserProfileForm,
-    UserNoteForm,)
+    UserNoteForm,
+    FullUserEditForm,)
 
 from editorial.models import (
     User,
@@ -55,6 +56,7 @@ def user_detail(request, pk):
     bio, expertise, profile photo, social media links and most recent content.
     """
 
+    print "in USER DETAIL"
     user = get_object_or_404(User, pk=pk)
     user_stories = User.get_user_stories(user)
     user_content = User.get_user_content(user)
@@ -75,17 +77,57 @@ def user_detail(request, pk):
 def user_edit(request, pk):
     """ Edit the user's profile."""
 
+    print "IN USER EDIT"
     user = get_object_or_404(User, pk=pk)
 
     if request.method == "POST":
+        print "POST request made"
+        # import pdb; pdb.set_trace()
         userform = UserProfileForm(request.POST, request.FILES, instance=user)
+        # print "userform exists: ", userform
         if userform.is_valid():
+            print "is valid"
             userform.save()
+            print "userform saved"
             return redirect('user_detail', pk = user.id)
+
     else:
-        userform = UserProfileForm(instance=user)
+        print "USERFORM NOT VALID"
+        userform = FullUserEditForm(instance=user)
 
     return render(request, 'editorial/useredit.html', {
             'user': user,
             'userform': userform
     })
+
+
+@csrf_exempt
+def user_deactivate(request):
+    """ Deactivate a user."""
+
+    if request.method == "POST":
+        user_id = request.POST.get('user_id')
+        user = get_object_or_404(User, pk=user_id)
+        print "USER ID: ", user_id
+        user.is_active = False
+        print "User Status: ", user.is_active
+        user.save()
+        print "This user has been deactivated."
+
+    return redirect('org_edit', pk=user.organization.id)
+
+
+@csrf_exempt
+def user_activate(request):
+    """ Activate a user."""
+
+    if request.method == "POST":
+        user_id = request.POST.get('user_id')
+        user = get_object_or_404(User, pk=user_id)
+        print "USER ID: ", user_id
+        user.is_active = True
+        print "User Status: ", user.is_active
+        user.save()
+        print "This user has been activated."
+
+    return redirect('org_edit', pk=user.organization.id)

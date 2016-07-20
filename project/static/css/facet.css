@@ -63,11 +63,22 @@ hr {
   font-size: 1em;
 }
 
+.clear-button {
+  background: none;
+  padding: 0px;
+  border: none;
+}
+
 /* ---------------------------------------*/
 /*       Nav and Body/Wrapper Styles      */
 /* ---------------------------------------*/
 
 /*Navigation*/
+
+#settings-dropdown {
+  width: 225px;
+}
+
 
 .masthead-brand {
   margin-top: 10px;
@@ -315,6 +326,10 @@ hr {
   text-transform: uppercase;
 }
 
+.lowercase {
+  text-transform: lowercase;
+}
+
 .spread-01 {
   letter-spacing: .1em;
 }
@@ -353,8 +368,16 @@ hr {
   text-decoration: none;
 }
 
+.medium-dark, .medium-dark a {
+  color: #4C5561 !important;
+}
+
 .darker, .darker a {
   color: #374355 !important;
+}
+
+.greyed {
+  color: #666666 !important;
 }
 
 .bright, .bright a {
@@ -753,6 +776,7 @@ label {
 .slimScrollBar {
   background: #54657E none repeat scroll 0% 0% !important;
   width: 6px;
+  z-index: 40 !important;
 }
 
 /* ---------------------------------------*/
@@ -788,6 +812,18 @@ td h4 {
 .dataTables_info {
   font-size: 10px;
   color: #8493A8 !important;
+}
+
+.paginate_button.previous.disabled {
+  padding-right: 10px;
+  color: #8493A8;
+  font-size: 12px;
+}
+
+.paginate_button.next.disabled {
+  padding-left: 10px;
+  color: #8493A8;
+  font-size: 12px;
 }
 
 #user-stories-list_length {

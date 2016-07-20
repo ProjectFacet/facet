@@ -18,6 +18,7 @@
     <h3 class="center">Your Team<a href="#"><i class="fa fa-plus sameline dark" data-toggle="modal" data-target="#addUserModal"></i></a></h2>
     <div class="row">
     {% for user in organization.user_set.all %}
+    {% if user.is_active %}
     <div class="col-lg-6 col-md-6 col-sm-6">
       <div class="panel fade in panel-default" data-init-panel="true">
         <div class="panel-body team-panel">
@@ -45,6 +46,7 @@
         </div><!-- /.progress -->
       </div><!-- /.panel -->
     </div><!-- /.cols -->
+    {% endif %}
     {% endfor %}
   </div>
   </div>
@@ -110,7 +112,7 @@
             </div><!-- /panel -->
 
           {% endfor %}
-        </div><!-- /panel-group --
+        </div><!-- /panel-group -->
 </div>
 
 

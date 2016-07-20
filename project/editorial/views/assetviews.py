@@ -85,6 +85,7 @@ def upload_webfacet_image(request):
             webimage = imageform.save(commit=False)
             # retrieve the webfacet the image should be associated with
             webfacet_id = request.POST.get('webfacet')
+            print "webfacetID: ", webfacet_id
             webfacet = get_object_or_404(WebFacet, id=webfacet_id)
             # set request based attributes
             webimage.owner = request.user
@@ -414,6 +415,66 @@ def upload_webfacet_audio(request):
             webfacet.save()
     return redirect('story_detail', pk=webfacet.story.id)
 
+
+def upload_printfacet_audio(request):
+    """ Add audio to a printfacet."""
+
+    if request.method == 'POST':
+        audioform=AudioAssetForm(request.POST, request.FILES)
+        if audioform.is_valid():
+            printaudio = audioform.save(commit=False)
+            # retrieve the printfacet the audio should be associated with
+            printfacet_id = request.POST.get('printfacet')
+            printfacet = get_object_or_404(PrintFacet, id=printfacet_id)
+            # set request based attributes
+            printaudio.owner = request.user
+            printaudio.organization = request.user.organization
+            printaudio.save()
+            # add audio asset to printfacet audio_assets
+            printfacet.audio_assets.add(printaudio)
+            printfacet.save()
+    return redirect('story_detail', pk=printfacet.story.id)
+
+
+def upload_audiofacet_audio(request):
+    """ Add audio to a audiofacet."""
+
+    if request.method == 'POST':
+        audioform=AudioAssetForm(request.POST, request.FILES)
+        if audioform.is_valid():
+            audioaudio = audioform.save(commit=False)
+            # retrieve the audiofacet the audio should be associated with
+            audiofacet_id = request.POST.get('audiofacet')
+            audiofacet = get_object_or_404(AudioFacet, id=audiofacet_id)
+            # set request based attributes
+            audioaudio.owner = request.user
+            audioaudio.organization = request.user.organization
+            audioaudio.save()
+            # add audio asset to audiofacet audio_assets
+            audiofacet.audio_assets.add(audioaudio)
+            audiofacet.save()
+    return redirect('story_detail', pk=audiofacet.story.id)
+
+
+def upload_videofacet_audio(request):
+    """ Add audio to a videofacet."""
+
+    if request.method == 'POST':
+        audioform=AudioAssetForm(request.POST, request.FILES)
+        if audioform.is_valid():
+            videoaudio = audioform.save(commit=False)
+            # retrieve the videofacet the audio should be associated with
+            videofacet_id = request.POST.get('videofacet')
+            videofacet = get_object_or_404(VideoFacet, id=videofacet_id)
+            # set request based attributes
+            videoaudio.owner = request.user
+            videoaudio.organization = request.user.organization
+            vaudio.save()
+            # add audio asset to videofacet audio_assets
+            videofacet.audio_assets.add(videoaudio)
+            videofacet.save()
+    return redirect('story_detail', pk=videofacet.story.id)
+
 #----------------------------------------------------------------------#
 #   Add Audio Asset Views
 #----------------------------------------------------------------------#
@@ -436,6 +497,62 @@ def add_webfacet_audio(request):
             webfacet.save()
     return redirect('story_detail', pk=webfacet.story.id)
 
+
+def add_printfacet_audio(request):
+    """ Add existing audio(s) in the library to another printfacet."""
+
+    if request.method == "POST":
+        add_audio_form = AddAudioForm(request.POST, request=request)
+        if add_audio_form.is_valid():
+            printfacet_id = request.POST.get('printfacet')
+            print "WEBFACETid: ", printfacet_id
+            printfacet = get_object_or_404(PrintFacet, id=printfacet_id)
+            audios = request.POST.getlist('audios')
+            print "DOCS: ", audios
+            for audio in audios:
+                audio_ins = get_object_or_404(AudioAsset, id=audio)
+                print "DOCins: ", audio_ins
+                printfacet.audio_assets.add(audio_ins)
+            printfacet.save()
+    return redirect('story_detail', pk=printfacet.story.id)
+
+
+def add_audiofacet_audio(request):
+    """ Add existing audio(s) in the library to another audiofacet."""
+
+    if request.method == "POST":
+        add_audio_form = AddAudioForm(request.POST, request=request)
+        if add_audio_form.is_valid():
+            audiofacet_id = request.POST.get('audiofacet')
+            print "WEBFACETid: ", audiofacet_id
+            audiofacet = get_object_or_404(AudioFacet, id=audiofacet_id)
+            audios = request.POST.getlist('audios')
+            print "DOCS: ", audios
+            for audio in audios:
+                audio_ins = get_object_or_404(AudioAsset, id=audio)
+                print "DOCins: ", audio_ins
+                audiofacet.audio_assets.add(audio_ins)
+            audiofacet.save()
+    return redirect('story_detail', pk=audiofacet.story.id)
+
+
+def add_videofacet_audio(request):
+    """ Add existing audio(s) in the library to another videofacet."""
+
+    if request.method == "POST":
+        add_audio_form = AddAudioForm(request.POST, request=request)
+        if add_audio_form.is_valid():
+            videofacet_id = request.POST.get('videofacet')
+            print "WEBFACETid: ", videofacet_id
+            videofacet = get_object_or_404(VideoFacet, id=videofacet_id)
+            audios = request.POST.getlist('audios')
+            print "DOCS: ", audios
+            for audio in audios:
+                audio_ins = get_object_or_404(AudioAsset, id=audio)
+                print "DOCins: ", audio_ins
+                videofacet.audio_assets.add(audio_ins)
+            videofacet.save()
+    return redirect('story_detail', pk=videofacet.story.id)
 
 #----------------------------------------------------------------------#
 #   Upload Video Asset Views

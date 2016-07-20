@@ -14,10 +14,13 @@ from views import (
     seriesviews,
     storyviews,
     assetviews,
+    pushcontentviews,
     communicationviews,
     noteviews,
     downloadviews,
     scheduleviews)
+
+from . import api
 
 from views.searchviews import EditorialSearchView
 
@@ -26,6 +29,15 @@ urlpatterns = [
     #   Test URL - Used for non-destructive testing of templates/queries
     #----------------------------------------------------------------------#
     url(r'^test$', generalviews.test, name='test'),
+    #----------------------------------------------------------------------#
+    #   API URL - Used API endpoints
+    #----------------------------------------------------------------------#
+    url('^api/', include(api.router.urls)),
+    #----------------------------------------------------------------------#
+    #   WebFacet to WordPress URL - On demand pushing
+    #----------------------------------------------------------------------#
+    url(r'^webfacet/json/$', pushcontentviews.webfacet_json, name='webfacet_json'),
+    # url(r'^webfacet/wordpress/$', pushcontentviews.push_webfacet_wp, name='push_webfacet_wp'),
     #----------------------------------------------------------------------#
     #   Homepage URLS
     #----------------------------------------------------------------------#
@@ -102,6 +114,8 @@ urlpatterns = [
     url(r'^user/(?P<pk>[0-9]+)/edit/$', userviews.user_edit, name='user_edit'),
     url(r'^user/(?P<pk>[0-9]+)/notes/$', noteviews.user_notes, name='user_notes'),
     url(r'^user/note/new/$', noteviews.create_user_note, name='create_user_note'),
+    url(r'^user/deactivate/$', userviews.user_deactivate, name='user_deactivate'),
+    url(r'^user/activate/$', userviews.user_activate, name='user_activate'),
     #----------------------------------------------------------------------#
     #   Series URLS
     #----------------------------------------------------------------------#
@@ -144,13 +158,13 @@ urlpatterns = [
     url(r'^videofacet/document/add/$', assetviews.add_videofacet_document, name='add_videofacet_document'),
     # Audio
     url(r'^webfacet/audio/new/$', assetviews.upload_webfacet_audio, name='upload_webfacet_audio'),
-    # url(r'^printfacet/audio/new/$', assetviews.upload_printfacet_audio, name='upload_printfacet_audio'),
-    # url(r'^audiofacet/audio/new/$', assetviews.upload_audiofacet_audio, name='upload_audiofacet_audio'),
-    # url(r'^videofacet/audio/new/$', assetviews.upload_videofacet_audio, name='upload_videofacet_audio'),
+    url(r'^printfacet/audio/new/$', assetviews.upload_printfacet_audio, name='upload_printfacet_audio'),
+    url(r'^audiofacet/audio/new/$', assetviews.upload_audiofacet_audio, name='upload_audiofacet_audio'),
+    url(r'^videofacet/audio/new/$', assetviews.upload_videofacet_audio, name='upload_videofacet_audio'),
     url(r'^webfacet/audio/add/$', assetviews.add_webfacet_audio, name='add_webfacet_audio'),
-    # url(r'^printfacet/audio/add/$', assetviews.add_printfacet_audio, name='add_printfacet_audio'),
-    # url(r'^audiofacet/audio/add/$', assetviews.add_audiofacet_audio, name='add_audiofacet_audio'),
-    # url(r'^videofacet/audio/add/$', assetviews.add_videofacet_audio, name='add_videofacet_audio'),
+    url(r'^printfacet/audio/add/$', assetviews.add_printfacet_audio, name='add_printfacet_audio'),
+    url(r'^audiofacet/audio/add/$', assetviews.add_audiofacet_audio, name='add_audiofacet_audio'),
+    url(r'^videofacet/audio/add/$', assetviews.add_videofacet_audio, name='add_videofacet_audio'),
     # Video
     url(r'^webfacet/video/new/$', assetviews.upload_webfacet_video, name='upload_webfacet_video'),
     # url(r'^printfacet/video/new/$', assetviews.upload_printfacet_video, name='upload_printfacet_video'),

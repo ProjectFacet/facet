@@ -4,7 +4,7 @@
 {% load bootstrap3 %}
 
 {% block head %}
-{{ form.media }}
+{{ storyform.media }}
 {% endblock %}
 
 {% block content %}
@@ -12,12 +12,12 @@
 <div class="row particles" id="user-hero">
   <div class="upper-content">
     <div class="col-xs-12 content-upper-75">
-      <h1 class="media-heading text-light center thin uppercase spread-025">Edit: {{ story.name }}</h1>
+      <h1 class="media-heading text-light center thin uppercase spread-025">Edit Story</h1>
     </div>
   </div>
 </div>
 
-<div class="row">
+<div class="row content-lower-10">
   <div class="col-xs-12">
     <div class="row">
     <form method="POST" class="post-form">{% csrf_token %}
@@ -64,6 +64,7 @@
 
       <!-- Right Side -->
       <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+        {% if org_partners %}
         <div class="form-group custom-form">
           <a href="#" data-toggle="tooltip" title="{{ storyform.share.help_text }}"><span class="field-label">{{ storyform.share.label_tag }}</span></a>
           {{ storyform.share }}
@@ -118,6 +119,10 @@
             </div>
           {% endif %}
         </div>
+        {% else %}
+        <span class="field-label">Sharing | Collaboration</span>
+        <p class="tiny-text dark">Start or join a network to enable sharing or collaboration.</p>
+        {% endif %}
         <div class="form-group custom-form">
           <a href="#" data-toggle="tooltip" title="{{ storyform.embargo.help_text }}"><span class="field-label">{{ storyform.embargo.label_tag }}</span></a>
           {{ storyform.embargo }}

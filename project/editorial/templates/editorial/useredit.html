@@ -52,9 +52,10 @@
 </div>
 <!-- End header for xs/xs/md display -->
 
-<form class="post-form" method="POST" enctype="multipart/form-data">{% csrf_token %}
+
 
 <div class="row profile-row">
+  <form class="post-form" method="POST" enctype="multipart/form-data">{% csrf_token %}
   <!-- Left Column -->
   <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
 
@@ -347,9 +348,48 @@
       {% endif %}
     </div>
 
-    <button id="edit-button" class="btn btn-primary" type="submit">{% trans "Save" %}</button>
+    <!-- User status -->
+    {% comment %}
+    {% if request.user.id == user.organization.owner.id %}
+
+    <div class="form-group custom-form">
+      <a href="#" data-toggle="tooltip" title="{{ userform.is_superuser.help_text }}"><span class="field-label">{{ userform.is_superuser.label_tag }}</span></a>
+      {{ userform.is_superuser }}
+      {% if userform.is_superuser.errors %}
+        <div class="alert alert-warning" role="alert">
+        {{ userform.is_superuser.errors }}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="form-group custom-form">
+      <a href="#" data-toggle="tooltip" title="{{ userform.is_staff.help_text }}"><span class="field-label">{{ userform.is_staff.label_tag }}</span></a>
+      {{ userform.is_staff }}
+      {% if userform.is_staff.errors %}
+        <div class="alert alert-warning" role="alert">
+        {{ userform.is_staff.errors }}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="form-group custom-form">
+      <a href="#" data-toggle="tooltip" title="{{ userform.user_type.help_text }}"><span class="field-label">{{ userform.user_type.label_tag }}</span></a>
+      {{ userform.user_type }}
+      {% if userform.user_type.errors %}
+        <div class="alert alert-warning" role="alert">
+        {{ userform.user_type.errors }}
+        </div>
+      {% endif %}
+    </div>
+
+    {% endif %}
+    {% endcomment %}
+
+    <button id="edit-button" class="btn btn-primary" type="submit">{% trans "Save" %}</button></a>
+    </form>
+    <a href="{% url 'user_detail' user.id %}"><button type="submit" class="btn btn-default">Cancel</button>
   </div>
-</form>
+
 
 {% else %}
 <p>You are not authorized to edit this page.</p>

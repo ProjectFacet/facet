@@ -9,7 +9,7 @@ from django.contrib.auth import get_user_model
 from django.forms import Textarea, TextInput, RadioSelect, Select, NumberInput, CheckboxInput, CheckboxSelectMultiple
 from datetimewidget.widgets import DateTimeWidget
 from tinymce.widgets import TinyMCE
-from django.contrib.staticfiles.templatetags.staticfiles import static
+# from django.contrib.staticfiles.templatetags.staticfiles import static
 
 from editorial.models import (
     User,
@@ -73,6 +73,18 @@ class UserProfileForm(forms.ModelForm):
             'expertise': Textarea(attrs={'rows':2}),
         }
 
+class FullUserEditForm(forms.ModelForm):
+    """Form for organization owner or a user to edit a user's full profile."""
+
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'username', 'credit_name', 'title', 'phone', 'email', 'bio', 'location',
+                 'expertise', 'website', 'facebook', 'github', 'twitter', 'linkedin', 'instagram', 'snapchat', 'vine', 'photo',
+                 'password', 'is_superuser', 'is_staff', 'user_type']
+        widgets = {
+            'expertise': Textarea(attrs={'rows':2}),
+        }
+
 # ------------------------------ #
 #      Organization Forms        #
 # ------------------------------ #
@@ -128,10 +140,11 @@ class SeriesForm(forms.ModelForm):
             'collaborate_with': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select', 'id':'collaborate-with'}),
             }
 
-    class Media:
-        css = {'all': (static('css/chosen.min.css'))
-        }
-        js = (static('scripts/chosen.jquery.min.js'))
+    # class Media:
+    #     css = {'all': ('/static/css/chosen.min.css')
+    #     }
+    #     js = ('/static/js/chosen.jquery.min.js')
+
 
 # ------------------------------ #
 #          Story Forms           #
@@ -177,10 +190,11 @@ class StoryForm(forms.ModelForm):
             'series': Select(attrs={'class': 'form-control'}),
         }
 
-    class Media:
-        css = {'all': (static('css/chosen.min.css'))
-        }
-        js = (static('scripts/chosen.jquery.min.js'))
+    # class Media:
+    #     css = {'all': ('/static/css/chosen.min.css')
+    #     }
+    #     js = ('/static/js/chosen.jquery.min.js')
+
 
 # ------------------------------ #
 #          Facet Forms           #
@@ -244,14 +258,16 @@ class WebFacetForm(forms.ModelForm):
             'length': NumberInput(attrs={'class': 'form-control'}),
         }
 
-    class Media:
-        css = {
-            'all': (static('css/bootstrap-datetimepicker.css'), static('css/chosen.min.css'))
-        }
-        js = (static('scripts/chosen.jquery.min.js'),
-         static('scripts/moment.js'),
-         static('scripts/jquery.datetimepicker.js'),
-         static('scripts/bootstrap-datetimepicker.js'),)
+    # class Media:
+    #     css = {
+    #         'all': ('/static/css/bootstrap-datetimepicker.css', '/static/css/chosen.min.css')
+    #     }
+    #     js = ('/static/js/chosen.jquery.min.js',
+    #      '/static/scripts/moment.js',
+    #      '/static/scripts/jquery.datetimepicker.js',
+    #      '/static/scripts/bootstrap-datetimepicker.js',
+    #      '/static/scripts/tiny_mce/tinymce.min.js',)
+
 
 
 class PrintFacetForm(forms.ModelForm):
@@ -311,14 +327,15 @@ class PrintFacetForm(forms.ModelForm):
             'length': NumberInput(attrs={'class': 'form-control'}),
         }
 
-    class Media:
-        css = {
-            'all': (static('css/bootstrap-datetimepicker.css'), static('css/chosen.min.css'))
-        }
-        js = (static('scripts/chosen.jquery.min.js'),
-         static('scripts/moment.js'),
-         static('scripts/jquery.datetimepicker.js'),
-         static('scripts/bootstrap-datetimepicker.js'),)
+    # class Media:
+    #     css = {
+    #         'all': ('/static/css/bootstrap-datetimepicker.css', '/static/css/chosen.min.css')
+    #     }
+    #     js = ('/static/scripts/chosen.jquery.min.js',
+    #      '/static/scripts/moment.js',
+    #      '/static/scripts/jquery.datetimepicker.js',
+    #      '/static/scripts/bootstrap-datetimepicker.js',
+    #      '/static/scripts/tiny_mce/tinymce.min.js',)
 
 
 class AudioFacetForm(forms.ModelForm):
@@ -378,14 +395,16 @@ class AudioFacetForm(forms.ModelForm):
             'length': NumberInput(attrs={'class': 'form-control'}),
         }
 
-    class Media:
-        css = {
-            'all': (static('css/bootstrap-datetimepicker.css'), static('css/chosen.min.css'))
-        }
-        js = (static('scripts/chosen.jquery.min.js'),
-         static('scripts/moment.js'),
-         static('scripts/jquery.datetimepicker.js'),
-         static('scripts/bootstrap-datetimepicker.js'),)
+    # class Media:
+    #     css = {
+    #         'all': ('/static/css/bootstrap-datetimepicker.css', '/static/css/chosen.min.css')
+    #     }
+    #     js = ('/static/js/chosen.jquery.min.js',
+    #      '/static/scripts/moment.js',
+    #      '/static/scripts/jquery.datetimepicker.js',
+    #      '/static/scripts/bootstrap-datetimepicker.js',
+    #      '/static/scripts/tiny_mce/tinymce.min.js',)
+
 
 
 class VideoFacetForm(forms.ModelForm):
@@ -445,14 +464,15 @@ class VideoFacetForm(forms.ModelForm):
             'length': NumberInput(attrs={'class': 'form-control'}),
         }
 
-    class Media:
-        css = {
-            'all': (static('css/bootstrap-datetimepicker.css'), static('css/chosen.min.css'))
-        }
-        js = (static('scripts/chosen.jquery.min.js'),
-         static('scripts/moment.js'),
-         static('scripts/jquery.datetimepicker.js'),
-         static('scripts/bootstrap-datetimepicker.js'),)
+    # class Media:
+    #     css = {
+    #         'all': ('/static/css/bootstrap-datetimepicker.css', '/static/css/chosen.min.css')
+    #     }
+    #     js = ('/static/scripts/chosen.jquery.min.js',
+    #      '/static/scripts/moment.js',
+    #      '/static/scripts/jquery.datetimepicker.js',
+    #      '/static/scripts/bootstrap-datetimepicker.js',
+    #      '/static/scripts/tiny_mce/tinymce.min.js',)
 
 
 # ------------------------------ #
@@ -596,6 +616,13 @@ class AddVideoForm(forms.Form):
 
 class PrivateMessageForm(forms.ModelForm):
     """ Message form for private messages. """
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request")
+        super(PrivateMessageForm, self).__init__(*args, **kwargs)
+        if self.request.user.organization:
+            self.fields['recipient'].queryset = User.get_user_contact_list(self.request.user)
+
 
     class Meta:
         model = PrivateMessage
