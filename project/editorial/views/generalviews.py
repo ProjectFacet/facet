@@ -7,7 +7,7 @@ from django.http import HttpResponse
 from django.utils import timezone
 from django.views.generic import TemplateView , UpdateView, DetailView
 from django.views.decorators.csrf import csrf_exempt
-import datetime, time
+from datetime import datetime, timedelta, time
 import json
 
 # All imports are included for use in test view
@@ -112,22 +112,52 @@ def dashboard(request):
     Displays log of other user activity since last_login
     Ex: Oliver Q. added "Dhark Indicted" to Story: "Star City Organized Crime Leader Arrested"
     """
+    # establish timeliness of content
+    today = timezone.now().date()
+    tomorrow = today + timedelta(1)
+    today_start = datetime.combine(today, time())
+    today_end = datetime.combine(tomorrow, time())
+
     # query for new comments since last_login from any discussions the user has participated in
     recent_comments = User.recent_comments(request.user)
     # if no new comments, display 10 most recent older comments
     older_comments = User.inbox_comments(request.user)[:10]
+    all_comments = Comment.objects.all()[:10]
     # query for any new content created since last_login
     new_stories = Story.objects.filter(creation_date__gte=request.user.last_login)[:8]
     # if no new stories, display 10 most recent stories
     old_stories = Story.objects.filter(organization = request.user.organization)[:10]
+    # facets where run_date=today
+    running_today = []
+    webfacet_run_today = WebFacet.objects.filter(run_date__range=(today_start, today_end))
+    printfacet_run_today = PrintFacet.objects.filter(run_date__range=(today_start, today_end))
+    audiofacet_run_today = AudioFacet.objects.filter(run_date__range=(today_start, today_end))
+    videofacet_run_today = VideoFacet.objects.filter(run_date__range=(today_start, today_end))
+    running_today.extend(webfacet_run_today)
+    running_today.extend(printfacet_run_today)
+    running_today.extend(audiofacet_run_today)
+    running_today.extend(videofacet_run_today)
+    # facets where due_edit=today
+    edit_today = []
+    webfacet_edit_today = WebFacet.objects.filter(due_edit__range=(today_start, today_end))
+    printfacet_edit_today = PrintFacet.objects.filter(due_edit__range=(today_start, today_end))
+    audiofacet_edit_today = AudioFacet.objects.filter(due_edit__range=(today_start, today_end))
+    videofacet_edit_today = VideoFacet.objects.filter(due_edit__range=(today_start, today_end))
+    edit_today.extend(webfacet_edit_today)
+    edit_today.extend(printfacet_edit_today)
+    edit_today.extend(audiofacet_edit_today)
+    edit_today.extend(videofacet_edit_today)
 
     # TODO: query for other user activity since last_login
 
     return render(request, 'editorial/dashboard.html', {
         'recent_comments': recent_comments,
         'older_comments': older_comments,
+        'all_comments': all_comments,
         'new_stories': new_stories,
         'old_stories': old_stories,
+        'running_today': running_today,
+        'edit_today': edit_today,
     })
 
 #----------------------------------------------------------------------#

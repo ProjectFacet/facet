@@ -3,125 +3,356 @@
 {% load i18n %}
 {% load bootstrap3 %}
 
+<!-------------------------------------------->
+<!--      BREADCRUMB NAVIGATION             -->
+<!-------------------------------------------->
+
+{% block breadcrumb %}
+<div>
+    <ol class="breadcrumb icon-angle-right icon-th">
+        <li class="fadeIn"> Home </li>
+        <li class="fadeIn"> Dashboard </li>
+    </ol>
+</div>
+{% endblock breadcrumb %}
+
+<!-------------------------------------------->
+<!--            Main Section                -->
+<!-------------------------------------------->
+
 {% block content %}
+    <!-- Row One -->
+    <div class="row m-b-40">
+        <!-- Left Column -->
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+          <div class="bs-nav-tabs nav-tabs-primary">
+              <ul class="nav nav-tabs nav-animated-border-from-left">
+                  <!-- <li class="nav-item"> <a ng-href="" class="nav-link active" data-toggle="tab" data-target="#activity-tab">Activity</a> </li> -->
+                  <li class="nav-item"> <a ng-href="" class="nav-link" data-toggle="tab" data-target="#discussion-tab">Discussion</a> </li>
+              </ul>
+              <div class="tab-content">
+                  <!-- <div role="tabpanel" class="tab-pane in active" id="activity-tab">
+                    Activity Feed
+                    <div class="m-b-20">
+                        <div class="activity-widget-3">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="media">
+                                        <a class="media-left"> <img class="media-object img-circle h-40 w-40" alt="User" src="{{ request.user.display_photo.url }}"> </a>
+                                        <div class="media-body">
+                                            <h5>Abe created a new Story Local election candidate profiles</h5>
+                                            <p class="text-muted">A few seconds ago</p>
+                                        </div>
+                                        <div class="media-right"><i class="fa fa-plus color-success" aria-hidden="true"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="media">
+                                        <a class="media-left"> <img class="media-object img-circle h-40 w-40" alt="User" src="{{ request.user.display_photo.url }}"> </a>
+                                        <div class="media-body">
+                                            <h5>Christina updated WebFacet New research shows changing dependence on subsistence hunting.</h5>
+                                            <p class="text-muted">2 hours ago</p>
+                                        </div>
+                                        <div class="media-right"><i class="fa fa-refresh color-default" aria-hidden="true"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="media">
+                                        <a class="media-left"> <img class="media-object img-circle h-40 w-40" alt="User" src="{{ request.user.display_photo.url }}"> </a>
+                                        <div class="media-body">
+                                            <h5>Victoria edited VideoFacet Fisherman speak out following trial</h5>
+                                            <p class="text-muted">3 hours ago</p>
+                                        </div>
+                                        <div class="media-right"><i class="fa fa-pencil color-warning" aria-hidden="true"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="media">
+                                        <a class="media-left"> <img class="media-object img-circle h-40 w-40" alt="User" src="{{ request.user.display_photo.url }}"> </a>
+                                        <div class="media-body">
+                                            <h5>Katie archived story Gravitational Waves finally observed </h5>
+                                            <p class="text-muted">4 hours ago</p>
+                                        </div>
+                                        <div class="media-right"><i class="fa fa-minus color-danger" aria-hidden="true"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="media">
+                                        <a class="media-left"> <img class="media-object img-circle h-40 w-40" alt="User" src="{{ request.user.display_photo.url }}"> </a>
+                                        <div class="media-body">
+                                            <h5>Alex uploaded graphics to WebFacet How researchers use traditional place names and knowledge</h5>
+                                            <p class="text-muted">5 hours ago</p>
+                                        </div>
+                                        <div class="media-right"><i class="fa fa-upload color-info" aria-hidden="true"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                  </div> -->
+                  <div role="tabpanel" class="tab-pane in active" id="discussion-tab">
+                    <div class="m-b-20">
+                        <div class="activity-widget-3">
+                            {% for comment in all_comments %}
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <div class="media">
+                                        <a class="media-left">
+                                          {% if comment.user.display_photo %}
+                                            <img class="media-object img-circle h-40 w-40" src="{{ comment.user.display_photo.url }}" alt="user">
+                                          {% else %}
+                                            <p class="f-w-300 f-s-12">{{ comment.user.first_name }}</p>
+                                          {% endif %}
+                                        </a>
+                                        <div class="media-body">
+                                            <p class="f-w-300 f-s-16">{{ comment.text }}</p>
+                                            <p class="f-w-400 f-s-12">
+                                              {% if comment.discussion.organization_discussion.all %}
+                                                {% for organization in comment.discussion.organization_discussion.all %}
+                                                  <a href="{% url 'org_detail' pk=organization.id %}"> {{ organization.type }} - {{ organization.name }}<span class="color-default">  |  {{ comment.date|date:'N j' }} at {{ comment.date|date:'g:i a' }} </span></a>
+                                                {% endfor %}
+                                              {% elif comment.discussion.network_discussion.all %}
+                                                {% for network in comment.discussion.network_discussion.all %}
+                                                  <a href="{% url 'network_detail' pk=network.id %}"> {{ network.type }} - {{ network.name }}<span class="color-default">  |  {{ comment.date|date:'N j' }} at {{ comment.date|date:'g:i a' }} </span></a>
+                                                {% endfor %}
+                                              {% elif comment.discussion.series_set.all %}
+                                                {% for series in comment.discussion.series_set.all %}
+                                                  <a href="{% url 'series_detail' pk=series.id %}"> {{ series.type }} - {{ series.name }}<span class="color-default">  |  {{ comment.date|date:'N j' }} at {{ comment.date|date:'g:i a' }} </span></a>
+                                                {% endfor %}
+                                              {% elif comment.discussion.story_set.all %}
+                                                {% for story in comment.discussion.story_set.all %}
+                                                  <a href="{% url 'story_detail' pk=story.id %}"> {{ story.type }} - {{ story.name }}<span class="color-default">  |  {{ comment.date|date:'N j' }} at {{ comment.date|date:'g:i a' }} </span></a>
+                                                {% endfor %}
+                                              {% elif comment.discussion.webfacet_set.all %}
+                                                {% for webfacet in comment.discussion.webfacet_set.all %}
+                                                  <a href="{% url 'story_detail' pk=webfacet.story.id %}#web"> {{ webfacet.type }} - {{ webfacet.title }}<span class="color-default">  |  {{ comment.date|date:'N j' }} at {{ comment.date|date:'g:i a' }} </span></a>
+                                                {% endfor %}
+                                              {% elif comment.discussion.printfacet_set.all %}
+                                                {% for printfacet in comment.discussion.printfacet_set.all %}
+                                                  <a href="{% url 'story_detail' pk=printfacet.story.id %}#print"> {{ printfacet.type }} - {{ printfacet.title }}<span class="color-default">  |  {{ comment.date|date:'N j' }} at {{ comment.date|date:'g:i a' }} </span></a>
+                                                {% endfor %}
+                                              {% elif comment.discussion.audiofacet_set.all %}
+                                                {% for audiofacet in comment.discussion.audiofacet_set.all %}
+                                                  <a href="{% url 'story_detail' pk=audiofacet.story.id %}#audio"> {{ audiofacet.type }} - {{ audiofacet.title }}<span class="color-default">  |  {{ comment.date|date:'N j' }} at {{ comment.date|date:'g:i a' }} </span></a>
+                                                {% endfor %}
+                                              {% elif comment.discussion.videofacet_set.all %}
+                                                {% for videofacet in comment.discussion.videofacet_set.all %}
+                                                  <a href="{% url 'story_detail' pk=videofacet.story.id %}#video"> {{ videofacet.type }} - {{ videofacet.title }}<span class="color-default">  |  {{ comment.date|date:'N j' }} at {{ comment.date|date:'g:i a' }} </span></a>
+                                                {% endfor %}
+                                              {% endif %}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                  </div>
+              </div>
+          </div>
+        </div>
 
-<div class="row">
-  <!-- RIGHT SIDE -->
-  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-md-push-6 col-lg-push-6" id="dashboard-right">
-    <a href="#" data-toggle="tooltip" title="Recent Stories"><label class="field-label">Recent Stories</label></a>
+        <!-- Right Column -->
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+          <div class="bs-nav-tabs nav-tabs-success">
+              <ul class="nav nav-tabs nav-animated-border-from-left">
+                  <li class="nav-item"> <a ng-href="" class="nav-link active" data-toggle="tab" data-target="#stories-running">Running Today</a> </li>
+                  <li class="nav-item"> <a ng-href="" class="nav-link" data-toggle="tab" data-target="#stories-new">New Stories</a> </li>
+                  <li class="nav-item"> <a ng-href="" class="nav-link" data-toggle="tab" data-target="#stories-edit">Due for Edit</a> </li>
+              </ul>
+              <div class="tab-content">
+                  <div role="tabpanel" class="tab-pane in active p-t-0" id="stories-running">
+                    <!-- Full table for md and lg displays -->
+                    <table class="table table-hover m-t-5" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Platform</th>
+                                <th>Credit</th>
+                                <th>Time</th>
+                            </tr>
+                        </thead>
+                        <tfoot class="hidden">
+                            <tr>
+                              <th>Title</th>
+                              <th>Type</th>
+                              <th>Credit</th>
+                              <th>Time</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                          {% for facet in running_today|slice:":7" %}
+                            <tr>
+                                <td>
+                                  {% if facet.type == "WebFacet" %}
+                                  <a href="{% url 'story_detail' pk=facet.story.id %}#web">
+                                  {% elif facet.type == "PrintFacet" %}
+                                  <a href="{% url 'story_detail' pk=facet.story.id %}#print">
+                                  {% elif facet.type == "AudioFacet" %}
+                                  <a href="{% url 'story_detail' pk=facet.story.id %}#audio">
+                                  {% elif facet.type == "VideoFacet" %}
+                                  <a href="{% url 'story_detail' pk=facet.story.id %}#video">
+                                  {% else %}
+                                  <a href="#">
+                                  {% endif %}{{ facet.title }}</a>
+                                </td>
+                                <td>{{ facet.type }}</td>
+                                <td>{{ facet.credit.all.0.credit_name }}</td>
+                                <td>{{ facet.run_date|date:'g:i a'}}</td>
+                            </tr>
+                          {% endfor %}
+                    </table>
+                    <!-- End full table -->
+                    <!-- Partial table for xs and sm displays -->
+                    {% comment %}
+                    <!-- <table class="table table-responsive table-hover visible-xs-inline visible-sm-inline hidden-md-inline hidden-lg-inline" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Platform</th>
+                                <th>Time</th>
+                            </tr>
+                        </thead>
+                        <tfoot class="hidden">
+                            <tr>
+                              <th>Title</th>
+                              <th>Type</th>
+                              <th>Time</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                          {% for facet in running_today %}
+                            <tr>
+                                <td>
+                                  {% if facet.type == "WebFacet" %}
+                                  <a href="{% url 'story_detail' pk=facet.story.id %}#web">
+                                  {% elif facet.type == "PrintFacet" %}
+                                  <a href="{% url 'story_detail' pk=facet.story.id %}#print">
+                                  {% elif facet.type == "AudioFacet" %}
+                                  <a href="{% url 'story_detail' pk=facet.story.id %}#audio">
+                                  {% elif facet.type == "VideoFacet" %}
+                                  <a href="{% url 'story_detail' pk=facet.story.id %}#video">
+                                  {% else %}
+                                  <a href="#">
+                                  {% endif %}{{ facet.title }}</a>
+                                </td>
+                                <td>{{ facet.type }}</td>
+                                <td>{{ facet.run_date|date:'g:i a'}}</td>
+                            </tr>
+                          {% endfor %}
+                    </table> -->
+                    <!-- End partial table -->
+                    {% endcomment %}
 
-    <!-- Full table for md and lg displays -->
-    <table class="table table-condensed hidden-xs hidden-sm visible-md visible-lg">
-      <thead>
-        <tr>
-          <th>Story</th>
-          <th>Series</th>
-          <th>Owner</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for story in old_stories %}
-        <tr>
-          <td><a href="{% url 'story_detail' story.id %}">{{ story.name }}</a></td>
-          <td>{% if story.series %} <a href="{% url 'series_detail' story.series.id %}">{{ story.series.name }}</a>{% endif %}</td>
-          <td>{{ story.owner.credit_name }}</td>
-          <td>{{ story.story_description }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    <!-- End full table -->
+                  </div>
+                  <div role="tabpanel" class="tab-pane p-t-0" id="stories-new">
+                    <table class="table table-hover m-t-5" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>Story</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tfoot class="hidden">
+                            <tr>
+                              <th>Title</th>
+                              <th>Description</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                          {% for story in old_stories|slice:":5" %}
+                            <tr>
+                              <td><a href="{% url 'story_detail' story.id %}">{{ story.name }}</a></td>
+                              <td>{{ story.story_description }}</td>
+                            </tr>
+                          {% endfor %}
+                        </tbody>
+                    </table>
+                    <a href="{% url 'story_list' %}" title="View Story List"><p class="f-w-300 f-s-12 p-l-10">All Stories</p></a>
+                  </div>
+                  <div role="tabpanel" class="tab-pane p-t-0" id="stories-edit">
+                    <table class="table table-hover m-t-0 table-condensed" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Platform</th>
+                                <th>Credit</th>
+                                <th>Due</th>
+                            </tr>
+                        </thead>
+                        <tfoot class="hidden">
+                            <tr>
+                              <th>Title</th>
+                              <th>Type</th>
+                              <th>Credit</th>
+                              <th>Due</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                          {% for facet in edit_today|slice:":7" %}
+                            <tr>
+                                <td>
+                                  {% if facet.type == "WebFacet" %}
+                                  <a href="{% url 'story_detail' pk=facet.story.id %}#web">
+                                  {% elif facet.type == "PrintFacet" %}
+                                  <a href="{% url 'story_detail' pk=facet.story.id %}#print">
+                                  {% elif facet.type == "AudioFacet" %}
+                                  <a href="{% url 'story_detail' pk=facet.story.id %}#audio">
+                                  {% elif facet.type == "VideoFacet" %}
+                                  <a href="{% url 'story_detail' pk=facet.story.id %}#video">
+                                  {% else %}
+                                  <a href="#">
+                                  {% endif %}{{ facet.title }}</a>
+                                </td>
+                                <td>{{ facet.type }}</td>
+                                <td>{{ facet.credit.all.0.credit_name }}</td>
+                                <td>{{ facet.due_edit|date:'g:i a'}}</td>
+                            </tr>
+                          {% endfor %}
+                    </table>
+                  </div>
+              </div>
+          </div>
+        </div> <!-- End of Right Column -->
 
-    <!-- Partial table for xs and sm displays -->
-    <table class="table table-condensed visible-xs visible-sm hidden-md hidden-lg">
-      <thead>
-        <tr>
-          <th>Story</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for story in old_stories %}
-        <tr>
-          <td><a href="{% url 'story_detail' story.id %}">{{ story.name }}</a></td>
-          <td>{{ story.story_description }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    <!-- End partial table -->
+    </div> <!-- End of Row One -->
 
-  </div>
-  <!-- END RIGHT SIDE -->
+    <!-- Row Two -->
+    <div class="row m-b-40">
+        <h4 class="m-l-10 m-b-20"> Partnerships</h4>
+        <!-- Left Column -->
+        <div class="col-xs-12 col-lg-6">
+              <h5 class="text-center">New Network Stories</h5>
+              <ul class="list-group m-10">
+                  <li class="list-group-item"> <span class="text-xs pull-right">Wolf Media</span> Michael Smith upgraded to the $50 plan</li>
+                  <li class="list-group-item"> <span class="text-xs pull-right">Arctic Times</span> Jane Perez cancelled the $25 plan</li>
+                  <li class="list-group-item"> <span class="text-xs pull-right">International Times</span> George Clinton from Facebook upgraded to the $25 plan</li>
+                  <li class="list-group-item"> <span class="text-xs pull-right">Cold Snap</span> Someone from Google cancelled the $25 plan</li>
+                  <li class="list-group-item"> <span class="text-xs pull-right">Wolf Media</span> Lucas Smith upgraded to the $25 plan</li>
+              </ul>
+        </div>
 
-  <!-- LEFT SIDE ON md/lg -->
-  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 col-md-pull-6 col-lg-pull-6" id="dashboard-left">
-    <a href="#" data-toggle="tooltip" title="Recent Comments"><label class="field-label">Recent Comments</label></a>
-    <div class="dashboard-comments panel-body right-rule">
-      <div data-toggle="slimScroll" style="height:565px" data-color="#5D9CEC" data-allow-page-scroll="false">
-          <table class="table table-condensed">
-            <tbody>
-              {% for comment in older_comments %}
-              <tr>
-                <td class="comment-td">{{ comment.text }}<br>
-                  <p class="tiny-text pad-5">
-                    {% if comment.discussion.organization_discussion.all %}
-                      {% for organization in comment.discussion.organization_discussion.all %}
-                        <a href="{% url 'org_detail' pk=organization.id %}">{{ organization.type }} - {{ organization.name }}  |  {{ comment.date|date:'n/j' }} at {{ comment.date|date:'g:i a' }}</a>
-                      {% endfor %}
-                    {% elif comment.discussion.network_discussion.all %}
-                      {% for network in comment.discussion.network_discussion.all %}
-                        <a href="{% url 'network_detail' pk=network.id %}">{{ network.type }} - {{ network.name }}  |  {{ comment.date|date:'n/j' }} at {{ comment.date|date:'g:i a' }}</a>
-                      {% endfor %}
-                    {% elif comment.discussion.series_set.all %}
-                      {% for series in comment.discussion.series_set.all %}
-                        <a href="{% url 'series_detail' pk=series.id %}">{{ series.type }} - {{ series.name }}  |  {{ comment.date|date:'n/j' }} at {{ comment.date|date:'g:i a' }}</a>
-                      {% endfor %}
-                    {% elif comment.discussion.story_set.all %}
-                      {% for story in comment.discussion.story_set.all %}
-                        <a href="{% url 'story_detail' pk=story.id %}">{{ story.type }} - {{ story.name }}  |  {{ comment.date|date:'n/j' }} at {{ comment.date|date:'g:i a' }}</a>
-                      {% endfor %}
-                    {% elif comment.discussion.webfacet_set.all %}
-                      {% for webfacet in comment.discussion.webfacet_set.all %}
-                        <a href="{% url 'story_detail' pk=webfacet.story.id %}#web">{{ webfacet.type }} - {{ webfacet.title }}  |  {{ comment.date|date:'n/j' }} at {{ comment.date|date:'g:i a' }}</a>
-                      {% endfor %}
-                    {% elif comment.discussion.printfacet_set.all %}
-                      {% for printfacet in comment.discussion.printfacet_set.all %}
-                        <a href="{% url 'story_detail' pk=printfacet.story.id %}#print">{{ printfacet.type }} - {{ printfacet.title }}  |  {{ comment.date|date:'n/j' }} at {{ comment.date|date:'g:i a' }}</a>
-                      {% endfor %}
-                    {% elif comment.discussion.audiofacet_set.all %}
-                      {% for audiofacet in comment.discussion.audiofacet_set.all %}
-                        <a href="{% url 'story_detail' pk=audiofacet.story.id %}#audio">{{ audiofacet.type }} - {{ audiofacet.title }}  |  {{ comment.date|date:'n/j' }} at {{ comment.date|date:'g:i a' }}</a>
-                      {% endfor %}
-                    {% elif comment.discussion.videofacet_set.all %}
-                      {% for videofacet in comment.discussion.videofacet_set.all %}
-                        <a href="{% url 'story_detail' pk=videofacet.story.id %}#video">{{ videofacet.type }} - {{ videofacet.title }}  |  {{ comment.date|date:'n/j' }} at {{ comment.date|date:'g:i a' }}</a>
-                      {% endfor %}
-                    {% endif %}
-                  <p>
-                  </td>
-                <!-- <td><p class="tiny-text"> {{ comment.date|date:'n/j' }}<br/>{{ comment.date|date:'g:i a' }}</p></td> -->
-                <td>
-                  {% if comment.user.display_photo %}
-                  <img class="media-object img-circle" width="32" src="{{ comment.user.display_photo.url }}" alt="user">
-                  {% else %}
-                  {% endif %}
-                  <p class="tiny-text">{{ comment.user.first_name }}</p>
-                </td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
-      </div>
-    </div>
-    <!-- <hr>
-    <div class="activity-stream">
-      <a href="#" data-toggle="tooltip" title="Recent Activity"><label class="field-label">Recent Activity</label></a>
+        <!-- Right Column -->
+        <div class="col-xs-12 col-lg-6">
+              <h5 class="text-center">Criterion News Stories Picked up by Partners</h5>
+              <ul class="list-group">
+                  <li class="list-group-item"> <span class="text-xs pull-right">Arctic Times</span> Michael Smith upgraded to the $50 plan</li>
+                  <li class="list-group-item"> <span class="text-xs pull-right">Arctic Times</span> Jane Perez cancelled the $25 plan</li>
+                  <li class="list-group-item"> <span class="text-xs pull-right">Wolf Media</span> George Clinton from Facebook upgraded to the $25 plan</li>
+                  <li class="list-group-item"> <span class="text-xs pull-right">Cold Snap</span> Someone from Google cancelled the $25 plan</li>
+                  <li class="list-group-item"> <span class="text-xs pull-right">Wolf Media</span> Lucas Smith upgraded to the $25 plan</li>
+              </ul>
+        </div>
 
+    </div><!-- End of Row Twoe -->
 
-    </div> -->
-  </div>
-  <!-- END LEFT SIDE -->
-
-{% endblock %}
+    {% endblock content %}
