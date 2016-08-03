@@ -41,6 +41,17 @@ def series_list(request):
     return render(request, 'editorial/serieslist.html', {'series': series})
 
 
+def series_json(request):
+    """Displays JSON of series that a story can be a part of."""
+
+    series_list = Series.objects.filter(organization=request.user.organization)
+    series = {}
+    for item in series_list:
+        series[item.id]=item.name
+    print series
+    return HttpResponse(json.dumps(series), content_type = "application/json")
+
+
 def series_new(request):
     """ A logged in user can create a series.
 

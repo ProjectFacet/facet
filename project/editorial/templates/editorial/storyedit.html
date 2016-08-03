@@ -170,7 +170,227 @@
   </div>
 </div>
 
+{% comment %}
+<hr class="dark">
+
+<h2>X-editable Experiment</h2>
+
+<div class="row content-lower-10">
+  <div class="col-xs-12">
+    <div class="row">
+      {% csrf_token %}
+
+      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+        <!-- Left Side -->
+        <div class="form-group custom-form">
+          <p class="label">Story: </p>
+          <a href="#" id="storyname" data-type="text" data-pk="1" data-title="Enter story name">{{story.name}}</a>
+        </div>
+        <div class="form-group custom-form">
+          <p class="label">Description: </p>
+          <a href="#" id="storydescription" data-type="textarea" data-pk="1" data-placeholder="Description" data-title="Enter Description">{{ story.story_description }}</a>
+        </div>
+        <div class="form-group custom-form">
+          <p class="label">Series: </p>
+          <a href="#" id="storyseries" data-type="select" data-pk="1" data-value="5" data-source="{% url 'series_json' %}" data-title="Select series">{{ story.series }}</a>
+        </div>
+        <div class="form-group custom-form">
+          <p class="label">Team: </p>
+          <a href="#" id="storyteam" data-type="select2" data-pk="1" data-title="Enter tags">
+              {% if story.team.all %}
+                {% for teammember in story.team.all %}
+                  {{teammember.credit_name}}
+                {% endfor %}
+              {% else %}
+              <span class="medium-text dark">Select Team</span>
+              {% endif %}
+          </a>
+
+        </div>
+        <div class="form-group custom-form">
+          <span class="label">Sensitive: </span> <a href="#" id="storysensitive">{{ story.sensitive }}</a>
+        </div>
+        <div class="form-group custom-form">
+          <span class="label">Archive: </span> <a href="#" id="storyarchive">{{ story.archived }}</a>
+        </div>
+      </div>
+
+      <!-- Right Side -->
+      <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+        {% if org_partners %}
+        <div class="form-group custom-form">
+          <span class="label">Share: </span><a href="#" id="storyshare">
+            {% if story.share == True %} Shared</i>{% else %}Not Shared{% endif %}
+          </a>
+        </div>
+        <div class="form-group custom-form">
+          <span class="label">Ready to Share: </span> <a href="#" id="storyreadytoshare">{{ story.ready_to_share }}</a>
+        </div>
+        <div class="form-group custom-form">
+          <span class="label">Share With: </span>
+          <a href="#" id="storysharewith" data-type="select2" data-pk="1" data-title="Select partners to share with:">
+            {% for partner in story.share_with.all %}
+              {{partner.name}}
+            {% endfor %}
+          </a>
+        </div>
+        <div class="form-group custom-form">
+          <span class="label">Share Date: </span> <a href="#" id="storysharedate" data-type="combodate" data-template="D MMM YYYY  HH:mm" data-format="YYYY-MM-DD HH:mm" data-viewformat="MMM D, YYYY, HH:mm" data-pk="1"  data-title="Set share date">
+            {{ story.share_with_date }}
+          </a>
+        </div>
+        <div class="form-group custom-form">
+          <span class="label">Collaborate: </span> <a href="#" id="storycollaborate">{{ story.collaborate }}</a>
+        </div>
+        <div class="form-group custom-form">
+          <span class="label">Collaborate With: </span>
+          <a href="#" id="storycollaboratewith" data-type="select2" data-pk="1" data-title="Select partners to collaborate with:">
+            {% if story.collaborate_with.all %}
+              {% for partner in story.collaborate_with.all %}
+                {{partner.name}}
+              {% endfor %}
+            {% else %}
+            <span class="medium-text dark">Click to add collaborators</span>
+            {% endif %}
+          </a>
+        </div>
+        {% else %}
+        <span class="label">Sharing | Collaboration</span>
+        <p class="tiny-text dark">Start or join a network to enable sharing or collaboration.</p>
+        {% endif %}
+        <div class="form-group custom-form">
+          <span class="label">Embargo: </span> <a href="#" id="storyembargo">{{ story.embargo }}</a>
+        </div>
+        <div class="form-group custom-form">
+          <span class="label">Embargo Date: </span> <a href="#" id="storyembargodate" data-type="combodate" data-template="D MMM YYYY  HH:mm" data-format="YYYY-MM-DD HH:mm" data-viewformat="MMM D, YYYY, HH:mm" data-pk="1"  data-title="Set embargo lift date">{{ story.embargo_datetime }}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endcomment %}
+
+
+
+
+
 <script>
 $(".chosen-select").chosen()
 </script>
+
+<script>
+// mode
+  $.fn.editable.defaults.mode = 'inline';
+
+  //editables
+  $('#storyname').editable();
+
+  $('#storydescription').editable({
+    showbuttons: 'bottom'
+  });
+
+  $('#storyseries').editable({
+       showbuttons: false
+    });
+
+// {% url "story_team_options_json" pk=story.id %}
+
+  $('#storyteam').editable({
+    inputclass: 'input-large',
+    select2: {
+        width: 300,
+        tags: ["Abe", "Madison", "Victoria", "Garrett", "Katie"],
+        placeholder: 'Select team',
+        tokenSeparators: [",", " "]
+    }
+  });
+
+  $('#storyshare').editable({
+    type: 'checklist',
+    url: '',
+    pk: 1,
+    placement: 'right',
+    title: 'Check to Share',
+    source: {'1': 'Shared'},
+    emptytext: 'Not Shared'
+  });
+
+  $('#storyreadytoshare').editable({
+    type: 'checklist',
+    url: '',
+    pk: 1,
+    placement: 'right',
+    title: 'Check to Share',
+    source: {'1': 'Ready'},
+    emptytext: 'Not Ready'
+  });
+
+  $('#storysharewith').editable({
+    inputclass: 'input-large',
+    select2: {
+        tags: ['html', 'javascript', 'css', 'ajax'],
+        tokenSeparators: [",", " "]
+    }
+  });
+
+  $('#storysharedate').editable({
+    placement: 'right',
+    combodate: {
+      firstItem: 'name'
+    }
+  });
+
+  $('#storycollaborate').editable({
+    type: 'checklist',
+    url: '',
+    pk: 1,
+    placement: 'right',
+    title: 'Check to Share',
+    source: {'1': 'Collaborate'},
+    emptytext: 'Not Collaborative'
+  });
+
+  $('#storycollaboratewith').editable({
+    inputclass: 'input-large',
+    select2: {
+        tags: ['html', 'javascript', 'css', 'ajax'],
+        tokenSeparators: [",", " "]
+    }
+  });
+
+  $('#storyembargo').editable({
+    type: 'checklist',
+    url: '',
+    pk: 1,
+    placement: 'right',
+    title: 'Check to Share',
+    source: {'1': 'Embargoed'},
+    emptytext: 'No Embargo'
+  });
+
+  $('#storyembargodate').editable();
+
+  $('#storysensitive').editable({
+    type: 'checklist',
+    url: '',
+    pk: 1,
+    placement: 'right',
+    title: 'Check to Share',
+    source: {'1': 'Sensitive'},
+    emptytext: 'Not Sensitive'
+  });
+
+  $('#storyarchive').editable({
+    type: 'checklist',
+    url: '',
+    pk: 1,
+    placement: 'right',
+    title: 'Check to Share',
+    source: {'1': 'Archived'},
+    emptytext: 'Active'
+  });
+
+</script>
+
+
 {% endblock %}

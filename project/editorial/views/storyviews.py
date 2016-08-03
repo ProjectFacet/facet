@@ -134,6 +134,23 @@ def story_delete(request, pk):
     return redirect('story_list')
 
 
+def story_team_options_json(request, pk):
+    """Returns JSON of team members that can be assigned to a story."""
+
+    story = get_object_or_404(Story, pk=pk)
+    print story
+
+    team = Story.get_story_team(story)
+    story_team = {}
+    for item in team:
+        story_team[item.id]=item.credit_name
+    print story_team
+    return HttpResponse(json.dumps(story_team), content_type = "application/json")
+
+
+
+
+
 def story_detail(request, pk):
     """ The detail page for a story.
 
@@ -511,3 +528,32 @@ def story_detail(request, pk):
         'webfacet_videoform': webfacet_videoform,
         'webfacet_video': webfacet_video,
         })
+
+
+#--------------------Prelim Test Views---------------------------------#
+#----------------------------------------------------------------------#
+#                Edit Views
+#----------------------------------------------------------------------#
+
+    # ------------------------------ #
+    #            Story               #
+    # ------------------------------ #
+
+    # def update_story_name(request,pk):
+    #     """updates story name."""
+
+    # ------------------------------ #
+    #            Webfacet            #
+    # ------------------------------ #
+
+    # ------------------------------ #
+    #           Printfacet           #
+    # ------------------------------ #
+
+    # ------------------------------ #
+    #           Audiofacet           #
+    # ------------------------------ #
+
+    # ------------------------------ #
+    #           Videofacet           #
+    # ------------------------------ #
