@@ -11,7 +11,15 @@ var colors = {
     'light': '#f5f5f5',
     'dark': '#262932',
     'white': '#ffffff',
-    'black': '#000000'
+    'black': '#000000',
+    'darker': '#262932',
+    'medium': '#38414f',
+    'lighter': '#474d5d',
+    'darkgrey': '#252525',
+    'mediumgrey': '#505050',
+    'lightgrey': '#757575',
+    'lightergrey': '#d5d5d5',
+    'lightestgrey': '#fafafa',
 };
 
 var palette1 = {

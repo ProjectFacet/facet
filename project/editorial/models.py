@@ -33,7 +33,7 @@ from django.db.models import Q
 from django.contrib.postgres.fields import ArrayField
 from simple_history.models import HistoricalRecords
 from model_utils.models import TimeStampedModel
-from datetime import timedelta
+from datetime import datetime, timedelta, time
 from imagekit.models import ProcessedImageField, ImageSpecField
 from pilkit.processors import ResizeToFit, SmartResize
 from django.contrib.auth.models import AbstractUser
@@ -366,6 +366,15 @@ class Organization(models.Model):
         organization_networks = all_organization_networks.distinct()
         return organization_networks
 
+    # def get_org_network_content(self):
+    #     """Return queryset of content shared with any network an organization is a member of excluding their own content."""
+    #
+    #     networks = Organization.get_org_networks(self)
+    #     content = Network.get_network_shared_stories(network__in=networks)
+    #     print "content: ", content
+    #     return content
+
+
     def get_org_collaborators(self):
         """ Return list of all organizations that are members of the same networks as self."""
 
@@ -403,6 +412,13 @@ class Organization(models.Model):
         videos = VideoAsset.objects.filter(organization=self)
         return videos
 
+    def get_org_comments(self):
+        """Retrieve all the comments associated with users of an organization."""
+
+        users = Organization.get_org_users(self)
+        org_comments = Comment.objects.filter(Q(user__in=users))
+        return org_comments
+
     def get_org_collaborative_content(self):
         """ Return list of all content that an org is a collaborator on."""
 
@@ -413,6 +429,49 @@ class Organization(models.Model):
         org_collaborative_content.extend(internal_stories)
 
         return org_collaborative_content
+
+    def get_org_stories_running_today(self):
+        """Return list of content scheduled to run today."""
+
+        # establish timeliness of content
+        today = timezone.now().date()
+        tomorrow = today + timedelta(1)
+        today_start = datetime.combine(today, time())
+        today_end = datetime.combine(tomorrow, time())
+
+        # facets where run_date=today
+        running_today = []
+        webfacet_run_today = WebFacet.objects.filter(run_date__range=(today_start, today_end), organization=self)
+        printfacet_run_today = PrintFacet.objects.filter(run_date__range=(today_start, today_end), organization=self)
+        audiofacet_run_today = AudioFacet.objects.filter(run_date__range=(today_start, today_end), organization=self)
+        videofacet_run_today = VideoFacet.objects.filter(run_date__range=(today_start, today_end), organization=self)
+        running_today.extend(webfacet_run_today)
+        running_today.extend(printfacet_run_today)
+        running_today.extend(audiofacet_run_today)
+        running_today.extend(videofacet_run_today)
+
+        return running_today
+
+    def get_org_stories_due_for_edit_today(self):
+        """Return list of content scheduled for edit today."""
+
+        # establish timeliness of content
+        today = timezone.now().date()
+        tomorrow = today + timedelta(1)
+        today_start = datetime.combine(today, time())
+        today_end = datetime.combine(tomorrow, time())
+
+        edit_today = []
+        webfacet_edit_today = WebFacet.objects.filter(due_edit__range=(today_start, today_end), organization=self)
+        printfacet_edit_today = PrintFacet.objects.filter(due_edit__range=(today_start, today_end), organization=self)
+        audiofacet_edit_today = AudioFacet.objects.filter(due_edit__range=(today_start, today_end), organization=self)
+        videofacet_edit_today = VideoFacet.objects.filter(due_edit__range=(today_start, today_end), organization=self)
+        edit_today.extend(webfacet_edit_today)
+        edit_today.extend(printfacet_edit_today)
+        edit_today.extend(audiofacet_edit_today)
+        edit_today.extend(videofacet_edit_today)
+
+        return edit_today
 
     def get_org_searchable_content(self):
         """ Return queryset of all objects that can be searched by a user."""

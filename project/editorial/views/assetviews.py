@@ -41,17 +41,19 @@ def asset_library(request):
     """ Display media library of all organization assets."""
 
     images = ImageAsset.objects.filter(organization=request.user.organization)
+    documents = DocumentAsset.objects.filter(organization=request.user.organization)
 
     return render(request, 'editorial/assets.html', {
         'images': images,
+        'documents': documents,
     })
 
 #----------------------------------------------------------------------#
 #   Asset Detail Views
 #----------------------------------------------------------------------#
 
-def asset_detail(request, pk):
-    """ Display detail information for a specific asset."""
+def image_asset_detail(request, pk):
+    """ Display detail information for a specific image asset."""
 
     image = get_object_or_404(ImageAsset, id=pk)
     image_usage = ImageAsset.get_image_usage(image)
@@ -65,11 +67,32 @@ def asset_detail(request, pk):
     else:
         editimageform = ImageAssetForm(instance=image)
 
-    return render(request, 'editorial/assetdetail.html', {
+    return render(request, 'editorial/imageassetdetail.html', {
         'image': image,
         'image_usage': image_usage,
         'editimageform': editimageform,
     })
+
+def document_asset_detail(request, pk):
+    """ Display detail information for a specific document asset."""
+
+    document = get_object_or_404(DocumentAsset, id=pk)
+    document_usage = DocumentAsset.get_document_usage(document)
+    print "IU: ", document_usage
+
+    # if request.method =="POST":
+    #     editimageform = ImageAssetForm(data=request.POST, instance=image)
+    #     if editimageform.is_valid():
+    #         editimageform.save()
+    #         return redirect('asset_detail', pk=image.id)
+    # else:
+    #     editimageform = ImageAssetForm(instance=image)
+    #
+    # return render(request, 'editorial/imageassetdetail.html', {
+    #     'image': image,
+    #     'image_usage': image_usage,
+    #     'editimageform': editimageform,
+    # })
 
 
 #----------------------------------------------------------------------#

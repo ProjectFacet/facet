@@ -10,7 +10,6 @@
 {% block breadcrumb %}
 <div>
     <ol class="breadcrumb icon-angle-right icon-th">
-        <li class="fadeIn"> Home </li>
         <li class="fadeIn"> Dashboard </li>
     </ol>
 </div>
@@ -25,10 +24,10 @@
     <div class="row m-b-40">
         <!-- Left Column -->
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-          <div class="bs-nav-tabs nav-tabs-primary">
+          <div class="bs-nav-tabs nav-tabs-default">
               <ul class="nav nav-tabs nav-animated-border-from-left">
                   <!-- <li class="nav-item"> <a ng-href="" class="nav-link active" data-toggle="tab" data-target="#activity-tab">Activity</a> </li> -->
-                  <li class="nav-item"> <a ng-href="" class="nav-link" data-toggle="tab" data-target="#discussion-tab">Discussion</a> </li>
+                  <li class="nav-item"> <a ng-href="" class="nav-link active" data-toggle="tab" data-target="#discussion-tab">Discussion</a> </li>
               </ul>
               <div class="tab-content">
                   <!-- <div role="tabpanel" class="tab-pane in active" id="activity-tab">
@@ -163,7 +162,7 @@
 
         <!-- Right Column -->
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-          <div class="bs-nav-tabs nav-tabs-success">
+          <div class="bs-nav-tabs nav-tabs-default">
               <ul class="nav nav-tabs nav-animated-border-from-left">
                   <li class="nav-item"> <a ng-href="" class="nav-link active" data-toggle="tab" data-target="#stories-running">Running Today</a> </li>
                   <li class="nav-item"> <a ng-href="" class="nav-link" data-toggle="tab" data-target="#stories-new">New Stories</a> </li>
@@ -172,7 +171,7 @@
               <div class="tab-content">
                   <div role="tabpanel" class="tab-pane in active p-t-0" id="stories-running">
                     <!-- Full table for md and lg displays -->
-                    <table class="table table-hover m-t-5" cellspacing="0" width="100%">
+                    <table class="table table-hover hidden-sm-down" cellspacing="0" width="100%">
                         <thead>
                             <tr>
                                 <th>Title</th>
@@ -213,8 +212,7 @@
                     </table>
                     <!-- End full table -->
                     <!-- Partial table for xs and sm displays -->
-                    {% comment %}
-                    <!-- <table class="table table-responsive table-hover visible-xs-inline visible-sm-inline hidden-md-inline hidden-lg-inline" cellspacing="0" width="100%">
+                    <table class="table table-hover hidden-md-up" cellspacing="0" width="100%">
                         <thead>
                             <tr>
                                 <th>Title</th>
@@ -249,13 +247,12 @@
                                 <td>{{ facet.run_date|date:'g:i a'}}</td>
                             </tr>
                           {% endfor %}
-                    </table> -->
+                    </table>
                     <!-- End partial table -->
-                    {% endcomment %}
 
                   </div>
                   <div role="tabpanel" class="tab-pane p-t-0" id="stories-new">
-                    <table class="table table-hover m-t-5" cellspacing="0" width="100%">
+                    <table class="table table-hover" cellspacing="0" width="100%">
                         <thead>
                             <tr>
                                 <th>Story</th>
@@ -279,8 +276,10 @@
                     </table>
                     <a href="{% url 'story_list' %}" title="View Story List"><p class="f-w-300 f-s-12 p-l-10">All Stories</p></a>
                   </div>
+
+                  <!-- Full table for md and lg displays -->
                   <div role="tabpanel" class="tab-pane p-t-0" id="stories-edit">
-                    <table class="table table-hover m-t-0 table-condensed" cellspacing="0" width="100%">
+                    <table class="table table-hover hidden-sm-down" cellspacing="0" width="100%">
                         <thead>
                             <tr>
                                 <th>Title</th>
@@ -320,6 +319,47 @@
                           {% endfor %}
                     </table>
                   </div>
+                  <!-- End full table -->
+                  <!-- Partial table for xs and sm displays -->
+                  <div role="tabpanel" class="tab-pane p-t-0" id="stories-edit">
+                    <table class="table table-hover hidden-md-up" cellspacing="0" width="100%">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Platform</th>
+                                <th>Due</th>
+                            </tr>
+                        </thead>
+                        <tfoot class="hidden">
+                            <tr>
+                              <th>Title</th>
+                              <th>Type</th>
+                              <th>Due</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                          {% for facet in edit_today|slice:":7" %}
+                            <tr>
+                                <td>
+                                  {% if facet.type == "WebFacet" %}
+                                  <a href="{% url 'story_detail' pk=facet.story.id %}#web">
+                                  {% elif facet.type == "PrintFacet" %}
+                                  <a href="{% url 'story_detail' pk=facet.story.id %}#print">
+                                  {% elif facet.type == "AudioFacet" %}
+                                  <a href="{% url 'story_detail' pk=facet.story.id %}#audio">
+                                  {% elif facet.type == "VideoFacet" %}
+                                  <a href="{% url 'story_detail' pk=facet.story.id %}#video">
+                                  {% else %}
+                                  <a href="#">
+                                  {% endif %}{{ facet.title }}</a>
+                                </td>
+                                <td>{{ facet.type }}</td>
+                                <td>{{ facet.due_edit|date:'g:i a'}}</td>
+                            </tr>
+                          {% endfor %}
+                    </table>
+                  </div>
+                  <!-- End partial table -->
               </div>
           </div>
         </div> <!-- End of Right Column -->
@@ -333,11 +373,9 @@
         <div class="col-xs-12 col-lg-6">
               <h5 class="text-center">New Network Stories</h5>
               <ul class="list-group m-10">
-                  <li class="list-group-item"> <span class="text-xs pull-right">Wolf Media</span> Michael Smith upgraded to the $50 plan</li>
-                  <li class="list-group-item"> <span class="text-xs pull-right">Arctic Times</span> Jane Perez cancelled the $25 plan</li>
-                  <li class="list-group-item"> <span class="text-xs pull-right">International Times</span> George Clinton from Facebook upgraded to the $25 plan</li>
-                  <li class="list-group-item"> <span class="text-xs pull-right">Cold Snap</span> Someone from Google cancelled the $25 plan</li>
-                  <li class="list-group-item"> <span class="text-xs pull-right">Wolf Media</span> Lucas Smith upgraded to the $25 plan</li>
+                  {% for story in shared_networkstories|slice:":5" %}
+                  <li class="list-group-item"> <span class="text-xs pull-right">{{story.organization.name}}</span> {{story.name}}</li>
+                  {% endfor %}
               </ul>
         </div>
 

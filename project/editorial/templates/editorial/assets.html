@@ -3,40 +3,88 @@
 {% load i18n %}
 {% load bootstrap3 %}
 
-{% block content %}
+<!-------------------------------------------->
+<!--      BREADCRUMB NAVIGATION             -->
+<!-------------------------------------------->
 
-<div class="row particles" id="user-hero">
-  <div class="upper-content">
-    <div class="col-lg-12 content-upper-75">
-      <h1 class="media-heading text-light center thin uppercase spread-025">Asset Library</h1>
-    </div>
+{% block breadcrumb %}
+<div>
+    <ol class="breadcrumb icon-angle-right icon-th">
+      <li class="fadeIn"><a href="{% url 'dashboard' %}"> Dashboard </a></li>
+      <li class="fadeIn"><a href="{% url 'asset_library' %}" title="You are here"> Media Library </a></li>
+    </ol>
+</div>
+{% endblock breadcrumb %}
+
+<!-------------------------------------------->
+<!--            Main Section                -->
+<!-------------------------------------------->
+
+{% block content %}
+<!-- Row One -->
+<div class="row m-b-40">
+  <div class="bs-nav-tabs nav-tabs-default">
+      <ul class="nav nav-tabs nav-animated-border-from-left m-b-40">
+          <li class="nav-item"> <a ng-href="" class="nav-link active" data-toggle="tab" data-target="#graphics"><h5>Graphics</h5></a> </li>
+          <li class="nav-item"> <a ng-href="" class="nav-link" data-toggle="tab" data-target="#documents"><h5>Documents</h5></a> </li>
+          <li class="nav-item"> <a ng-href="" class="nav-link" data-toggle="tab" data-target="#audio"><h5>Audio</h5></a> </li>
+      </ul>
+      <div class="tab-content">
+          <!-- Graphics Panel -->
+          <div role="tabpanel" class="tab-pane in active p-t-0" id="graphics">
+            <div id="image-asset-library">
+            {% for image in images %}
+              {% if image.display_photo %}
+                <div class="zoom-in-1 overlay-0 col-xs-6 col-sm-6 col-md-4 col-lg-2">
+                    <img src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}" class="img-fluid image-center height-100 hidden-md-up">
+                    <img src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}" class="img-fluid image-center height-200 hidden-sm-down">
+                    <div class="overlay bg-dark centered">
+                        <div class="title f-w-800 capitalize"><a href="{% url 'image_asset_detail' pk=image.id %}">{{ image.asset_title }}</a></div>
+                        <div class="asset-description f-w-500 hidden-sm-down"> {{ image.asset_description }} </div>
+                        <div class="link hidden-sm-down"><a href="{% url 'image_asset_detail' pk=image.id %}"><p class="color-lighter f-w-900">See Detail <i class="fa fa-angle-right"></i></p></a></div>
+                    </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+            </div>
+          </div>
+          <!-- Documents Panel -->
+          <div role="tabpanel" class="tab-pane p-t-0" id="documents">
+            <div id="document-asset-library">
+            {% for document in documents %}
+                <div class="zoom-in-1 overlay-0 col-xs-6 col-sm-6 col-md-4 col-lg-2">
+                    {% if document.type == "PDF" %}
+                    <div class="icon"><i class="fa fa-file-pdf-o"></i></div>
+                    {% elif document.type == "WORD"}
+                    <div class="icon"><i class="fa fa-file-word-o"></i></div>
+                    {% elif document.type == "TXT" %}
+                    <div class="icon"><i class="fa fa-file-text-o"></i></div>
+                    {% elif document.type == "CSV"}
+                    <div class="icon"><i class="fa fa-file-excel-o"></i></div>
+                    {% elif document.type == "XLS" %}
+                    <div class="icon"><i class="fa fa-file-excel-o"></i></div>
+                    {% elif document.type == "OTHER"}
+                    <div class="icon"><i class="fa fa-file-o"></i></div>
+                    {% endif %}
+                    <div class="overlay bg-dark centered">
+                        <div class="title f-w-800 capitalize"><a href="{% url 'document_asset_detail' pk=document.id %}">{{ document.asset_title }}</a></div>
+                        <div class="asset-description f-w-500 hidden-sm-down"> {{ document.asset_description }} </div>
+                        <div class="link hidden-sm-down"><a href="{% url 'asset_detail' pk=image.id %}"><p class="color-lighter f-w-900">See Detail <i class="fa fa-angle-right"></i></p></a></div>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+          </div>
+          <!-- Audio Panel -->
+          <div role="tabpanel" class="tab-pane p-t-0" id="audio">
+            <!-- TODO Audio players -->
+          </div>
+      </div>
   </div>
 </div>
 
-<div id="asset-library">
-    <div class="row content-lower-50">
-      {% for image in images %}
-        {% if image.display_photo %}
-        <div class="col-xs-6 col-sm-6 col-md-3 col-lg-2">
-          <div class="thumbnail">
-            <div class="asset_container">
-              <a href="{{ image.display_photo.url }}" class="popout asset_thumbnail"><img src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}"></a>
-            </div>
-            <div class="asset_caption">
-              <!-- <p class="darker text-fit">{{ image.asset_title }}</p> -->
-              <p class="small-text dark asset_description"><a href="{% url 'asset_detail' pk=image.id %}"><i class="fa fa-info-circle"></i> {{ image.asset_description }}</a><p>
-              <!-- <p><a href="{% url 'asset_detail' pk=image.id %}"><i class="fa fa-info dark"></i></a></p> -->
-            </div>
-          </div>
-        </div>
-        {% endif %}
-      {% endfor %}
-    </div>
-</div>
 
-
-
-<script>
+<!-- <script>
 
   $('#asset-library').magnificPopup({
     delegate: '.popout',
@@ -44,11 +92,14 @@
     gallery: {enabled:true}
   });
 
-</script>
+</script> -->
 <script>
 $(document).ready(function() {
-  $(".asset_caption").dotdotdot();
+  $(".asset-description").dotdotdot();
 });
+
+$('.img-center').centerImage();
+
 </script>
 
 

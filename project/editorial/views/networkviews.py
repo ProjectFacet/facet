@@ -10,6 +10,7 @@ from django.http import HttpResponse
 from django.utils import timezone
 from django.views.generic import TemplateView , UpdateView, DetailView
 from django.views.decorators.csrf import csrf_exempt
+from django.core.serializers.json import DjangoJSONEncoder
 import datetime
 import json
 
@@ -176,6 +177,26 @@ def network_list(request):
     network_list = Organization.get_org_networks(organization)
 
     return render(request, 'editorial/networklist.html', {'network_list': network_list})
+
+
+# def network_stories_json(request):
+#     """Return JSON of network story objects."""
+#
+#     organization = request.user.organization
+#     networks = Organization.get_org_networks(organization)
+#
+#     shared_networkstories = []
+#     for network in networks:
+#         stories = Network.get_network_shared_stories(network)
+#         shared_networkstories.extend(stories)
+#     shared_networkstories = [story for story in shared_networkstories if story.organization != organization]
+#     stories = set(shared_networkstories)
+#     # networkstories = json.dumps(list(stories), cls=DjangoJSONEncoder)
+#
+#     org_network_content = Organization.get_org_network_content(organization)
+#     print "ONC: ", org_network_content
+#
+#     return HttpResponse(json.dumps(networkstories), content_type='application/json')
 
 
 def network_stories(request):

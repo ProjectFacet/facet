@@ -26,7 +26,7 @@
   <!-- Image Meta -->
   <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
     <div class="row">
-          <form action="{% url 'asset_detail' pk=image.id %}" method="POST" class="post-form" enctype="multipart/form-data">
+          <form action="{% url 'image_asset_detail' pk=image.id %}" method="POST" class="post-form" enctype="multipart/form-data">
             {% csrf_token %}
 
                 <!-- Left Col -->

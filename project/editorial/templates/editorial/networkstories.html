@@ -3,21 +3,31 @@
 {% load i18n %}
 {% load bootstrap3 %}
 
+<!-------------------------------------------->
+<!--      BREADCRUMB NAVIGATION             -->
+<!-------------------------------------------->
+
+{% block breadcrumb %}
+<div>
+    <ol class="breadcrumb icon-angle-right icon-th">
+      <li class="fadeIn"> Dashboard </li>
+      <li class="fadeIn"><a href="{% url 'network_list' %}" title="Network List"> Networks </a></li>
+      <li class="fadeIn"><a href="{% url 'network_stories' %}" title="You are here"> Network Content </a></li>
+    </ol>
+</div>
+{% endblock breadcrumb %}
+
+<!-------------------------------------------->
+<!--            Main Section                -->
+<!-------------------------------------------->
+
 {% block content %}
 
-<div class="row particles" id="user-hero">
-  <div class="upper-content">
-    <div class="col-xs-12 content-upper-75">
-      <h1 class="media-heading text-light center thin uppercase spread-025">Network Shared Stories</h1>
-    </div>
-  </div>
-</div>
-
-<div class="row">
+<div class="row m-b-40">
   <div class="col-xs-12">
 
     <!-- Full table for md and lg displays -->
-    <table id="network-stories-list" class="table table-condensed hidden-xs hidden-sm visible-md visible-lg">
+    <table id="network-stories-list" class="table table-condensed table-striped hidden-sm-down">
       <thead>
         <tr>
           <th>Story</th>
@@ -34,7 +44,7 @@
         {% if story.webfacetstory.all or story.printfacetstory.all or story.audiofacetstory.all or story.videofacetstory.all %}
           {% for facet in story.webfacetstory.all %}
             <tr>
-              <td>{{ facet.story.name }}{% if facet.story.ready_to_share %}<form action="/story/copy/{{ facet.story_id }}/" method="POST" class="sameline">{% csrf_token %}<button class="clear" type="submit"><i class="fa fa-clone"></i></button></form>{% endif %}</td>
+              <td>{{ facet.story.name }}{% if facet.story.ready_to_share %}<form action="/story/copy/{{ facet.story_id }}/" method="POST" class="sameline">{% csrf_token %}<button class="clear clear-button" type="submit"><i class="fa fa-clone"></i></button></form>{% endif %}</td>
               <td>{{ facet.type}}</td>
               <td><a href="#" data-toggle="tooltip" title="{{ facet.wf_description }}">{{ facet.title }}</a></td>
               <td>{{ facet.owner.credit_name }}</td>
@@ -89,7 +99,7 @@
     <!-- End full table -->
 
     <!-- Partial table for xs and sm displays -->
-    <table class="table table-condensed visible-xs visible-sm hidden-md hidden-lg">
+    <table class="table table-condensed table-striped hidden-md-up">
       <thead>
         <tr>
           <th>Story</th>

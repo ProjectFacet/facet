@@ -3,18 +3,78 @@
 {% load i18n %}
 {% load bootstrap3 %}
 
-{% block content %}
+<!-------------------------------------------->
+<!--      BREADCRUMB NAVIGATION             -->
+<!-------------------------------------------->
 
-<div class="row particles" id="user-hero">
-  <div class="upper-content">
-    <div class="col-lg-12 content-upper-75">
-      <h1 class="media-heading text-light center thin uppercase spread-025">Teams</h1>
-    </div>
-  </div>
+{% block breadcrumb %}
+<div>
+    <ol class="breadcrumb icon-angle-right icon-th">
+        <li class="fadeIn"> Dashboard </li>
+        <li class="fadeIn"><a href="{% url 'team_list' %}" title="You are here"> Team </a></li>
+    </ol>
 </div>
+{% endblock breadcrumb %}
 
-<div class="row">
-  <div class="col-md-6">
+<!-------------------------------------------->
+<!--            Main Section                -->
+<!-------------------------------------------->
+
+{% block content %}
+    <!-- Row One -->
+    <div class="row m-b-40">
+        <!-- Left Column -->
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+          <div class="row m-b-20">
+            <h5 class="center">Your Team<a href="#"><i class="fa fa-plus sameline dark" data-toggle="modal" data-target="#addUserModal"></i></a></h5>
+
+            {% for user in organization.user_set.all %}
+            {% if user.is_active %}
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-6"> <!-- Start of Team Card -->
+              <div class="m-b-20">
+
+                <div class="user-widget-1">
+                  <div class="row">
+                      <div class="col-xs-12">
+                          <a class="media-left media-middle"> {% if user.display_photo %}<img class="centered img-rounded h-100 w-100" src="{{ user.display_photo.url }}" alt="profile image">{% else %}{% endif %} </a>
+                          <div class="media-body">
+                              <div class="p-10">
+                                  <h4 class="text-bold color-white"><a href="{% url 'user_detail' user.id %}">{{ user.credit_name }}</a></h4>
+                                  <h5 class="text-bold color-white">{{ user.title }}</h5>
+                                  <p> <i class="fa fa-map-marker color-white"></i> <span class="color-white">{{ user.location }}</span> </p>
+                                  <p> <i class="fa fa-envelope-o color-white"></i> <span class="color-white">{{ user.email }}</span> </p>
+                                  <p> <i class="fa fa-twitter color-white"></i> <span class="color-white">{{ user.phone }}</span> </p>
+                                  <p class="f-s-12">{% if request.user.id == user.id or request.user.id == user.organization.owner.id %}<a href="{% url 'user_edit' pk=user.id %}">Edit Profile</a>{% endif %}</p>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+
+              </div>
+            </div> <!-- End of Team Card -->
+            {% endif %}
+            {% endfor %}
+
+
+          </div> <!-- End of Row -->
+
+
+
+
+        </div>
+        <!-- Right Column -->
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+
+        </div>
+    </div>
+
+
+
+
+
+
+<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
     <h3 class="center">Your Team<a href="#"><i class="fa fa-plus sameline dark" data-toggle="modal" data-target="#addUserModal"></i></a></h2>
     <div class="row">
     {% for user in organization.user_set.all %}

@@ -56,7 +56,8 @@ urlpatterns = [
     #   Asset Library URLS
     #----------------------------------------------------------------------#
     url(r'^assets$', assetviews.asset_library, name='asset_library'),
-    url(r'^asset/(?P<pk>[0-9]+)/$', assetviews.asset_detail, name='asset_detail'),
+    url(r'^asset/image/(?P<pk>[0-9]+)/$', assetviews.image_asset_detail, name='image_asset_detail'),
+    url(r'^asset/document/(?P<pk>[0-9]+)/$', assetviews.document_asset_detail, name='document_asset_detail'),
     # url(r'^asset/(?P<pk>[0-9]+)/edit/$', assetviews.asset_edit, name='asset_edit'),
     #----------------------------------------------------------------------#
     #   Collaborations URLS
@@ -190,6 +191,7 @@ urlpatterns = [
     url(r'^network/(?P<pk>[0-9]+)/edit/$', networkviews.network_edit, name='network_edit'),
     url(r'^network/list$', networkviews.network_list, name='network_list'),
     url(r'^network/stories$', networkviews.network_stories, name='network_stories'),
+    # url(r'^network/stories/json$', networkviews.network_stories_json, name='network_stories_json'),
     url(r'^network/(?P<pk>[0-9]+)/notes/$', noteviews.network_notes, name='network_notes'),
     url(r'^network/note/new/$', noteviews.create_network_note, name='create_network_note'),
 ]

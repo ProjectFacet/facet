@@ -21,7 +21,6 @@
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="{% static 'css/components/bootstrap.css' %}">
-    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
     <link rel="stylesheet" href="{% static 'css/bootstrap-datetimepicker.css' %}">
 
     <!-- Font Awesome -->
@@ -38,6 +37,9 @@
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800,300italic,400italic,600italic,700italic,800italic' rel='stylesheet' type='text/css'>
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic,900,900italic" rel="stylesheet" type="text/css">
 
+    <!-- Datatables -->
+    <!-- <link href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css"> -->
+
     <!-- Chart Styles -->
     <link rel="stylesheet" href="{% static 'bower_components/chartist/dist/chartist.min.css' %}">
 
@@ -49,8 +51,23 @@
     <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
     <link rel="stylesheet" href="{% static 'css/chosen.css' %}">
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
-    <link rel="stylesheet" href="{% static 'css/facet.css' %}">
+    <!-- <link rel="stylesheet" href="{% static 'css/facet.css' %}"> -->
     <link rel="stylesheet" href="{% static 'css/facetui.css' %}">
+
+    <!-- ================================================= -->
+    <!--                 Styles & Fonts                    -->
+    <!-- ================================================= -->
+
+    <!-- jQuery -->
+    <script src="{% static 'bower_components/jquery/dist/jquery.js' %}"></script>
+
+    <!-- Popup JS -->
+    <script src="{% static 'scripts/jquery.magnific-popup.min.js' %}"></script>
+
+    <!-- Image Center -->
+    <script src="{% static 'scripts/jquery.blImageCenter.js' %}"></script>
+
+
     {% block head %}
     <!-- Child Head Items -->
     {% endblock %}
@@ -612,7 +629,7 @@
                       <!--     JS       -->
     <!-- ================================================= -->
     <!-- ================================================= -->
-    <script src="{% static 'bower_components/jquery/dist/jquery.js' %}"></script>
+    <!-- <script src="{% static 'bower_components/jquery/dist/jquery.js' %}"></script> IN HEAD-->
     <script src="{% static 'bower_components/tether/dist/js/tether.js' %}"></script>
     <script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.js' %}"></script>
     <script src="{% static 'bower_components/PACE/pace.js' %}"></script>
@@ -643,10 +660,11 @@
     <script src="{% static 'scripts/chosen.jquery.min.js' %}"></script>
 
     <!-- Popup JS -->
-    <script src="{% static 'scripts/jquery.magnific-popup.min.js' %}"></script>
+    <!-- <script src="{% static 'scripts/jquery.magnific-popup.min.js' %}"></script> -->
 
     <!-- Content Tables -->
     <script src="{% static 'scripts/jquery.dataTables.min.js' %}"></script>
+    <!-- <script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script> -->
 
     <!-- Datetime Picker JS  -->
     <script src="{% static 'scripts/moment.js' %}"></script>
@@ -678,14 +696,14 @@
     <script src="{% static 'scripts/facet.js' %}"></script>
 
     <!-- DEPENDENCIES : Required plugins -->
-    <script src="{% static 'scripts/dependencies.js' %}"></script>
+    <!-- <script src="{% static 'scripts/dependencies.js' %}"></script> -->
 
     <!-- Wrapkit -->
-    <script src="{% static 'scripts/wrapkit.js' %}"></script>
-    <script src="{% static 'scripts/wrapkit-setup.js' %}"></script>
+    <!-- <script src="{% static 'scripts/wrapkit.js' %}"></script> -->
+    <!-- <script src="{% static 'scripts/wrapkit-setup.js' %}"></script> -->
 
     <!-- Plugin Setups: vendors & dependencies setups -->
-    <script src="{% static 'scripts/plugin-setups.js' %}"></script>
+    <!-- <script src="{% static 'scripts/plugin-setups.js' %}"></script> -->
 
     <!-- SlimScroll -->
     <script src="{% static 'scripts/jquery.slimscroll.js' %}"></script>

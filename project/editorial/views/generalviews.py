@@ -112,42 +112,33 @@ def dashboard(request):
     Displays log of other user activity since last_login
     Ex: Oliver Q. added "Dhark Indicted" to Story: "Star City Organized Crime Leader Arrested"
     """
-    # establish timeliness of content
-    today = timezone.now().date()
-    tomorrow = today + timedelta(1)
-    today_start = datetime.combine(today, time())
-    today_end = datetime.combine(tomorrow, time())
-
     # query for new comments since last_login from any discussions the user has participated in
     recent_comments = User.recent_comments(request.user)
     # if no new comments, display 10 most recent older comments
     older_comments = User.inbox_comments(request.user)[:10]
-    all_comments = Comment.objects.all()[:10]
+    # retrieve all organization comments
+    organization = request.user.organization
+    all_comments = Organization.get_org_comments(organization)
+    # query for new stories shared to network
+    organization = request.user.organization
+    networks = Organization.get_org_networks(organization)
+    shared_networkstories = []
+    for network in networks:
+        stories = Network.get_network_shared_stories(network)
+        shared_networkstories.extend(stories)
+    shared_networkstories = [story for story in shared_networkstories if story.organization != organization]
+    networkstories = set(shared_networkstories)
     # query for any new content created since last_login
     new_stories = Story.objects.filter(creation_date__gte=request.user.last_login)[:8]
     # if no new stories, display 10 most recent stories
     old_stories = Story.objects.filter(organization = request.user.organization)[:10]
     # facets where run_date=today
-    running_today = []
-    webfacet_run_today = WebFacet.objects.filter(run_date__range=(today_start, today_end))
-    printfacet_run_today = PrintFacet.objects.filter(run_date__range=(today_start, today_end))
-    audiofacet_run_today = AudioFacet.objects.filter(run_date__range=(today_start, today_end))
-    videofacet_run_today = VideoFacet.objects.filter(run_date__range=(today_start, today_end))
-    running_today.extend(webfacet_run_today)
-    running_today.extend(printfacet_run_today)
-    running_today.extend(audiofacet_run_today)
-    running_today.extend(videofacet_run_today)
+    running_today = Organization.get_org_stories_running_today(organization)
     # facets where due_edit=today
-    edit_today = []
-    webfacet_edit_today = WebFacet.objects.filter(due_edit__range=(today_start, today_end))
-    printfacet_edit_today = PrintFacet.objects.filter(due_edit__range=(today_start, today_end))
-    audiofacet_edit_today = AudioFacet.objects.filter(due_edit__range=(today_start, today_end))
-    videofacet_edit_today = VideoFacet.objects.filter(due_edit__range=(today_start, today_end))
-    edit_today.extend(webfacet_edit_today)
-    edit_today.extend(printfacet_edit_today)
-    edit_today.extend(audiofacet_edit_today)
-    edit_today.extend(videofacet_edit_today)
+    edit_today = Organization.get_org_stories_due_for_edit_today(organization)
 
+    copied_shared_stories = StoryCopyDetail.objects.filter(original_org=request.user.organization)
+    print "CSS: ", copied_shared_stories
     # TODO: query for other user activity since last_login
 
     return render(request, 'editorial/dashboard.html', {
@@ -158,6 +149,8 @@ def dashboard(request):
         'old_stories': old_stories,
         'running_today': running_today,
         'edit_today': edit_today,
+        'shared_networkstories': shared_networkstories,
+        'copied_shared_stories': copied_shared_stories,
     })
 
 #----------------------------------------------------------------------#
