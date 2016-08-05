@@ -555,71 +555,77 @@
                 <!-- Child Template Content -->
                 {% endblock content %}
 
-            <!-- ====================================== -->
-            <!--            Footer Section              -->
-            <!-- ====================================== -->
-            <div class="footer">
-                <div class="row">
-                    <div class="col-xs-12"> <a href="http://projectfacet.org" target="_blank">© 2016. Project Facet. </a></div>
+                <!-- ====================================== -->
+                <!--            Footer Section              -->
+                <!-- ====================================== -->
+                <div class="footer">
+                    <div class="row">
+                        <div class="col-xs-12"> <a href="http://projectfacet.org" target="_blank">© 2016. Project Facet. </a></div>
+                    </div>
                 </div>
-            </div>
 
-            <!-- ================================================= -->
-            <!-- ================================================= -->
-                    <!-- MODAL WINDOWS SECTION -->
-            <!-- ================================================= -->
-            <!-- ================================================= -->
-
-            <!-- Private Message Modal -->
-              <div class="modal fade" id="sendPrivateMessage" tabindex="-1" role="dialog" aria-labelledby="sendPrivateMessageLabel">
-                <div class="modal-dialog" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                      <h4 class="modal-title" id="sendPrivateMessageLabel">Send a private message</h4>
-                    </div>
-                    <div class="modal-body">
-                      {% if privatemessageform %}
-                      <form action="{% url 'private_message_new' %}" method="POST" class="post-form">
-                      {% csrf_token %}
-                      {% bootstrap_form privatemessageform %}
-                      <button type="submit" class="btn btn-primary">Send Message</button>
-                      </form>
-                      {% endif %}
-                    </div>
-                    <div class="modal-footer">
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            <!-- User Note Modal -->
-              <div class="modal fade" id="addUserNote" tabindex="-1" role="dialog" aria-labelledby="addUserNoteLabel">
-                <div class="modal-dialog" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                      <h4 class="modal-title" id="addUserNoteLabel">Create a note</h4>
-                    </div>
-                    <div class="modal-body">
-                      {% if usernoteform %}
-                      <form action="{% url 'create_user_note' %}" method="POST" class="post-form">
-                      {% csrf_token %}
-                      {% bootstrap_form usernoteform %}
-                      <button type="submit" class="btn btn-primary">Create Note</button>
-                      </form>
-                      {% endif %}
-                    </div>
-                    <div class="modal-footer">
-                    </div>
-                  </div>
-                </div>
-              </div>
-            <!-- End of Modal Windows -->
 
 
             </div> <!-- End of Main -->
         </div> <!-- End of row -->
+
+        {% block modals %}
+
+        {% endblock modals %}
+        <!-- ================================================= -->
+        <!-- ================================================= -->
+                <!-- MODAL WINDOWS SECTION -->
+        <!-- ================================================= -->
+        <!-- ================================================= -->
+
+        <!-- Private Message Modal -->
+          <div class="modal fade" id="sendPrivateMessage" tabindex="-1" role="dialog" aria-labelledby="sendPrivateMessageLabel">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                  <h4 class="modal-title" id="sendPrivateMessageLabel">Send a private message</h4>
+                </div>
+                <div class="modal-body">
+                  {% if privatemessageform %}
+                  <form action="{% url 'private_message_new' %}" method="POST" class="post-form">
+                  {% csrf_token %}
+                  {% bootstrap_form privatemessageform %}
+                  <button type="submit" class="btn btn-primary">Send Message</button>
+                  </form>
+                  {% endif %}
+                </div>
+                <div class="modal-footer">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- User Note Modal -->
+            <div class="modal fade" id="addUserNote" tabindex="-1" role="dialog" aria-labelledby="addUserNoteLabel">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="addUserNoteLabel">Create a note</h4>
+                  </div>
+                  <div class="modal-body">
+                    {% if usernoteform %}
+                    <form action="{% url 'create_user_note' %}" method="POST" class="post-form">
+                    {% csrf_token %}
+                    {% bootstrap_form usernoteform %}
+                    <button type="submit" class="btn btn-primary">Create Note</button>
+                    </form>
+                    {% endif %}
+                  </div>
+                  <div class="modal-footer">
+                  </div>
+                </div>
+              </div>
+            </div>
+          <!-- End of Modal Windows -->
+
+
     </div> <!-- End of container -->
 
 

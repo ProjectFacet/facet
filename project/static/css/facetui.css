@@ -30,3 +30,37 @@
   padding: 0px;
   border: none;
 }
+
+.modal-dialog {
+  z-index: 5000 !important;
+}
+
+.modal-open.pace-done {
+  padding-right: 0px !important;
+}
+
+.modal-backdrop fade in {
+  padding-right: 0px !important;
+}
+
+/*Text Spread Utilies*/
+
+.spread-01 {
+  letter-spacing: .1em;
+}
+
+.spread-025 {
+  letter-spacing: .25em;
+}
+
+.spread-05 {
+  letter-spacing: .5em;
+}
+
+.spread-075 {
+  letter-spacing: .75em;
+}
+
+.spread-1 {
+  letter-spacing: 1em;
+}

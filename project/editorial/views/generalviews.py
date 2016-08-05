@@ -167,6 +167,7 @@ def team_list(request):
     # the user's organization
     organization = request.user.organization
     networks = Organization.get_org_networks(organization)
+    partners = Organization.get_org_collaborators(organization)
 
     # form for adding a new user to the team
     adduserform = AddUserForm()
@@ -175,6 +176,7 @@ def team_list(request):
     return render(request, 'editorial/team.html', {
         'organization': organization,
         'networks': networks,
+        'partners': partners,
         'adduserform': adduserform,
         })
 
@@ -196,7 +198,7 @@ def discussion(request):
     private_messages_received = User.private_messages_received(request.user)
     private_messages_sent = User.private_messages_sent(request.user)
 
-    return render(request, 'editorial/discussion.html', {
+    return render(request, 'editorial/inbox.html', {
         'comments': comments,
         'private_messages_received': private_messages_received,
         'private_messages_sent': private_messages_sent,
