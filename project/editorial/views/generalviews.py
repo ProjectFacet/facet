@@ -9,6 +9,7 @@ from django.views.generic import TemplateView , UpdateView, DetailView
 from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime, timedelta, time
 import json
+from django.template.loader import render_to_string
 
 # All imports are included for use in test view
 
@@ -184,7 +185,7 @@ def team_list(request):
 #   Discussion Views
 #----------------------------------------------------------------------#
 
-def discussion(request):
+def inbox(request):
     """ Return discussion inbox.
 
     Displays comments from SeriesPlan Discussions involving user.
@@ -204,6 +205,12 @@ def discussion(request):
         'private_messages_sent': private_messages_sent,
     })
 
+def message_html(request, pk):
+    """Return html for displaying a specific message."""
+    message = get_object_or_404(PrivateMessage, id=pk)
+
+    message_html = render_to_string('private-message-content.html', {'message': message})
+    return HttpResponse(message_html)
 
 #----------------------------------------------------------------------#
 #   Collaborations View

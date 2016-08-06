@@ -68,13 +68,14 @@ urlpatterns = [
     #----------------------------------------------------------------------#
     url(r'^team$', generalviews.team_list, name='team_list'),
     #----------------------------------------------------------------------#
-    #   Discussion URLS - Labeled as Inbox in navigation
+    #   Inbox URLS - Labeled as Inbox in navigation
     #----------------------------------------------------------------------#
-    url(r'^discussion$', generalviews.discussion, name='discussion'),
+    url(r'^inbox$', generalviews.inbox, name='inbox'),
     #----------------------------------------------------------------------#
     #   Private Message URLS
     #----------------------------------------------------------------------#
     url(r'^privatemessage/new/$', communicationviews.private_message_new, name='private_message_new'),
+    url(r'^privatemessage/(?P<pk>[0-9]+)/content/$', generalviews.message_html, name='message_html'),
     #----------------------------------------------------------------------#
     #   Copy URLS
     #----------------------------------------------------------------------#
