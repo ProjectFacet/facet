@@ -31,22 +31,24 @@
             <h4>Folders</h4>
             <ul class="list-group">
                 <li class="list-group-item">
-                    <a href="email-inbox.html"> <i class="sidebar-icon fa fa-inbox color-false"></i> Inbox <span class="label label-warning label-rounded pull-right"></span> </a>
+                    <a href="{% url 'inbox' %}"> <i class="sidebar-icon fa fa-inbox color-false"></i> Inbox <span class="label label-warning label-rounded pull-right"></span> </a>
                 </li>
                 <li class="list-group-item">
-                    <a href="email-compose.html"> <i class="sidebar-icon fa fa-envelope-o color-false"></i> Sent</a>
+                    <a href="{% url 'sent_html' %}" id="sent_messages"> <i class="sidebar-icon fa fa-envelope-o color-false"></i> Sent</a>
+                </li>
+                {% comment %}
+                <li class="list-group-item">
+                    <a href="{% url 'inbox_important' %}"> <i class="sidebar-icon fa fa-certificate color-false"></i> Important <span class="label label-success label-rounded pull-right"></span> </a>
                 </li>
                 <li class="list-group-item">
-                    <a href="email-inbox.html"> <i class="sidebar-icon fa fa-certificate color-false"></i> Important <span class="label label-success label-rounded pull-right"></span> </a>
+                    <a href="{% url 'inbox_trash' %}"> <i class="sidebar-icon fa fa-trash-o color-false"></i> Trash</a>
                 </li>
-                <li class="list-group-item">
-                    <a href="email-inbox.html"> <i class="sidebar-icon fa fa-trash-o color-false"></i> Trash</a>
-                </li>
+                {% endcomment %}
             </ul>
             <h4>Comment Feed Categories</h4>
             <ul class="list-group">
                 <li class="list-group-item">
-                    <a href="email-inbox.html"> <i class="sidebar-icon fa fa-circle color-danger"></i>Organization</a>
+                    <a href="{% url 'comments_html' %}" id="organization_comments"> <i class="sidebar-icon fa fa-circle color-danger"></i>Organization</a>
                 </li>
                 <li class="list-group-item">
                     <a href="email-inbox.html"> <i class="sidebar-icon fa fa-circle color-warning"></i>Network</a>
@@ -74,10 +76,10 @@
                       <div class="btn-group pull-right">
 
                       </div>
-                      <button class="btn btn-default btn-sm"><i class="fa fa-refresh"></i> </button>
-                      <button class="btn btn-default btn-sm"><i class="fa fa-eye"></i> </button>
-                      <button class="btn btn-default btn-sm"><i class="fa fa-exclamation"></i> </button>
-                      <button class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i> </button>
+                      {% comment %}<a href="{% url 'inbox' %}"><button class="btn btn-default btn-sm"><i class="fa fa-refresh"></i> </button></a>{% endcomment %}
+                      {% comment %}<button class="btn btn-default btn-sm"><i class="fa fa-eye"></i> </button>{% endcomment %}
+                      {% comment %}<button class="btn btn-default btn-sm"><i class="fa fa-exclamation"></i> </button>{% endcomment %}
+                      {% comment %}<button class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i> </button>{% endcomment %}
                   </div>
               </div>
               <div class="inbox-content">
@@ -90,7 +92,7 @@
                                       <input type="checkbox"><span class="c-indicator c-indicator-default"></span> </label>
                               </td>
                               <td>
-                                  <a href="{% url 'message_html' message.pk %}" class="specific-message"> <span class="email-contact">{{ message.user.credit_name }}</span> </a>
+                                  <a href="{% url 'message_html' message.pk %}" id="specific-message"> <span class="email-contact">{{ message.user.credit_name }}</span> </a>
                               </td>
                               <td class="subject"><a href="" class="specific-message">{{ message.subject }}</a> </td>
                               <td class="text-right">{{ message.date|date:'D, M j' }} at {{ message.date|date:'g:i a' }}</td>
@@ -104,18 +106,40 @@
   </div>
 
 <script>
-
-$("a[.specific-message]").click(function(event) {
-    console.log("clicked email name");
-    event.preventDefault();
-    var target = $(this).attr("href");
-    $("#inbox-main").load(target, function() {
-         $("#inbox-main").modal("show");
+$(function() {
+    $("#specific-message").click(function(event) {
+        event.preventDefault();
+        var page_url = jQuery(this).attr("href")
+        console.log(page_url);
+        $('#inbox-main')
+           .load(page_url);
     });
 });
-
 </script>
 
+<script>
+$(function() {
+    $("#sent_messages").click(function(event) {
+        event.preventDefault();
+        var page_url = jQuery(this).attr("href")
+        console.log(page_url);
+        $('#inbox-main')
+           .load(page_url);
+    });
+});
+</script>
+
+<script>
+$(function() {
+    $("#organization_comments").click(function(event) {
+        event.preventDefault();
+        var page_url = jQuery(this).attr("href")
+        console.log(page_url);
+        $('#inbox-main')
+           .load(page_url);
+    });
+});
+</script>
 
 {% endblock %}
 

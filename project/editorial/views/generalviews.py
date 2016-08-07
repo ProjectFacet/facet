@@ -182,37 +182,6 @@ def team_list(request):
         })
 
 #----------------------------------------------------------------------#
-#   Discussion Views
-#----------------------------------------------------------------------#
-
-def inbox(request):
-    """ Return discussion inbox.
-
-    Displays comments from SeriesPlan Discussions involving user.
-    Displays comments from StoryPlan Discussions involving user.
-    Displays comments from any Facet Editing Discussion involving user.
-    Displays comments from any PrivateDiscussion involving user.
-    """
-
-    comments = User.inbox_comments(request.user)
-
-    private_messages_received = User.private_messages_received(request.user)
-    private_messages_sent = User.private_messages_sent(request.user)
-
-    return render(request, 'editorial/inbox.html', {
-        'comments': comments,
-        'private_messages_received': private_messages_received,
-        'private_messages_sent': private_messages_sent,
-    })
-
-def message_html(request, pk):
-    """Return html for displaying a specific message."""
-    message = get_object_or_404(PrivateMessage, id=pk)
-
-    message_html = render_to_string('private-message-content.html', {'message': message})
-    return HttpResponse(message_html)
-
-#----------------------------------------------------------------------#
 #   Collaborations View
 #----------------------------------------------------------------------#
 

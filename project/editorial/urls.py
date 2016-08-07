@@ -7,6 +7,7 @@ from django.conf.urls import url, include
 from views import (
     generalviews,
     # assetviews,
+    inboxviews,
     scheduleviews,
     organizationviews,
     userviews,
@@ -70,12 +71,16 @@ urlpatterns = [
     #----------------------------------------------------------------------#
     #   Inbox URLS - Labeled as Inbox in navigation
     #----------------------------------------------------------------------#
-    url(r'^inbox$', generalviews.inbox, name='inbox'),
+    url(r'^inbox$', inboxviews.inbox, name='inbox'),
+    url(r'^inbox/sent$', inboxviews.sent_html, name='sent_html'),
+    url(r'^inbox/comments$', inboxviews.comments_html, name='comments_html'),
+    # url(r'^inbox/important$', inboxviews.inbox_important, name='inbox_important'),
+    # url(r'^inbox/trash$', inboxviews.inbox_trash, name='inbox_trash'),
     #----------------------------------------------------------------------#
     #   Private Message URLS
     #----------------------------------------------------------------------#
     url(r'^privatemessage/new/$', communicationviews.private_message_new, name='private_message_new'),
-    url(r'^privatemessage/(?P<pk>[0-9]+)/content/$', generalviews.message_html, name='message_html'),
+    url(r'^privatemessage/(?P<pk>[0-9]+)/content/$', inboxviews.message_html, name='message_html'),
     #----------------------------------------------------------------------#
     #   Copy URLS
     #----------------------------------------------------------------------#

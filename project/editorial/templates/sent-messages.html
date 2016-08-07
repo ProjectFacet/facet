@@ -1,0 +1,31 @@
+<div class="inbox-header">
+    <h3> Sent Messages </h3>
+    <div class="m-b-20">
+        <div class="btn-group pull-right">
+
+        </div>
+        {% comment %}<a href="{% url 'inbox' %}"><button class="btn btn-default btn-sm"><i class="fa fa-refresh"></i> </button></a>{% endcomment %}
+        {% comment %}<button class="btn btn-default btn-sm"><i class="fa fa-eye"></i> </button>{% endcomment %}
+        {% comment %}<button class="btn btn-default btn-sm"><i class="fa fa-exclamation"></i> </button>{% endcomment %}
+        {% comment %}<button class="btn btn-default btn-sm"><i class="fa fa-trash-o"></i> </button>{% endcomment %}
+    </div>
+</div>
+<div class="inbox-content">
+    <table class="table">
+        <tbody>
+            {% for message in sent_messages %}
+            <tr id="{{message.id}}-table-row">
+                <td>
+                    <label class="c-input c-checkbox">
+                        <input type="checkbox"><span class="c-indicator c-indicator-default"></span> </label>
+                </td>
+                <td>
+                    <a href="{% url 'message_html' message.pk %}" id="specific-message"> <span class="email-contact">{{ message.recipient.credit_name }}</span> </a>
+                </td>
+                <td class="subject"><a href="" class="specific-message">{{ message.subject }}</a> </td>
+                <td class="text-right">{{ message.date|date:'D, M j' }} at {{ message.date|date:'g:i a' }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
