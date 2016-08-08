@@ -73,7 +73,7 @@ urlpatterns = [
     #----------------------------------------------------------------------#
     url(r'^inbox$', inboxviews.inbox, name='inbox'),
     url(r'^inbox/sent$', inboxviews.sent_html, name='sent_html'),
-    url(r'^inbox/comments$', inboxviews.comments_html, name='comments_html'),
+    url(r'^inbox//(?P<comment_type>[-\w]+)/comments$', inboxviews.comments_html, name='comments_html'),
     # url(r'^inbox/important$', inboxviews.inbox_important, name='inbox_important'),
     # url(r'^inbox/trash$', inboxviews.inbox_trash, name='inbox_trash'),
     #----------------------------------------------------------------------#

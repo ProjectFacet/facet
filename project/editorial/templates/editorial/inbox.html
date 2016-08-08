@@ -48,19 +48,19 @@
             <h4>Comment Feed Categories</h4>
             <ul class="list-group">
                 <li class="list-group-item">
-                    <a href="{% url 'comments_html' %}" id="organization_comments"> <i class="sidebar-icon fa fa-circle color-danger"></i>Organization</a>
+                    <a href="{% url 'comments_html' comment_type='organization' %}" id="organization_comments" title="View Organization Comments"> <i class="sidebar-icon fa fa-circle color-danger"></i>Organization</a>
                 </li>
                 <li class="list-group-item">
-                    <a href="email-inbox.html"> <i class="sidebar-icon fa fa-circle color-warning"></i>Network</a>
+                    <a href="{% url 'comments_html' comment_type='network' %}" id="network_comments" title="View Network Comments"> <i class="sidebar-icon fa fa-circle color-warning"></i>Network</a>
                 </li>
                 <li class="list-group-item">
-                    <a href="email-inbox.html"> <i class="sidebar-icon fa fa-circle color-success"></i>Story</a>
+                    <a href="{% url 'comments_html' comment_type='story' %}" id="story_comments" title="View Organization Story Comments"> <i class="sidebar-icon fa fa-circle color-success"></i>Story</a>
                 </li>
                 <li class="list-group-item">
-                    <a href="email-inbox.html"> <i class="sidebar-icon fa fa-circle color-info"></i>Series</a>
+                    <a href="{% url 'comments_html' comment_type='series' %}" id="series_comments" title="View Organization Series Comments"> <i class="sidebar-icon fa fa-circle color-info"></i>Series</a>
                 </li>
                 <li class="list-group-item">
-                    <a href="email-inbox.html"> <i class="sidebar-icon fa fa-circle color-primary"></i>Facet</a>
+                    <a href="{% url 'comments_html' comment_type='facet' %}" id="facet_comments" title="View Organization Story Facet Comments"> <i class="sidebar-icon fa fa-circle color-primary"></i>Facet</a>
                 </li>
             </ul>
           </div>
@@ -141,6 +141,53 @@ $(function() {
 });
 </script>
 
+<script>
+$(function() {
+    $("#network_comments").click(function(event) {
+        event.preventDefault();
+        var page_url = jQuery(this).attr("href")
+        console.log(page_url);
+        $('#inbox-main')
+           .load(page_url);
+    });
+});
+</script>
+
+<script>
+$(function() {
+    $("#story_comments").click(function(event) {
+        event.preventDefault();
+        var page_url = jQuery(this).attr("href")
+        console.log(page_url);
+        $('#inbox-main')
+           .load(page_url);
+    });
+});
+</script>
+
+<script>
+$(function() {
+    $("#series_comments").click(function(event) {
+        event.preventDefault();
+        var page_url = jQuery(this).attr("href")
+        console.log(page_url);
+        $('#inbox-main')
+           .load(page_url);
+    });
+});
+</script>
+
+<script>
+$(function() {
+    $("#facet_comments").click(function(event) {
+        event.preventDefault();
+        var page_url = jQuery(this).attr("href")
+        console.log(page_url);
+        $('#inbox-main')
+           .load(page_url);
+    });
+});
+</script>
 {% endblock %}
 
 {% block modals %}

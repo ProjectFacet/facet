@@ -111,13 +111,34 @@ def sent_html(request):
     return HttpResponse(sent_messages_html)
 
 
-def comments_html(request):
+def comments_html(request, comment_type):
     """Return comment feeds."""
 
-    all_comments = Organization.get_org_comments(request.user.organization)
+    print "comment type: ", comment_type
+    # returns all comments involving any user of an Organization
+    all_comments = Organization.get_org_user_comments(request.user.organization)
 
-    comments_html = render_to_string('inbox-comments.html', {'all_comments': all_comments})
-    
+    if comment_type=="organization":
+    # returns all comments made for an Organization
+        comments = Organization.get_org_comments(request.user.organization)
+    elif comment_type=="network":
+    # returns all comments for any networks an Organization is part of
+        comments = Organization.get_network_comments(request.user.organization)
+    elif comment_type=="story":
+    # returns all comments for any story of an Organization
+        comments = Organization.get_story_comments(request.user.organization)
+    elif comment_type=="series":
+    # returns all comments for any series of an Organization
+        comments = Organization.get_series_comments(request.user.organization)
+    elif comment_type=="facet":
+    # returns all comments for any facets of stories of an Organization
+        comments = Organization.get_facet_comments(request.user.organization)
+
+    comments_html = render_to_string('inbox-comments.html', {
+                            'comments': comments,
+                            'comment_type': comment_type,
+    })
+
     return HttpResponse(comments_html)
 
 # def inbox_important(request):

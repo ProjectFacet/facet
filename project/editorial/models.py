@@ -412,12 +412,61 @@ class Organization(models.Model):
         videos = VideoAsset.objects.filter(organization=self)
         return videos
 
-    def get_org_comments(self):
-        """Retrieve all the comments associated with users of an organization."""
+    def get_org_user_comments(self):
+        """Retrieve all the comments associated with users of an organization.
+
+        Effectively 'all' comments for an organization.
+        """
 
         users = Organization.get_org_users(self)
-        org_comments = Comment.objects.filter(Q(user__in=users))
-        return org_comments
+        org_user_comments = Comment.objects.filter(Q(user__in=users))
+        return org_user_comments
+
+    def get_org_comments(self):
+        """Retrieve all organization comments."""
+
+        organization_comments = Comment.objects.filter(discussion__discussion_type='ORG', user__organization=self)
+        return organization_comments
+
+    def get_network_comments(self):
+        """Retrieve all comments for networks an organization is a member of."""
+
+        networks = Organization.get_org_networks(self)
+        network_discussions = [network.discussion for network in networks]
+        network_comments = Comment.objects.filter(discussion__in=network_discussions)
+        return network_comments
+
+    def get_story_comments(self):
+        """Retrieve all comments for stories belonging to an organization."""
+
+        org_stories = Story.objects.filter(organization=self)
+        story_discussions = [story.discussion for story in org_stories]
+        story_comments = Comment.objects.filter(discussion__in=story_discussions)
+        return story_comments
+
+    def get_series_comments(self):
+        """Retrieve all comments for series belonging to an organization."""
+
+        org_series = Series.objects.filter(organization=self)
+        series_discussions = [series.discussion for series in org_series]
+        series_comments = Comment.objects.filter(discussion__in=series_discussions)
+        return series_comments
+
+    def get_facet_comments(self):
+        """Retrieve all comments for facets belonging to stories of an organization."""
+
+        org_facets = []
+        webfacets = WebFacet.objects.filter(Q(organization=self))
+        printfacets = PrintFacet.objects.filter(Q(organization=self))
+        audiofacets = AudioFacet.objects.filter(Q(organization=self))
+        videofacets = VideoFacet.objects.filter(Q(organization=self))
+        org_facets.extend(webfacets)
+        org_facets.extend(printfacets)
+        org_facets.extend(audiofacets)
+        org_facets.extend(videofacets)
+        facet_discussions = [facet.discussion for facet in org_facets]
+        facet_comments = Comment.objects.filter(discussion__in=facet_discussions)
+        return facet_comments
 
     def get_org_collaborative_content(self):
         """ Return list of all content that an org is a collaborator on."""
