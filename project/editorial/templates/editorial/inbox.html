@@ -27,7 +27,7 @@
   <!-- Inbox Sidebar -->
     <div class="col-xs-12 col-lg-2">
         <div class="email-sidebar">
-            <a class="btn btn-block btn-default" href="email-compose.html">Compose Message</a>
+            <a href="{% url 'compose_message_html' %}" class="btn btn-block btn-default" id="compose-message">Compose Message</a>
             <h4>Folders</h4>
             <ul class="list-group">
                 <li class="list-group-item">
@@ -105,9 +105,24 @@
     </div>
   </div>
 
+  <script>
+  $(function() {
+      $("#compose-message").click(function(event) {
+          console.log("specific messages");
+          event.preventDefault();
+          var page_url = jQuery(this).attr("href")
+          console.log(page_url);
+          $('#inbox-main')
+             .load(page_url);
+      });
+  });
+  </script>
+
+
 <script>
 $(function() {
     $("#specific-message").click(function(event) {
+        console.log("specific messages");
         event.preventDefault();
         var page_url = jQuery(this).attr("href")
         console.log(page_url);
@@ -120,6 +135,7 @@ $(function() {
 <script>
 $(function() {
     $("#sent_messages").click(function(event) {
+        console.log("sent messages");
         event.preventDefault();
         var page_url = jQuery(this).attr("href")
         console.log(page_url);

@@ -36,6 +36,7 @@ from editorial.models import (
 
 #TODO: Refactor to reduce repetitiveness/use AJAX for submission
 
+@csrf_exempt
 def private_message_new(request):
     """ Private messaging method. """
 

@@ -159,3 +159,12 @@ def message_html(request, pk):
 
     message_html = render_to_string('private-message-content.html', {'message': message})
     return HttpResponse(message_html)
+
+
+def compose_message_html(request):
+    """Return private message form."""
+
+    privatemessageform = PrivateMessageForm(request=request)
+
+    compose_message_html = render_to_string('compose-message.html', {'privatemessageform' : privatemessageform})
+    return HttpResponse(compose_message_html)

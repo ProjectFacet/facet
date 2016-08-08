@@ -1,0 +1,14 @@
+{% load bootstrap3 %}
+
+<div class="inbox-header">
+    <div class="pull-right"> <a class="btn btn-warning btn-sm"><i class="fa fa-pencil"></i> Draft</a> <a class="btn btn-warning btn-sm"><i class="fa fa-times"></i> Discard</a> </div>
+    <h3> Compose Message </h3> </div>
+<div class="email-compose">
+  {% if privatemessageform %}
+  <form action="{% url 'private_message_new' %}" method="POST" class="post-form">
+  {% csrf_token %}
+  {% bootstrap_form privatemessageform %}
+  <button type="submit" class="btn btn-primary">Send Message</button>
+  </form>
+  {% endif %}
+</div>

@@ -136,15 +136,18 @@ class SeriesForm(forms.ModelForm):
         model = Series
         fields = ['name', 'series_description', 'collaborate', 'collaborate_with', 'team']
         widgets = {
-            'team': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select', 'id':'series-team'}),
-            'collaborate_with': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select', 'id':'collaborate-with'}),
+            'name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Series Name'}),
+            'series_description': Textarea(attrs={'class': 'form-control', 'placeholder': 'Description'}),
+            'team': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select form-control facet-select', 'id':'series-team', 'data-placeholder': 'Select Series Team'}),
+            'collaborate': CheckboxInput(attrs={'class': 'c-indicator c-indicator-default'}),
+            'collaborate_with': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select form-control facet-select', 'id':'collaborate-with', 'data-placeholder': 'Select Collaborators'}),
             }
 
-    # class Media:
-    #     css = {
-    #         'all': ('css/bootstrap-datetimepicker.css', 'css/chosen.min.css')
-    #     }
-    #     js = ('scripts/chosen.jquery.min.js',)
+    class Media:
+        css = {
+            'all': ('css/bootstrap-datetimepicker.css', 'css/chosen.min.css')
+        }
+        js = ('scripts/chosen.jquery.min.js',)
 
 # ------------------------------ #
 #          Story Forms           #

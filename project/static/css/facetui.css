@@ -4,6 +4,10 @@
   margin-bottom: .25rem;
 }
 
+.pace .pace-progress {
+  background: #5bc0de;
+}
+
 #stories-list_length > label:nth-child(1) > select:nth-child(1) {
   width: 75px;
   display: inline-block;
@@ -64,3 +68,61 @@
 .spread-1 {
   letter-spacing: 1em;
 }
+
+#series_team_chosen .chosen-choices {
+  height: 40px !important;
+  background-color: #3c414f !important;
+  border-color: #424756 !important;
+  color: #fff !important;
+  }
+
+#series-team-chosen .search-choice li {
+    height: 32px !important;
+  }
+
+.chosen-container-multi .chosen-choices {
+  height: 40px !important;
+  background-color: #3c414f !important;
+  background-image: none;
+  border-color: #424756 !important;
+  color: #fff !important;
+}
+
+.chosen-drop {
+  background-color: #f5f5f5 !important;
+  border-color: #424756 !important;
+  color: #fff !important;
+  font-size: 14px;
+}
+
+/*.chosen-choices {
+  background-color: transparent;
+  background-image: none;
+  color: #fff;
+  border: 1px grey;
+}*/
+
+.chosen-container-multi .chosen-choices li.search-choice {
+  background-color: transparent;
+  background-image: none;
+  color: #fff;
+  border: none !important;
+  font-size: 14px;
+  height: auto;
+  box-shadow: none;
+}
+
+.chosen-container-multi .chosen-choices li.search-field input[type="text"] {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.search-choice-close {
+  color: #fff !important;
+}
+
+input[type="checkbox"] {
+
+}
+
+/*.chosen-container-multi .chosen-choices li.search-choice*/
