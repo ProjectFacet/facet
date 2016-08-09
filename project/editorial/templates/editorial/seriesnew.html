@@ -12,7 +12,7 @@
     <ol class="breadcrumb icon-angle-right icon-th">
         <li class="fadeIn"><a href="{% url 'dashboard' %}"> Dashboard </a></li>
         <li class="fadeIn"> Create New Content </li>
-        <li class="fadeIn"><a href="{% url 'story_new' %}" title="You are Here"> New Series </a></li>
+        <li class="fadeIn"><a href="{% url 'series_new' %}" title="You are Here"> New Series </a></li>
     </ol>
 </div>
 {% endblock breadcrumb %}
@@ -24,7 +24,7 @@
 {% block content %}
 
 <div class="row m-b-40">
-  <div class="col-md-12">
+  <div class="col-xs-12">
     <div class="row">
     <form method="POST" class="post-form forms-basic">{% csrf_token %}
       <!-- Left Side -->
@@ -78,10 +78,11 @@
 
           <fieldset class="form-group m-b-20">
             <span class="col-xs-2">
-              <label class="capitalize">{{ seriesform.collaborate.label_tag }}</label>
+              <label class="capitalize c-input c-checkbox">{{ seriesform.collaborate.label_tag }}</label>
             </span>
             <span class="col-xs-10">
               {{ seriesform.collaborate }}
+              <span class="c-indicator c-indicator-default"></span>
               {% if seriesform.collaborate.errors %}
               <small class="text-muted">{{ seriesform.collaborate.errors }}</small>
               {% endif %}
