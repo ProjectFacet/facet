@@ -3,46 +3,62 @@
 {% load i18n %}
 {% load bootstrap3 %}
 
-{% block head %}
-{{ networkform.media }}
-{% endblock %}
+<!-------------------------------------------->
+<!--      BREADCRUMB NAVIGATION             -->
+<!-------------------------------------------->
+
+{% block breadcrumb %}
+<div>
+    <ol class="breadcrumb icon-angle-right icon-th">
+        <li class="fadeIn"> Dashboard </li>
+        <li class="fadeIn"><a href="{% url 'network_list' %}" title="View Network List"> Networks </a></li>
+        <li class="fadeIn"><a href="{% url 'network_detail' network.id %}" title="View Network Detail"> {{ network.name }} </a></li>
+        <li class="fadeIn"><a href="{% url 'network_edit' pk=network.id %}" title="You are Here"> Edit {{ network.name }} </a></li>
+    </ol>
+</div>
+{% endblock breadcrumb %}
+
+<!-------------------------------------------->
+<!--            Main Section                -->
+<!-------------------------------------------->
 
 {% block content %}
+<!-- Row One -->
+<div class="row m-b-40">
 
-<div class="row particles" id="user-hero">
-  <div class="upper-content">
-    <div class="col-xs-12 content-upper-75">
-      <h1 class="media-heading text-light center thin uppercase spread-025">Edit {{ network.name }}</h1>
-    </div>
-  </div>
-</div>
-
-<div class="row content-lower-25">
   <div class="col-xs-12">
     <div class="row">
-    <form method="POST" class="post-form">{% csrf_token %}
+    <form method="POST" class="post-form forms-basic">{% csrf_token %}
       <!-- Left Side -->
-      <div class="col-xs-12 col-sm-12 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2">
-        <div class="form-group custom-form">
-          <a href="#" data-toggle="tooltip" title="{{ seriesform.name.help_text }}"><span class="field-label">{{ networkform.name.label_tag }}</span></a>
-          {{ networkform.name }}
-          {% if networkform.name.errors %}
-            <div class="alert alert-warning" role="alert">
-            {{ networkform.name.errors }}
+          <div class="col-xs-12 col-sm-12 col-md-2 col-md-offset-2 col-lg-8 col-lg-offset-2">
+              <div class="row">
+                <fieldset class="form-group m-b-20">
+                  <div class="col-xs-2">
+                    <label>{{ networkform.name.label_tag }}</label>
+                  </div>
+                  <div class="col-xs-10">
+                    {{ networkform.name }}
+                    {% if networkform.name.errors %}
+                    <small class="text-muted">{{ networkform.name.errors }}</small>
+                    {% endif %}
+                  </div>
+                </fieldset>
+
+                <fieldset class="form-group m-b-20">
+                  <div class="col-xs-2">
+                    <label class="capitalize">{{ networkform.network_description.label_tag }}</label>
+                  </div>
+                  <div class="col-xs-10">
+                    {{ networkform.network_description }}
+                    {% if networkform.network_description.errors %}
+                    <small class="text-muted">{{ networkform.network_description.errors }}</small>
+                    {% endif %}
+                  </div>
+                </fieldset>
+              <button type="submit" class="save btn btn-default">Save</button>
+              <a href="{% url 'network_list' %}"><button class="save btn btn-default">Cancel</button></a>
             </div>
-          {% endif %}
-        </div>
-        <div class="form-group custom-form">
-          <a href="#" data-toggle="tooltip" title="{{ seriesform.series_description.help_text }}"><span class="field-label">{{ networkform.network_description.label_tag }}</span></a>
-          {{ networkform.network_description }}
-          {% if networkform.network_description.errors %}
-            <div class="alert alert-warning" role="alert">
-            {{ networkform.network_description.errors }}
-            </div>
-          {% endif %}
-        </div>
-        <button type="submit" class="save btn btn-default">Save</button>
-      </div>
+          </div>
       </form>
     </div>
   </div>
