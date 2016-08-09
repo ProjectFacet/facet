@@ -123,4 +123,8 @@ input[type="checkbox"] {
   box-shadow: none;
 }
 
+[data-palette="palette-2"] .navbar-1 .navbar-drawer::after {
+  background-color: #5bc0de !important;
+}
+
 /*.chosen-container-multi .chosen-choices li.search-choice*/

@@ -164,8 +164,8 @@
                                 </ul>
 
                                 <div class="navbar-drawer pull-left hidden-lg-down">
-                                    <form class="form-inline navbar-form">
-                                        <input class="form-control" type="text" placeholder="Search"> </form>
+                                    <form action="{% url 'search' %}" class="form-inline navbar-form">
+                                        <input id="searchbox" type="text" name="q" class="form-control" value="{{request.GET.q}}" placeholder="Search"> </form>
                                 </div>
                                 <!---------------->
                                 <!-- Pull Right -->
