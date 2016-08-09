@@ -128,3 +128,8 @@ input[type="checkbox"] {
 }
 
 /*.chosen-container-multi .chosen-choices li.search-choice*/
+
+
+.right-rule {
+  border-right: 1px solid #54657E;
+}
