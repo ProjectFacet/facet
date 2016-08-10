@@ -3,393 +3,336 @@
 {% load i18n %}
 {% load bootstrap3 %}
 
+<!-------------------------------------------->
+<!--      BREADCRUMB NAVIGATION             -->
+<!-------------------------------------------->
+
+{% block breadcrumb %}
+<div>
+    <ol class="breadcrumb icon-angle-right icon-th">
+        <li class="fadeIn"> Dashboard </li>
+        <li class="fadeIn"><a href="{% url 'team_list' %}" title="View Team"> Team </a></li>
+        <li class="fadeIn"><a href="{% url 'user_detail' user.id %}" title="View {{ user.credit_name}} Profile"> {{ user.credit_name}} </a></li>
+        <li class="fadeIn"><a href="{% url 'user_edit' user.id %}" title="You are here"> Edit {{ user.credit_name}} </a></li>
+    </ol>
+</div>
+{% endblock breadcrumb %}
+
+<!-------------------------------------------->
+<!--            Main Section                -->
+<!-------------------------------------------->
+
 {% block content %}
+<!-- Row One -->
+<div class="row m-b-40">
+    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+        <a class="media-left media-middle"> {% if user.display_photo %}<img class="centered h-200 w-200 m-r-40" src="{{ user.display_photo.url }}" id="user-profile-photo" alt="profile image">{% else %}{% endif %} </a>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <h4 class="m-t-5 m-b-10"><a href="{% url 'user_detail' user.id %}">{{ user.credit_name }}</a></h4>
+        <p class="f-s-300"> <span class="color-white m-r-20">{{ user.title }}</span> | <span class="color-white m-l-20 m-r-20">{{user.organization.name}}</span> | <i class="fa fa-map-marker color-white m-l-20"></i> <span class="color-white m-r-20">{{ user.location }}</span></p>
+        <p class="f-s-300"> <i class="fa fa-phone color-white"></i> <span class="color-white m-r-20">{{ user.phone }}</span> | <i class="fa fa-envelope-o color-white m-l-20"></i> <span class="color-white m-r-20">{{ user.email }}</span> </p>
+        <p>
+          {% if user.twitter %}<a href="{{ user.twitter }}" class="btn btn-sm btn-circle ml-1x" aria-label="twitter"><i class="fa fa-lg fa-twitter"></i></a>{% endif %}
+          {% if user.github %}<a href="{{ user.github }}" class="btn btn-sm btn-circle" aria-label="github"><i class="fa fa-lg fa-github"></i></a>{% endif %}
+          {% if user.instagram %}<a href="{{ user.instagram }}" class="btn btn-sm btn-circle ml-1x" aria-label="instagram"><i class="fa fa-lg fa-instagram"></i></a>{% endif %}
+          {% if user.facebook %}<a href="{{ user.facebook }}" class="btn btn-sm btn-circle ml-1x" aria-label="facebook"><i class="fa fa-lg fa-facebook"></i></a>{% endif %}
+          {% if user.linkedin %}<a href="{{ user.linkedin }}" class="btn btn-sm btn-circle ml-1x" aria-label="linkedin"><i class="fa fa-lg fa-linkedin-square"></i></a>{% endif %}
+          {% if user.vine %}<a href="{{ user.vine }}" class="btn btn-sm btn-circle ml-1x" aria-label="vine"><i class="fa fa-lg fa-vine"></i></a>{% endif %}
+        </p>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
+      <h5 class="m-t-40"> Bio</h5>
+      <p>{{user.bio}}</p>
+    </div>
+</div>
+
 {% if request.user.id == user.id or request.user.id == user.organization.owner.id %}
 
-<!-- Header for lg display -->
-<div class="row particles hidden-xs hidden-sm hidden-md visible-lg" id="user-hero">
-  <div class="upper-content">
-    <div class="col-sm-1 col-md-2 col-lg-2">
-      {% if user.display_photo %}
-      <img alt="cover" class="profile-page-pic no-padding border-white content-upper-75" src="{{ user.display_photo.url }}">
-      {% else %}
-      <!-- <img alt="cover" class="profile-page-pic no-padding border-white content-upper-75" src="nophoto.jpg"> -->
-      {% endif %}
-    </div>
-    <div class="col-lg-10 content-upper-75">
-      <h1 class="media-heading text-light thin uppercase spread-025">{{ user.credit_name }}</h1>
-      <p> &nbsp;</p>
-      <p class="mb-4x tiny-text">Edit {% if request.user.id == user.id %} your {% else %} {{ user.credit_name }}'s {% endif %}profile and click Save to keep changes.</p>
-      <p> &nbsp;</p>
-      <p> &nbsp;</p>
-    </div>
-  </div>
+<div class="row m-b-40">
+  <p class="mb-4x tiny-text">Edit {% if request.user.id == user.id %} your {% else %} {{ user.credit_name }}'s {% endif %}profile and click Save to keep changes.</p>
 </div>
-<!-- End header for lg display -->
-
-<!-- Header for xs/xs/md display -->
-<div class="visible-xs visible-sm visible-md hidden-lg">
-  <div class="row particles " id="user-hero">
-    <div class="upper-content">
-      <div class="col-lg-12 content-upper-75">
-        <h2 class="media-heading text-light thin uppercase spread-025 center">{{ user.credit_name }}</h2>
-      </div>
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col-xs-6 col-xs-offset-3 col-sm-4 col-sm-offset-4 col-md-2 col-md-offset-0">
-      {% if user.display_photo %}
-      <img alt="cover" class="no-padding border-white img-thumbnail img-responsive content-lower-25" src="{{ user.display_photo.url }}">
-      {% else %}
-      <!-- <img alt="cover" class="profile-page-pic no-padding border-white content-upper-75" src="nophoto.jpg"> -->
-      {% endif %}
-    </div>
-    <div class="col-xs-12 col-sm-12 col-md-10 content-lower-25">
-      <p class="mb-4x tiny-text">Edit {% if request.user.id == user.id %} your {% else %} {{ user.credit_name }}'s {% endif %}profile and click Save to keep changes.</p>
-    </div>
-  </div>
-</div>
-<!-- End header for xs/xs/md display -->
 
 
+<div class="row">
+  <form class="form-basic" method="POST" enctype="multipart/form-data">{% csrf_token %}
+          <!-- Left Column -->
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
 
-<div class="row profile-row">
-  <form class="post-form" method="POST" enctype="multipart/form-data">{% csrf_token %}
-  <!-- Left Column -->
-  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+            <!-- User First Name -->
+            <fieldset class="form-group m-b-20">
+              <div class="col-xs-2 offset-xs-1">
+                <label>{{ userform.first_name.label_tag }}</label>
+              </div>
+              <div class="col-xs-9">
+                {{ userform.first_name }}
+                {% if userform.first_name.errors %}
+                <small class="text-muted">{{ userform.first_name.errors }}</small>
+                {% endif %}
+              </div>
+            </fieldset>
+            <!-- User Last Name -->
+            <fieldset class="form-group m-b-20">
+              <div class="col-xs-2 offset-xs-1">
+                <label>{{ userform.last_name.label_tag }}</label>
+              </div>
+              <div class="col-xs-9">
+                {{ userform.last_name }}
+                {% if userform.last_name.errors %}
+                <small class="text-muted">{{ userform.last_name.errors }}</small>
+                {% endif %}
+              </div>
+            </fieldset>
+            <!-- User Credit Name -->
+            <fieldset class="form-group m-b-20">
+              <div class="col-xs-2 offset-xs-1">
+                <label>{{ userform.credit_name.label_tag }}</label>
+              </div>
+              <div class="col-xs-9">
+                {{ userform.credit_name }}
+                {% if userform.credit_name.errors %}
+                <small class="text-muted">{{ userform.credit_name.errors }}</small>
+                {% endif %}
+              </div>
+            </fieldset>
+            <!-- User Username -->
+            <fieldset class="form-group m-b-20">
+              <div class="col-xs-2 offset-xs-1">
+                <label>{{ userform.username.label_tag }}</label>
+              </div>
+              <div class="col-xs-9">
+                {{ userform.username }}
+                {% if userform.username.errors %}
+                <small class="text-muted">{{ userform.username.errors }}</small>
+                {% endif %}
+              </div>
+            </fieldset>
+            <!-- User Title -->
+            <fieldset class="form-group m-b-20">
+              <div class="col-xs-2 offset-xs-1">
+                <label>{{ userform.title.label_tag }}</label>
+              </div>
+              <div class="col-xs-9">
+                {{ userform.title }}
+                {% if userform.title.errors %}
+                <small class="text-muted">{{ userform.title.errors }}</small>
+                {% endif %}
+              </div>
+            </fieldset>
+            <!-- User Location -->
+            <fieldset class="form-group m-b-20">
+              <div class="col-xs-2 offset-xs-1">
+                <label>{{ userform.location.label_tag }}</label>
+              </div>
+              <div class="col-xs-9">
+                {{ userform.location }}
+                {% if userform.location.errors %}
+                <small class="text-muted">{{ userform.location.errors }}</small>
+                {% endif %}
+              </div>
+            </fieldset>
+            <!-- User Email -->
+            <fieldset class="form-group m-b-20">
+              <div class="col-xs-2 offset-xs-1">
+                <label>{{ userform.email.label_tag }}</label>
+              </div>
+              <div class="col-xs-9">
+                {{ userform.email }}
+                {% if userform.email.errors %}
+                <small class="text-muted">{{ userform.email.errors }}</small>
+                {% endif %}
+              </div>
+            </fieldset>
+            <!-- User Phone -->
+            <fieldset class="form-group m-b-20">
+              <div class="col-xs-2 offset-xs-1">
+                <label>{{ userform.phone.label_tag }}</label>
+              </div>
+              <div class="col-xs-9">
+                {{ userform.phone }}
+                {% if userform.phone.errors %}
+                <small class="text-muted">{{ userform.phone.errors }}</small>
+                {% endif %}
+              </div>
+            </fieldset>
+            <!-- User Website -->
+            <fieldset class="form-group m-b-20">
+              <div class="col-xs-2 offset-xs-1">
+                <label>{{ userform.website.label_tag }}</label>
+              </div>
+              <div class="col-xs-9">
+                {{ userform.website }}
+                {% if userform.website.errors %}
+                <small class="text-muted">{{ userform.website.errors }}</small>
+                {% endif %}
+              </div>
+            </fieldset>
+            <!-- User Github -->
+            <fieldset class="form-group m-b-20">
+              <div class="col-xs-2 offset-xs-1">
+                <label>{{ userform.github.label_tag }}</label>
+              </div>
+              <div class="col-xs-9">
+                {{ userform.github }}
+                {% if userform.github.errors %}
+                <small class="text-muted">{{ userform.github.errors }}</small>
+                {% endif %}
+              </div>
+            </fieldset>
+            <!-- User Facebook -->
+            <fieldset class="form-group m-b-20">
+              <div class="col-xs-2 offset-xs-1">
+                <label>{{ userform.facebook.label_tag }}</label>
+              </div>
+              <div class="col-xs-9">
+                {{ userform.facebook }}
+                {% if userform.facebook.errors %}
+                <small class="text-muted">{{ userform.facebook.errors }}</small>
+                {% endif %}
+              </div>
+            </fieldset>
+            <!-- User Twitter -->
+            <fieldset class="form-group m-b-20">
+              <div class="col-xs-2 offset-xs-1">
+                <label>{{ userform.twitter.label_tag }}</label>
+              </div>
+              <div class="col-xs-9">
+                {{ userform.twitter }}
+                {% if userform.twitter.errors %}
+                <small class="text-muted">{{ userform.twitter.errors }}</small>
+                {% endif %}
+              </div>
+            </fieldset>
+            <!-- User LinkedIn -->
+            <fieldset class="form-group m-b-20">
+              <div class="col-xs-2 offset-xs-1">
+                <label>{{ userform.linkedin.label_tag }}</label>
+              </div>
+              <div class="col-xs-9">
+                {{ userform.linkedin }}
+                {% if userform.linkedin.errors %}
+                <small class="text-muted">{{ userform.linkedin.errors }}</small>
+                {% endif %}
+              </div>
+            </fieldset>
+            <!-- User Instagram -->
+            <fieldset class="form-group m-b-20">
+              <div class="col-xs-2 offset-xs-1">
+                <label>{{ userform.instagram.label_tag }}</label>
+              </div>
+              <div class="col-xs-9">
+                {{ userform.instagram }}
+                {% if userform.instagram.errors %}
+                <small class="text-muted">{{ userform.instagram.errors }}</small>
+                {% endif %}
+              </div>
+            </fieldset>
+            <!-- User Snapchat -->
+            <fieldset class="form-group m-b-20">
+              <div class="col-xs-2 offset-xs-1">
+                <label>{{ userform.snapchat.label_tag }}</label>
+              </div>
+              <div class="col-xs-9">
+                {{ userform.snapchat }}
+                {% if userform.snapchat.errors %}
+                <small class="text-muted">{{ userform.snapchat.errors }}</small>
+                {% endif %}
+              </div>
+            </fieldset>
+            <!-- User Vine -->
+            <fieldset class="form-group m-b-20">
+              <div class="col-xs-2 offset-xs-1">
+                <label>{{ userform.vine.label_tag }}</label>
+              </div>
+              <div class="col-xs-9">
+                {{ userform.vine }}
+                {% if userform.vine.errors %}
+                <small class="text-muted">{{ userform.vine.errors }}</small>
+                {% endif %}
+              </div>
+            </fieldset>
 
-    <div class="row profile-row">
-      <div class="form-group custom-form">
-        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
-        <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.first_name.label_tag }}</span></a>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
-        {{ userform.first_name }}
-        {% if userform.first_name.errors %}
-          <div class="alert alert-warning" role="alert">
-          {{ userform.first_name.errors }}
           </div>
-        {% endif %}
-        </div>
-      </div>
-    </div>
+          <!-- Right Column -->
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
 
-    <div class="row profile-row">
-      <div class="form-group custom-form">
-        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
-        <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.last_name.label_tag }}</span></a>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
-        {{ userform.last_name }}
-        {% if userform.last_name.errors %}
-          <div class="alert alert-warning" role="alert">
-          {{ userform.last_name.errors }}
-          </div>
-        {% endif %}
-        </div>
-      </div>
-    </div>
+            <!-- User Bio -->
+            <fieldset class="form-group m-b-20">
+              <div class="col-xs-2">
+                <label>{{ userform.bio.label_tag }}</label>
+              </div>
+              <div class="col-xs-10">
+                {{ userform.bio }}
+                {% if userform.bio.errors %}
+                <small class="text-muted">{{ userform.bio.errors }}</small>
+                {% endif %}
+              </div>
+            </fieldset>
+            <!-- User Expertise -->
+            <fieldset class="form-group m-b-20">
+              <div class="col-xs-2">
+                <label>{{ userform.expertise.label_tag }}</label>
+              </div>
+              <div class="col-xs-10">
+                {{ userform.expertise }}
+                {% if userform.bio.errors %}
+                <small class="text-muted">{{ userform.expertise.errors }}</small>
+                {% endif %}
+              </div>
+            </fieldset>
+            <!-- User Profile Photo -->
+            <div class="form-group custom-form">
+              <a href="#" data-toggle="tooltip" title="{{ userform.photo.help_text }}"><span class="field-label">{{ userform.photo.label_tag }}</span></a>
+              {{ userform.photo }}
+              {% if userform.photo.errors %}
+                <div class="alert alert-warning" role="alert">
+                {{ userform.photo.errors }}
+                </div>
+              {% endif %}
+            </div>
 
-    <div class="row profile-row">
-      <div class="form-group custom-form">
-        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
-        <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.credit_name.label_tag }}</span></a>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
-        {{ userform.credit_name }}
-        {% if userform.credit_name.errors %}
-          <div class="alert alert-warning" role="alert">
-          {{ userform.credit_name.errors }}
-          </div>
-        {% endif %}
-        </div>
-      </div>
-    </div>
+            <!-- User status -->
+            {% comment %}
+            {% if request.user.id == user.organization.owner.id %}
 
-    <div class="row profile-row">
-      <div class="form-group custom-form">
-        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
-        <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.username.label_tag }}</span></a>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
-        {{ userform.username }}
-        {% if userform.username.errors %}
-          <div class="alert alert-warning" role="alert">
-          {{ userform.username.errors }}
-          </div>
-        {% endif %}
-        </div>
-      </div>
-    </div>
+            <div class="form-group custom-form">
+              <a href="#" data-toggle="tooltip" title="{{ userform.is_superuser.help_text }}"><span class="field-label">{{ userform.is_superuser.label_tag }}</span></a>
+              {{ userform.is_superuser }}
+              {% if userform.is_superuser.errors %}
+                <div class="alert alert-warning" role="alert">
+                {{ userform.is_superuser.errors }}
+                </div>
+              {% endif %}
+            </div>
 
-    <div class="row profile-row">
-      <div class="form-group custom-form">
-        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
-        <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.title.label_tag }}</span></a>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
-        {{ userform.title }}
-        {% if userform.title.errors %}
-          <div class="alert alert-warning" role="alert">
-          {{ userform.title.errors }}
-          </div>
-        {% endif %}
-        </div>
-      </div>
-    </div>
+            <div class="form-group custom-form">
+              <a href="#" data-toggle="tooltip" title="{{ userform.is_staff.help_text }}"><span class="field-label">{{ userform.is_staff.label_tag }}</span></a>
+              {{ userform.is_staff }}
+              {% if userform.is_staff.errors %}
+                <div class="alert alert-warning" role="alert">
+                {{ userform.is_staff.errors }}
+                </div>
+              {% endif %}
+            </div>
 
-    <div class="row profile-row">
-      <div class="form-group custom-form">
-        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
-        <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.location.label_tag }}</span></a>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
-        {{ userform.location }}
-        {% if userform.location.errors %}
-          <div class="alert alert-warning" role="alert">
-          {{ userform.location.errors }}
-          </div>
-        {% endif %}
-        </div>
-      </div>
-    </div>
+            <div class="form-group custom-form">
+              <a href="#" data-toggle="tooltip" title="{{ userform.user_type.help_text }}"><span class="field-label">{{ userform.user_type.label_tag }}</span></a>
+              {{ userform.user_type }}
+              {% if userform.user_type.errors %}
+                <div class="alert alert-warning" role="alert">
+                {{ userform.user_type.errors }}
+                </div>
+              {% endif %}
+            </div>
 
-    <div class="row profile-row">
-      <div class="form-group custom-form">
-        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
-        <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.email.label_tag }}</span></a>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
-        {{ userform.email }}
-        {% if userform.email.errors %}
-          <div class="alert alert-warning" role="alert">
-          {{ userform.email.errors }}
-          </div>
-        {% endif %}
-        </div>
-      </div>
-    </div>
+            {% endif %}
+            {% endcomment %}
 
-    <div class="row profile-row">
-      <div class="form-group custom-form">
-        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
-        <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.phone.label_tag }}</span></a>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
-        {{ userform.phone }}
-        {% if userform.phone.errors %}
-          <div class="alert alert-warning" role="alert">
-          {{ userform.phone.errors }}
-          </div>
-        {% endif %}
-        </div>
-      </div>
-    </div>
-
-    <div class="row profile-row">
-      <div class="form-group custom-form">
-        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
-        <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.website.label_tag }}</span></a>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
-        {{ userform.website }}
-        {% if userform.website.errors %}
-          <div class="alert alert-warning" role="alert">
-          {{ userform.website.errors }}
-          </div>
-        {% endif %}
-        </div>
-      </div>
-    </div>
-
-    <div class="row profile-row">
-      <div class="form-group custom-form">
-        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
-        <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.github.label_tag }}</span></a>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
-        {{ userform.github }}
-        {% if userform.github.errors %}
-          <div class="alert alert-warning" role="alert">
-          {{ userform.github.errors }}
-          </div>
-        {% endif %}
-        </div>
-      </div>
-    </div>
-
-    <div class="row profile-row">
-      <div class="form-group custom-form">
-        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
-        <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.facebook.label_tag }}</span></a>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
-        {{ userform.facebook }}
-        {% if userform.facebook.errors %}
-          <div class="alert alert-warning" role="alert">
-          {{ userform.facebook.errors }}
-          </div>
-        {% endif %}
-        </div>
-      </div>
-    </div>
-
-    <div class="row profile-row">
-      <div class="form-group custom-form">
-        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
-        <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.twitter.label_tag }}</span></a>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
-        {{ userform.twitter }}
-        {% if userform.twitter.errors %}
-          <div class="alert alert-warning" role="alert">
-          {{ userform.twitter.errors }}
-          </div>
-        {% endif %}
-        </div>
-      </div>
-    </div>
-
-    <div class="row profile-row">
-      <div class="form-group custom-form">
-        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
-        <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.linkedin.label_tag }}</span></a>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
-        {{ userform.linkedin }}
-        {% if userform.linkedin.errors %}
-          <div class="alert alert-warning" role="alert">
-          {{ userform.linkedin.errors }}
-          </div>
-        {% endif %}
-        </div>
-      </div>
-    </div>
-
-    <div class="row profile-row">
-      <div class="form-group custom-form">
-        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
-        <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.instagram.label_tag }}</span></a>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
-        {{ userform.instagram }}
-        {% if userform.instagram.errors %}
-          <div class="alert alert-warning" role="alert">
-          {{ userform.instagram.errors }}
-          </div>
-        {% endif %}
-        </div>
-      </div>
-    </div>
-
-    <div class="row profile-row">
-      <div class="form-group custom-form">
-        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
-        <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.snapchat.label_tag }}</span></a>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
-        {{ userform.snapchat }}
-        {% if userform.snapchat.errors %}
-          <div class="alert alert-warning" role="alert">
-          {{ userform.snapchat.errors }}
-          </div>
-        {% endif %}
-        </div>
-      </div>
-    </div>
-
-    <div class="row profile-row">
-      <div class="form-group custom-form">
-        <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
-        <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.vine.label_tag }}</span></a>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
-        {{ userform.vine }}
-        {% if userform.vine.errors %}
-          <div class="alert alert-warning" role="alert">
-          {{ userform.vine.errors }}
-          </div>
-        {% endif %}
-        </div>
-      </div>
-    </div>
-
-</div>
-  <!-- Right Column -->
-  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-
-    <div class="form-group custom-form">
-      <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.bio.label_tag }}</span></a>
-      {{ userform.bio }}
-      {% if userform.bio.errors %}
-        <div class="alert alert-warning" role="alert">
-        {{ userform.bio.errors }}
-        </div>
-      {% endif %}
-    </div>
-
-    <div class="form-group custom-form">
-      <a href="#" data-toggle="tooltip" title="{{ storyform.name.help_text }}"><span class="field-label">{{ userform.expertise.label_tag }}</span></a>
-      {{ userform.expertise }}
-      {% if userform.expertise.errors %}
-        <div class="alert alert-warning" role="alert">
-        {{ userform.expertise.errors }}
-        </div>
-      {% endif %}
-    </div>
-    <div class="form-group custom-form">
-      <a href="#" data-toggle="tooltip" title="{{ userform.photo.help_text }}"><span class="field-label">{{ userform.photo.label_tag }}</span></a>
-      {{ userform.photo }}
-      {% if userform.photo.errors %}
-        <div class="alert alert-warning" role="alert">
-        {{ userform.photo.errors }}
-        </div>
-      {% endif %}
-    </div>
-
-    <!-- User status -->
-    {% comment %}
-    {% if request.user.id == user.organization.owner.id %}
-
-    <div class="form-group custom-form">
-      <a href="#" data-toggle="tooltip" title="{{ userform.is_superuser.help_text }}"><span class="field-label">{{ userform.is_superuser.label_tag }}</span></a>
-      {{ userform.is_superuser }}
-      {% if userform.is_superuser.errors %}
-        <div class="alert alert-warning" role="alert">
-        {{ userform.is_superuser.errors }}
-        </div>
-      {% endif %}
-    </div>
-
-    <div class="form-group custom-form">
-      <a href="#" data-toggle="tooltip" title="{{ userform.is_staff.help_text }}"><span class="field-label">{{ userform.is_staff.label_tag }}</span></a>
-      {{ userform.is_staff }}
-      {% if userform.is_staff.errors %}
-        <div class="alert alert-warning" role="alert">
-        {{ userform.is_staff.errors }}
-        </div>
-      {% endif %}
-    </div>
-
-    <div class="form-group custom-form">
-      <a href="#" data-toggle="tooltip" title="{{ userform.user_type.help_text }}"><span class="field-label">{{ userform.user_type.label_tag }}</span></a>
-      {{ userform.user_type }}
-      {% if userform.user_type.errors %}
-        <div class="alert alert-warning" role="alert">
-        {{ userform.user_type.errors }}
-        </div>
-      {% endif %}
-    </div>
-
-    {% endif %}
-    {% endcomment %}
-
-    <button id="edit-button" class="btn btn-primary" type="submit">{% trans "Save" %}</button></a>
-    </form>
-    <a href="{% url 'user_detail' user.id %}"><button type="submit" class="btn btn-default">Cancel</button>
-  </div>
-
+            <a href="{% url 'user_detail' user.id %}"><button type="submit" class="btn btn-default pull-right m-r-10">Cancel</button>
+            <button id="edit-button" class="btn btn-default pull-right m-r-10" type="submit">{% trans "Save" %}</button></a>
+          </div> <!-- End of Right Column -->
+  </form>
+</div><!-- End of Row -->
 
 {% else %}
 <p>You are not authorized to edit this page.</p>

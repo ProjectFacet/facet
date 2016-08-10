@@ -133,3 +133,15 @@ input[type="checkbox"] {
 .right-rule {
   border-right: 1px solid #54657E;
 }
+
+.user-profile {
+  margin: 0px;
+  padding: 0px;
+  background-image: none !important;
+  background-color: #3c414f !important;
+}
+
+#user-profile-photo {
+  margin-left: -15px !important;
+  margin-top: -12px !important;
+}
