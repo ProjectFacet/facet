@@ -3,63 +3,90 @@
 {% load i18n %}
 {% load bootstrap3 %}
 
-{% block head %}
-{{ orgform.media }}
-{% endblock %}
+<!-------------------------------------------->
+<!--      BREADCRUMB NAVIGATION             -->
+<!-------------------------------------------->
+
+{% block breadcrumb %}
+<div>
+    <ol class="breadcrumb icon-angle-right icon-th">
+      <li class="fadeIn"> Dashboard </li>
+      <li class="hidden-md-down"><a href="{% url 'org_new' %}">Create Organization</a></li>
+    </ol>
+</div>
+{% endblock breadcrumb %}
+
+<!-------------------------------------------->
+<!--            Main Section                -->
+<!-------------------------------------------->
 
 {% block content %}
-
-<div class="row particles" id="user-hero">
-  <div class="upper-content">
-    <div class="col-lg-12 content-upper-75">
-      <h1 class="media-heading text-light center thin uppercase spread-025">New Organization</h1>
-    </div>
-  </div>
-</div>
-
-<div class="row content-lower-25">
+<!-- Row One -->
+<div class="row m-b-40">
   <div class="col-xs-12">
     <div class="row">
     <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
       <!-- Left Side -->
       <div class="col-xs-12 col-sm-12 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2">
-        <div class="form-group custom-form">
-          <a href="#" data-toggle="tooltip" title="{{ orgform.name.help_text }}"><span class="field-label">{{ orgform.name.label_tag }}</span></a>
-          {{ orgform.name }}
-          {% if orgform.name.errors %}
-            <div class="alert alert-warning" role="alert">
-            {{ orgform.name.errors }}
-            </div>
-          {% endif %}
-        </div>
-        <div class="form-group custom-form">
-          <a href="#" data-toggle="tooltip" title="{{ orgform.name.help_text }}"><span class="field-label">{{ orgform.location.label_tag }}</span></a>
-          {{ orgform.location }}
-          {% if orgform.location.errors %}
-            <div class="alert alert-warning" role="alert">
-            {{ orgform.location.errors }}
-            </div>
-          {% endif %}
-        </div>
-        <div class="form-group custom-form">
-          <a href="#" data-toggle="tooltip" title="{{ orgform.name.help_text }}"><span class="field-label">{{ orgform.logo.label_tag }}</span></a>
+        <!-- Organization Name -->
+        <fieldset class="form-group m-b-20">
+          {% comment %}
+          <div class="col-xs-2">
+            <label>{{ orgform.name.label_tag }}</label>
+          </div>
+          {% endcomment %}
+          <div class="col-xs-12">
+            {{ orgform.name }}
+            {% if orgform.name.errors %}
+            <small class="text-muted">{{ orgform.name.errors }}</small>
+            {% endif %}
+          </div>
+        </fieldset>
+        <!-- Organization Location -->
+        <fieldset class="form-group m-b-20">
+          {% comment %}
+          <div class="col-xs-2">
+            <label>{{ orgform.location.label_tag }}</label>
+          </div>
+          {% endcomment %}
+          <div class="col-xs-12">
+            {{ orgform.location }}
+            {% if orgform.location.errors %}
+            <small class="text-muted">{{ orgform.location.errors }}</small>
+            {% endif %}
+          </div>
+        </fieldset>
+        <!-- Organization Description -->
+        <fieldset class="form-group m-b-20">
+          {% comment %}
+          <div class="col-xs-2">
+            <label>Description: </label>
+          </div>
+          {% endcomment %}
+          <div class="col-xs-12">
+            {{ orgform.org_description }}
+            {% if orgform.org_description.errors %}
+            <small class="text-muted">{{ orgform.org_description.errors }}</small>
+            {% endif %}
+          </div>
+        </fieldset>
+        <!-- Organization Logo -->
+        <div class="form-group custom-form m-b-40">
+          <div class="col-xs-2">
+            <label>Logo: </label>
+          </div>
+          <div class="col-xs-10">
           {{ orgform.logo }}
           {% if orgform.logo.errors %}
             <div class="alert alert-warning" role="alert">
             {{ orgform.logo.errors }}
             </div>
           {% endif %}
+          </div>
         </div>
-        <div class="form-group custom-form">
-          <a href="#" data-toggle="tooltip" title="{{ orgform.series_description.help_text }}"><span class="field-label">{{ orgform.org_description.label_tag }}</span></a>
-          {{ orgform.org_description }}
-          {% if orgform.org_description.errors %}
-            <div class="alert alert-warning" role="alert">
-            {{ orgform.org_description.errors }}
-            </div>
-          {% endif %}
-        </div>
-        <button type="submit" class="save btn btn-default">Save</button>
+
+        <a href="{% url 'org_new' %}"><button class="save btn btn-default m-t-20 pull-right">Cancel</button></a>
+        <button type="submit" class="save btn btn-default m-t-20 m-r-10 pull-right">Save</button>
       </div>
       </form>
     </div>

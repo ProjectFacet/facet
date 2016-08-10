@@ -113,6 +113,7 @@ urlpatterns = [
     url(r'^organization/(?P<pk>[0-9]+)/$', organizationviews.org_detail, name='org_detail'),
     url(r'^organization/(?P<pk>[0-9]+)/edit/$', organizationviews.org_edit, name='org_edit'),
     url(r'^organization/(?P<pk>[0-9]+)/notes/$', noteviews.org_notes, name='org_notes'),
+    url(r'^organization/(?P<pk>[0-9]+)/note/(?P<note_type>[-\w]+)/content$', noteviews.note_content_html, name='note_content_html'),
     url(r'^organization/note/new/$', noteviews.create_org_note, name='create_org_note'),
     #----------------------------------------------------------------------#
     #   User URLS
@@ -121,6 +122,7 @@ urlpatterns = [
     url(r'^user/(?P<pk>[0-9]+)/$', userviews.user_detail, name='user_detail'),
     url(r'^user/(?P<pk>[0-9]+)/edit/$', userviews.user_edit, name='user_edit'),
     url(r'^user/(?P<pk>[0-9]+)/notes/$', noteviews.user_notes, name='user_notes'),
+    url(r'^user/(?P<pk>[0-9]+)/note/(?P<note_type>[-\w]+)/content$', noteviews.note_content_html, name='note_content_html'),
     url(r'^user/note/new/$', noteviews.create_user_note, name='create_user_note'),
     url(r'^user/deactivate/$', userviews.user_deactivate, name='user_deactivate'),
     url(r'^user/activate/$', userviews.user_activate, name='user_activate'),
@@ -134,6 +136,7 @@ urlpatterns = [
     url(r'^series/(?P<pk>[0-9]+)/edit/$', seriesviews.series_edit, name='series_edit'),
     url(r'^series/(?P<pk>[0-9]+)/delete/$', seriesviews.series_delete, name='series_delete'),
     url(r'^series/(?P<pk>[0-9]+)/notes/$', noteviews.series_notes, name='series_notes'),
+    url(r'^series/(?P<pk>[0-9]+)/note/(?P<note_type>[-\w]+)/content$', noteviews.note_content_html, name='note_content_html'),
     url(r'^series/note/new/$', noteviews.create_series_note, name='create_series_note'),
     #----------------------------------------------------------------------#
     #   Story URLS
@@ -143,6 +146,8 @@ urlpatterns = [
     url(r'^story/(?P<pk>[0-9]+)/$', storyviews.story_detail, name='story_detail'),
     url(r'^story/(?P<pk>[0-9]+)/edit/$', storyviews.story_edit, name='story_edit'),
     url(r'^story/(?P<pk>[0-9]+)/delete/$', storyviews.story_delete, name='story_delete'),
+    url(r'^story/(?P<pk>[0-9]+)/notes/$', noteviews.story_notes, name='story_notes'),
+    url(r'^story/(?P<pk>[0-9]+)/note/(?P<note_type>[-\w]+)/content$', noteviews.note_content_html, name='note_content_html'),
     url(r'^story/note/new/$', noteviews.create_story_note, name='create_story_note'),
     url(r'^story/(?P<pk>[0-9]+)/team/json$', storyviews.story_team_options_json, name='story_team_options_json'),
     #----------------------------------------------------------------------#
@@ -200,5 +205,6 @@ urlpatterns = [
     url(r'^network/stories$', networkviews.network_stories, name='network_stories'),
     # url(r'^network/stories/json$', networkviews.network_stories_json, name='network_stories_json'),
     url(r'^network/(?P<pk>[0-9]+)/notes/$', noteviews.network_notes, name='network_notes'),
+    url(r'^network/(?P<pk>[0-9]+)/note/(?P<note_type>[-\w]+)/content$', noteviews.note_content_html, name='note_content_html'),
     url(r'^network/note/new/$', noteviews.create_network_note, name='create_network_note'),
 ]

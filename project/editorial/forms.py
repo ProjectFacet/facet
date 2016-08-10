@@ -6,7 +6,7 @@ from ourwidgets import OurDateTimePicker
 from django import forms
 from django.utils.safestring import mark_safe
 from django.contrib.auth import get_user_model
-from django.forms import Textarea, TextInput, RadioSelect, Select, NumberInput, CheckboxInput, CheckboxSelectMultiple
+from django.forms import Textarea, TextInput, RadioSelect, Select, NumberInput, CheckboxInput, CheckboxSelectMultiple, FileField
 from datetimewidget.widgets import DateTimeWidget
 from tinymce.widgets import TinyMCE
 # from django.contrib.staticfiles.templatetags.staticfiles import static
@@ -95,7 +95,11 @@ class OrganizationForm(forms.ModelForm):
     class Meta:
         model = Organization
         fields = ['name', 'org_description', 'location', 'logo']
-
+        widgets = {
+            'name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Organization Name'}),
+            'location': TextInput(attrs={'class': 'form-control', 'placeholder': 'Organization Location'}),
+            'org_description': Textarea(attrs={'class': 'form-control', 'placeholder': 'Organization Description'}),
+            }
 
 # ------------------------------ #
 #         Network Forms          #
@@ -108,7 +112,7 @@ class NetworkForm(forms.ModelForm):
         model = Network
         fields = ['name', 'network_description', 'logo']
         widgets = {
-            'name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Series Name'}),
+            'name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Network Name'}),
             'network_description': Textarea(attrs={'class': 'form-control', 'placeholder': 'Description'}),
             }
 

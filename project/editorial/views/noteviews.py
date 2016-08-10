@@ -10,6 +10,7 @@ from django.http import HttpResponse
 from django.utils import timezone
 from django.views.generic import TemplateView , UpdateView, DetailView
 from django.views.decorators.csrf import csrf_exempt
+from django.template.loader import render_to_string
 import datetime
 import json
 
@@ -34,6 +35,35 @@ from editorial.models import (
     SeriesNote,
     StoryNote,)
 
+
+#----------------------------------------------------------------------#
+#   General Note Views
+#----------------------------------------------------------------------#
+
+def note_content_html(request, note_type, pk):
+    """Return note content as html."""
+
+    print note_type
+    print pk
+    print "in note_content_html"
+    if note_type=='organization':
+        note = get_object_or_404(OrganizationNote, pk=pk)
+    elif note_type=='network':
+        print "in note_type = network"
+        note = get_object_or_404(NetworkNote, pk=pk)
+    elif note_type=='user':
+        note = get_object_or_404(UserNote, pk=pk)
+    elif note_type=='series':
+        note = get_object_or_404(SeriesNote, pk=pk)
+    elif note_type=='story':
+        note = get_object_or_404(StoryNote, pk=pk)
+
+    note_html = render_to_string('note-content.html', {
+                        'note': note,
+                        'note_type': note_type,
+    })
+
+    return HttpResponse(note_html)
 
 #----------------------------------------------------------------------#
 #   Organization Note Views
@@ -118,13 +148,21 @@ def series_notes(request, pk):
 def create_series_note(request):
     """ Post a note to an series."""
 
+    print "heeeey"
+
     if request.method == "POST":
+        print "hoooo"
         form = SeriesNoteForm(request.POST or None)
+        print "3"
         if form.is_valid():
+            print "4"
             series_id = request.POST.get('series')
+            print "series id: ", series_id
             series = get_object_or_404(Series, pk=series_id)
+            print "series: ", series
             seriesnote = form.save(commit=False)
             seriesnote.owner = request.user
+            seriesnote.organization = request.user.organization
             seriesnote.series = series
             seriesnote.save()
             return redirect('series_detail', pk=series.id)
@@ -136,11 +174,14 @@ def create_series_note(request):
 def story_notes(request, pk):
     """ Display all of the notes for an story. """
 
-    story = get_object_or_404(Series, pk=pk)
-    storynotes = SeriesNote.objects.filter(story_id=story.id)
+    story = get_object_or_404(Story, pk=pk)
+    storynotes = StoryNote.objects.filter(story_id=story.id)
+    storynoteform = StoryNoteForm()
 
     return render(request, 'editorial/storynotes.html', {
+        'story': story,
         'storynotes': storynotes,
+        'storynoteform': storynoteform,
     })
 
 
@@ -154,6 +195,7 @@ def create_story_note(request):
             story = get_object_or_404(Story, pk=story_id)
             storynote = form.save(commit=False)
             storynote.owner = request.user
+            storynote.organization = request.user.organization
             storynote.story = story
             storynote.save()
             return redirect('story_detail', pk=story.id)

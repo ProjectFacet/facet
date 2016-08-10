@@ -1,0 +1,17 @@
+<div class="email-view">
+    <div class="inbox-header">
+        <div class="pull-right">
+        </div>
+    </div>
+    <h3 class="m-b-20"> <span>Subject: </span> <span>{{ note.title }}</span> </h3>
+    <p class="text-bold m-b-20"> <span class="pull-right email-date">{{ note.creation_date|date:'D, M j' }} | {{ note.creation_date|date:'g:i a' }}</span> <span class="email-from"><strong>Author: </strong></span> {{ note.owner.credit_name }}</p>
+    <p class=""></p>
+    <p>{{ note.text|safe }}</p>
+    {% if note.keywords %}
+    <hr>
+    <small>Keywords: {% for keyword in note.keywords %}{{ keyword }}, {% endfor %}</small>
+    {% endif %}
+</div>
+<div class="text-left">
+    {% comment %}<button type="button" class="btn btn-default"><i class="fa fa-trash-o"></i> Remove</button>{% endcomment %}
+</div>

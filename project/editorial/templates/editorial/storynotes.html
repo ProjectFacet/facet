@@ -11,9 +11,9 @@
 <div>
     <ol class="breadcrumb icon-angle-right icon-th">
         <li class="fadeIn"> Dashboard </li>
-        <li class="fadeIn"><a href="{% url 'series_list' %}" title="View Series"> Series </a></li>
-        <li class="fadeIn"><a href="{% url 'series_detail' series.id %}" title="View {{series.name}}"> {{ series.name }} </a></li>
-        <li class="fadeIn"><a href={% url 'series_notes' pk=series.id %} title="You are here"> {{ series.name }} Notes </a></li>
+        <li class="fadeIn"><a href="{% url 'story_list' %}" title="View Your Stories"> Stories </a></li>
+        <li class="fadeIn"><a href="{% url 'story_detail' story.id %}" title="View {{story.name}}"> {{story.name}} </a></li>
+        <li class="fadeIn"><a href="{% url 'story_notes' story.id %}" title="You are here"> {{story.name}} Notes </a></li>
     </ol>
 </div>
 {% endblock breadcrumb %}
@@ -28,13 +28,13 @@
 
   <!-- Left Column -->
   <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 activity-widget-4">
-    <h4 class="m-b-40">Notes <a data-toggle="modal" data-target="#addSeriesNote" title="Add Series Note"><i class="fa fa-plus sameline dark"></i></a></h4>
-    {% for note in seriesnotes %}
+    <h4 class="m-b-40">Notes <a data-toggle="modal" data-target="#addStoryNote" title="Add Story Note"><i class="fa fa-plus sameline dark"></i></a></h4>
+    {% for note in storynotes %}
     <div class="row">
         <div class="col-xs-12">
           <div class="media">
               <div class="media-body">
-                  <a href="{% url 'note_content_html' note_type='series' pk=note.id %}" id="note-{{note.id}}" class="series_note_link"><h5 class="media-heading"> {{ note.title }} </h5></a>
+                  <a href="{% url 'note_content_html' note_type='story' pk=note.id %}" id="note-{{note.id}}" class="story_note_link"><h5 class="media-heading"> {{ note.title }} </h5></a>
                   <small class="f-s-14">{{ note.owner.credit_name }}</small></br>
                   <small class="color-default">{{ note.creation_date|date:'D M j g:i a' }}</small>
               </div>
@@ -54,7 +54,7 @@
 
 <script>
 $(function() {
-    $(".series_note_link").click(function(event) {
+    $(".story_note_link").click(function(event) {
         event.preventDefault();
         var page_url = jQuery(this).attr("href")
         console.log(page_url);
@@ -69,18 +69,18 @@ $(function() {
 
 {% block modals %}
 <!-- Add Note Modal -->
-<div class="modal fade" id="addSeriesNote" tabindex="-1" role="dialog" aria-labelledby="addSeriesNoteModalLabel">
+<div class="modal fade" id="addStoryNote" tabindex="-1" role="dialog" aria-labelledby="addStoryNoteModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h5 class="modal-title" id="addUserModalLabel">Add a note for this series</h5>
+        <h5 class="modal-title" id="addStoryNoteLabel">Add a note for this story</h5>
       </div>
       <div class="modal-body">
-        <form action="{% url 'create_series_note' %}" method="POST" class="post-form">
+        <form action="{% url 'create_story_note' %}" method="POST" class="post-form">
         {% csrf_token %}
-        {% bootstrap_form seriesnoteform %}
-        <input type="hidden" name="series" value="{{ series.pk }}" />
+        {% bootstrap_form storynoteform %}
+        <input type="hidden" name="story" value="{{ story.pk }}" />
         <button type="submit" class="btn btn-primary">Post Note</button>
         </form>
       </div>
