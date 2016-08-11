@@ -55,11 +55,12 @@
 
 
 <div class="row">
-  <form class="form-basic" method="POST" enctype="multipart/form-data">{% csrf_token %}
+  <form class="form-basic post-form" method="POST" enctype="multipart/form-data">{% csrf_token %}
           <!-- Left Column -->
           <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
 
             <!-- User First Name -->
+            <div class="row">
             <fieldset class="form-group m-b-20">
               <div class="col-xs-2 offset-xs-1">
                 <label>{{ userform.first_name.label_tag }}</label>
@@ -71,7 +72,9 @@
                 {% endif %}
               </div>
             </fieldset>
+            </div>
             <!-- User Last Name -->
+            <div class="row">
             <fieldset class="form-group m-b-20">
               <div class="col-xs-2 offset-xs-1">
                 <label>{{ userform.last_name.label_tag }}</label>
@@ -83,7 +86,9 @@
                 {% endif %}
               </div>
             </fieldset>
+            </div>
             <!-- User Credit Name -->
+            <div class="row">
             <fieldset class="form-group m-b-20">
               <div class="col-xs-2 offset-xs-1">
                 <label>{{ userform.credit_name.label_tag }}</label>
@@ -95,7 +100,9 @@
                 {% endif %}
               </div>
             </fieldset>
+            </div>
             <!-- User Username -->
+            <div class="row">
             <fieldset class="form-group m-b-20">
               <div class="col-xs-2 offset-xs-1">
                 <label>{{ userform.username.label_tag }}</label>
@@ -107,7 +114,9 @@
                 {% endif %}
               </div>
             </fieldset>
+            </div>
             <!-- User Title -->
+            <div class="row">
             <fieldset class="form-group m-b-20">
               <div class="col-xs-2 offset-xs-1">
                 <label>{{ userform.title.label_tag }}</label>
@@ -119,7 +128,9 @@
                 {% endif %}
               </div>
             </fieldset>
+            </div>
             <!-- User Location -->
+            <div class="row">
             <fieldset class="form-group m-b-20">
               <div class="col-xs-2 offset-xs-1">
                 <label>{{ userform.location.label_tag }}</label>
@@ -131,7 +142,9 @@
                 {% endif %}
               </div>
             </fieldset>
+            </div>
             <!-- User Email -->
+            <div class="row">
             <fieldset class="form-group m-b-20">
               <div class="col-xs-2 offset-xs-1">
                 <label>{{ userform.email.label_tag }}</label>
@@ -143,7 +156,9 @@
                 {% endif %}
               </div>
             </fieldset>
+            </div>
             <!-- User Phone -->
+            <div class="row">
             <fieldset class="form-group m-b-20">
               <div class="col-xs-2 offset-xs-1">
                 <label>{{ userform.phone.label_tag }}</label>
@@ -155,7 +170,12 @@
                 {% endif %}
               </div>
             </fieldset>
+            </div>
+            
+            <h4 class="m-b-20">Profiles</h4>
+
             <!-- User Website -->
+            <div class="row">
             <fieldset class="form-group m-b-20">
               <div class="col-xs-2 offset-xs-1">
                 <label>{{ userform.website.label_tag }}</label>
@@ -167,7 +187,9 @@
                 {% endif %}
               </div>
             </fieldset>
+            </div>
             <!-- User Github -->
+            <div class="row">
             <fieldset class="form-group m-b-20">
               <div class="col-xs-2 offset-xs-1">
                 <label>{{ userform.github.label_tag }}</label>
@@ -179,7 +201,9 @@
                 {% endif %}
               </div>
             </fieldset>
+            </div>
             <!-- User Facebook -->
+            <div class="row">
             <fieldset class="form-group m-b-20">
               <div class="col-xs-2 offset-xs-1">
                 <label>{{ userform.facebook.label_tag }}</label>
@@ -191,7 +215,9 @@
                 {% endif %}
               </div>
             </fieldset>
+            </div>
             <!-- User Twitter -->
+            <div class="row">
             <fieldset class="form-group m-b-20">
               <div class="col-xs-2 offset-xs-1">
                 <label>{{ userform.twitter.label_tag }}</label>
@@ -203,7 +229,9 @@
                 {% endif %}
               </div>
             </fieldset>
+            </div>
             <!-- User LinkedIn -->
+            <div class="row">
             <fieldset class="form-group m-b-20">
               <div class="col-xs-2 offset-xs-1">
                 <label>{{ userform.linkedin.label_tag }}</label>
@@ -215,7 +243,9 @@
                 {% endif %}
               </div>
             </fieldset>
+            </div>
             <!-- User Instagram -->
+            <div class="row">
             <fieldset class="form-group m-b-20">
               <div class="col-xs-2 offset-xs-1">
                 <label>{{ userform.instagram.label_tag }}</label>
@@ -227,7 +257,9 @@
                 {% endif %}
               </div>
             </fieldset>
+            </div>
             <!-- User Snapchat -->
+            <div class="row">
             <fieldset class="form-group m-b-20">
               <div class="col-xs-2 offset-xs-1">
                 <label>{{ userform.snapchat.label_tag }}</label>
@@ -239,7 +271,9 @@
                 {% endif %}
               </div>
             </fieldset>
+            </div>
             <!-- User Vine -->
+            <div class="row">
             <fieldset class="form-group m-b-20">
               <div class="col-xs-2 offset-xs-1">
                 <label>{{ userform.vine.label_tag }}</label>
@@ -251,6 +285,7 @@
                 {% endif %}
               </div>
             </fieldset>
+            </div>
 
           </div>
           <!-- Right Column -->

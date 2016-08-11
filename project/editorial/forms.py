@@ -93,21 +93,21 @@ class UserProfileForm(forms.ModelForm):
             'instagram': TextInput(attrs={'class': 'form-control', 'placeholder': 'Instagram Profile Link'}),
             'snapchat': TextInput(attrs={'class': 'form-control', 'placeholder': 'Snapchat Profile Link'}),
             'vine': TextInput(attrs={'class': 'form-control', 'placeholder': 'Vine Profile Link'}),
-            'bio': Textarea(attrs={'rows':2, 'placeholder': 'Professional Bio'}),
-            'expertise': Textarea(attrs={'rows':2, 'placeholder': 'Expertise'}),
+            'bio': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Professional Bio'}),
+            'expertise': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Expertise'}),
         }
 
-class FullUserEditForm(forms.ModelForm):
-    """Form for organization owner or a user to edit a user's full profile."""
-
-    class Meta:
-        model = User
-        fields = ['first_name', 'last_name', 'username', 'credit_name', 'title', 'phone', 'email', 'bio', 'location',
-                 'expertise', 'website', 'facebook', 'github', 'twitter', 'linkedin', 'instagram', 'snapchat', 'vine', 'photo',
-                 'password', 'is_superuser', 'is_staff', 'user_type']
-        widgets = {
-            'expertise': Textarea(attrs={'rows':2}),
-        }
+# class FullUserEditForm(forms.ModelForm):
+#     """Form for organization owner or a user to edit a user's full profile."""
+#
+#     class Meta:
+#         model = User
+#         fields = ['first_name', 'last_name', 'username', 'credit_name', 'title', 'phone', 'email', 'bio', 'location',
+#                  'expertise', 'website', 'facebook', 'github', 'twitter', 'linkedin', 'instagram', 'snapchat', 'vine', 'photo',
+#                  'password', 'is_superuser', 'is_staff', 'user_type']
+#         widgets = {
+#             'expertise': Textarea(attrs={'rows':2}),
+#         }
 
 # ------------------------------ #
 #      Organization Forms        #

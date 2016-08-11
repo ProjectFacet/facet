@@ -17,7 +17,8 @@ from editorial.forms import (
     AddUserForm,
     UserProfileForm,
     UserNoteForm,
-    FullUserEditForm,)
+    # FullUserEditForm,
+    )
 
 from editorial.models import (
     User,
@@ -92,8 +93,7 @@ def user_edit(request, pk):
             return redirect('user_detail', pk = user.id)
 
     else:
-        print "USERFORM NOT VALID"
-        userform = FullUserEditForm(instance=user)
+        userform = UserProfileForm(instance=user)
 
     return render(request, 'editorial/useredit.html', {
             'user': user,
