@@ -58,22 +58,26 @@ def schedule_content(request):
                 edit_event_dict['id'] = webfacet.id
                 edit_event_dict['title'] = webfacet.title.encode('utf-8')
                 edit_event_dict['fulltitle'] = '<span class="tiny-text dark">Edit</span> {title} <span class="tiny-text dark">({type})</span>'.format(type=webfacet.type.encode('utf-8'), title=webfacet.title.encode('utf-8'))
-                edit_event_dict['hovertitle'] = "Edit - {title} ({type})".format(type=webfacet.type.encode('utf-8'), title=webfacet.title.encode('utf-8'))
                 edit_event_dict['url'] = webfacet.get_absolute_url()
                 edit_event_dict['class'] = 'event_edit'
                 edit_event_dict['start'] = time.mktime(webfacet.due_edit.timetuple()) * 1000
                 edit_event_dict['end'] = (time.mktime(webfacet.due_edit.timetuple()) * 1000) + 60
+                edit_event_dict['overlap'] = True
+                edit_event_dict['backgroundColor'] = '#00aced'
+                edit_event_dict['textColor'] = '#fff'
                 data['result'].append(edit_event_dict)
             if webfacet.run_date:
                 run_event_dict = {}
                 run_event_dict['id'] = webfacet.id
                 run_event_dict['title'] = webfacet.title.encode('utf-8')
                 run_event_dict['fulltitle'] = '<span class="tiny-text dark">Run</span> {title} <span class="tiny-text dark">({type})</span>'.format(type=webfacet.type.encode('utf-8'), title=webfacet.title.encode('utf-8'))
-                run_event_dict['hovertitle'] = "Run - {title} ({type})".format(type=webfacet.type.encode('utf-8'), title=webfacet.title.encode('utf-8'))
                 run_event_dict['url'] = webfacet.get_absolute_url()
                 run_event_dict['class'] = 'event_run'
                 run_event_dict['start'] = time.mktime(webfacet.run_date.timetuple()) * 1000
                 run_event_dict['end'] = (time.mktime(webfacet.run_date.timetuple()) * 1000) + 60
+                run_event_dict['overlap'] = True
+                run_event_dict['backgroundColor'] = '#5cb85c'
+                run_event_dict['textColor'] = '#fff'
                 data['result'].append(run_event_dict)
         # Print Facet Schedules
         for printfacet in story.printfacetstory.all():
@@ -82,22 +86,26 @@ def schedule_content(request):
                 edit_event_dict['id'] = printfacet.id
                 edit_event_dict['title'] = printfacet.title.encode('utf-8')
                 edit_event_dict['fulltitle'] = '<span class="tiny-text dark">Edit</span> {title} <span class="tiny-text dark">({type})</span>'.format(type=printfacet.type.encode('utf-8'), title=printfacet.title.encode('utf-8'))
-                edit_event_dict['hovertitle'] = "Edit - {title} ({type})".format(type=printfacet.type.encode('utf-8'), title=printfacet.title.encode('utf-8'))
                 edit_event_dict['url'] = printfacet.get_absolute_url()
                 edit_event_dict['class'] = 'event_edit'
                 edit_event_dict['start'] = time.mktime(printfacet.due_edit.timetuple()) * 1000
                 edit_event_dict['end'] = (time.mktime(printfacet.due_edit.timetuple()) * 1000) + 60
+                edit_event_dict['overlap'] = True
+                edit_event_dict['backgroundColor'] = '#00aced'
+                edit_event_dict['textColor'] = '#fff'
                 data['result'].append(edit_event_dict)
             if printfacet.run_date:
                 run_event_dict = {}
                 run_event_dict['id'] = printfacet.id
                 run_event_dict['title'] = printfacet.title.encode('utf-8')
                 run_event_dict['fulltitle'] = '<span class="tiny-text dark">Run</span> {title} <span class="tiny-text dark">({type})</span>'.format(type=printfacet.type.encode('utf-8'), title=printfacet.title.encode('utf-8'))
-                run_event_dict['hovertitle'] = "Run - {title} ({type})".format(type=printfacet.type.encode('utf-8'), title=printfacet.title.encode('utf-8'))
                 run_event_dict['url'] = printfacet.get_absolute_url()
                 run_event_dict['class'] = 'event_run'
                 run_event_dict['start'] = time.mktime(printfacet.run_date.timetuple()) * 1000
                 run_event_dict['end'] = (time.mktime(printfacet.run_date.timetuple()) * 1000) + 60
+                run_event_dict['overlap'] = True
+                run_event_dict['backgroundColor'] = '#5cb85c'
+                run_event_dict['textColor'] = '#fff'
                 data['result'].append(run_event_dict)
         # Audio Facet Schedules
         for audiofacet in story.audiofacetstory.all():
@@ -106,22 +114,26 @@ def schedule_content(request):
                 edit_event_dict['id'] = audiofacet.id
                 edit_event_dict['title'] = audiofacet.title.encode('utf-8')
                 edit_event_dict['fulltitle'] = '<span class="tiny-text dark">Edit</span> {title} <span class="tiny-text dark">({type})</span>'.format(type=audiofacet.type.encode('utf-8'), title=audiofacet.title.encode('utf-8'))
-                edit_event_dict['hovertitle'] = "Edit - {title} ({type})".format(type=audiofacet.type.encode('utf-8'), title=audiofacet.title.encode('utf-8'))
                 edit_event_dict['url'] = audiofacet.get_absolute_url()
                 edit_event_dict['class'] = 'event_edit'
                 edit_event_dict['start'] = time.mktime(audiofacet.due_edit.timetuple()) * 1000
                 edit_event_dict['end'] = (time.mktime(audiofacet.due_edit.timetuple()) * 1000) + 60
+                edit_event_dict['overlap'] = True
+                edit_event_dict['backgroundColor'] = '#00aced'
+                edit_event_dict['textColor'] = '#fff'
                 data['result'].append(edit_event_dict)
             if audiofacet.run_date:
                 run_event_dict = {}
                 run_event_dict['id'] = audiofacet.id
                 run_event_dict['title'] = audiofacet.title.encode('utf-8')
                 run_event_dict['fulltitle'] = '<span class="tiny-text dark">Run</span> {title} <span class="tiny-text dark">({type})</span>'.format(type=audiofacet.type.encode('utf-8'), title=audiofacet.title.encode('utf-8'))
-                run_event_dict['hovertitle'] = "Run - {title} ({type})".format(type=audiofacet.type.encode('utf-8'), title=audiofacet.title.encode('utf-8'))
                 run_event_dict['url'] = audiofacet.get_absolute_url()
                 run_event_dict['class'] = 'event_run'
                 run_event_dict['start'] = time.mktime(audiofacet.run_date.timetuple()) * 1000
                 run_event_dict['end'] = (time.mktime(audiofacet.run_date.timetuple()) * 1000) + 60
+                run_event_dict['overlap'] = True
+                run_event_dict['backgroundColor'] = '#5cb85c'
+                run_event_dict['textColor'] = '#fff'
                 data['result'].append(run_event_dict)
         # Video Facet Schedules
         for videofacet in story.videofacetstory.all():
@@ -130,22 +142,26 @@ def schedule_content(request):
                 edit_event_dict['id'] = videofacet.id
                 edit_event_dict['title'] = videofacet.title.encode('utf-8')
                 edit_event_dict['fulltitle'] = '<span class="tiny-text dark">Edit</span> {title} <span class="tiny-text dark">({type})</span>'.format(type=videofacet.type.encode('utf-8'), title=videofacet.title.encode('utf-8'))
-                edit_event_dict['hovertitle'] = "Edit - {title} ({type})".format(type=videofacet.type.encode('utf-8'), title=videofacet.title.encode('utf-8'))
                 edit_event_dict['url'] = videofacet.get_absolute_url()
                 edit_event_dict['class'] = 'event_edit'
                 edit_event_dict['start'] = time.mktime(videofacet.due_edit.timetuple()) * 1000
                 edit_event_dict['end'] = (time.mktime(videofacet.due_edit.timetuple()) * 1000) + 60
+                edit_event_dict['overlap'] = True
+                edit_event_dict['backgroundColor'] = '#00aced'
+                edit_event_dict['textColor'] = '#fff'
                 data['result'].append(edit_event_dict)
             if videofacet.run_date:
                 run_event_dict = {}
                 run_event_dict['id'] = videofacet.id
                 run_event_dict['title'] = videofacet.title.encode('utf-8')
                 run_event_dict['fulltitle'] = "<span class='tiny-text dark'>Run</span> {title} <span class='tiny-text dark'>({type})</span>".format(type=videofacet.type.encode('utf-8'), title=videofacet.title.encode('utf-8'))
-                run_event_dict['hovertitle'] = "Run - {title} ({type})".format(type=videofacet.type.encode('utf-8'), title=videofacet.title.encode('utf-8'))
                 run_event_dict['url'] = videofacet.get_absolute_url()
                 run_event_dict['class'] = 'event_run'
                 run_event_dict['start'] = time.mktime(videofacet.run_date.timetuple()) * 1000
                 run_event_dict['end'] = (time.mktime(videofacet.run_date.timetuple()) * 1000) + 60
+                run_event_dict['overlap'] = True
+                run_event_dict['backgroundColor'] = '#5cb85c'
+                run_event_dict['textColor'] = '#fff'
                 data['result'].append(run_event_dict)
 
     # print "DATA: ", data

@@ -43,6 +43,9 @@
     <!-- Chart Styles -->
     <link rel="stylesheet" href="{% static 'bower_components/chartist/dist/chartist.min.css' %}">
 
+    <!-- Calendar Styles -->
+    <link rel="stylesheet" href="{% static 'bower_components/fullcalendar/dist/fullcalendar.css' %}">
+
     <!-- X-Editable -->
     <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
@@ -55,7 +58,7 @@
     <link rel="stylesheet" href="{% static 'css/facetui.css' %}">
 
     <!-- ================================================= -->
-    <!--                 Styles & Fonts                    -->
+    <!--                 Javascript                    -->
     <!-- ================================================= -->
 
     <!-- jQuery -->
@@ -70,6 +73,13 @@
     <!-- Multiselect for Arrays  -->
     <script src="{% static 'scripts/chosen.jquery.min.js' %}"></script>
 
+    <!-- Datetime Picker JS  -->
+    <script src="{% static 'scripts/moment.js' %}"></script>
+    <script src="{% static 'scripts/jquery.datetimepicker.js' %}"></script>
+    <script src="{% static 'scripts/bootstrap-datetimepicker.js' %}"></script>
+
+    <!-- Calendar JS -->
+    <script src="{% static 'bower_components/fullcalendar/dist/fullcalendar.js' %}"></script>
 
     {% block head %}
     <!-- Child Head Items -->
@@ -661,6 +671,8 @@
     <script src="http://bower.batchthemes.com/bower_components/datamaps/dist/datamaps.all.js"></script>
     <!-- <script src="{% static 'scripts/dashboards.js' %}"></script> -->
     <!-- <script src="{% static 'scripts/index.js' %}"></script> -->
+    <!-- <script src="{% static 'bower_components/fullcalendar/dist/fullcalendar.js' %}"></script> -->
+    <!-- <script src="{% static 'scripts/extras-calendar.js' %}"></script> -->
 
     <!------------>
     <!-- OLD JS -->
@@ -676,13 +688,13 @@
     <!-- <script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script> -->
 
     <!-- Datetime Picker JS  -->
-    <script src="{% static 'scripts/moment.js' %}"></script>
+    <!-- <script src="{% static 'scripts/moment.js' %}"></script>
     <script src="{% static 'scripts/jquery.datetimepicker.js' %}"></script>
-    <script src="{% static 'scripts/bootstrap-datetimepicker.js' %}"></script>
+    <script src="{% static 'scripts/bootstrap-datetimepicker.js' %}"></script> -->
 
     <!-- Bootstrap Calendar JS -->
-    <script src="{% static 'bootstrap-calendar/js/calendar.js' %}"></script>
-    <script src="{% static 'scripts/underscore/underscore-min.js' %}"></script>
+    <!-- <script src="{% static 'bootstrap-calendar/js/calendar.js' %}"></script>
+    <script src="{% static 'scripts/underscore/underscore-min.js' %}"></script> -->
     <!-- <script src="{% static 'bootstrap-calendar/js/app.js' %}"></script> -->
 
     <!-- Text Editor JS -->
