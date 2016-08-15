@@ -3,76 +3,114 @@
 {% load i18n %}
 {% load bootstrap3 %}
 
-{% block head %}
-{{ seriesform.media }}
-{% endblock %}
+<!-------------------------------------------->
+<!--      BREADCRUMB NAVIGATION             -->
+<!-------------------------------------------->
+
+{% block breadcrumb %}
+<div>
+    <ol class="breadcrumb icon-angle-right icon-th">
+        <li class="fadeIn"><a href="{% url 'dashboard' %}"> Dashboard </a></li>
+        <li class="fadeIn"><a href="{% url 'series_list' %}" title="See Series"> Series </a></li>
+        <li class="fadeIn"><a href="{% url 'series_detail' series.id %}" title="See {{series.name}}"> {{series.name }} </a></li>
+        <li class="fadeIn"><a href="{% url 'series_edit' series.id %}" title="You are Here"> Edit  {{series.name }} </a></li>
+    </ol>
+</div>
+{% endblock breadcrumb %}
+
+<!-------------------------------------------->
+<!--            Main Section                -->
+<!-------------------------------------------->
 
 {% block content %}
 
-<div class="row particles" id="user-hero">
-  <div class="upper-content">
-    <div class="col-xs-12 content-upper-75">
-      <h1 class="media-heading text-light center thin uppercase spread-025">Edit Series: {{ series.name }}</h1>
-    </div>
-  </div>
-</div>
-
-<div class="row content-lower-25">
+<div class="row m-b-40">
   <div class="col-xs-12">
     <div class="row">
-    <form method="POST" class="post-form">{% csrf_token %}
+    <form method="POST" class="post-form forms-basic">{% csrf_token %}
       <!-- Left Side -->
       <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-        <div class="form-group custom-form">
-          <a href="#" data-toggle="tooltip" title="{{ seriesform.name.help_text }}"><span class="field-label">{{ seriesform.name.label_tag }}</span></a>
-          {{ seriesform.name }}
-          {% if seriesform.name.errors %}
-            <div class="alert alert-warning" role="alert">
-            {{ seriesform.name.errors }}
-            </div>
-          {% endif %}
-        </div>
-        <div class="form-group custom-form">
-          <a href="#" data-toggle="tooltip" title="{{ seriesform.series_description.help_text }}"><span class="field-label">{{ seriesform.series_description.label_tag }}</span></a>
-          {{ seriesform.series_description }}
-          {% if seriesform.series_description.errors %}
-            <div class="alert alert-warning" role="alert">
-            {{ seriesform.series_description.errors }}
-            </div>
-          {% endif %}
+        <div class="row">
+              <fieldset class="form-group m-b-20">
+                {% comment %}
+                <div class="col-xs-2">
+                  <label>{{ seriesform.name.label_tag }}</label>
+                </div>
+                {% endcomment %}
+                <div class="col-xs-12">
+                  {{ seriesform.name }}
+                  {% if seriesform.name.errors %}
+                  <small class="text-muted">{{ seriesform.name.errors }}</small>
+                  {% endif %}
+                </div>
+              </fieldset>
+
+              <fieldset class="form-group m-b-20">
+                {% comment %}
+                <div class="col-xs-2">
+                  <label class="capitalize">{{ seriesform.series_description.label_tag }}</label>
+                </div>
+                {% endcomment %}
+                <div class="col-xs-12">
+                  {{ seriesform.series_description }}
+                  {% if seriesform.series_description.errors %}
+                  <small class="text-muted">{{ seriesform.series_description.errors }}</small>
+                  {% endif %}
+                </div>
+              </fieldset>
         </div>
       </div>
       <!-- Right Side -->
       <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-        <div class="form-group custom-form">
-          <a href="#" data-toggle="tooltip" title="{{ seriesform.team.help_text }}"><span class="field-label">{{ seriesform.team.label_tag }}</span></a>
-          {{ seriesform.team }}
-          {% if seriesform.team.errors %}
-            <div class="alert alert-warning" role="alert">
-            {{ seriesform.team.errors }}
+        <div class="row">
+          <fieldset class="form-group m-b-20">
+            {% comment %}
+            <div class="col-xs-2">
+              <label class="capitalize">{{ seriesform.team.label_tag }}</label>
             </div>
-          {% endif %}
-        </div>
-        <div class="form-group custom-form">
-          <a href="#" data-toggle="tooltip" title="{{ seriesform.collaborate.help_text }}"><span class="field-label">{{ seriesform.collaborate.label_tag }}</span></a>
-          {{ seriesform.collaborate }}
-          {% if seriesform.collaborate.errors %}
-            <div class="alert alert-warning" role="alert">
-            {{ seriesform.collaborate.errors }}
+            {% endcomment %}
+            <div class="col-xs-12">
+              {{ seriesform.team }}
+              {% if seriesform.team.errors %}
+              <small class="text-muted">{{ seriesform.team.errors }}</small>
+              {% endif %}
             </div>
-          {% endif %}
-        </div>
-        <div class="form-group custom-form">
-          <a href="#" data-toggle="tooltip" title="{{ seriesform.collaborate_with.help_text }}"><span class="field-label">{{ seriesform.collaborate_with.label_tag }}</span></a>
-          {{ seriesform.collaborate_with }}
-          {% if seriesform.collaborate_with.errors %}
-            <div class="alert alert-warning" role="alert">
-            {{ seriesform.collaborate_with.errors }}
+          </fieldset>
+
+          <fieldset class="form-group m-b-20">
+            <span class="col-xs-2">
+              <label class="capitalize c-input c-checkbox">{{ seriesform.collaborate.label_tag }}</label>
+            </span>
+            <span class="col-xs-10">
+              {{ seriesform.collaborate }}
+              <span class="c-indicator c-indicator-default"></span>
+              {% if seriesform.collaborate.errors %}
+              <small class="text-muted">{{ seriesform.collaborate.errors }}</small>
+              {% endif %}
+            </span>
+          </fieldset>
+
+          <fieldset class="form-group m-b-20">
+            {% comment %}
+            <div class="col-xs-2">
+              <label class="capitalize">{{ seriesform.collaborate_with.label_tag }}</label>
             </div>
-          {% endif %}
+            {% endcomment %}
+            <div class="col-xs-12">
+              {{ seriesform.collaborate_with }}
+              {% if seriesform.collaborate_with.errors %}
+              <small class="text-muted">{{ seriesform.collaborate_with.errors }}</small>
+              {% endif %}
+            </div>
+          </fieldset>
+
+
+          <div class="col-xs-12">
+            <button type="submit" class="save btn btn-default">Save</button>
+            <a href="{% url 'series_new' %}"><button class="btn btn-default">Cancel</button></a>
+          </div>
         </div>
 
-        <button type="submit" class="save btn btn-default">Save</button>
       </div>
 
       </form>
@@ -80,9 +118,14 @@
   </div>
 </div>
 
-
 <script>
-$(".chosen-select").chosen()
-</script>
 
+// $(document).bind("pageinit", function() {
+//     $(".chosen-select").chosen();
+// });
+//
+
+$(".chosen-select").chosen()
+
+</script>
 {% endblock %}

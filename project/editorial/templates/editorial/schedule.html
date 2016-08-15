@@ -38,7 +38,7 @@
     'use strict';
 
     $(function() {
-
+        var events_array = $.get('{% url "schedule-content" %}')
         $('#calendar').fullCalendar({
             dayClick: function(date, jsEvent, view) {
                 console.log('Clicked on: ' + date.format());
@@ -55,20 +55,18 @@
             // defaultDate: '2016-03-12',
             defaultView: 'month',
             editable: true,
-            // events: '{% url "schedule-content" %}',
-            events: [{
-                title: 'Click for Google',
-                url: 'http://google.com/',
-                start: '2016-08-28'
-            }]
+            events: events_array,
+            // events: [{
+            //     title: 'Click for Google',
+            //     url: 'http://google.com/',
+            //     start: '2016-08-28'
+            // }]
         });
 
     });
 
 
 })();
-
-
 </script>
 
 {% endblock %}
