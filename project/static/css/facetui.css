@@ -13,6 +13,13 @@
   display: inline-block;
 }
 
+.left-rule {
+  border-left: 1px solid #3c414f;
+}
+
+.right-rule {
+  border-right: 1px solid #3c414f;
+}
 
 .height-100 {
   height: 100px;

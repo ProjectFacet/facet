@@ -1,441 +1,213 @@
 {% extends 'base.html' %}
 
+{% load i18n %}
 {% load bootstrap3 %}
+
+<!-------------------------------------------->
+<!--      BREADCRUMB NAVIGATION             -->
+<!-------------------------------------------->
+
+{% block breadcrumb %}
+<div>
+    <ol class="breadcrumb icon-angle-right icon-th">
+        <li class="fadeIn"><a href="{% url 'dashboard' %}"> Dashboard </a></li>
+        <li class="fadeIn"><a href="{% url 'series_list' %}" title="View Series"> Series </a></li>
+        <li class="fadeIn"><a href="{% url 'series_detail' series.id %}" title="You are Here"> {{ series.name }} </a></li>
+    </ol>
+</div>
+{% endblock breadcrumb %}
+
+<!-------------------------------------------->
+<!--            Main Section                -->
+<!-------------------------------------------->
 
 {% block content %}
 
-<div class="row particles" id="user-hero">
-  <div class="upper-content">
-    <div class="col-xs-12 content-upper-75">
-      <h1 class="media-heading text-light center thin uppercase spread-025">Series: {{ series.name }}</h1>
-      <!-- <h5 class="center thin spread-01 content-upper-5 hidden-xs hidden-sm"> {{ series.series_description }} {% if request.user.organization == series.organization %}<a href="{% url 'series_edit' pk=series.id %}"><i class="fa fa-pencil sameline"></i></a>{% endif %}</h5> -->
-    </div>
-  </div>
-</div>
+<div class="row m-b-40">
 
-<!-- Display for md and lg display -->
-<div class="row content-lower-10 hidden-xs hidden-sm visible-md visible-lg">
-  <div class="col-md-8">
-    <div class="row">
-      <div class="col-md-6 right-rule">
-        <a href="#" data-toggle="tooltip" title="Discussion for the series"><label class="field-label">Discussion</label></a>
-        <!-- Comments from series discussion -->
-        <div class="discussion" data-toggle="slimScroll" style="height:280px" data-color="#5D9CEC" data-allow-page-scroll="false">
-            {% if seriescomments %}
-              <div class="row">
-                {% for comment in seriescomments %}
-                  <div class="col-md-10">
-                    <p>{{ comment.text }}</p>
-                    <p class="tiny-text">{{ comment.date|date:'D M j g:i a' }}</p>
-                  </div>
-                  <div class="col-md-2">
-                    {% if comment.user.display_photo %}
-                    <img class="media-object img-circle" width="32" src="{{ comment.user.display_photo.url }}" alt="user">
-                    {% else %}
-                    {% endif %}
-                    <p class="tiny-text">{{ comment.user.first_name }}</p>
-                  </div>
-                {% endfor %}
-              </div>
-            {% endif %}
-        </div>
-        <!-- End of discussion comments -->
-        <!-- Comment form to add comments -->
-        <div class="comment">
-          <hr>
-          <div class="row">
-            <form action="{% url 'create_seriescomment' %}" method="POST" class="post-form" role="form">
-              <div class="col-md-10">
-                  {% csrf_token %}
-                  <div class="form-group">
-                  {{ seriescommentform.text }}
-                  </div>
-                  {% if seriescommentform.text.errors %}
-                    <div class="alert alert-warning" role="alert">
-                    {{ seriescommentform.text.errors }}
-                    </div>
-                  {% endif %}
-                  <input type="hidden" name="series" value="{{ series.pk }}" />
-              </div>
-              <div class="col-md-2">
-                  <div class="form-group">
-                    <button type="submit" class="btn btn-default btn-sm" name="seriescommentform">
-                        <i class="fa fa-paper-plane"></i>
-                    </button>
-                  </div>
-                  <!-- <input type="submit" name="seriescommentform" value="Post Comment"/> -->
-              </div>
-            </form>
-          </div>
-        </div>
-        <!-- End of comment form -->
-
-      </div>
-      <div class="col-md-6">
-        <a href="#" data-toggle="tooltip" title="Series Details"><label class="field-label">Details</label></a>
-        <div class="row">
-          <div class="col-md-10">
-            <h4 class="thin"><i>{{ series.series_description }}</i></h4>
-          </div>
-          <div class="col-md-2">
-            {% if request.user.organization == series.organization %}
-              <a href="{% url 'series_edit' pk=series.id %}"><p class="dark"><i class="fa fa-pencil dark"></i>  Edit<p></a>
-            {% endif %}
-            {% if request.user.organization == series.organization %}
-              <form action="{% url 'series_delete' pk=series.id %}" method="POST" class="post-form">
-              {% csrf_token %}
-              <input type="submit" class="fa-input dark delete_icon" value="&#xf057;  Delete">
-              </form>
-            {% endif %}
-          </div>
-        </div>
-        <hr>
-        <div class="row">
-          <div class="col-md-6">
-            <h5>Created: <span class="sameline bright">{{ series.creation_date|date:'D M j g:i a' }}</span></h5>
-            <h5>Archived: <span class="sameline bright">{% if series.archived == True %} <i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</span></h5>
-            <h5>Sensitive: <span class="sameline bright">{% if series.sensitive == True %} <i class="fa fa-check-square-o"></i>{% else %}  <i class="fa fa-square-o"></i>{% endif %}</span></h5>
-          </div>
-          <div class="col-md-6">
-            <h5>Collaboration: <span class="sameline bright">{% if series.collaborate == True %} <i class="fa fa-check-square-o"></i>{% else %} <i class="fa fa-square-o"></i>{% endif %}</span></h5>
-            <h5>Partners: </h5>
-            {% for collaborator in series.collaborate_with.all %}
-            <p>- {{ collaborator.name }}</p>
-            {% endfor %}
-          </div>
-          <div class="col-md-12">
-          <hr>
-          <h5>Team: </h5>
-          <div class="row">
-          {% for user in series.team.all %}
-          <div class="col-md-1">
-            {% if user.display_photo %}
-            <img class="media-object img-circle" width="32" src="{{ user.display_photo.url }}" alt="user">
-            {% else %}
-            {% endif %}
-            <p class="tiny-text">{{ user.first_name }}</p>
-          </div>
-          {% endfor %}
-          </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <hr>
-    <div class="seriesnotes">
-      <div class="section-title">
-      <a href="#" data-toggle="tooltip" title="Series Notes"><label class="field-label">Notes</label></a>
-      <a href="#" data-toggle="modal" data-target="#addSeriesNote" title="Add Series Note"><i class="fa fa-plus sameline dark"></i></a>
-      </div>
-      <div class="displaynotes">
-          <div class="row">
-            {% for note in seriesnotes %}
-            <!-- MODAL TRIGGER -->
-              <a href="#" data-toggle="modal" data-target="#addNote{{note.id}}">
-                <div class="col-md-3 col-lg-3">
-                  <div class="panel fade in panel-default note-panel" data-init-panel="true">
-                    <div class="panel-body">
+    <!-- Left Column -->
+    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+      <div class="row">
+        <!-- Discussion Column -->
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+          <h4 class="m-b-20"> Discussion</h4>
+          <div class="comments" data-toggle="slimScroll" style="height:400px" data-color="#5D9CEC" data-allow-page-scroll="false">
+              {% if seriescomments %}
+              {% for comment in seriescomments %}
+              <div class="row m-b-10">
+                  <div class="col-xs-12">
                       <div class="media">
-                        <div class="media-left">
-                          <!-- Place icon or image here -->
-                        </div>
-                        <div class="media-body">
-                          <h5 class="media-heading brighter">{{ note.title }}</h5>
-                          <p class="help-block tiny-text bright">{{ note.owner.credit_name }}</p>
-                        </div><!-- /.media -body-->
-                      </div><!-- /.media -->
-                    </div><!-- /.panel-body -->
-                    <div class="progress progress-xs no-radius no-margin">
-                      <div class="progress-bar bg-grd-orange" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                          <a class="media-left">
+                            {% if comment.user.display_photo %}
+                              <img class="media-object img-circle h-40 w-40" src="{{ comment.user.display_photo.url }}" alt="user">
+                            {% else %}
+                              <p class="f-w-300 f-s-12">{{ comment.user.first_name }}</p>
+                            {% endif %}
+                          </a>
+                          <div class="media-body">
+                              <p class="f-w-300 f-s-16">{{ comment.text }}
+                              <span class="f-w-400 f-s-12 color-default p-r-40" style="float: right;">
+                                {{ comment.date|date:'N j' }} at {{ comment.date|date:'g:i a' }}
+                              </span>
+                              </p>
+                          </div>
                       </div>
-                    </div><!-- /.progress -->
-                  </div><!-- /.panel -->
-                </div><!-- /.cols -->
-              </a>
-            <!-- END MODAL TRIGGER -->
-            <!-- MODAL ITSELF -->
-              <div class="modal fade" id="addNote{{note.id}}" tabindex="-1" role="dialog" aria-labelledby="addaddNote{{note.id}}">
-                <div class="modal-dialog" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                      <h5 class="modal-title" id="addNote{{note.id}}Label">{{ note.title }}</h5>
-                    </div>
-                    <div class="modal-body dark">
-                      {{ note.text|linebreaksbr }}
-                    </div>
-                    <div class="modal-footer">
-                      <p class="tiny-text">{{ note.owner }} | {{ note.creation_date|date:'D M j g:i a' }}<p>
-                      <p class="tiny-text">Keywords: {% for keyword in note.keywords %}{{ keyword }}, {% endfor %}<p>
-                    </div>
                   </div>
-                </div>
-              </div>
-            <!-- END MODAL -->
-            {% endfor %}
-          </div>
-          <a href="{% url 'series_notes' pk=series.id %}" class="link-text">See all notes...</a>
-      </div>
-
-    </div>
-  </div>
-  <div class="col-md-4 left-rule">
-    <a href="#" data-toggle="tooltip" title="Series Stories"><label class="field-label">Stories</label></a>
-    <a href="{% url 'story_new' %}" title="Add A Story"><i class="fa fa-plus sameline dark"></i></a>
-    <div class="stories">
-      <div class="row" data-toggle="slimScroll" style="height:525px" data-color="#5D9CEC" data-allow-page-scroll="false">
-      {% for story in series.story_set.all %}
-          <a href="{% url 'story_detail' pk=story.id %}">
-            <div class="col-md-6 col-lg-6">
-              <div class="panel fade in panel-default" data-init-panel="true">
-                {% if story_images %}
-                  <div class="panel-bod story-panel" style="background-image: url({{ image.display_photo.url }}); height: 200px; width: 400px;">
-                {% else %}
-                  <div class="panel-bod story-panel">
-                {% endif %}
-                    <div class="media">
-                      <div class="media-left">
-                        <!-- Place icon or image here -->
-                      </div>
-                      <div class="media-body">
-                        <h5 class="brighter">{{ story.name }}</h5>
-                        <p class="tiny-text">{{ story.creation_date }}</p>
-                        {% if story.webfacetstory.all or story.printfacetstory.all or story.audiofacetstory.all or story.videofacetstory.all %}
-                        <p class="dark">
-                        {% for facet in story.webfacetstory.all %}
-                        <i class="fa fa-laptop"></i>
-                        {% endfor %}
-                        {% for facet in story.printfacetstory.all %}
-                        <i class="fa fa-newspaper-o"></i>
-                        {% endfor %}
-                        {% for facet in story.audiofacetstory.all %}
-                        <i class="fa fa-microphone"></i>
-                        {% endfor %}
-                        {% for facet in story.videofacetstory.all %}
-                        <i class="fa fa-film"></i>
-                        {% endfor %}
-                        </p>
-                        {% endif %}
-                      </div><!-- /.media -body-->
-                    </div><!-- /.media -->
-                  </div><!-- /.panel-body -->
-                <div class="progress progress-xs no-radius no-margin">
-                  <div class="progress-bar bg-grd-blue" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-                  </div>
-                </div><!-- /.progress -->
-              </div><!-- /.panel -->
-            </div><!-- /.cols -->
-          </a>
-        {% endfor %}
-      </div>
-    </div>
-  </div>
-</div>
-<!-- END Display for md and lg display -->
-
-<!-- Display for xs and sm display -->
-<div class="row content-lower-10 visible-xs visible-sm hidden-md hidden-lg">
-  <div class="col-xs-12">
-    <div class="row">
-      <!-- Details Panel -->
-      <div class="col-xs-12">
-        <a href="#" data-toggle="tooltip" title="Series Details"><label class="field-label">Details</label></a>
-        <div class="row">
-          <div class="col-xs-12">
-            <h5>Description:  {{ series.series_description }} {% if request.user.organization == series.organization %}<a href="{% url 'series_edit' pk=series.id %}"><i class="fa fa-pencil sameline"></i></a>{% endif %}</h5>
-            <h5>Created: <span class="sameline bright">{{ series.creation_date|date:'D M j g:i a' }}</span></h5>
-            <h5>Archived: <span class="sameline bright">{% if series.archived == True %} <i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</span></h5>
-            <h5>Sensitive: <span class="sameline bright">{% if series.sensitive == True %} <i class="fa fa-check-square-o"></i>{% else %}  <i class="fa fa-square-o"></i>{% endif %}</span></h5>
-            <h5>Collaboration: <span class="sameline bright">{% if series.collaborate == True %} <i class="fa fa-check-square-o"></i>{% else %} <i class="fa fa-square-o"></i>{% endif %}</span></h5>
-            <h5>Partners: </h5>
-            {% for collaborator in series.collaborate_with.all %}
-            <p>- {{ collaborator.name }}</p>
-            {% endfor %}
-            <h5>Team: </h5>
-              <div class="row">
-              {% for user in series.team.all %}
-              <div class="col-xs-2">
-                {% if user.display_photo %}
-                <img class="media-object img-circle" width="32" src="{{ user.display_photo.url }}" alt="user">
-                {% else %}
-                {% endif %}
-                <p class="tiny-text">{{ user.first_name }}</p>
               </div>
               {% endfor %}
-              </div>
+              {% endif %}
           </div>
-        </div>
-        <hr>
-      </div>
-      <!-- END Details Panel -->
-
-      <!-- Discussion Panel -->
-      <div class="col-xs-12">
-        <a href="#" data-toggle="tooltip" title="Discussion for the series"><label class="field-label">Discussion</label></a>
-        <!-- Comments from series discussion -->
-        <div class="discussion" data-toggle="slimScroll" style="height:280px" data-color="#5D9CEC" data-allow-page-scroll="false">
-            {% if seriescomments %}
-              <div class="row">
-                {% for comment in seriescomments %}
-                  <div class="col-xs-10">
-                    <p>{{ comment.text }}</p>
-                    <p class="tiny-text">{{ comment.date|date:'D M j g:i a' }}</p>
-                  </div>
-                  <div class="col-xs-2">
-                    {% if comment.user.display_photo %}
-                    <img class="media-object img-circle" width="32" src="{{ comment.user.display_photo.url }}" alt="user">
-                    {% else %}
-                    {% endif %}
-                    <p class="tiny-text">{{ comment.user.first_name }}</p>
-                  </div>
-                {% endfor %}
-              </div>
-            {% endif %}
-        </div>
-        <!-- End of discussion comments -->
-        <!-- Comment form to add comments -->
-        <div class="comment">
-          <hr>
-          <div class="row">
-            <form action="{% url 'create_seriescomment' %}" method="POST" class="post-form" role="form">
-              <div class="col-xs-10">
-                  {% csrf_token %}
-                  <div class="form-group">
-                  {{ seriescommentform.text }}
-                  </div>
-                  {% if seriescommentform.text.errors %}
-                    <div class="alert alert-warning" role="alert">
-                    {{ seriescommentform.text.errors }}
-                    </div>
-                  {% endif %}
-                  <input type="hidden" name="series" value="{{ series.pk }}" />
-              </div>
-              <div class="col-xs-2">
-                  <div class="form-group">
-                    <button type="submit" class="btn btn-default btn-sm" name="seriescommentform">
-                        <i class="fa fa-paper-plane"></i>
-                    </button>
-                  </div>
-                  <!-- <input type="submit" name="seriescommentform" value="Post Comment"/> -->
-              </div>
-            </form>
-          </div>
-        </div>
-        <!-- End of comment form -->
-      </div>
-      <!-- END Discussion Panel -->
-    </div>
-    <hr>
-    <div class="seriesnotes">
-      <div class="section-title">
-      <a href="#" data-toggle="tooltip" title="Series Notes"><label class="field-label">Notes</label></a>
-      <a href="#" data-toggle="modal" data-target="#addSeriesNote" title="Add Series Note"><i class="fa fa-plus sameline dark"></i></a>
-      </div>
-      <div class="displaynotes">
-          <div class="row">
-            {% for note in seriesnotes %}
-            <!-- MODAL TRIGGER -->
-              <a href="#" data-toggle="modal" data-target="#addNote{{note.id}}">
-                <div class="col-xs-12 col-sm-12">
-                  <div class="panel fade in panel-default note-panel" data-init-panel="true">
-                    <div class="panel-body">
-                      <div class="media">
-                        <div class="media-left">
-                          <!-- Place icon or image here -->
+          <div class="post-comment">
+                <div class="row">
+                  <form action="{% url 'create_seriescomment' %}" method="POST" class="post-form" role="form">
+                    <div class="col-md-10">
+                        {% csrf_token %}
+                        <div class="form-group">
+                        {{ seriescommentform.text }}
                         </div>
-                        <div class="media-body">
-                          <h5 class="media-heading brighter">{{ note.title }}</h5>
-                          <p class="help-block tiny-text bright">{{ note.owner.credit_name }}</p>
-                        </div><!-- /.media -body-->
-                      </div><!-- /.media -->
-                    </div><!-- /.panel-body -->
-                    <div class="progress progress-xs no-radius no-margin">
-                      <div class="progress-bar bg-grd-orange" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-                      </div>
-                    </div><!-- /.progress -->
-                  </div><!-- /.panel -->
-                </div><!-- /.cols -->
-              </a>
-            <!-- END MODAL TRIGGER -->
-            <!-- MODAL ITSELF -->
-              <div class="modal fade" id="addNote{{note.id}}" tabindex="-1" role="dialog" aria-labelledby="addaddNote{{note.id}}">
-                <div class="modal-dialog" role="document">
-                  <div class="modal-content">
-                    <div class="modal-header">
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                      <h5 class="modal-title" id="addNote{{note.id}}Label">{{ note.title }}</h5>
+                        {% if seriescommentform.text.errors %}
+                          <div class="alert alert-warning" role="alert">
+                          {{ seriescommentform.text.errors }}
+                          </div>
+                        {% endif %}
+                        <input type="hidden" name="series" value="{{ series.pk }}" />
                     </div>
-                    <div class="modal-body dark">
-                      {{ note.text|linebreaksbr }}
+                    <div class="col-md-2">
+                        <div class="form-group">
+                          <button type="submit" class="btn btn-default btn-lg" name="seriescommentform">
+                              <i class="fa fa-paper-plane"></i>
+                          </button>
+                        </div>
+                        <!-- <input type="submit" name="seriescommentform" value="Post Comment"/> -->
                     </div>
-                    <div class="modal-footer">
-                      <p class="tiny-text">{{ note.owner }} | {{ note.creation_date|date:'D M j g:i a' }}<p>
-                      <p class="tiny-text">Keywords: {% for keyword in note.keywords %}{{ keyword }}, {% endfor %}<p>
-                    </div>
-                  </div>
+                  </form>
                 </div>
-              </div>
-            <!-- END MODAL -->
-            {% endfor %}
+            </div>
+        </div>
+        <!-- Details Column -->
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+          <h4 class="m-b-20"> Details</h4>
+          <div class="row">
+            <div class="col-md-10">
+              <h5 class="thin"><i>{{ series.name }}</i></h5>
+              <h6 class="thin"><i>{{ series.series_description }}</i></h6>
+            </div>
+            <div class="col-md-2">
+              {% if request.user.organization == series.organization %}
+                <a href="{% url 'series_edit' pk=series.id %}"><button class="btn btn-sm bg-default m-b-10">Edit</button></a>
+              {% endif %}
+              {% if request.user.organization == series.organization %}
+                <form action="{% url 'series_delete' pk=series.id %}" method="POST" class="post-form">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-sm bg-danger-100">Delete</button>
+                </form>
+              {% endif %}
+            </div>
           </div>
-          <a href="{% url 'series_notes' pk=series.id %}" class="link-text">See all notes...</a>
+          <div class="row">
+            <div class="col-md-6">
+              <hr>
+              <p>Created: <span class="sameline bright">{{ series.creation_date|date:'D M j g:i a' }}</span></p>
+              <p>Archived: <span class="sameline bright">{% if series.archived == True %} <i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</span></p>
+              <p>Sensitive: <span class="sameline bright">{% if series.sensitive == True %} <i class="fa fa-check-square-o"></i>{% else %}  <i class="fa fa-square-o"></i>{% endif %}</span></p>
+            </div>
+            <div class="col-md-6">
+              <hr>
+              <p>Collaboration: <span class="sameline bright">{% if series.collaborate == True %} <i class="fa fa-check-square-o"></i>{% else %} <i class="fa fa-square-o"></i>{% endif %}</span></p>
+              <p>Partners: </p>
+              {% for collaborator in series.collaborate_with.all %}
+              <p>- {{ collaborator.name }}</p>
+              {% endfor %}
+            </div>
+            <div class="col-md-12">
+            <hr>
+            <p>Team: </p>
+            <div class="row">
+            {% for user in series.team.all %}
+            <div class="col-md-1">
+              {% if user.display_photo %}
+              <img class="media-object img-circle" width="32" src="{{ user.display_photo.url }}" alt="user">
+              {% else %}
+              {% endif %}
+              <p class="tiny-text">{{ user.first_name }}</p>
+            </div>
+            {% endfor %}
+            </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <hr>
-
+      <div class="row">
+        <hr>
+        <!-- Notes Column -->
+        <div class="col-xs-12">
+          <div class="seriesnotes">
+            <h4 class="m-b-20">Notes <a data-toggle="modal" data-target="#addSeriesNote" title="Add Series Note"><i class="fa fa-plus sameline dark"></i></a></h4>
+            <div class="displaynotes">
+            {% for note in seriesnotes|slice:":6" %}
+                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                  <div class="card bs-card">
+                      <div class="card-block">
+                          <a data-toggle="modal" data-target="#addNote{{note.id}}" title="View Organization Note"><h4 class="f-s-16 f-w-500 m-b-20">{{ note.title }}</h4></a>
+                          <p class="card-text color-default f-s-12">{{ note.owner.credit_name }}
+                              <br>{{ note.creation_date|date:'N j' }}, {{ note.creation_date|date:'g:i a' }}</p>
+                      </div>
+                  </div>
+                </div><!-- /.cols -->
+            {% endfor %}
+            <a href="{% url 'series_notes' pk=series.id %}" class="link-text m-b-40"><small>See all notes...</small></a>
+          </div>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
-  <div class="col-xs-12">
-    <a href="#" data-toggle="tooltip" title="Series Stories"><label class="field-label">Stories</label></a>
-    <a href="{% url 'story_new' %}" title="Add A Story"><i class="fa fa-plus sameline dark"></i></a>
-    <div class="stories">
-      <div class="row" data-toggle="slimScroll" style="height:525px" data-color="#5D9CEC" data-allow-page-scroll="false">
-      {% for story in series.story_set.all %}
-          <a href="{% url 'story_detail' pk=story.id %}">
-            <div class="col-xs-12 col-sm-12">
-              <div class="panel fade in panel-default" data-init-panel="true">
-                <div class="panel-bod story-panel">
-                  <div class="media">
-                    <div class="media-left">
-                      <!-- Place icon or image here -->
-                    </div>
-                    <div class="media-body">
-                      <h5 class="brighter">{{ story.name }}</h5>
-                      <p class="tiny-text">{{ story.creation_date }}</p>
-                      {% if story.webfacetstory.all or story.printfacetstory.all or story.audiofacetstory.all or story.videofacetstory.all %}
-                      <p class="dark">
+    <!-- End of Left column -->
+
+    <!-- Right Column -->
+    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+
+      <h4 class="m-b-20"> Stories <a href="{% url 'story_new' %}" title="Add A Story"><i class="fa fa-plus sameline dark"></i></a></h4>
+        <table class="table table-hover" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th>Story</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tfoot class="hidden">
+                <tr>
+                  <th>Title</th>
+                  <th>Facets</th>
+                </tr>
+            </tfoot>
+            <tbody>
+              {% for story in series.story_set.all %}
+                <tr>
+                  <td><a href="{% url 'story_detail' story.id %}">{{ story.name }}</a></td>
+                  <td>
+                    {% if story.webfacetstory.all or story.printfacetstory.all or story.audiofacetstory.all or story.videofacetstory.all %}
                       {% for facet in story.webfacetstory.all %}
-                      <i class="fa fa-laptop"></i>
+                      <a href="{% url 'story_detail' pk=facet.story.id %}#web" title="{{ facet.wf_description }}"><p class="color-default sameline">Web</p></a>
                       {% endfor %}
                       {% for facet in story.printfacetstory.all %}
-                      <i class="fa fa-newspaper-o"></i>
+                      <a href="{% url 'story_detail' pk=facet.story.id %}#print" title="{{ facet.pf_description }}"><p class="color-default sameline">Print</p></a>
                       {% endfor %}
                       {% for facet in story.audiofacetstory.all %}
-                      <i class="fa fa-microphone"></i>
+                      <a href="{% url 'story_detail' pk=facet.story.id %}#audio" title="{{ facet.af_description }}"><p class="color-default sameline">Audio</p></a>
                       {% endfor %}
                       {% for facet in story.videofacetstory.all %}
-                      <i class="fa fa-film"></i>
+                      <a href="{% url 'story_detail' pk=facet.story.id %}#video" title="{{ facet.vf_description }}"><p class="color-default sameline">Video</p></a>
                       {% endfor %}
-                      </p>
-                      {% endif %}
-                    </div><!-- /.media -body-->
-                  </div><!-- /.media -->
-                </div><!-- /.panel-body -->
-                <div class="progress progress-xs no-radius no-margin">
-                  <div class="progress-bar bg-grd-blue" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-                  </div>
-                </div><!-- /.progress -->
-              </div><!-- /.panel -->
-            </div><!-- /.cols -->
-          </a>
-        {% endfor %}
-      </div>
+                    {% endif %}
+
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+        </table>
     </div>
-  </div>
+    <!-- End of Right Column -->
 </div>
-<!-- END Display for xs and sm display -->
-
-
-
 
 {% endblock %}
 
