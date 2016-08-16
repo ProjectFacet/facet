@@ -3,34 +3,51 @@
 {% load i18n %}
 {% load bootstrap3 %}
 
-{% block content %}
+<!-------------------------------------------->
+<!--      BREADCRUMB NAVIGATION             -->
+<!-------------------------------------------->
 
-<div class="row particles" id="user-hero">
-  <div class="upper-content">
-    <div class="col-xs-12 content-upper-85">
-      <h1 class="media-heading text-light center thin uppercase spread-025">Asset Detail</h1>
-      <a href="{% url 'asset_library' %}" title="View Asset Library"><h5 class="center thin hidden-xs hidden-sm"> Return to Library</h5></a>
-    </div>
-  </div>
+{% block breadcrumb %}
+<div>
+    <ol class="breadcrumb icon-angle-right icon-th">
+      <li class="fadeIn"><a href="{% url 'dashboard' %}"> Dashboard </a></li>
+      <li class="fadeIn"><a href="{% url 'asset_library' %}" title="Return to Media Library"> Media Library </a></li>
+      <li class="fadeIn"><a href="{% url 'image_asset_detail' image.id %}" title="You are here">Image: {{image.asset_title}}  </a></li>
+    </ol>
 </div>
+{% endblock breadcrumb %}
 
-<div class="row content-lower-50">
+<!-------------------------------------------->
+<!--            Main Section                -->
+<!-------------------------------------------->
+
+{% block content %}
+<!-- Row One -->
+<div class="row m-b-40">
 
   <!-- Display Image -->
   <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+      <h4 class="m-b-20">Image</h4>
     {% if image.display_photo %}
-        <a class="thumbnail" href="{{ image.display_photo.url }}"><img src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}"></a>
+        <a class="image-popup-vertical-fit" href="{{ image.display_photo.url }}" title="{{ image.asset_description}}"><img class="img-fluid" src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}"></a>
     {% endif %}
   </div>
 
   <!-- Image Meta -->
   <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
     <div class="row">
+      <div class="col-xs-12">
+        <h4 class="m-b-20">Details</h4>
+      </div>
+    </div>
+    <div class="row">
           <form action="{% url 'image_asset_detail' pk=image.id %}" method="POST" class="post-form" enctype="multipart/form-data">
             {% csrf_token %}
 
                 <!-- Left Col -->
                 <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+
+                  {% comment %}
                   <div class="form-group custom-form">
                     <a href="#" data-toggle="tooltip" title="{{ editimageform.photo.help_text }}"><span class="field-label">{{ editimageform.photo.label_tag }}</span></a>
                     {{ editimageform.photo }}
@@ -40,6 +57,7 @@
                       </div>
                     {% endif %}
                   </div>
+                  {% endcomment %}
 
                   <div class="form-group custom-form">
                     <a href="#" data-toggle="tooltip" title="{{ editimageform.asset_title.help_text }}"><span class="field-label">{{ editimageform.asset_title.label_tag }}</span></a>
@@ -105,7 +123,7 @@
       <div class="row">
         <div class="col-xs-12">
         <hr class="content-lower-25">
-        <label class="field-label content-lower-10">Facets where this asset is used.</label>
+        <h4 class="m-b-20">Usage</h4>
         {% for facet in image_usage %}
           <p class="small-text">{{ facet.title }}</p>
         {% endfor %}
@@ -114,4 +132,49 @@
     </div>
 </div>
 
+<script>
+$(document).ready(function() {
+
+	$('.image-popup-vertical-fit').magnificPopup({
+		type: 'image',
+		closeOnContentClick: true,
+		mainClass: 'mfp-img-mobile',
+		image: {
+			verticalFit: true
+		}
+
+	});
+
+	$('.image-popup-fit-width').magnificPopup({
+		type: 'image',
+		closeOnContentClick: true,
+		image: {
+			verticalFit: false
+		}
+	});
+
+	$('.image-popup-no-margins').magnificPopup({
+		type: 'image',
+		closeOnContentClick: true,
+		closeBtnInside: false,
+		fixedContentPos: true,
+		mainClass: 'mfp-no-margins mfp-with-zoom', // class to remove default margin from left and right side
+		image: {
+			verticalFit: true
+		},
+		zoom: {
+			enabled: true,
+			duration: 300 // don't foget to change the duration also in CSS
+		}
+	});
+
+});
+
+</script>
+
+
+{% endblock %}
+
+
+{% block modals %}
 {% endblock %}
