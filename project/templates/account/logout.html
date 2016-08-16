@@ -7,7 +7,9 @@
 {% block content %}
 <div class="container">
   <div class="row">
-    <div class="col-md-5">
+    <div class="col-xs-12">
+
+        <div class="login-page text-center animated fadeIn delay-2000">
 
         <h2>{% trans "Sign Out" %}</h2>
 
@@ -18,8 +20,11 @@
           {% if redirect_field_value %}
           <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
           {% endif %}
-          <button class="btn btn-default" type="submit">{% trans 'Sign Out' %}</button>
+          <button class=" btn btn-lg btn-info btn-block m-b-20" type="submit">{% trans 'Sign Out' %}</button>
         </form>
+
+        </div>
+
     </div>
   </div>
 </div>
