@@ -45,10 +45,10 @@
 
           <!-- AudioFacet Description -->
           <fieldset class="form-group m-b-10">
-            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audioform.wf_description.label_tag }}</label>
-            {{ audioform.wf_description }}
-            {% if audioform.wf_description.errors %}
-              <small class="text-muted">{{ audioform.wf_description.errors }}</small>
+            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">Description</label>
+            {{ audioform.af_description }}
+            {% if audioform.af_description.errors %}
+              <small class="text-muted">{{ audioform.af_description.errors }}</small>
             {% endif %}
           </fieldset>
 

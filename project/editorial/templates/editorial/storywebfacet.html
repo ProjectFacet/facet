@@ -45,7 +45,7 @@
 
           <!-- WebFacet Description -->
           <fieldset class="form-group m-b-10">
-            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ webform.wf_description.label_tag }}</label>
+            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">Description</label>
             {{ webform.wf_description }}
             {% if webform.wf_description.errors %}
               <small class="text-muted">{{ webform.wf_description.errors }}</small>
@@ -325,7 +325,7 @@
           <div class="edit-history">
             {% if webhistory %}
               {% for entry in webhistory %}
-              <p class="tiny-text">{{ entry.history_date }}
+              <p class="f-s-12 f-s-300 subtle">{{ entry.history_date }}</p>
               {% endfor %}
             {% endif %}
           </div>

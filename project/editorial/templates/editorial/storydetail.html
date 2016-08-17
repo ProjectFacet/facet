@@ -43,11 +43,11 @@
       <div class="col-xs-12 col-md-4">
         <div class="bs-nav-tabs nav-tabs-default m-b-20" id="facettabs">
           <ul class="nav nav-tabs nav-animated-border-from-left nav-tabs-sticky text-center">
-            <li class="nav-item"><a ng-href="" class="nav-link active" data-toggle="tab" data-target="#storydetail">Story Detail</a></li>
-            <li class="nav-item"><a ng-href="" class="nav-link" data-toggle="tab" data-target="#web">Web</a></li>
-            <li class="nav-item"><a ng-href="" class="nav-link" data-toggle="tab" data-target="#print">Print</a></li>
-            <li class="nav-item"><a ng-href="" class="nav-link" data-toggle="tab" data-target="#audio">Audio</a></li>
-            <li class="nav-item"><a ng-href="" class="nav-link" data-toggle="tab" data-target="#video">Video</a></li>
+            <li class="nav-item"><a href="#storydetail" class="nav-link active" data-toggle="tab" data-target="#storydetail"><h4>Story Detail</h4></a></li>
+            <li class="nav-item"><a href="#web" class="nav-link" data-toggle="tab" data-target="#web"><h4>Web</h4></a></li>
+            <li class="nav-item"><a href="#print" class="nav-link" data-toggle="tab" data-target="#print"><h4>Print</h4></a></li>
+            <li class="nav-item"><a href="#audio" class="nav-link" data-toggle="tab" data-target="#audio"><h4>Audio</h4></a></li>
+            <li class="nav-item"><a href="#video" class="nav-link" data-toggle="tab" data-target="#video"><h4>Video</h4></a></li>
           </ul>
         </div>
       </div>
@@ -280,6 +280,14 @@
 
   <script>
     $('.nav-tabs-sticky').stickyTabs();
+
+    // $(function() {
+    //   var options = {
+    //       selectorAttribute: "data-target",
+    //       backToTop: true
+    //   };
+    // $('.nav-tabs-sticky').stickyTabs( options );
+    // });
   </script>
 
   <script>

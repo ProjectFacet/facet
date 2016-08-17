@@ -45,10 +45,10 @@
 
           <!-- VideoFacet Description -->
           <fieldset class="form-group m-b-10">
-            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ videoform.wf_description.label_tag }}</label>
-            {{ videoform.wf_description }}
-            {% if videoform.wf_description.errors %}
-              <small class="text-muted">{{ videoform.wf_description.errors }}</small>
+            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">Description</label>
+            {{ videoform.vf_description }}
+            {% if videoform.vf_description.errors %}
+              <small class="text-muted">{{ videoform.vf_description.errors }}</small>
             {% endif %}
           </fieldset>
 

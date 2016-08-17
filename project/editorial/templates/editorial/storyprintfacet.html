@@ -45,10 +45,10 @@
 
           <!-- PrintFacet Description -->
           <fieldset class="form-group m-b-10">
-            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ printform.wf_description.label_tag }}</label>
-            {{ printform.wf_description }}
-            {% if printform.wf_description.errors %}
-              <small class="text-muted">{{ printform.wf_description.errors }}</small>
+            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">Description</label>
+            {{ printform.pf_description }}
+            {% if printform.pf_description.errors %}
+              <small class="text-muted">{{ printform.pf_description.errors }}</small>
             {% endif %}
           </fieldset>
 
