@@ -170,3 +170,17 @@ input[type="checkbox"] {
 #wf_dueedit_picker {
   color: #fff !important;
 }
+
+.bootstrap-datetimepicker-widget, .picker-switch, .accordion-toggle {
+  background-color: #38414f !important;
+  color: #fff !important;
+}
+
+.glyphicon-chevron-up,
+.glyphicon-chevron-down,
+.glyphicon-calendar,
+.glyphicon-time,
+.glyphicon-chevron-right,
+.glyphicon-chevron-left {
+  color: #ffffff !important;
+}
