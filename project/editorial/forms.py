@@ -265,7 +265,7 @@ class WebFacetForm(forms.ModelForm):
         )
     )
 
-    wf_content = forms.CharField(widget=TinyMCE(attrs={'rows':25, 'id': 'wf_content'}))
+    wf_content = forms.CharField(widget=TinyMCE(attrs={'rows':40, 'id': 'wf_content'}))
 
     class Meta:
         model = WebFacet
@@ -285,15 +285,16 @@ class WebFacetForm(forms.ModelForm):
             'credit',
         ]
         widgets = {
-            'credit': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select form-control', 'id':'webfacet-credit'}),
-            'title': Textarea(attrs={'rows':2}),
-            'wf_description': Textarea(attrs={'rows':3}),
-            'excerpt': Textarea(attrs={'rows':4}),
-            'captions': Textarea(attrs={'rows':5}),
-            'share_note': Textarea(attrs={'rows':5}),
+            'title': TextInput(attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Title'}),
+            'code': TextInput(attrs={'class': 'form-control', 'placeholder': 'Code'}),
+            'credit': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select form-control facet-select', 'id':'webfacet-credit', 'data-placeholder': 'Select Credited Team'}),
             'editor': Select(attrs={'class': 'form-control'}),
-            'status': Select(attrs={'class': 'form-control'}),
+            'wf_description': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Description'}),
+            'excerpt': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Excerpt'}),
             'length': NumberInput(attrs={'class': 'form-control'}),
+            'share_note': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Share Note'}),
+            'keywords': TextInput(attrs={'class': 'form-control', 'placeholder': 'Keywords'}),
+            'status': Select(attrs={'class': 'form-control'}),
         }
 
     # class Media:
@@ -352,15 +353,16 @@ class PrintFacetForm(forms.ModelForm):
             'credit',
         ]
         widgets = {
-            'credit': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select form-control', 'id':'printfacet-credit'}),
-            'title': Textarea(attrs={'rows':2}),
-            'pf_description': Textarea(attrs={'rows':3}),
-            'excerpt': Textarea(attrs={'rows':4}),
-            'captions': Textarea(attrs={'rows':5}),
-            'share_note': Textarea(attrs={'rows':5}),
+            'title': TextInput(attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Title'}),
+            'code': TextInput(attrs={'class': 'form-control', 'placeholder': 'Code'}),
+            'credit': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select form-control facet-select', 'id':'printfacet-credit', 'data-placeholder': 'Select Credited Team'}),
             'editor': Select(attrs={'class': 'form-control'}),
-            'status': Select(attrs={'class': 'form-control'}),
+            'pf_description': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Description'}),
+            'excerpt': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Excerpt'}),
             'length': NumberInput(attrs={'class': 'form-control'}),
+            'share_note': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Share Note'}),
+            'keywords': TextInput(attrs={'class': 'form-control', 'placeholder': 'Keywords'}),
+            'status': Select(attrs={'class': 'form-control'}),
         }
 
     # class Media:
@@ -419,15 +421,16 @@ class AudioFacetForm(forms.ModelForm):
             'credit',
         ]
         widgets = {
-            'credit': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select form-control', 'id':'audiofacet-credit'}),
-            'title': Textarea(attrs={'rows':2}),
-            'af_description': Textarea(attrs={'rows':3}),
-            'excerpt': Textarea(attrs={'rows':4}),
-            'captions': Textarea(attrs={'rows':5}),
-            'share_note': Textarea(attrs={'rows':5}),
+            'title': TextInput(attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Title'}),
+            'code': TextInput(attrs={'class': 'form-control', 'placeholder': 'Code'}),
+            'credit': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select form-control facet-select', 'id':'audiofacet-credit', 'data-placeholder': 'Select Credited Team'}),
             'editor': Select(attrs={'class': 'form-control'}),
-            'status': Select(attrs={'class': 'form-control'}),
+            'af_description': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Description'}),
+            'excerpt': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Excerpt'}),
             'length': NumberInput(attrs={'class': 'form-control'}),
+            'share_note': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Share Note'}),
+            'keywords': TextInput(attrs={'class': 'form-control', 'placeholder': 'Keywords'}),
+            'status': Select(attrs={'class': 'form-control'}),
         }
 
     # class Media:
@@ -486,15 +489,16 @@ class VideoFacetForm(forms.ModelForm):
             'credit',
         ]
         widgets = {
-            'credit': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select form-control', 'id':'videofacet-credit'}),
-            'title': Textarea(attrs={'rows':2}),
-            'vf_description': Textarea(attrs={'rows':3}),
-            'excerpt': Textarea(attrs={'rows':4}),
-            'captions': Textarea(attrs={'rows':5}),
-            'share_note': Textarea(attrs={'rows':5}),
+            'title': TextInput(attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Title'}),
+            'code': TextInput(attrs={'class': 'form-control', 'placeholder': 'Code'}),
+            'credit': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select form-control facet-select', 'id':'videofacet-credit', 'data-placeholder': 'Select Credited Team'}),
             'editor': Select(attrs={'class': 'form-control'}),
-            'status': Select(attrs={'class': 'form-control'}),
+            'vf_description': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Description'}),
+            'excerpt': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Excerpt'}),
             'length': NumberInput(attrs={'class': 'form-control'}),
+            'share_note': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Share Note'}),
+            'keywords': TextInput(attrs={'class': 'form-control', 'placeholder': 'Keywords'}),
+            'status': Select(attrs={'class': 'form-control'}),
         }
 
     # class Media:

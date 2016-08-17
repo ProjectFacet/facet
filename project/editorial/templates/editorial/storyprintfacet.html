@@ -1,0 +1,336 @@
+<div role="tabpanel" class="tab-pane p-t-0" id="print">
+  <div class="row">
+    <div class="col-md-12">
+      <form method="POST" class="post-form">
+        {% csrf_token %}
+
+        <!-- Left Column -->
+        <div class="col-md-2">
+
+          <!-- PrintFacet Title -->
+          <fieldset class="form-group m-b-10">
+            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ printform.title.label_tag }}</label>
+            {{ printform.title }}
+            {% if printform.title.errors %}
+              <small class="text-muted">{{ printform.title.errors }}</small>
+            {% endif %}
+          </fieldset>
+
+          <!-- PrintFacet Code -->
+          <fieldset class="form-group m-b-10">
+            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ printform.code.label_tag }}</label>
+            {{ printform.code }}
+            {% if printform.code.errors %}
+              <small class="text-muted">{{ printform.code.errors }}</small>
+            {% endif %}
+          </fieldset>
+
+          <!-- PrintFacet Credit -->
+          <fieldset class="form-group m-b-10">
+            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ printform.credit.label_tag }}</label>
+            {{ printform.credit }}
+            {% if printform.credit.errors %}
+              <small class="text-muted">{{ printform.credit.errors }}</small>
+            {% endif %}
+          </fieldset>
+
+          <!-- PrintFacet Editor -->
+          <fieldset class="form-group m-b-10">
+            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ printform.editor.label_tag }}</label>
+            {{ printform.editor }}
+            {% if printform.editor.errors %}
+              <small class="text-muted">{{ printform.editor.errors }}</small>
+            {% endif %}
+          </fieldset>
+
+          <!-- PrintFacet Description -->
+          <fieldset class="form-group m-b-10">
+            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ printform.wf_description.label_tag }}</label>
+            {{ printform.wf_description }}
+            {% if printform.wf_description.errors %}
+              <small class="text-muted">{{ printform.wf_description.errors }}</small>
+            {% endif %}
+          </fieldset>
+
+          <!-- PrintFacet Excerpt -->
+          <fieldset class="form-group m-b-10">
+            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ printform.excerpt.label_tag }}</label>
+            {{ printform.excerpt }}
+            {% if printform.excerpt.errors %}
+              <small class="text-muted">{{ printform.excerpt.errors }}</small>
+            {% endif %}
+          </fieldset>
+
+          <!-- PrintFacet Length -->
+          <fieldset class="form-group m-b-10">
+            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ printform.length.label_tag }}</label>
+            {{ printform.length }}
+            {% if printform.length.errors %}
+              <small class="text-muted">{{ printform.length.errors }}</small>
+            {% endif %}
+          </fieldset>
+
+          <!-- PrintFacet Share Note -->
+          <fieldset class="form-group m-b-10">
+            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ printform.share_note.label_tag }}</label>
+            {{ printform.share_note }}
+            {% if printform.share_note.errors %}
+              <small class="text-muted">{{ printform.share_note.errors }}</small>
+            {% endif %}
+          </fieldset>
+
+          <!-- ======================== -->
+          <!--       ASSETS FORMS       -->
+          <!-- ======================== -->
+
+          <!-- Printfacet Images -->
+          <div class="section-title">
+            <a href="#" data-toggle="tooltip" title="Image"><label class="field-label">Images</label></a>
+            <a href="#" data-toggle="modal" data-target="#addPrintFacetImage" title="Add Image"><i class="fa fa-picture-o sameline dark"></i></a>
+          </div>
+          <div id="printimage-thumbs">
+            <div class="row">
+            {% for printfacet in story.printfacetstory.all %}
+              {% for image in printfacet.image_assets.all %}
+                {% if image.display_photo %}
+                <div class="col-md-4">
+                  <a href="{{ image.display_photo.url }}" class="thumbnail"><img src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}"></a>
+                </div>
+                {% endif %}
+              {% endfor %}
+            {% endfor %}
+            </div>
+          </div>
+
+          <!-- Printfacet Documents -->
+          <div class="section-title">
+            <a href="#" data-toggle="tooltip" title="Document"><label class="field-label">Documents</label></a>
+            <a href="#" data-toggle="modal" data-target="#addPrintFacetDocument" title="Add Document"><i class="fa fa-file sameline dark"></i></a>
+          </div>
+          <div id="printfacet-docs">
+            <div class="row">
+              {% for document in printfacet_documents %}
+                <div class="col-md-1">
+                    <label>
+                        {% if document.doc_type == 'OTHER' %}
+                        <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-file-o dark"></i></h3></a>
+                        {% endif %}
+                        {% if document.doc_type == 'TEXT' %}
+                        <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-text-o dark"></i></h3></a>
+                        {% endif %}
+                        {% if document.doc_type == 'WORD DOC' %}
+                        <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-word-o dark"></i></h3></a>
+                        {% endif %}
+                        {% if document.doc_type == 'EXCEL' %}
+                        <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-excel-o dark"></i></h3></a>
+                        {% endif %}
+                        {% if document.doc_type == 'PDF' %}
+                        <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-pdf-o dark"></i></h3></a>
+                        {% endif %}
+                        {% if document.doc_type == 'COMMA SEPARATED' %}
+                        <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-o dark"></i></h3></a>
+                        {% endif %}
+                      </label>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+
+          <!-- Printfacet Audio -->
+          <div class="section-title">
+            <a href="#" data-toggle="tooltip" title="Audio"><label class="field-label">Audio</label></a>
+            <a href="#" data-toggle="modal" data-target="#addPrintFacetAudio" title="Add Audio"><i class="fa fa-headphones sameline dark"></i></a>
+          </div>
+          <div id="printfacet-audio">
+            <div class="row">
+              {% for audio in printfacet_audio %}
+                <div class="col-xs-12">
+                    {% if audio.audio_type == 'MP3' %}
+                    <a href="" title="{{ audio.asset_description }}" target="_blank"><i class="fa fa-play sameline"></i> <span class="small-text dark sameline">{{ audio.asset_title }}</span></a>
+                    {% endif %}
+                    {% if audio.audio_type == 'WAV' %}
+                    <!-- <i class="fa fa-play sameline"></i> <span class="small-text dark sameline">{{ audio.asset_title }}</span> -->
+                    <audio id="{{ audio.asset_title }}" controls="controls" preload="metadata">
+                      <source src="{{ audio.audio.url }}" type="audio/wav"/>
+                      Your browser does not support the audioplayer.
+                    </audio>
+                    {% endif %}
+                    {% if audio.audio_type == 'SC' %}
+                    <a href="{{ audio.link }}" title="{{ audio.asset_description }}" target="_blank"><i class="fa fa-soundcloud sameline"></i> <span class="small-text dark sameline">{{ audio.asset_title }}</span></a>
+                    {% endif %}
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+
+          {% comment %}
+          <!-- Printfacet Video -->
+          <div class="section-title">
+            <a href="#" data-toggle="tooltip" title="Video"><label class="field-label">Video</label></a>
+            <a href="#" data-toggle="modal" data-target="#addPrintFacetVideo" title="Add Video"><i class="fa fa-play sameline dark"></i></a>
+          </div>
+          <div id="printfacet-video">
+            <div class="row">
+              {% for video in printfacet_video %}
+                <div class="col-md-1">
+                    <label>
+                        {% if video.video_type == 'MP4' %}
+                        <a href="" title="{{ video.asset_description }}" target="_blank"><h3><i class="fa fa-video-camera dark"></i></h3></a>
+                        {% endif %}
+                        {% if video.video_type == 'YT' %}
+                        <a href="" title="{{ video.asset_description }}" target="_blank"><h3><i class="fa fa-youtube-play dark"></i></h3></a>
+                        {% endif %}
+                        {% if video.video_type == 'VIM' %}
+                        <a href="" title="{{ video.asset_description }}" target="_blank"><h3><i class="fa fa-vimeo-square dark"></i></h3></a>
+                        {% endif %}
+                      </label>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+          {% endcomment %}
+
+        </div>
+        <!-- End of Left Column -->
+
+        <!-- Center Column -->
+        <div class="col-md-8">
+
+          <!-- PrintFacet Content -->
+          <fieldset class="form-group m-b-10">
+            {{ printform.pf_content }}
+            {% if printform.pf_content.errors %}
+              <small class="text-muted">{{ printform.pf_content.errors }}</small>
+            {% endif %}
+          </fieldset>
+
+          <!-- PrintFacet Keywords -->
+          <fieldset class="form-group m-b-10">
+            {% comment %}<label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ printform.keywords.label_tag }}</label>{% endcomment %}
+            {{ printform.keywords }}
+            {% if printform.keywords.errors %}
+              <small class="text-muted">{{ printform.keywords.errors }}</small>
+            {% endif %}
+          </fieldset>
+
+
+        </div>
+        <!-- End of Center Column -->
+        <!-- Right Column -->
+        <div class="col-md-2">
+
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="save-button m-b-20">
+              <button type="submit" class="btn btn-info content-bottom-10 btn btn-block no-border" name="printform">Save Print Story</button>
+              <!-- <input type="submit" name="printform" value="Save Print Story" /> -->
+            </div>
+          </div>
+        </div>
+
+        <div class="row profile-row">
+          <!-- PrintFacet Status -->
+          <div class="col-xs-12">
+          <fieldset class="form-group m-b-20">
+            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ printform.status.label_tag }}</label>
+            {{ printform.status }}
+            {% if printform.status.errors %}
+              <small class="text-muted">{{ printform.status.errors }}</small>
+            {% endif %}
+          </fieldset>
+          </div>
+        </div>
+
+        <div class="row profile-row">
+          <!-- PrintFacet Due Edit -->
+          <fieldset class="form-group m-b-10">
+            <div class="col-xs-3">
+              <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ printform.due_edit.label_tag }}</label>
+            </div>
+            <div class="col-xs-9">
+              {{ printform.due_edit }}
+              {% if printform.due_edit.errors %}
+              <small class="text-muted">{{ printform.due_edit.errors }}</small>
+              {% endif %}
+            </div>
+          </fieldset>
+        </div>
+
+        <div class="row profile-row">
+          <!-- PrintFacet Run Date -->
+          <fieldset class="form-group m-b-10">
+            <div class="col-xs-3">
+              <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ printform.run_date.label_tag }}</label>
+            </div>
+            <div class="col-xs-9">
+              {{ printform.run_date }}
+              {% if printform.run_date.errors %}
+              <small class="text-muted">{{ printform.run_date.errors }}</small>
+              {% endif %}
+            </div>
+          </fieldset>
+        </div>
+          <!-- End of PrintFacet form -->
+          <!-- <input type="submit" name="printform" value="Save Print Story" /> -->
+          </form>
+
+          <div class="discussion">
+          <a href="#" data-toggle="tooltip" title="Discussion for the printfacet"><label class="field-label">Discussion</label></a>
+              {% if printcomments %}
+                <div class="row">
+                  {% for comment in printcomments %}
+                    <div class="col-md-10">
+                      <p>{{ comment.text }}</p>
+                      <p class="tiny-text">{{ comment.date|date:'D M j g:i a' }}</p>
+                    </div>
+                    <div class="col-md-2">
+                      {% if comment.user.display_photo %}
+                      <img class="media-object img-circle" width="32" src="{{ comment.user.display_photo.url }}" alt="user">
+                      {% else %}
+                      {% endif %}
+                      <p class="tiny-text">{{ comment.user.first_name }}</p>
+                    </div>
+                  {% endfor %}
+                </div>
+              {% endif %}
+          </div>
+          <div class="comment">
+              <div class="row">
+                <form action="{% url 'create_printcomment' %}" method="POST" class="post-form" role="form">
+                  <div class="col-md-10">
+                      {% csrf_token %}
+                      <div class="form-group">
+                      {{ printcommentform.text }}
+                      </div>
+                      {% if printcommentform.text.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ printcommentform.text.errors }}
+                        </div>
+                      {% endif %}
+                      <input type="hidden" name="story" value="{{ story.pk }}" />
+                  </div>
+                  <div class="col-md-2">
+                      <div class="form-group">
+                        <button type="submit" class="btn btn-default btn-sm" id="printcomment-submit" name="printcommentform">
+                            <i class="fa fa-paper-plane"></i>
+                        </button>
+                      </div>
+                      <!-- <input type="submit" name="printcommentform" value="Post Comment"/> -->
+                  </div>
+                </form>
+              </div>
+            </div>
+
+          <a href="#" data-toggle="tooltip" title="Edit history for the printfacet"><label class="field-label">Edit History</label></a>
+          <div class="edit-history">
+            {% if printhistory %}
+              {% for entry in printhistory %}
+              <p class="tiny-text">{{ entry.history_date }}
+              {% endfor %}
+            {% endif %}
+          </div>
+        </div>
+        <!-- End of Right Column -->
+    </div>
+  </div>
+</div>

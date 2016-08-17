@@ -76,6 +76,14 @@
   letter-spacing: 1em;
 }
 
+.subtle {
+  color: #4C5561;
+}
+
+.slim-margin {
+  margin-bottom: 0 !important;
+}
+
 .chosen-container-multi .chosen-choices {
   height: 40px !important;
   background-color: #3c414f !important;
@@ -115,7 +123,9 @@ input[type="checkbox"] {
 
 }
 
-#story_team_chosen, #share_with_chosen, #collaborate_with_chosen {
+#story_team_chosen, #share_with_chosen, #collaborate_with_chosen,
+#webfacet_credit_chosen, #printfacet_credit_chosen,
+#audiofacet_credit_chosen, #videofacet_credit_chosen {
   width: 100% !important;
 }
 
@@ -151,4 +161,12 @@ input[type="checkbox"] {
 #user-profile-photo {
   margin-left: -15px !important;
   margin-top: -12px !important;
+}
+
+#wf_content_ifr, #pf_content_ifr, #af_content_ifr, #vf_content_ifr {
+  height: 600px !important;
+}
+
+#wf_dueedit_picker {
+  color: #fff !important;
 }
