@@ -35,15 +35,15 @@
                 <div class="user-widget-1">
                   <div class="row">
                       <div class="col-xs-12">
-                        <h5 class="text-bold color-white text-center spread-025"><a href="{% url 'user_detail' user.id %}">{{ user.credit_name }}</a></h5>
-                          <a class="media-left media-middle"> {% if user.display_photo %}<img class="centered img-rounded h-100 w-100" src="{{ user.display_photo.url }}" alt="profile image">{% else %}{% endif %} </a>
+                        <h5 class="text-bold color-white text-center"><a href="{% url 'user_detail' user.id %}">{{ user.credit_name }}</a></h5>
+                          <a class="media-left media-middle"> {% if user.display_photo %}<img class="centered img-rounded h-100 w-100 neg-m-l-20" src="{{ user.display_photo.url }}" alt="profile image">{% else %}{% endif %} </a>
                           <div class="media-body">
                               <div class="p-10">
                                   <h6 class="text-bold color-white m-l-20">{{ user.title }}</h6>
-                                  <p> <i class="fa fa-map-marker color-white"></i> <span class="color-white">{{ user.location }}</span> </p>
-                                  <p> <i class="fa fa-envelope-o color-white"></i> <span class="color-white">{{ user.email }}</span> </p>
-                                  <p> <i class="fa fa-twitter color-white"></i> <span class="color-white">{{ user.phone }}</span> </p>
-                                  <p class="f-s-12">{% if request.user.id == user.id or request.user.id == user.organization.owner.id %}<a href="{% url 'user_edit' pk=user.id %}">Edit Profile</a>{% endif %}</p>
+                                  <p> <span class="color-white">{{ user.location }}</span> </p>
+                                  <p> <span class="color-white">{{ user.email }}</span> </p>
+                                  <p> <span class="color-white">{{ user.phone }}</span> </p>
+                                  <p class="f-s-12">{% if request.user.id == user.id or request.user.id == user.organization.owner.id %}<a href="{% url 'user_edit' pk=user.id %}" class="default">Edit Profile</a>{% endif %}</p>
                               </div>
                           </div>
                       </div>

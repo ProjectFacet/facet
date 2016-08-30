@@ -35,7 +35,7 @@
             <div id="image-asset-library">
             {% for image in images %}
               {% if image.display_photo %}
-                <div class="zoom-in-1 overlay-0 col-xs-6 col-sm-6 col-md-4 col-lg-2">
+                <div class="zoom-in-1 overlay-0 col-xs-6 col-sm-6 col-md-4 col-lg-2 m-b-20">
                     <img src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}" class="img-fluid image-center height-100 hidden-md-up">
                     <img src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}" class="img-fluid image-center height-200 hidden-sm-down">
                     <div class="overlay bg-dark centered">
@@ -69,7 +69,7 @@
                     <div class="overlay bg-dark centered">
                         <div class="title f-w-800 capitalize"><a href="{% url 'document_asset_detail' pk=document.id %}">{{ document.asset_title }}</a></div>
                         <div class="asset-description f-w-500 hidden-sm-down"> {{ document.asset_description }} </div>
-                        <div class="link hidden-sm-down"><a href="{% url 'asset_detail' pk=image.id %}"><p class="color-lighter f-w-900">See Detail <i class="fa fa-angle-right"></i></p></a></div>
+                        <div class="link hidden-sm-down"><a href="{% url 'document_asset_detail' pk=document.id %}"><p class="color-lighter f-w-900">See Detail <i class="fa fa-angle-right"></i></p></a></div>
                     </div>
                 </div>
             {% endfor %}

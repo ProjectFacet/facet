@@ -13,6 +13,15 @@
   display: inline-block;
 }
 
+i.subtle {
+  color: #4C5561 !important;
+}
+
+a.default {
+  color: #5bc0de !important;
+}
+
+
 .left-rule {
   border-left: 1px solid #3c414f;
 }
@@ -83,6 +92,15 @@
 .slim-margin {
   margin-bottom: 0 !important;
 }
+
+.neg-m-l-10 {
+  margin-left: -10px !important;
+}
+
+.neg-m-l-20 {
+  margin-left: -20px !important;
+}
+
 
 .chosen-container-multi .chosen-choices {
   min-height: 40px !important;

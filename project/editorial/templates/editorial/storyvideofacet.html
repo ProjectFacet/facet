@@ -84,9 +84,9 @@
           <!-- ======================== -->
 
           <!-- Videofacet Images -->
-          <div class="section-title">
-            <a href="#" data-toggle="tooltip" title="Image"><label class="field-label">Images</label></a>
-            <a href="#" data-toggle="modal" data-target="#addVideoFacetImage" title="Add Image"><i class="fa fa-picture-o sameline dark"></i></a>
+          <div class="section-title m-t-20 m-b-20">
+            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">Images</label>
+            <a href="#" data-toggle="modal" data-target="#addVideoFacetImage" title="Add Image"><i class="fa fa-plus sameline subtle"></i></a>
           </div>
           <div id="videoimage-thumbs">
             <div class="row">
@@ -103,9 +103,9 @@
           </div>
 
           <!-- Videofacet Documents -->
-          <div class="section-title">
-            <a href="#" data-toggle="tooltip" title="Document"><label class="field-label">Documents</label></a>
-            <a href="#" data-toggle="modal" data-target="#addVideoFacetDocument" title="Add Document"><i class="fa fa-file sameline dark"></i></a>
+          <div class="section-title m-t-20 m-b-20">
+            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">Documents</label>
+            <a href="#" data-toggle="modal" data-target="#addVideoFacetDocument" title="Add Document"><i class="fa fa-plus sameline subtle"></i></a>
           </div>
           <div id="videofacet-docs">
             <div class="row">
@@ -137,9 +137,9 @@
           </div>
 
           <!-- Videofacet Audio -->
-          <div class="section-title">
-            <a href="#" data-toggle="tooltip" title="Audio"><label class="field-label">Audio</label></a>
-            <a href="#" data-toggle="modal" data-target="#addVideoFacetAudio" title="Add Audio"><i class="fa fa-headphones sameline dark"></i></a>
+          <div class="section-title m-t-20 m-b-20">
+            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">Audio</label>
+            <a href="#" data-toggle="modal" data-target="#addVideoFacetAudio" title="Add Audio"><i class="fa fa-plus sameline subtle"></i></a>
           </div>
           <div id="videofacet-audio">
             <div class="row">
@@ -165,9 +165,9 @@
 
           {% comment %}
           <!-- Videofacet Video -->
-          <div class="section-title">
-            <a href="#" data-toggle="tooltip" title="Video"><label class="field-label">Video</label></a>
-            <a href="#" data-toggle="modal" data-target="#addVideoFacetVideo" title="Add Video"><i class="fa fa-play sameline dark"></i></a>
+          <div class="section-title m-t-20 m-b-20">
+            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">Video</label>
+            <a href="#" data-toggle="modal" data-target="#addVideoFacetVideo" title="Add Video"><i class="fa fa-plus sameline subtle"></i></a>
           </div>
           <div id="videofacet-video">
             <div class="row">
@@ -275,13 +275,12 @@
           </form>
 
           <div class="discussion">
-          <a href="#" data-toggle="tooltip" title="Discussion for the videofacet"><label class="field-label">Discussion</label></a>
+          <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">Discussion</label>
               {% if videocomments %}
                 <div class="row">
                   {% for comment in videocomments %}
                     <div class="col-md-10">
-                      <p>{{ comment.text }}</p>
-                      <p class="tiny-text">{{ comment.date|date:'D M j g:i a' }}</p>
+                      <p>{{ comment.text }} <span class="f-s-12 subtle">| {{ comment.date|date:'D, M j g:i a' }}</span></p>
                     </div>
                     <div class="col-md-2">
                       {% if comment.user.display_photo %}
@@ -321,7 +320,7 @@
               </div>
             </div>
 
-          <a href="#" data-toggle="tooltip" title="Edit history for the videofacet"><label class="field-label">Edit History</label></a>
+          <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">Edit History</label>
           <div class="edit-history">
             {% if videohistory %}
               {% for entry in videohistory %}
