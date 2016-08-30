@@ -85,7 +85,7 @@
 }
 
 .chosen-container-multi .chosen-choices {
-  height: 40px !important;
+  min-height: 40px !important;
   background-color: #3c414f !important;
   background-image: none;
   border-color: #424756 !important;
