@@ -84,7 +84,7 @@
           <!-- ======================== -->
 
           <!-- Webfacet Images -->
-          <div class="section-title">
+          <div class="section-title m-t-20">
             <a href="#" data-toggle="tooltip" title="Image"><label class="field-label">Images</label></a>
             <a href="#" data-toggle="modal" data-target="#addWebFacetImage" title="Add Image"><i class="fa fa-picture-o sameline dark"></i></a>
           </div>
@@ -93,8 +93,8 @@
             {% for webfacet in story.webfacetstory.all %}
               {% for image in webfacet.image_assets.all %}
                 {% if image.display_photo %}
-                <div class="col-md-4">
-                  <a href="{{ image.display_photo.url }}" class="thumbnail"><img src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}"></a>
+                <div class="col-xs-4">
+                  <a href="{{ image.display_photo.url }}" class="thumbnail"><img src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}" class="img-fluid"></a>
                 </div>
                 {% endif %}
               {% endfor %}
@@ -103,7 +103,7 @@
           </div>
 
           <!-- Webfacet Documents -->
-          <div class="section-title">
+          <div class="section-title m-t-20">
             <a href="#" data-toggle="tooltip" title="Document"><label class="field-label">Documents</label></a>
             <a href="#" data-toggle="modal" data-target="#addWebFacetDocument" title="Add Document"><i class="fa fa-file sameline dark"></i></a>
           </div>
@@ -137,7 +137,7 @@
           </div>
 
           <!-- Webfacet Audio -->
-          <div class="section-title">
+          <div class="section-title m-t-20">
             <a href="#" data-toggle="tooltip" title="Audio"><label class="field-label">Audio</label></a>
             <a href="#" data-toggle="modal" data-target="#addWebFacetAudio" title="Add Audio"><i class="fa fa-headphones sameline dark"></i></a>
           </div>
@@ -165,7 +165,7 @@
 
           {% comment %}
           <!-- Webfacet Video -->
-          <div class="section-title">
+          <div class="section-title m-t-20">
             <a href="#" data-toggle="tooltip" title="Video"><label class="field-label">Video</label></a>
             <a href="#" data-toggle="modal" data-target="#addWebFacetVideo" title="Add Video"><i class="fa fa-play sameline dark"></i></a>
           </div>

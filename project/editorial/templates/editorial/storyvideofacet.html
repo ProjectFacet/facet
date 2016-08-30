@@ -94,7 +94,7 @@
               {% for image in videofacet.image_assets.all %}
                 {% if image.display_photo %}
                 <div class="col-md-4">
-                  <a href="{{ image.display_photo.url }}" class="thumbnail"><img src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}"></a>
+                  <a href="{{ image.display_photo.url }}" class="thumbnail"><img src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}" class="img-fluid"></a>
                 </div>
                 {% endif %}
               {% endfor %}
