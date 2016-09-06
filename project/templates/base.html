@@ -228,8 +228,10 @@
                                         <a class="nav-link dropdown-toggle no-after" data-toggle="dropdown">
                                           {% if request.user.display_photo %}
                                           <img class="img-circle img-fluid profile-image" src="{{ request.user.display_photo.url }}">
+                                          {% elif request.user.first_name %}
+                                          <p>{{request.user.first_name}}</p>
                                           {% else %}
-                                          <p>{request.user.first_name}</p>
+                                          <p>{{request.user.email}}</p>
                                           {% endif %}
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-scale from-right dropdown-menu-right">
@@ -365,35 +367,75 @@
                                         <div class="row">
                                             <div class="col-xs-12 bs-media">
                                                 <div class="media">
-                                                    <a class="media-left"> <i class="fa fa-circle icon color-success"></i> <img class="media-object img-circle h-40 w-40" alt="User" src="{{ request.user.display_photo.url }}"> </a>
+                                                    <a class="media-left"> <i class="fa fa-circle icon color-success"></i>
+                                                      {% if request.user.display_photo %}
+                                                      <img class="media-object img-circle h-40 w-40" alt="User" src="{{ request.user.display_photo.url }}">
+                                                      {% elif request.user.first_name %}
+                                                      <p>{{request.user.first_name}}</p>
+                                                      {% else %}
+                                                      <p>{{request.user.email}}</p>
+                                                      {% endif %}
+                                                    </a>
                                                     <div class="media-body">
                                                         <h5 class="media-heading"> Lucas smith </h5>
                                                         <p>Vital Database Dude</p>
                                                     </div>
                                                 </div>
                                                 <div class="media">
-                                                    <a class="media-left"> <i class="fa fa-circle icon color-info"></i> <img class="media-object img-circle h-40 w-40" alt="User" src="{{ request.user.display_photo.url }}"> </a>
+                                                    <a class="media-left"> <i class="fa fa-circle icon color-info"></i>
+                                                      {% if request.user.display_photo %}
+                                                      <img class="media-object img-circle h-40 w-40" alt="User" src="{{ request.user.display_photo.url }}">
+                                                      {% elif request.user.first_name %}
+                                                      <p>{{request.user.first_name}}</p>
+                                                      {% else %}
+                                                      <p>{{request.user.email}}</p>
+                                                      {% endif %}
+                                                    </a>
                                                     <div class="media-body">
                                                         <h5 class="media-heading"> Janet Abshire </h5>
                                                         <p>Lead Innovation Officer</p>
                                                     </div>
                                                 </div>
                                                 <div class="media">
-                                                    <a class="media-left"> <i class="fa fa-circle icon color-success"></i> <img class="media-object img-circle h-40 w-40" alt="User" src="{{ request.user.display_photo.url }}"> </a>
+                                                    <a class="media-left"> <i class="fa fa-circle icon color-success"></i>
+                                                      {% if request.user.display_photo %}
+                                                      <img class="media-object img-circle h-40 w-40" alt="User" src="{{ request.user.display_photo.url }}">
+                                                      {% elif request.user.first_name %}
+                                                      <p>{{request.user.first_name}}</p>
+                                                      {% else %}
+                                                      <p>{{request.user.email}}</p>
+                                                      {% endif %}
+                                                     </a>
                                                     <div class="media-body">
                                                         <h5 class="media-heading"> Lucas Koch </h5>
                                                         <p>Incomparable UX Editor</p>
                                                     </div>
                                                 </div>
                                                 <div class="media">
-                                                    <a class="media-left"> <i class="fa fa-circle icon color-warning"></i> <img class="media-object img-circle h-40 w-40" alt="User" src="{{ request.user.display_photo.url }}"> </a>
+                                                    <a class="media-left"> <i class="fa fa-circle icon color-warning"></i>
+                                                      {% if request.user.display_photo %}
+                                                      <img class="media-object img-circle h-40 w-40" alt="User" src="{{ request.user.display_photo.url }}">
+                                                      {% elif request.user.first_name %}
+                                                      <p>{{request.user.first_name}}</p>
+                                                      {% else %}
+                                                      <p>{{request.user.email}}</p>
+                                                      {% endif %}
+                                                    </a>
                                                     <div class="media-body">
                                                         <h5 class="media-heading"> Gladys Schuster </h5>
                                                         <p>Primary Product Pioneer</p>
                                                     </div>
                                                 </div>
                                                 <div class="media">
-                                                    <a class="media-left"> <i class="fa fa-circle icon color-success"></i> <img class="media-object img-circle h-40 w-40" alt="User" src="{{ request.user.display_photo.url }}"> </a>
+                                                    <a class="media-left"> <i class="fa fa-circle icon color-success"></i>
+                                                      {% if request.user.display_photo %}
+                                                      <img class="media-object img-circle h-40 w-40" alt="User" src="{{ request.user.display_photo.url }}">
+                                                      {% elif request.user.first_name %}
+                                                      <p>{{request.user.first_name}}</p>
+                                                      {% else %}
+                                                      <p>{{request.user.email}}</p>
+                                                      {% endif %}
+                                                    </a>
                                                     <div class="media-body">
                                                         <h5 class="media-heading"> George Clinton </h5>
                                                         <p>World Class API Genius</p>
@@ -407,70 +449,150 @@
                                         <div class="row">
                                             <div class="col-xs-12 bs-media">
                                                 <div class="media">
-                                                    <a class="media-left"> <i class="fa fa-circle icon color-danger"></i> <img class="media-object img-circle h-40 w-40" alt="User" src="{{ request.user.display_photo.url }}"> </a>
+                                                    <a class="media-left"> <i class="fa fa-circle icon color-danger"></i>
+                                                      {% if request.user.display_photo %}
+                                                      <img class="media-object img-circle h-40 w-40" alt="User" src="{{ request.user.display_photo.url }}">
+                                                      {% elif request.user.first_name %}
+                                                      <p>{{request.user.first_name}}</p>
+                                                      {% else %}
+                                                      <p>{{request.user.email}}</p>
+                                                      {% endif %}
+                                                    </a>
                                                     <div class="media-body">
                                                         <h5 class="media-heading"> Kirsten Perez </h5>
                                                         <p>Project Management Researcher</p>
                                                     </div>
                                                 </div>
                                                 <div class="media">
-                                                    <a class="media-left"> <i class="fa fa-circle icon color-danger"></i> <img class="media-object img-circle h-40 w-40" alt="User" src="{{ request.user.display_photo.url }}"> </a>
+                                                    <a class="media-left"> <i class="fa fa-circle icon color-danger"></i>
+                                                      {% if request.user.display_photo %}
+                                                      <img class="media-object img-circle h-40 w-40" alt="User" src="{{ request.user.display_photo.url }}">
+                                                      {% elif request.user.first_name %}
+                                                      <p>{{request.user.first_name}}</p>
+                                                      {% else %}
+                                                      <p>{{request.user.email}}</p>
+                                                      {% endif %}
+                                                    </a>
                                                     <div class="media-body">
                                                         <h5 class="media-heading"> Jerome Lynch </h5>
                                                         <p>Android Engineer</p>
                                                     </div>
                                                 </div>
                                                 <div class="media">
-                                                    <a class="media-left"> <i class="fa fa-circle icon color-success"></i> <img class="media-object img-circle h-40 w-40" alt="User" src="{{ request.user.display_photo.url }}"> </a>
+                                                    <a class="media-left"> <i class="fa fa-circle icon color-success"></i>
+                                                      {% if request.user.display_photo %}
+                                                      <img class="media-object img-circle h-40 w-40" alt="User" src="{{ request.user.display_photo.url }}">
+                                                      {% elif request.user.first_name %}
+                                                      <p>{{request.user.first_name}}</p>
+                                                      {% else %}
+                                                      <p>{{request.user.email}}</p>
+                                                      {% endif %}
+                                                    </a>
                                                     <div class="media-body">
                                                         <h5 class="media-heading"> Hannah Cook </h5>
                                                         <p>Wise Email Captain</p>
                                                     </div>
                                                 </div>
                                                 <div class="media">
-                                                    <a class="media-left"> <i class="fa fa-circle icon color-warning"></i> <img class="media-object img-circle h-40 w-40"alt="User" src="{{ request.user.display_photo.url }}"> </a>
+                                                    <a class="media-left"> <i class="fa fa-circle icon color-warning"></i>
+                                                      {% if request.user.display_photo %}
+                                                      <img class="media-object img-circle h-40 w-40" alt="User" src="{{ request.user.display_photo.url }}">
+                                                      {% elif request.user.first_name %}
+                                                      <p>{{request.user.first_name}}</p>
+                                                      {% else %}
+                                                      <p>{{request.user.email}}</p>
+                                                      {% endif %}
+                                                    </a>
                                                     <div class="media-body">
                                                         <h5 class="media-heading"> Melvin Hicks </h5>
                                                         <p>Primary PHP Monkey</p>
                                                     </div>
                                                 </div>
                                                 <div class="media">
-                                                    <a class="media-left"> <i class="fa fa-circle icon color-danger"></i> <img class="media-object img-circle h-40 w-40" alt="User" src="{{ request.user.display_photo.url }}"> </a>
+                                                    <a class="media-left"> <i class="fa fa-circle icon color-danger"></i>
+                                                      {% if request.user.display_photo %}
+                                                      <img class="media-object img-circle h-40 w-40" alt="User" src="{{ request.user.display_photo.url }}">
+                                                      {% elif request.user.first_name %}
+                                                      <p>{{request.user.first_name}}</p>
+                                                      {% else %}
+                                                      <p>{{request.user.email}}</p>
+                                                      {% endif %}
+                                                    </a>
                                                     <div class="media-body">
                                                         <h5 class="media-heading"> Jackie Perkins </h5>
                                                         <p>Executive PR Evangelist</p>
                                                     </div>
                                                 </div>
                                                 <div class="media">
-                                                    <a class="media-left"> <i class="fa fa-circle icon color-info"></i> <img class="media-object img-circle h-40 w-40" alt="User" src="{{ request.user.display_photo.url }}"> </a>
+                                                    <a class="media-left"> <i class="fa fa-circle icon color-info"></i>
+                                                      {% if request.user.display_photo %}
+                                                      <img class="media-object img-circle h-40 w-40" alt="User" src="{{ request.user.display_photo.url }}">
+                                                      {% elif request.user.first_name %}
+                                                      <p>{{request.user.first_name}}</p>
+                                                      {% else %}
+                                                      <p>{{request.user.email}}</p>
+                                                      {% endif %}
+                                                    </a>
                                                     <div class="media-body">
                                                         <h5 class="media-heading"> Michael Jenkins </h5>
                                                         <p>Ruby On Rails Developer</p>
                                                     </div>
                                                 </div>
                                                 <div class="media">
-                                                    <a class="media-left"> <i class="fa fa-circle icon color-success"></i> <img class="media-object img-circle h-40 w-40" alt="User" src="{{ request.user.display_photo.url }}"> </a>
+                                                    <a class="media-left"> <i class="fa fa-circle icon color-success"></i>
+                                                      {% if request.user.display_photo %}
+                                                      <img class="media-object img-circle h-40 w-40" alt="User" src="{{ request.user.display_photo.url }}">
+                                                      {% elif request.user.first_name %}
+                                                      <p>{{request.user.first_name}}</p>
+                                                      {% else %}
+                                                      <p>{{request.user.email}}</p>
+                                                      {% endif %}
+                                                    </a>
                                                     <div class="media-body">
                                                         <h5 class="media-heading"> Monica White </h5>
                                                         <p>iOS Strategist</p>
                                                     </div>
                                                 </div>
                                                 <div class="media">
-                                                    <a class="media-left"> <i class="fa fa-circle icon color-danger"></i> <img class="media-object img-circle h-40 w-40" alt="User" src="{{ request.user.display_photo.url }}"> </a>
+                                                    <a class="media-left"> <i class="fa fa-circle icon color-danger"></i>
+                                                      {% if request.user.display_photo %}
+                                                      <img class="media-object img-circle h-40 w-40" alt="User" src="{{ request.user.display_photo.url }}">
+                                                      {% elif request.user.first_name %}
+                                                      <p>{{request.user.first_name}}</p>
+                                                      {% else %}
+                                                      <p>{{request.user.email}}</p>
+                                                      {% endif %}
+                                                    </a>
                                                     <div class="media-body">
                                                         <h5 class="media-heading"> Eric Simpson </h5>
                                                         <p>Innovation Pioneer</p>
                                                     </div>
                                                 </div>
                                                 <div class="media">
-                                                    <a class="media-left"> <i class="fa fa-circle icon color-warning"></i> <img class="media-object img-circle h-40 w-40" alt="User" src="{{ request.user.display_photo.url }}"> </a>
+                                                    <a class="media-left"> <i class="fa fa-circle icon color-warning"></i>
+                                                      {% if request.user.display_photo %}
+                                                      <img class="media-object img-circle h-40 w-40" alt="User" src="{{ request.user.display_photo.url }}">
+                                                      {% elif request.user.first_name %}
+                                                      <p>{{request.user.first_name}}</p>
+                                                      {% else %}
+                                                      <p>{{request.user.email}}</p>
+                                                      {% endif %}
+                                                    </a>
                                                     <div class="media-body">
                                                         <h5 class="media-heading"> Clorinda Murphy </h5>
                                                         <p>Social Media Writer</p>
                                                     </div>
                                                 </div>
                                                 <div class="media">
-                                                    <a class="media-left"> <i class="fa fa-circle icon color-primary"></i> <img class="media-object img-circle h-40 w-40" alt="User" src="{{ request.user.display_photo.url }}"> </a>
+                                                    <a class="media-left"> <i class="fa fa-circle icon color-primary"></i>
+                                                      {% if request.user.display_photo %}
+                                                      <img class="media-object img-circle h-40 w-40" alt="User" src="{{ request.user.display_photo.url }}">
+                                                      {% elif request.user.first_name %}
+                                                      <p>{{request.user.first_name}}</p>
+                                                      {% else %}
+                                                      <p>{{request.user.email}}</p>
+                                                      {% endif %}
+                                                    </a>
                                                     <div class="media-body">
                                                         <h5 class="media-heading"> James Smith </h5>
                                                         <p>Project Management Champ</p>

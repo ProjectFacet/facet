@@ -40,7 +40,7 @@
           {% if user.linkedin %}<a href="{{ user.linkedin }}" class="btn btn-sm btn-circle ml-1x" aria-label="linkedin"><i class="fa fa-lg fa-linkedin-square"></i></a>{% endif %}
           {% if user.vine %}<a href="{{ user.vine }}" class="btn btn-sm btn-circle ml-1x" aria-label="vine"><i class="fa fa-lg fa-vine"></i></a>{% endif %}
         </p>
-        <small class="f-s-12">{% if request.user.id == user.id or request.user.id == user.organization.owner.id %}<a href="{% url 'user_edit' pk=user.id %}">Edit Profile</a>{% endif %}</small>
+        <small class="f-s-12">{% if request.user.id == user.id or request.user.id == user.organization.owner.id %}<a href="{% url 'user_edit' pk=user.id %}" class="default">Edit Profile</a>{% endif %}</small>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
       <h5 class="m-t-40"> Bio</h5>
