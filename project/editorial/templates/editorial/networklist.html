@@ -12,7 +12,7 @@
     <ol class="breadcrumb icon-angle-right icon-th">
         <li class="fadeIn"> Dashboard </li>
         <li class="fadeIn"><a href="{% url 'network_list' %}" title="You are here"> Networks </a></li>
-    </ol> 
+    </ol>
 </div>
 {% endblock breadcrumb %}
 
@@ -23,21 +23,24 @@
 {% block content %}
 
 <div class="row m-b-40">
-
-  {% for network in network_list %}
-  <div class="col-xs-12 col-lg-4 m-b-5">
-        <div class="text-widget-1">
-            <div class="row">
-                <div class="col-xs-3"> <h5 class="m-l-20"><a href="{% url 'network_detail' network.id %}">{{ network.name }}</a></h5> </div>
-                <div class="col-xs-9 text-left">
-                  <p class="f-s-14 f-w-300">{{ network.network_description }} {% if request.user.organization == network.owner_organization %}<a href="{% url 'network_edit' pk=network.id %}"> <i class="fa fa-pencil sameline"></i></a>{% endif %}</p>
-                  <span class="f-w-600 f-s-11 uppercase">Organizations</span>
-                  <p class="f-s-12 f-w-300">{% for organization in network.organizations.all %}{{ organization.name }}, {% endfor %}</p>
-                </div>
-            </div>
-        </div>
-    </div>
-    {% endfor %}
+  {% if network_list %}
+    {% for network in network_list %}
+    <div class="col-xs-12 col-lg-4 m-b-5">
+          <div class="text-widget-1">
+              <div class="row">
+                  <div class="col-xs-3"> <h5 class="m-l-20"><a href="{% url 'network_detail' network.id %}">{{ network.name }}</a></h5> </div>
+                  <div class="col-xs-9 text-left">
+                    <p class="f-s-14 f-w-300">{{ network.network_description }} {% if request.user.organization == network.owner_organization %}<a href="{% url 'network_edit' pk=network.id %}"> <i class="fa fa-pencil sameline"></i></a>{% endif %}</p>
+                    <span class="f-w-600 f-s-11 uppercase">Organizations</span>
+                    <p class="f-s-12 f-w-300">{% for organization in network.organizations.all %}{{ organization.name }}, {% endfor %}</p>
+                  </div>
+              </div>
+          </div>
+      </div>
+      {% endfor %}
+    {% else %}
+    <p class="f-s-18 subtle text-center italic m-b-40 m-t-40">Welcome to the Network page. This is where you will see all of the networks that your organization manages or belongs. Click here to create a <a href="{% url 'network_new' %}" title="Create New Network" class="default">network</a>.</p>
+    {% endif %}
 
 </div>
 
