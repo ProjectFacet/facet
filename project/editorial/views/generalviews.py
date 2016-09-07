@@ -143,6 +143,7 @@ def dashboard(request):
     # TODO: query for other user activity since last_login
 
     return render(request, 'editorial/dashboard.html', {
+        'networks': networks,
         'recent_comments': recent_comments,
         'older_comments': older_comments,
         'all_comments': all_comments,

@@ -3,9 +3,9 @@
 {% load i18n %}
 {% load bootstrap3 %}
 
-<!-------------------------------------------->
+<!-- ====================================== -->
 <!--      BREADCRUMB NAVIGATION             -->
-<!-------------------------------------------->
+<!-- ====================================== -->
 
 {% block breadcrumb %}
 <div>
@@ -15,9 +15,9 @@
 </div>
 {% endblock breadcrumb %}
 
-<!-------------------------------------------->
+<!-- ====================================== -->
 <!--            Main Section                -->
-<!-------------------------------------------->
+<!-- ====================================== -->
 
 {% block content %}
     <!-- Row One -->
@@ -99,6 +99,7 @@
                   </div> -->
                   <div role="tabpanel" class="tab-pane in active" id="discussion-tab">
                     <div class="m-b-20">
+                        {% if all_comments %}
                         <div class="activity-widget-3">
                             {% for comment in all_comments %}
                             <div class="row">
@@ -154,6 +155,25 @@
                             </div>
                             {% endfor %}
                         </div>
+                        {% else %}
+                        <div class="row">
+                            <div class="col-xs-12">
+                              <p class="f-s-14 subtle text-center">
+                                This is the Discussion Panel. As your team and partners discuss content, new additions to the conversation will appear here for quick access.
+                              </p>
+                              {% if old_stories or new_stories %}
+                                {% if networks %}
+                                <p class="f-s-16 subtle text-center italic">It looks like no one has commented on any <a href="{% url 'story_list' %}" title="View Story List" class="default">content</a> or your <a href="{% url 'org_detail' pk=request.user.organization.id %}" class="default">organization</a>. Click one of those options to add a comment.</p>
+                                {% else %}
+                                <p class="f-s-16 subtle text-center italic">It looks like no one has commented on any <a href="{% url 'story_list' %}" title="View Story List" class="default">content</a>, your <a href="{% url 'org_detail' pk=request.user.organization.id %}" class="default">organization</a> or in any <a href="{% url 'network_list' %}" title="View Networks" class="default">networks</a>. Click one of those options to add a comment.</p>
+                                {% endif %}
+                              {% else %}
+                              <p class="f-s-16 subtle text-center italic">It looks like you don't have any content yet. Click here to add a <a href="{% url 'series_new' %}" title="Create New Series" class="default">series</a> or a <a href="{% url 'story_new' %}" title="Create New Story" class="default">story</a>.</p>
+                              <p class="f-s-16 subtle text-center italic">Or welcome your team members to the site on the <a href="{% url 'org_detail' pk=request.user.organization.id %}" class="default">organization</a> page.</p>
+                              {% endif %}
+                            </div>
+                        </div>
+                        {% endif %}
                     </div>
                   </div>
               </div>
@@ -170,6 +190,7 @@
               </ul>
               <div class="tab-content">
                   <div role="tabpanel" class="tab-pane in active p-t-0" id="stories-running">
+                    {% if running_today %}
                     <!-- Full table for md and lg displays -->
                     <table class="table table-hover hidden-sm-down" cellspacing="0" width="100%">
                         <thead>
@@ -183,32 +204,33 @@
                         <tfoot class="hidden">
                             <tr>
                               <th>Title</th>
-                              <th>Type</th>
+                              <th>Platform</th>
                               <th>Credit</th>
                               <th>Time</th>
                             </tr>
                         </tfoot>
                         <tbody>
-                          {% for facet in running_today|slice:":7" %}
-                            <tr>
-                                <td>
-                                  {% if facet.type == "WebFacet" %}
-                                  <a href="{% url 'story_detail' pk=facet.story.id %}#web">
-                                  {% elif facet.type == "PrintFacet" %}
-                                  <a href="{% url 'story_detail' pk=facet.story.id %}#print">
-                                  {% elif facet.type == "AudioFacet" %}
-                                  <a href="{% url 'story_detail' pk=facet.story.id %}#audio">
-                                  {% elif facet.type == "VideoFacet" %}
-                                  <a href="{% url 'story_detail' pk=facet.story.id %}#video">
-                                  {% else %}
-                                  <a href="#">
-                                  {% endif %}{{ facet.title }}</a>
-                                </td>
-                                <td>{{ facet.type }}</td>
-                                <td>{{ facet.credit.all.0.credit_name }}</td>
-                                <td>{{ facet.run_date|date:'g:i a'}}</td>
-                            </tr>
-                          {% endfor %}
+                            {% for facet in running_today|slice:":7" %}
+                              <tr>
+                                  <td>
+                                    {% if facet.type == "WebFacet" %}
+                                    <a href="{% url 'story_detail' pk=facet.story.id %}#web">
+                                    {% elif facet.type == "PrintFacet" %}
+                                    <a href="{% url 'story_detail' pk=facet.story.id %}#print">
+                                    {% elif facet.type == "AudioFacet" %}
+                                    <a href="{% url 'story_detail' pk=facet.story.id %}#audio">
+                                    {% elif facet.type == "VideoFacet" %}
+                                    <a href="{% url 'story_detail' pk=facet.story.id %}#video">
+                                    {% else %}
+                                    <a href="#">
+                                    {% endif %}{{ facet.title }}</a>
+                                  </td>
+                                  <td>{{ facet.type }}</td>
+                                  <td>{{ facet.credit.all.0.credit_name }}</td>
+                                  <td>{{ facet.run_date|date:'g:i a'}}</td>
+                              </tr>
+                            {% endfor %}
+                        </tbody>
                     </table>
                     <!-- End full table -->
                     <!-- Partial table for xs and sm displays -->
@@ -228,30 +250,38 @@
                             </tr>
                         </tfoot>
                         <tbody>
-                          {% for facet in running_today %}
-                            <tr>
-                                <td>
-                                  {% if facet.type == "WebFacet" %}
-                                  <a href="{% url 'story_detail' pk=facet.story.id %}#web">
-                                  {% elif facet.type == "PrintFacet" %}
-                                  <a href="{% url 'story_detail' pk=facet.story.id %}#print">
-                                  {% elif facet.type == "AudioFacet" %}
-                                  <a href="{% url 'story_detail' pk=facet.story.id %}#audio">
-                                  {% elif facet.type == "VideoFacet" %}
-                                  <a href="{% url 'story_detail' pk=facet.story.id %}#video">
-                                  {% else %}
-                                  <a href="#">
-                                  {% endif %}{{ facet.title }}</a>
-                                </td>
-                                <td>{{ facet.type }}</td>
-                                <td>{{ facet.run_date|date:'g:i a'}}</td>
-                            </tr>
-                          {% endfor %}
+                            {% for facet in running_today %}
+                              <tr>
+                                  <td>
+                                    {% if facet.type == "WebFacet" %}
+                                    <a href="{% url 'story_detail' pk=facet.story.id %}#web">
+                                    {% elif facet.type == "PrintFacet" %}
+                                    <a href="{% url 'story_detail' pk=facet.story.id %}#print">
+                                    {% elif facet.type == "AudioFacet" %}
+                                    <a href="{% url 'story_detail' pk=facet.story.id %}#audio">
+                                    {% elif facet.type == "VideoFacet" %}
+                                    <a href="{% url 'story_detail' pk=facet.story.id %}#video">
+                                    {% else %}
+                                    <a href="#">
+                                    {% endif %}{{ facet.title }}</a>
+                                  </td>
+                                  <td>{{ facet.type }}</td>
+                                  <td>{{ facet.run_date|date:'g:i a'}}</td>
+                              </tr>
+                            {% endfor %}
+                      </tbody>
                     </table>
                     <!-- End partial table -->
+                  <!-- If no running_today   -->
+                  {% else %}
+                  <p class="f-s-14 subtle m-t-20">
+                    It looks like you don't have any content scheduled to be published today.
+                  </p>
+                  {% endif %}
 
                   </div>
                   <div role="tabpanel" class="tab-pane p-t-0" id="stories-new">
+                    {% if new_stories %}
                     <table class="table table-hover" cellspacing="0" width="100%">
                         <thead>
                             <tr>
@@ -275,10 +305,17 @@
                         </tbody>
                     </table>
                     <a href="{% url 'story_list' %}" title="View Story List"><p class="f-w-300 f-s-12 p-l-10">All Stories</p></a>
+                    {% else %}
+                    <p class="f-s-14 subtle m-t-20">
+                      It looks like you don't have any new stories to display.
+                      Add a <a href="{% url 'story_new' %}" title="Create New Story" class="default">new story</a>.
+                    </p>
+                    {% endif %}
                   </div>
 
                   <!-- Full table for md and lg displays -->
                   <div role="tabpanel" class="tab-pane p-t-0" id="stories-edit">
+                    {% if edit_today %}
                     <table class="table table-hover hidden-sm-down" cellspacing="0" width="100%">
                         <thead>
                             <tr>
@@ -318,10 +355,8 @@
                             </tr>
                           {% endfor %}
                     </table>
-                  </div>
                   <!-- End full table -->
                   <!-- Partial table for xs and sm displays -->
-                  <div role="tabpanel" class="tab-pane p-t-0" id="stories-edit">
                     <table class="table table-hover hidden-md-up" cellspacing="0" width="100%">
                         <thead>
                             <tr>
@@ -358,6 +393,9 @@
                             </tr>
                           {% endfor %}
                     </table>
+                    {% else %}
+                      <p class="f-s-14 subtle m-t-20">It looks like you don't have any stories due for edit today.</p>
+                    {% endif %}
                   </div>
                   <!-- End partial table -->
               </div>
@@ -367,21 +405,26 @@
     </div> <!-- End of Row One -->
 
     <!-- Row Two -->
+    {% if networks %}
     <div class="row m-b-40">
         <h4 class="m-l-10 m-b-20"> Partnerships</h4>
         <!-- Left Column -->
         <div class="col-xs-12 col-lg-6">
-              <h5 class="text-center">New Network Stories</h5>
-              <ul class="list-group m-10">
-                  {% for story in shared_networkstories|slice:":5" %}
-                  <li class="list-group-item"> <span class="text-xs pull-right">{{story.organization.name}}</span> {{story.name}}</li>
-                  {% endfor %}
-              </ul>
+          <h5 class="text-center">New Network Stories</h5>
+          {% if shared_networkstories %}
+            <ul class="list-group m-10">
+              {% for story in shared_networkstories|slice:":5" %}
+                <li class="list-group-item"> <span class="text-xs pull-right">{{story.organization.name}}</span> {{story.name}}</li>
+              {% endfor %}
+            </ul>
+          {% else %}
+            <p class="f-s-14 subtle m-t-20 text-center">There are currently no new shared stories available from your partners.</p>
+          {% endif %}
         </div>
-
         <!-- Right Column -->
         <div class="col-xs-12 col-lg-6">
-              <h5 class="text-center">Criterion News Stories Picked up by Partners</h5>
+          <h5 class="text-center">Criterion News Stories Picked up by Partners</h5>
+          {% if copied_shared_stories %}
               <ul class="list-group">
                   <li class="list-group-item"> <span class="text-xs pull-right">Arctic Times</span> Michael Smith upgraded to the $50 plan</li>
                   <li class="list-group-item"> <span class="text-xs pull-right">Arctic Times</span> Jane Perez cancelled the $25 plan</li>
@@ -389,8 +432,47 @@
                   <li class="list-group-item"> <span class="text-xs pull-right">Cold Snap</span> Someone from Google cancelled the $25 plan</li>
                   <li class="list-group-item"> <span class="text-xs pull-right">Wolf Media</span> Lucas Smith upgraded to the $25 plan</li>
               </ul>
+          {% else %}
+            <p class="f-s-14 subtle text-center m-t-20">There are currently stories recently used by your partners.</p>
+          {% endif %}
         </div>
+    </div><!-- End of Row Two Partnerships-->
 
-    </div><!-- End of Row Twoe -->
+    {% else %}
+    <div class="row m-b-40">
+        <h4 class="m-l-10 m-b-20"> Partnerships</h4>
+        <!-- Left Column -->
+        <div class="col-xs-12 col-lg-6">
+              <h5 class="text-center">New Network Stories</h5>
+              {% if shared_networkstories %}
+                <ul class="list-group m-10">
+                  {% for story in shared_networkstories|slice:":5" %}
+                    <li class="list-group-item"> <span class="text-xs pull-right">{{story.organization.name}}</span> {{story.name}}</li>
+                  {% endfor %}
+                </ul>
+              {% else %}
+                <p class="f-s-14 subtle m-t-20 text-center">Once you create or join a network, new stories from your partners will appear here.</p>
+                <p class="f-s-16 subtle text-center italic">Click here to create a <a href="{% url 'network_new' %}" title="Create New Network" class="default">network</a>.</p>
+              {% endif %}
+        </div>
+        <!-- Right Column -->
+        <div class="col-xs-12 col-lg-6">
+          <h5 class="text-center">Criterion News Stories Picked up by Partners</h5>
+          {% if copied_shared_stories %}
+              <ul class="list-group">
+                  <li class="list-group-item"> <span class="text-xs pull-right">Arctic Times</span> Michael Smith upgraded to the $50 plan</li>
+                  <li class="list-group-item"> <span class="text-xs pull-right">Arctic Times</span> Jane Perez cancelled the $25 plan</li>
+                  <li class="list-group-item"> <span class="text-xs pull-right">Wolf Media</span> George Clinton from Facebook upgraded to the $25 plan</li>
+                  <li class="list-group-item"> <span class="text-xs pull-right">Cold Snap</span> Someone from Google cancelled the $25 plan</li>
+                  <li class="list-group-item"> <span class="text-xs pull-right">Wolf Media</span> Lucas Smith upgraded to the $25 plan</li>
+              </ul>
+          {% else %}
+            <p class="f-s-14 subtle text-center m-t-20">Once you join or create a network, you will be able to see which of your shared content is used by your partners.</p>
+            <p class="f-s-16 subtle text-center italic">Click here to create a <a href="{% url 'network_new' %}" title="Create New Network" class="default">network</a>.</p>
+          {% endif %}
+        </div>
+    </div><!-- End of Row Two No Partnerships -->
+
+    {% endif %}
 
     {% endblock content %}

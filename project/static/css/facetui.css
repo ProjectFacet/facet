@@ -89,6 +89,10 @@ a.default {
   color: #4C5561;
 }
 
+.italic {
+  font-style: italic;
+}
+
 .slim-margin {
   margin-bottom: 0 !important;
 }
