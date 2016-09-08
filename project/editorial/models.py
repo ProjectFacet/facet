@@ -2582,7 +2582,7 @@ class ImageAsset(models.Model):
         return self.asset_title
 
     def get_absolute_url(self):
-        return reverse('asset_detail', kwargs={'pk': self.id})
+        return reverse('image_asset_detail', kwargs={'pk': self.id})
 
     @property
     def description(self):
@@ -2753,7 +2753,7 @@ class DocumentAsset(models.Model):
         return self.asset_title
 
     # def get_absolute_url(self):
-    #     return reverse('asset_detail', kwargs={'pk': self.id})
+    #     return reverse('document_asset_detail', kwargs={'pk': self.id})
 
     @property
     def description(self):
