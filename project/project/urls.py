@@ -30,7 +30,6 @@ urlpatterns = [
     url(r'^accounts/', include(allauth.urls)),
     url(r'^tinymce/', include('tinymce.urls')),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    # url(r"^search/", include("watson.urls", namespace="watson")),
-    # url(r'^activity/', include('actstream.urls')),
+    url(r'^activity/', include('actstream.urls')),
     url(r'', include('editorial.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

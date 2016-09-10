@@ -53,6 +53,7 @@ INSTALLED_APPS = (
     'tinymce',
     'watson',
     'embed_video',
+    'actstream',
     'project',
 )
 
@@ -139,6 +140,19 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ]
 }
+
+# -------------------------------------------------------------- #
+# ACTIVITY STREAM SETTINGS #
+# -------------------------------------------------------------- #
+
+ACTSTREAM_SETTINGS = {
+    # 'MANAGER': 'myapp.managers.MyActionManager',
+    'FETCH_RELATIONS': True,
+    'USE_PREFETCH': False,
+    'USE_JSONFIELD': True,
+    'GFK_FETCH_DEPTH': 1,
+}
+
 
 # -------------------------------------------------------------- #
 # OTHER SETTINGS #
