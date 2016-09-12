@@ -1,4 +1,6 @@
 <!-- {% load static from staticfiles %} -->
+{% load activity_tags %}
+
 <!doctype html>
 <html lang="en">
 
@@ -277,7 +279,7 @@
             <div class="right-sidebar-outer">
                 <div class="right-sidebar-inner">
                     <div class="right-sidebar">
-                        <div class="bs-nav-tabs nav-tabs-warning justified">
+                        <div class="bs-nav-tabs nav-tabs-default justified">
                             <ul class="nav nav-tabs nav-animated-border-from-center">
                                 <li class="nav-item"> <a class="nav-link active" data-toggle="tab" data-target="#rtab-left">Activity</a> </li>
                                 <li class="nav-item"> <a class="nav-link" data-toggle="tab" data-target="#rtab-center">Users</a> </li>
@@ -285,80 +287,26 @@
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane fade in active" id="rtab-left">
-                                    <h5>Today</h5>
+                                    <h5>Recent</h5>
                                     <div class="timeline-widget-4">
-                                        <div class="row bg-odd-color">
-                                            <div class="col-xs-12 timeline timeline-info">
-                                                <div class="p-10">
-                                                    <p>Someone commented on your post</p>
-                                                    <p class="text-sm text-muted">10 minutes ago</p>
-                                                    <p class="text-sm m-t-10"> <span>Reply</span> <i class="m-l-5 m-r-5 fa fa-mail-reply"></i> </p>
+                                      {% for activity in activitystream %}
+                                        <div class="row {% cycle 'bg-odd-color' 'bg-even-color' %}">
+                                            {% if activity.verb == 'created' or activity.verb == 'added note' or activity.verb == 'added' %}
+                                                <div class="col-xs-12 timeline timeline-info">
+                                            {% elif activity.verb == 'edited' or activity.verb == 'shared' or activity.verb == 'picked up' %}
+                                                <div class="col-xs-12 timeline timeline-success">
+                                            {% elif activity.verb == 'commented on' %}
+                                                <div class="col-xs-12 timeline timeline-warning">
+                                            {% elif activity.verb == 'uploaded image' or activity.verb == 'uploaded document' or activity.verb == 'uploaded audio' or activity.verb == 'added image' or activity.verb == 'added document' or activity.verb == 'added audio' %}
+                                                <div class="col-xs-12 timeline timeline-danger">
+                                            {% endif %}
+                                                    <div class="p-10">
+                                                        <p>{{ activity.actor }} {{ activity.verb }} {{activity.action_object.credit_name }}</p>
+                                                        <p class="text-sm text-muted">{{ activity.timestamp|timesince }} </p>
+                                                    </div>
                                                 </div>
-                                            </div>
                                         </div>
-                                        <div class="row bg-even-color">
-                                            <div class="col-xs-12 timeline timeline-danger">
-                                                <div class="p-10">
-                                                    <p>A friend posted something on instagram</p>
-                                                    <p class="text-sm text-muted">30 minutes ago</p>
-                                                    <p class="text-sm m-t-10"> <span>Like</span> <i class="m-l-5 m-r-5 fa fa-thumbs-o-up"></i> <span>Comment</span> <i class="m-l-5 m-r-5 fa fa-comment"></i> </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row bg-odd-color">
-                                            <div class="col-xs-12 timeline timeline-success">
-                                                <div class="p-10">
-                                                    <p>Finished important task</p>
-                                                    <p class="text-sm text-muted">3 hours ago</p>
-                                                    <p class="text-sm m-t-10"> <span>10</span> <i class="m-l-5 m-r-5 fa fa-star-o"></i> <span>23</span> <i class="m-l-5 m-r-5 fa fa-heart-o"></i> </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row bg-even-color">
-                                            <div class="col-xs-12 timeline timeline-success">
-                                                <div class="p-10">
-                                                    <p>Went to mars</p>
-                                                    <p class="text-sm text-muted">Last month</p>
-                                                    <p class="text-sm m-t-10"> <span>10</span> <i class="m-l-5 m-r-5 fa fa-check"></i> </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row bg-odd-color">
-                                            <div class="col-xs-12 timeline timeline-warning">
-                                                <div class="p-10">
-                                                    <p>Bought a Tesla</p>
-                                                    <p class="text-sm text-muted">3 months ago</p>
-                                                    <p class="text-sm m-t-10"> <span>10</span> <i class="m-l-5 m-r-5 fa fa-twitter"></i> <span>23</span> <i class="m-l-5 m-r-5 fa fa-heart"></i> </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row bg-even-color">
-                                            <div class="col-xs-12 timeline timeline-success">
-                                                <div class="p-10">
-                                                    <p>Went to mars</p>
-                                                    <p class="text-sm text-muted">Last month</p>
-                                                    <p class="text-sm m-t-10"> <span>10</span> <i class="m-l-5 m-r-5 fa fa-check"></i> </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row bg-odd-color">
-                                            <div class="col-xs-12 timeline timeline-warning">
-                                                <div class="p-10">
-                                                    <p>Bought a Tesla</p>
-                                                    <p class="text-sm text-muted">3 months ago</p>
-                                                    <p class="text-sm m-t-10"> <span>10</span> <i class="m-l-5 m-r-5 fa fa-twitter"></i> <span>23</span> <i class="m-l-5 m-r-5 fa fa-heart"></i> </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row bg-even-color">
-                                            <div class="col-xs-12 timeline timeline-info">
-                                                <div class="p-10">
-                                                    <p>Someone commented on your post</p>
-                                                    <p class="text-sm text-muted">10 minutes ago</p>
-                                                    <p class="text-sm m-t-10"> <span>Reply</span> <i class="m-l-5 m-r-5 fa fa-mail-reply"></i> </p>
-                                                </div>
-                                            </div>
-                                        </div>
+                                      {% endfor %}
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="rtab-center">
@@ -439,163 +387,6 @@
                                                     <div class="media-body">
                                                         <h5 class="media-heading"> George Clinton </h5>
                                                         <p>World Class API Genius</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <h5>Offline</h5>
-                                    <div class="user-widget-8">
-                                        <div class="row">
-                                            <div class="col-xs-12 bs-media">
-                                                <div class="media">
-                                                    <a class="media-left"> <i class="fa fa-circle icon color-danger"></i>
-                                                      {% if request.user.display_photo %}
-                                                      <img class="media-object img-circle h-40 w-40" alt="User" src="{{ request.user.display_photo.url }}">
-                                                      {% elif request.user.first_name %}
-                                                      <p>{{request.user.first_name}}</p>
-                                                      {% else %}
-                                                      <p>{{request.user.email}}</p>
-                                                      {% endif %}
-                                                    </a>
-                                                    <div class="media-body">
-                                                        <h5 class="media-heading"> Kirsten Perez </h5>
-                                                        <p>Project Management Researcher</p>
-                                                    </div>
-                                                </div>
-                                                <div class="media">
-                                                    <a class="media-left"> <i class="fa fa-circle icon color-danger"></i>
-                                                      {% if request.user.display_photo %}
-                                                      <img class="media-object img-circle h-40 w-40" alt="User" src="{{ request.user.display_photo.url }}">
-                                                      {% elif request.user.first_name %}
-                                                      <p>{{request.user.first_name}}</p>
-                                                      {% else %}
-                                                      <p>{{request.user.email}}</p>
-                                                      {% endif %}
-                                                    </a>
-                                                    <div class="media-body">
-                                                        <h5 class="media-heading"> Jerome Lynch </h5>
-                                                        <p>Android Engineer</p>
-                                                    </div>
-                                                </div>
-                                                <div class="media">
-                                                    <a class="media-left"> <i class="fa fa-circle icon color-success"></i>
-                                                      {% if request.user.display_photo %}
-                                                      <img class="media-object img-circle h-40 w-40" alt="User" src="{{ request.user.display_photo.url }}">
-                                                      {% elif request.user.first_name %}
-                                                      <p>{{request.user.first_name}}</p>
-                                                      {% else %}
-                                                      <p>{{request.user.email}}</p>
-                                                      {% endif %}
-                                                    </a>
-                                                    <div class="media-body">
-                                                        <h5 class="media-heading"> Hannah Cook </h5>
-                                                        <p>Wise Email Captain</p>
-                                                    </div>
-                                                </div>
-                                                <div class="media">
-                                                    <a class="media-left"> <i class="fa fa-circle icon color-warning"></i>
-                                                      {% if request.user.display_photo %}
-                                                      <img class="media-object img-circle h-40 w-40" alt="User" src="{{ request.user.display_photo.url }}">
-                                                      {% elif request.user.first_name %}
-                                                      <p>{{request.user.first_name}}</p>
-                                                      {% else %}
-                                                      <p>{{request.user.email}}</p>
-                                                      {% endif %}
-                                                    </a>
-                                                    <div class="media-body">
-                                                        <h5 class="media-heading"> Melvin Hicks </h5>
-                                                        <p>Primary PHP Monkey</p>
-                                                    </div>
-                                                </div>
-                                                <div class="media">
-                                                    <a class="media-left"> <i class="fa fa-circle icon color-danger"></i>
-                                                      {% if request.user.display_photo %}
-                                                      <img class="media-object img-circle h-40 w-40" alt="User" src="{{ request.user.display_photo.url }}">
-                                                      {% elif request.user.first_name %}
-                                                      <p>{{request.user.first_name}}</p>
-                                                      {% else %}
-                                                      <p>{{request.user.email}}</p>
-                                                      {% endif %}
-                                                    </a>
-                                                    <div class="media-body">
-                                                        <h5 class="media-heading"> Jackie Perkins </h5>
-                                                        <p>Executive PR Evangelist</p>
-                                                    </div>
-                                                </div>
-                                                <div class="media">
-                                                    <a class="media-left"> <i class="fa fa-circle icon color-info"></i>
-                                                      {% if request.user.display_photo %}
-                                                      <img class="media-object img-circle h-40 w-40" alt="User" src="{{ request.user.display_photo.url }}">
-                                                      {% elif request.user.first_name %}
-                                                      <p>{{request.user.first_name}}</p>
-                                                      {% else %}
-                                                      <p>{{request.user.email}}</p>
-                                                      {% endif %}
-                                                    </a>
-                                                    <div class="media-body">
-                                                        <h5 class="media-heading"> Michael Jenkins </h5>
-                                                        <p>Ruby On Rails Developer</p>
-                                                    </div>
-                                                </div>
-                                                <div class="media">
-                                                    <a class="media-left"> <i class="fa fa-circle icon color-success"></i>
-                                                      {% if request.user.display_photo %}
-                                                      <img class="media-object img-circle h-40 w-40" alt="User" src="{{ request.user.display_photo.url }}">
-                                                      {% elif request.user.first_name %}
-                                                      <p>{{request.user.first_name}}</p>
-                                                      {% else %}
-                                                      <p>{{request.user.email}}</p>
-                                                      {% endif %}
-                                                    </a>
-                                                    <div class="media-body">
-                                                        <h5 class="media-heading"> Monica White </h5>
-                                                        <p>iOS Strategist</p>
-                                                    </div>
-                                                </div>
-                                                <div class="media">
-                                                    <a class="media-left"> <i class="fa fa-circle icon color-danger"></i>
-                                                      {% if request.user.display_photo %}
-                                                      <img class="media-object img-circle h-40 w-40" alt="User" src="{{ request.user.display_photo.url }}">
-                                                      {% elif request.user.first_name %}
-                                                      <p>{{request.user.first_name}}</p>
-                                                      {% else %}
-                                                      <p>{{request.user.email}}</p>
-                                                      {% endif %}
-                                                    </a>
-                                                    <div class="media-body">
-                                                        <h5 class="media-heading"> Eric Simpson </h5>
-                                                        <p>Innovation Pioneer</p>
-                                                    </div>
-                                                </div>
-                                                <div class="media">
-                                                    <a class="media-left"> <i class="fa fa-circle icon color-warning"></i>
-                                                      {% if request.user.display_photo %}
-                                                      <img class="media-object img-circle h-40 w-40" alt="User" src="{{ request.user.display_photo.url }}">
-                                                      {% elif request.user.first_name %}
-                                                      <p>{{request.user.first_name}}</p>
-                                                      {% else %}
-                                                      <p>{{request.user.email}}</p>
-                                                      {% endif %}
-                                                    </a>
-                                                    <div class="media-body">
-                                                        <h5 class="media-heading"> Clorinda Murphy </h5>
-                                                        <p>Social Media Writer</p>
-                                                    </div>
-                                                </div>
-                                                <div class="media">
-                                                    <a class="media-left"> <i class="fa fa-circle icon color-primary"></i>
-                                                      {% if request.user.display_photo %}
-                                                      <img class="media-object img-circle h-40 w-40" alt="User" src="{{ request.user.display_photo.url }}">
-                                                      {% elif request.user.first_name %}
-                                                      <p>{{request.user.first_name}}</p>
-                                                      {% else %}
-                                                      <p>{{request.user.email}}</p>
-                                                      {% endif %}
-                                                    </a>
-                                                    <div class="media-body">
-                                                        <h5 class="media-heading"> James Smith </h5>
-                                                        <p>Project Management Champ</p>
                                                     </div>
                                                 </div>
                                             </div>

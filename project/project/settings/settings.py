@@ -96,6 +96,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'project.context_processors.include_private_message_form',
+                'project.context_processors.include_activity_stream',
             ],
         },
     },
@@ -148,9 +149,9 @@ REST_FRAMEWORK = {
 ACTSTREAM_SETTINGS = {
     'MANAGER': 'editorial.managers.MyActionManager',
     'FETCH_RELATIONS': True,
-    'USE_PREFETCH': False,
+    'USE_PREFETCH': True,
     'USE_JSONFIELD': True,
-    'GFK_FETCH_DEPTH': 1,
+    'GFK_FETCH_DEPTH': 2,
 }
 
 

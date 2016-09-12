@@ -4,11 +4,7 @@
 
 
 from editorial.forms import PrivateMessageForm, UserNoteForm
-
-# def include_private_message_form(request):
-#     privatemessageform = PrivateMessageForm(request=request)
-#     usernoteform = UserNoteForm()
-#     return {'privatemessageform': privatemessageform, 'usernoteform': usernoteform}
+from actstream.models import any_stream
 
 def include_private_message_form(request):
     if request.user.is_authenticated():
@@ -18,6 +14,15 @@ def include_private_message_form(request):
     else:
         return {}
 
+def include_activity_stream(request):
+    if request.user.is_authenticated():
+        activity_stream = any_stream(request.user)
+        print "Activity Stream: ", activity_stream
+        for item in activity_stream:
+            print "VERB: ", item.verb
+            print "TARGET: ", item.target
+            print "ACTION OBJECT: ", item.action_object.credit_name
+        return {'activitystream': activity_stream }
 
 
 # def include_user_note_form(request):
@@ -25,3 +30,8 @@ def include_private_message_form(request):
 #     print "USERNOTEFORM"
 #     print usernoteform
 #     return {'usernoteform': usernoteform}
+
+# def include_private_message_form(request):
+#     privatemessageform = PrivateMessageForm(request=request)
+#     usernoteform = UserNoteForm()
+#     return {'privatemessageform': privatemessageform, 'usernoteform': usernoteform}

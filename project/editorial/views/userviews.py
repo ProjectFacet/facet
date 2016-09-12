@@ -46,10 +46,8 @@ def user_new(request):
             sender_email = request.user.email
             send_mail(mail_subject, message, settings.EMAIL_HOST_USER, recipient, fail_silently=True)
             # record action for activity stream
-            print "USER PK: ", user.pk
             new_user = get_object_or_404(User, pk=user.pk)
             action.send(request.user, verb="added", action_object=new_user)
-            print "ACTION Recorded"
         return redirect('team_list')
     else:
         form=AddUserForm()
