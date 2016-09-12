@@ -146,7 +146,7 @@ REST_FRAMEWORK = {
 # -------------------------------------------------------------- #
 
 ACTSTREAM_SETTINGS = {
-    # 'MANAGER': 'myapp.managers.MyActionManager',
+    'MANAGER': 'editorial.managers.MyActionManager',
     'FETCH_RELATIONS': True,
     'USE_PREFETCH': False,
     'USE_JSONFIELD': True,

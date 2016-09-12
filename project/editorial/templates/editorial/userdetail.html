@@ -51,6 +51,7 @@
 <div class="row">
     <!-- Left Column -->
     <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10" id="dashboard-left">
+      {% if user_stories %}
       <table id="user-stories-list" class="table table-condensed">
         <thead>
           <tr>
@@ -67,6 +68,9 @@
           {% endfor %}
         </tbody>
       </table>
+      {% else %}
+      <p class="f-s-18 subtle text-center italic m-b-40 m-t-40">Welcome to the {{ user.credit_name }}'s page. This is where you will see all of the current active content for {{ user.credit_name }}.</p>
+      {% endif %}
     </div>
     <!-- Right Column -->
     <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 activity-widget-4" id="dashboard-right">
