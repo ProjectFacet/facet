@@ -139,7 +139,6 @@ def dashboard(request):
     edit_today = Organization.get_org_stories_due_for_edit_today(organization)
 
     copied_shared_stories = StoryCopyDetail.objects.filter(original_org=request.user.organization)
-    print "CSS: ", copied_shared_stories
     # TODO: query for other user activity since last_login
 
     return render(request, 'editorial/dashboard.html', {

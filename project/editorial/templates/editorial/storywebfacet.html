@@ -1,6 +1,7 @@
 <div role="tabpanel" class="tab-pane p-t-0" id="web">
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-xs-12">
+      <div class="row">
       <form method="POST" class="post-form">
         {% csrf_token %}
 
@@ -78,117 +79,6 @@
               <small class="text-muted">{{ webform.share_note.errors }}</small>
             {% endif %}
           </fieldset>
-
-          <!-- ======================== -->
-          <!--       ASSETS FORMS       -->
-          <!-- ======================== -->
-
-          <!-- Webfacet Images -->
-          <div class="section-title m-t-20 m-b-20">
-            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">Images</label>
-            <a href="#" data-toggle="modal" data-target="#addWebFacetImage" title="Add Image"><i class="fa fa-plus sameline subtle"></i></a>
-          </div>
-          <div id="webimage-thumbs">
-            <div class="row">
-            {% for webfacet in story.webfacetstory.all %}
-              {% for image in webfacet.image_assets.all %}
-                {% if image.display_photo %}
-                <div class="col-xs-4">
-                  <a href="{{ image.display_photo.url }}" class="thumbnail"><img src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}" class="img-fluid"></a>
-                </div>
-                {% endif %}
-              {% endfor %}
-            {% endfor %}
-            </div>
-          </div>
-
-          <!-- Webfacet Documents -->
-          <div class="section-title m-t-20 m-b-20">
-            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">Documents</label>
-            <a href="#" data-toggle="modal" data-target="#addWebFacetDocument" title="Add Document"><i class="fa fa-plus sameline subtle"></i></a>
-          </div>
-          <div id="webfacet-docs">
-            <div class="row">
-              {% for document in webfacet_documents %}
-                <div class="col-md-1">
-                    <label>
-                        {% if document.doc_type == 'OTHER' %}
-                        <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-file-o dark"></i></h3></a>
-                        {% endif %}
-                        {% if document.doc_type == 'TEXT' %}
-                        <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-text-o dark"></i></h3></a>
-                        {% endif %}
-                        {% if document.doc_type == 'WORD DOC' %}
-                        <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-word-o dark"></i></h3></a>
-                        {% endif %}
-                        {% if document.doc_type == 'EXCEL' %}
-                        <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-excel-o dark"></i></h3></a>
-                        {% endif %}
-                        {% if document.doc_type == 'PDF' %}
-                        <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-pdf-o dark"></i></h3></a>
-                        {% endif %}
-                        {% if document.doc_type == 'COMMA SEPARATED' %}
-                        <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-o dark"></i></h3></a>
-                        {% endif %}
-                      </label>
-                </div>
-              {% endfor %}
-            </div>
-          </div>
-
-          <!-- Webfacet Audio -->
-          <div class="section-title m-t-20 m-b-20">
-            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">Audio</label>
-            <a href="#" data-toggle="modal" data-target="#addWebFacetAudio" title="Add Audio"><i class="fa fa-plus sameline subtle"></i></a>
-          </div>
-          <div id="webfacet-audio">
-            <div class="row">
-              {% for audio in webfacet_audio %}
-                <div class="col-xs-12">
-                    {% if audio.audio_type == 'MP3' %}
-                    <a href="" title="{{ audio.asset_description }}" target="_blank"><i class="fa fa-play sameline"></i> <span class="small-text dark sameline">{{ audio.asset_title }}</span></a>
-                    {% endif %}
-                    {% if audio.audio_type == 'WAV' %}
-                    <!-- <i class="fa fa-play sameline"></i> <span class="small-text dark sameline">{{ audio.asset_title }}</span> -->
-                    <audio id="{{ audio.asset_title }}" controls="controls" preload="metadata">
-                      <source src="{{ audio.audio.url }}" type="audio/wav"/>
-                      Your browser does not support the audioplayer.
-                    </audio>
-                    {% endif %}
-                    {% if audio.audio_type == 'SC' %}
-                    <a href="{{ audio.link }}" title="{{ audio.asset_description }}" target="_blank"><i class="fa fa-soundcloud sameline"></i> <span class="small-text dark sameline">{{ audio.asset_title }}</span></a>
-                    {% endif %}
-                </div>
-              {% endfor %}
-            </div>
-          </div>
-
-          {% comment %}
-          <!-- Webfacet Video -->
-          <div class="section-title m-t-20 m-b-20">
-            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">Video</label>
-            <a href="#" data-toggle="modal" data-target="#addWebFacetVideo" title="Add Video"><i class="fa fa-plus sameline subtle"></i></a>
-          </div>
-          <div id="webfacet-video">
-            <div class="row">
-              {% for video in webfacet_video %}
-                <div class="col-md-1">
-                    <label>
-                        {% if video.video_type == 'MP4' %}
-                        <a href="" title="{{ video.asset_description }}" target="_blank"><h3><i class="fa fa-video-camera dark"></i></h3></a>
-                        {% endif %}
-                        {% if video.video_type == 'YT' %}
-                        <a href="" title="{{ video.asset_description }}" target="_blank"><h3><i class="fa fa-youtube-play dark"></i></h3></a>
-                        {% endif %}
-                        {% if video.video_type == 'VIM' %}
-                        <a href="" title="{{ video.asset_description }}" target="_blank"><h3><i class="fa fa-vimeo-square dark"></i></h3></a>
-                        {% endif %}
-                      </label>
-                </div>
-              {% endfor %}
-            </div>
-          </div>
-          {% endcomment %}
 
         </div>
         <!-- End of Left Column -->
@@ -330,6 +220,131 @@
           </div>
         </div>
         <!-- End of Right Column -->
+      </div>
+
     </div>
   </div>
+
+  <div class="row m-t-20">
+    <div class="col-xs-12">
+      <h6>Assets</h6>
+    </div>
+    <!-- ======================== -->
+    <!--       ASSETS FORMS       -->
+    <!-- ======================== -->
+
+    <!-- Webfacet Images -->
+    <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+      <div class="section-title m-b-20">
+        <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">Images</label>
+        <a href="#" data-toggle="modal" data-target="#addWebFacetImage" title="Add Image"><i class="fa fa-plus sameline subtle"></i></a>
+      </div>
+      <div id="webimage-thumbs">
+        <div class="row">
+        {% for webfacet in story.webfacetstory.all %}
+          {% for image in webfacet.image_assets.all %}
+            {% if image.display_photo %}
+            <div class="col-xs-4">
+              <a href="{{ image.display_photo.url }}" class="thumbnail"><img src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}" class="img-fluid"></a>
+            </div>
+            {% endif %}
+          {% endfor %}
+        {% endfor %}
+        </div>
+      </div>
+    </div>
+    <!-- Webfacet Documents -->
+    <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+      <div class="section-title m-b-20">
+        <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">Documents</label>
+        <a href="#" data-toggle="modal" data-target="#addWebFacetDocument" title="Add Document"><i class="fa fa-plus sameline subtle"></i></a>
+      </div>
+      <div id="webfacet-docs">
+        <div class="row">
+          {% for document in webfacet_documents %}
+            <div class="col-md-1">
+                <label>
+                    {% if document.doc_type == 'OTHER' %}
+                    <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-file-o dark"></i></h3></a>
+                    {% endif %}
+                    {% if document.doc_type == 'TEXT' %}
+                    <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-text-o dark"></i></h3></a>
+                    {% endif %}
+                    {% if document.doc_type == 'WORD DOC' %}
+                    <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-word-o dark"></i></h3></a>
+                    {% endif %}
+                    {% if document.doc_type == 'EXCEL' %}
+                    <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-excel-o dark"></i></h3></a>
+                    {% endif %}
+                    {% if document.doc_type == 'PDF' %}
+                    <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-pdf-o dark"></i></h3></a>
+                    {% endif %}
+                    {% if document.doc_type == 'COMMA SEPARATED' %}
+                    <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-o dark"></i></h3></a>
+                    {% endif %}
+                  </label>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <!-- Webfacet Audio -->
+    <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+      <div class="section-title m-b-20">
+        <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">Audio</label>
+        <a href="#" data-toggle="modal" data-target="#addWebFacetAudio" title="Add Audio"><i class="fa fa-plus sameline subtle"></i></a>
+      </div>
+      <div id="webfacet-audio">
+        <div class="row">
+          {% for audio in webfacet_audio %}
+            <div class="col-xs-12">
+                {% if audio.audio_type == 'MP3' %}
+                <a href="" title="{{ audio.asset_description }}" target="_blank"><i class="fa fa-play sameline"></i> <span class="small-text dark sameline">{{ audio.asset_title }}</span></a>
+                {% endif %}
+                {% if audio.audio_type == 'WAV' %}
+                <!-- <i class="fa fa-play sameline"></i> <span class="small-text dark sameline">{{ audio.asset_title }}</span> -->
+                <audio id="{{ audio.asset_title }}" controls="controls" preload="metadata">
+                  <source src="{{ audio.audio.url }}" type="audio/wav"/>
+                  Your browser does not support the audioplayer.
+                </audio>
+                {% endif %}
+                {% if audio.audio_type == 'SC' %}
+                <a href="{{ audio.link }}" title="{{ audio.asset_description }}" target="_blank"><i class="fa fa-soundcloud sameline"></i> <span class="small-text dark sameline">{{ audio.asset_title }}</span></a>
+                {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <!-- Webfacet Video -->
+    <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+      {% comment %}
+      <div class="section-title m-b-20">
+        <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">Video</label>
+        <a href="#" data-toggle="modal" data-target="#addWebFacetVideo" title="Add Video"><i class="fa fa-plus sameline subtle"></i></a>
+      </div>
+      <div id="webfacet-video">
+        <div class="row">
+          {% for video in webfacet_video %}
+            <div class="col-md-1">
+                <label>
+                    {% if video.video_type == 'MP4' %}
+                    <a href="" title="{{ video.asset_description }}" target="_blank"><h3><i class="fa fa-video-camera dark"></i></h3></a>
+                    {% endif %}
+                    {% if video.video_type == 'YT' %}
+                    <a href="" title="{{ video.asset_description }}" target="_blank"><h3><i class="fa fa-youtube-play dark"></i></h3></a>
+                    {% endif %}
+                    {% if video.video_type == 'VIM' %}
+                    <a href="" title="{{ video.asset_description }}" target="_blank"><h3><i class="fa fa-vimeo-square dark"></i></h3></a>
+                    {% endif %}
+                  </label>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endcomment %}
+    </div>
+  </div>
+
+
 </div>

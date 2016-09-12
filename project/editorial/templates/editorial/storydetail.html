@@ -207,7 +207,7 @@
         {% csrf_token %}
         {% bootstrap_form storynoteform %}
         <input type="hidden" name="story" value="{{ story.pk }}" />
-        <button type="submit" class="btn btn-primary">Post Note</button>
+        <button type="submit" class="btn btn-primary m-t-20">Post Note</button>
         </form>
       </div>
       <div class="modal-footer">
@@ -571,134 +571,138 @@
   </div> <!-- Close modal dialog -->
 </div> <!-- Close modal -->
 
-
 <!-- ================================================= -->
             <!-- ADD WEBFACET IMAGE MODAL -->
 <!-- ================================================= -->
 <div class="modal fade" id="addWebFacetImage" tabindex="-1" role="dialog" aria-labelledby="addWebFacetImageLabel">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <ul class="nav nav-tabs" role="imagelist">
-          <li role="presentation" class="active"><a href="#uploadimageweb" aria-controls="home" role="tab" data-toggle="tab" class="darker">Upload a Photo</a></li>
-          <li role="presentation"><a href="#imagelibraryweb" aria-controls="profile" role="tab" data-toggle="tab" class="darker">Select From Library</a></li>
-        </ul>
-      </div>
-      <div class="modal-body">
-        <div class="tab-content">
-          <!-- UPLOAD PANEL -->
-          <div role="tabpanel" class="tab-pane active" id="uploadimageweb">
-            <div class="uploadpanel" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
-            <form action="{% url 'upload_webfacet_image' %}" method="POST" class="post-form" enctype="multipart/form-data">
-            {% csrf_token %}
-            <!-- Left Col -->
-            <div class="col-md-6">
-
-              <div class="form-group custom-form">
-                <a href="#" data-toggle="tooltip" title="{{ webfacet_imageform.photo.help_text }}"><span class="field-label">{{ webfacet_imageform.photo.label_tag }}</span></a>
-                {{ webfacet_imageform.photo }}
-                {% if webfacet_imageform.photo.errors %}
-                  <div class="alert alert-warning" role="alert">
-                  {{ webfacet_imageform.photo.errors }}
-                  </div>
-                {% endif %}
-              </div>
-
-              <div class="form-group custom-form">
-                <a href="#" data-toggle="tooltip" title="{{ webfacet_imageform.asset_title.help_text }}"><span class="field-label">{{ webfacet_imageform.asset_title.label_tag }}</span></a>
-                {{ webfacet_imageform.asset_title }}
-                {% if webfacet_imageform.asset_title.errors %}
-                  <div class="alert alert-warning" role="alert">
-                  {{ webfacet_imageform.asset_title.errors }}
-                  </div>
-                {% endif %}
-              </div>
-
-              <div class="form-group custom-form">
-                <a href="#" data-toggle="tooltip" title="{{ webfacet_imageform.image_type.help_text }}"><span class="field-label">{{ webfacet_imageform.image_type.label_tag }}</span></a>
-                {{ webfacet_imageform.image_type }}
-                {% if webfacet_imageform.image_type.errors %}
-                  <div class="alert alert-warning" role="alert">
-                  {{ webfacet_imageform.image_type.errors }}
-                  </div>
-                {% endif %}
-              </div>
-
-              <div class="form-group custom-form">
-                <a href="#" data-toggle="tooltip" title="{{ webfacet_imageform.keywords.help_text }}"><span class="field-label">{{ webfacet_imageform.keywords.label_tag }}</span></a>
-                {{ webfacet_imageform.keywords }}
-                {% if webfacet_imageform.keywords.errors %}
-                  <div class="alert alert-warning" role="alert">
-                  {{ webfacet_imageform.keywords.errors }}
-                  </div>
-                {% endif %}
-              </div>
-
-            </div>
-            <!-- End Left Col -->
-            <!-- Right Col -->
-            <div class="col-md-6">
-
-              <div class="form-group custom-form">
-                <a href="#" data-toggle="tooltip" title="{{ webfacet_imageform.asset_description.help_text }}"><span class="field-label">{{ webfacet_imageform.asset_description.label_tag }}</span></a>
-                {{ webfacet_imageform.asset_description }}
-                {% if webfacet_imageform.asset_description.errors %}
-                  <div class="alert alert-warning" role="alert">
-                  {{ webfacet_imageform.asset_description.errors }}
-                  </div>
-                {% endif %}
-              </div>
-
-              <div class="form-group custom-form">
-                <a href="#" data-toggle="tooltip" title="{{ webfacet_imageform.attribution.help_text }}"><span class="field-label">{{ webfacet_imageform.attribution.label_tag }}</span></a>
-                {{ webfacet_imageform.attribution }}
-                {% if webfacet_imageform.attribution.errors %}
-                  <div class="alert alert-warning" role="alert">
-                  {{ webfacet_imageform.attribution.errors }}
-                  </div>
-                {% endif %}
-              </div>
-
-            </div>
-
-            <!-- End Right Col -->
-            {% for webfacet in story.webfacetstory.all %}
-            <input type="hidden" name="webfacet" value="{{ webfacet.pk }}" />
-            {% endfor %}
-            <div>
-              <button type="submit" class="btn btn-primary">Save Image</button>
-            </div>
-            </form>
-            </div>
-          </div>
-          <!-- END UPLOAD PANEL -->
-          <!-- LIBRARY PANEL -->
-          <div role="tabpanel" class="tab-pane" id="imagelibraryweb">
-            <div class="imagelibrary" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
-              <form action="{% url 'add_webfacet_image' %}" method="POST" class="post-form" name="addwebimage">
-                {% csrf_token %}
-                <div class="image-library">
-                {% for image in images %}
-                  <div class="col-md-2">
-                    <label>
-                      <img class="img-responsive img-thumbnail" src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}">
-                      <input type="checkbox" name="images" value="{{ image.id }}">
-                    </label>
-                  </div>
-                {% endfor %}
-                </div>
-                {% for webfacet in story.webfacetstory.all %}
-                <input type="hidden" name="webfacet" value="{{ webfacet.pk }}" />
-                {% endfor %}
-                <button type="submit" class="btn btn-primary" name="addwebimage">Add Images</button>
-              </form>
-            </div>
-          </div>
-          <!-- END LIBRARY PANEL -->
+      <div class="bs-nav-tabs nav-tabs-default">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <ul class="nav nav-tabs nav-animated-border-from-left">
+              <li class="nav-item"> <a ng-href="" class="nav-link active" data-toggle="tab" data-target="#uploadimageweb">Upload a Photo</a></li>
+              <li class="nav-item"> <a ng-href="" class="nav-link" data-toggle="tab" data-target="#imagelibraryweb">Select From Library</a></li>
+          </ul>
         </div>
-      </div>
-      <div class="modal-footer">
+        <div class="modal-body">
+          <div class="tab-content">
+            <!-- UPLOAD PANEL -->
+            <div role="tabpanel" class="tab-pane active" id="uploadimageweb">
+              <div class="uploadpanel" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
+              <form action="{% url 'upload_webfacet_image' %}" method="POST" class="post-form" enctype="multipart/form-data">
+              {% csrf_token %}
+              <!-- Left Col -->
+              <div class="col-md-6">
+
+                <div class="form-group custom-form">
+                  <a href="#" data-toggle="tooltip" title="{{ webfacet_imageform.photo.help_text }}"><span class="field-label">{{ webfacet_imageform.photo.label_tag }}</span></a>
+                  {{ webfacet_imageform.photo }}
+                  {% if webfacet_imageform.photo.errors %}
+                    <div class="alert alert-warning" role="alert">
+                    {{ webfacet_imageform.photo.errors }}
+                    </div>
+                  {% endif %}
+                </div>
+
+                <div class="form-group custom-form">
+                  <a href="#" data-toggle="tooltip" title="{{ webfacet_imageform.asset_title.help_text }}"><span class="field-label">{{ webfacet_imageform.asset_title.label_tag }}</span></a>
+                  {{ webfacet_imageform.asset_title }}
+                  {% if webfacet_imageform.asset_title.errors %}
+                    <div class="alert alert-warning" role="alert">
+                    {{ webfacet_imageform.asset_title.errors }}
+                    </div>
+                  {% endif %}
+                </div>
+
+                <div class="form-group custom-form">
+                  <a href="#" data-toggle="tooltip" title="{{ webfacet_imageform.image_type.help_text }}"><span class="field-label">{{ webfacet_imageform.image_type.label_tag }}</span></a>
+                  {{ webfacet_imageform.image_type }}
+                  {% if webfacet_imageform.image_type.errors %}
+                    <div class="alert alert-warning" role="alert">
+                    {{ webfacet_imageform.image_type.errors }}
+                    </div>
+                  {% endif %}
+                </div>
+
+                <div class="form-group custom-form">
+                  <a href="#" data-toggle="tooltip" title="{{ webfacet_imageform.keywords.help_text }}"><span class="field-label">{{ webfacet_imageform.keywords.label_tag }}</span></a>
+                  {{ webfacet_imageform.keywords }}
+                  {% if webfacet_imageform.keywords.errors %}
+                    <div class="alert alert-warning" role="alert">
+                    {{ webfacet_imageform.keywords.errors }}
+                    </div>
+                  {% endif %}
+                </div>
+
+              </div>
+              <!-- End Left Col -->
+              <!-- Right Col -->
+              <div class="col-md-6">
+
+                <div class="form-group custom-form">
+                  <a href="#" data-toggle="tooltip" title="{{ webfacet_imageform.asset_description.help_text }}"><span class="field-label">{{ webfacet_imageform.asset_description.label_tag }}</span></a>
+                  {{ webfacet_imageform.asset_description }}
+                  {% if webfacet_imageform.asset_description.errors %}
+                    <div class="alert alert-warning" role="alert">
+                    {{ webfacet_imageform.asset_description.errors }}
+                    </div>
+                  {% endif %}
+                </div>
+
+                <div class="form-group custom-form">
+                  <a href="#" data-toggle="tooltip" title="{{ webfacet_imageform.attribution.help_text }}"><span class="field-label">{{ webfacet_imageform.attribution.label_tag }}</span></a>
+                  {{ webfacet_imageform.attribution }}
+                  {% if webfacet_imageform.attribution.errors %}
+                    <div class="alert alert-warning" role="alert">
+                    {{ webfacet_imageform.attribution.errors }}
+                    </div>
+                  {% endif %}
+                </div>
+
+              </div>
+
+              <!-- End Right Col -->
+              {% for webfacet in story.webfacetstory.all %}
+              <input type="hidden" name="webfacet" value="{{ webfacet.pk }}" />
+              {% endfor %}
+              <div>
+                <button type="submit" class="btn btn-primary m-l-20">Save Image</button>
+              </div>
+              </form>
+              </div>
+            </div>
+            <!-- END UPLOAD PANEL -->
+            <!-- LIBRARY PANEL -->
+            <div role="tabpanel" class="tab-pane" id="imagelibraryweb">
+              <div class="imagelibrary" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
+                <form action="{% url 'add_webfacet_image' %}" method="POST" class="post-form" name="addwebimage">
+                  {% csrf_token %}
+                  <div class="image-library">
+                  {% for image in images %}
+                    <div class="col-md-2">
+                      <label>
+                        <img class="img-responsive img-thumbnail" src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}">
+                        <input type="checkbox" name="images" value="{{ image.id }}">
+                      </label>
+                    </div>
+                  {% endfor %}
+                  </div>
+                  {% for webfacet in story.webfacetstory.all %}
+                  <input type="hidden" name="webfacet" value="{{ webfacet.pk }}" />
+                  {% endfor %}
+                  <div class="row">
+                    <div class="col-xs-12">
+                      <button type="submit" class="btn btn-primary" name="addwebimage">Add Images</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <!-- END LIBRARY PANEL -->
+          </div>
+        </div>
+        <div class="modal-footer"></div>
       </div>
     </div>
   </div>
@@ -710,126 +714,131 @@
 <div class="modal fade" id="addPrintFacetImage" tabindex="-1" role="dialog" aria-labelledby="addPrintFacetImageLabel">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <ul class="nav nav-tabs" role="imagelist">
-          <li role="presentation" class="active"><a href="#uploadprint" aria-controls="home" role="tab" data-toggle="tab" class="darker">Upload a Photo</a></li>
-          <li role="presentation"><a href="#libraryprint" aria-controls="profile" role="tab" data-toggle="tab" class="darker">Select From Library</a></li>
-        </ul>
-      </div>
-      <div class="modal-body">
-        <div class="tab-content">
-          <!-- UPLOAD PANEL -->
-          <div role="tabpanel" class="tab-pane active" id="uploadprint">
-            <div class="uploadpanel" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
-              <form action="{% url 'upload_printfacet_image' %}" method="POST" class="post-form" enctype="multipart/form-data">
-              {% csrf_token %}
-              <!-- Left Col -->
-              <div class="col-md-6">
-
-                <div class="form-group custom-form">
-                  <a href="#" data-toggle="tooltip" title="{{ printfacet_imageform.photo.help_text }}"><span class="field-label">{{ printfacet_imageform.photo.label_tag }}</span></a>
-                  {{ printfacet_imageform.photo }}
-                  {% if printfacet_imageform.photo.errors %}
-                    <div class="alert alert-warning" role="alert">
-                    {{ printfacet_imageform.photo.errors }}
-                    </div>
-                  {% endif %}
-                </div>
-
-                <div class="form-group custom-form">
-                  <a href="#" data-toggle="tooltip" title="{{ printfacet_imageform.asset_title.help_text }}"><span class="field-label">{{ printfacet_imageform.asset_title.label_tag }}</span></a>
-                  {{ printfacet_imageform.asset_title }}
-                  {% if printfacet_imageform.asset_title.errors %}
-                    <div class="alert alert-warning" role="alert">
-                    {{ printfacet_imageform.asset_title.errors }}
-                    </div>
-                  {% endif %}
-                </div>
-
-                <div class="form-group custom-form">
-                  <a href="#" data-toggle="tooltip" title="{{ printfacet_imageform.image_type.help_text }}"><span class="field-label">{{ printfacet_imageform.image_type.label_tag }}</span></a>
-                  {{ printfacet_imageform.image_type }}
-                  {% if printfacet_imageform.image_type.errors %}
-                    <div class="alert alert-warning" role="alert">
-                    {{ printfacet_imageform.image_type.errors }}
-                    </div>
-                  {% endif %}
-                </div>
-
-                <div class="form-group custom-form">
-                  <a href="#" data-toggle="tooltip" title="{{ printfacet_imageform.keywords.help_text }}"><span class="field-label">{{ printfacet_imageform.keywords.label_tag }}</span></a>
-                  {{ printfacet_imageform.keywords }}
-                  {% if printfacet_imageform.keywords.errors %}
-                    <div class="alert alert-warning" role="alert">
-                    {{ printfacet_imageform.keywords.errors }}
-                    </div>
-                  {% endif %}
-                </div>
-
-              </div>
-              <!-- End Left Col -->
-              <!-- Right Col -->
-              <div class="col-md-6">
-
-                <div class="form-group custom-form">
-                  <a href="#" data-toggle="tooltip" title="{{ printfacet_imageform.asset_description.help_text }}"><span class="field-label">{{ printfacet_imageform.asset_description.label_tag }}</span></a>
-                  {{ printfacet_imageform.asset_description }}
-                  {% if printfacet_imageform.asset_description.errors %}
-                    <div class="alert alert-warning" role="alert">
-                    {{ printfacet_imageform.asset_description.errors }}
-                    </div>
-                  {% endif %}
-                </div>
-
-                <div class="form-group custom-form">
-                  <a href="#" data-toggle="tooltip" title="{{ printfacet_imageform.attribution.help_text }}"><span class="field-label">{{ printfacet_imageform.attribution.label_tag }}</span></a>
-                  {{ printfacet_imageform.attribution }}
-                  {% if printfacet_imageform.attribution.errors %}
-                    <div class="alert alert-warning" role="alert">
-                    {{ printfacet_imageform.attribution.errors }}
-                    </div>
-                  {% endif %}
-                </div>
-
-              </div>
-              <!-- End Right Col -->
-              {% for printfacet in story.printfacetstory.all %}
-              <input type="hidden" name="printfacet" value="{{ printfacet.pk }}" />
-              {% endfor %}
-              <div>
-                <button type="submit" class="btn btn-primary">Save Image</button>
-              </div>
-              </form>
-            </div>
-          </div>
-          <!-- END UPLOAD PANEL -->
-          <!-- LIBRARY PANEL -->
-          <div role="tabpanel" class="tab-pane" id="libraryprint">
-            <div class="imagelibrary" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
-              <form action="{% url 'add_printfacet_image' %}" method="POST" class="post-form" name="addprintimage">
+      <div class="bs-nav-tabs nav-tabs-default">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <ul class="nav nav-tabs nav-animated-border-from-left">
+            <li class="nav-item"> <a ng-href="" class="nav-link active" data-toggle="tab" data-target="#uploadprint">Upload a Photo</a></li>
+            <li class="nav-item"> <a ng-href="" class="nav-link" data-toggle="tab" data-target="#libraryprint">Select From Library</a></li>
+          </ul>
+        </div>
+        <div class="modal-body">
+          <div class="tab-content">
+            <!-- UPLOAD PANEL -->
+            <div role="tabpanel" class="tab-pane active" id="uploadprint">
+              <div class="uploadpanel" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
+                <form action="{% url 'upload_printfacet_image' %}" method="POST" class="post-form" enctype="multipart/form-data">
                 {% csrf_token %}
-                <div class="image-library">
-                {% for image in images %}
-                  <div class="col-md-2">
-                    <label>
-                      <img class="img-responsive img-thumbnail" src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}">
-                      <input type="checkbox" name="images" value="{{ image.id }}">
-                    </label>
+                <!-- Left Col -->
+                <div class="col-md-6">
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ printfacet_imageform.photo.help_text }}"><span class="field-label">{{ printfacet_imageform.photo.label_tag }}</span></a>
+                    {{ printfacet_imageform.photo }}
+                    {% if printfacet_imageform.photo.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ printfacet_imageform.photo.errors }}
+                      </div>
+                    {% endif %}
                   </div>
-                {% endfor %}
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ printfacet_imageform.asset_title.help_text }}"><span class="field-label">{{ printfacet_imageform.asset_title.label_tag }}</span></a>
+                    {{ printfacet_imageform.asset_title }}
+                    {% if printfacet_imageform.asset_title.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ printfacet_imageform.asset_title.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ printfacet_imageform.image_type.help_text }}"><span class="field-label">{{ printfacet_imageform.image_type.label_tag }}</span></a>
+                    {{ printfacet_imageform.image_type }}
+                    {% if printfacet_imageform.image_type.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ printfacet_imageform.image_type.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ printfacet_imageform.keywords.help_text }}"><span class="field-label">{{ printfacet_imageform.keywords.label_tag }}</span></a>
+                    {{ printfacet_imageform.keywords }}
+                    {% if printfacet_imageform.keywords.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ printfacet_imageform.keywords.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
                 </div>
+                <!-- End Left Col -->
+                <!-- Right Col -->
+                <div class="col-md-6">
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ printfacet_imageform.asset_description.help_text }}"><span class="field-label">{{ printfacet_imageform.asset_description.label_tag }}</span></a>
+                    {{ printfacet_imageform.asset_description }}
+                    {% if printfacet_imageform.asset_description.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ printfacet_imageform.asset_description.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ printfacet_imageform.attribution.help_text }}"><span class="field-label">{{ printfacet_imageform.attribution.label_tag }}</span></a>
+                    {{ printfacet_imageform.attribution }}
+                    {% if printfacet_imageform.attribution.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ printfacet_imageform.attribution.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                </div>
+                <!-- End Right Col -->
                 {% for printfacet in story.printfacetstory.all %}
                 <input type="hidden" name="printfacet" value="{{ printfacet.pk }}" />
                 {% endfor %}
-                <button type="submit" class="btn btn-primary" name="addprintimage">Add Images</button>
-              </form>
+                <div>
+                  <button type="submit" class="btn btn-primary">Save Image</button>
+                </div>
+                </form>
+              </div>
             </div>
+            <!-- END UPLOAD PANEL -->
+            <!-- LIBRARY PANEL -->
+            <div role="tabpanel" class="tab-pane" id="libraryprint">
+              <div class="imagelibrary" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
+                <form action="{% url 'add_printfacet_image' %}" method="POST" class="post-form" name="addprintimage">
+                  {% csrf_token %}
+                  <div class="image-library">
+                  {% for image in images %}
+                    <div class="col-md-2">
+                      <label>
+                        <img class="img-responsive img-thumbnail" src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}">
+                        <input type="checkbox" name="images" value="{{ image.id }}">
+                      </label>
+                    </div>
+                  {% endfor %}
+                  </div>
+                  {% for printfacet in story.printfacetstory.all %}
+                  <input type="hidden" name="printfacet" value="{{ printfacet.pk }}" />
+                  {% endfor %}
+                  <div class="row">
+                    <div class="col-xs-12">
+                  <button type="submit" class="btn btn-primary" name="addprintimage">Add Images</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <!-- END LIBRARY PANEL -->
           </div>
-          <!-- END LIBRARY PANEL -->
         </div>
-      </div>
-      <div class="modal-footer">
+        <div class="modal-footer"></div>
       </div>
     </div>
   </div>
@@ -841,126 +850,127 @@
 <div class="modal fade" id="addAudioFacetImage" tabindex="-1" role="dialog" aria-labelledby="addAudioFacetImageLabel">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <ul class="nav nav-tabs" role="imagelist">
-          <li role="presentation" class="active"><a href="#uploadaudio" aria-controls="home" role="tab" data-toggle="tab" class="darker">Upload a Photo</a></li>
-          <li role="presentation"><a href="#libraryaudio" aria-controls="profile" role="tab" data-toggle="tab" class="darker">Select From Library</a></li>
-        </ul>
-      </div>
-      <div class="modal-body">
-        <div class="tab-content">
-          <!-- UPLOAD PANEL -->
-          <div role="tabpanel" class="tab-pane active" id="uploadaudio">
-            <div class="uploadpanel" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
-              <form action="{% url 'upload_audiofacet_image' %}" method="POST" class="post-form" enctype="multipart/form-data">
-              {% csrf_token %}
-              <!-- Left Col -->
-              <div class="col-md-6">
-
-                <div class="form-group custom-form">
-                  <a href="#" data-toggle="tooltip" title="{{ audiofacet_imageform.photo.help_text }}"><span class="field-label">{{ audiofacet_imageform.photo.label_tag }}</span></a>
-                  {{ audiofacet_imageform.photo }}
-                  {% if audiofacet_imageform.photo.errors %}
-                    <div class="alert alert-warning" role="alert">
-                    {{ audiofacet_imageform.photo.errors }}
-                    </div>
-                  {% endif %}
-                </div>
-
-                <div class="form-group custom-form">
-                  <a href="#" data-toggle="tooltip" title="{{ audiofacet_imageform.asset_title.help_text }}"><span class="field-label">{{ audiofacet_imageform.asset_title.label_tag }}</span></a>
-                  {{ audiofacet_imageform.asset_title }}
-                  {% if audiofacet_imageform.asset_title.errors %}
-                    <div class="alert alert-warning" role="alert">
-                    {{ audiofacet_imageform.asset_title.errors }}
-                    </div>
-                  {% endif %}
-                </div>
-
-                <div class="form-group custom-form">
-                  <a href="#" data-toggle="tooltip" title="{{ audiofacet_imageform.image_type.help_text }}"><span class="field-label">{{ audiofacet_imageform.image_type.label_tag }}</span></a>
-                  {{ audiofacet_imageform.image_type }}
-                  {% if audiofacet_imageform.image_type.errors %}
-                    <div class="alert alert-warning" role="alert">
-                    {{ audiofacet_imageform.image_type.errors }}
-                    </div>
-                  {% endif %}
-                </div>
-
-                <div class="form-group custom-form">
-                  <a href="#" data-toggle="tooltip" title="{{ audiofacet_imageform.keywords.help_text }}"><span class="field-label">{{ audiofacet_imageform.keywords.label_tag }}</span></a>
-                  {{ audiofacet_imageform.keywords }}
-                  {% if audiofacet_imageform.keywords.errors %}
-                    <div class="alert alert-warning" role="alert">
-                    {{ audiofacet_imageform.keywords.errors }}
-                    </div>
-                  {% endif %}
-                </div>
-
-              </div>
-              <!-- End Left Col -->
-              <!-- Right Col -->
-              <div class="col-md-6">
-
-                <div class="form-group custom-form">
-                  <a href="#" data-toggle="tooltip" title="{{ audiofacet_imageform.asset_description.help_text }}"><span class="field-label">{{ audiofacet_imageform.asset_description.label_tag }}</span></a>
-                  {{ audiofacet_imageform.asset_description }}
-                  {% if audiofacet_imageform.asset_description.errors %}
-                    <div class="alert alert-warning" role="alert">
-                    {{ audiofacet_imageform.asset_description.errors }}
-                    </div>
-                  {% endif %}
-                </div>
-
-                <div class="form-group custom-form">
-                  <a href="#" data-toggle="tooltip" title="{{ audiofacet_imageform.attribution.help_text }}"><span class="field-label">{{ audiofacet_imageform.attribution.label_tag }}</span></a>
-                  {{ audiofacet_imageform.attribution }}
-                  {% if audiofacet_imageform.attribution.errors %}
-                    <div class="alert alert-warning" role="alert">
-                    {{ audiofacet_imageform.attribution.errors }}
-                    </div>
-                  {% endif %}
-                </div>
-
-              </div>
-              <!-- End Right Col -->
-              {% for audiofacet in story.audiofacetstory.all %}
-              <input type="hidden" name="audiofacet" value="{{ audiofacet.pk }}" />
-              {% endfor %}
-              <div>
-                <button type="submit" class="btn btn-primary">Save Image</button>
-              </div>
-              </form>
-            </div>
-          </div>
-          <!-- END UPLOAD PANEL -->
-          <!-- LIBRARY PANEL -->
-          <div role="tabpanel" class="tab-pane" id="libraryaudio">
-            <div class="imagelibrary" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
-              <form action="{% url 'add_audiofacet_image' %}" method="POST" class="post-form" name="addaudioimage">
+      <div class="bs-nav-tabs nav-tabs-default">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <ul class="nav nav-tabs nav-animated-border-from-left">
+              <li class="nav-item"> <a ng-href="" class="nav-link active" data-toggle="tab" data-target="#uploadaudioimage">Upload a Photo</a></li>
+              <li class="nav-item"> <a ng-href="" class="nav-link" data-toggle="tab" data-target="#libraryaudioimage">Select From Library</a></li>
+          </ul>
+        </div>
+        <div class="modal-body">
+          <div class="tab-content">
+            <!-- UPLOAD PANEL -->
+            <div role="tabpanel" class="tab-pane active" id="uploadaudioimage">
+              <div class="uploadpanel" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
+                <form action="{% url 'upload_audiofacet_image' %}" method="POST" class="post-form" enctype="multipart/form-data">
                 {% csrf_token %}
-                <div class="image-library">
-                {% for image in images %}
-                  <div class="col-md-2">
-                    <label>
-                      <img class="img-responsive img-thumbnail" src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}">
-                      <input type="checkbox" name="images" value="{{ image.id }}">
-                    </label>
+                <!-- Left Col -->
+                <div class="col-md-6">
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ audiofacet_imageform.photo.help_text }}"><span class="field-label">{{ audiofacet_imageform.photo.label_tag }}</span></a>
+                    {{ audiofacet_imageform.photo }}
+                    {% if audiofacet_imageform.photo.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ audiofacet_imageform.photo.errors }}
+                      </div>
+                    {% endif %}
                   </div>
-                {% endfor %}
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ audiofacet_imageform.asset_title.help_text }}"><span class="field-label">{{ audiofacet_imageform.asset_title.label_tag }}</span></a>
+                    {{ audiofacet_imageform.asset_title }}
+                    {% if audiofacet_imageform.asset_title.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ audiofacet_imageform.asset_title.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ audiofacet_imageform.image_type.help_text }}"><span class="field-label">{{ audiofacet_imageform.image_type.label_tag }}</span></a>
+                    {{ audiofacet_imageform.image_type }}
+                    {% if audiofacet_imageform.image_type.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ audiofacet_imageform.image_type.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ audiofacet_imageform.keywords.help_text }}"><span class="field-label">{{ audiofacet_imageform.keywords.label_tag }}</span></a>
+                    {{ audiofacet_imageform.keywords }}
+                    {% if audiofacet_imageform.keywords.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ audiofacet_imageform.keywords.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
                 </div>
+                <!-- End Left Col -->
+                <!-- Right Col -->
+                <div class="col-md-6">
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ audiofacet_imageform.asset_description.help_text }}"><span class="field-label">{{ audiofacet_imageform.asset_description.label_tag }}</span></a>
+                    {{ audiofacet_imageform.asset_description }}
+                    {% if audiofacet_imageform.asset_description.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ audiofacet_imageform.asset_description.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ audiofacet_imageform.attribution.help_text }}"><span class="field-label">{{ audiofacet_imageform.attribution.label_tag }}</span></a>
+                    {{ audiofacet_imageform.attribution }}
+                    {% if audiofacet_imageform.attribution.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ audiofacet_imageform.attribution.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                </div>
+                <!-- End Right Col -->
                 {% for audiofacet in story.audiofacetstory.all %}
                 <input type="hidden" name="audiofacet" value="{{ audiofacet.pk }}" />
                 {% endfor %}
-                <button type="submit" class="btn btn-primary" name="addaudioimage">Add Images</button>
-              </form>
+                <div>
+                  <button type="submit" class="btn btn-primary">Save Image</button>
+                </div>
+                </form>
+              </div>
             </div>
+            <!-- END UPLOAD PANEL -->
+            <!-- LIBRARY PANEL -->
+            <div role="tabpanel" class="tab-pane" id="libraryaudioimage">
+              <div class="imagelibrary" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
+                <form action="{% url 'add_audiofacet_image' %}" method="POST" class="post-form" name="addaudioimage">
+                  {% csrf_token %}
+                  <div class="image-library">
+                  {% for image in images %}
+                    <div class="col-md-2">
+                      <label>
+                        <img class="img-responsive img-thumbnail" src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}">
+                        <input type="checkbox" name="images" value="{{ image.id }}">
+                      </label>
+                    </div>
+                  {% endfor %}
+                  </div>
+                  {% for audiofacet in story.audiofacetstory.all %}
+                  <input type="hidden" name="audiofacet" value="{{ audiofacet.pk }}" />
+                  {% endfor %}
+                  <button type="submit" class="btn btn-primary" name="addaudioimage">Add Images</button>
+                </form>
+              </div>
+            </div>
+            <!-- END LIBRARY PANEL -->
           </div>
-          <!-- END LIBRARY PANEL -->
         </div>
-      </div>
-      <div class="modal-footer">
+        <div class="modal-footer"></div>
       </div>
     </div>
   </div>
@@ -1693,7 +1703,6 @@
   </div>
 </div>
 
-
 <!-- ================================================= -->
             <!-- ADD WEBFACET AUDIO MODAL -->
 <!-- ================================================= -->
@@ -1849,7 +1858,6 @@
     </div>
   </div>
 </div>
-
 
 <!-- ================================================= -->
             <!-- ADD PRINTFACET AUDIO MODAL -->
@@ -2007,8 +2015,6 @@
   </div>
 </div>
 
-
-
 <!-- ================================================= -->
             <!-- ADD AUDIOFACET AUDIO MODAL -->
 <!-- ================================================= -->
@@ -2164,7 +2170,6 @@
     </div>
   </div>
 </div>
-
 
 <!-- ================================================= -->
             <!-- ADD VIDEOFACET AUDIO MODAL -->
@@ -2322,7 +2327,6 @@
   </div>
 </div>
 
-
 <!-- ================================================= -->
             <!-- ADD WEBFACET VIDEO MODAL -->
 <!-- ================================================= -->
@@ -2478,7 +2482,6 @@
     </div>
   </div>
 </div>
-
 
 
 {% endblock modals %}
