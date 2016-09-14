@@ -678,7 +678,7 @@
               <div class="imagelibrary" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
                 <form action="{% url 'add_webfacet_image' %}" method="POST" class="post-form" name="addwebimage">
                   {% csrf_token %}
-                  <div class="image-library">
+                  <div class=" row image-library">
                   {% for image in images %}
                     <div class="col-md-2">
                       <label>
@@ -686,6 +686,9 @@
                         <input type="checkbox" name="images" value="{{ image.id }}">
                       </label>
                     </div>
+                    {% if forloop.counter|divisibleby:"6" and not forloop.last %}
+                      </div><div class="row">
+                    {% endif %}
                   {% endfor %}
                   </div>
                   {% for webfacet in story.webfacetstory.all %}
