@@ -18,6 +18,7 @@ def include_activity_stream(request):
     if request.user.is_authenticated():
         activity_stream = any_stream(request.user)
         return {'activitystream': activity_stream }
+    else: return {}
 
 
 # def include_user_note_form(request):
