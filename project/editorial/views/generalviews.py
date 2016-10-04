@@ -113,30 +113,39 @@ def dashboard(request):
     Displays log of other user activity since last_login
     Ex: Oliver Q. added "Dhark Indicted" to Story: "Star City Organized Crime Leader Arrested"
     """
+    # get user organization
+    organization = request.user.organization
     # query for new comments since last_login from any discussions the user has participated in
     recent_comments = User.recent_comments(request.user)
     # if no new comments, display 10 most recent older comments
     older_comments = User.inbox_comments(request.user)[:10]
-    # retrieve all organization comments
-    organization = request.user.organization
-    all_comments = Organization.get_org_comments(organization)
-    # query for new stories shared to network
-    organization = request.user.organization
-    networks = Organization.get_org_networks(organization)
+
+    if organization:
+        # retrieve all organization comments
+        all_comments = Organization.get_org_comments(organization)
+        # query for new stories shared to network
+        networks = Organization.get_org_networks(organization)
+        # facets where run_date=today
+        running_today = Organization.get_org_stories_running_today(organization)
+        # facets where due_edit=today
+        edit_today = Organization.get_org_stories_due_for_edit_today(organization)
+    else:
+        all_comments = []
+        networks = []
+        running_today = []
+        edit_today = []
+
     shared_networkstories = []
     for network in networks:
         stories = Network.get_network_shared_stories(network)
         shared_networkstories.extend(stories)
     shared_networkstories = [story for story in shared_networkstories if story.organization != organization]
     networkstories = set(shared_networkstories)
+
     # query for any new content created since last_login
     new_stories = Story.objects.filter(creation_date__gte=request.user.last_login)[:8]
     # if no new stories, display 10 most recent stories
     old_stories = Story.objects.filter(organization = request.user.organization)[:10]
-    # facets where run_date=today
-    running_today = Organization.get_org_stories_running_today(organization)
-    # facets where due_edit=today
-    edit_today = Organization.get_org_stories_due_for_edit_today(organization)
 
     copied_shared_stories = StoryCopyDetail.objects.filter(original_org=request.user.organization)
     # TODO: query for other user activity since last_login

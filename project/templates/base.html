@@ -233,7 +233,7 @@
                                           {% elif request.user.first_name %}
                                           <p>{{request.user.first_name}}</p>
                                           {% else %}
-                                          <p>{{request.user.email}}</p>
+                                          <i class="fa fa-user" aria-hidden="true"></i>
                                           {% endif %}
                                         </a>
                                         <div class="dropdown-menu dropdown-menu-scale from-right dropdown-menu-right">
