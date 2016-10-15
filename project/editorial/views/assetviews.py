@@ -99,6 +99,71 @@ def document_asset_detail(request, pk):
 #   Upload Image Asset Views
 #----------------------------------------------------------------------#
 
+def upload_image(request):
+    """ Add image to a facet."""
+
+    if request.method == 'POST':
+        imageform=ImageAssetForm(request.POST, request.FILES)
+        if imageform.is_valid():
+            image = imageform.save(commit=False)
+            # retrieve the facet the image should be associated with
+            facet_type = request.POST.get('type')
+            if facet_type == "webfacet":
+                facet_id = request.POST.get('webfacet')
+                facet = get_object_or_404(WebFacet, id=facet_id)
+            elif facet_type == "printfacet":
+                facet_id = request.POST.get('printfacet')
+                facet = get_object_or_404(PrintFacet, id=facet_id)
+            elif facet_type == "audiofacet":
+                facet_id = request.POST.get('audiofacet')
+                facet = get_object_or_404(AudioFacet, id=facet_id)
+            elif facet_type == "videofacet":
+                facet_id = request.POST.get('videofacet')
+                facet = get_object_or_404(VideoFacet, id=facet_id)
+
+            # set request based attributes
+            image.owner = request.user
+            image.organization = request.user.organization
+            image.save()
+
+            # add image asset to facet image_assets
+            facet.image_assets.add(image)
+            facet.save()
+    return redirect('story_detail', pk=facet.story.id)
+
+
+def add_image(request):
+    """ Add existing image(s) in the library to another facet."""
+
+    if request.method == "POST":
+        add_image_form = AddImageForm(request.POST, request=request)
+        if add_image_form.is_valid():
+            images = request.POST.getlist('images')
+            # retrieve the facet the images should be associated with
+            facet_type = request.POST.get('type')
+            if facet_type == "webfacet":
+                facet_id = request.POST.get('webfacet')
+                facet = get_object_or_404(WebFacet, id=facet_id)
+            elif facet_type == "printfacet":
+                facet_id = request.POST.get('printfacet')
+                facet = get_object_or_404(PrintFacet, id=facet_id)
+            elif facet_type == "audiofacet":
+                facet_id = request.POST.get('audiofacet')
+                facet = get_object_or_404(AudioFacet, id=facet_id)
+            elif facet_type == "videofacet":
+                facet_id = request.POST.get('videofacet')
+                facet = get_object_or_404(VideoFacet, id=facet_id)
+
+            for image in images:
+                img_ins = get_object_or_404(ImageAsset, id=image)
+                facet.image_assets.add(img_ins)
+            facet.save()
+
+    return redirect('story_detail', pk=facet.story.id)
+
+
+
+
 def upload_webfacet_image(request):
     """ Add image to a webfacet."""
 

@@ -158,6 +158,8 @@ urlpatterns = [
     #   Asset URLS
     #----------------------------------------------------------------------#
     # Images
+    url(r'^image/new/$', assetviews.upload_image, name='upload_image'),
+    url(r'^image/add/$', assetviews.add_image, name='add_image'),
     url(r'^webfacet/image/new/$', assetviews.upload_webfacet_image, name='upload_webfacet_image'),
     url(r'^printfacet/image/new/$', assetviews.upload_printfacet_image, name='upload_printfacet_image'),
     url(r'^audiofacet/image/new/$', assetviews.upload_audiofacet_image, name='upload_audiofacet_image'),
