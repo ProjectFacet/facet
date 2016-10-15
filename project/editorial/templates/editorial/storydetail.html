@@ -224,8 +224,11 @@
 {% include "editorial/storydownloadmodal.html" %}
 
 <!-- ================================================= -->
-            <!-- ADD WEBFACET IMAGE MODAL -->
+            <!-- IMAGE MODAL -->
 <!-- ================================================= -->
+
+{% include "editorial/story_imageassetmodal.html" %}
+
 {% comment %}
 <div class="modal fade" id="addWebFacetImage" tabindex="-1" role="dialog" aria-labelledby="addWebFacetImageLabel">
   <div class="modal-dialog modal-lg" role="document">
@@ -363,13 +366,6 @@
     </div>
   </div>
 </div>
-{% endcomment %}
-
-{% include "editorial/story_imageassetmodal.html" %}
-
-<!-- ================================================= -->
-            <!-- ADD PRINTFACET IMAGE MODAL -->
-<!-- ================================================= -->
 <div class="modal fade" id="addPrintFacetImage" tabindex="-1" role="dialog" aria-labelledby="addPrintFacetImageLabel">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -502,10 +498,6 @@
     </div>
   </div>
 </div>
-
-<!-- ================================================= -->
-            <!-- ADD AUDIOFACET IMAGE MODAL -->
-<!-- ================================================= -->
 <div class="modal fade" id="addAudioFacetImage" tabindex="-1" role="dialog" aria-labelledby="addAudioFacetImageLabel">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -634,10 +626,6 @@
     </div>
   </div>
 </div>
-
-<!-- ================================================= -->
-            <!-- ADD VIDEOFACET IMAGE MODAL -->
-<!-- ================================================= -->
 <div class="modal fade" id="addVideoFacetImage" tabindex="-1" role="dialog" aria-labelledby="addVideoFacetImageLabel">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -765,9 +753,10 @@
     </div>
   </div>
 </div>
+{% endcomment %}
 
 <!-- ================================================= -->
-            <!-- ADD WEBFACET DOCUMENT MODAL -->
+            <!-- DOCUMENT MODAL -->
 <!-- ================================================= -->
 <div class="modal fade" id="addWebFacetDocument" tabindex="-1" role="dialog" aria-labelledby="addWebFacetDocument">
   <div class="modal-dialog modal-lg" role="document">

@@ -162,8 +162,6 @@ def add_image(request):
     return redirect('story_detail', pk=facet.story.id)
 
 
-
-
 def upload_webfacet_image(request):
     """ Add image to a webfacet."""
 
