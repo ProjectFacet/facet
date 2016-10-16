@@ -148,9 +148,6 @@ def story_team_options_json(request, pk):
     return HttpResponse(json.dumps(story_team), content_type = "application/json")
 
 
-
-
-
 def story_detail(request, pk):
     """ The detail page for a story.
 
@@ -170,6 +167,9 @@ def story_detail(request, pk):
     audiofiles = Organization.get_org_audio_library(request.user.organization)
     video = Organization.get_org_video_library(request.user.organization)
     imageform=ImageAssetForm()
+    documentform=DocumentAssetForm()
+    audioform=AudioAssetForm()
+    videoform=VideoAssetForm()
 
 # ------------------------------ #
 #           webfacet             #
@@ -178,10 +178,6 @@ def story_detail(request, pk):
     # create these here for efficiency
     webform=WebFacetForm(request=request, story=story)
     webcommentform=WebFacetCommentForm()
-    webfacet_imageform=ImageAssetForm()
-    webfacet_documentform=DocumentAssetForm()
-    webfacet_audioform=AudioAssetForm()
-    webfacet_videoform=VideoAssetForm()
 
     try:
         webfacet = get_object_or_404(WebFacet, story=story)
@@ -243,9 +239,6 @@ def story_detail(request, pk):
     # create these here for efficiency
     printform=PrintFacetForm(request=request, story=story)
     printcommentform=PrintFacetCommentForm()
-    printfacet_imageform=ImageAssetForm()
-    printfacet_documentform=DocumentAssetForm()
-    printfacet_audioform=AudioAssetForm()
 
     try:
         # print "PF Try"
@@ -305,9 +298,6 @@ def story_detail(request, pk):
     # create these here for efficiency
     audioform=AudioFacetForm(request=request, story=story)
     audiocommentform=AudioFacetCommentForm()
-    audiofacet_imageform=ImageAssetForm()
-    audiofacet_documentform=DocumentAssetForm()
-    audiofacet_audioform=AudioAssetForm()
 
     try:
         audiofacet = get_object_or_404(AudioFacet, story=story)
@@ -368,9 +358,6 @@ def story_detail(request, pk):
     # create these here for efficiency
     videoform=VideoFacetForm(request=request, story=story)
     videocommentform=VideoFacetCommentForm()
-    videofacet_imageform=ImageAssetForm()
-    videofacet_documentform=DocumentAssetForm()
-    videofacet_audioform=AudioAssetForm()
 
     try:
         # print "VF Try"
@@ -501,33 +488,23 @@ def story_detail(request, pk):
         'videocommentform': videocommentform,
         'images': images,
         'imageform': imageform,
-        'webfacet_imageform': webfacet_imageform,
-        'printfacet_imageform': printfacet_imageform,
-        'audiofacet_imageform': audiofacet_imageform,
-        'videofacet_imageform': videofacet_imageform,
+        'documentform': documentform,
+        'audioform': audioform,
+        'videoform': videoform,
         'webfacet_images': webfacet_images,
         'printfacet_images': printfacet_images,
         'audiofacet_images': audiofacet_images,
         'videofacet_images': videofacet_images,
         'documents': documents,
-        'webfacet_documentform' : webfacet_documentform,
-        'printfacet_documentform' : printfacet_documentform,
-        'audiofacet_documentform' : audiofacet_documentform,
-        'videofacet_documentform' : videofacet_documentform,
         'webfacet_documents': webfacet_documents,
         'printfacet_documents': printfacet_documents,
         'audiofacet_documents': audiofacet_documents,
         'videofacet_documents': videofacet_documents,
         'audiofiles': audiofiles,
-        'webfacet_audioform': webfacet_audioform,
-        'printfacet_audioform': printfacet_audioform,
-        'audiofacet_audioform': audiofacet_audioform,
-        'videofacet_audioform': videofacet_audioform,
         'webfacet_audio': webfacet_audio,
         'printfacet_audio': printfacet_audio,
         'audiofacet_audio': audiofacet_audio,
         'videofacet_audio': videofacet_audio,
-        'webfacet_videoform': webfacet_videoform,
         'webfacet_video': webfacet_video,
         })
 

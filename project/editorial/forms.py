@@ -563,9 +563,11 @@ class DocumentAssetForm(forms.ModelForm):
             'keywords',
         ]
         widgets = {
-            'asset_description': Textarea(attrs={'rows':3}),
-            'attribution': Textarea(attrs={'rows':3}),
+            'asset_title': TextInput(attrs={'class': 'form-control', 'placeholder': 'Asset Title'}),
+            'asset_description': Textarea(attrs={'class': 'form-control', 'rows':3, 'placeholder': 'Description'}),
+            'attribution': Textarea(attrs={'class': 'form-control', 'rows':3, 'placeholder': 'Attribution'}),
             'doc_type': Select(attrs={'class': 'form-control'}),
+            'keywords': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Keywords'}),
         }
 
 class AddDocumentForm(forms.Form):
@@ -596,9 +598,12 @@ class AudioAssetForm(forms.ModelForm):
             'keywords',
         ]
         widgets = {
-            'asset_description': Textarea(attrs={'rows':3}),
-            'attribution': Textarea(attrs={'rows':3}),
+            'asset_title': TextInput(attrs={'class': 'form-control', 'placeholder': 'Asset Title'}),
+            'asset_description': Textarea(attrs={'class': 'form-control', 'rows':3, 'placeholder': 'Description'}),
+            'attribution': Textarea(attrs={'class': 'form-control', 'rows':3, 'placeholder': 'Attribution'}),
+            'link': TextInput(attrs={'class': 'form-control', 'placeholder': 'Link'}),
             'audio_type': Select(attrs={'class': 'form-control'}),
+            'keywords': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Keywords'}),
         }
 
 class AddAudioForm(forms.Form):
@@ -629,9 +634,11 @@ class VideoAssetForm(forms.ModelForm):
             'keywords',
         ]
         widgets = {
-            'asset_description': Textarea(attrs={'rows':3}),
-            'attribution': Textarea(attrs={'rows':3}),
+            'asset_title': TextInput(attrs={'class': 'form-control', 'placeholder': 'Asset Title'}),
+            'asset_description': Textarea(attrs={'class': 'form-control', 'rows':3, 'placeholder': 'Description'}),
+            'attribution': Textarea(attrs={'class': 'form-control', 'rows':3, 'placeholder': 'Attribution'}),
             'video_type': Select(attrs={'class': 'form-control'}),
+            'keywords': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Keywords'}),
         }
 
 class AddVideoForm(forms.Form):

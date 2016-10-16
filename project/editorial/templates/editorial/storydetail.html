@@ -758,6 +758,9 @@
 <!-- ================================================= -->
             <!-- DOCUMENT MODAL -->
 <!-- ================================================= -->
+{% include "editorial/story_documentassetmodal.html" %}
+
+{% comment %}
 <div class="modal fade" id="addWebFacetDocument" tabindex="-1" role="dialog" aria-labelledby="addWebFacetDocument">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -903,10 +906,6 @@
     </div>
   </div>
 </div>
-
-<!-- ================================================= -->
-            <!-- ADD PRINTFACET DOCUMENT MODAL -->
-<!-- ================================================= -->
 <div class="modal fade" id="addPrintFacetDocument" tabindex="-1" role="dialog" aria-labelledby="addPrintFacetDocument">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -1052,10 +1051,6 @@
     </div>
   </div>
 </div>
-
-<!-- ================================================= -->
-            <!-- ADD AUDIOFACET DOCUMENT MODAL -->
-<!-- ================================================= -->
 <div class="modal fade" id="addAudioFacetDocument" tabindex="-1" role="dialog" aria-labelledby="addAudioFacetDocument">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -1201,10 +1196,6 @@
     </div>
   </div>
 </div>
-
-<!-- ================================================= -->
-            <!-- ADD VIDEOFACET DOCUMENT MODAL -->
-<!-- ================================================= -->
 <div class="modal fade" id="addVideoFacetDocument" tabindex="-1" role="dialog" aria-labelledby="addVideoFacetDocument">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -1350,10 +1341,13 @@
     </div>
   </div>
 </div>
+{% endcomment %}
+<!-- ================================================= -->
+            <!-- AUDIO MODAL -->
+<!-- ================================================= -->
+{% include "editorial/story_audioassetmodal.html" %}
 
-<!-- ================================================= -->
-            <!-- ADD WEBFACET AUDIO MODAL -->
-<!-- ================================================= -->
+{% comment %}
 <div class="modal fade" id="addWebFacetAudio" tabindex="-1" role="dialog" aria-labelledby="addWebFacetAudio">
   <div class="modal-dialog modal-lg" role="audio">
     <div class="modal-content">
@@ -1506,10 +1500,6 @@
     </div>
   </div>
 </div>
-
-<!-- ================================================= -->
-            <!-- ADD PRINTFACET AUDIO MODAL -->
-<!-- ================================================= -->
 <div class="modal fade" id="addPrintFacetAudio" tabindex="-1" role="dialog" aria-labelledby="addPrintFacetAudio">
   <div class="modal-dialog modal-lg" role="audio">
     <div class="modal-content">
@@ -1662,10 +1652,6 @@
     </div>
   </div>
 </div>
-
-<!-- ================================================= -->
-            <!-- ADD AUDIOFACET AUDIO MODAL -->
-<!-- ================================================= -->
 <div class="modal fade" id="addAudioFacetAudio" tabindex="-1" role="dialog" aria-labelledby="addAudioFacetAudio">
   <div class="modal-dialog modal-lg" role="audio">
     <div class="modal-content">
@@ -1818,10 +1804,6 @@
     </div>
   </div>
 </div>
-
-<!-- ================================================= -->
-            <!-- ADD VIDEOFACET AUDIO MODAL -->
-<!-- ================================================= -->
 <div class="modal fade" id="addVideoFacetAudio" tabindex="-1" role="dialog" aria-labelledby="addVideoFacetAudio">
   <div class="modal-dialog modal-lg" role="audio">
     <div class="modal-content">
@@ -1974,10 +1956,13 @@
     </div>
   </div>
 </div>
+{% endcomment %}
 
 <!-- ================================================= -->
             <!-- ADD WEBFACET VIDEO MODAL -->
 <!-- ================================================= -->
+
+{% comment %}
 <div class="modal fade" id="addWebFacetVideo" tabindex="-1" role="dialog" aria-labelledby="addWebFacetVideo">
   <div class="modal-dialog modal-lg" role="video">
     <div class="modal-content">
@@ -2130,6 +2115,6 @@
     </div>
   </div>
 </div>
-
+{% endcomment %}
 
 {% endblock modals %}

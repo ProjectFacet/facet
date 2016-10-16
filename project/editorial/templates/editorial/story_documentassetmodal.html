@@ -1,62 +1,62 @@
-<!-- Image Asset Modal -->
+<!-- Document Asset Modal -->
 
-<div class="modal fade" id="ImageAssetModal" tabindex="-1" role="dialog" aria-labelledby="ImageAssetModal">
+<div class="modal fade" id="DocumentAssetModal" tabindex="-1" role="dialog" aria-labelledby="DocumentAssetModal">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="bs-nav-tabs nav-tabs-default">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <ul class="nav nav-tabs nav-animated-border-from-left">
-            <li class="nav-item"> <a ng-href="" class="nav-link active" data-toggle="tab" data-target="#uploadimage">Upload a Photo</a></li>
-            <li class="nav-item"> <a ng-href="" class="nav-link" data-toggle="tab" data-target="#imagelibrary">Select From Library</a></li>
+            <li class="nav-item"> <a ng-href="" class="nav-link active" data-toggle="tab" data-target="#uploaddocument">Upload a Document</a></li>
+            <li class="nav-item"> <a ng-href="" class="nav-link" data-toggle="tab" data-target="#documentlibrary">Select From Document Library</a></li>
           </ul>
         </div>
-        <div class="modal-body" id="imagemodalbody">
+        <div class="modal-body" id="documentmodalbody">
           <div class="tab-content">
             <!-- UPLOAD PANEL -->
-            <div role="tabpanel" class="tab-pane active" id="uploadimage">
+            <div role="tabpanel" class="tab-pane active" id="uploaddocument">
               <div class="uploadpanel" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
-              <form action="{% url 'upload_image' %}" method="POST" class="post-form" enctype="multipart/form-data">
+              <form action="{% url 'upload_document' %}" method="POST" class="post-form" enctype="multipart/form-data">
               {% csrf_token %}
               <!-- Left Col -->
               <div class="col-md-6">
 
                 <div class="form-group custom-form">
-                  <a href="#" data-toggle="tooltip" title="{{ imageform.photo.help_text }}"><span class="field-label">{{ imageform.photo.label_tag }}</span></a>
-                  {{ imageform.photo }}
-                  {% if imageform.photo.errors %}
+                  <a href="#" data-toggle="tooltip" title="{{ documentform.document.help_text }}"><span class="field-label">{{ documentform.document.label_tag }}</span></a>
+                  {{ documentform.document }}
+                  {% if documentform.document.errors %}
                     <div class="alert alert-warning" role="alert">
-                    {{ imageform.photo.errors }}
+                    {{ documentform.document.errors }}
                     </div>
                   {% endif %}
                 </div>
 
                 <div class="form-group custom-form">
-                  <a href="#" data-toggle="tooltip" title="{{ imageform.asset_title.help_text }}"><span class="field-label">{{ imageform.asset_title.label_tag }}</span></a>
-                  {{ imageform.asset_title }}
-                  {% if imageform.asset_title.errors %}
+                  <a href="#" data-toggle="tooltip" title="{{ documentform.asset_title.help_text }}"><span class="field-label">{{ documentform.asset_title.label_tag }}</span></a>
+                  {{ documentform.asset_title }}
+                  {% if documentform.asset_title.errors %}
                     <div class="alert alert-warning" role="alert">
-                    {{ imageform.asset_title.errors }}
+                    {{ documentform.asset_title.errors }}
                     </div>
                   {% endif %}
                 </div>
 
                 <div class="form-group custom-form">
-                  <a href="#" data-toggle="tooltip" title="{{ imageform.image_type.help_text }}"><span class="field-label">{{ imageform.image_type.label_tag }}</span></a>
-                  {{ imageform.image_type }}
-                  {% if imageform.image_type.errors %}
+                  <a href="#" data-toggle="tooltip" title="{{ documentform.doc_type.help_text }}"><span class="field-label">{{ documentform.doc_type.label_tag }}</span></a>
+                  {{ documentform.doc_type }}
+                  {% if documentform.doc_type.errors %}
                     <div class="alert alert-warning" role="alert">
-                    {{ imageform.image_type.errors }}
+                    {{ documentform.doc_type.errors }}
                     </div>
                   {% endif %}
                 </div>
 
                 <div class="form-group custom-form">
-                  <a href="#" data-toggle="tooltip" title="{{ imageform.keywords.help_text }}"><span class="field-label">{{ imageform.keywords.label_tag }}</span></a>
-                  {{ imageform.keywords }}
-                  {% if imageform.keywords.errors %}
+                  <a href="#" data-toggle="tooltip" title="{{ documentform.keywords.help_text }}"><span class="field-label">{{ documentform.keywords.label_tag }}</span></a>
+                  {{ documentform.keywords }}
+                  {% if documentform.keywords.errors %}
                     <div class="alert alert-warning" role="alert">
-                    {{ imageform.keywords.errors }}
+                    {{ documentform.keywords.errors }}
                     </div>
                   {% endif %}
                 </div>
@@ -67,21 +67,21 @@
               <div class="col-md-6">
 
                 <div class="form-group custom-form">
-                  <a href="#" data-toggle="tooltip" title="{{ imageform.asset_description.help_text }}"><span class="field-label">{{ imageform.asset_description.label_tag }}</span></a>
-                  {{ imageform.asset_description }}
-                  {% if imageform.asset_description.errors %}
+                  <a href="#" data-toggle="tooltip" title="{{ documentform.asset_description.help_text }}"><span class="field-label">{{ documentform.asset_description.label_tag }}</span></a>
+                  {{ documentform.asset_description }}
+                  {% if documentform.asset_description.errors %}
                     <div class="alert alert-warning" role="alert">
-                    {{ imageform.asset_description.errors }}
+                    {{ documentform.asset_description.errors }}
                     </div>
                   {% endif %}
                 </div>
 
                 <div class="form-group custom-form">
-                  <a href="#" data-toggle="tooltip" title="{{ imageform.attribution.help_text }}"><span class="field-label">{{ imageform.attribution.label_tag }}</span></a>
-                  {{ imageform.attribution }}
-                  {% if imageform.attribution.errors %}
+                  <a href="#" data-toggle="tooltip" title="{{ documentform.attribution.help_text }}"><span class="field-label">{{ documentform.attribution.label_tag }}</span></a>
+                  {{ documentform.attribution }}
+                  {% if documentform.attribution.errors %}
                     <div class="alert alert-warning" role="alert">
-                    {{ imageform.attribution.errors }}
+                    {{ documentform.attribution.errors }}
                     </div>
                   {% endif %}
                 </div>
@@ -90,13 +90,13 @@
               <!-- End Right Col -->
               <!-- ===================================== -->
               <!-- ===================================== -->
-              <div class="hidden-image-inputs">>
+              <div class="hidden-document-inputs">>
                     <!-- Insert custom content via jQuery -->
               </div>
               <!-- ===================================== -->
               <!-- ===================================== -->
               <div>
-                <button type="submit" class="btn btn-primary m-l-20">Save Image</button>
+                <button type="submit" class="btn btn-primary m-l-20">Save Document</button>
               </div>
               </form>
               </div>
@@ -104,16 +104,16 @@
             <!-- END UPLOAD PANEL -->
 
             <!-- LIBRARY PANEL -->
-            <div role="tabpanel" class="tab-pane" id="imagelibrary">
-              <div class="imagelibrary" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
-                <form action="{% url 'add_image' %}" method="POST" class="post-form" name="addimage">
+            <div role="tabpanel" class="tab-pane" id="documentlibrary">
+              <div class="documentlibrary" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
+                <form action="{% url 'add_document' %}" method="POST" class="post-form" name="adddocument">
                   {% csrf_token %}
-                  <div class=" row image-library">
-                  {% for image in images %}
+                  <div class="row document-library">
+                  {% for document in documents %}
                     <div class="col-md-2">
                       <label>
-                        <img class="img-responsive img-thumbnail" src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}">
-                        <input type="checkbox" name="images" value="{{ image.id }}">
+                        <img class="img-responsive" src="{{ document.display_photo.url }}" alt="{{ document.asset_title }}">
+                        <input type="checkbox" name="documents" value="{{ document.id }}">
                       </label>
                     </div>
                     {% if forloop.counter|divisibleby:"6" and not forloop.last %}
@@ -124,7 +124,7 @@
 
                 <!-- ===================================== -->
                 <!-- ===================================== -->
-                <div class="hidden-image-inputs">
+                <div class="hidden-document-inputs">
                     <!-- Insert custom content via jQuery -->
                 </div>
                 <!-- ===================================== -->
@@ -132,7 +132,7 @@
 
                   <div class="row">
                     <div class="col-xs-12">
-                      <button type="submit" class="btn btn-primary" name="addimage">Add Images</button>
+                      <button type="submit" class="btn btn-primary" name="adddocument">Add Document</button>
                     </div>
                   </div>
                 </form>
@@ -149,7 +149,7 @@
 </div>
 
 <script>
-$('#ImageAssetModal').on('show.bs.modal', function (event) {
+$('#DocumentAssetModal').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget) // Button that triggered the modal
     var facet = button.data('facet') // Extract info from data-* attributes
 
@@ -170,27 +170,27 @@ $('#ImageAssetModal').on('show.bs.modal', function (event) {
                 '{% endfor %}'
 
     var videofacetHidden = '{% for videofacet in story.videofacetstory.all %}' +
-                '<input type="hidden" name="vfacet" value="{{ videofacet.pk }}" />' +
+                '<input type="hidden" name="videofacet" value="{{ videofacet.pk }}" />' +
                 '<input  type="hidden" name="type" value="videofacet" />' +
                 '{% endfor %}'
 
 
     var modal = $(this)
 
-    if (facet == 'webfacet_image') {
-        modal.find('.hidden-image-inputs').html(webfacetHidden)
+    if (facet == 'webfacet_document') {
+        modal.find('.hidden-document-inputs').html(webfacetHidden)
     }
-    else if (facet == 'printfacet_image') {
-        modal.find('.hidden-image-inputs').html(printfacetHidden)
+    else if (facet == 'printfacet_document') {
+        modal.find('.hidden-document-inputs').html(printfacetHidden)
     }
-    else if (facet == 'audiofacet_image') {
-        modal.find('.hidden-image-inputs').html(audiofacetHidden)
+    else if (facet == 'audiofacet_document') {
+        modal.find('.hidden-document-inputs').html(audiofacetHidden)
     }
-    else if (facet == 'videofacet_image') {
-        modal.find('.hidden-image-inputs').html(videofacetHidden)
+    else if (facet == 'videofacet_document') {
+        modal.find('.hidden-document-inputs').html(videofacetHidden)
     }
     else {
-        modal.find('.hidden-image-inputs').html('<div></div>')
+        modal.find('.hidden-document-inputs').html('<div></div>')
     }
 })
 

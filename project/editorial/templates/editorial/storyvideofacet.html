@@ -1,6 +1,7 @@
 <div role="tabpanel" class="tab-pane p-t-0" id="video">
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-xs-12">
+      <div class="row">
       <form method="POST" class="post-form">
         {% csrf_token %}
 
@@ -79,117 +80,6 @@
             {% endif %}
           </fieldset>
 
-          <!-- ======================== -->
-          <!--       ASSETS FORMS       -->
-          <!-- ======================== -->
-
-          <!-- Videofacet Images -->
-          <div class="section-title m-t-20 m-b-20">
-            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">Images</label>
-            <a href="#" data-toggle="modal" data-target="#addVideoFacetImage" title="Add Image"><i class="fa fa-plus sameline subtle"></i></a>
-          </div>
-          <div id="videoimage-thumbs">
-            <div class="row">
-            {% for videofacet in story.videofacetstory.all %}
-              {% for image in videofacet.image_assets.all %}
-                {% if image.display_photo %}
-                <div class="col-md-4">
-                  <a href="{{ image.display_photo.url }}" class="thumbnail"><img src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}" class="img-fluid"></a>
-                </div>
-                {% endif %}
-              {% endfor %}
-            {% endfor %}
-            </div>
-          </div>
-
-          <!-- Videofacet Documents -->
-          <div class="section-title m-t-20 m-b-20">
-            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">Documents</label>
-            <a href="#" data-toggle="modal" data-target="#addVideoFacetDocument" title="Add Document"><i class="fa fa-plus sameline subtle"></i></a>
-          </div>
-          <div id="videofacet-docs">
-            <div class="row">
-              {% for document in videofacet_documents %}
-                <div class="col-md-1">
-                    <label>
-                        {% if document.doc_type == 'OTHER' %}
-                        <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-file-o dark"></i></h3></a>
-                        {% endif %}
-                        {% if document.doc_type == 'TEXT' %}
-                        <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-text-o dark"></i></h3></a>
-                        {% endif %}
-                        {% if document.doc_type == 'WORD DOC' %}
-                        <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-word-o dark"></i></h3></a>
-                        {% endif %}
-                        {% if document.doc_type == 'EXCEL' %}
-                        <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-excel-o dark"></i></h3></a>
-                        {% endif %}
-                        {% if document.doc_type == 'PDF' %}
-                        <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-pdf-o dark"></i></h3></a>
-                        {% endif %}
-                        {% if document.doc_type == 'COMMA SEPARATED' %}
-                        <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-o dark"></i></h3></a>
-                        {% endif %}
-                      </label>
-                </div>
-              {% endfor %}
-            </div>
-          </div>
-
-          <!-- Videofacet Audio -->
-          <div class="section-title m-t-20 m-b-20">
-            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">Audio</label>
-            <a href="#" data-toggle="modal" data-target="#addVideoFacetAudio" title="Add Audio"><i class="fa fa-plus sameline subtle"></i></a>
-          </div>
-          <div id="videofacet-audio">
-            <div class="row">
-              {% for audio in videofacet_audio %}
-                <div class="col-xs-12">
-                    {% if audio.audio_type == 'MP3' %}
-                    <a href="" title="{{ audio.asset_description }}" target="_blank"><i class="fa fa-play sameline"></i> <span class="small-text dark sameline">{{ audio.asset_title }}</span></a>
-                    {% endif %}
-                    {% if audio.audio_type == 'WAV' %}
-                    <!-- <i class="fa fa-play sameline"></i> <span class="small-text dark sameline">{{ audio.asset_title }}</span> -->
-                    <audio id="{{ audio.asset_title }}" controls="controls" preload="metadata">
-                      <source src="{{ audio.audio.url }}" type="audio/wav"/>
-                      Your browser does not support the audioplayer.
-                    </audio>
-                    {% endif %}
-                    {% if audio.audio_type == 'SC' %}
-                    <a href="{{ audio.link }}" title="{{ audio.asset_description }}" target="_blank"><i class="fa fa-soundcloud sameline"></i> <span class="small-text dark sameline">{{ audio.asset_title }}</span></a>
-                    {% endif %}
-                </div>
-              {% endfor %}
-            </div>
-          </div>
-
-          {% comment %}
-          <!-- Videofacet Video -->
-          <div class="section-title m-t-20 m-b-20">
-            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">Video</label>
-            <a href="#" data-toggle="modal" data-target="#addVideoFacetVideo" title="Add Video"><i class="fa fa-plus sameline subtle"></i></a>
-          </div>
-          <div id="videofacet-video">
-            <div class="row">
-              {% for video in videofacet_video %}
-                <div class="col-md-1">
-                    <label>
-                        {% if video.video_type == 'MP4' %}
-                        <a href="" title="{{ video.asset_description }}" target="_blank"><h3><i class="fa fa-video-camera dark"></i></h3></a>
-                        {% endif %}
-                        {% if video.video_type == 'YT' %}
-                        <a href="" title="{{ video.asset_description }}" target="_blank"><h3><i class="fa fa-youtube-play dark"></i></h3></a>
-                        {% endif %}
-                        {% if video.video_type == 'VIM' %}
-                        <a href="" title="{{ video.asset_description }}" target="_blank"><h3><i class="fa fa-vimeo-square dark"></i></h3></a>
-                        {% endif %}
-                      </label>
-                </div>
-              {% endfor %}
-            </div>
-          </div>
-          {% endcomment %}
-
         </div>
         <!-- End of Left Column -->
 
@@ -216,14 +106,15 @@
 
         </div>
         <!-- End of Center Column -->
+
         <!-- Right Column -->
         <div class="col-md-2">
 
         <div class="row">
           <div class="col-xs-12">
             <div class="save-button m-b-20">
-              <button type="submit" class="btn btn-info content-bottom-10 btn btn-block no-border" name="videoform">Save Video Story</button>
-              <!-- <input type="submit" name="videoform" value="Save Video Story" /> -->
+              <button type="submit" class="btn btn-info content-bottom-10 btn btn-block no-border" name="videoform">Save Web Story</button>
+              <!-- <input type="submit" name="videoform" value="Save Web Story" /> -->
             </div>
           </div>
         </div>
@@ -271,7 +162,7 @@
           </fieldset>
         </div>
           <!-- End of VideoFacet form -->
-          <!-- <input type="submit" name="videoform" value="Save Video Story" /> -->
+          <!-- <input type="submit" name="videoform" value="Save Web Story" /> -->
           </form>
 
           <div class="discussion">
@@ -287,7 +178,7 @@
                       <img class="media-object img-circle" width="32" src="{{ comment.user.display_photo.url }}" alt="user">
                       {% else %}
                       {% endif %}
-                      <p class="tiny-text">{{ comment.user.first_name }}</p>
+                      <p class="f-s-12 subtle">{{ comment.user.first_name }}</p>
                     </div>
                   {% endfor %}
                 </div>
@@ -324,12 +215,136 @@
           <div class="edit-history">
             {% if videohistory %}
               {% for entry in videohistory %}
-              <p class="tiny-text">{{ entry.history_date }}
+              <p class="f-s-12 f-s-300 subtle">{{ entry.history_date }}</p>
               {% endfor %}
             {% endif %}
           </div>
         </div>
         <!-- End of Right Column -->
+      </div>
+
     </div>
   </div>
+
+  <div class="row m-t-20">
+    <div class="col-xs-12">
+      <h6>Assets</h6>
+    </div>
+    <!-- ======================== -->
+    <!--       ASSETS FORMS       -->
+    <!-- ======================== -->
+
+    <!-- Videofacet Images -->
+    <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+      <div class="section-title m-b-20">
+        <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">Images</label>
+        <a href="#" data-toggle="modal" data-target="#ImageAssetModal" data-facet="videofacet_image" title="Add Image"><i class="fa fa-plus sameline subtle"></i></a>
+      </div>
+      <div id="videoimage-thumbs">
+        <div class="row">
+        {% for videofacet in story.videofacetstory.all %}
+          {% for image in videofacet.image_assets.all %}
+            {% if image.display_photo %}
+            <div class="col-xs-4">
+              <a href="{{ image.display_photo.url }}" class="thumbnail"><img src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}" class="img-fluid"></a>
+            </div>
+            {% endif %}
+          {% endfor %}
+        {% endfor %}
+        </div>
+      </div>
+    </div>
+    <!-- Videofacet Documents -->
+    <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+      <div class="section-title m-b-20">
+        <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">Documents</label>
+        <a href="#" data-toggle="modal" data-target="#DocumentAssetModal" data-facet="videofacet_document" title="Add Document"><i class="fa fa-plus sameline subtle"></i></a>
+      </div>
+      <div id="videofacet-docs">
+        <div class="row">
+          {% for document in videofacet_documents %}
+            <div class="col-md-1">
+                <label>
+                    {% if document.doc_type == 'OTHER' %}
+                    <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-file-o dark"></i></h3></a>
+                    {% endif %}
+                    {% if document.doc_type == 'TEXT' %}
+                    <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-text-o dark"></i></h3></a>
+                    {% endif %}
+                    {% if document.doc_type == 'WORD DOC' %}
+                    <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-word-o dark"></i></h3></a>
+                    {% endif %}
+                    {% if document.doc_type == 'EXCEL' %}
+                    <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-excel-o dark"></i></h3></a>
+                    {% endif %}
+                    {% if document.doc_type == 'PDF' %}
+                    <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-pdf-o dark"></i></h3></a>
+                    {% endif %}
+                    {% if document.doc_type == 'COMMA SEPARATED' %}
+                    <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-o dark"></i></h3></a>
+                    {% endif %}
+                  </label>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <!-- Videofacet Audio -->
+    <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+      <div class="section-title m-b-20">
+        <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">Audio</label>
+        <a href="#" data-toggle="modal" data-target="#AudioAssetModal" data-facet="videofacet_audio" title="Add Audio"><i class="fa fa-plus sameline subtle"></i></a>
+      </div>
+      <div id="videofacet-audio">
+        <div class="row">
+          {% for audio in videofacet_audio %}
+            <div class="col-xs-12">
+                {% if audio.audio_type == 'MP3' %}
+                <a href="" title="{{ audio.asset_description }}" target="_blank"><i class="fa fa-play sameline"></i> <span class="small-text dark sameline">{{ audio.asset_title }}</span></a>
+                {% endif %}
+                {% if audio.audio_type == 'WAV' %}
+                <!-- <i class="fa fa-play sameline"></i> <span class="small-text dark sameline">{{ audio.asset_title }}</span> -->
+                <audio id="{{ audio.asset_title }}" controls="controls" preload="metadata">
+                  <source src="{{ audio.audio.url }}" type="audio/wav"/>
+                  Your browser does not support the audioplayer.
+                </audio>
+                {% endif %}
+                {% if audio.audio_type == 'SC' %}
+                <a href="{{ audio.link }}" title="{{ audio.asset_description }}" target="_blank"><i class="fa fa-soundcloud sameline"></i> <span class="small-text dark sameline">{{ audio.asset_title }}</span></a>
+                {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <!-- Videofacet Video -->
+    <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+      {% comment %}
+      <div class="section-title m-b-20">
+        <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">Video</label>
+        <a href="#" data-toggle="modal" data-target="#VideoAssetModal" data-facet="videofacet_video" title="Add Video"><i class="fa fa-plus sameline subtle"></i></a>
+      </div>
+      <div id="videofacet-video">
+        <div class="row">
+          {% for video in videofacet_video %}
+            <div class="col-md-1">
+                <label>
+                    {% if video.video_type == 'MP4' %}
+                    <a href="" title="{{ video.asset_description }}" target="_blank"><h3><i class="fa fa-video-camera dark"></i></h3></a>
+                    {% endif %}
+                    {% if video.video_type == 'YT' %}
+                    <a href="" title="{{ video.asset_description }}" target="_blank"><h3><i class="fa fa-youtube-play dark"></i></h3></a>
+                    {% endif %}
+                    {% if video.video_type == 'VIM' %}
+                    <a href="" title="{{ video.asset_description }}" target="_blank"><h3><i class="fa fa-vimeo-square dark"></i></h3></a>
+                    {% endif %}
+                  </label>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endcomment %}
+    </div>
+  </div>
+
 </div>
