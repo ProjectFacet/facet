@@ -605,6 +605,7 @@ class AudioAssetForm(forms.ModelForm):
             'asset_title': TextInput(attrs={'class': 'form-control', 'placeholder': 'Asset Title'}),
             'asset_description': Textarea(attrs={'class': 'form-control', 'rows':3, 'placeholder': 'Description'}),
             'attribution': Textarea(attrs={'class': 'form-control', 'rows':3, 'placeholder': 'Attribution'}),
+            'link': TextInput(attrs={'class': 'form-control', 'placeholder': 'Link'}),
             'audio_type': Select(attrs={'class': 'form-control'}),
             'keywords': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Keywords'}),
         }

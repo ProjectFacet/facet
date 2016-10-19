@@ -18,82 +18,84 @@
               <div class="uploadpanel" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
               <form action="{% url 'upload_audio' %}" method="POST" class="post-form" enctype="multipart/form-data">
               {% csrf_token %}
-              <!-- Left Col -->
-              <div class="col-md-6">
 
-                <fieldset class="form-group m-b-10">
-                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audioform.audio.label_tag }}</label>
-                  {{ audioform.audio }}
-                  {% if audioform.audio.errors %}
-                    <small class="text-muted">{{ audioform.audio.errors }}</small>
-                  {% endif %}
-                </fieldset>
+                <!-- Left Col -->
+                <div class="col-md-6">
 
-                <fieldset class="form-group m-b-10">
-                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audioform.link.label_tag }}</label>
-                  {{ audioform.link }}
-                  {% if audioform.link.errors %}
-                    <small class="text-muted">{{ audioform.link.errors }}</small>
-                  {% endif %}
-                </fieldset>
+                  <fieldset class="form-group m-b-10">
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audioassetform.audio.label_tag }}</label>
+                    {{ audioassetform.audio }}
+                    {% if audioassetform.audio.errors %}
+                      <small class="text-muted">{{ audioassetform.audio.errors }}</small>
+                    {% endif %}
+                  </fieldset>
 
-                <fieldset class="form-group m-b-10">
-                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audioform.asset_title.label_tag }}</label>
-                  {{ audioform.asset_title }}
-                  {% if audioform.asset_title.errors %}
-                    <small class="text-muted">{{ audioform.asset_title.errors }}</small>
-                  {% endif %}
-                </fieldset>
+                  <fieldset class="form-group m-b-10">
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audioassetform.link.label_tag }}</label>
+                    {{ audioassetform.link }}
+                    {% if audioassetform.link.errors %}
+                      <small class="text-muted">{{ audioassetform.link.errors }}</small>
+                    {% endif %}
+                  </fieldset>
 
-                <fieldset class="form-group m-b-10">
-                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audioform.audio_type.label_tag }}</label>
-                  {{ audioform.audio_type }}
-                  {% if audioform.audio_type.errors %}
-                    <small class="text-muted">{{ audioform.audio_type.errors }}</small>
-                  {% endif %}
-                </fieldset>
+                  <fieldset class="form-group m-b-10">
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audioassetform.asset_title.label_tag }}</label>
+                    {{ audioassetform.asset_title }}
+                    {% if audioassetform.asset_title.errors %}
+                      <small class="text-muted">{{ audioassetform.asset_title.errors }}</small>
+                    {% endif %}
+                  </fieldset>
 
-                <fieldset class="form-group m-b-10">
-                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audioform.keywords.label_tag }}</label>
-                  {{ audioform.keywords }}
-                  {% if audioform.keywords.errors %}
-                    <small class="text-muted">{{ audioform.keywords.errors }}</small>
-                  {% endif %}
-                </fieldset>
+                  <fieldset class="form-group m-b-10">
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audioassetform.audio_type.label_tag }}</label>
+                    {{ audioassetform.audio_type }}
+                    {% if audioassetform.audio_type.errors %}
+                      <small class="text-muted">{{ audioassetform.audio_type.errors }}</small>
+                    {% endif %}
+                  </fieldset>
 
-              </div>
-              <!-- End Left Col -->
-              <!-- Right Col -->
-              <div class="col-md-6">
+                  <fieldset class="form-group m-b-10">
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audioassetform.keywords.label_tag }}</label>
+                    {{ audioassetform.keywords }}
+                    {% if audioassetform.keywords.errors %}
+                      <small class="text-muted">{{ audioassetform.keywords.errors }}</small>
+                    {% endif %}
+                  </fieldset>
 
-                <fieldset class="form-group m-b-10">
-                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audioform.asset_description.label_tag }}</label>
-                  {{ audioform.asset_description }}
-                  {% if audioform.asset_description.errors %}
-                    <small class="text-muted">{{ audioform.asset_description.errors }}</small>
-                  {% endif %}
-                </fieldset>
+                </div>
+                <!-- End Left Col -->
+                <!-- Right Col -->
+                <div class="col-md-6">
 
-                <fieldset class="form-group m-b-10">
-                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audioform.attribution.label_tag }}</label>
-                  {{ audioform.attribution }}
-                  {% if audioform.attribution.errors %}
-                    <small class="text-muted">{{ audioform.attribution.errors }}</small>
-                  {% endif %}
-                </fieldset>
+                  <fieldset class="form-group m-b-10">
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audioassetform.asset_description.label_tag }}</label>
+                    {{ audioassetform.asset_description }}
+                    {% if audioassetform.asset_description.errors %}
+                      <small class="text-muted">{{ audioassetform.asset_description.errors }}</small>
+                    {% endif %}
+                  </fieldset>
 
-              </div>
-              <!-- End Right Col -->
-              <!-- ===================================== -->
-              <!-- ===================================== -->
-              <div class="hidden-audio-inputs">>
-                    <!-- Insert custom content via jQuery -->
-              </div>
-              <!-- ===================================== -->
-              <!-- ===================================== -->
-              <div>
-                <button type="submit" class="btn btn-primary m-l-20">Save Audio</button>
-              </div>
+                  <fieldset class="form-group m-b-10">
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audioassetform.attribution.label_tag }}</label>
+                    {{ audioassetform.attribution }}
+                    {% if audioassetform.attribution.errors %}
+                      <small class="text-muted">{{ audioassetform.attribution.errors }}</small>
+                    {% endif %}
+                  </fieldset>
+
+                </div>
+                <!-- End Right Col -->
+                <!-- ===================================== -->
+                <!-- ===================================== -->
+                <div class="hidden-audio-inputs">>
+                        <!-- Insert custom content via jQuery -->
+                  </div>
+                <!-- ===================================== -->
+                <!-- ===================================== -->
+                <div>
+                    <button type="submit" class="btn btn-primary m-l-20">Save Audio</button>
+                </div>
+
               </form>
               </div>
             </div>

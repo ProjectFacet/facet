@@ -166,10 +166,10 @@ def story_detail(request, pk):
     documents = Organization.get_org_document_library(request.user.organization)
     audiofiles = Organization.get_org_audio_library(request.user.organization)
     video = Organization.get_org_video_library(request.user.organization)
-    imageform=ImageAssetForm()
-    documentform=DocumentAssetForm()
-    audioform=AudioAssetForm()
-    videoform=VideoAssetForm()
+    imageassetform=ImageAssetForm()
+    documentassetform=DocumentAssetForm()
+    audioassetform=AudioAssetForm()
+    videoassetform=VideoAssetForm()
 
 # ------------------------------ #
 #           webfacet             #
@@ -487,10 +487,10 @@ def story_detail(request, pk):
         'videohistory': videohistory,
         'videocommentform': videocommentform,
         'images': images,
-        'imageform': imageform,
-        'documentform': documentform,
-        'audioform': audioform,
-        'videoform': videoform,
+        'imageassetform': imageassetform,
+        'documentassetform': documentassetform,
+        'audioassetform': audioassetform,
+        'videoassetform': videoassetform,
         'webfacet_images': webfacet_images,
         'printfacet_images': printfacet_images,
         'audiofacet_images': audiofacet_images,
