@@ -21,70 +21,58 @@
               <!-- Left Col -->
               <div class="col-md-6">
 
-                <div class="form-group custom-form">
-                  <a href="#" data-toggle="tooltip" title="{{ imageform.photo.help_text }}"><span class="field-label">{{ imageform.photo.label_tag }}</span></a>
+                <fieldset class="form-group m-b-10">
+                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ imageform.photo.label_tag }}</label>
                   {{ imageform.photo }}
                   {% if imageform.photo.errors %}
-                    <div class="alert alert-warning" role="alert">
-                    {{ imageform.photo.errors }}
-                    </div>
+                    <small class="text-muted">{{ imageform.photo.errors }}</small>
                   {% endif %}
-                </div>
+                </fieldset>
 
-                <div class="form-group custom-form">
-                  <a href="#" data-toggle="tooltip" title="{{ imageform.asset_title.help_text }}"><span class="field-label">{{ imageform.asset_title.label_tag }}</span></a>
+                <fieldset class="form-group m-b-10">
+                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin"><span class="field-label">{{ imageform.asset_title.label_tag }}</label>
                   {{ imageform.asset_title }}
                   {% if imageform.asset_title.errors %}
-                    <div class="alert alert-warning" role="alert">
-                    {{ imageform.asset_title.errors }}
-                    </div>
+                    <small class="text-muted">{{ imageform.asset_title.errors }}</small>
                   {% endif %}
-                </div>
+                </fieldset>
 
-                <div class="form-group custom-form">
-                  <a href="#" data-toggle="tooltip" title="{{ imageform.image_type.help_text }}"><span class="field-label">{{ imageform.image_type.label_tag }}</span></a>
+                <fieldset class="form-group m-b-10">
+                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ imageform.image_type.label_tag }}</label>
                   {{ imageform.image_type }}
                   {% if imageform.image_type.errors %}
-                    <div class="alert alert-warning" role="alert">
-                    {{ imageform.image_type.errors }}
-                    </div>
+                    <small class="text-muted">{{ imageform.image_type.errors }}</small>
                   {% endif %}
-                </div>
+                </fieldset>
 
-                <div class="form-group custom-form">
-                  <a href="#" data-toggle="tooltip" title="{{ imageform.keywords.help_text }}"><span class="field-label">{{ imageform.keywords.label_tag }}</span></a>
+                <fieldset class="form-group m-b-10">
+                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ imageform.keywords.label_tag }}</label>
                   {{ imageform.keywords }}
                   {% if imageform.keywords.errors %}
-                    <div class="alert alert-warning" role="alert">
-                    {{ imageform.keywords.errors }}
-                    </div>
+                    <small class="text-muted">{{ imageform.keywords.errors }}</small>
                   {% endif %}
-                </div>
+                </fieldset>
 
               </div>
               <!-- End Left Col -->
               <!-- Right Col -->
               <div class="col-md-6">
 
-                <div class="form-group custom-form">
-                  <a href="#" data-toggle="tooltip" title="{{ imageform.asset_description.help_text }}"><span class="field-label">{{ imageform.asset_description.label_tag }}</span></a>
+                <fieldset class="form-group m-b-10">
+                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ imageform.asset_description.label_tag }}</label>
                   {{ imageform.asset_description }}
                   {% if imageform.asset_description.errors %}
-                    <div class="alert alert-warning" role="alert">
-                    {{ imageform.asset_description.errors }}
-                    </div>
+                    <small class="text-muted">{{ imageform.asset_description.errors }}</small>
                   {% endif %}
-                </div>
+                </fieldset>
 
-                <div class="form-group custom-form">
-                  <a href="#" data-toggle="tooltip" title="{{ imageform.attribution.help_text }}"><span class="field-label">{{ imageform.attribution.label_tag }}</span></a>
+                <fieldset class="form-group m-b-10">
+                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ imageform.attribution.label_tag }}</label>
                   {{ imageform.attribution }}
                   {% if imageform.attribution.errors %}
-                    <div class="alert alert-warning" role="alert">
-                    {{ imageform.attribution.errors }}
-                    </div>
+                    <small class="text-muted">{{ imageform.attribution.errors }}</small>
                   {% endif %}
-                </div>
+                </fieldset>
 
               </div>
               <!-- End Right Col -->

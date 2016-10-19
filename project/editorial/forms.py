@@ -536,6 +536,7 @@ class ImageAssetForm(forms.ModelForm):
             'keywords': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Keywords'}),
         }
 
+
 class AddImageForm(forms.Form):
     """ Add existing image(s) to a facet."""
 
@@ -548,6 +549,7 @@ class AddImageForm(forms.Form):
         widget=CheckboxSelectMultiple,
         queryset = ImageAsset.objects.all()
     )
+
 
 class DocumentAssetForm(forms.ModelForm):
     """Upload document to a facet."""
@@ -570,6 +572,7 @@ class DocumentAssetForm(forms.ModelForm):
             'keywords': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Keywords'}),
         }
 
+
 class AddDocumentForm(forms.Form):
     """ Add existing document(s) to a facet."""
 
@@ -582,6 +585,7 @@ class AddDocumentForm(forms.Form):
         widget=CheckboxSelectMultiple,
         queryset = DocumentAsset.objects.all()
     )
+
 
 class AudioAssetForm(forms.ModelForm):
     """Upload audio to a facet."""
@@ -601,10 +605,10 @@ class AudioAssetForm(forms.ModelForm):
             'asset_title': TextInput(attrs={'class': 'form-control', 'placeholder': 'Asset Title'}),
             'asset_description': Textarea(attrs={'class': 'form-control', 'rows':3, 'placeholder': 'Description'}),
             'attribution': Textarea(attrs={'class': 'form-control', 'rows':3, 'placeholder': 'Attribution'}),
-            'link': TextInput(attrs={'class': 'form-control', 'placeholder': 'Link'}),
             'audio_type': Select(attrs={'class': 'form-control'}),
             'keywords': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Keywords'}),
         }
+
 
 class AddAudioForm(forms.Form):
     """ Add existing audio to a facet."""
@@ -612,12 +616,13 @@ class AddAudioForm(forms.Form):
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop("request")
         super(AddAudioForm, self).__init__(*args, **kwargs)
-        self.fields['documents'].queryset = Organization.get_org_audio_library(self.request.user.organization)
+        self.fields['audio'].queryset = Organization.get_org_audio_library(self.request.user.organization)
 
     audio = forms.ModelMultipleChoiceField(
         widget=CheckboxSelectMultiple,
         queryset = AudioAsset.objects.all()
     )
+
 
 class VideoAssetForm(forms.ModelForm):
     """Upload video to a facet."""
@@ -640,6 +645,7 @@ class VideoAssetForm(forms.ModelForm):
             'video_type': Select(attrs={'class': 'form-control'}),
             'keywords': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Keywords'}),
         }
+
 
 class AddVideoForm(forms.Form):
     """ Add existing video to a facet."""

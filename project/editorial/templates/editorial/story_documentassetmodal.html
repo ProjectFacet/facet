@@ -21,70 +21,58 @@
               <!-- Left Col -->
               <div class="col-md-6">
 
-                <div class="form-group custom-form">
-                  <a href="#" data-toggle="tooltip" title="{{ documentform.document.help_text }}"><span class="field-label">{{ documentform.document.label_tag }}</span></a>
+                <fieldset class="form-group m-b-10">
+                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ documentform.document.label_tag }}</label>
                   {{ documentform.document }}
                   {% if documentform.document.errors %}
-                    <div class="alert alert-warning" role="alert">
-                    {{ documentform.document.errors }}
-                    </div>
+                    <small class="text-muted">{{ documentform.document.errors }}</small>
                   {% endif %}
-                </div>
+                </fieldset>
 
-                <div class="form-group custom-form">
-                  <a href="#" data-toggle="tooltip" title="{{ documentform.asset_title.help_text }}"><span class="field-label">{{ documentform.asset_title.label_tag }}</span></a>
+                <fieldset class="form-group m-b-10">
+                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ documentform.asset_title.label_tag }}</label>
                   {{ documentform.asset_title }}
                   {% if documentform.asset_title.errors %}
-                    <div class="alert alert-warning" role="alert">
-                    {{ documentform.asset_title.errors }}
-                    </div>
+                    <small class="text-muted">{{ documentform.asset_title.errors }}</small>
                   {% endif %}
-                </div>
+                </fieldset>
 
-                <div class="form-group custom-form">
-                  <a href="#" data-toggle="tooltip" title="{{ documentform.doc_type.help_text }}"><span class="field-label">{{ documentform.doc_type.label_tag }}</span></a>
+                <fieldset class="form-group m-b-10">
+                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ documentform.doc_type.label_tag }}</label>
                   {{ documentform.doc_type }}
                   {% if documentform.doc_type.errors %}
-                    <div class="alert alert-warning" role="alert">
-                    {{ documentform.doc_type.errors }}
-                    </div>
+                    <small class="text-muted">{{ documentform.doc_type.errors }}</small>
                   {% endif %}
-                </div>
+                </fieldset>
 
-                <div class="form-group custom-form">
-                  <a href="#" data-toggle="tooltip" title="{{ documentform.keywords.help_text }}"><span class="field-label">{{ documentform.keywords.label_tag }}</span></a>
+                <fieldset class="form-group m-b-10">
+                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ documentform.keywords.label_tag }}</label>
                   {{ documentform.keywords }}
                   {% if documentform.keywords.errors %}
-                    <div class="alert alert-warning" role="alert">
-                    {{ documentform.keywords.errors }}
-                    </div>
+                    <small class="text-muted">{{ documentform.keywords.errors }}</small>
                   {% endif %}
-                </div>
+                </fieldset>
 
               </div>
               <!-- End Left Col -->
               <!-- Right Col -->
               <div class="col-md-6">
 
-                <div class="form-group custom-form">
-                  <a href="#" data-toggle="tooltip" title="{{ documentform.asset_description.help_text }}"><span class="field-label">{{ documentform.asset_description.label_tag }}</span></a>
+                <fieldset class="form-group m-b-10">
+                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ documentform.asset_description.label_tag }}</label>
                   {{ documentform.asset_description }}
                   {% if documentform.asset_description.errors %}
-                    <div class="alert alert-warning" role="alert">
-                    {{ documentform.asset_description.errors }}
-                    </div>
+                    <small class="text-muted">{{ documentform.asset_description.errors }}</small>
                   {% endif %}
-                </div>
+                </fieldset>
 
-                <div class="form-group custom-form">
-                  <a href="#" data-toggle="tooltip" title="{{ documentform.attribution.help_text }}"><span class="field-label">{{ documentform.attribution.label_tag }}</span></a>
+                <fieldset class="form-group m-b-10">
+                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ documentform.attribution.label_tag }}</label>
                   {{ documentform.attribution }}
                   {% if documentform.attribution.errors %}
-                    <div class="alert alert-warning" role="alert">
-                    {{ documentform.attribution.errors }}
-                    </div>
+                    <small class="text-muted">{{ documentform.attribution.errors }}</small>
                   {% endif %}
-                </div>
+                </fieldset>
 
               </div>
               <!-- End Right Col -->

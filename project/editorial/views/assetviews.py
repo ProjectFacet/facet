@@ -281,8 +281,8 @@ def add_audio(request):
                 facet_id = request.POST.get('videofacet')
                 facet = get_object_or_404(VideoFacet, id=facet_id)
 
-            audios = request.POST.getlist('audios')
-            for audio in audios:
+            audio_list = request.POST.getlist('audio')
+            for audio in audio_list:
                 audio_ins = get_object_or_404(AudioAsset, id=audio)
                 facet.audio_assets.add(audio_ins)
             facet.save()
