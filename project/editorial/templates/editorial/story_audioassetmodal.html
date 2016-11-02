@@ -107,7 +107,7 @@
                 <form action="{% url 'add_audio' %}" method="POST" class="post-form" name="addaudio">
                   {% csrf_token %}
                   <div class="row audio-library">
-                  {% for audio in audio %}
+                  {% for audio in audiofiles %}
                     <div class="col-md-2">
                       <label>
                         <img class="img-responsive" src="{{ audio.display_photo.url }}" alt="{{ audio.asset_title }}">
