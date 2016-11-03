@@ -108,7 +108,13 @@
                   {% csrf_token %}
                   <div class="row audio-library">
                   {% for audio in audiofiles %}
-                    <div class="col-md-2">
+                    <div class="col-md-6">
+                      {% if audio.audio_type == 'WAV' %}
+                      <audio id="{{ audio.asset_title }}" controls="controls" preload="metadata">
+                        <source src="{{ audio.audio.url }}" type="audio/wav"/>
+                        Your browser does not support the audioplayer.
+                      </audio>
+                      {% endif %}
                       <label>
                         <img class="img-responsive" src="{{ audio.display_photo.url }}" alt="{{ audio.asset_title }}">
                         <input type="checkbox" name="audio" value="{{ audio.id }}">

@@ -1,0 +1,15 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg xmlns="http://www.w3.org/2000/svg">
+<metadata>Copyright (C) 2014 by original authors @ fontello.com</metadata>
+<defs>
+<font id="flat-audio" horiz-adv-x="1000" >
+<font-face font-family="flat-audio" font-weight="400" font-stretch="normal" units-per-em="1000" ascent="850" descent="-150" />
+<missing-glyph horiz-adv-x="1000" />
+<glyph glyph-name="resize-full" unicode="&#xe744;" d="m476 746l316 0l0-316l-100 124l-146-152l-100 100l152 146z m-230-444l100-100l-152-146l122-100l-316 0l0 316l100-122z" horiz-adv-x="792" />
+<glyph glyph-name="resize-small" unicode="&#xe746;" d="m156 146l-106 100l296 0l0-296l-100 106l-146-156l-100 100z m744 554l-154-144l104-100l-294 0l0 294l100-104l144 154z" horiz-adv-x="900" />
+<glyph glyph-name="play" unicode="&#x25b6;" d="m486 376q14-10 14-26q0-14-14-24l-428-266q-24-16-41-6t-17 40l0 514q0 30 17 40t41-6z" horiz-adv-x="500" />
+<glyph glyph-name="pause" unicode="&#x2016;" d="m440 700q90 0 90-64l0-570q0-66-90-66t-90 66l0 570q0 64 90 64z m-350 0q90 0 90-64l0-570q0-66-90-66t-90 66l0 570q0 64 90 64z" horiz-adv-x="530" />
+</font>
+</defs>
+</svg>

@@ -96,7 +96,12 @@ def index(request):
 def test(request):
     """ Use for rapid testing of new pages."""
 
-    return render(request, 'editorial/test.html')
+    audiofiles = AudioAsset.objects.all()
+    print audiofiles
+
+    return render(request, 'editorial/test.html', {
+        'audiofiles': audiofiles,
+    })
 
 
 #----------------------------------------------------------------------#

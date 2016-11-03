@@ -1,0 +1,258 @@
+/*
+ * flat.video Skin for jPlayer
+ * http://www.jplayer.org
+ *
+ * Copyright (c) 2014 Happyworm Ltd
+ *
+ * Authors: Mark Boas, Mark J Panaghiston
+ * Version: 3.0.0
+ * Date: 14th November 2014
+ */
+
+@charset "UTF-8";
+
+@font-face {
+	/* Entypo pictograms by Daniel Bruce — www.entypo.com */
+	font-family: 'flat-video';
+	src: url("font/flat-video.eot");
+	src: url("font/flat-video.eot#iefix") format('embedded-opentype'),
+		url("data:font/woff;base64,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") format('woff'),
+		url("font/flat-video.ttf") format('truetype'),
+		url("font/flat-video.svg#flat-video") format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+/* Setting the size.
+ * 1) With the responsive design, the skin will adapt to match the container width
+ * 2) For fixed width, the 360p and 270p classes given below
+ * 3) The class name, width and height must match the jPlayer size option setting
+ * 4) HDTV aspect ratio is 16:9
+ * 5) More info at http://jplayer.org/latest/developer-guide/#jPlayer-option-size
+ */
+
+.jp-flat-video-responsive {
+	min-width: 320px; /* 180p */
+	max-width: 1280px; /* 720p */
+	width: 100%;
+	height: auto;
+}
+
+.jp-flat-video-360p {
+	width: 640px;
+	height: 360px;
+}
+
+.jp-flat-video-270p {
+	width: 480px;
+	height: 270px;
+}
+
+.jp-flat-video {
+	position: relative;
+	font-family: 'Source Sans Pro', sans-serif;
+	text-align: left;
+	min-height: 64px;
+
+	/* Hide iOS touch highlight */
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
+
+	/* Disable selection */
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+
+	/* define your text color here */
+	color: #ffffff;
+}
+
+.jp-flat-video,
+.jp-flat-video * {
+	margin: 0;
+	padding: 0;
+	border: none;
+	font-size: 0;
+	line-height: 0;
+}
+
+.jp-flat-video *:focus {
+	/* Disable the browser focus highlighting. */
+	outline:none;
+}
+.jp-flat-video button::-moz-focus-inner {
+	/* Disable the browser CSS3 focus highlighting. */
+	border: 0;
+}
+
+.jp-flat-video-full {
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+}
+
+.jp-flat-video .jp-jplayer video {
+	background-color:#000;
+}
+
+.jp-flat-video .jp-gui {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	height: 64px;
+}
+
+.jp-flat-video .jp-control {
+	position: absolute;
+	top: 0;
+	width: 64px;
+	height: 100%;
+
+	/* define your pause/play and fullscreen/restore button background color here */
+	background-color: #00aef6;
+}
+
+.jp-flat-video .jp-play-control {
+	left: 0;
+}
+
+.jp-flat-video .jp-screen-control {
+	right: 0;
+}
+
+.jp-flat-video .jp-button {
+	display: block;
+	text-decoration: none;
+
+	width: 64px;
+	height: 100%;
+	font-size: 32px;
+	line-height: 64px;
+
+	text-align: center;
+	background: none;
+	cursor: pointer;
+
+	/* define your pause/play and fullscreen/restore button icon color here */
+	color: #ffffff;
+}
+.jp-flat-video .jp-button:focus {
+	/* define your pause/play button in focus icon color here */
+	color: #e5f7ff;
+}
+
+.jp-flat-video .jp-button:before {
+	display: block;
+
+	font-family: 'flat-video';
+	font-style: normal;
+	font-weight: normal;
+	text-decoration: none;
+	font-variant: normal;
+	text-transform: none;
+	speak: none;
+
+	width: 64px;
+	line-height: 64px;
+
+	text-align: center;
+	opacity: 1.0;
+}
+
+.jp-flat-video.jp-state-playing .jp-play:before {
+	content: '\2016';
+}
+.jp-flat-video .jp-play:before {
+	content: '\25b6';
+}
+.jp-flat-video.jp-state-full-screen .jp-full-screen:before {
+	content: '\E746';
+}
+.jp-flat-video .jp-full-screen:before {
+	content: '\E744';
+}
+
+.jp-flat-video .jp-bar {
+	position: absolute;
+	top: 0;
+	left: 64px;
+	right: 64px;
+	height: 100%;
+
+	/* define your unseekable progress bar background color here - only noticeable with the flash solution as it downloads */
+	background-color: #000000;
+}
+
+.jp-flat-video .jp-seek-bar.jp-seek-bar-display {
+	min-width: 0;
+
+	/* define your unplayed progress bar background color here */
+	background-color: #232323;
+}
+.jp-flat-video .jp-seek-bar {
+	position: absolute;
+	top: 0;
+	left: 0;
+	min-width: 100%;
+	height: 100%;
+
+	cursor: pointer;
+}
+
+.jp-flat-video .jp-play-bar {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 0;
+	height: 100%;
+
+	/* define your played progress bar background color here */
+	background-color: #0082b2;
+}
+
+.jp-flat-video .jp-details,
+.jp-flat-video .jp-timing {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 100%;
+	padding: 0 12px;
+
+	font-size: 16px;
+	line-height: 64px;
+}
+.jp-flat-video .jp-timing {
+	text-align: right;
+}
+.jp-flat-video .jp-title,
+.jp-flat-video .jp-duration {
+	font-size: 16px;
+	line-height: 64px;
+}
+
+.jp-flat-video .jp-no-solution {
+	position: absolute;
+	bottom: 0;
+	left: 64px;
+	right: 64px;
+	height: 48px; /* 64px - 8px - 8px = 48px */
+	padding: 8px 0;
+
+	line-height: 24px;
+	font-size: 16px;
+	text-align: center;
+	display: none;
+
+	/* define your error message text color here */
+	color: #000000;
+
+	/* define your error message background color here */
+	background-color: #b28282;
+}

@@ -52,12 +52,17 @@
     <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
 
+    <!-- Flat jPlayer Skin -->
+    <link rel="stylesheet" href="{% static 'flat-jplayer/css/flat.audio.css' %}">
+    <link rel="stylesheet" href="{% static 'flat-jplayer/css/flat.video.css' %}">
+
     <!-- Project Facet Styles -->
     <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
     <link rel="stylesheet" href="{% static 'css/chosen.css' %}">
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
     <!-- <link rel="stylesheet" href="{% static 'css/facet.css' %}"> -->
     <link rel="stylesheet" href="{% static 'css/facetui.css' %}">
+
 
     <!-- ================================================= -->
     <!--                 Javascript                    -->
@@ -86,6 +91,11 @@
     <!-- jQuery Sticky Tabs -->
     <!-- Allows for direct linking to bootstrap tabs -->
     <script src="{% static 'scripts/jquery.stickytabs.js' %}"></script>
+
+    <!-- Flat jPlayer JS -->
+    <script src="{% static 'flat-jplayer/js/jquery.jplayer.js' %}"></script>
+    <script src="{% static 'flat-jplayer/js/flat.audio.js' %}"></script>
+    <script src="{% static 'flat-jplayer/js/flat.video.js' %}"></script>
 
     {% block head %}
     <!-- Child Head Items -->
@@ -595,6 +605,10 @@
     <!-- <script src="{% static 'bower_components/fullcalendar/dist/fullcalendar.js' %}"></script> -->
     <!-- <script src="{% static 'scripts/extras-calendar.js' %}"></script> -->
 
+    <!-- Flat jPlayer JS -->
+    <!-- <script src="{% static 'flat-jplayer/js/jquery.jplayer.js' %}"></script>
+    <script src="{% static 'flat-jplayer/js/flat.audio.js' %}"></script>
+    <script src="{% static 'flat-jplayer/js/flat.video.js' %}"></script> -->
     <!------------>
     <!-- OLD JS -->
     <!------------>
