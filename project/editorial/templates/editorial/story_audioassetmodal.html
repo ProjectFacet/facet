@@ -108,16 +108,66 @@
                   {% csrf_token %}
                   <div class="row audio-library">
                   {% for audio in audiofiles %}
-                    <div class="col-md-6">
-                      {% if audio.audio_type == 'WAV' %}
-                      <audio id="{{ audio.asset_title }}" controls="controls" preload="metadata">
-                        <source src="{{ audio.audio.url }}" type="audio/wav"/>
-                        Your browser does not support the audioplayer.
-                      </audio>
+                    <div class="col-md-3">
+                      {% if audio.audio_type == 'MP3' or audio.audio_type == 'WAV' %}
+                      <div id="jplayer_audio_{{audio.pk}}" class="jp-jplayer"></div>
+                      <div id="jp_container_audio_{{audio.pk}}" class="jp-flat-audio m-b-10" role="application" aria-label="media player">
+                        <div class="jp-play-control jp-control">
+                          <button class="jp-play jp-button" role="button" aria-label="play" tabindex="0"></button>
+                        </div>
+                        <div class="jp-bar">
+                          <div class="jp-seek-bar jp-seek-bar-display"></div>
+                          <div class="jp-seek-bar">
+                            <div class="jp-play-bar"></div>
+                            <div class="jp-details"><span class="jp-title" aria-label="title"></span></div>
+                            <div class="jp-timing"><span class="jp-duration" role="timer" aria-label="duration"></span></div>
+                          </div>
+                        </div>
+                        <div class="jp-no-solution">
+                          Media Player Error<br />
+                          Update your browser or Flash plugin
+                        </div>
+                      </div>
+                      <script>
+                      jQuery(document).ready(function($) {
+                        $("#jplayer_audio_{{audio.pk}}").jPlayer({
+                          ready: function(event) {
+                            $(this).jPlayer("setMedia", {
+                              title: "{{audio.asset_title}}",
+                              wav: "{{audio.audio.url}}",
+                              mp3: "{{audio.audio.url}}",
+                            });
+                          },
+                          play: function() { // Avoid multiple jPlayers playing together.
+                            $(this).jPlayer("pauseOthers");
+                          },
+                          timeFormat: {
+                            padMin: false
+                          },
+                          swfPath: "js",
+                          supplied: "wav, mp3",
+                          cssSelectorAncestor: "#jp_container_audio_{{audio.pk}}",
+                          useStateClassSkin: true,
+                          autoBlur: false,
+                          smoothPlayBar: true,
+                          remainingDuration: true,
+                          keyEnabled: true,
+                          keyBindings: {
+                            // Disable some of the default key controls
+                            loop: null,
+                            muted: null,
+                            volumeUp: null,
+                            volumeDown: null
+                          },
+                          wmode: "window"
+                        });
+                      });
+                      </script>
                       {% endif %}
+                    </div>
+                    <div class="col-md-1">
                       <label>
-                        <img class="img-responsive" src="{{ audio.display_photo.url }}" alt="{{ audio.asset_title }}">
-                        <input type="checkbox" name="audio" value="{{ audio.id }}">
+                        <input class="inline" type="checkbox" name="audio" value="{{ audio.id }}">
                       </label>
                     </div>
                     {% if forloop.counter|divisibleby:"6" and not forloop.last %}

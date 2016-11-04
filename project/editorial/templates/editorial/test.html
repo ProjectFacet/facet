@@ -26,9 +26,7 @@
   <div class="col-xs-12">
 
     {% for audio in audiofiles %}
-
-    {% if audio.audio_type == 'WAV' %}
-
+      {% if audio.audio_type == 'WAV' or audio.audio_type == 'MP3' %}
       <div id="jplayer_audio_{{audio.pk}}" class="jp-jplayer"></div>
 
       <div id="jp_container_audio_{{audio.pk}}" class="jp-flat-audio" role="application" aria-label="media player">
@@ -48,7 +46,6 @@
           Update your browser or Flash plugin
         </div>
       </div>
-
       <script>
       jQuery(document).ready(function($) {
         $("#jplayer_audio_{{audio.pk}}").jPlayer({
@@ -56,6 +53,7 @@
             $(this).jPlayer("setMedia", {
               title: "{{audio.asset_title}}",
               wav: "{{audio.audio.url}}",
+              mp3: "{{audio.audio.url}}",
             });
           },
           play: function() { // Avoid multiple jPlayers playing together.
@@ -65,7 +63,7 @@
             padMin: false
           },
           swfPath: "js",
-          supplied: "wav",
+          supplied: "wav, mp3",
           cssSelectorAncestor: "#jp_container_audio_{{audio.pk}}",
           useStateClassSkin: true,
           autoBlur: false,
@@ -83,12 +81,7 @@
         });
       });
       </script>
-
-
-
-
-    {% endif %}
-
+      {% endif %}
     {% endfor %}
 
 

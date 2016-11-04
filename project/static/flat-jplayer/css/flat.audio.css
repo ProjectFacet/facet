@@ -32,10 +32,10 @@
 	font-family: 'Source Sans Pro', sans-serif;
 	text-align: left;
 
-	min-width:320px;
+	min-width:160px;
 	max-width:1280px;
 	width: 100%;
-	height: 64px;
+	height: 32px;
 
 	/* Hide iOS touch highlight */
 	-webkit-tap-highlight-color: rgba(0,0,0,0);
@@ -73,7 +73,7 @@
 .jp-flat-audio .jp-control {
 	position: absolute;
 	top: 0;
-	width: 64px;
+	width: 32px;
 	height: 100%;
 
 	/* define your pause/play button background color here */
@@ -88,10 +88,10 @@
 	display:block;
 	text-decoration: none;
 
-	width: 64px;
+	width: 32px;
 	height: 100%;
-	font-size: 32px;
-	line-height: 64px;
+	font-size: 16px;
+	line-height: 32px;
 
 	text-align: center;
 	background: none;
@@ -116,8 +116,8 @@
 	text-transform: none;
 	speak: none;
 
-	width: 64px;
-	line-height: 64px;
+	width: 32px;
+	line-height: 32px;
 
 	text-align: center;
 	opacity: 1.0;
@@ -133,18 +133,18 @@
 .jp-flat-audio .jp-bar {
 	position: absolute;
 	top: 0;
-	left: 64px;
+	left: 32px;
 	right: 0;
 	height: 100%;
 
 	/* define your unseekable progress bar background color here - only noticeable with the flash solution as it downloads */
-	background-color: #000000;
+	background-color: #3c414f;
 }
 .jp-flat-audio .jp-seek-bar.jp-seek-bar-display {
 	min-width: 0;
 
 	/* define your unplayed progress bar background color here */
-	background-color: #232323;
+	background-color: #3c414f;
 }
 .jp-flat-audio .jp-seek-bar {
 	position: absolute;
@@ -176,28 +176,28 @@
 	height: 100%;
 	padding: 0 12px;
 
-	font-size: 16px;
-	line-height: 64px;
+	font-size: 12px;
+	line-height: 32px;
 }
 .jp-flat-audio .jp-timing {
 	text-align: right;
 }
 .jp-flat-audio .jp-title,
 .jp-flat-audio .jp-duration {
-	font-size: 16px;
-	line-height: 64px;
+	font-size: 12px;
+	line-height: 32px;
 }
 
 .jp-flat-audio .jp-no-solution {
 	position: absolute;
 	top: 0;
-	left: 64px;
+	left: 32px;
 	right: 0;
-	height: 48px; /* 64px - 8px - 8px = 48px */
+	height: 16px; /* 32px - 8px - 8px = 48px */
 	padding: 8px 0;
 
 	line-height: 24px;
-	font-size: 16px;
+	font-size: 12px;
 	text-align: center;
 	display: none;
 

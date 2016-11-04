@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load bootstrap3 %}
+
+<!-------------------------------------------->
+<!--      BREADCRUMB NAVIGATION             -->
+<!-------------------------------------------->
+
+{% block breadcrumb %}
+<div>
+    <ol class="breadcrumb icon-angle-right icon-th">
+      <li class="fadeIn"><a href="{% url 'dashboard' %}"> Dashboard </a></li>
+      <li class="fadeIn"><a href="{% url 'asset_library' %}" title="Return to Media Library"> Media Library </a></li>
+      <li class="fadeIn"><a href="{% url 'document_asset_detail' document.id %}" title="You are here">Document: {{document.asset_title}}  </a></li>
+    </ol>
+</div>
+{% endblock breadcrumb %}
+
+<!-------------------------------------------->
+<!--            Main Section                -->
+<!-------------------------------------------->
+
+{% block content %}
+<!-- Row One -->
+<div class="row m-b-40">
+
+  <!-- Display Document -->
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+      <h4 class="m-b-20">Document</h4>
+      <object width="100%" height="650px" data="{{ document.document.url }}"></object>
+  </div>
+
+  <!-- Document Meta -->
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+    <div class="row">
+      <div class="col-xs-12">
+        <h4 class="m-b-20">Details</h4>
+      </div>
+    </div>
+    <div class="row">
+          <form action="{% url 'document_asset_detail' pk=document.id %}" method="POST" class="post-form" enctype="multipart/form-data">
+            {% csrf_token %}
+
+                <!-- Left Col -->
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+
+                  {% comment %}
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ editimageform.photo.help_text }}"><span class="field-label">{{ editimageform.photo.label_tag }}</span></a>
+                    {{ editimageform.photo }}
+                    {% if editimageform.photo.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ editimageform.photo.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+                  {% endcomment %}
+
+                  <fieldset class="form-group m-b-10">
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ editdocumentform.asset_title.label_tag }}</label>
+                    {{ editdocumentform.asset_title }}
+                    {% if editdocumentform.asset_title.errors %}
+                      <small class="text-muted">{{ editdocumentform.asset_title.errors }}</small>
+                    {% endif %}
+                  </fieldset>
+
+                  <fieldset class="form-group m-b-10">
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ editdocumentform.doc_type.label_tag }}</label>
+                    {{ editdocumentform.doc_type }}
+                    {% if editdocumentform.doc_type.errors %}
+                      <small class="text-muted">{{ editdocumentform.doc_type.errors }}</small>
+                    {% endif %}
+                  </fieldset>
+
+                  <fieldset class="form-group m-b-10">
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ editdocumentform.keywords.label_tag }}</label>
+                    {{ editdocumentform.keywords }}
+                    {% if editdocumentform.keywords.errors %}
+                      <small class="text-muted">{{ editdocumentform.keywords.errors }}</small>
+                    {% endif %}
+                  </fieldset>
+
+                </div>
+                <!-- End Left Col -->
+
+                <!-- Right Col -->
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                  <fieldset class="form-group m-b-10">
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ editdocumentform.asset_description.label_tag }}</label>
+                    {{ editdocumentform.asset_description }}
+                    {% if editdocumentform.asset_description.errors %}
+                      <small class="text-muted">{{ editdocumentform.asset_description.errors }}</small>
+                    {% endif %}
+                  </fieldset>
+
+                  <fieldset class="form-group m-b-10">
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ editdocumentform.attribution.label_tag }}</label>
+                    {{ editdocumentform.attribution }}
+                    {% if editdocumentform.attribution.errors %}
+                      <small class="text-muted">{{ editdocumentform.attribution.errors }}</small>
+                    {% endif %}
+                  </fieldset>
+
+                  <div>
+                  <button type="submit" class="btn btn-primary">Save Changes</button>
+                  </div>
+                </div>
+            </form>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+        <hr class="content-lower-25">
+        <h4 class="m-b-20">Usage</h4>
+        {% for facet in document_usage %}
+          <p class="small-text">{{ facet.title }}</p>
+        {% endfor %}
+      </div>
+      </div>
+    </div>
+</div>
+
+
+
+
+{% endblock %}
+
+
+{% block modals %}
+{% endblock %}

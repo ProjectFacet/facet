@@ -30,7 +30,8 @@ from editorial.models import (
     AudioFacet,
     VideoFacet,
     ImageAsset,
-    DocumentAsset)
+    DocumentAsset,
+    AudioAsset)
 
 
 #----------------------------------------------------------------------#
@@ -42,10 +43,12 @@ def asset_library(request):
 
     images = ImageAsset.objects.filter(organization=request.user.organization)
     documents = DocumentAsset.objects.filter(organization=request.user.organization)
+    audiofiles = AudioAsset.objects.filter(organization=request.user.organization)
 
     return render(request, 'editorial/assets.html', {
         'images': images,
         'documents': documents,
+        'audiofiles': audiofiles,
     })
 
 #----------------------------------------------------------------------#
@@ -57,7 +60,6 @@ def image_asset_detail(request, pk):
 
     image = get_object_or_404(ImageAsset, id=pk)
     image_usage = ImageAsset.get_image_usage(image)
-    print "IU: ", image_usage
 
     if request.method =="POST":
         editimageform = ImageAssetForm(data=request.POST, instance=image)
@@ -73,26 +75,48 @@ def image_asset_detail(request, pk):
         'editimageform': editimageform,
     })
 
+
 def document_asset_detail(request, pk):
     """ Display detail information for a specific document asset."""
 
     document = get_object_or_404(DocumentAsset, id=pk)
     document_usage = DocumentAsset.get_document_usage(document)
-    print "IU: ", document_usage
 
-    # if request.method =="POST":
-    #     editimageform = ImageAssetForm(data=request.POST, instance=image)
-    #     if editimageform.is_valid():
-    #         editimageform.save()
-    #         return redirect('asset_detail', pk=image.id)
-    # else:
-    #     editimageform = ImageAssetForm(instance=image)
-    #
-    # return render(request, 'editorial/imageassetdetail.html', {
-    #     'image': image,
-    #     'image_usage': image_usage,
-    #     'editimageform': editimageform,
-    # })
+
+    if request.method =="POST":
+        editdocumentform = ImageDocumentForm(data=request.POST, instance=document)
+        if editdocumentform.is_valid():
+            editdocumentform.save()
+            return redirect('asset_detail', pk=document.id)
+    else:
+        editdocumentform = DocumentAssetForm(instance=document)
+
+    return render(request, 'editorial/documentassetdetail.html', {
+        'document': document,
+        'document_usage': document_usage,
+        'editdocumentform': editdocumentform,
+    })
+
+
+def audio_asset_detail(request, pk):
+    """ Display detail information for a specific audio asset."""
+
+    audio = get_object_or_404(AudioAsset, id=pk)
+    audio_usage = AudioAsset.get_audio_usage(audio)
+
+    if request.method =="POST":
+        editaudioform = AudioAssetForm(data=request.POST, instance=audio)
+        if editaudioform.is_valid():
+            editaudioform.save()
+            return redirect('asset_detail', pk=audio.id)
+    else:
+        editaudioform = AudioAssetForm(instance=audio)
+
+    return render(request, 'editorial/audioassetdetail.html', {
+        'audio': audio,
+        'audio_usage': audio_usage,
+        'editaudioform': editaudioform,
+    })
 
 
 #----------------------------------------------------------------------#
