@@ -91,10 +91,14 @@ def send_network_invite(request):
     """ Send private message with link to join a network."""
 
     network = request.POST.get('network')
+    print "N: ", network
     network = get_object_or_404(Network, id=network)
     user_email = request.POST.get('invited_user')
+    print "UE: ", user_email
     user = get_object_or_404(User, email=user_email)
+    print "U: ", user
     organization = get_object_or_404(Organization, id=user.organization_id)
+    print "O: ", organization
     message_subject = "Invitation for {organization} to join {network}".format(organization = organization.name, network=network.name)
     message_text = '<form action="/network/invitation/accept/" method="POST" class="post-form"><input type="hidden" name="network" value="{network}" /><button type="submit" class="btn btn-primary">Accept Invitation</button></form>'.format(network=network.id)
     discussion = Discussion.objects.create_discussion('PRI')

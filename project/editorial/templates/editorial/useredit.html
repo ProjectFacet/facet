@@ -326,41 +326,60 @@
               {% endif %}
             </div>
 
-            <!-- User status -->
             {% comment %}
-            {% if request.user.id == user.organization.owner.id %}
+              <!-- User status -->
+              {% if request.user.id == user.organization.owner_id %}
 
-            <div class="form-group custom-form">
-              <a href="#" data-toggle="tooltip" title="{{ userform.is_superuser.help_text }}"><span class="field-label">{{ userform.is_superuser.label_tag }}</span></a>
-              {{ userform.is_superuser }}
-              {% if userform.is_superuser.errors %}
-                <div class="alert alert-warning" role="alert">
-                {{ userform.is_superuser.errors }}
+              <fieldset class="form-group m-b-20">
+                <div class="col-xs-2">
+                  <label>{{ userform.is_superuser.label_tag }}</label>
                 </div>
-              {% endif %}
-            </div>
-
-            <div class="form-group custom-form">
-              <a href="#" data-toggle="tooltip" title="{{ userform.is_staff.help_text }}"><span class="field-label">{{ userform.is_staff.label_tag }}</span></a>
-              {{ userform.is_staff }}
-              {% if userform.is_staff.errors %}
-                <div class="alert alert-warning" role="alert">
-                {{ userform.is_staff.errors }}
+                <div class="col-xs-10">
+                  {{ userform.is_superuser }}
+                  {% if userform.is_superuser.errors %}
+                  <small class="text-muted">{{ userform.is_superuser.errors }}</small>
+                  {% endif %}
                 </div>
-              {% endif %}
-            </div>
+              </fieldset>
 
-            <div class="form-group custom-form">
-              <a href="#" data-toggle="tooltip" title="{{ userform.user_type.help_text }}"><span class="field-label">{{ userform.user_type.label_tag }}</span></a>
-              {{ userform.user_type }}
-              {% if userform.user_type.errors %}
-                <div class="alert alert-warning" role="alert">
-                {{ userform.user_type.errors }}
+              <fieldset class="form-group m-b-20">
+                <div class="col-xs-2">
+                  <label>{{ userform.is_staff.label_tag }}</label>
                 </div>
-              {% endif %}
-            </div>
+                <div class="col-xs-10">
+                  {{ userform.is_staff }}
+                  {% if userform.is_staff.errors %}
+                  <small class="text-muted">{{ userform.is_staff.errors }}</small>
+                  {% endif %}
+                </div>
+              </fieldset>
 
-            {% endif %}
+              <fieldset class="form-group m-b-20">
+                <div class="col-xs-2">
+                  <label>{{ userform.user_type.label_tag }}</label>
+                </div>
+                <div class="col-xs-10">
+                  {{ userform.user_type }}
+                  {% if userform.user_type.errors %}
+                  <small class="text-muted">{{ userform.user_type.errors }}</small>
+                  {% endif %}
+                </div>
+              </fieldset>
+
+              <fieldset class="form-group m-b-20">
+                <div class="col-xs-2">
+                  <label>{{ userform.password.label_tag }}</label>
+                </div>
+                <div class="col-xs-10">
+                  {{ userform.password }}
+                  {% if userform.password.errors %}
+                  <small class="text-muted">{{ userform.password.errors }}</small>
+                  {% endif %}
+                </div>
+              </fieldset>
+
+
+              {% endif %}
             {% endcomment %}
 
             <a href="{% url 'user_detail' user.id %}"><button type="submit" class="btn btn-danger pull-right m-r-10">Cancel</button></a>

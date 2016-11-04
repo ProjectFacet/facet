@@ -75,7 +75,7 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'username', 'credit_name', 'title', 'phone', 'email', 'bio', 'location',
-                 'expertise', 'website', 'facebook', 'github', 'twitter', 'linkedin', 'instagram', 'snapchat', 'vine', 'photo']
+                 'expertise', 'website', 'facebook', 'github', 'twitter', 'linkedin', 'instagram', 'snapchat', 'vine', 'photo', 'password', 'is_superuser', 'is_staff', 'user_type']
         widgets = {
             'first_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'First Name'}),
             'last_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Last Name'}),
@@ -95,6 +95,8 @@ class UserProfileForm(forms.ModelForm):
             'vine': TextInput(attrs={'class': 'form-control', 'placeholder': 'Vine Profile Link'}),
             'bio': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Professional Bio'}),
             'expertise': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Expertise'}),
+            'password': TextInput(attrs={'class': 'form-control', 'placeholder': 'Password'}),
+            'user_type': Select(attrs={'class': 'c-select', 'id':'user-type'}),
         }
 
 # class FullUserEditForm(forms.ModelForm):
