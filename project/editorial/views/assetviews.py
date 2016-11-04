@@ -69,7 +69,7 @@ def image_asset_detail(request, pk):
     else:
         editimageform = ImageAssetForm(instance=image)
 
-    return render(request, 'editorial/imageassetdetail.html', {
+    return render(request, 'editorial/assetdetail_image.html', {
         'image': image,
         'image_usage': image_usage,
         'editimageform': editimageform,
@@ -91,7 +91,7 @@ def document_asset_detail(request, pk):
     else:
         editdocumentform = DocumentAssetForm(instance=document)
 
-    return render(request, 'editorial/documentassetdetail.html', {
+    return render(request, 'editorial/assetdetail_document.html', {
         'document': document,
         'document_usage': document_usage,
         'editdocumentform': editdocumentform,
@@ -112,10 +112,31 @@ def audio_asset_detail(request, pk):
     else:
         editaudioform = AudioAssetForm(instance=audio)
 
-    return render(request, 'editorial/audioassetdetail.html', {
+    return render(request, 'editorial/assetdetail_audio.html', {
         'audio': audio,
         'audio_usage': audio_usage,
         'editaudioform': editaudioform,
+    })
+
+
+def video_asset_detail(request, pk):
+    """ Display detail information for a specific video asset."""
+
+    video = get_object_or_404(VideoAsset, id=pk)
+    video_usage = VideoAsset.get_video_usage(video)
+
+    if request.method =="POST":
+        editvideoform = VideoAssetForm(data=request.POST, instance=video)
+        if editvideoform.is_valid():
+            editvideoform.save()
+            return redirect('asset_detail', pk=video.id)
+    else:
+        editvideoform = VideoAssetForm(instance=video)
+
+    return render(request, 'editorial/assetdetail_video.html', {
+        'video': video,
+        'video_usage': video_usage,
+        'editvideoform': editvideoform,
     })
 
 

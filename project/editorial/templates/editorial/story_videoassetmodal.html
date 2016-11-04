@@ -1,0 +1,251 @@
+<!-- Video Asset Modal -->
+
+<div class="modal fade" id="VideoAssetModal" tabindex="-1" role="dialog" aria-labelledby="VideoAssetModal">
+  <div class="modal-dialog modal-lg" role="video">
+    <div class="modal-content">
+      <div class="bs-nav-tabs nav-tabs-default">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <ul class="nav nav-tabs nav-animated-border-from-left">
+            <li class="nav-item"> <a ng-href="" class="nav-link active" data-toggle="tab" data-target="#uploadvideo">Upload a Video</a></li>
+            <li class="nav-item"> <a ng-href="" class="nav-link" data-toggle="tab" data-target="#videolibrary">Select From Video Library</a></li>
+          </ul>
+        </div>
+        <div class="modal-body" id="videomodalbody">
+          <div class="tab-content">
+            <!-- UPLOAD PANEL -->
+            <div role="tabpanel" class="tab-pane active" id="uploadvideo">
+              <div class="uploadpanel" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
+              <form action="{% url 'upload_video' %}" method="POST" class="post-form" enctype="multipart/form-data">
+              {% csrf_token %}
+
+                <!-- Left Col -->
+                <div class="col-md-6">
+
+                  <fieldset class="form-group m-b-10">
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ videoassetform.video.label_tag }}</label>
+                    {{ videoassetform.video }}
+                    {% if videoassetform.video.errors %}
+                      <small class="text-muted">{{ videoassetform.video.errors }}</small>
+                    {% endif %}
+                  </fieldset>
+
+                  <fieldset class="form-group m-b-10">
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ videoassetform.link.label_tag }}</label>
+                    {{ videoassetform.link }}
+                    {% if videoassetform.link.errors %}
+                      <small class="text-muted">{{ videoassetform.link.errors }}</small>
+                    {% endif %}
+                  </fieldset>
+
+                  <fieldset class="form-group m-b-10">
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ videoassetform.asset_title.label_tag }}</label>
+                    {{ videoassetform.asset_title }}
+                    {% if videoassetform.asset_title.errors %}
+                      <small class="text-muted">{{ videoassetform.asset_title.errors }}</small>
+                    {% endif %}
+                  </fieldset>
+
+                  <fieldset class="form-group m-b-10">
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ videoassetform.video_type.label_tag }}</label>
+                    {{ videoassetform.video_type }}
+                    {% if videoassetform.video_type.errors %}
+                      <small class="text-muted">{{ videoassetform.video_type.errors }}</small>
+                    {% endif %}
+                  </fieldset>
+
+                  <fieldset class="form-group m-b-10">
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ videoassetform.keywords.label_tag }}</label>
+                    {{ videoassetform.keywords }}
+                    {% if videoassetform.keywords.errors %}
+                      <small class="text-muted">{{ videoassetform.keywords.errors }}</small>
+                    {% endif %}
+                  </fieldset>
+
+                </div>
+                <!-- End Left Col -->
+                <!-- Right Col -->
+                <div class="col-md-6">
+
+                  <fieldset class="form-group m-b-10">
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ videoassetform.asset_description.label_tag }}</label>
+                    {{ videoassetform.asset_description }}
+                    {% if videoassetform.asset_description.errors %}
+                      <small class="text-muted">{{ videoassetform.asset_description.errors }}</small>
+                    {% endif %}
+                  </fieldset>
+
+                  <fieldset class="form-group m-b-10">
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ videoassetform.attribution.label_tag }}</label>
+                    {{ videoassetform.attribution }}
+                    {% if videoassetform.attribution.errors %}
+                      <small class="text-muted">{{ videoassetform.attribution.errors }}</small>
+                    {% endif %}
+                  </fieldset>
+
+                </div>
+                <!-- End Right Col -->
+                <!-- ===================================== -->
+                <!-- ===================================== -->
+                <div class="hidden-video-inputs">>
+                        <!-- Insert custom content via jQuery -->
+                  </div>
+                <!-- ===================================== -->
+                <!-- ===================================== -->
+                <div>
+                    <button type="submit" class="btn btn-primary m-l-20">Save Video</button>
+                </div>
+
+              </form>
+              </div>
+            </div>
+            <!-- END UPLOAD PANEL -->
+
+            <!-- LIBRARY PANEL -->
+            <div role="tabpanel" class="tab-pane" id="videolibrary">
+              <div class="videolibrary" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
+                <form action="{% url 'add_video' %}" method="POST" class="post-form" name="addvideo">
+                  {% csrf_token %}
+                  <div class="row video-library">
+                  {% for video in videos %}
+                    <div class="col-md-3">
+                      {% if video.video_type == 'MP3' or video.video_type == 'WAV' %}
+                      <div id="jplayer_video_{{video.pk}}" class="jp-jplayer"></div>
+                      <div id="jp_container_video_{{video.pk}}" class="jp-flat-video m-b-10" role="application" aria-label="media player">
+                        <div class="jp-play-control jp-control">
+                          <button class="jp-play jp-button" role="button" aria-label="play" tabindex="0"></button>
+                        </div>
+                        <div class="jp-bar">
+                          <div class="jp-seek-bar jp-seek-bar-display"></div>
+                          <div class="jp-seek-bar">
+                            <div class="jp-play-bar"></div>
+                            <div class="jp-details"><span class="jp-title" aria-label="title"></span></div>
+                            <div class="jp-timing"><span class="jp-duration" role="timer" aria-label="duration"></span></div>
+                          </div>
+                        </div>
+                        <div class="jp-no-solution">
+                          Media Player Error<br />
+                          Update your browser or Flash plugin
+                        </div>
+                      </div>
+                      <script>
+                      jQuery(document).ready(function($) {
+                        $("#jplayer_video_{{video.pk}}").jPlayer({
+                          ready: function(event) {
+                            $(this).jPlayer("setMedia", {
+                              title: "{{video.asset_title}}",
+                              wav: "{{video.video.url}}",
+                              mp3: "{{video.video.url}}",
+                            });
+                          },
+                          play: function() { // Avoid multiple jPlayers playing together.
+                            $(this).jPlayer("pauseOthers");
+                          },
+                          timeFormat: {
+                            padMin: false
+                          },
+                          swfPath: "js",
+                          supplied: "wav, mp3",
+                          cssSelectorAncestor: "#jp_container_video_{{video.pk}}",
+                          useStateClassSkin: true,
+                          autoBlur: false,
+                          smoothPlayBar: true,
+                          remainingDuration: true,
+                          keyEnabled: true,
+                          keyBindings: {
+                            // Disable some of the default key controls
+                            loop: null,
+                            muted: null,
+                            volumeUp: null,
+                            volumeDown: null
+                          },
+                          wmode: "window"
+                        });
+                      });
+                      </script>
+                      {% endif %}
+                    </div>
+                    <div class="col-md-1">
+                      <label>
+                        <input class="inline" type="checkbox" name="video" value="{{ video.id }}">
+                      </label>
+                    </div>
+                    {% if forloop.counter|divisibleby:"6" and not forloop.last %}
+                      </div><div class="row">
+                    {% endif %}
+                  {% endfor %}
+                  </div>
+
+                <!-- ===================================== -->
+                <!-- ===================================== -->
+                <div class="hidden-video-inputs">
+                    <!-- Insert custom content via jQuery -->
+                </div>
+                <!-- ===================================== -->
+                <!-- ===================================== -->
+
+                  <div class="row">
+                    <div class="col-xs-12">
+                      <button type="submit" class="btn btn-primary" name="addvideo">Add Video</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <!-- END LIBRARY PANEL -->
+          </div>
+        </div>
+        </div>
+        <div class="modal-footer"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+$('#VideoAssetModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget) // Button that triggered the modal
+    var facet = button.data('facet') // Extract info from data-* attributes
+
+    var webfacetHidden = '{% for webfacet in story.webfacetstory.all %}' +
+                '<input type="hidden" name="webfacet" value="{{ webfacet.pk }}" />' +
+                '<input  type="hidden" name="type" value="webfacet" />' +
+                '{% endfor %}'
+
+
+    var printfacetHidden = '{% for printfacet in story.printfacetstory.all %}' +
+                '<input type="hidden" name="printfacet" value="{{ printfacet.pk }}" />' +
+                '<input  type="hidden" name="type" value="printfacet" />' +
+                '{% endfor %}'
+
+    var audiofacetHidden = '{% for audiofacet in story.audiofacetstory.all %}' +
+                '<input type="hidden" name="audiofacet" value="{{ audiofacet.pk }}" />' +
+                '<input  type="hidden" name="type" value="audiofacet" />' +
+                '{% endfor %}'
+
+    var videofacetHidden = '{% for videofacet in story.videofacetstory.all %}' +
+                '<input type="hidden" name="videofacet" value="{{ videofacet.pk }}" />' +
+                '<input  type="hidden" name="type" value="videofacet" />' +
+                '{% endfor %}'
+
+
+    var modal = $(this)
+
+    if (facet == 'webfacet_video') {
+        modal.find('.hidden-video-inputs').html(webfacetHidden)
+    }
+    else if (facet == 'printfacet_video') {
+        modal.find('.hidden-video-inputs').html(printfacetHidden)
+    }
+    else if (facet == 'audiofacet_video') {
+        modal.find('.hidden-video-inputs').html(audiofacetHidden)
+    }
+    else if (facet == 'videofacet_video') {
+        modal.find('.hidden-video-inputs').html(videofacetHidden)
+    }
+    else {
+        modal.find('.hidden-video-inputs').html('<div></div>')
+    }
+})
+
+</script>

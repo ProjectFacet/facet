@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load bootstrap3 %}
+
+<!-------------------------------------------->
+<!--      BREADCRUMB NAVIGATION             -->
+<!-------------------------------------------->
+
+{% block breadcrumb %}
+<div>
+    <ol class="breadcrumb icon-angle-right icon-th">
+      <li class="fadeIn"><a href="{% url 'dashboard' %}"> Dashboard </a></li>
+      <li class="fadeIn"><a href="{% url 'asset_library' %}" title="Return to Media Library"> Media Library </a></li>
+      <li class="fadeIn"><a href="{% url 'video_asset_detail' video.id %}" title="You are here">Video: {{video.asset_title}}  </a></li>
+    </ol>
+</div>
+{% endblock breadcrumb %}
+
+<!-------------------------------------------->
+<!--            Main Section                -->
+<!-------------------------------------------->
+
+{% block content %}
+<!-- Row One -->
+<div class="row m-b-40">
+
+  <!-- Display Video -->
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+      <h4 class="m-b-20">Video</h4>
+
+  </div>
+
+  <!-- Video Meta -->
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+    <div class="row">
+      <div class="col-xs-12">
+        <h4 class="m-b-20">Details</h4>
+      </div>
+    </div>
+    <div class="row">
+          <form action="{% url 'video_asset_detail' pk=video.id %}" method="POST" class="post-form" enctype="multipart/form-data">
+            {% csrf_token %}
+
+                <!-- Left Col -->
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ editvideoform.asset_title.help_text }}"><span class="field-label">{{ editvideoform.asset_title.label_tag }}</span></a>
+                    {{ editvideoform.asset_title }}
+                    {% if editvideoform.asset_title.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ editvideoform.asset_title.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ editvideoform.video_type.help_text }}"><span class="field-label">{{ editvideoform.video_type.label_tag }}</span></a>
+                    {{ editvideoform.video_type }}
+                    {% if editvideoform.video_type.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ editvideoform.video_type.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ editvideoform.keywords.help_text }}"><span class="field-label">{{ editvideoform.keywords.label_tag }}</span></a>
+                    {{ editvideoform.keywords }}
+                    {% if editvideoform.keywords.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ editvideoform.keywords.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                </div>
+                <!-- End Left Col -->
+
+                <!-- Right Col -->
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ editvideoform.asset_description.help_text }}"><span class="field-label">{{ editvideoform.asset_description.label_tag }}</span></a>
+                    {{ editvideoform.asset_description }}
+                    {% if editvideoform.asset_description.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ editvideoform.asset_description.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ editvideoform.attribution.help_text }}"><span class="field-label">{{ editvideoform.attribution.label_tag }}</span></a>
+                    {{ editvideoform.attribution }}
+                    {% if editvideoform.attribution.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ editvideoform.attribution.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div>
+                  <button type="submit" class="btn btn-primary">Save Changes</button>
+                  </div>
+                </div>
+            </form>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+        <hr class="content-lower-25">
+        <h4 class="m-b-20">Usage</h4>
+        {% for facet in video_usage %}
+          <p class="small-text">{{ facet.title }}</p>
+        {% endfor %}
+      </div>
+      </div>
+    </div>
+</div>
+
+
+
+{% endblock %}
+
+
+{% block modals %}
+{% endblock %}
