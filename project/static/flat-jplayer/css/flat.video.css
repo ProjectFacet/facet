@@ -32,7 +32,7 @@
  */
 
 .jp-flat-video-responsive {
-	min-width: 320px; /* 180p */
+	min-width: 160px; /* 180p */
 	max-width: 1280px; /* 720p */
 	width: 100%;
 	height: auto;
@@ -52,7 +52,7 @@
 	position: relative;
 	font-family: 'Source Sans Pro', sans-serif;
 	text-align: left;
-	min-height: 64px;
+	min-height: 32px;
 
 	/* Hide iOS touch highlight */
 	-webkit-tap-highlight-color: rgba(0,0,0,0);
@@ -98,20 +98,20 @@
 }
 
 .jp-flat-video .jp-jplayer video {
-	background-color:#000;
+	background-color:#3c414f;
 }
 
 .jp-flat-video .jp-gui {
 	position: absolute;
 	bottom: 0;
 	width: 100%;
-	height: 64px;
+	height: 32px;
 }
 
 .jp-flat-video .jp-control {
 	position: absolute;
 	top: 0;
-	width: 64px;
+	width: 32px;
 	height: 100%;
 
 	/* define your pause/play and fullscreen/restore button background color here */
@@ -130,10 +130,10 @@
 	display: block;
 	text-decoration: none;
 
-	width: 64px;
+	width: 32px;
 	height: 100%;
-	font-size: 32px;
-	line-height: 64px;
+	font-size: 18px;
+	line-height: 32px;
 
 	text-align: center;
 	background: none;
@@ -158,8 +158,8 @@
 	text-transform: none;
 	speak: none;
 
-	width: 64px;
-	line-height: 64px;
+	width: 32px;
+	line-height: 32px;
 
 	text-align: center;
 	opacity: 1.0;
@@ -181,19 +181,19 @@
 .jp-flat-video .jp-bar {
 	position: absolute;
 	top: 0;
-	left: 64px;
-	right: 64px;
+	left: 32px;
+	right: 32px;
 	height: 100%;
 
 	/* define your unseekable progress bar background color here - only noticeable with the flash solution as it downloads */
-	background-color: #000000;
+	background-color: #3c414f;
 }
 
 .jp-flat-video .jp-seek-bar.jp-seek-bar-display {
 	min-width: 0;
 
 	/* define your unplayed progress bar background color here */
-	background-color: #232323;
+	background-color: #3c414f;
 }
 .jp-flat-video .jp-seek-bar {
 	position: absolute;
@@ -225,28 +225,28 @@
 	height: 100%;
 	padding: 0 12px;
 
-	font-size: 16px;
-	line-height: 64px;
+	font-size: 12px;
+	line-height: 32px;
 }
 .jp-flat-video .jp-timing {
 	text-align: right;
 }
 .jp-flat-video .jp-title,
 .jp-flat-video .jp-duration {
-	font-size: 16px;
-	line-height: 64px;
+	font-size: 12px;
+	line-height: 32px;
 }
 
 .jp-flat-video .jp-no-solution {
 	position: absolute;
 	bottom: 0;
-	left: 64px;
-	right: 64px;
-	height: 48px; /* 64px - 8px - 8px = 48px */
+	left: 32px;
+	right: 32px;
+	height: 32px; /* 64px - 8px - 8px = 48px */
 	padding: 8px 0;
 
 	line-height: 24px;
-	font-size: 16px;
+	font-size: 12px;
 	text-align: center;
 	display: none;
 

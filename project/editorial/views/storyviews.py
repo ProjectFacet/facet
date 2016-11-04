@@ -165,7 +165,7 @@ def story_detail(request, pk):
     images = Organization.get_org_image_library(request.user.organization)
     documents = Organization.get_org_document_library(request.user.organization)
     audiofiles = Organization.get_org_audio_library(request.user.organization)
-    video = Organization.get_org_video_library(request.user.organization)
+    videos = Organization.get_org_video_library(request.user.organization)
     imageassetform=ImageAssetForm()
     documentassetform=DocumentAssetForm()
     audioassetform=AudioAssetForm()
@@ -506,6 +506,7 @@ def story_detail(request, pk):
         'audiofacet_audio': audiofacet_audio,
         'videofacet_audio': videofacet_audio,
         'webfacet_video': webfacet_video,
+        'videos': videos,
         })
 
 

@@ -2992,6 +2992,11 @@ class VideoAsset(models.Model):
         blank=True,
     )
 
+    # poster = models.FileField(
+    #     upload_to='videos',
+    #     blank=True,
+    # )
+
     link = models.URLField(
         max_length=400,
         help_text='Link to video file on YouTube or Vimeo',

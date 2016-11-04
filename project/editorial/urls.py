@@ -60,7 +60,7 @@ urlpatterns = [
     url(r'^asset/image/(?P<pk>[0-9]+)/$', assetviews.image_asset_detail, name='image_asset_detail'),
     url(r'^asset/document/(?P<pk>[0-9]+)/$', assetviews.document_asset_detail, name='document_asset_detail'),
     url(r'^asset/audio/(?P<pk>[0-9]+)/$', assetviews.audio_asset_detail, name='audio_asset_detail'),
-    url(r'^asset/video/(?P<pk>[0-9]+)/$', assetviews.video_asset_detail, name='audio_video_detail'),
+    url(r'^asset/video/(?P<pk>[0-9]+)/$', assetviews.video_asset_detail, name='video_asset_detail'),
     # url(r'^asset/(?P<pk>[0-9]+)/edit/$', assetviews.asset_edit, name='asset_edit'),
     #----------------------------------------------------------------------#
     #   Collaborations URLS

@@ -31,7 +31,8 @@ from editorial.models import (
     VideoFacet,
     ImageAsset,
     DocumentAsset,
-    AudioAsset)
+    AudioAsset,
+    VideoAsset)
 
 
 #----------------------------------------------------------------------#
@@ -44,11 +45,13 @@ def asset_library(request):
     images = ImageAsset.objects.filter(organization=request.user.organization)
     documents = DocumentAsset.objects.filter(organization=request.user.organization)
     audiofiles = AudioAsset.objects.filter(organization=request.user.organization)
+    videos = VideoAsset.objects.filter(organization=request.user.organization)
 
     return render(request, 'editorial/assets.html', {
         'images': images,
         'documents': documents,
         'audiofiles': audiofiles,
+        'videos': videos,
     })
 
 #----------------------------------------------------------------------#
