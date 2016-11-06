@@ -12,6 +12,7 @@ from django.views.generic import TemplateView , UpdateView, DetailView
 from django.views.decorators.csrf import csrf_exempt
 import datetime
 import json
+from actstream import action
 
 from editorial.forms import (
     StoryForm,
@@ -91,6 +92,10 @@ def story_new(request):
             story.discussion = discussion
             story.save()
             storyform.save_m2m()
+
+            # record action for activity stream
+            action.send(request.user, verb="created", action_object=story)
+
             return redirect('story_detail', pk=story.pk)
     else:
         storyform = StoryForm(request=request)
@@ -113,6 +118,10 @@ def story_edit(request, pk):
         storyform = StoryForm(data=request.POST, instance=story, request=request)
         if storyform.is_valid():
             storyform.save()
+
+            # record action for activity stream
+            action.send(request.user, verb="edited", action_object=story)
+
             return redirect('story_detail', pk=story.id)
     else:
         storyform = StoryForm(instance=story, request=request)
@@ -161,11 +170,14 @@ def story_detail(request, pk):
     storycommentform = StoryCommentForm()
     storydiscussion = get_object_or_404(Discussion, id=story.discussion.id)
     storycomments = Comment.objects.filter(discussion=storydiscussion).order_by('-date')
+
     notes = StoryNote.objects.filter(story=story)
+
     images = Organization.get_org_image_library(request.user.organization)
     documents = Organization.get_org_document_library(request.user.organization)
     audiofiles = Organization.get_org_audio_library(request.user.organization)
     videos = Organization.get_org_video_library(request.user.organization)
+
     imageassetform=ImageAssetForm()
     documentassetform=DocumentAssetForm()
     audioassetform=AudioAssetForm()
@@ -181,10 +193,7 @@ def story_detail(request, pk):
 
     try:
         webfacet = get_object_or_404(WebFacet, story=story)
-        # print "WEBFACET CREDIT", webfacet.credit.all()
-
         # IF WEBFACET EXISTS DO ALL OF THE FOLLOWING
-        # rebind webform to include webfacet instance
         webform = WebFacetForm(instance=webfacet, request=request, story=story)
         # retrieve discussion and comments
         webfacetdiscussion = get_object_or_404(Discussion, id=webfacet.discussion.id)
@@ -193,32 +202,24 @@ def story_detail(request, pk):
         webhistory = webfacet.edit_history.all()[:5]
         # update an existing webfacet
         if request.method == "POST":
-            # print "WF Try If Post"
             if 'webform' in request.POST:
-                # print "WF Try If Post If webform"
                 webform = WebFacetForm(data=request.POST, instance=webfacet, request=request, story=story)
-                #import pdb; pdb.set_trace()
                 if webform.is_valid():
-                    # print "WF Try If Post If Webform Valid"
                     webform.save()
-                    # print "webfacet updated"
+                    # record action for activity stream
+                    action.send(request.user, verb="edited", action_object=webfacet)
+
                     return redirect('story_detail', pk=story.pk)
     except:
-        # print "WF Except"
-    # except WebFacet.DoesNotExist:
+        # except WebFacet.DoesNotExist:
         # display form and save a new webfacet
         webcomments = []
         webhistory = []
         if request.method == "POST":
-            # print "WF Except Post"
             if 'webform' in request.POST:
-                # print "WF Except Post If webform"
                 webform = WebFacetForm(data=request.POST, request=request, story=story)
                 if webform.is_valid():
-                    # #import pdb; pdb.set_trace()
-                    # print "WF Except Post If webform Valid"
                     webfacet = webform.save(commit=False)
-                    # print "webfacet = webform.save(commit=False)"
                     webfacet.story = story
                     webfacet.owner = request.user
                     webfacet.organization = request.user.organization
@@ -227,9 +228,11 @@ def story_detail(request, pk):
                     webfacet.discussion = discussion
                     webfacet.save()
                     webform.save_m2m()
-                    # print "webfacet created"
                     # create history of the webfacet
                     webhistory = webfacet.edit_history.all()[:5]
+                    # record action for activity stream
+                    action.send(request.user, verb="created", action_object=webfacet)
+
                     return redirect('story_detail', pk=story.pk)
 
 # ------------------------------ #
@@ -241,7 +244,6 @@ def story_detail(request, pk):
     printcommentform=PrintFacetCommentForm()
 
     try:
-        # print "PF Try"
         printfacet = get_object_or_404(PrintFacet, story=story)
         # IF PRINTFACET EXISTS DO ALL OF THE FOLLOWING
         printform = PrintFacetForm(instance=printfacet, request=request, story=story)
@@ -252,32 +254,24 @@ def story_detail(request, pk):
         printhistory = printfacet.edit_history.all()[:5]
         # update an existing printfacet
         if request.method == "POST":
-            # print "PF Try If Post"
             if 'printform' in request.POST:
-                # print "PF Try If Post If printform"
-                #import pdb; pdb.set_trace()
                 printform = PrintFacetForm(data=request.POST, instance=printfacet, request=request, story=story)
                 if printform.is_valid():
-                    # print "PF Try If Post If printform Valid"
                     printform.save()
-                    # print "printfacet updated"
+                    # record action for activity stream
+                    action.send(request.user, verb="edited", action_object=printfacet)
+
                     return redirect('story_detail', pk=story.pk)
     except:
-        # print "PF Except"
-    # except PrintFacet.DoesNotExist:
+        # except PrintFacet.DoesNotExist:
         # display form and save a new printfacet
         printcomments = []
         printhistory = []
         if request.method == "POST":
-            # print "PF Except If Post"
             if 'printform' in request.POST:
-                # print "PF Except If Post If printform"
-                # #import pdb; pdb.set_trace()
                 printform = PrintFacetForm(data=request.POST, request=request, story=story)
                 if printform.is_valid():
-                    # print "PF Except If Post If printform Valid"
                     printfacet = printform.save(commit=False)
-                    # print "printfacet = printform.save(commit=False)"
                     printfacet.story = story
                     printfacet.owner = request.user
                     printfacet.organization = request.user.organization
@@ -286,9 +280,11 @@ def story_detail(request, pk):
                     printfacet.discussion = discussion
                     printfacet.save()
                     printform.save_m2m()
-                    # print "printfacet created"
                     # create history of the printfacet
                     printhistory = printfacet.edit_history.all()[:5]
+                    # record action for activity stream
+                    action.send(request.user, verb="created", action_object=printfacet)
+
                     return redirect('story_detail', pk=story.pk)
 
 # ------------------------------ #
@@ -301,9 +297,7 @@ def story_detail(request, pk):
 
     try:
         audiofacet = get_object_or_404(AudioFacet, story=story)
-        # print "AUDIOFACET CREDIT: ", audiofacet.credit.all()
-
-        # IF WEBFACET EXISTS DO ALL OF THE FOLLOWING
+        # IF AUDIOFACET EXISTS DO ALL OF THE FOLLOWING
         audioform = AudioFacetForm(instance=audiofacet, request=request, story=story)
         # retrieve discussion and comments
         audiofacetdiscussion = get_object_or_404(Discussion, id=audiofacet.discussion.id)
@@ -312,32 +306,25 @@ def story_detail(request, pk):
         audiohistory = audiofacet.edit_history.all()[:5]
         # update an existing audiofacet
         if request.method == "POST":
-            # print "AF Try If Post"
             if 'audioform' in request.POST:
-                # print "AF Try If Post If Audioform"
-                # #import pdb; pdb.set_trace()
                 audioform = AudioFacetForm(data=request.POST, instance=audiofacet, request=request, story=story)
                 if audioform.is_valid():
-                    # print "AF Try If Post If Audioform Valid"
                     audioform.save()
-                    # print "audiofacet updated"
+
+                    # record action for activity stream
+                    action.send(request.user, verb="edited", action_object=audiofacet)
+
                     return redirect('story_detail', pk=story.pk)
     except:
-        # print "AF Except"
-    # except AudioFacet.DoesNotExist:
+        # except AudioFacet.DoesNotExist:
         # display form and save a new audiofacet
         audiocomments = []
         audiohistory = []
         if request.method == "POST":
-            # print "AF Except If Post"
             if 'audioform' in request.POST:
-                # print "AF Except If Post If Audioform"
-                # #import pdb; pdb.set_trace()
                 audioform = AudioFacetForm(data=request.POST, request=request, story=story)
                 if audioform.is_valid():
-                    # print "AF Except If Post If Audioform Valid"
                     audiofacet = audioform.save(commit=False)
-                    # print "audiofacet = audioform.save(commit=False)"
                     audiofacet.story = story
                     audiofacet.owner = request.user
                     audiofacet.organization = request.user.organization
@@ -346,9 +333,11 @@ def story_detail(request, pk):
                     audiofacet.discussion = discussion
                     audiofacet.save()
                     audioform.save_m2m()
-                    # print "audiofacet created"
                     # create history of the audiofacet
                     audiohistory = audiofacet.edit_history.all()[:5]
+                    # record action for activity stream
+                    action.send(request.user, verb="created", action_object=audiofacet)
+
                     return redirect('story_detail', pk=story.pk)
 
 # ------------------------------ #
@@ -360,7 +349,6 @@ def story_detail(request, pk):
     videocommentform=VideoFacetCommentForm()
 
     try:
-        # print "VF Try"
         videofacet = get_object_or_404(VideoFacet, story=story)
         # IF WEBFACET EXISTS DO ALL OF THE FOLLOWING
         videoform = VideoFacetForm(instance=videofacet, request=request, story=story)
@@ -371,32 +359,23 @@ def story_detail(request, pk):
         videohistory = videofacet.edit_history.all()[:5]
         # update an existing videofacet
         if request.method == "POST":
-            # print "VF Try If Post"
             if 'videoform' in request.POST:
-                # print "VF Try If Post If Videoform"
-                # # #import pdb; pdb.set_trace()
                 videoform = VideoFacetForm(data=request.POST, instance=videofacet, request=request, story=story)
                 if videoform.is_valid():
-                    # print "VF Try If Post If Videoform Valid"
                     videoform.save()
-                    # print "videofacet updated"
+                    # record action for activity stream
+                    action.send(request.user, verb="edited", action_object=videofacet)
                     return redirect('story_detail', pk=story.pk)
     except:
-        # print "VF Except If Post If Videoform Valid"
-    # except VideoFacet.DoesNotExist:
+        # except VideoFacet.DoesNotExist:
         # display form and save a new videofacet
         videocomments = []
         videohistory = []
         if request.method == "POST":
-            # print "VF Except If Post"
             if 'videoform' in request.POST:
-                # print "VF Except If Post If Videoform"
                 videoform = VideoFacetForm(data=request.POST, request=request, story=story)
                 if videoform.is_valid():
-                    # #import pdb; pdb.set_trace()
-                    # print "VF Except If Post If Videoform Valid"
                     videofacet = videoform.save(commit=False)
-                    # print "videofacet = videoform.save(commit=False)"
                     videofacet.story = story
                     videofacet.owner = request.user
                     videofacet.organization = request.user.organization
@@ -405,9 +384,11 @@ def story_detail(request, pk):
                     videofacet.discussion = discussion
                     videofacet.save()
                     videoform.save_m2m()
-                    # print "videofacet created"
                     # create history of the videofacet
                     videohistory = videofacet.edit_history.all()[:5]
+                    # record action for activity stream
+                    action.send(request.user, verb="created", action_object=videofacet)
+
                     return redirect('story_detail', pk=story.pk)
 
     # ------------------------------ #
@@ -505,8 +486,11 @@ def story_detail(request, pk):
         'printfacet_audio': printfacet_audio,
         'audiofacet_audio': audiofacet_audio,
         'videofacet_audio': videofacet_audio,
-        'webfacet_video': webfacet_video,
         'videos': videos,
+        'webfacet_video': webfacet_video,
+        'printfacet_video': printfacet_video,
+        'audiofacet_video': audiofacet_video,
+        'videofacet_video': videofacet_video,
         })
 
 

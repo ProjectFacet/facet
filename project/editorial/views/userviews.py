@@ -39,12 +39,14 @@ def user_new(request):
             user = form.save(commit=False)
             user.organization = request.user.organization
             user.save()
+
             # notify new user of of account creation
             mail_subject = "New Facet User Details"
             message = "You've been added to Facet. Your login is your email and your password is please."
             recipient = [user.email]
             sender_email = request.user.email
             send_mail(mail_subject, message, settings.EMAIL_HOST_USER, recipient, fail_silently=True)
+
             # record action for activity stream
             new_user = get_object_or_404(User, pk=user.pk)
             action.send(request.user, verb="added", action_object=new_user)
@@ -61,7 +63,6 @@ def user_detail(request, pk):
     bio, expertise, profile photo, social media links and most recent content.
     """
 
-    print "in USER DETAIL"
     user = get_object_or_404(User, pk=pk)
     user_stories = User.get_user_stories(user)
     user_content = User.get_user_content(user)

@@ -12,7 +12,7 @@ class EditorialAppConfig(AppConfig):
     name = "editorial"
 
     def ready(self):
-        """Add models to search."""
+        """Add models to search. Add models to Activity Stream."""
 
         for model_name in [
             "Series",
@@ -42,6 +42,7 @@ class EditorialAppConfig(AppConfig):
         registry.register(self.get_model('ImageAsset'))
         registry.register(self.get_model('DocumentAsset'))
         registry.register(self.get_model('AudioAsset'))
+        registry.register(self.get_model('VideoAsset'))
         registry.register(self.get_model('OrganizationNote'))
         registry.register(self.get_model('NetworkNote'))
         registry.register(self.get_model('SeriesNote'))

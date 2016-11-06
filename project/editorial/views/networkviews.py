@@ -13,6 +13,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.serializers.json import DjangoJSONEncoder
 import datetime
 import json
+from actstream import action
 
 from editorial.forms import (
     NetworkForm,
@@ -91,14 +92,10 @@ def send_network_invite(request):
     """ Send private message with link to join a network."""
 
     network = request.POST.get('network')
-    print "N: ", network
     network = get_object_or_404(Network, id=network)
     user_email = request.POST.get('invited_user')
-    print "UE: ", user_email
     user = get_object_or_404(User, email=user_email)
-    print "U: ", user
     organization = get_object_or_404(Organization, id=user.organization_id)
-    print "O: ", organization
     message_subject = "Invitation for {organization} to join {network}".format(organization = organization.name, network=network.name)
     message_text = '<form action="/network/invitation/accept/" method="POST" class="post-form"><input type="hidden" name="network" value="{network}" /><button type="submit" class="btn btn-primary">Accept Invitation</button></form>'.format(network=network.id)
     discussion = Discussion.objects.create_discussion('PRI')
@@ -246,9 +243,12 @@ def copy_network_story(request, pk):
     organization = request.user.organization
     partner = request.user.organization
 
+    # record action for activity story_team
+    # action.send(request.user, verb="picked up", action_object=original_story)
+
     if request.method == "POST":
 
-        #Create a copy of the story and a storycopydetail record
+        # Create a copy of the story and a storycopydetail record
         copied_story = Story.copy_story(original_story)
         copied_story.owner = user
         copied_story.organization = organization
@@ -259,7 +259,6 @@ def copy_network_story(request, pk):
             original_story=original_story,
             partner_story=copied_story
             )
-        print "Story Copied"
 
         # Create copy of facets if they exist
         # Copy the WebFacet
@@ -276,9 +275,8 @@ def copy_network_story(request, pk):
                 original_webfacet=original_webfacet[0],
                 partner_webfacet=copied_webfacet
             )
-            print "Webfacet Copied"
 
-            #create copy of webfacet images
+            # create copy of webfacet images
             original_webfacet_images = WebFacet.get_webfacet_images(original_webfacet[0])
             for image in original_webfacet_images:
                 copied_image = ImageAsset.copy_image(image)
@@ -291,11 +289,11 @@ def copy_network_story(request, pk):
                     original_imageasset=image,
                     partner_imageasset=copied_image
                 )
-                #add image to copied webfacet
+                # add image to copied webfacet
                 copied_webfacet.image_assets.add(copied_image)
                 copied_webfacet.save()
 
-            #create copy of webfacet documents
+            # create copy of webfacet documents
             original_webfacet_documents = WebFacet.get_webfacet_documents(original_webfacet[0])
             for document in original_webfacet_documents:
                 copied_document = DocumentAsset.copy_document(document)
@@ -308,12 +306,12 @@ def copy_network_story(request, pk):
                     original_documentasset=document,
                     partner_documentasset=copied_document
                 )
-                #add document to copied webfacet
+                # add document to copied webfacet
                 copied_webfacet.document_assets.add(copied_document)
                 copied_webfacet.save()
 
 
-            #create copy of webfacet audio
+            # create copy of webfacet audio
             original_webfacet_audiofiles = WebFacet.get_webfacet_audio(original_webfacet[0])
             for audio in original_webfacet_audiofiles:
                 copied_audio = AudioAsset.copy_audio(audio)
@@ -326,26 +324,26 @@ def copy_network_story(request, pk):
                     original_audioasset=audio,
                     partner_audioasset=copied_audio
                 )
-                #add audio to copied webfacet
+                # add audio to copied webfacet
                 copied_webfacet.audio_assets.add(copied_audio)
                 copied_webfacet.save()
 
-            #create copy of webfacet video
+            # create copy of webfacet video
             # original_webfacet_video = WebFacet.get_webfacet_video(original_webfacet[0])
-            # for video in original_webfacet_videos:
-            #     copied_video = VideoAsset.copy_video(video)
-            #     copied_video.owner = user
-            #     copied_video.organization = organization
-            #     copied_video.save()
-            #     videoasset_copy_record = VideoAssetCopyDetail.objects.create_videoasset_copy_record(
-            #         original_org=original_org,
-            #         partner=partner,
-            #         original_videoasset=video,
-            #         partner_videoasset=copied_video
-            #     )
-            #     #add video to copied webfacet
-            #     copied_webfacet.video_assets.add(copied_video)
-            #     copied_webfacet.save()
+            for video in original_webfacet_videos:
+                copied_video = VideoAsset.copy_video(video)
+                copied_video.owner = user
+                copied_video.organization = organization
+                copied_video.save()
+                videoasset_copy_record = VideoAssetCopyDetail.objects.create_videoasset_copy_record(
+                    original_org=original_org,
+                    partner=partner,
+                    original_videoasset=video,
+                    partner_videoasset=copied_video
+                )
+                # add video to copied webfacet
+                copied_webfacet.video_assets.add(copied_video)
+                copied_webfacet.save()
 
         # Copy the PrintFacet
         if original_printfacet:
@@ -361,9 +359,8 @@ def copy_network_story(request, pk):
                 original_printfacet=original_printfacet,
                 partner_printfacet=copied_printfacet
             )
-            print "Printfacet Copied"
 
-            #create copy of printfacet images
+            # create copy of printfacet images
             original_printfacet_images = PrintFacet.get_printfacet_images(original_printfacet[0])
             for image in original_printfacet_images:
                 copied_image = ImageAsset.copy_image(image)
@@ -376,11 +373,11 @@ def copy_network_story(request, pk):
                     original_imageasset=image,
                     partner_imageasset=copied_image
                 )
-                #add image to copied printfacet
+                # add image to copied printfacet
                 copied_printfacet.image_assets.add(copied_image)
                 copied_printfacet.save()
 
-            #create copy of printfacet documents
+            # create copy of printfacet documents
             original_printfacet_documents = PrintFacet.get_printfacet_documents(original_printfacet[0])
             for document in original_printfacet_documents:
                 copied_document = DocumentAsset.copy_document(document)
@@ -393,12 +390,12 @@ def copy_network_story(request, pk):
                     original_documentasset=document,
                     partner_documentasset=copied_document
                 )
-                #add document to copied printfacet
+                # add document to copied printfacet
                 copied_printfacet.document_assets.add(copied_document)
                 copied_printfacet.save()
 
 
-            #create copy of printfacet audio
+            # create copy of printfacet audio
             original_printfacet_audiofiles = PrintFacet.get_printfacet_audio(original_printfacet[0])
             for audio in original_printfacet_audios:
                 copied_audio = AudioAsset.copy_audio(audio)
@@ -411,26 +408,26 @@ def copy_network_story(request, pk):
                     original_audioasset=audio,
                     partner_audioasset=copied_audio
                 )
-                #add audio to copied printfacet
+                # add audio to copied printfacet
                 copied_printfacet.audio_assets.add(copied_audio)
                 copied_printfacet.save()
 
             # create copy of printfacet video
-            # original_printfacet_video = PrintFacet.get_printfacet_video(original_printfacet[0])
-            # for video in original_printfacet_videos:
-            #     copied_video = VideoAsset.copy_video(video)
-            #     copied_video.owner = user
-            #     copied_video.organization = organization
-            #     copied_video.save()
-            #     videoasset_copy_record = VideoAssetCopyDetail.objects.create_videoasset_copy_record(
-            #         original_org=original_org,
-            #         partner=partner,
-            #         original_videoasset=video,
-            #         partner_videoasset=copied_video
-            #     )
-            #     #add video to copied printfacet
-            #     copied_printfacet.video_assets.add(copied_video)
-            #     copied_printfacet.save()
+            original_printfacet_video = PrintFacet.get_printfacet_video(original_printfacet[0])
+            for video in original_printfacet_videos:
+                copied_video = VideoAsset.copy_video(video)
+                copied_video.owner = user
+                copied_video.organization = organization
+                copied_video.save()
+                videoasset_copy_record = VideoAssetCopyDetail.objects.create_videoasset_copy_record(
+                    original_org=original_org,
+                    partner=partner,
+                    original_videoasset=video,
+                    partner_videoasset=copied_video
+                )
+                # add video to copied printfacet
+                copied_printfacet.video_assets.add(copied_video)
+                copied_printfacet.save()
 
         # Copy the AudioFacet
         if original_audiofacet:
@@ -448,7 +445,7 @@ def copy_network_story(request, pk):
             )
             print "Audiofacet Copied"
 
-            #create copy of audiofacet images
+            # create copy of audiofacet images
             original_audiofacet_images = AudioFacet.get_audiofacet_images(original_audiofacet[0])
             for image in original_audiofacet_images:
                 copied_image = ImageAsset.copy_image(image)
@@ -461,11 +458,11 @@ def copy_network_story(request, pk):
                     original_imageasset=image,
                     partner_imageasset=copied_image
                 )
-                #add image to copied audiofacet
+                # add image to copied audiofacet
                 copied_audiofacet.image_assets.add(copied_image)
                 copied_audiofacet.save()
 
-            #create copy of audiofacet documents
+            # create copy of audiofacet documents
             original_audiofacet_documents = AudioFacet.get_audiofacet_documents(original_audiofacet[0])
             for document in original_audiofacet_documents:
                 copied_document = DocumentAsset.copy_document(document)
@@ -478,11 +475,11 @@ def copy_network_story(request, pk):
                     original_documentasset=document,
                     partner_documentasset=copied_document
                 )
-                #add document to copied audiofacet
+                # add document to copied audiofacet
                 copied_audiofacet.document_assets.add(copied_document)
                 copied_audiofacet
 
-            #create copy of audiofacet audio
+            # create copy of audiofacet audio
             original_audiofacet_audiofiles = AudioFacet.get_audiofacet_audio(original_audiofacet[0])
             for audio in original_audiofacet_audios:
                 copied_audio = AudioAsset.copy_audio(audio)
@@ -495,26 +492,26 @@ def copy_network_story(request, pk):
                     original_audioasset=audio,
                     partner_audioasset=copied_audio
                 )
-                #add audio to copied audiofacet
+                # add audio to copied audiofacet
                 copied_audiofacet.audio_assets.add(copied_audio)
                 copied_audiofacet.save()
 
             # create copy of audiofacet video
-            # original_audiofacet_video = AudioFacet.get_audiofacet_video(original_audiofacet[0])
-            # for video in original_audiofacet_videos:
-            #     copied_video = VideoAsset.copy_video(video)
-            #     copied_video.owner = user
-            #     copied_video.organization = organization
-            #     copied_video.save()
-            #     videoasset_copy_record = VideoAssetCopyDetail.objects.create_videoasset_copy_record(
-            #         original_org=original_org,
-            #         partner=partner,
-            #         original_videoasset=video,
-            #         partner_videoasset=copied_video
-            #     )
-            #     #add video to copied audiofacet
-            #     copied_audiofacet.video_assets.add(copied_video)
-            #     copied_audiofacet.save()
+            original_audiofacet_video = AudioFacet.get_audiofacet_video(original_audiofacet[0])
+            for video in original_audiofacet_videos:
+                copied_video = VideoAsset.copy_video(video)
+                copied_video.owner = user
+                copied_video.organization = organization
+                copied_video.save()
+                videoasset_copy_record = VideoAssetCopyDetail.objects.create_videoasset_copy_record(
+                    original_org=original_org,
+                    partner=partner,
+                    original_videoasset=video,
+                    partner_videoasset=copied_video
+                )
+                # add video to copied audiofacet
+                copied_audiofacet.video_assets.add(copied_video)
+                copied_audiofacet.save()
 
         # Copy the VideoFacet
         if original_videofacet:
@@ -533,7 +530,7 @@ def copy_network_story(request, pk):
             print "Videofacet Copied"
 
 
-            #create copy of videofacet images
+            # create copy of videofacet images
             original_videofacet_images = VideoFacet.get_videofacet_images(original_videofacet[0])
             for image in original_videofacet_images:
                 copied_image = ImageAsset.copy_image(image)
@@ -546,11 +543,11 @@ def copy_network_story(request, pk):
                     original_imageasset=image,
                     partner_imageasset=copied_image
                 )
-                #add image to copied videofacet
+                # add image to copied videofacet
                 partner_videofacet.image_assets.add(copied_image)
                 partner_videofacet.save()
 
-            #create copy of videofacet documents
+            # create copy of videofacet documents
             original_videofacet_documents = VideoFacet.get_videofacet_documents(original_videofacet[0])
             for document in original_videofacet_documents:
                 copied_document = DocumentAsset.copy_document(document)
@@ -563,12 +560,12 @@ def copy_network_story(request, pk):
                     original_documentasset=document,
                     partner_documentasset=copied_document
                 )
-                #add document to copied videofacet
+                # add document to copied videofacet
                 partner_documentasset.document_assets.add(copied_document)
                 partner_documentasset.save()
 
 
-            #create copy of videofacet audio
+            # create copy of videofacet audio
             original_videofacet_audiofiles = VideoFacet.get_videofacet_audio(original_videofacet[0])
             for audio in original_videofacet_audiofiles:
                 copied_audio = AudioAsset.copy_audio(audio)
@@ -581,26 +578,26 @@ def copy_network_story(request, pk):
                     original_audioasset=audio,
                     partner_audioasset=copied_audio
                 )
-                #add audio to copied audiofacet
+                # add audio to copied audiofacet
                 partner_audioasset.audio_assets.add(copied_audio)
                 partner_audioasset.save()
 
             # create copy of videofacet video
-            # original_videofacet_video = VideoFacet.get_videofacet_video(original_videofacet[0])
-            # for video in original_videofacet_videos:
-            #     copied_video = VideoAsset.copy_video(video)
-            #     copied_video.owner = user
-            #     copied_video.organization = organization
-            #     copied_video.save()
-            #     videoasset_copy_record = VideoAssetCopyDetail.objects.create_videoasset_copy_record(
-            #         original_org=original_org,
-            #         partner=partner,
-            #         original_videoasset=video,
-            #         partner_videoasset=copied_video
-            #     )
-            #     #add video to copied videofacet
-            #     partner_videoasset.video_assets.add(copied_video)
-            #     partner_videoasset.save()
+            original_videofacet_video = VideoFacet.get_videofacet_video(original_videofacet[0])
+            for video in original_videofacet_videos:
+                copied_video = VideoAsset.copy_video(video)
+                copied_video.owner = user
+                copied_video.organization = organization
+                copied_video.save()
+                videoasset_copy_record = VideoAssetCopyDetail.objects.create_videoasset_copy_record(
+                    original_org=original_org,
+                    partner=partner,
+                    original_videoasset=video,
+                    partner_videoasset=copied_video
+                )
+                # add video to copied videofacet
+                partner_videoasset.video_assets.add(copied_video)
+                partner_videoasset.save()
 
 
 

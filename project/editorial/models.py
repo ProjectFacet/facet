@@ -270,6 +270,11 @@ class User(AbstractUser):
     def search_title(self):
         return self.credit_name
 
+
+    @property
+    def type(self):
+        return "User"
+
 #----------------------------------------------------------------------#
 
 @python_2_unicode_compatible
@@ -2594,7 +2599,7 @@ class ImageAsset(models.Model):
 
     @property
     def type(self):
-        return "Image Asset"
+        return "Image"
 
 #----------------------------------------------------------------------#
 # DocumentAsset
@@ -2765,7 +2770,7 @@ class DocumentAsset(models.Model):
 
     @property
     def type(self):
-        return "Document Asset"
+        return "Document"
 
 #----------------------------------------------------------------------#
 # AudioAsset
@@ -2936,7 +2941,7 @@ class AudioAsset(models.Model):
 
     @property
     def type(self):
-        return "Audio Asset"
+        return "Audio"
 
 #----------------------------------------------------------------------#
 #VideoAsset
@@ -3069,31 +3074,31 @@ class VideoAsset(models.Model):
         video_copy.save()
         return video_copy
 
-    # def get_video_download_info(self):
-    #     """Return rst of video information for download."""
+    def get_video_download_info(self):
+        """Return rst of video information for download."""
 
-    #     title = self.asset_title.encode('utf-8')
-    #     description = self.asset_description.encode('utf-8')
-    #     attribution = self.attribution.encode('utf-8')
+        title = self.asset_title.encode('utf-8')
+        description = self.asset_description.encode('utf-8')
+        attribution = self.attribution.encode('utf-8')
 
-    #     video_info="""
-    #     Video
-    #     =======
-    #     {title}.jpg
-    #     Description: {description}
-    #     Attribution: {attribution}
-    #     Type: {type}
-    #     Creation Date: {date}
-    #     Owner: {owner}
-    #     Organization: {organization}
-    #     Original: {original}
-    #     Keywords: {keywords}
-    #     """.format(title=title, description=description, attribution=attribution,
-    #     type=self.doc_type, date=self.creation_date, owner=self.owner,
-    #     organization=self.organization.name, original=self.original,
-    #     keywords=self.keywords)
+        video_info="""
+        Video
+        =======
+        {title}.jpg
+        Description: {description}
+        Attribution: {attribution}
+        Type: {type}
+        Creation Date: {date}
+        Owner: {owner}
+        Organization: {organization}
+        Original: {original}
+        Keywords: {keywords}
+        """.format(title=title, description=description, attribution=attribution,
+        type=self.doc_type, date=self.creation_date, owner=self.owner,
+        organization=self.organization.name, original=self.original,
+        keywords=self.keywords)
 
-    #     return video_info
+        return video_info
 
     def __str__(self):
         return self.asset_title
@@ -3111,7 +3116,7 @@ class VideoAsset(models.Model):
 
     @property
     def type(self):
-        return "Video Asset"
+        return "Video"
 
 
 #----------------------------------------------------------------------#

@@ -314,7 +314,34 @@
                                                 <div class="col-xs-12 timeline timeline-danger">
                                             {% endif %}
                                                     <div class="p-10">
-                                                        <p>{{ activity.actor }} {{ activity.verb }} {{activity.action_object.credit_name }}</p>
+                                                        {% if activity.action_object.type == 'User' %}
+                                                          <p>{{ activity.actor }} {{ activity.verb }} User: {{activity.action_object.credit_name }}</p>
+                                                        {% elif activity.action_object.type == 'Organization' %}
+                                                          <p>{{ activity.actor }} {{ activity.verb }} Organization: {{activity.action_object.name }}</p>
+                                                        {% elif activity.action_object.type == 'Network' %}
+                                                          <p>{{ activity.actor }} {{ activity.verb }} Network: {{activity.action_object.name }}</p>
+                                                        {% elif activity.action_object.type == 'Series' %}
+                                                          <p>{{ activity.actor }} {{ activity.verb }} Series: {{activity.action_object.name }}</p>
+                                                        {% elif activity.action_object.type == 'Story' %}
+                                                          <p>{{ activity.actor }} {{ activity.verb }} Story: {{activity.action_object.name }}</p>
+                                                        {% elif activity.action_object.type == 'WebFacet' %}
+                                                          <p>{{ activity.actor }} {{ activity.verb }} WebFacet: {{activity.action_object.title }}</p>
+                                                        {% elif activity.action_object.type == 'PrintFacet' %}
+                                                          <p>{{ activity.actor }} {{ activity.verb }} PrintFacet: {{activity.action_object.title }}</p>
+                                                        {% elif activity.action_object.type == 'AudioFacet' %}
+                                                          <p>{{ activity.actor }} {{ activity.verb }} AudioFacet: {{activity.action_object.title }}</p>
+                                                        {% elif activity.action_object.type == 'VideoFacet' %}
+                                                          <p>{{ activity.actor }} {{ activity.verb }} VideoFacet: {{activity.action_object.title }}</p>
+                                                        {% elif activity.action_object.type == 'Image' %}
+                                                          <p>{{ activity.actor }} {{ activity.verb }} Image: {{activity.action_object.asset_title }}</p>
+                                                        {% elif activity.action_object.type == 'Document' %}
+                                                          <p>{{ activity.actor }} {{ activity.verb }} Document: {{activity.action_object.asset_title }}</p>
+                                                        {% elif activity.action_object.type == 'Audio' %}
+                                                          <p>{{ activity.actor }} {{ activity.verb }} Audio: {{activity.action_object.asset_title }}</p>
+                                                        {% elif activity.action_object.type == 'Video' %}
+                                                          <p>{{ activity.actor }} {{ activity.verb }} Audio: {{activity.action_object.asset_title }}</p>
+                                                        {% endif %}
+
                                                         <p class="text-sm text-muted">{{ activity.timestamp|timesince }} </p>
                                                     </div>
                                                 </div>
