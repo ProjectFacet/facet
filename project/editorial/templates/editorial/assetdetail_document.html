@@ -113,7 +113,15 @@
         <hr class="content-lower-25">
         <h4 class="m-b-20">Usage</h4>
         {% for facet in document_usage %}
-          <p class="small-text">{{ facet.title }}</p>
+          {% if facet.type == 'WebFacet' %}
+          <a href="{% url 'story_detail' pk=facet.story.id %}#web" title="Go to Facet"><p class="small-text">{{ facet.title }}</p></a>
+          {% elif facet.type == 'PrintFacet' %}
+          <a href="{% url 'story_detail' pk=facet.story.id %}#print" title="Go to Facet"><p class="small-text">{{ facet.title }}</p></a>
+          {% elif facet.type == 'AudioFacet' %}
+          <a href="{% url 'story_detail' pk=facet.story.id %}#audio" title="Go to Facet"><p class="small-text">{{ facet.title }}</p></a>
+          {% elif facet.type == 'VideoFacet' %}
+          <a href="{% url 'story_detail' pk=facet.story.id %}#video" title="Go to Facet"><p class="small-text">{{ facet.title }}</p></a>
+          {% endif %}
         {% endfor %}
       </div>
       </div>
