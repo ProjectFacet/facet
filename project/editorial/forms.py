@@ -136,14 +136,17 @@ class SeriesForm(forms.ModelForm):
         model = Series
         fields = ['name', 'series_description', 'collaborate', 'collaborate_with', 'team']
         widgets = {
+            'name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Series Name'}),
+            'series_description': Textarea(attrs={'class': 'form-control', 'placeholder': 'Description'}),
             'team': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select', 'id':'series-team'}),
+            'collaborate': CheckboxInput(attrs={'class': 'c-indicator c-indicator-default'}),
             'collaborate_with': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select', 'id':'collaborate-with'}),
             }
 
-    # class Media:
-    #     css = {'all': ('/static/css/chosen.min.css')
-    #     }
-    #     js = ('/static/js/chosen.jquery.min.js')
+    class Media:
+        css = {'all': ('/static/css/chosen.min.css')
+        }
+        js = ('/static/js/chosen.jquery.min.js')
 
 
 # ------------------------------ #
