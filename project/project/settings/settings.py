@@ -97,6 +97,7 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'project.context_processors.include_private_message_form',
                 'project.context_processors.include_activity_stream',
+                'project.context_processors.include_logged_in_users',
             ],
         },
     },
