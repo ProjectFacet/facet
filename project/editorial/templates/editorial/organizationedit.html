@@ -3,65 +3,94 @@
 {% load i18n %}
 {% load bootstrap3 %}
 
-{% block content %}
+<!-------------------------------------------->
+<!--      BREADCRUMB NAVIGATION             -->
+<!-------------------------------------------->
 
-<div class="row particles" id="user-hero">
-  <div class="upper-content">
-    <div class="col-xs-12 content-upper-75">
-      <h1 class="media-heading text-light center thin uppercase spread-025">Manage {{ organization.name }}</h1>
-    </div>
-  </div>
+{% block breadcrumb %}
+<div>
+    <ol class="breadcrumb icon-angle-right icon-th">
+      <li class="fadeIn"> Dashboard </li>
+      {% if request.user.organization %}
+      <li class="fadeIn"><a href="{% url 'org_detail' pk=request.user.organization.id %}" title="View Organization Detail"> Organization </a></li>
+      {% endif %}
+      <li class="hidden-md-down">Manage {{ organization.name }}</li>
+    </ol>
 </div>
+{% endblock breadcrumb %}
 
-<div class="row content-lower-25">
+<!-------------------------------------------->
+<!--            Main Section                -->
+<!-------------------------------------------->
+
+{% block content %}
+<!-- Row One -->
+<div class="row m-b-40">
   <!-- Left Side -->
-  <div class="col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-4 col-md-offset-1 col-lg-4 col-lg-offset-1">
-    <h3 class="thin uppercase content-bottom-25 dark">Organization</h1>
+  <div class="col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-5 col-md-offset-1 col-lg-5 col-lg-offset-1">
+    <h4 class="m-b-20">Organization</h1>
     <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
-        <div class="form-group custom-form">
-          <a href="#" data-toggle="tooltip" title="{{ orgform.name.help_text }}"><span class="field-label">{{ orgform.name.label_tag }}</span></a>
-          {{ orgform.name }}
-          {% if orgform.name.errors %}
-            <div class="alert alert-warning" role="alert">
-            {{ orgform.name.errors }}
-            </div>
-          {% endif %}
-        </div>
-        <div class="form-group custom-form">
-          <a href="#" data-toggle="tooltip" title="{{ orgform.name.help_text }}"><span class="field-label">{{ orgform.location.label_tag }}</span></a>
-          {{ orgform.location }}
-          {% if orgform.location.errors %}
-            <div class="alert alert-warning" role="alert">
-            {{ orgform.location.errors }}
-            </div>
-          {% endif %}
-        </div>
-        <div class="form-group custom-form">
-          <a href="#" data-toggle="tooltip" title="{{ orgform.logo.help_text }}"><span class="field-label">{{ orgform.logo.label_tag }}</span></a>
+        <!-- Organization Name -->
+        <fieldset class="form-group m-b-20">
+          <div class="col-xs-2">
+            <label>{{ orgform.name.label_tag }}</label>
+          </div>
+          <div class="col-xs-10">
+            {{ orgform.name }}
+            {% if orgform.name.errors %}
+            <small class="text-muted">{{ orgform.name.errors }}</small>
+            {% endif %}
+          </div>
+        </fieldset>
+        <!-- Organization Location -->
+        <fieldset class="form-group m-b-20">
+          <div class="col-xs-2">
+            <label>{{ orgform.location.label_tag }}</label>
+          </div>
+          <div class="col-xs-10">
+            {{ orgform.location }}
+            {% if orgform.location.errors %}
+            <small class="text-muted">{{ orgform.location.errors }}</small>
+            {% endif %}
+          </div>
+        </fieldset>
+        <!-- Organization Description -->
+        <fieldset class="form-group m-b-20">
+          <div class="col-xs-2">
+            <label>Description: </label>
+          </div>
+          <div class="col-xs-10">
+            {{ orgform.org_description }}
+            {% if orgform.org_description.errors %}
+            <small class="text-muted">{{ orgform.org_description.errors }}</small>
+            {% endif %}
+          </div>
+        </fieldset>
+        <!-- Organization Logo -->
+        <div class="form-group custom-form m-b-40">
+          <div class="col-xs-2">
+            <label>Logo: </label>
+          </div>
+          <div class="col-xs-10">
           {{ orgform.logo }}
           {% if orgform.logo.errors %}
             <div class="alert alert-warning" role="alert">
             {{ orgform.logo.errors }}
             </div>
           {% endif %}
+          </div>
         </div>
-        <div class="form-group custom-form">
-          <a href="#" data-toggle="tooltip" title="{{ orgform.series_description.help_text }}"><span class="field-label">{{ orgform.org_description.label_tag }}</span></a>
-          {{ orgform.org_description }}
-          {% if orgform.org_description.errors %}
-            <div class="alert alert-warning" role="alert">
-            {{ orgform.org_description.errors }}
-            </div>
-          {% endif %}
-        </div>
-        <button type="submit" class="save btn btn-default">Save</button>
+
+        <a href="{% url 'org_detail' pk=request.user.organization.id %}"><button class="save btn btn-default m-t-20 pull-right">Cancel</button></a>
+        <button type="submit" class="save btn btn-default m-t-20 m-r-10 pull-right">Save</button>
+
       </form>
   </div>
   <!-- Right Side -->
   <div class="col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-4 col-md-offset-1 col-lg-4 col-lg-offset-1">
-    <h3 class="thin uppercase content-bottom-25 dark">Team</h1>
+    <h4 class="m-b-20">Team</h4>
     {% for person in team %}
-      <div class="row content-bottom-10">
+      <div class="row m-b-20">
         <div class="col-xs-2">
           {% if person.display_photo %}
           <img class="media-object" width="100%" src="{{ person.display_photo.url }}" alt="user">
@@ -69,13 +98,13 @@
           {% endif %}
         </div>
         <div class="col-xs-4">
-          <a href="{% url 'user_detail' person.id %}" title="{{ person.credit_name }}'s Profile"><p>{{ person.credit_name }}</p></a>
-          <p class="small-text dark">{{ person.title }}</p>
+          <span class="m-t-10"><a href="{% url 'user_detail' person.id %}" title="{{ person.credit_name }}'s Profile">{{ person.credit_name }}</a></span></br>
+          <small class="color-default">{{ person.title }}</small>
 
         </div>
         <div class="col-xs-6">
           <a href="{% url 'user_edit' person.id %}" title="Edit {{ person.credit_name }}'s Profile">
-            <button class="btn btn-xs btn-primary">
+            <button class="btn btn-sm btn-primary">
               <i class="fa fa-pencil" aria-hidden="true"></i>
               Edit
             </button>
@@ -83,7 +112,7 @@
           {% if person.is_active == True %}
             <form action="{% url 'user_deactivate' %}" method="POST" class="post-form sameline" onsubmit="return confirm('Do you want to deactivate this user?');">
               <input type="hidden" name="user_id" value="{{ person.id }}" />
-              <button class="btn btn-xs btn-warning">
+              <button class="btn btn-sm btn-warning">
                 <i class="fa fa-minus-circle" aria-hidden="true"></i>
                 Deactivate
               </button>

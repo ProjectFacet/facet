@@ -1,0 +1,251 @@
+<!-- Audio Asset Modal -->
+
+<div class="modal fade" id="AudioAssetModal" tabindex="-1" role="dialog" aria-labelledby="AudioAssetModal">
+  <div class="modal-dialog modal-lg" role="audio">
+    <div class="modal-content">
+      <div class="bs-nav-tabs nav-tabs-default">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <ul class="nav nav-tabs nav-animated-border-from-left">
+            <li class="nav-item"> <a ng-href="" class="nav-link active" data-toggle="tab" data-target="#uploadaudio">Upload a Audio</a></li>
+            <li class="nav-item"> <a ng-href="" class="nav-link" data-toggle="tab" data-target="#audiolibrary">Select From Audio Library</a></li>
+          </ul>
+        </div>
+        <div class="modal-body" id="audiomodalbody">
+          <div class="tab-content">
+            <!-- UPLOAD PANEL -->
+            <div role="tabpanel" class="tab-pane active" id="uploadaudio">
+              <div class="uploadpanel" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
+              <form action="{% url 'upload_audio' %}" method="POST" class="post-form" enctype="multipart/form-data">
+              {% csrf_token %}
+
+                <!-- Left Col -->
+                <div class="col-md-6">
+
+                  <fieldset class="form-group m-b-10">
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audioassetform.audio.label_tag }}</label>
+                    {{ audioassetform.audio }}
+                    {% if audioassetform.audio.errors %}
+                      <small class="text-muted">{{ audioassetform.audio.errors }}</small>
+                    {% endif %}
+                  </fieldset>
+
+                  <fieldset class="form-group m-b-10">
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audioassetform.link.label_tag }}</label>
+                    {{ audioassetform.link }}
+                    {% if audioassetform.link.errors %}
+                      <small class="text-muted">{{ audioassetform.link.errors }}</small>
+                    {% endif %}
+                  </fieldset>
+
+                  <fieldset class="form-group m-b-10">
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audioassetform.asset_title.label_tag }}</label>
+                    {{ audioassetform.asset_title }}
+                    {% if audioassetform.asset_title.errors %}
+                      <small class="text-muted">{{ audioassetform.asset_title.errors }}</small>
+                    {% endif %}
+                  </fieldset>
+
+                  <fieldset class="form-group m-b-10">
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audioassetform.audio_type.label_tag }}</label>
+                    {{ audioassetform.audio_type }}
+                    {% if audioassetform.audio_type.errors %}
+                      <small class="text-muted">{{ audioassetform.audio_type.errors }}</small>
+                    {% endif %}
+                  </fieldset>
+
+                  <fieldset class="form-group m-b-10">
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audioassetform.keywords.label_tag }}</label>
+                    {{ audioassetform.keywords }}
+                    {% if audioassetform.keywords.errors %}
+                      <small class="text-muted">{{ audioassetform.keywords.errors }}</small>
+                    {% endif %}
+                  </fieldset>
+
+                </div>
+                <!-- End Left Col -->
+                <!-- Right Col -->
+                <div class="col-md-6">
+
+                  <fieldset class="form-group m-b-10">
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audioassetform.asset_description.label_tag }}</label>
+                    {{ audioassetform.asset_description }}
+                    {% if audioassetform.asset_description.errors %}
+                      <small class="text-muted">{{ audioassetform.asset_description.errors }}</small>
+                    {% endif %}
+                  </fieldset>
+
+                  <fieldset class="form-group m-b-10">
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audioassetform.attribution.label_tag }}</label>
+                    {{ audioassetform.attribution }}
+                    {% if audioassetform.attribution.errors %}
+                      <small class="text-muted">{{ audioassetform.attribution.errors }}</small>
+                    {% endif %}
+                  </fieldset>
+
+                </div>
+                <!-- End Right Col -->
+                <!-- ===================================== -->
+                <!-- ===================================== -->
+                <div class="hidden-audio-inputs">>
+                        <!-- Insert custom content via jQuery -->
+                  </div>
+                <!-- ===================================== -->
+                <!-- ===================================== -->
+                <div>
+                    <button type="submit" class="btn btn-primary m-l-20">Save Audio</button>
+                </div>
+
+              </form>
+              </div>
+            </div>
+            <!-- END UPLOAD PANEL -->
+
+            <!-- LIBRARY PANEL -->
+            <div role="tabpanel" class="tab-pane" id="audiolibrary">
+              <div class="audiolibrary" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
+                <form action="{% url 'add_audio' %}" method="POST" class="post-form" name="addaudio">
+                  {% csrf_token %}
+                  <div class="row audio-library">
+                  {% for audio in audiofiles %}
+                    <div class="col-md-3">
+                      {% if audio.audio_type == 'MP3' or audio.audio_type == 'WAV' %}
+                      <div id="jplayer_audio_{{audio.pk}}" class="jp-jplayer"></div>
+                      <div id="jp_container_audio_{{audio.pk}}" class="jp-flat-audio m-b-10" role="application" aria-label="media player">
+                        <div class="jp-play-control jp-control">
+                          <button class="jp-play jp-button" role="button" aria-label="play" tabindex="0"></button>
+                        </div>
+                        <div class="jp-bar">
+                          <div class="jp-seek-bar jp-seek-bar-display"></div>
+                          <div class="jp-seek-bar">
+                            <div class="jp-play-bar"></div>
+                            <div class="jp-details"><span class="jp-title" aria-label="title"></span></div>
+                            <div class="jp-timing"><span class="jp-duration" role="timer" aria-label="duration"></span></div>
+                          </div>
+                        </div>
+                        <div class="jp-no-solution">
+                          Media Player Error<br />
+                          Update your browser or Flash plugin
+                        </div>
+                      </div>
+                      <script>
+                      jQuery(document).ready(function($) {
+                        $("#jplayer_audio_{{audio.pk}}").jPlayer({
+                          ready: function(event) {
+                            $(this).jPlayer("setMedia", {
+                              title: "{{audio.asset_title}}",
+                              wav: "{{audio.audio.url}}",
+                              mp3: "{{audio.audio.url}}",
+                            });
+                          },
+                          play: function() { // Avoid multiple jPlayers playing together.
+                            $(this).jPlayer("pauseOthers");
+                          },
+                          timeFormat: {
+                            padMin: false
+                          },
+                          swfPath: "js",
+                          supplied: "wav, mp3",
+                          cssSelectorAncestor: "#jp_container_audio_{{audio.pk}}",
+                          useStateClassSkin: true,
+                          autoBlur: false,
+                          smoothPlayBar: true,
+                          remainingDuration: true,
+                          keyEnabled: true,
+                          keyBindings: {
+                            // Disable some of the default key controls
+                            loop: null,
+                            muted: null,
+                            volumeUp: null,
+                            volumeDown: null
+                          },
+                          wmode: "window"
+                        });
+                      });
+                      </script>
+                      {% endif %}
+                    </div>
+                    <div class="col-md-1">
+                      <label>
+                        <input class="inline" type="checkbox" name="audio" value="{{ audio.id }}">
+                      </label>
+                    </div>
+                    {% if forloop.counter|divisibleby:"6" and not forloop.last %}
+                      </div><div class="row">
+                    {% endif %}
+                  {% endfor %}
+                  </div>
+
+                <!-- ===================================== -->
+                <!-- ===================================== -->
+                <div class="hidden-audio-inputs">
+                    <!-- Insert custom content via jQuery -->
+                </div>
+                <!-- ===================================== -->
+                <!-- ===================================== -->
+
+                  <div class="row">
+                    <div class="col-xs-12">
+                      <button type="submit" class="btn btn-primary" name="addaudio">Add Audio</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <!-- END LIBRARY PANEL -->
+          </div>
+        </div>
+        </div>
+        <div class="modal-footer"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+$('#AudioAssetModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget) // Button that triggered the modal
+    var facet = button.data('facet') // Extract info from data-* attributes
+
+    var webfacetHidden = '{% for webfacet in story.webfacetstory.all %}' +
+                '<input type="hidden" name="webfacet" value="{{ webfacet.pk }}" />' +
+                '<input  type="hidden" name="type" value="webfacet" />' +
+                '{% endfor %}'
+
+
+    var printfacetHidden = '{% for printfacet in story.printfacetstory.all %}' +
+                '<input type="hidden" name="printfacet" value="{{ printfacet.pk }}" />' +
+                '<input  type="hidden" name="type" value="printfacet" />' +
+                '{% endfor %}'
+
+    var audiofacetHidden = '{% for audiofacet in story.audiofacetstory.all %}' +
+                '<input type="hidden" name="audiofacet" value="{{ audiofacet.pk }}" />' +
+                '<input  type="hidden" name="type" value="audiofacet" />' +
+                '{% endfor %}'
+
+    var videofacetHidden = '{% for videofacet in story.videofacetstory.all %}' +
+                '<input type="hidden" name="videofacet" value="{{ videofacet.pk }}" />' +
+                '<input  type="hidden" name="type" value="videofacet" />' +
+                '{% endfor %}'
+
+
+    var modal = $(this)
+
+    if (facet == 'webfacet_audio') {
+        modal.find('.hidden-audio-inputs').html(webfacetHidden)
+    }
+    else if (facet == 'printfacet_audio') {
+        modal.find('.hidden-audio-inputs').html(printfacetHidden)
+    }
+    else if (facet == 'audiofacet_audio') {
+        modal.find('.hidden-audio-inputs').html(audiofacetHidden)
+    }
+    else if (facet == 'videofacet_audio') {
+        modal.find('.hidden-audio-inputs').html(videofacetHidden)
+    }
+    else {
+        modal.find('.hidden-audio-inputs').html('<div></div>')
+    }
+})
+
+</script>

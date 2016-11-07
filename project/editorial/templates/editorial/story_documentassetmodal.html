@@ -1,0 +1,185 @@
+<!-- Document Asset Modal -->
+
+<div class="modal fade" id="DocumentAssetModal" tabindex="-1" role="dialog" aria-labelledby="DocumentAssetModal">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="bs-nav-tabs nav-tabs-default">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <ul class="nav nav-tabs nav-animated-border-from-left">
+            <li class="nav-item"> <a ng-href="" class="nav-link active" data-toggle="tab" data-target="#uploaddocument">Upload a Document</a></li>
+            <li class="nav-item"> <a ng-href="" class="nav-link" data-toggle="tab" data-target="#documentlibrary">Select From Document Library</a></li>
+          </ul>
+        </div>
+        <div class="modal-body" id="documentmodalbody">
+          <div class="tab-content">
+            <!-- UPLOAD PANEL -->
+            <div role="tabpanel" class="tab-pane active" id="uploaddocument">
+              <div class="uploadpanel" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
+              <form action="{% url 'upload_document' %}" method="POST" class="post-form" enctype="multipart/form-data">
+              {% csrf_token %}
+              <!-- Left Col -->
+              <div class="col-md-6">
+
+                <fieldset class="form-group m-b-10">
+                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ documentassetform.document.label_tag }}</label>
+                  {{ documentassetform.document }}
+                  {% if documentassetform.document.errors %}
+                    <small class="text-muted">{{ documentassetform.document.errors }}</small>
+                  {% endif %}
+                </fieldset>
+
+                <fieldset class="form-group m-b-10">
+                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ documentassetform.asset_title.label_tag }}</label>
+                  {{ documentassetform.asset_title }}
+                  {% if documentassetform.asset_title.errors %}
+                    <small class="text-muted">{{ documentassetform.asset_title.errors }}</small>
+                  {% endif %}
+                </fieldset>
+
+                <fieldset class="form-group m-b-10">
+                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ documentassetform.doc_type.label_tag }}</label>
+                  {{ documentassetform.doc_type }}
+                  {% if documentassetform.doc_type.errors %}
+                    <small class="text-muted">{{ documentassetform.doc_type.errors }}</small>
+                  {% endif %}
+                </fieldset>
+
+                <fieldset class="form-group m-b-10">
+                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ documentassetform.keywords.label_tag }}</label>
+                  {{ documentassetform.keywords }}
+                  {% if documentassetform.keywords.errors %}
+                    <small class="text-muted">{{ documentassetform.keywords.errors }}</small>
+                  {% endif %}
+                </fieldset>
+
+              </div>
+              <!-- End Left Col -->
+              <!-- Right Col -->
+              <div class="col-md-6">
+
+                <fieldset class="form-group m-b-10">
+                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ documentassetform.asset_description.label_tag }}</label>
+                  {{ documentassetform.asset_description }}
+                  {% if documentassetform.asset_description.errors %}
+                    <small class="text-muted">{{ documentassetform.asset_description.errors }}</small>
+                  {% endif %}
+                </fieldset>
+
+                <fieldset class="form-group m-b-10">
+                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ documentassetform.attribution.label_tag }}</label>
+                  {{ documentassetform.attribution }}
+                  {% if documentassetform.attribution.errors %}
+                    <small class="text-muted">{{ documentassetform.attribution.errors }}</small>
+                  {% endif %}
+                </fieldset>
+
+              </div>
+              <!-- End Right Col -->
+              <!-- ===================================== -->
+              <!-- ===================================== -->
+              <div class="hidden-document-inputs">>
+                    <!-- Insert custom content via jQuery -->
+              </div>
+              <!-- ===================================== -->
+              <!-- ===================================== -->
+              <div>
+                <button type="submit" class="btn btn-primary m-l-20">Save Document</button>
+              </div>
+              </form>
+              </div>
+            </div>
+            <!-- END UPLOAD PANEL -->
+
+            <!-- LIBRARY PANEL -->
+            <div role="tabpanel" class="tab-pane" id="documentlibrary">
+              <div class="documentlibrary" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
+                <form action="{% url 'add_document' %}" method="POST" class="post-form" name="adddocument">
+                  {% csrf_token %}
+                  <div class="row document-library">
+                  {% for document in documents %}
+                    <div class="col-md-2">
+                      <label>
+                        <img class="img-responsive" src="{{ document.display_photo.url }}" alt="{{ document.asset_title }}">
+                        <input type="checkbox" name="documents" value="{{ document.id }}">
+                      </label>
+                    </div>
+                    {% if forloop.counter|divisibleby:"6" and not forloop.last %}
+                      </div><div class="row">
+                    {% endif %}
+                  {% endfor %}
+                  </div>
+
+                <!-- ===================================== -->
+                <!-- ===================================== -->
+                <div class="hidden-document-inputs">
+                    <!-- Insert custom content via jQuery -->
+                </div>
+                <!-- ===================================== -->
+                <!-- ===================================== -->
+
+                  <div class="row">
+                    <div class="col-xs-12">
+                      <button type="submit" class="btn btn-primary" name="adddocument">Add Document</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <!-- END LIBRARY PANEL -->
+          </div>
+        </div>
+        </div>
+        <div class="modal-footer"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+$('#DocumentAssetModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget) // Button that triggered the modal
+    var facet = button.data('facet') // Extract info from data-* attributes
+
+    var webfacetHidden = '{% for webfacet in story.webfacetstory.all %}' +
+                '<input type="hidden" name="webfacet" value="{{ webfacet.pk }}" />' +
+                '<input  type="hidden" name="type" value="webfacet" />' +
+                '{% endfor %}'
+
+
+    var printfacetHidden = '{% for printfacet in story.printfacetstory.all %}' +
+                '<input type="hidden" name="printfacet" value="{{ printfacet.pk }}" />' +
+                '<input  type="hidden" name="type" value="printfacet" />' +
+                '{% endfor %}'
+
+    var audiofacetHidden = '{% for audiofacet in story.audiofacetstory.all %}' +
+                '<input type="hidden" name="audiofacet" value="{{ audiofacet.pk }}" />' +
+                '<input  type="hidden" name="type" value="audiofacet" />' +
+                '{% endfor %}'
+
+    var videofacetHidden = '{% for videofacet in story.videofacetstory.all %}' +
+                '<input type="hidden" name="videofacet" value="{{ videofacet.pk }}" />' +
+                '<input  type="hidden" name="type" value="videofacet" />' +
+                '{% endfor %}'
+
+
+    var modal = $(this)
+
+    if (facet == 'webfacet_document') {
+        modal.find('.hidden-document-inputs').html(webfacetHidden)
+    }
+    else if (facet == 'printfacet_document') {
+        modal.find('.hidden-document-inputs').html(printfacetHidden)
+    }
+    else if (facet == 'audiofacet_document') {
+        modal.find('.hidden-document-inputs').html(audiofacetHidden)
+    }
+    else if (facet == 'videofacet_document') {
+        modal.find('.hidden-document-inputs').html(videofacetHidden)
+    }
+    else {
+        modal.find('.hidden-document-inputs').html('<div></div>')
+    }
+})
+
+</script>

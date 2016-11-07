@@ -3,52 +3,45 @@
 {% load i18n %}
 {% load bootstrap3 %}
 
+<!-------------------------------------------->
+<!--      BREADCRUMB NAVIGATION             -->
+<!-------------------------------------------->
+
+{% block breadcrumb %}
+<div>
+    <ol class="breadcrumb icon-angle-right icon-th">
+        <li class="fadeIn"> Dashboard </li>
+        <li class="fadeIn"><a href="{% url 'network_list' %}" title="You are here"> Networks </a></li>
+    </ol>
+</div>
+{% endblock breadcrumb %}
+
+<!-------------------------------------------->
+<!--            Main Section                -->
+<!-------------------------------------------->
+
 {% block content %}
 
-<div class="row particles" id="user-hero">
-  <div class="upper-content">
-    <div class="col-xs-12 content-upper-75">
-      <h1 class="media-heading text-light center thin uppercase spread-025">Networks</h1>
-    </div>
-  </div>
-</div>
-
-<div class="row content-lower-25">
-{% for network in network_list %}
-
-<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
-  <div class="panel fade in panel-default" data-init-panel="true">
-    <div class="panel-body network-panel">
-      <div class="media">
-        <div class="media-body">
-          <h3 class="brighter"><a href="{% url 'network_detail' network.id %}">{{ network.name }}</a></h3>
-          <p class="help-block bright">{{ network.network_description }} {% if request.user.organization == network.owner_organization %}<a href="{% url 'network_edit' pk=network.id %}"><i class="fa fa-pencil sameline dark"></i></a>{% endif %}</p>
-          <!-- <hr>
-          <div class="row">
-            <div class="col-md-6">
-              <p class="bright">Stories Shared </p>
-              <p>A Number</p>
-            </div>
-            <div class="col-md-6">
-              <p class="bright">Collaborations</p>
-              <p>A Number</p>
-            </div>
-          </div> -->
-          <hr>
-          <p class="bright">Managing Organization: {{ network.owner_organization.name }}</p>
-          <p class="bright">Member Organizations: {% for organization in network.organizations.all %}{{ organization.name }}, {% endfor %}</p>
-        </div><!-- /.media -body-->
-      </div><!-- /.media -->
-    </div><!-- /.panel-body -->
-
-    <div class="progress progress-xs no-radius no-margin">
-      <div class="progress-bar bg-grd-red" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+<div class="row m-b-40">
+  {% if network_list %}
+    {% for network in network_list %}
+    <div class="col-xs-12 col-lg-4 m-b-5">
+          <div class="text-widget-1">
+              <div class="row">
+                  <div class="col-xs-3"> <h5 class="m-l-20"><a href="{% url 'network_detail' network.id %}">{{ network.name }}</a></h5> </div>
+                  <div class="col-xs-9 text-left">
+                    <p class="f-s-14 f-w-300">{{ network.network_description }} {% if request.user.organization == network.owner_organization %}<a href="{% url 'network_edit' pk=network.id %}"> <i class="fa fa-pencil sameline"></i></a>{% endif %}</p>
+                    <span class="f-w-600 f-s-11 uppercase">Organizations</span>
+                    <p class="f-s-12 f-w-300">{% for organization in network.organizations.all %}{{ organization.name }}, {% endfor %}</p>
+                  </div>
+              </div>
+          </div>
       </div>
-    </div><!-- /.progress -->
-  </div><!-- /.panel -->
-</div><!-- /.cols -->
-
-{% endfor %}
+      {% endfor %}
+    {% else %}
+    <p class="f-s-18 subtle text-center italic m-b-40 m-t-40">Welcome to the Network page. This is where you will see all of the networks that your organization manages or belongs. Click here to create a <a href="{% url 'network_new' %}" title="Create New Network" class="default">network</a>.</p>
+    {% endif %}
 
 </div>
+
 {% endblock %}

@@ -1,0 +1,180 @@
+<div role="tabpanel" class="tab-pane in active p-t-0" id="storydetail">
+
+  <div class="row">
+    <!-- Discussion Column -->
+    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 right-rule">
+      <h4 class="m-b-20"> Discussion</h4>
+      <div class="comments" data-toggle="slimScroll" style="height:400px" data-color="#5D9CEC" data-allow-page-scroll="false">
+          {% if storycomments %}
+          {% for comment in storycomments %}
+          <div class="row m-b-10">
+              <div class="col-xs-12">
+                  <div class="media">
+                      <a class="media-left">
+                        {% if comment.user.display_photo %}
+                          <img class="media-object img-circle h-40 w-40" src="{{ comment.user.display_photo.url }}" alt="user">
+                        {% else %}
+                          <p class="f-w-300 f-s-12">{{ comment.user.first_name }}</p>
+                        {% endif %}
+                      </a>
+                      <div class="media-body">
+                          <p class="f-w-300 f-s-16">{{ comment.text }}
+                          <span class="f-w-400 f-s-12 color-default p-r-40" style="float: right;">
+                            {{ comment.date|date:'N j' }} at {{ comment.date|date:'g:i a' }}
+                          </span>
+                          </p>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          {% endfor %}
+          {% endif %}
+      </div>
+      <div class="post-comment">
+            <div class="row">
+              <form action="{% url 'create_storycomment' %}" method="POST" class="post-form" role="form">
+                <div class="col-md-10">
+                    {% csrf_token %}
+                    <div class="form-group">
+                    {{ storycommentform.text }}
+                    </div>
+                    {% if storycommentform.text.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ storycommentform.text.errors }}
+                      </div>
+                    {% endif %}
+                    <input type="hidden" name="story" value="{{ story.pk }}" />
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                      <button type="submit" class="btn btn-default btn-lg" name="storycommentform">
+                          <i class="fa fa-paper-plane"></i>
+                      </button>
+                    </div>
+                    <!-- <input type="submit" name="storycommentform" value="Post Comment"/> -->
+                </div>
+              </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Details Column -->
+    <div class="col-xs-12 col-md-6 right-rule">
+      <!-- <a href="#" data-toggle="tooltip" title="Story Details"><label class="field-label">Details</label></a> -->
+      <div class="row">
+        <div class="col-md-12">
+          <h4 class="m-b-20"> Details</h4>
+          <div class="row">
+            <div class="col-md-10">
+              <h5 class="m-b-20">{{ story.name }}</h5>
+              <h6 class="m-b-10"><i>{{ story.story_description }}</i></h6>
+            </div>
+            <div class="col-md-2" id="story-commands">
+              {% if request.user.organization == story.organization %}<a href="{% url 'story_edit' pk=story.id %}"><button class="btn btn-sm bg-default btn-block m-b-10">Edit</button></a>{% endif %}
+              <a href="#" data-toggle="modal" data-target="#downloadStory" title="Download"><button class="btn btn-sm bg-success btn-block m-b-10">Download</button></a>
+              {% for webfacet in story.webfacetstory.all %}
+                {% if webfacet.status == "Ready" and webfacet.pushed_to_wp == False %}
+                <form action="{% url 'webfacet_json' %}" method="POST" class="post-form" role="form" id="wordpress-form-false">
+                  <input type="hidden" id="wf_id-field" name="webfacet_id" value="{{ webfacet.pk }}" />
+                  <button id="push_webfacet_button" class="btn btn-sm bg-primary btn-block m-b-10">Wordpress</button>
+                </form>
+                {% endif %}
+                {% if webfacet.status == "Ready" and webfacet.pushed_to_wp == True %}
+                <form action="{% url 'webfacet_json' %}" method="POST" class="post-form" role="form" id="wordpress-form-true">
+                  <input type="hidden" id="wf_id-field" name="webfacet_id" value="{{ webfacet.pk }}" />
+                  <button type="submit" class="clear-button" id="push-webfacet-button">
+                    <p class="medium-dark" id="push-webfacet-text"><i class="fa fa-wordpress medium-dark" id="push-webfacet-icon"></i> Push WebFacet</p>
+                  </button>
+                </form>
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+          <hr>
+        </div>
+        <div class="col-md-6">
+          <p>Series: <span class="sameline bright">{% if story.series %}<a href="{% url 'series_detail' pk=story.series.id %}" title="View Series: {{story.series.name}}">{{ story.series.name }}</a>{% else %} <span class="tiny-text">Not currently part of a series</span>{% endif %}</p>
+          <p>Original: <span class="sameline bright">{% if story.original_story == True %} <i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</span></p>
+          {% if story.original_story == False %}
+          <p>Origin: <span class="sameline bright">Original Org</span></p>
+          {% endif %}
+          <p>Embargo: <span class="sameline bright">{% if story.embargo == True %} <i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</span></p>
+          {% if story.embargo %}
+            <p>Embargo until {{ story.embargo_datetime|date:'D M j g:i a' }}</p>
+          {% endif %}
+          <p>Created: <span class="sameline bright">{{ story.creation_date|date:'D, M j g:i a' }}</span></p>
+          <p>Archived: <span class="sameline bright">{% if story.archived == True %} <i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</span></p>
+          <p>Sensitive: <span class="sameline bright">{% if story.sensitive == True %} <i class="fa fa-check-square-o"></i>{% else %}  <i class="fa fa-square-o"></i>{% endif %}</span></p>
+        </div>
+        <div class="col-md-6">
+          <p>Team:</p>
+            <div class="row">
+            {% for user in story.team.all %}
+            <div class="col-md-4">
+              {% if user.display_photo %}
+              <img class="media-object img-circle" width="32" src="{{ user.display_photo.url }}" alt="user">
+              {% else %}
+              {% endif %}
+              <small class="subtle">{{ user.first_name }}</small>
+            </div>
+            {% endfor %}
+            </div>
+        </div>
+        <div class="col-md-12">
+          <hr>
+          <label>Sharing and Collaboration</label>
+          <div class="row">
+            {% if story.original_story == True %}
+            <div class="col-md-6">
+              <p>Shared: <span class="sameline bright">{% if story.share == True %} <i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</span></p>
+              <p>Ready To Share: <span class="sameline bright">{% if story.ready_to_share == True %} <i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</span></p>
+              <p>Share Date: <span class="sameline bright">{{ story.share_with_date|date:'D, M j g:i a' }}</span></p>
+              <p>Shared With:</p>
+              <div class="row">
+              {% for network in story.share_with.all %}
+                <div class="col-md-4">
+                <p><a href="{% url 'network_detail' pk=network.id %}">{{ network.name }}</a></p>
+                </div>
+              {% endfor %}
+              </div>
+            </div>
+            <div class="col-md-6">
+              <p>Collaboration: <span class="sameline bright">{% if story.collaborate == True %} <i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</span></p>
+              <p>Collaborating With:</p>
+              {% for collaborator in story.collaborate_with.all %}
+              <p>{{ collaborator }}</p>
+              {% endfor %}
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div><!--End col 6-->
+    <div class="col-md-2">
+      <div class="section-title">
+        <h4 class="m-b-20">Notes <a data-toggle="modal" data-target="#addStoryNote" title="Add Story Note"><i class="fa fa-plus sameline dark"></i></a></h4>
+      </div>
+      <div class="storynotes">
+        <div class="row" data-toggle="slimScroll" style="height:525px" data-color="#5D9CEC" data-allow-page-scroll="false">
+            {% for note in storynotes %}
+                <div class="col-xs-12">
+                  <div class="card bs-card">
+                      <div class="card-block">
+                          <a data-toggle="modal" data-target="#addNote{{note.id}}" title="View Organization Note"><h4 class="f-s-16 f-w-500 m-b-20">{{ note.title }}</h4></a>
+                          <p class="card-text color-default f-s-12">{{ note.owner.credit_name }}
+                              <br>{{ note.creation_date|date:'N j' }}, {{ note.creation_date|date:'g:i a' }}</p>
+                      </div>
+                  </div>
+                </div><!-- /.cols -->
+
+            {% endfor %}
+            <div class="col-xs-12">
+              <a href="{% url 'story_notes' pk=story.id %}" class="link-text m-b-40"><small>See all notes...</small></a>
+            </div>
+          </div>
+        </div>
+    </div>
+
+</div>
+
+</div>

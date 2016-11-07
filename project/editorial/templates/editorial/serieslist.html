@@ -3,19 +3,31 @@
 {% load i18n %}
 {% load bootstrap3 %}
 
+<!-------------------------------------------->
+<!--      BREADCRUMB NAVIGATION             -->
+<!-------------------------------------------->
+
+{% block breadcrumb %}
+<div>
+    <ol class="breadcrumb icon-angle-right icon-th">
+        <li class="fadeIn"><a href="{% url 'dashboard' %}"> Dashboard </a></li>
+        <li class="fadeIn"> Content </li>
+        <li class="fadeIn"><a href="{% url 'series_list' %}" title="View Series List"> Series </a></li>
+    </ol>
+</div>
+{% endblock breadcrumb %}
+
+<!-------------------------------------------->
+<!--            Main Section                -->
+<!-------------------------------------------->
+
 {% block content %}
 
-<div class="row particles" id="user-hero">
-  <div class="upper-content">
-    <div class="col-xs-12 content-upper-75">
-      <h1 class="media-heading text-light center thin uppercase spread-025">Series</h1>
-    </div>
-  </div>
-</div>
-
-<div class="row">
+<div class="row m-b-40">
   <div class="col-xs-12">
-    <table id="series-list" class="table table-condensed">
+    {% if series %}
+    <!-- Full table for xs, sm, md and lg displays -->
+    <table id="series-list" class="table table-condensed table-striped">
       <thead>
         <tr>
           <th>Series</th>
@@ -33,6 +45,9 @@
         {% endfor %}
       </tbody>
     </table>
+    {% else %}
+      <p class="f-s-18 subtle text-center italic m-b-40 m-t-40">Welcome to the Series page. This is where you will see all of the current active series from your organization. Click here to add a <a href="{% url 'series_new' %}" title="Create New Series" class="default">series</a>.</p>
+    {% endif %}
   </div>
 </div>
 

@@ -12,6 +12,7 @@ from django.views.generic import TemplateView , UpdateView, DetailView
 from django.views.decorators.csrf import csrf_exempt
 import datetime
 import json
+from actstream import action
 
 from editorial.forms import (
     SeriesForm,
@@ -41,6 +42,17 @@ def series_list(request):
     return render(request, 'editorial/serieslist.html', {'series': series})
 
 
+def series_json(request):
+    """Displays JSON of series that a story can be a part of."""
+
+    series_list = Series.objects.filter(organization=request.user.organization)
+    series = {}
+    for item in series_list:
+        series[item.id]=item.name
+    print series
+    return HttpResponse(json.dumps(series), content_type = "application/json")
+
+
 def series_new(request):
     """ A logged in user can create a series.
 
@@ -64,6 +76,10 @@ def series_new(request):
         series.discussion = discussion
         series.save()
         seriesform.save_m2m()
+
+        # record action for activity stream
+        action.send(request.user, verb="created", action_object=series)
+
         return redirect('series_detail', pk=series.pk)
     else:
         seriesform = SeriesForm(request=request)
@@ -101,6 +117,10 @@ def series_edit(request, pk):
         seriesform = SeriesForm(data=request.POST, instance=series, request=request)
         if seriesform.is_valid():
             seriesform.save()
+
+            # record action for activity stream
+            action.send(request.user, verb="edited", action_object=series)
+
             return redirect('series_detail', pk=series.id)
     else:
         seriesform = SeriesForm(instance=series, request=request)

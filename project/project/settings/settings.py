@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'debug_toolbar',
     'bootstrap3',
     'imagekit',
@@ -52,6 +53,7 @@ INSTALLED_APPS = (
     'tinymce',
     'watson',
     'embed_video',
+    'actstream',
     'project',
 )
 
@@ -95,6 +97,8 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'project.context_processors.include_private_message_form',
+                'project.context_processors.include_activity_stream',
+                'project.context_processors.include_logged_in_users',
             ],
         },
     },
@@ -139,6 +143,19 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ]
 }
+
+# -------------------------------------------------------------- #
+# ACTIVITY STREAM SETTINGS #
+# -------------------------------------------------------------- #
+
+ACTSTREAM_SETTINGS = {
+    'MANAGER': 'editorial.managers.MyActionManager',
+    'FETCH_RELATIONS': True,
+    'USE_PREFETCH': True,
+    'USE_JSONFIELD': True,
+    'GFK_FETCH_DEPTH': 2,
+}
+
 
 # -------------------------------------------------------------- #
 # OTHER SETTINGS #

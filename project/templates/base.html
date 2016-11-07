@@ -5,349 +5,639 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <title>Project Facet</title>
-  <meta name="description" content="Project Facet">
-  <meta name="viewport" content="initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,width=device-width,height=device-height,target-densitydpi=device-dpi,user-scalable=yes" />
+    <meta charset="utf-8">
+    <title>Project Facet</title>
+    <meta name="description" content="Project Facet">
+    <meta name="viewport" content="initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,width=device-width,height=device-height,target-densitydpi=device-dpi,user-scalable=yes">
+    <!-- Favicon -->
+    <link rel="icon" href="{% static 'images/favicons/facet_favicon-64x64.png' %}"/>
 
-  <!-- ================================================= -->
-                <!--     Styles & Fonts     -->
-  <!-- ================================================= -->
-  <!-- Favicon -->
-  <link rel="icon" href="{% static 'images/favicons/facet_favicon-64x64.png' %}"/>
+    <!--[if IE]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
 
-  <!-- Fonts -->
-  <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800,300italic,400italic,600italic,700italic,800italic' rel='stylesheet' type='text/css'>
+    <!-- ================================================= -->
+    <!--                 Styles & Fonts                    -->
+    <!-- ================================================= -->
 
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-  <!-- <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}"> -->
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="{% static 'css/components/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap-datetimepicker.css' %}">
 
-  <!-- Bootstrap -->
-  <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
-  <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
-  <link rel="stylesheet" href="{% static 'css/bootstrap-datetimepicker.css' %}">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
 
-  <!-- Bootstrap Calendar -->
-  <link rel="stylesheet" href="{% static 'bootstrap-calendar/css/calendar.css' %}">
+    <!-- Animate -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.1/animate.min.css">
 
-  <!-- Dependencies -->
-  <link rel="stylesheet" href="{% static 'css/dependencies.css' %}">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/1.0.0/css/flag-icon.min.css" rel="stylesheet" type="text/css">
 
-  <!-- Wrapkit -->
-  <link rel="stylesheet" href="{% static 'css/wrapkit.css' %}">
+    <!-- Fonts -->
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800,300italic,400italic,600italic,700italic,800italic' rel='stylesheet' type='text/css'>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic,900,900italic" rel="stylesheet" type="text/css">
 
-  <!-- STYLES -->
-  <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
-  <link rel="stylesheet" href="{% static 'css/components.css' %}">
-  <link rel="stylesheet" href="{% static 'css/demo.css' %}">
-  <link rel="stylesheet" href="{% static 'css/chosen.css' %}">
-  <link rel="stylesheet" href="{% static 'css/facet.css' %}">
+    <!-- Datatables -->
+    <!-- <link href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css"> -->
 
-  <!-- ================================================= -->
-                  <!--     JS       -->
-  <!-- ================================================= -->
+    <!-- Chart Styles -->
+    <link rel="stylesheet" href="{% static 'bower_components/chartist/dist/chartist.min.css' %}">
 
-  <!-- Dependencies -->
-  <script src="{% static 'scripts/jquery-1.11.3.min.js' %}"></script>
-  <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
-  <!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script> -->
+    <!-- Calendar Styles -->
+    <link rel="stylesheet" href="{% static 'bower_components/fullcalendar/dist/fullcalendar.css' %}">
 
-  <!-- Multiselect for Arrays  -->
-  <script src="{% static 'scripts/chosen.jquery.min.js' %}"></script>
+    <!-- X-Editable -->
+    <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
 
-  <!-- Popup JS -->
-  <script src="{% static 'scripts/jquery.magnific-popup.min.js' %}"></script>
+    <!-- Flat jPlayer Skin -->
+    <link rel="stylesheet" href="{% static 'flat-jplayer/css/flat.audio.css' %}">
+    <link rel="stylesheet" href="{% static 'flat-jplayer/css/flat.video.css' %}">
 
-  <!-- Content Tables -->
-  <script src="{% static 'scripts/jquery.dataTables.min.js' %}"></script>
-
-  <!-- Datetime Picker JS  -->
-  <script src="{% static 'scripts/moment.js' %}"></script>
-  <script src="{% static 'scripts/jquery.datetimepicker.js' %}"></script>
-  <script src="{% static 'scripts/bootstrap-datetimepicker.js' %}"></script>
-
-  <!-- Bootstrap Calendar JS -->
-  <script src="{% static 'bootstrap-calendar/js/calendar.js' %}"></script>
-  <script src="{% static 'scripts/underscore/underscore-min.js' %}"></script>
-
-  <!-- <script src="{% static 'bootstrap-calendar/js/app.js' %}"></script> -->
-
-  <!-- Text Editor JS -->
-  <script src="{% static 'scripts/tiny_mce/tinymce.min.js' %}"></script>
-
-  <!-- jQuery Dot Dot -->
-  <!-- Truncates text so it fits into containers and ends with an ellipsis and a link -->
-  <script src="{% static 'scripts/jquery.dotdotdot.js' %}"></script>
-
-  <!-- jQuery Sticky Tabs -->
-  <!-- Allows for direct linking to bootstrap tabs -->
-  <script src="{% static 'scripts/jquery.stickytabs.js' %}"></script>
+    <!-- Project Facet Styles -->
+    <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
+    <link rel="stylesheet" href="{% static 'css/chosen.css' %}">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <!-- <link rel="stylesheet" href="{% static 'css/facet.css' %}"> -->
+    <link rel="stylesheet" href="{% static 'css/facetui.css' %}">
 
 
-  {% block head %}
+    <!-- ================================================= -->
+    <!--                 Javascript                    -->
+    <!-- ================================================= -->
 
-  {% endblock %}
+    <!-- jQuery -->
+    <script src="{% static 'bower_components/jquery/dist/jquery.js' %}"></script>
 
+    <!-- Popup JS -->
+    <script src="{% static 'scripts/jquery.magnific-popup.min.js' %}"></script>
 
+    <!-- Image Center -->
+    <script src="{% static 'scripts/jquery.blImageCenter.js' %}"></script>
+
+    <!-- Multiselect for Arrays  -->
+    <script src="{% static 'scripts/chosen.jquery.min.js' %}"></script>
+
+    <!-- Datetime Picker JS  -->
+    <script src="{% static 'scripts/moment.js' %}"></script>
+    <script src="{% static 'scripts/jquery.datetimepicker.js' %}"></script>
+    <script src="{% static 'scripts/bootstrap-datetimepicker.js' %}"></script>
+
+    <!-- Calendar JS -->
+    <script src="{% static 'bower_components/fullcalendar/dist/fullcalendar.js' %}"></script>
+
+    <!-- jQuery Sticky Tabs -->
+    <!-- Allows for direct linking to bootstrap tabs -->
+    <script src="{% static 'scripts/jquery.stickytabs.js' %}"></script>
+
+    <!-- Flat jPlayer JS -->
+    <script src="{% static 'flat-jplayer/js/jquery.jplayer.js' %}"></script>
+    <script src="{% static 'flat-jplayer/js/flat.audio.js' %}"></script>
+    <script src="{% static 'flat-jplayer/js/flat.video.js' %}"></script>
+
+    {% block head %}
+    <!-- Child Head Items -->
+    {% endblock %}
 </head>
 
-<body>
+
+<body data-layout="horizontal-navigation-3" data-palette="palette-2" data-direction="ltr">
   {% load bootstrap3 %}
+  {% load humanize %}
+  <!-- ====================================== -->
+  <!-- ====================================== -->
+  <!--              NAVIGATION                -->
+  <!-- ====================================== -->
+  <!-- ====================================== -->
+    <nav class="navbar navbar-fixed-top navbar-1">
+      <a class="navbar-brand" href="#"><img src="{% static 'images/logo/brand-text-light.png' %}" alt="Facet Logo" class="logo p-t-5" width="125px"></a>
+      {% comment %}
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#collapsebar">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">Facet</a>
+      </div>
 
-  <main id="wrapper" class="wrapkit-wrapper">
+      <div class="collapse navbar-collapse" id="collapsebar">
+      {% endcomment %}
+                        {% if request.user.is_authenticated %}
+                                <!---------------->
+                                <!-- Pull left  -->
+                                <!---------------->
+                                <ul class="nav navbar-nav pull-left hidden-lg-down">
+                                  <li class="nav-item">
+                                      <a class="nav-link" href="{% url 'dashboard' %}"> Dashboard </a>
+                                  </li>
+                                </ul>
 
-  <!-- ================================================= -->
-  <!-- ================================================= -->
-                  <!-- NAVIGATION -->
-  <!-- ================================================= -->
-  <!-- ================================================= -->
+                                <ul class="nav navbar-nav pull-left hidden-lg-down">
+                                  <li class="nav-item dropdown dropdown-menu-right">
+                                      <a class="nav-link dropdown-toggle no-after f-s-16" data-toggle="dropdown"> Content </a>
+                                      <div class="dropdown-menu dropdown-menu-scale from-right dropdown-menu-right">
+                                          <a class="dropdown-item" href="{% url 'schedule' %}" title="View Schedule"> <span class="title">Schedule</span> </a>
+                                          <a class="dropdown-item" href="{% url 'story_list' %}" title="View Story List"> </span> <span class="title">Stories</span> </a>
+                                          <a class="dropdown-item" href="{% url 'series_list' %}" title="View Series List"> </span> <span class="title">Series</span> </a>
+                                          <a class="dropdown-item" href="{% url 'collaborations' %}" title="View Content in Collaboration"> </span> <span class="title">Collaborations</span> </a>
+                                      </div>
+                                  </li>
+                                </ul>
 
-    <nav class="navbar navbar-inverse">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button"
-                  class="navbar-toggle collapsed"
-                  data-toggle="collapse"
-                  data-target="#navbar"
-                  aria-expanded="false"
-                  aria-controls="navbar">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-          </button>
-          <!-- ================================================= -->
-                                <!-- LOGO -->
-          <!-- ================================================= -->
-          <div class="pull-left">
-            <a class="navbar-brand" role="logo">
-              <img src="{% static 'images/logo/brand-text-light.png' %}" alt="Facet Logo" class="logo">
-            </a>
+                                <ul class="nav navbar-nav pull-left hidden-lg-down">
+                                  <li class="nav-item">
+                                      <a class="nav-link" href="{% url 'asset_library' %}" title="View Media Library"> Media </a>
+                                  </li>
+                                </ul>
+
+                                <ul class="nav navbar-nav pull-left hidden-lg-down">
+                                  <li class="nav-item dropdown dropdown-menu-right">
+                                      <a class="nav-link dropdown-toggle no-after f-s-16" data-toggle="dropdown"> Networks </a>
+                                      <div class="dropdown-menu dropdown-menu-scale from-right dropdown-menu-right">
+                                          <a class="dropdown-item" href="{% url 'network_list' %}" title="View Networks"> <span class="title"> Networks </span> </a>
+                                          <a class="dropdown-item" href="{% url 'network_stories' %}" title="View Network Content"> </span> <span class="title"> Network Content </span> </a>
+                                      </div>
+                                  </li>
+                                </ul>
+
+                                <ul class="nav navbar-nav pull-left hidden-lg-down">
+                                  <li class="nav-item">
+                                      <a class="nav-link" href="{% url 'team_list' %}" title="View Teams and Collaborators"> Teams </a>
+                                  </li>
+                                </ul>
+
+                                <ul class="nav navbar-nav pull-left hidden-lg-down">
+                                  <li class="nav-item">
+                                      <a class="nav-link" href="{% url 'inbox' %}" title="You are here"> Inbox </a>
+                                  </li>
+                                </ul>
+
+                                <ul class="nav navbar-nav pull-left hidden-lg-down">
+                                  <li class="nav-item dropdown dropdown-menu-right">
+                                      <a class="nav-link dropdown-toggle no-after f-s-16" data-toggle="dropdown"> Create New Content </a>
+                                      <div class="dropdown-menu dropdown-menu-scale from-right dropdown-menu-right">
+                                          <a class="dropdown-item" href="{% url 'series_new' %}" title="Create New Series"> <span class="title"> New Series </span> </a>
+                                          <a class="dropdown-item" href="{% url 'story_new' %}" title="Create New Story"> </span> <span class="title"> New Story </span> </a>
+                                      </div>
+                                  </li>
+                                </ul>
+
+                                <ul class="nav navbar-nav pull-left toggle-search">
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-click="toggle-search"> <i class="zmdi zmdi-search"></i> </a>
+                                    </li>
+                                </ul>
+
+                                <div class="navbar-drawer pull-left hidden-lg-down">
+                                    <form action="{% url 'search' %}" class="form-inline navbar-form">
+                                        <input id="searchbox" type="text" name="q" class="form-control" value="{{request.GET.q}}" placeholder="Search"> </form>
+                                </div>
+                                <!---------------->
+                                <!-- Pull Right -->
+                                <!---------------->
+                                <ul class="nav navbar-nav pull-right hidden-lg-down">
+                                  <li class="nav-item dropdown dropdown-menu-right">
+                                      <a class="nav-link dropdown-toggle no-after" data-toggle="dropdown"> <span class="zmdi zmdi-settings"></span> </a>
+                                      <div class="dropdown-menu dropdown-menu-scale from-right dropdown-menu-right">
+                                          {% if request.user.organization %}
+                                            <a class="dropdown-item" href="{% url 'org_detail' pk=request.user.organization.id %}"> <span class="title">Organization</span> </a>
+                                            {% if request.user.organization.owner = request.user %}
+                                              <a class="dropdown-item" href="{% url 'org_edit' pk=request.user.organization.id %}"> </span> <span class="title">Manage Organization</span> </a>
+                                            {% endif %}
+                                          {% endif %}
+                                          <a class="dropdown-item" href="{% url 'network_new' %}"> </span> <span class="title">Create Network</span> </a>
+                                      </div>
+                                  </li>
+                                </ul>
+
+                                <ul class="nav navbar-nav pull-right toggle-fullscreen-mode">
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-click="toggle-fullscreen-mode"> <i class="zmdi zmdi-fullscreen"></i> </a>
+                                    </li>
+                                </ul>
+
+                                <ul class="nav navbar-nav pull-right hidden-lg-down">
+                                    <li class="nav-item dropdown dropdown-menu-right">
+                                        <a class="nav-link dropdown-toggle no-after" data-toggle="modal" data-target="#addUserNote" href="#" title="Add a note"> <span class="fa fa-sticky-note"></span> </a>
+                                    </li>
+                                </ul>
+
+                                <ul class="nav navbar-nav pull-right hidden-lg-down">
+                                    <li class="nav-item dropdown dropdown-menu-right">
+                                        <a class="nav-link dropdown-toggle no-after" data-toggle="modal" data-target="#sendPrivateMessage" href="#" title="Send a private message"> <span class="fa fa-comment"></span> </a>
+                                    </li>
+                                </ul>
+
+                                <ul class="nav navbar-nav pull-right hidden-lg-down navbar-notifications">
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-click="toggle-right-sidebar"> <i class="zmdi zmdi-notifications-active"></i></a>
+                                    </li>
+                                </ul>
+
+                                <ul class="nav navbar-nav pull-right hidden-lg-down navbar-profile">
+                                    <li class="nav-item dropdown">
+                                        <a class="nav-link dropdown-toggle no-after" data-toggle="dropdown">
+                                          {% if request.user.display_photo %}
+                                          <img class="img-circle img-fluid profile-image" src="{{ request.user.display_photo.url }}">
+                                          {% elif request.user.first_name %}
+                                          <p>{{request.user.first_name}}</p>
+                                          {% else %}
+                                          <i class="fa fa-user" aria-hidden="true"></i>
+                                          {% endif %}
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-scale from-right dropdown-menu-right">
+                                            <a class="dropdown-item animated fadeIn" href="{% url 'inbox' %}" title="View Inbox"> <i class="zmdi zmdi-email"></i> <span class="dropdown-text">Inbox</span> </a>
+                                            <a class="dropdown-item animated fadeIn" href="{% url 'user_edit' pk=request.user.id %}"> <i class="zmdi zmdi-settings-square"></i> <span class="dropdown-text">Profile</span> </a>
+                                            <a class="dropdown-item animated fadeIn" href="#"> <i class="zmdi zmdi-alarm"></i> <span class="dropdown-text">Lock screen</span> </a>
+                                            <a class="dropdown-item animated fadeIn" href="/accounts/logout"> <i class="zmdi zmdi-power"></i> <span class="dropdown-text">Logout</span> </a>
+                                        </div>
+                                    </li>
+                                </ul>
+                          {% else %}
+                          <li><a href="/accounts/login/" class="pull-right thin">Login</a></li>
+                          {% endif %}
+        <!-- </div> -->
+
+    </nav>
+    <!-- ====================================== -->
+    <!-- ====================================== -->
+    <!--      BREADCRUMB NAVIGATION             -->
+    <!-- ====================================== -->
+    <!-- ====================================== -->
+    <div class="horizontal-navigation horizontal-navigation-3">
+        <div class="container-fluid">
+          <div class="row">
+              <div class="col-xs-12">
+                  {% block breadcrumb %}
+                  <!-- Breadcrumb Content -->
+                  {% endblock breadcrumb %}
+              </div>
           </div>
         </div>
-          <!-- ================================================= -->
-                              <!-- MAIN MENU -->
-          <!-- ================================================= -->
+    </div>
+    <!-- ====================================== -->
+    <!-- ====================================== -->
+    <!--        Main Part of the Page           -->
+    <!-- ====================================== -->
+    <!-- ====================================== -->
+    <div class="container-fluid">
+        <div class="row">
+            <!-- ====================================== -->
+            <!--            Right Sidebar               -->
+            <!-- ====================================== -->
+            {% if request.user.is_authenticated %}
+            <div class="right-sidebar-outer">
+                <div class="right-sidebar-inner">
+                    <div class="right-sidebar">
+                        <div class="bs-nav-tabs nav-tabs-default justified">
+                            <ul class="nav nav-tabs nav-animated-border-from-center">
+                                <li class="nav-item"> <a class="nav-link active" data-toggle="tab" data-target="#rtab-left">Activity</a> </li>
+                                <li class="nav-item"> <a class="nav-link" data-toggle="tab" data-target="#rtab-center">Users</a> </li>
+                                <li class="nav-item"> <a class="nav-link" data-toggle="tab" data-target="#rtab-right">Social</a> </li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane fade in active" id="rtab-left">
+                                    <h5>Recent</h5>
+                                    <div class="timeline-widget-4">
+                                      {% for activity in activitystream %}
+                                        <div class="row {% cycle 'bg-odd-color' 'bg-even-color' %}">
+                                            {% if activity.verb == 'created' or activity.verb == 'added note' or activity.verb == 'added' %}
+                                                <div class="col-xs-12 timeline timeline-info">
+                                            {% elif activity.verb == 'edited' or activity.verb == 'shared' or activity.verb == 'picked up' %}
+                                                <div class="col-xs-12 timeline timeline-success">
+                                            {% elif activity.verb == 'commented on' %}
+                                                <div class="col-xs-12 timeline timeline-warning">
+                                            {% elif activity.verb == 'uploaded image' or activity.verb == 'uploaded document' or activity.verb == 'uploaded audio' or activity.verb == 'added image' or activity.verb == 'added document' or activity.verb == 'added audio' %}
+                                                <div class="col-xs-12 timeline timeline-danger">
+                                            {% endif %}
+                                                    <div class="p-10">
+                                                        {% if activity.action_object.type == 'User' %}
+                                                          <p>{{ activity.actor }} {{ activity.verb }} User: {{activity.action_object.credit_name }}</p>
+                                                        {% elif activity.action_object.type == 'Organization' %}
+                                                          <p>{{ activity.actor }} {{ activity.verb }} Organization: {{activity.action_object.name }}</p>
+                                                        {% elif activity.action_object.type == 'Network' %}
+                                                          <p>{{ activity.actor }} {{ activity.verb }} Network: {{activity.action_object.name }}</p>
+                                                        {% elif activity.action_object.type == 'Series' %}
+                                                          <p>{{ activity.actor }} {{ activity.verb }} Series: {{activity.action_object.name }}</p>
+                                                        {% elif activity.action_object.type == 'Story' %}
+                                                          <p>{{ activity.actor }} {{ activity.verb }} Story: {{activity.action_object.name }}</p>
+                                                        {% elif activity.action_object.type == 'WebFacet' %}
+                                                          <p>{{ activity.actor }} {{ activity.verb }} WebFacet: {{activity.action_object.title }}</p>
+                                                        {% elif activity.action_object.type == 'PrintFacet' %}
+                                                          <p>{{ activity.actor }} {{ activity.verb }} PrintFacet: {{activity.action_object.title }}</p>
+                                                        {% elif activity.action_object.type == 'AudioFacet' %}
+                                                          <p>{{ activity.actor }} {{ activity.verb }} AudioFacet: {{activity.action_object.title }}</p>
+                                                        {% elif activity.action_object.type == 'VideoFacet' %}
+                                                          <p>{{ activity.actor }} {{ activity.verb }} VideoFacet: {{activity.action_object.title }}</p>
+                                                        {% elif activity.action_object.type == 'Image' %}
+                                                          <p>{{ activity.actor }} {{ activity.verb }} Image: {{activity.action_object.asset_title }}</p>
+                                                        {% elif activity.action_object.type == 'Document' %}
+                                                          <p>{{ activity.actor }} {{ activity.verb }} Document: {{activity.action_object.asset_title }}</p>
+                                                        {% elif activity.action_object.type == 'Audio' %}
+                                                          <p>{{ activity.actor }} {{ activity.verb }} Audio: {{activity.action_object.asset_title }}</p>
+                                                        {% elif activity.action_object.type == 'Video' %}
+                                                          <p>{{ activity.actor }} {{ activity.verb }} Audio: {{activity.action_object.asset_title }}</p>
+                                                        {% endif %}
 
-        <div id="navbar" class="navbar-collapse collapse">
-          {% if request.user.is_authenticated %}
-          <ul class="nav navbar-nav">
-            <li id="dashboard-link"><a href="{% url 'dashboard' %}">Dashboard</a></li>
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" title="Content">Content<span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                  <li><a href="{% url 'schedule' %}" title="View Schedule">Schedule</a></li>
-                  <li><a href="{% url 'story_list' %}" title="View Story List">Stories</a></li>
-                  <li><a href="{% url 'series_list' %}" title="View Series List">Series</a></li>
-                  <li><a href="{% url 'collaborations' %}" title="View Content in Collaboration">Collaborations</a></li>
-                  <li><a href="{% url 'asset_library' %}" title="View Asset Library">Assets</a></li>
-                </ul>
-            </li>
-            <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" title="Networks">Networks<span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                  <li><a href="{% url 'network_list' %}" title="View Networks">Networks</a></li>
-                  <li><a href="{% url 'network_stories' %}" title="View Network Content">Network Stories</a></li>
-                </ul>
-            </li>
-            <li><a href="{% url 'team_list' %}" title="View Teams and Collaborators">Teams</a></li>
-            <li><a href="{% url 'discussion' %}" title="View Inbox">Inbox</a></li>
+                                                        <p class="text-sm text-muted">{{ activity.timestamp|timesince }} </p>
+                                                    </div>
+                                                </div>
+                                        </div>
+                                      {% endfor %}
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="rtab-center">
+                                    <h5>Online</h5>
+                                    <div class="user-widget-8">
+                                        <div class="row">
+                                            <div class="col-xs-12 bs-media">
+                                                {% for user in org_users %}
+
+                                                  <div class="media">
+                                                      <a class="media-left"> <i class="fa fa-circle icon color-success"></i>
+                                                        {% if user.display_photo %}
+                                                        <img class="media-object img-circle h-40 w-40" alt="User" src="{{ user.display_photo.url }}">
+                                                        {% elif user.first_name %}
+                                                        <p>{{user.first_name}}</p>
+                                                        {% else %}
+                                                        <p>{{user.email}}</p>
+                                                        {% endif %}
+                                                      </a>
+                                                      <div class="media-body">
+                                                          <h5 class="media-heading"> {{ user.credit_name }} </h5>
+                                                          <p>{{ user.title }}</p>
+                                                      </div>
+                                                  </div>
+
+                                                {% endfor %}
 
 
-            <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" title="Create Series and Stories">Create New Content<span class="caret"></span></a>
-              <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                <li><a href="{% url 'series_new' %}" title="Create New Series">Series</a></li>
-                <li><a href="{% url 'story_new' %}" title="Create New Story">Story</a></li>
-              </ul>
-            </li>
-            <li><a href="{% url 'search' %}" title="Search Content">Search</a></li>
-          </ul>
-          {% endif %}
 
-          <div class="pull-right" role="navigation">
-
-           {% comment %}
-            <!-- <div class="user-ident dropdown-ext">
-              {% if request.user.is_authenticated %}
-              <div class="panel clear-panel fade in panel-default" data-init-panel="true">
-                <div class="clear-panel-body">
-                  <div class="media">
-                    <div class="media-left">
-                      <div class="">
-                      </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="tab-pane fade" id="rtab-right">
+                                    <h5>Twitter</h5>
+                                    <div class="m-b-10">
+                                        <div class="icon-widget-3 bg-twitter">
+                                            <div class="row icon">
+                                                <div class="col-xs-12 text-center"> <i class="color-white"></i> </div>
+                                            </div>
+                                            <div class="row icons">
+                                                <div class="col-xs-12 col-md-4 col-lg-4 text-center">
+                                                    <div class="amount"> <i class="fa fa-twitter color-white"></i> <span class="color-white">90</span> </div>
+                                                </div>
+                                                <div class="col-xs-12 col-md-4 col-lg-4 text-center">
+                                                    <div class="amount"> <i class="fa fa-comment-o color-white"></i> <span class="color-white">22</span> </div>
+                                                </div>
+                                                <div class="col-xs-12 col-md-4 col-lg-4 text-center">
+                                                    <div class="amount"> <i class="fa fa-star-o color-white"></i> <span class="color-white">33</span> </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h5>Facebook</h5>
+                                    <div class="m-b-10">
+                                        <div class="icon-widget-3 bg-facebook">
+                                            <div class="row icon">
+                                                <div class="col-xs-12 text-center"> <i class="color-white"></i> </div>
+                                            </div>
+                                            <div class="row icons">
+                                                <div class="col-xs-12 col-md-4 col-lg-4 text-center">
+                                                    <div class="amount"> <i class="fa fa-thumbs-o-up color-white"></i> <span class="color-white">45</span> </div>
+                                                </div>
+                                                <div class="col-xs-12 col-md-4 col-lg-4 text-center">
+                                                    <div class="amount"> <i class="fa fa-comment-o color-white"></i> <span class="color-white">51</span> </div>
+                                                </div>
+                                                <div class="col-xs-12 col-md-4 col-lg-4 text-center">
+                                                    <div class="amount"> <i class="fa fa-star-o color-white"></i> <span class="color-white">13</span> </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h5>Google</h5>
+                                    <div class="m-b-10">
+                                        <div class="icon-widget-3 bg-google">
+                                            <div class="row icon">
+                                                <div class="col-xs-12 text-center"> <i class="color-white"></i> </div>
+                                            </div>
+                                            <div class="row icons">
+                                                <div class="col-xs-12 col-md-4 col-lg-4 text-center">
+                                                    <div class="amount"> <i class="fa fa-heart-o color-white"></i> <span class="color-white">8</span> </div>
+                                                </div>
+                                                <div class="col-xs-12 col-md-4 col-lg-4 text-center">
+                                                    <div class="amount"> <i class="fa fa-comment-o color-white"></i> <span class="color-white">13</span> </div>
+                                                </div>
+                                                <div class="col-xs-12 col-md-4 col-lg-4 text-center">
+                                                    <div class="amount"> <i class="fa fa-star-o color-white"></i> <span class="color-white">44</span> </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <h5>Recent Mentions</h5>
+                                    <div class="m-b-10 p-20">
+                                        <div class="row">
+                                          <div class="icon-widget-2 bg-twitter color-white">
+                                              <div class="row">
+                                                  <div class="col-xs-12">
+                                                      <div class="p-20">
+                                                          <a class="media-left media-middle"> <i class="fa fa-twitter color-white"></i> </a>
+                                                          <div class="media-body">
+                                                              <blockquote class="blockquote">
+                                                                  <div class="blockquote-text color-white">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</div>
+                                                                  <div class="blockquote-author">@john.doe</div>
+                                                              </blockquote>
+                                                          </div>
+                                                      </div>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="media-body">
-                      <a href="{% url 'user_detail' pk=request.user.id %}"><h6 class="media-heading bright">{{ user.credit_name}}</h6></a>
-                      {% if user.organization %}<a href="{% url 'org_detail' pk=request.user.organization_id %}"><p class="help-block tiny-text close-text">{{ user.organization.name }}</p></a>{% endif %}
+                </div>
+            </div>
+            {% endif %}
+            <!-- ====================================== -->
+            <!--            Main Section                -->
+            <!-- ====================================== -->
+            <div class="col-xs-12 main" id="main">
+                {% block content %}
+                <!-- Child Template Content -->
+                {% endblock content %}
+
+                <!-- ====================================== -->
+                <!--            Footer Section              -->
+                <!-- ====================================== -->
+                <div class="footer">
+                    <div class="row">
+                        <div class="col-xs-12"> <a href="http://projectfacet.org" target="_blank">© 2016. Project Facet. </a></div>
                     </div>
+                </div>
+
+
+
+            </div> <!-- End of Main -->
+        </div> <!-- End of row -->
+
+        {% block modals %}
+
+        {% endblock modals %}
+        <!-- ================================================= -->
+        <!-- ================================================= -->
+                <!-- MODAL WINDOWS SECTION -->
+        <!-- ================================================= -->
+        <!-- ================================================= -->
+
+        <!-- Private Message Modal -->
+          <div class="modal fade" id="sendPrivateMessage" tabindex="-1" role="dialog" aria-labelledby="sendPrivateMessageLabel">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                  <h4 class="modal-title" id="sendPrivateMessageLabel">Send a private message</h4>
+                </div>
+                <div class="modal-body">
+                  {% if privatemessageform %}
+                  <form action="{% url 'private_message_new' %}" method="POST" class="post-form">
+                  {% csrf_token %}
+                  {% bootstrap_form privatemessageform %}
+                  <button type="submit" class="btn btn-primary">Send Message</button>
+                  </form>
+                  {% endif %}
+                </div>
+                <div class="modal-footer">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- User Note Modal -->
+            <div class="modal fade" id="addUserNote" tabindex="-1" role="dialog" aria-labelledby="addUserNoteLabel">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="addUserNoteLabel">Create a note</h4>
+                  </div>
+                  <div class="modal-body">
+                    {% if usernoteform %}
+                    <form action="{% url 'create_user_note' %}" method="POST" class="post-form">
+                    {% csrf_token %}
+                    {% bootstrap_form usernoteform %}
+                    <button type="submit" class="btn btn-primary">Create Note</button>
+                    </form>
+                    {% endif %}
+                  </div>
+                  <div class="modal-footer">
                   </div>
                 </div>
               </div>
-              {% endif %}
-            </div> -->
-
-          {% endcomment %}
-          <!-- ================================================= -->
-                                <!-- MESSAGING -->
-          <!-- ================================================= -->
-          {% if request.user.is_authenticated %}
-            <div class="dropdown-ext">
-              <a href="{% url 'user_detail' pk=request.user.id %}"><h6 class="media-heading bright">{{ request.user.credit_name}}</h6></a>
-              {% if request.user.organization %}
-                <a href="{% url 'org_detail' pk=request.user.organization_id %}"><p class="help-block tiny-text close-text">{{ request.user.organization.name }}</p></a>
-              {% endif %}
-            </div><!-- /.dropdown -->
-            <div class="dropdown-ext">
-              <a aria-label="notifications" class="btn btn-icon navbar-btn dropdown-toggle" data-toggle="modal" data-target="#addUserNote" href="#" title="Add a note">
-                <i class="fa fa-sticky-note"></i>
-              </a>
-            </div><!-- /.dropdown -->
-            <div class="dropdown-ext">
-              <a aria-label="notifications" class="btn btn-icon navbar-btn dropdown-toggle" data-toggle="modal" data-target="#sendPrivateMessage" href="#" title="Send a private message">
-                <i class="fa fa-comments-o"></i>
-              </a>
-            </div><!-- /.dropdown -->
-          {% endif %}
-
-          <!-- ================================================= -->
-                            <!-- PROFILE LINKS -->
-          <!-- ================================================= -->
-          <ul class="nav navbar-nav navbar-right">
-              {% if request.user.is_authenticated %}
-                <div class="dropdown">
-                  <a aria-label="More" class="btn btn-icon navbar-btn dropdown-toggle" data-toggle="dropdown" href="#">
-                    <i class="fa fa-ellipsis-v"></i>
-                  </a>
-                  <ul class="dropdown-menu dropdown-menu-right thin" role="menu" id="settings-dropdown">
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'user_edit' pk=request.user.id %}"><span class="pull-right"><i class="fa fa-user text-muted"></i></span>Profile</a></li>
-                    <li class="divider"></li>
-                    {% if request.user.organization %}
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'org_detail' pk=request.user.organization.id %}"><span class="pull-right"><i class="fa fa-home text-muted"></i></span>Organization</a></li>
-                    {% endif %}
-                    {% if request.user.organization.owner = request.user %}
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'org_edit' pk=request.user.organization.id %}"><span class="pull-right"><i class="fa fa-pencil text-muted"></i></span>Manage Organization</a></li>
-                    {% endif %}
-                    <!-- <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'org_new' %}"><span class="pull-right"><i class="fa fa-users text-muted"></i></span>New Organization</a></li> -->
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="{% url 'network_new' %}"><span class="pull-right"><i class="fa fa-users text-muted"></i></span>New Network</a></li>
-                    <li class="divider"></li>
-                    <li role="presentation"><a role="menuitem" tabindex="-1" href="/accounts/logout"><span class="pull-right"><i class="fa fa-sign-out text-muted"></i></span> Sign out</a></li>
-                  </ul>
-                </div><!-- /.dropdown -->
-              {% else %}
-                <li><a href="/accounts/signup/" class="pull-right thin">Signup</a></li>
-                <li><a href="/accounts/login/" class="pull-right thin">Login</a></li>
-              {% endif %}
-          </ul>
-        </div>
-      </div>
-
-      </div>
-    </nav>
-    <!-- END NAVIGATION -->
-
-    <!-- BODY OF APP -->
-    <div class="container-fluid">
-    {% block content %}
-      <!-- ================================================= -->
-      <!-- ================================================= -->
-                      <!-- MAIN CONTENT SECTION -->
-      <!-- ================================================= -->
-      <!-- ================================================= -->
-    {% endblock %}
-  </div>
-    <!-- END OF APP BODY -->
-
-    <!-- ================================================= -->
-    <!-- ================================================= -->
-                    <!-- FOOTER SECTION -->
-    <!-- ================================================= -->
-    <!-- ================================================= -->
-
-    <!-- Footer -->
-
-    <!-- ================================================= -->
-    <!-- ================================================= -->
-                    <!-- MODAL WINDOWS SECTION -->
-    <!-- ================================================= -->
-    <!-- ================================================= -->
-
-    <!-- Private Message Modal -->
-    <div class="modal fade" id="sendPrivateMessage" tabindex="-1" role="dialog" aria-labelledby="sendPrivateMessageLabel">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="sendPrivateMessageLabel">Send a private message</h4>
-          </div>
-          <div class="modal-body">
-            {% if privatemessageform %}
-            <form action="{% url 'private_message_new' %}" method="POST" class="post-form">
-            {% csrf_token %}
-            {% bootstrap_form privatemessageform %}
-            <button type="submit" class="btn btn-primary">Send Message</button>
-            </form>
-            {% endif %}
-          </div>
-          <div class="modal-footer">
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- User Note Modal -->
-    <div class="modal fade" id="addUserNote" tabindex="-1" role="dialog" aria-labelledby="addUserNoteLabel">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="addUserNoteLabel">Create a note</h4>
-          </div>
-          <div class="modal-body">
-            {% if usernoteform %}
-            <form action="{% url 'create_user_note' %}" method="POST" class="post-form">
-            {% csrf_token %}
-            {% bootstrap_form usernoteform %}
-            <button type="submit" class="btn btn-primary">Create Note</button>
-            </form>
-            {% endif %}
-          </div>
-          <div class="modal-footer">
-          </div>
-        </div>
-      </div>
-    </div>
+            </div>
+          <!-- End of Modal Windows -->
 
 
-    <!-- End of Modal Windows -->
+    </div> <!-- End of container -->
 
-  </main><!--/#wrapper-->
+
 
     <!-- ================================================= -->
     <!-- ================================================= -->
                       <!--     JS       -->
     <!-- ================================================= -->
     <!-- ================================================= -->
+    <!-- <script src="{% static 'bower_components/jquery/dist/jquery.js' %}"></script> IN HEAD-->
+    <script src="{% static 'bower_components/tether/dist/js/tether.js' %}"></script>
+    <script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.js' %}"></script>
+    <script src="{% static 'bower_components/PACE/pace.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.0.0/lodash.min.js"></script>
+    <script src="{% static 'scripts/components/jquery-fullscreen/jquery.fullscreen-min.js' %}"></script>
+    <script src="{% static 'bower_components/jquery-storage-api/jquery.storageapi.min.js' %}"></script>
+    <script src="{% static 'bower_components/wow/dist/wow.min.js' %}"></script>
+    <script src="{% static 'scripts/functions.js' %}"></script>
+    <script src="{% static 'scripts/colors.js' %}"></script>
+    <!-- <script src="{% static 'scripts/left-sidebar.js' %}"></script> -->
+    <script src="{% static 'scripts/navbar.js' %}"></script>
+    <script src="{% static 'scripts/horizontal-navigation-3.js' %}"></script>
+    <!-- <script src="{% static 'scripts/main.js' %}"></script> -->
+    <script src="{% static 'bower_components/notifyjs/dist/notify.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
+    <script src="{% static 'bower_components/chartist/dist/chartist.min.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/easy-pie-chart/2.1.6/jquery.easypiechart.min.js"></script>
+    <script src="{% static 'bower_components/d3/d3.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
+    <script src="http://bower.batchthemes.com/bower_components/datamaps/dist/datamaps.all.js"></script>
+    <!-- <script src="{% static 'scripts/dashboards.js' %}"></script> -->
+    <!-- <script src="{% static 'scripts/index.js' %}"></script> -->
+    <!-- <script src="{% static 'bower_components/fullcalendar/dist/fullcalendar.js' %}"></script> -->
+    <!-- <script src="{% static 'scripts/extras-calendar.js' %}"></script> -->
 
-    <!-- Particles jQuery -->
-    <!-- <script src="static/scripts/vendor.js"></script> -->
-    <script type='text/javascript' src="{% static 'scripts/jquery.particleground.min.js' %}"></script>
-    <script type='text/javascript' src="{% static 'scripts/particles.js' %}"></script>
+    <!-- Flat jPlayer JS -->
+    <!-- <script src="{% static 'flat-jplayer/js/jquery.jplayer.js' %}"></script>
+    <script src="{% static 'flat-jplayer/js/flat.audio.js' %}"></script>
+    <script src="{% static 'flat-jplayer/js/flat.video.js' %}"></script> -->
+    <!------------>
+    <!-- OLD JS -->
+    <!------------>
+    <!-- Multiselect for Arrays  -->
+    <!-- <script src="{% static 'scripts/chosen.jquery.min.js' %}"></script> -->
+
+    <!-- Popup JS -->
+    <!-- <script src="{% static 'scripts/jquery.magnific-popup.min.js' %}"></script> -->
+
+    <!-- Content Tables -->
+    <script src="{% static 'scripts/jquery.dataTables.min.js' %}"></script>
+    <!-- <script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script> -->
+
+    <!-- Datetime Picker JS  -->
+    <!-- <script src="{% static 'scripts/moment.js' %}"></script>
+    <script src="{% static 'scripts/jquery.datetimepicker.js' %}"></script>
+    <script src="{% static 'scripts/bootstrap-datetimepicker.js' %}"></script> -->
+
+    <!-- Bootstrap Calendar JS -->
+    <!-- <script src="{% static 'bootstrap-calendar/js/calendar.js' %}"></script>
+    <script src="{% static 'scripts/underscore/underscore-min.js' %}"></script> -->
+    <!-- <script src="{% static 'bootstrap-calendar/js/app.js' %}"></script> -->
+
+    <!-- Text Editor JS -->
+    <script src="{% static 'scripts/tiny_mce/tinymce.min.js' %}"></script>
+
+    <!-- X-Editable -->
+    <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.full.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.js"></script>
+
+    <!-- jQuery Dot Dot -->
+    <!-- Truncates text so it fits into containers and ends with an ellipsis and a link -->
+    <script src="{% static 'scripts/jquery.dotdotdot.js' %}"></script>
+
+    <!-- jQuery Sticky Tabs -->
+    <!-- Allows for direct linking to bootstrap tabs -->
+    <!-- <script src="{% static 'scripts/jquery.stickytabs.js' %}"></script> -->
 
     <!-- Main JS -->
     <script src="{% static 'scripts/facet.js' %}"></script>
 
     <!-- DEPENDENCIES : Required plugins -->
-    <script src="{% static 'scripts/dependencies.js' %}"></script>
+    <!-- <script src="{% static 'scripts/dependencies.js' %}"></script> -->
 
     <!-- Wrapkit -->
-    <script src="{% static 'scripts/wrapkit.js' %}"></script>
-    <script src="{% static 'scripts/wrapkit-setup.js' %}"></script>
+    <!-- <script src="{% static 'scripts/wrapkit.js' %}"></script> -->
+    <!-- <script src="{% static 'scripts/wrapkit-setup.js' %}"></script> -->
 
     <!-- Plugin Setups: vendors & dependencies setups -->
-    <script src="{% static 'scripts/plugin-setups.js' %}"></script>
+    <!-- <script src="{% static 'scripts/plugin-setups.js' %}"></script> -->
 
+    <!-- SlimScroll -->
+    <script src="{% static 'scripts/jquery.slimscroll.js' %}"></script>
 
 </body>
+
 </html>

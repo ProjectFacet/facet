@@ -1,0 +1,13 @@
+<div class="email-view">
+    <div class="inbox-header">
+        <div class="pull-right">
+            {% comment %}<a class="btn btn-default btn-sm" href="email-inbox.html"><i class="fa fa-trash-o"></i> </a>{% endcomment %}
+        </div>
+    </div>
+    <h3 class="m-b-20"> <span>Subject: </span> <span>{{ message.subject }}</span> </h3>
+    <p class="text-bold m-b-20"> <span class="pull-right email-date">{{ message.date|date:'D, M j' }} | {{ message.date|date:'g:i a' }}</span> <span class="email-from"><strong>From: </strong></span> {{ message.user.credit_name }}</p>
+    <p>{{ message.text|safe }}</p>
+</div>
+<div class="text-left">
+    {% comment %}<button type="button" class="btn btn-default"><i class="fa fa-trash-o"></i> Remove</button>{% endcomment %}
+</div>

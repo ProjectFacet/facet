@@ -12,6 +12,7 @@ from django.views.generic import TemplateView , UpdateView, DetailView
 from django.views.decorators.csrf import csrf_exempt
 import datetime
 import json
+from actstream import action
 
 from editorial.forms import (
     PrivateMessageForm,)
@@ -36,6 +37,7 @@ from editorial.models import (
 
 #TODO: Refactor to reduce repetitiveness/use AJAX for submission
 
+@csrf_exempt
 def private_message_new(request):
     """ Private messaging method. """
 
@@ -72,6 +74,9 @@ def create_orgcomment(request):
         comment = Comment.objects.create_comment(user=request.user, discussion=discussion, text=comment_text)
         comment.save()
 
+        # record action for activity stream
+        action.send(request.user, verb="commented on", action_object=organization)
+
         return redirect('org_detail', pk=organization.id)
 
 def org_comments(request):
@@ -98,6 +103,9 @@ def create_networkcomment(request):
         comment = Comment.objects.create_comment(user=request.user, discussion=discussion, text=comment_text)
         comment.save()
 
+        # record action for activity stream
+        action.send(request.user, verb="commented on", action_object=network)
+
         return redirect('network_detail', pk=network.id)
 
 
@@ -111,6 +119,9 @@ def create_seriescomment(request):
         discussion = get_object_or_404(Discussion, id=series.discussion.id)
         comment = Comment.objects.create_comment(user=request.user, discussion=discussion, text=comment_text)
         comment.save()
+
+        # record action for activity stream
+        action.send(request.user, verb="commented on", action_object=series)
 
         return redirect('series_detail', pk=series.id)
 
@@ -126,6 +137,9 @@ def create_storycomment(request):
         comment = Comment.objects.create_comment(user=request.user, discussion=discussion, text=comment_text)
         comment.save()
 
+        # record action for activity stream
+        action.send(request.user, verb="commented on", action_object=story)
+
         return redirect('story_detail', pk=story.id)
 
 def create_webcomment(request):
@@ -139,6 +153,9 @@ def create_webcomment(request):
         discussion = get_object_or_404(Discussion, id=webfacet.discussion.id)
         comment = Comment.objects.create_comment(user=request.user, discussion=discussion, text=comment_text)
         comment.save()
+
+        # record action for activity stream
+        action.send(request.user, verb="commented on", action_object=webfacet)
 
         return redirect('story_detail', pk=story.id)
 
@@ -155,6 +172,9 @@ def create_printcomment(request):
         comment = Comment.objects.create_comment(user=request.user, discussion=discussion, text=comment_text)
         comment.save()
 
+        # record action for activity stream
+        action.send(request.user, verb="commented on", action_object=printfacet)
+
         return redirect('story_detail', pk=story.id)
 
 
@@ -170,6 +190,9 @@ def create_audiocomment(request):
         comment = Comment.objects.create_comment(user=request.user, discussion=discussion, text=comment_text)
         comment.save()
 
+        # record action for activity stream
+        action.send(request.user, verb="commented on", action_object=audiofacet)
+
         return redirect('story_detail', pk=story.id)
 
 
@@ -184,6 +207,9 @@ def create_videocomment(request):
         discussion = get_object_or_404(Discussion, id=videofacet.discussion.id)
         comment = Comment.objects.create_comment(user=request.user, discussion=discussion, text=comment_text)
         comment.save()
+
+        # record action for activity stream
+        action.send(request.user, verb="commented on", action_object=videofacet)
 
         return redirect('story_detail', pk=story.id)
 

@@ -33,7 +33,7 @@ from django.db.models import Q
 from django.contrib.postgres.fields import ArrayField
 from simple_history.models import HistoricalRecords
 from model_utils.models import TimeStampedModel
-from datetime import timedelta
+from datetime import datetime, timedelta, time
 from imagekit.models import ProcessedImageField, ImageSpecField
 from pilkit.processors import ResizeToFit, SmartResize
 from django.contrib.auth.models import AbstractUser
@@ -270,6 +270,11 @@ class User(AbstractUser):
     def search_title(self):
         return self.credit_name
 
+
+    @property
+    def type(self):
+        return "User"
+
 #----------------------------------------------------------------------#
 
 @python_2_unicode_compatible
@@ -366,6 +371,15 @@ class Organization(models.Model):
         organization_networks = all_organization_networks.distinct()
         return organization_networks
 
+    # def get_org_network_content(self):
+    #     """Return queryset of content shared with any network an organization is a member of excluding their own content."""
+    #
+    #     networks = Organization.get_org_networks(self)
+    #     content = Network.get_network_shared_stories(network__in=networks)
+    #     print "content: ", content
+    #     return content
+
+
     def get_org_collaborators(self):
         """ Return list of all organizations that are members of the same networks as self."""
 
@@ -403,6 +417,62 @@ class Organization(models.Model):
         videos = VideoAsset.objects.filter(organization=self)
         return videos
 
+    def get_org_user_comments(self):
+        """Retrieve all the comments associated with users of an organization.
+
+        Effectively 'all' comments for an organization.
+        """
+
+        users = Organization.get_org_users(self)
+        org_user_comments = Comment.objects.filter(Q(user__in=users))
+        return org_user_comments
+
+    def get_org_comments(self):
+        """Retrieve all organization comments."""
+
+        organization_comments = Comment.objects.filter(discussion__discussion_type='ORG', user__organization=self)
+        return organization_comments
+
+    def get_network_comments(self):
+        """Retrieve all comments for networks an organization is a member of."""
+
+        networks = Organization.get_org_networks(self)
+        network_discussions = [network.discussion for network in networks]
+        network_comments = Comment.objects.filter(discussion__in=network_discussions)
+        return network_comments
+
+    def get_story_comments(self):
+        """Retrieve all comments for stories belonging to an organization."""
+
+        org_stories = Story.objects.filter(organization=self)
+        story_discussions = [story.discussion for story in org_stories]
+        story_comments = Comment.objects.filter(discussion__in=story_discussions)
+        return story_comments
+
+    def get_series_comments(self):
+        """Retrieve all comments for series belonging to an organization."""
+
+        org_series = Series.objects.filter(organization=self)
+        series_discussions = [series.discussion for series in org_series]
+        series_comments = Comment.objects.filter(discussion__in=series_discussions)
+        return series_comments
+
+    def get_facet_comments(self):
+        """Retrieve all comments for facets belonging to stories of an organization."""
+
+        org_facets = []
+        webfacets = WebFacet.objects.filter(Q(organization=self))
+        printfacets = PrintFacet.objects.filter(Q(organization=self))
+        audiofacets = AudioFacet.objects.filter(Q(organization=self))
+        videofacets = VideoFacet.objects.filter(Q(organization=self))
+        org_facets.extend(webfacets)
+        org_facets.extend(printfacets)
+        org_facets.extend(audiofacets)
+        org_facets.extend(videofacets)
+        facet_discussions = [facet.discussion for facet in org_facets]
+        facet_comments = Comment.objects.filter(discussion__in=facet_discussions)
+        return facet_comments
+
     def get_org_collaborative_content(self):
         """ Return list of all content that an org is a collaborator on."""
 
@@ -413,6 +483,49 @@ class Organization(models.Model):
         org_collaborative_content.extend(internal_stories)
 
         return org_collaborative_content
+
+    def get_org_stories_running_today(self):
+        """Return list of content scheduled to run today."""
+
+        # establish timeliness of content
+        today = timezone.now().date()
+        tomorrow = today + timedelta(1)
+        today_start = datetime.combine(today, time())
+        today_end = datetime.combine(tomorrow, time())
+
+        # facets where run_date=today
+        running_today = []
+        webfacet_run_today = WebFacet.objects.filter(run_date__range=(today_start, today_end), organization=self)
+        printfacet_run_today = PrintFacet.objects.filter(run_date__range=(today_start, today_end), organization=self)
+        audiofacet_run_today = AudioFacet.objects.filter(run_date__range=(today_start, today_end), organization=self)
+        videofacet_run_today = VideoFacet.objects.filter(run_date__range=(today_start, today_end), organization=self)
+        running_today.extend(webfacet_run_today)
+        running_today.extend(printfacet_run_today)
+        running_today.extend(audiofacet_run_today)
+        running_today.extend(videofacet_run_today)
+
+        return running_today
+
+    def get_org_stories_due_for_edit_today(self):
+        """Return list of content scheduled for edit today."""
+
+        # establish timeliness of content
+        today = timezone.now().date()
+        tomorrow = today + timedelta(1)
+        today_start = datetime.combine(today, time())
+        today_end = datetime.combine(tomorrow, time())
+
+        edit_today = []
+        webfacet_edit_today = WebFacet.objects.filter(due_edit__range=(today_start, today_end), organization=self)
+        printfacet_edit_today = PrintFacet.objects.filter(due_edit__range=(today_start, today_end), organization=self)
+        audiofacet_edit_today = AudioFacet.objects.filter(due_edit__range=(today_start, today_end), organization=self)
+        videofacet_edit_today = VideoFacet.objects.filter(due_edit__range=(today_start, today_end), organization=self)
+        edit_today.extend(webfacet_edit_today)
+        edit_today.extend(printfacet_edit_today)
+        edit_today.extend(audiofacet_edit_today)
+        edit_today.extend(videofacet_edit_today)
+
+        return edit_today
 
     def get_org_searchable_content(self):
         """ Return queryset of all objects that can be searched by a user."""
@@ -2474,7 +2587,7 @@ class ImageAsset(models.Model):
         return self.asset_title
 
     def get_absolute_url(self):
-        return reverse('asset_detail', kwargs={'pk': self.id})
+        return reverse('image_asset_detail', kwargs={'pk': self.id})
 
     @property
     def description(self):
@@ -2486,7 +2599,7 @@ class ImageAsset(models.Model):
 
     @property
     def type(self):
-        return "Image Asset"
+        return "Image"
 
 #----------------------------------------------------------------------#
 # DocumentAsset
@@ -2645,7 +2758,7 @@ class DocumentAsset(models.Model):
         return self.asset_title
 
     # def get_absolute_url(self):
-    #     return reverse('asset_detail', kwargs={'pk': self.id})
+    #     return reverse('document_asset_detail', kwargs={'pk': self.id})
 
     @property
     def description(self):
@@ -2657,7 +2770,7 @@ class DocumentAsset(models.Model):
 
     @property
     def type(self):
-        return "Document Asset"
+        return "Document"
 
 #----------------------------------------------------------------------#
 # AudioAsset
@@ -2828,7 +2941,7 @@ class AudioAsset(models.Model):
 
     @property
     def type(self):
-        return "Audio Asset"
+        return "Audio"
 
 #----------------------------------------------------------------------#
 #VideoAsset
@@ -2883,6 +2996,11 @@ class VideoAsset(models.Model):
         upload_to='videos',
         blank=True,
     )
+
+    # poster = models.FileField(
+    #     upload_to='videos',
+    #     blank=True,
+    # )
 
     link = models.URLField(
         max_length=400,
@@ -2956,31 +3074,31 @@ class VideoAsset(models.Model):
         video_copy.save()
         return video_copy
 
-    # def get_video_download_info(self):
-    #     """Return rst of video information for download."""
+    def get_video_download_info(self):
+        """Return rst of video information for download."""
 
-    #     title = self.asset_title.encode('utf-8')
-    #     description = self.asset_description.encode('utf-8')
-    #     attribution = self.attribution.encode('utf-8')
+        title = self.asset_title.encode('utf-8')
+        description = self.asset_description.encode('utf-8')
+        attribution = self.attribution.encode('utf-8')
 
-    #     video_info="""
-    #     Video
-    #     =======
-    #     {title}.jpg
-    #     Description: {description}
-    #     Attribution: {attribution}
-    #     Type: {type}
-    #     Creation Date: {date}
-    #     Owner: {owner}
-    #     Organization: {organization}
-    #     Original: {original}
-    #     Keywords: {keywords}
-    #     """.format(title=title, description=description, attribution=attribution,
-    #     type=self.doc_type, date=self.creation_date, owner=self.owner,
-    #     organization=self.organization.name, original=self.original,
-    #     keywords=self.keywords)
+        video_info="""
+        Video
+        =======
+        {title}.jpg
+        Description: {description}
+        Attribution: {attribution}
+        Type: {type}
+        Creation Date: {date}
+        Owner: {owner}
+        Organization: {organization}
+        Original: {original}
+        Keywords: {keywords}
+        """.format(title=title, description=description, attribution=attribution,
+        type=self.doc_type, date=self.creation_date, owner=self.owner,
+        organization=self.organization.name, original=self.original,
+        keywords=self.keywords)
 
-    #     return video_info
+        return video_info
 
     def __str__(self):
         return self.asset_title
@@ -2998,7 +3116,7 @@ class VideoAsset(models.Model):
 
     @property
     def type(self):
-        return "Video Asset"
+        return "Video"
 
 
 #----------------------------------------------------------------------#

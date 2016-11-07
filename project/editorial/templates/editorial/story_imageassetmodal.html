@@ -1,0 +1,185 @@
+<!-- Image Asset Modal -->
+
+<div class="modal fade" id="ImageAssetModal" tabindex="-1" role="dialog" aria-labelledby="ImageAssetModal">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="bs-nav-tabs nav-tabs-default">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <ul class="nav nav-tabs nav-animated-border-from-left">
+            <li class="nav-item"> <a ng-href="" class="nav-link active" data-toggle="tab" data-target="#uploadimage">Upload a Photo</a></li>
+            <li class="nav-item"> <a ng-href="" class="nav-link" data-toggle="tab" data-target="#imagelibrary">Select From Library</a></li>
+          </ul>
+        </div>
+        <div class="modal-body" id="imagemodalbody">
+          <div class="tab-content">
+            <!-- UPLOAD PANEL -->
+            <div role="tabpanel" class="tab-pane active" id="uploadimage">
+              <div class="uploadpanel" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
+              <form action="{% url 'upload_image' %}" method="POST" class="post-form" enctype="multipart/form-data">
+              {% csrf_token %}
+              <!-- Left Col -->
+              <div class="col-md-6">
+
+                <fieldset class="form-group m-b-10">
+                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ imageassetform.photo.label_tag }}</label>
+                  {{ imageassetform.photo }}
+                  {% if imageassetform.photo.errors %}
+                    <small class="text-muted">{{ imageassetform.photo.errors }}</small>
+                  {% endif %}
+                </fieldset>
+
+                <fieldset class="form-group m-b-10">
+                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin"><span class="field-label">{{ imageassetform.asset_title.label_tag }}</label>
+                  {{ imageassetform.asset_title }}
+                  {% if imageassetform.asset_title.errors %}
+                    <small class="text-muted">{{ imageassetform.asset_title.errors }}</small>
+                  {% endif %}
+                </fieldset>
+
+                <fieldset class="form-group m-b-10">
+                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ imageassetform.image_type.label_tag }}</label>
+                  {{ imageassetform.image_type }}
+                  {% if imageassetform.image_type.errors %}
+                    <small class="text-muted">{{ imageassetform.image_type.errors }}</small>
+                  {% endif %}
+                </fieldset>
+
+                <fieldset class="form-group m-b-10">
+                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ imageassetform.keywords.label_tag }}</label>
+                  {{ imageassetform.keywords }}
+                  {% if imageassetform.keywords.errors %}
+                    <small class="text-muted">{{ imageassetform.keywords.errors }}</small>
+                  {% endif %}
+                </fieldset>
+
+              </div>
+              <!-- End Left Col -->
+              <!-- Right Col -->
+              <div class="col-md-6">
+
+                <fieldset class="form-group m-b-10">
+                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ imageassetform.asset_description.label_tag }}</label>
+                  {{ imageassetform.asset_description }}
+                  {% if imageassetform.asset_description.errors %}
+                    <small class="text-muted">{{ imageassetform.asset_description.errors }}</small>
+                  {% endif %}
+                </fieldset>
+
+                <fieldset class="form-group m-b-10">
+                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ imageassetform.attribution.label_tag }}</label>
+                  {{ imageassetform.attribution }}
+                  {% if imageassetform.attribution.errors %}
+                    <small class="text-muted">{{ imageassetform.attribution.errors }}</small>
+                  {% endif %}
+                </fieldset>
+
+              </div>
+              <!-- End Right Col -->
+              <!-- ===================================== -->
+              <!-- ===================================== -->
+              <div class="hidden-image-inputs">>
+                    <!-- Insert custom content via jQuery -->
+              </div>
+              <!-- ===================================== -->
+              <!-- ===================================== -->
+              <div>
+                <button type="submit" class="btn btn-primary m-l-20">Save Image</button>
+              </div>
+              </form>
+              </div>
+            </div>
+            <!-- END UPLOAD PANEL -->
+
+            <!-- LIBRARY PANEL -->
+            <div role="tabpanel" class="tab-pane" id="imagelibrary">
+              <div class="imagelibrary" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
+                <form action="{% url 'add_image' %}" method="POST" class="post-form" name="addimage">
+                  {% csrf_token %}
+                  <div class=" row image-library">
+                  {% for image in images %}
+                    <div class="col-md-2">
+                      <label>
+                        <img class="img-responsive img-thumbnail" src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}">
+                        <input type="checkbox" name="images" value="{{ image.id }}">
+                      </label>
+                    </div>
+                    {% if forloop.counter|divisibleby:"6" and not forloop.last %}
+                      </div><div class="row">
+                    {% endif %}
+                  {% endfor %}
+                  </div>
+
+                <!-- ===================================== -->
+                <!-- ===================================== -->
+                <div class="hidden-image-inputs">
+                    <!-- Insert custom content via jQuery -->
+                </div>
+                <!-- ===================================== -->
+                <!-- ===================================== -->
+
+                  <div class="row">
+                    <div class="col-xs-12">
+                      <button type="submit" class="btn btn-primary" name="addimage">Add Images</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+            <!-- END LIBRARY PANEL -->
+          </div>
+        </div>
+        </div>
+        <div class="modal-footer"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+$('#ImageAssetModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget) // Button that triggered the modal
+    var facet = button.data('facet') // Extract info from data-* attributes
+
+    var webfacetHidden = '{% for webfacet in story.webfacetstory.all %}' +
+                '<input type="hidden" name="webfacet" value="{{ webfacet.pk }}" />' +
+                '<input  type="hidden" name="type" value="webfacet" />' +
+                '{% endfor %}'
+
+
+    var printfacetHidden = '{% for printfacet in story.printfacetstory.all %}' +
+                '<input type="hidden" name="printfacet" value="{{ printfacet.pk }}" />' +
+                '<input  type="hidden" name="type" value="printfacet" />' +
+                '{% endfor %}'
+
+    var audiofacetHidden = '{% for audiofacet in story.audiofacetstory.all %}' +
+                '<input type="hidden" name="audiofacet" value="{{ audiofacet.pk }}" />' +
+                '<input  type="hidden" name="type" value="audiofacet" />' +
+                '{% endfor %}'
+
+    var videofacetHidden = '{% for videofacet in story.videofacetstory.all %}' +
+                '<input type="hidden" name="vfacet" value="{{ videofacet.pk }}" />' +
+                '<input  type="hidden" name="type" value="videofacet" />' +
+                '{% endfor %}'
+
+
+    var modal = $(this)
+
+    if (facet == 'webfacet_image') {
+        modal.find('.hidden-image-inputs').html(webfacetHidden)
+    }
+    else if (facet == 'printfacet_image') {
+        modal.find('.hidden-image-inputs').html(printfacetHidden)
+    }
+    else if (facet == 'audiofacet_image') {
+        modal.find('.hidden-image-inputs').html(audiofacetHidden)
+    }
+    else if (facet == 'videofacet_image') {
+        modal.find('.hidden-image-inputs').html(videofacetHidden)
+    }
+    else {
+        modal.find('.hidden-image-inputs').html('<div></div>')
+    }
+})
+
+</script>

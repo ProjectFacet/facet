@@ -3,19 +3,32 @@
 {% load i18n %}
 {% load bootstrap3 %}
 
+<!-------------------------------------------->
+<!--      BREADCRUMB NAVIGATION             -->
+<!-------------------------------------------->
+
+{% block breadcrumb %}
+<div>
+    <ol class="breadcrumb icon-angle-right icon-th">
+        <li class="fadeIn"><a href="{% url 'dashboard' %}"> Dashboard </a></li>
+        <li class="fadeIn"> Content </li>
+        <li class="fadeIn"><a href="{% url 'collaborations' %}" title="View Content in Collaboration"> Collaborations </a></li>
+    </ol>
+</div>
+{% endblock breadcrumb %}
+
+<!-------------------------------------------->
+<!--            Main Section                -->
+<!-------------------------------------------->
+
 {% block content %}
 
-<div class="row particles" id="user-hero">
-  <div class="upper-content">
-    <div class="col-xs-12 content-upper-75">
-      <h1 class="media-heading text-light center thin uppercase spread-025">Collaborations</h1>
-    </div>
-  </div>
-</div>
-
-<div class="row">
+<div class="row m-b-40">
   <div class="col-xs-12">
-      <table id="collaboration-stories" class="table table-condensed">
+
+    {% if story_collaborations %}
+    <!-- Full table for xs, sm, md and lg displays -->
+      <table id="collaboration-stories" class="table table-condensed table-striped">
         <thead>
           <tr>
             <th>Story</th>
@@ -33,6 +46,9 @@
           {% endfor %}
         </tbody>
       </table>
+      {% else %}
+        <p class="f-s-18 subtle text-center italic m-b-40 m-t-40">Welcome to the Collaborations page. This is where you will see all of the current active collaborations including your organization. Click here to add a new collaborative <a href="{% url 'series_new' %}" title="Create New Series" class="default">series</a> or <a href="{% url 'story_new' %}" title="Create New Story" class="default">story</a>.</p>
+      {% endif %}
   </div>
 </div>
 

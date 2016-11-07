@@ -1,0 +1,396 @@
+<div role="tabpanel" class="tab-pane p-t-0" id="video">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="row">
+      <form method="POST" class="post-form">
+        {% csrf_token %}
+
+        <!-- Left Column -->
+        <div class="col-md-2">
+
+          <!-- VideoFacet Title -->
+          <fieldset class="form-group m-b-10">
+            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ videoform.title.label_tag }}</label>
+            {{ videoform.title }}
+            {% if videoform.title.errors %}
+              <small class="text-muted">{{ videoform.title.errors }}</small>
+            {% endif %}
+          </fieldset>
+
+          <!-- VideoFacet Code -->
+          <fieldset class="form-group m-b-10">
+            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ videoform.code.label_tag }}</label>
+            {{ videoform.code }}
+            {% if videoform.code.errors %}
+              <small class="text-muted">{{ videoform.code.errors }}</small>
+            {% endif %}
+          </fieldset>
+
+          <!-- VideoFacet Credit -->
+          <fieldset class="form-group m-b-10">
+            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ videoform.credit.label_tag }}</label>
+            {{ videoform.credit }}
+            {% if videoform.credit.errors %}
+              <small class="text-muted">{{ videoform.credit.errors }}</small>
+            {% endif %}
+          </fieldset>
+
+          <!-- VideoFacet Editor -->
+          <fieldset class="form-group m-b-10">
+            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ videoform.editor.label_tag }}</label>
+            {{ videoform.editor }}
+            {% if videoform.editor.errors %}
+              <small class="text-muted">{{ videoform.editor.errors }}</small>
+            {% endif %}
+          </fieldset>
+
+          <!-- VideoFacet Description -->
+          <fieldset class="form-group m-b-10">
+            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">Description</label>
+            {{ videoform.vf_description }}
+            {% if videoform.vf_description.errors %}
+              <small class="text-muted">{{ videoform.vf_description.errors }}</small>
+            {% endif %}
+          </fieldset>
+
+          <!-- VideoFacet Excerpt -->
+          <fieldset class="form-group m-b-10">
+            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ videoform.excerpt.label_tag }}</label>
+            {{ videoform.excerpt }}
+            {% if videoform.excerpt.errors %}
+              <small class="text-muted">{{ videoform.excerpt.errors }}</small>
+            {% endif %}
+          </fieldset>
+
+          <!-- VideoFacet Length -->
+          <fieldset class="form-group m-b-10">
+            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ videoform.length.label_tag }}</label>
+            {{ videoform.length }}
+            {% if videoform.length.errors %}
+              <small class="text-muted">{{ videoform.length.errors }}</small>
+            {% endif %}
+          </fieldset>
+
+          <!-- VideoFacet Share Note -->
+          <fieldset class="form-group m-b-10">
+            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ videoform.share_note.label_tag }}</label>
+            {{ videoform.share_note }}
+            {% if videoform.share_note.errors %}
+              <small class="text-muted">{{ videoform.share_note.errors }}</small>
+            {% endif %}
+          </fieldset>
+
+        </div>
+        <!-- End of Left Column -->
+
+        <!-- Center Column -->
+        <div class="col-md-8">
+
+          <!-- VideoFacet Content -->
+          <fieldset class="form-group m-b-10">
+            {{ videoform.vf_content }}
+            {% if videoform.vf_content.errors %}
+              <small class="text-muted">{{ videoform.vf_content.errors }}</small>
+            {% endif %}
+          </fieldset>
+
+          <!-- VideoFacet Keywords -->
+          <fieldset class="form-group m-b-10">
+            {% comment %}<label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ videoform.keywords.label_tag }}</label>{% endcomment %}
+            {{ videoform.keywords }}
+            {% if videoform.keywords.errors %}
+              <small class="text-muted">{{ videoform.keywords.errors }}</small>
+            {% endif %}
+          </fieldset>
+
+
+        </div>
+        <!-- End of Center Column -->
+
+        <!-- Right Column -->
+        <div class="col-md-2">
+
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="save-button m-b-20">
+              <button type="submit" class="btn btn-info content-bottom-10 btn btn-block no-border" name="videoform">Save Web Story</button>
+              <!-- <input type="submit" name="videoform" value="Save Web Story" /> -->
+            </div>
+          </div>
+        </div>
+
+        <div class="row profile-row">
+          <!-- VideoFacet Status -->
+          <div class="col-xs-12">
+          <fieldset class="form-group m-b-20">
+            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ videoform.status.label_tag }}</label>
+            {{ videoform.status }}
+            {% if videoform.status.errors %}
+              <small class="text-muted">{{ videoform.status.errors }}</small>
+            {% endif %}
+          </fieldset>
+          </div>
+        </div>
+
+        <div class="row profile-row">
+          <!-- VideoFacet Due Edit -->
+          <fieldset class="form-group m-b-10">
+            <div class="col-xs-3">
+              <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ videoform.due_edit.label_tag }}</label>
+            </div>
+            <div class="col-xs-9">
+              {{ videoform.due_edit }}
+              {% if videoform.due_edit.errors %}
+              <small class="text-muted">{{ videoform.due_edit.errors }}</small>
+              {% endif %}
+            </div>
+          </fieldset>
+        </div>
+
+        <div class="row profile-row">
+          <!-- VideoFacet Run Date -->
+          <fieldset class="form-group m-b-10">
+            <div class="col-xs-3">
+              <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ videoform.run_date.label_tag }}</label>
+            </div>
+            <div class="col-xs-9">
+              {{ videoform.run_date }}
+              {% if videoform.run_date.errors %}
+              <small class="text-muted">{{ videoform.run_date.errors }}</small>
+              {% endif %}
+            </div>
+          </fieldset>
+        </div>
+          <!-- End of VideoFacet form -->
+          <!-- <input type="submit" name="videoform" value="Save Web Story" /> -->
+          </form>
+
+          <div class="discussion">
+          <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">Discussion</label>
+              {% if videocomments %}
+                <div class="row">
+                  {% for comment in videocomments %}
+                    <div class="col-md-10">
+                      <p>{{ comment.text }} <span class="f-s-12 subtle">| {{ comment.date|date:'D, M j g:i a' }}</span></p>
+                    </div>
+                    <div class="col-md-2">
+                      {% if comment.user.display_photo %}
+                      <img class="media-object img-circle" width="32" src="{{ comment.user.display_photo.url }}" alt="user">
+                      {% else %}
+                      {% endif %}
+                      <p class="f-s-12 subtle">{{ comment.user.first_name }}</p>
+                    </div>
+                  {% endfor %}
+                </div>
+              {% endif %}
+          </div>
+          <div class="comment">
+              <div class="row">
+                <form action="{% url 'create_videocomment' %}" method="POST" class="post-form" role="form">
+                  <div class="col-md-10">
+                      {% csrf_token %}
+                      <div class="form-group">
+                      {{ videocommentform.text }}
+                      </div>
+                      {% if videocommentform.text.errors %}
+                        <div class="alert alert-warning" role="alert">
+                        {{ videocommentform.text.errors }}
+                        </div>
+                      {% endif %}
+                      <input type="hidden" name="story" value="{{ story.pk }}" />
+                  </div>
+                  <div class="col-md-2">
+                      <div class="form-group">
+                        <button type="submit" class="btn btn-default btn-sm" id="videocomment-submit" name="videocommentform">
+                            <i class="fa fa-paper-plane"></i>
+                        </button>
+                      </div>
+                      <!-- <input type="submit" name="videocommentform" value="Post Comment"/> -->
+                  </div>
+                </form>
+              </div>
+            </div>
+
+          <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">Edit History</label>
+          <div class="edit-history">
+            {% if videohistory %}
+              {% for entry in videohistory %}
+              <p class="f-s-12 f-s-300 subtle">{{ entry.history_date }}</p>
+              {% endfor %}
+            {% endif %}
+          </div>
+        </div>
+        <!-- End of Right Column -->
+      </div>
+
+    </div>
+  </div>
+
+  <div class="row m-t-20">
+    <div class="col-xs-12">
+      <h6>Assets</h6>
+    </div>
+    <!-- ======================== -->
+    <!--       ASSETS FORMS       -->
+    <!-- ======================== -->
+
+    <!-- Videofacet Images -->
+    <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+      <div class="section-title m-b-20">
+        <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">Images</label>
+        <a href="#" data-toggle="modal" data-target="#ImageAssetModal" data-facet="videofacet_image" title="Add Image"><i class="fa fa-plus sameline subtle"></i></a>
+      </div>
+      <div id="videoimage-thumbs">
+        <div class="row">
+        {% for videofacet in story.videofacetstory.all %}
+          {% for image in videofacet.image_assets.all %}
+            {% if image.display_photo %}
+            <div class="col-xs-4">
+              <a href="{{ image.display_photo.url }}" class="thumbnail"><img src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}" class="img-fluid"></a>
+            </div>
+            {% endif %}
+          {% endfor %}
+        {% endfor %}
+        </div>
+      </div>
+    </div>
+    <!-- Videofacet Documents -->
+    <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+      <div class="section-title m-b-20">
+        <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">Documents</label>
+        <a href="#" data-toggle="modal" data-target="#DocumentAssetModal" data-facet="videofacet_document" title="Add Document"><i class="fa fa-plus sameline subtle"></i></a>
+      </div>
+      <div id="videofacet-docs">
+        <div class="row">
+          {% for document in videofacet_documents %}
+            <div class="col-md-1">
+                <label>
+                    {% if document.doc_type == 'OTHER' %}
+                    <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-file-o dark"></i></h3></a>
+                    {% endif %}
+                    {% if document.doc_type == 'TEXT' %}
+                    <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-text-o dark"></i></h3></a>
+                    {% endif %}
+                    {% if document.doc_type == 'WORD DOC' %}
+                    <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-word-o dark"></i></h3></a>
+                    {% endif %}
+                    {% if document.doc_type == 'EXCEL' %}
+                    <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-excel-o dark"></i></h3></a>
+                    {% endif %}
+                    {% if document.doc_type == 'PDF' %}
+                    <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-pdf-o dark"></i></h3></a>
+                    {% endif %}
+                    {% if document.doc_type == 'COMMA SEPARATED' %}
+                    <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-o dark"></i></h3></a>
+                    {% endif %}
+                  </label>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <!-- Videofacet Audio -->
+    <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+      <div class="section-title m-b-20">
+        <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">Audio</label>
+        <a href="#" data-toggle="modal" data-target="#AudioAssetModal" data-facet="videofacet_audio" title="Add Audio"><i class="fa fa-plus sameline subtle"></i></a>
+      </div>
+      <div id="videofacet-audio">
+        <div class="row">
+          {% for audio in videofacet_audio %}
+            <div class="col-xs-6">
+              {% if audio.audio_type == 'MP3' or audio.audio_type == 'WAV' %}
+              <div id="jplayer_audio_{{audio.pk}}" class="jp-jplayer"></div>
+
+              <div id="jp_container_audio_{{audio.pk}}" class="jp-flat-audio" role="application" aria-label="media player">
+                <div class="jp-play-control jp-control">
+                  <button class="jp-play jp-button" role="button" aria-label="play" tabindex="0"></button>
+                </div>
+                <div class="jp-bar">
+                  <div class="jp-seek-bar jp-seek-bar-display"></div>
+                  <div class="jp-seek-bar">
+                    <div class="jp-play-bar"></div>
+                    <div class="jp-details"><span class="jp-title" aria-label="title"></span></div>
+                    <div class="jp-timing"><span class="jp-duration" role="timer" aria-label="duration"></span></div>
+                  </div>
+                </div>
+                <div class="jp-no-solution">
+                  Media Player Error<br />
+                  Update your browser or Flash plugin
+                </div>
+              </div>
+              <script>
+              jQuery(document).ready(function($) {
+                $("#jplayer_audio_{{audio.pk}}").jPlayer({
+                  ready: function(event) {
+                    $(this).jPlayer("setMedia", {
+                      title: "{{audio.asset_title}}",
+                      wav: "{{audio.audio.url}}",
+                      mp3: "{{audio.audio.url}}",
+                    });
+                  },
+                  play: function() { // Avoid multiple jPlayers playing together.
+                    $(this).jPlayer("pauseOthers");
+                  },
+                  timeFormat: {
+                    padMin: false
+                  },
+                  swfPath: "js",
+                  supplied: "wav, mp3",
+                  cssSelectorAncestor: "#jp_container_audio_{{audio.pk}}",
+                  useStateClassSkin: true,
+                  autoBlur: false,
+                  smoothPlayBar: true,
+                  remainingDuration: true,
+                  keyEnabled: true,
+                  keyBindings: {
+                    // Disable some of the default key controls
+                    loop: null,
+                    muted: null,
+                    volumeUp: null,
+                    volumeDown: null
+                  },
+                  wmode: "window"
+                });
+              });
+              </script>
+              {% endif %}
+                {% if audio.audio_type == 'SC' %}
+                <a href="{{ audio.link }}" title="{{ audio.asset_description }}" target="_blank"><i class="fa fa-soundcloud sameline"></i> <span class="small-text dark sameline">{{ audio.asset_title }}</span></a>
+                {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <!-- Videofacet Video -->
+    <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+      {% comment %}
+      <div class="section-title m-b-20">
+        <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">Video</label>
+        <a href="#" data-toggle="modal" data-target="#VideoAssetModal" data-facet="videofacet_video" title="Add Video"><i class="fa fa-plus sameline subtle"></i></a>
+      </div>
+      <div id="videofacet-video">
+        <div class="row">
+          {% for video in videofacet_video %}
+            <div class="col-md-1">
+                <label>
+                    {% if video.video_type == 'MP4' %}
+                    <a href="" title="{{ video.asset_description }}" target="_blank"><h3><i class="fa fa-video-camera dark"></i></h3></a>
+                    {% endif %}
+                    {% if video.video_type == 'YT' %}
+                    <a href="" title="{{ video.asset_description }}" target="_blank"><h3><i class="fa fa-youtube-play dark"></i></h3></a>
+                    {% endif %}
+                    {% if video.video_type == 'VIM' %}
+                    <a href="" title="{{ video.asset_description }}" target="_blank"><h3><i class="fa fa-vimeo-square dark"></i></h3></a>
+                    {% endif %}
+                  </label>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endcomment %}
+    </div>
+  </div>
+
+</div>

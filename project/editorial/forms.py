@@ -6,7 +6,7 @@ from ourwidgets import OurDateTimePicker
 from django import forms
 from django.utils.safestring import mark_safe
 from django.contrib.auth import get_user_model
-from django.forms import Textarea, TextInput, RadioSelect, Select, NumberInput, CheckboxInput, CheckboxSelectMultiple
+from django.forms import Textarea, TextInput, RadioSelect, Select, NumberInput, CheckboxInput, CheckboxSelectMultiple, FileField
 from datetimewidget.widgets import DateTimeWidget
 from tinymce.widgets import TinyMCE
 # from django.contrib.staticfiles.templatetags.staticfiles import static
@@ -60,7 +60,14 @@ class AddUserForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['email', 'password', 'username', 'is_superuser', 'is_staff', 'user_type']
-
+        widgets = {
+            'email': TextInput(attrs={'class': 'form-control', 'placeholder': 'Email'}),
+            'password': TextInput(attrs={'class': 'form-control', 'placeholder': 'Password'}),
+            'username': TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}),
+            'is_superuser': CheckboxInput(attrs={'class': 'c-indicator c-indicator-default'}),
+            'is_staff': CheckboxInput(attrs={'class': 'c-indicator c-indicator-default'}),
+            'user_type': Select(attrs={'class': 'c-select', 'id':'user-type'}),
+            }
 
 class UserProfileForm(forms.ModelForm):
     """ Handle a user completing their profile."""
@@ -68,22 +75,41 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'username', 'credit_name', 'title', 'phone', 'email', 'bio', 'location',
-                 'expertise', 'website', 'facebook', 'github', 'twitter', 'linkedin', 'instagram', 'snapchat', 'vine', 'photo']
+                 'expertise', 'website', 'facebook', 'github', 'twitter', 'linkedin', 'instagram', 'snapchat', 'vine', 'photo', 'password', 'is_superuser', 'is_staff', 'user_type']
         widgets = {
-            'expertise': Textarea(attrs={'rows':2}),
+            'first_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'First Name'}),
+            'last_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Last Name'}),
+            'credit_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Credit Name'}),
+            'username': TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}),
+            'title': TextInput(attrs={'class': 'form-control', 'placeholder': 'Title'}),
+            'location': TextInput(attrs={'class': 'form-control', 'placeholder': 'Location'}),
+            'email': TextInput(attrs={'class': 'form-control', 'placeholder': 'Email'}),
+            'phone': TextInput(attrs={'class': 'form-control', 'placeholder': 'Phone'}),
+            'website': TextInput(attrs={'class': 'form-control', 'placeholder': 'Website'}),
+            'github': TextInput(attrs={'class': 'form-control', 'placeholder': 'Github Profile Link'}),
+            'facebook': TextInput(attrs={'class': 'form-control', 'placeholder': 'Facebook Profile Link'}),
+            'twitter': TextInput(attrs={'class': 'form-control', 'placeholder': 'Twitter Profile Link'}),
+            'linkedin': TextInput(attrs={'class': 'form-control', 'placeholder': 'LinkedIn Profile Link'}),
+            'instagram': TextInput(attrs={'class': 'form-control', 'placeholder': 'Instagram Profile Link'}),
+            'snapchat': TextInput(attrs={'class': 'form-control', 'placeholder': 'Snapchat Profile Link'}),
+            'vine': TextInput(attrs={'class': 'form-control', 'placeholder': 'Vine Profile Link'}),
+            'bio': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Professional Bio'}),
+            'expertise': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Expertise'}),
+            'password': TextInput(attrs={'class': 'form-control', 'placeholder': 'Password'}),
+            'user_type': Select(attrs={'class': 'c-select', 'id':'user-type'}),
         }
 
-class FullUserEditForm(forms.ModelForm):
-    """Form for organization owner or a user to edit a user's full profile."""
-
-    class Meta:
-        model = User
-        fields = ['first_name', 'last_name', 'username', 'credit_name', 'title', 'phone', 'email', 'bio', 'location',
-                 'expertise', 'website', 'facebook', 'github', 'twitter', 'linkedin', 'instagram', 'snapchat', 'vine', 'photo',
-                 'password', 'is_superuser', 'is_staff', 'user_type']
-        widgets = {
-            'expertise': Textarea(attrs={'rows':2}),
-        }
+# class FullUserEditForm(forms.ModelForm):
+#     """Form for organization owner or a user to edit a user's full profile."""
+#
+#     class Meta:
+#         model = User
+#         fields = ['first_name', 'last_name', 'username', 'credit_name', 'title', 'phone', 'email', 'bio', 'location',
+#                  'expertise', 'website', 'facebook', 'github', 'twitter', 'linkedin', 'instagram', 'snapchat', 'vine', 'photo',
+#                  'password', 'is_superuser', 'is_staff', 'user_type']
+#         widgets = {
+#             'expertise': Textarea(attrs={'rows':2}),
+#         }
 
 # ------------------------------ #
 #      Organization Forms        #
@@ -95,7 +121,11 @@ class OrganizationForm(forms.ModelForm):
     class Meta:
         model = Organization
         fields = ['name', 'org_description', 'location', 'logo']
-
+        widgets = {
+            'name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Organization Name'}),
+            'location': TextInput(attrs={'class': 'form-control', 'placeholder': 'Organization Location'}),
+            'org_description': Textarea(attrs={'class': 'form-control', 'placeholder': 'Organization Description'}),
+            }
 
 # ------------------------------ #
 #         Network Forms          #
@@ -107,6 +137,11 @@ class NetworkForm(forms.ModelForm):
     class Meta:
         model = Network
         fields = ['name', 'network_description', 'logo']
+        widgets = {
+            'name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Network Name'}),
+            'network_description': Textarea(attrs={'class': 'form-control', 'placeholder': 'Description'}),
+            }
+
 
 
 class AddToNetworkForm(forms.Form):
@@ -138,16 +173,16 @@ class SeriesForm(forms.ModelForm):
         widgets = {
             'name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Series Name'}),
             'series_description': Textarea(attrs={'class': 'form-control', 'placeholder': 'Description'}),
-            'team': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select', 'id':'series-team'}),
+            'team': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select form-control facet-select', 'id':'series-team', 'data-placeholder': 'Select Series Team'}),
             'collaborate': CheckboxInput(attrs={'class': 'c-indicator c-indicator-default'}),
-            'collaborate_with': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select', 'id':'collaborate-with'}),
+            'collaborate_with': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select form-control facet-select', 'id':'collaborate-with', 'data-placeholder': 'Select Collaborators'}),
             }
 
     class Media:
-        css = {'all': ('/static/css/chosen.min.css')
+        css = {
+            'all': ('css/bootstrap-datetimepicker.css', 'css/chosen.min.css')
         }
-        js = ('/static/js/chosen.jquery.min.js')
-
+        js = ('scripts/chosen.jquery.min.js',)
 
 # ------------------------------ #
 #          Story Forms           #
@@ -187,17 +222,19 @@ class StoryForm(forms.ModelForm):
         model = Story
         fields = ['name', 'story_description', 'series', 'collaborate', 'collaborate_with','team', 'embargo', 'embargo_datetime', 'sensitive', 'share', 'ready_to_share', 'share_with', 'share_with_date', 'archived' ]
         widgets = {
-            'team': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select', 'id':'story-team'}),
-            'collaborate_with': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select', 'id':'collaborate-with'}),
-            'share_with': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select', 'id':'share-with'}),
-            'series': Select(attrs={'class': 'form-control'}),
+            'name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Story Name'}),
+            'story_description': Textarea(attrs={'class': 'form-control', 'placeholder': 'Description'}),
+            'team': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select', 'id':'story-team', 'data-placeholder': 'Select Team'}),
+            'collaborate_with': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select', 'id':'collaborate-with', 'data-placeholder': 'Select Partners'}),
+            'share_with': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select', 'id':'share-with', 'data-placeholder': 'Select Networks'}),
+            'series': Select(attrs={'class': 'c-select', 'id':'story-series'}),
         }
 
     # class Media:
-    #     css = {'all': ('/static/css/chosen.min.css')
+    #     css = {
+    #         'all': ('css/bootstrap-datetimepicker.css', 'css/chosen.min.css')
     #     }
-    #     js = ('/static/js/chosen.jquery.min.js')
-
+    #     js = ('scripts/chosen.jquery.min.js',)
 
 # ------------------------------ #
 #          Facet Forms           #
@@ -230,7 +267,7 @@ class WebFacetForm(forms.ModelForm):
         )
     )
 
-    wf_content = forms.CharField(widget=TinyMCE(attrs={'rows':25, 'id': 'wf_content'}))
+    wf_content = forms.CharField(widget=TinyMCE(attrs={'rows':40, 'id': 'wf_content'}))
 
     class Meta:
         model = WebFacet
@@ -250,27 +287,26 @@ class WebFacetForm(forms.ModelForm):
             'credit',
         ]
         widgets = {
-            'credit': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select form-control', 'id':'webfacet-credit'}),
-            'title': Textarea(attrs={'rows':2}),
-            'wf_description': Textarea(attrs={'rows':3}),
-            'excerpt': Textarea(attrs={'rows':4}),
-            'captions': Textarea(attrs={'rows':5}),
-            'share_note': Textarea(attrs={'rows':5}),
+            'title': TextInput(attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Title'}),
+            'code': TextInput(attrs={'class': 'form-control', 'placeholder': 'Code'}),
+            'credit': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select form-control facet-select', 'id':'webfacet-credit', 'data-placeholder': 'Select Credited Team'}),
             'editor': Select(attrs={'class': 'form-control'}),
-            'status': Select(attrs={'class': 'form-control'}),
+            'wf_description': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Description'}),
+            'excerpt': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Excerpt'}),
             'length': NumberInput(attrs={'class': 'form-control'}),
+            'share_note': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Share Note'}),
+            'keywords': TextInput(attrs={'class': 'form-control', 'placeholder': 'Keywords'}),
+            'status': Select(attrs={'class': 'form-control'}),
         }
 
     # class Media:
     #     css = {
-    #         'all': ('/static/css/bootstrap-datetimepicker.css', '/static/css/chosen.min.css')
+    #         'all': ('css/bootstrap-datetimepicker.css', 'css/chosen.min.css')
     #     }
-    #     js = ('/static/js/chosen.jquery.min.js',
-    #      '/static/scripts/moment.js',
-    #      '/static/scripts/jquery.datetimepicker.js',
-    #      '/static/scripts/bootstrap-datetimepicker.js',
-    #      '/static/scripts/tiny_mce/tinymce.min.js',)
-
+    #     js = ('scripts/chosen.jquery.min.js',
+    #      'scripts/moment.js',
+    #      'scripts/jquery.datetimepicker.js',
+    #      'scripts/bootstrap-datetimepicker.js',)
 
 
 class PrintFacetForm(forms.ModelForm):
@@ -319,26 +355,26 @@ class PrintFacetForm(forms.ModelForm):
             'credit',
         ]
         widgets = {
-            'credit': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select form-control', 'id':'printfacet-credit'}),
-            'title': Textarea(attrs={'rows':2}),
-            'pf_description': Textarea(attrs={'rows':3}),
-            'excerpt': Textarea(attrs={'rows':4}),
-            'captions': Textarea(attrs={'rows':5}),
-            'share_note': Textarea(attrs={'rows':5}),
+            'title': TextInput(attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Title'}),
+            'code': TextInput(attrs={'class': 'form-control', 'placeholder': 'Code'}),
+            'credit': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select form-control facet-select', 'id':'printfacet-credit', 'data-placeholder': 'Select Credited Team'}),
             'editor': Select(attrs={'class': 'form-control'}),
-            'status': Select(attrs={'class': 'form-control'}),
+            'pf_description': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Description'}),
+            'excerpt': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Excerpt'}),
             'length': NumberInput(attrs={'class': 'form-control'}),
+            'share_note': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Share Note'}),
+            'keywords': TextInput(attrs={'class': 'form-control', 'placeholder': 'Keywords'}),
+            'status': Select(attrs={'class': 'form-control'}),
         }
 
     # class Media:
     #     css = {
-    #         'all': ('/static/css/bootstrap-datetimepicker.css', '/static/css/chosen.min.css')
+    #         'all': ('css/bootstrap-datetimepicker.css', 'css/chosen.min.css')
     #     }
-    #     js = ('/static/scripts/chosen.jquery.min.js',
-    #      '/static/scripts/moment.js',
-    #      '/static/scripts/jquery.datetimepicker.js',
-    #      '/static/scripts/bootstrap-datetimepicker.js',
-    #      '/static/scripts/tiny_mce/tinymce.min.js',)
+    #     js = ('scripts/chosen.jquery.min.js',
+    #      'scripts/moment.js',
+    #      'scripts/jquery.datetimepicker.js',
+    #      'scripts/bootstrap-datetimepicker.js',)
 
 
 class AudioFacetForm(forms.ModelForm):
@@ -387,27 +423,26 @@ class AudioFacetForm(forms.ModelForm):
             'credit',
         ]
         widgets = {
-            'credit': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select form-control', 'id':'audiofacet-credit'}),
-            'title': Textarea(attrs={'rows':2}),
-            'af_description': Textarea(attrs={'rows':3}),
-            'excerpt': Textarea(attrs={'rows':4}),
-            'captions': Textarea(attrs={'rows':5}),
-            'share_note': Textarea(attrs={'rows':5}),
+            'title': TextInput(attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Title'}),
+            'code': TextInput(attrs={'class': 'form-control', 'placeholder': 'Code'}),
+            'credit': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select form-control facet-select', 'id':'audiofacet-credit', 'data-placeholder': 'Select Credited Team'}),
             'editor': Select(attrs={'class': 'form-control'}),
-            'status': Select(attrs={'class': 'form-control'}),
+            'af_description': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Description'}),
+            'excerpt': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Excerpt'}),
             'length': NumberInput(attrs={'class': 'form-control'}),
+            'share_note': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Share Note'}),
+            'keywords': TextInput(attrs={'class': 'form-control', 'placeholder': 'Keywords'}),
+            'status': Select(attrs={'class': 'form-control'}),
         }
 
     # class Media:
     #     css = {
-    #         'all': ('/static/css/bootstrap-datetimepicker.css', '/static/css/chosen.min.css')
+    #         'all': ('css/bootstrap-datetimepicker.css', 'css/chosen.min.css')
     #     }
-    #     js = ('/static/js/chosen.jquery.min.js',
-    #      '/static/scripts/moment.js',
-    #      '/static/scripts/jquery.datetimepicker.js',
-    #      '/static/scripts/bootstrap-datetimepicker.js',
-    #      '/static/scripts/tiny_mce/tinymce.min.js',)
-
+    #     js = ('scripts/chosen.jquery.min.js',
+    #      'scripts/moment.js',
+    #      'scripts/jquery.datetimepicker.js',
+    #      'scripts/bootstrap-datetimepicker.js',)
 
 
 class VideoFacetForm(forms.ModelForm):
@@ -456,26 +491,26 @@ class VideoFacetForm(forms.ModelForm):
             'credit',
         ]
         widgets = {
-            'credit': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select form-control', 'id':'videofacet-credit'}),
-            'title': Textarea(attrs={'rows':2}),
-            'vf_description': Textarea(attrs={'rows':3}),
-            'excerpt': Textarea(attrs={'rows':4}),
-            'captions': Textarea(attrs={'rows':5}),
-            'share_note': Textarea(attrs={'rows':5}),
+            'title': TextInput(attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Title'}),
+            'code': TextInput(attrs={'class': 'form-control', 'placeholder': 'Code'}),
+            'credit': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select form-control facet-select', 'id':'videofacet-credit', 'data-placeholder': 'Select Credited Team'}),
             'editor': Select(attrs={'class': 'form-control'}),
-            'status': Select(attrs={'class': 'form-control'}),
+            'vf_description': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Description'}),
+            'excerpt': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Excerpt'}),
             'length': NumberInput(attrs={'class': 'form-control'}),
+            'share_note': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Share Note'}),
+            'keywords': TextInput(attrs={'class': 'form-control', 'placeholder': 'Keywords'}),
+            'status': Select(attrs={'class': 'form-control'}),
         }
 
     # class Media:
     #     css = {
-    #         'all': ('/static/css/bootstrap-datetimepicker.css', '/static/css/chosen.min.css')
+    #         'all': ('css/bootstrap-datetimepicker.css', 'css/chosen.min.css')
     #     }
-    #     js = ('/static/scripts/chosen.jquery.min.js',
-    #      '/static/scripts/moment.js',
-    #      '/static/scripts/jquery.datetimepicker.js',
-    #      '/static/scripts/bootstrap-datetimepicker.js',
-    #      '/static/scripts/tiny_mce/tinymce.min.js',)
+    #     js = ('scripts/chosen.jquery.min.js',
+    #      'scripts/moment.js',
+    #      'scripts/jquery.datetimepicker.js',
+    #      'scripts/bootstrap-datetimepicker.js',)
 
 
 # ------------------------------ #
@@ -496,10 +531,13 @@ class ImageAssetForm(forms.ModelForm):
             'keywords',
         ]
         widgets = {
-            'asset_description': Textarea(attrs={'rows':3}),
-            'attribution': Textarea(attrs={'rows':3}),
+            'asset_title': TextInput(attrs={'class': 'form-control', 'placeholder': 'Asset Title'}),
+            'asset_description': Textarea(attrs={'class': 'form-control', 'rows':3, 'placeholder': 'Description'}),
+            'attribution': Textarea(attrs={'class': 'form-control', 'rows':3, 'placeholder': 'Attribution'}),
             'image_type': Select(attrs={'class': 'form-control'}),
+            'keywords': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Keywords'}),
         }
+
 
 class AddImageForm(forms.Form):
     """ Add existing image(s) to a facet."""
@@ -513,6 +551,7 @@ class AddImageForm(forms.Form):
         widget=CheckboxSelectMultiple,
         queryset = ImageAsset.objects.all()
     )
+
 
 class DocumentAssetForm(forms.ModelForm):
     """Upload document to a facet."""
@@ -528,10 +567,13 @@ class DocumentAssetForm(forms.ModelForm):
             'keywords',
         ]
         widgets = {
-            'asset_description': Textarea(attrs={'rows':3}),
-            'attribution': Textarea(attrs={'rows':3}),
+            'asset_title': TextInput(attrs={'class': 'form-control', 'placeholder': 'Asset Title'}),
+            'asset_description': Textarea(attrs={'class': 'form-control', 'rows':3, 'placeholder': 'Description'}),
+            'attribution': Textarea(attrs={'class': 'form-control', 'rows':3, 'placeholder': 'Attribution'}),
             'doc_type': Select(attrs={'class': 'form-control'}),
+            'keywords': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Keywords'}),
         }
+
 
 class AddDocumentForm(forms.Form):
     """ Add existing document(s) to a facet."""
@@ -545,6 +587,7 @@ class AddDocumentForm(forms.Form):
         widget=CheckboxSelectMultiple,
         queryset = DocumentAsset.objects.all()
     )
+
 
 class AudioAssetForm(forms.ModelForm):
     """Upload audio to a facet."""
@@ -561,10 +604,14 @@ class AudioAssetForm(forms.ModelForm):
             'keywords',
         ]
         widgets = {
-            'asset_description': Textarea(attrs={'rows':3}),
-            'attribution': Textarea(attrs={'rows':3}),
+            'asset_title': TextInput(attrs={'class': 'form-control', 'placeholder': 'Asset Title'}),
+            'asset_description': Textarea(attrs={'class': 'form-control', 'rows':3, 'placeholder': 'Description'}),
+            'attribution': Textarea(attrs={'class': 'form-control', 'rows':3, 'placeholder': 'Attribution'}),
+            'link': TextInput(attrs={'class': 'form-control', 'placeholder': 'Link'}),
             'audio_type': Select(attrs={'class': 'form-control'}),
+            'keywords': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Keywords'}),
         }
+
 
 class AddAudioForm(forms.Form):
     """ Add existing audio to a facet."""
@@ -572,12 +619,13 @@ class AddAudioForm(forms.Form):
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop("request")
         super(AddAudioForm, self).__init__(*args, **kwargs)
-        self.fields['documents'].queryset = Organization.get_org_audio_library(self.request.user.organization)
+        self.fields['audio'].queryset = Organization.get_org_audio_library(self.request.user.organization)
 
     audio = forms.ModelMultipleChoiceField(
         widget=CheckboxSelectMultiple,
         queryset = AudioAsset.objects.all()
     )
+
 
 class VideoAssetForm(forms.ModelForm):
     """Upload video to a facet."""
@@ -594,10 +642,14 @@ class VideoAssetForm(forms.ModelForm):
             'keywords',
         ]
         widgets = {
-            'asset_description': Textarea(attrs={'rows':3}),
-            'attribution': Textarea(attrs={'rows':3}),
+            'asset_title': TextInput(attrs={'class': 'form-control', 'placeholder': 'Asset Title'}),
+            'asset_description': Textarea(attrs={'class': 'form-control', 'rows':3, 'placeholder': 'Description'}),
+            'attribution': Textarea(attrs={'class': 'form-control', 'rows':3, 'placeholder': 'Attribution'}),
+            'link': TextInput(attrs={'class': 'form-control', 'placeholder': 'Link'}),
             'video_type': Select(attrs={'class': 'form-control'}),
+            'keywords': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Keywords'}),
         }
+
 
 class AddVideoForm(forms.Form):
     """ Add existing video to a facet."""

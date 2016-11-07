@@ -1,0 +1,256 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load bootstrap3 %}
+
+<!-------------------------------------------->
+<!--      BREADCRUMB NAVIGATION             -->
+<!-------------------------------------------->
+
+{% block breadcrumb %}
+<div>
+    <ol class="breadcrumb icon-angle-right icon-th">
+      <li class="fadeIn"><a href="{% url 'dashboard' %}"> Dashboard </a></li>
+      <li class="fadeIn"><a href="{% url 'asset_library' %}" title="Return to Media Library"> Media Library </a></li>
+      <li class="fadeIn"><a href="{% url 'video_asset_detail' video.id %}" title="You are here">Video: {{video.asset_title}}  </a></li>
+    </ol>
+</div>
+{% endblock breadcrumb %}
+
+<!-------------------------------------------->
+<!--            Main Section                -->
+<!-------------------------------------------->
+
+{% block content %}
+<!-- Row One -->
+<div class="row m-b-40">
+
+  <!-- Display Video -->
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+      <h4 class="m-b-20">Video</h4>
+      <div class="col-md-12">
+        {% if video.video_type == 'MP4' %}
+        <div id="jp_container_video_{{video.pk}}" class="jp-flat-video" role="application" aria-label="media player">
+          <div id="jplayer_video_{{video.pk}}" class="jp-jplayer"></div>
+          <div class="jp-gui">
+            <div class="jp-play-control jp-control">
+              <button class="jp-play jp-button" role="button" aria-label="play" tabindex="0"></button>
+            </div>
+            <div class="jp-bar">
+              <div class="jp-seek-bar jp-seek-bar-display"></div>
+              <div class="jp-seek-bar">
+                <div class="jp-play-bar"></div>
+                <div class="jp-details"><span class="jp-title" aria-label="title"></span></div>
+                <div class="jp-timing"><span class="jp-duration" role="timer" aria-label="duration"></span></div>
+              </div>
+            </div>
+            <div class="jp-screen-control jp-control">
+              <button class="jp-full-screen jp-button" role="button" aria-label="full screen" tabindex="0"></button>
+            </div>
+          </div>
+          <div class="jp-no-solution">
+            Media Player Error<br />
+            Update your browser or Flash plugin
+          </div>
+        </div>
+        <script>
+        $(document).ready(function($) {
+        $("#jplayer_video_{{video.pk}}").jPlayer({
+          ready: function(event) {
+            var $this = $(this).jPlayer("setMedia", {
+      				title: "Big Buck Bunny Trailer",
+      				m4v: "http://jplayer.org/video/m4v/Big_Buck_Bunny_Trailer.m4v",
+      				ogv: "http://jplayer.org/video/ogv/Big_Buck_Bunny_Trailer.ogv",
+      				webmv: "http://jplayer.org/video/webm/Big_Buck_Bunny_Trailer.webm",
+      				poster: "http://jplayer.org/video/poster/Big_Buck_Bunny_Trailer_480x270.png"
+      			});
+
+            // Fix GUI when Full Screen button is hidden.
+            if(event.jPlayer.status.noFullWindow) {
+              var $anc = $($this.jPlayer("option", "cssSelectorAncestor"));
+              $anc.find('.jp-screen-control').hide();
+              $anc.find('.jp-bar').css({"right":"0"});
+            }
+
+            // Fix the responsive size for iOS and Flash.
+            var fix_iOS_flash = function() {
+              var w = $this.data("jPlayer").ancestorJq.width(),
+                h = w * 9 / 16; // Change to suit your aspect ratio. Used 16:9 HDTV ratio.
+              $this.jPlayer("option", "size", {
+                width: w + "px",
+                height: h + "px"
+              });
+            };
+            var plt = $.jPlayer.platform;
+            if(plt.ipad || plt.iphone || plt.ipod || event.jPlayer.flash.used) {
+              $(window).on("resize", function() {
+                fix_iOS_flash();
+              });
+              fix_iOS_flash();
+            }
+          },
+          timeFormat: {
+            padMin: false
+          },
+          swfPath: "js",
+          supplied: "webmv, ogv, m4v",
+          cssSelectorAncestor: "#jp_container_video_{{video.pk}}",
+          // See the CSS for more info on changing the size.
+          size: {
+            width: "100%",
+            height: "auto",
+            cssClass: "jp-flat-video-responsive"
+          },
+          sizeFull: {
+            cssClass: "jp-flat-video-full"
+          },
+          autohide: {
+            full: false,
+            restored: false
+          },
+          // While playing, allow the GUI to hide
+          play: function() {
+            $(this).jPlayer("option", "autohide", {
+              full: true,
+              restored: true
+            });
+            // Avoid multiple jPlayers playing together.
+            $(this).jPlayer("pauseOthers");
+          },
+          // When paused, show the GUI
+          pause: function() {
+            $(this).jPlayer("option", "autohide", {
+              full: false,
+              restored: false
+            });
+          },
+          // Enable clicks on the video to toggle play/pause
+          click: function(event) {
+            if(event.jPlayer.status.paused) {
+              $(this).jPlayer("play");
+            } else {
+              $(this).jPlayer("pause");
+            }
+          },
+          useStateClassSkin: true,
+          autoBlur: false,
+          smoothPlayBar: !($.jPlayer.browser.msie && $.jPlayer.browser.version < 9), // IE8 did not like the hidden animated progress bar.
+          remainingDuration: true,
+          keyEnabled: true,
+          keyBindings: {
+            // Disable some of the default key controls
+            loop: null,
+            muted: null,
+            volumeUp: null,
+            volumeDown: null
+          }
+        });
+      });
+        </script>
+        {% endif %}
+      </div>
+
+  </div>
+
+  <!-- Video Meta -->
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+    <div class="row">
+      <div class="col-xs-12">
+        <h4 class="m-b-20">Details</h4>
+      </div>
+    </div>
+    <div class="row">
+          <form action="{% url 'video_asset_detail' pk=video.id %}" method="POST" class="post-form" enctype="multipart/form-data">
+            {% csrf_token %}
+
+                <!-- Left Col -->
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ editvideoform.asset_title.help_text }}"><span class="field-label">{{ editvideoform.asset_title.label_tag }}</span></a>
+                    {{ editvideoform.asset_title }}
+                    {% if editvideoform.asset_title.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ editvideoform.asset_title.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ editvideoform.video_type.help_text }}"><span class="field-label">{{ editvideoform.video_type.label_tag }}</span></a>
+                    {{ editvideoform.video_type }}
+                    {% if editvideoform.video_type.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ editvideoform.video_type.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ editvideoform.keywords.help_text }}"><span class="field-label">{{ editvideoform.keywords.label_tag }}</span></a>
+                    {{ editvideoform.keywords }}
+                    {% if editvideoform.keywords.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ editvideoform.keywords.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                </div>
+                <!-- End Left Col -->
+
+                <!-- Right Col -->
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ editvideoform.asset_description.help_text }}"><span class="field-label">{{ editvideoform.asset_description.label_tag }}</span></a>
+                    {{ editvideoform.asset_description }}
+                    {% if editvideoform.asset_description.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ editvideoform.asset_description.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ editvideoform.attribution.help_text }}"><span class="field-label">{{ editvideoform.attribution.label_tag }}</span></a>
+                    {{ editvideoform.attribution }}
+                    {% if editvideoform.attribution.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ editvideoform.attribution.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div>
+                  <button type="submit" class="btn btn-primary">Save Changes</button>
+                  </div>
+                </div>
+            </form>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+        <hr class="content-lower-25">
+        <h4 class="m-b-20">Usage</h4>
+        {% for facet in video_usage %}
+          {% if facet.type == 'WebFacet' %}
+          <a href="{% url 'story_detail' pk=facet.story.id %}#web" title="Go to Facet"><p class="small-text">{{ facet.title }}</p></a>
+          {% elif facet.type == 'PrintFacet' %}
+          <a href="{% url 'story_detail' pk=facet.story.id %}#print" title="Go to Facet"><p class="small-text">{{ facet.title }}</p></a>
+          {% elif facet.type == 'AudioFacet' %}
+          <a href="{% url 'story_detail' pk=facet.story.id %}#audio" title="Go to Facet"><p class="small-text">{{ facet.title }}</p></a>
+          {% elif facet.type == 'VideoFacet' %}
+          <a href="{% url 'story_detail' pk=facet.story.id %}#video" title="Go to Facet"><p class="small-text">{{ facet.title }}</p></a>
+          {% endif %}
+        {% endfor %}
+      </div>
+      </div>
+    </div>
+</div>
+
+
+
+{% endblock %}
+
+
+{% block modals %}
+{% endblock %}

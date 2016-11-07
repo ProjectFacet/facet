@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load bootstrap3 %}
+
+<!-------------------------------------------->
+<!--      BREADCRUMB NAVIGATION             -->
+<!-------------------------------------------->
+
+{% block breadcrumb %}
+<div>
+    <ol class="breadcrumb icon-angle-right icon-th">
+      <li class="fadeIn"><a href="{% url 'dashboard' %}"> Dashboard </a></li>
+      <li class="fadeIn"><a href="{% url 'asset_library' %}" title="Return to Media Library"> Media Library </a></li>
+      <li class="fadeIn"><a href="{% url 'image_asset_detail' image.id %}" title="You are here">Image: {{image.asset_title}}  </a></li>
+    </ol>
+</div>
+{% endblock breadcrumb %}
+
+<!-------------------------------------------->
+<!--            Main Section                -->
+<!-------------------------------------------->
+
+{% block content %}
+<!-- Row One -->
+<div class="row m-b-40">
+
+  <!-- Display Image -->
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+      <h4 class="m-b-20">Image</h4>
+    {% if image.display_photo %}
+        <a class="image-popup-vertical-fit" href="{{ image.display_photo.url }}" title="{{ image.asset_description}}"><img class="img-fluid" src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}"></a>
+    {% endif %}
+  </div>
+
+  <!-- Image Meta -->
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+    <div class="row">
+      <div class="col-xs-12">
+        <h4 class="m-b-20">Details</h4>
+      </div>
+    </div>
+    <div class="row">
+          <form action="{% url 'image_asset_detail' pk=image.id %}" method="POST" class="post-form" enctype="multipart/form-data">
+            {% csrf_token %}
+
+                <!-- Left Col -->
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+
+                  {% comment %}
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ editimageform.photo.help_text }}"><span class="field-label">{{ editimageform.photo.label_tag }}</span></a>
+                    {{ editimageform.photo }}
+                    {% if editimageform.photo.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ editimageform.photo.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+                  {% endcomment %}
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ editimageform.asset_title.help_text }}"><span class="field-label">{{ editimageform.asset_title.label_tag }}</span></a>
+                    {{ editimageform.asset_title }}
+                    {% if editimageform.asset_title.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ editimageform.asset_title.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ editimageform.image_type.help_text }}"><span class="field-label">{{ editimageform.image_type.label_tag }}</span></a>
+                    {{ editimageform.image_type }}
+                    {% if editimageform.image_type.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ editimageform.image_type.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ editimageform.keywords.help_text }}"><span class="field-label">{{ editimageform.keywords.label_tag }}</span></a>
+                    {{ editimageform.keywords }}
+                    {% if editimageform.keywords.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ editimageform.keywords.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                </div>
+                <!-- End Left Col -->
+
+                <!-- Right Col -->
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ editimageform.asset_description.help_text }}"><span class="field-label">{{ editimageform.asset_description.label_tag }}</span></a>
+                    {{ editimageform.asset_description }}
+                    {% if editimageform.asset_description.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ editimageform.asset_description.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ editimageform.attribution.help_text }}"><span class="field-label">{{ editimageform.attribution.label_tag }}</span></a>
+                    {{ editimageform.attribution }}
+                    {% if editimageform.attribution.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ editimageform.attribution.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div>
+                  <button type="submit" class="btn btn-primary">Save Changes</button>
+                  </div>
+                </div>
+            </form>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+        <hr class="content-lower-25">
+        <h4 class="m-b-20">Usage</h4>
+        {% for facet in image_usage %}
+          {% if facet.type == 'WebFacet' %}
+          <a href="{% url 'story_detail' pk=facet.story.id %}#web" title="Go to Facet"><p class="small-text">{{ facet.title }}</p></a>
+          {% elif facet.type == 'PrintFacet' %}
+          <a href="{% url 'story_detail' pk=facet.story.id %}#print" title="Go to Facet"><p class="small-text">{{ facet.title }}</p></a>
+          {% elif facet.type == 'AudioFacet' %}
+          <a href="{% url 'story_detail' pk=facet.story.id %}#audio" title="Go to Facet"><p class="small-text">{{ facet.title }}</p></a>
+          {% elif facet.type == 'VideoFacet' %}
+          <a href="{% url 'story_detail' pk=facet.story.id %}#video" title="Go to Facet"><p class="small-text">{{ facet.title }}</p></a>
+          {% endif %}
+        {% endfor %}
+      </div>
+      </div>
+    </div>
+</div>
+
+<script>
+$(document).ready(function() {
+
+	$('.image-popup-vertical-fit').magnificPopup({
+		type: 'image',
+		closeOnContentClick: true,
+		mainClass: 'mfp-img-mobile',
+		image: {
+			verticalFit: true
+		}
+
+	});
+
+	$('.image-popup-fit-width').magnificPopup({
+		type: 'image',
+		closeOnContentClick: true,
+		image: {
+			verticalFit: false
+		}
+	});
+
+	$('.image-popup-no-margins').magnificPopup({
+		type: 'image',
+		closeOnContentClick: true,
+		closeBtnInside: false,
+		fixedContentPos: true,
+		mainClass: 'mfp-no-margins mfp-with-zoom', // class to remove default margin from left and right side
+		image: {
+			verticalFit: true
+		},
+		zoom: {
+			enabled: true,
+			duration: 300 // don't foget to change the duration also in CSS
+		}
+	});
+
+});
+
+</script>
+
+
+{% endblock %}
+
+
+{% block modals %}
+{% endblock %}

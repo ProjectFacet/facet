@@ -10,8 +10,10 @@ from django.http import HttpResponse
 from django.utils import timezone
 from django.views.generic import TemplateView , UpdateView, DetailView
 from django.views.decorators.csrf import csrf_exempt
+from django.template.loader import render_to_string
 import datetime
 import json
+from actstream import action
 
 from editorial.forms import (
     NetworkNoteForm,
@@ -36,6 +38,32 @@ from editorial.models import (
 
 
 #----------------------------------------------------------------------#
+#   General Note Views
+#----------------------------------------------------------------------#
+
+def note_content_html(request, note_type, pk):
+    """Return note content as html."""
+
+    if note_type=='organization':
+        note = get_object_or_404(OrganizationNote, pk=pk)
+    elif note_type=='network':
+        print "in note_type = network"
+        note = get_object_or_404(NetworkNote, pk=pk)
+    elif note_type=='user':
+        note = get_object_or_404(UserNote, pk=pk)
+    elif note_type=='series':
+        note = get_object_or_404(SeriesNote, pk=pk)
+    elif note_type=='story':
+        note = get_object_or_404(StoryNote, pk=pk)
+
+    note_html = render_to_string('note-content.html', {
+                        'note': note,
+                        'note_type': note_type,
+    })
+
+    return HttpResponse(note_html)
+
+#----------------------------------------------------------------------#
 #   Organization Note Views
 #----------------------------------------------------------------------#
 
@@ -57,8 +85,6 @@ def create_org_note(request):
     """ Post a note to an organization."""
 
     organization = request.user.organization
-    print organization
-    print organization.id
     if request.method == "POST":
         form = OrganizationNoteForm(request.POST or None)
         if form.is_valid():
@@ -66,6 +92,10 @@ def create_org_note(request):
             organizationnote.owner = request.user
             organizationnote.organization = organization
             organizationnote.save()
+
+            # record action for activity story_team
+            action.send(request.user, verb="added note", action_object=organizationnote, target=organization)
+
             return redirect('org_detail', pk=organization.id)
 
 
@@ -125,8 +155,13 @@ def create_series_note(request):
             series = get_object_or_404(Series, pk=series_id)
             seriesnote = form.save(commit=False)
             seriesnote.owner = request.user
+            seriesnote.organization = request.user.organization
             seriesnote.series = series
             seriesnote.save()
+
+            # record action for activity story_team
+            action.send(request.user, verb="added note", action_object=seriesnote, target=series)
+
             return redirect('series_detail', pk=series.id)
 
 #----------------------------------------------------------------------#
@@ -136,11 +171,14 @@ def create_series_note(request):
 def story_notes(request, pk):
     """ Display all of the notes for an story. """
 
-    story = get_object_or_404(Series, pk=pk)
-    storynotes = SeriesNote.objects.filter(story_id=story.id)
+    story = get_object_or_404(Story, pk=pk)
+    storynotes = StoryNote.objects.filter(story_id=story.id)
+    storynoteform = StoryNoteForm()
 
     return render(request, 'editorial/storynotes.html', {
+        'story': story,
         'storynotes': storynotes,
+        'storynoteform': storynoteform,
     })
 
 
@@ -154,8 +192,13 @@ def create_story_note(request):
             story = get_object_or_404(Story, pk=story_id)
             storynote = form.save(commit=False)
             storynote.owner = request.user
+            storynote.organization = request.user.organization
             storynote.story = story
             storynote.save()
+
+            # record action for activity story_team
+            action.send(request.user, verb="added note", action_object=storynote, target=story)
+
             return redirect('story_detail', pk=story.id)
 
 
@@ -188,4 +231,8 @@ def create_network_note(request):
             networknote.owner = request.user
             networknote.network = network
             networknote.save()
+
+            # record action for activity story_team
+            action.send(request.user, verb="added note", action_object=networknote, target=network)
+
             return redirect('network_detail', pk=network.pk)

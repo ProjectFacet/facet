@@ -15,9 +15,11 @@ from models import (
     SeriesNote,
     StoryNote,
     ImageAsset,
+    DocumentAsset,
+    AudioAsset,
+    VideoAsset,
     Comment,
     Discussion)
-
 
 
 class UserAdmin(admin.ModelAdmin):
@@ -38,5 +40,8 @@ admin.site.register(VideoFacet)
 admin.site.register(SeriesNote)
 admin.site.register(StoryNote)
 admin.site.register(ImageAsset)
+admin.site.register(DocumentAsset)
+admin.site.register(AudioAsset)
+admin.site.register(VideoAsset)
 admin.site.register(Comment)
 admin.site.register(Discussion)
