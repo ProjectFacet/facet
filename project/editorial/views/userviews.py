@@ -84,15 +84,20 @@ def user_edit(request, pk):
     """ Edit the user's profile."""
 
     user = get_object_or_404(User, pk=pk)
-
+    print "1"
     if request.method == "POST":
         # import pdb; pdb.set_trace()
+        print "2"
         userform = UserProfileForm(request.POST, request.FILES, instance=user)
+        print "3"
         # print "userform exists: ", userform
         if userform.is_valid():
+            print "user update"
             userform.save()
+            print "user updated"
             return redirect('user_detail', pk = user.id)
     else:
+        print "a"
         userform = UserProfileForm(instance=user)
 
     return render(request, 'editorial/useredit.html', {
