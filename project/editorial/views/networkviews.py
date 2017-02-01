@@ -329,7 +329,7 @@ def copy_network_story(request, pk):
                 copied_webfacet.save()
 
             # create copy of webfacet video
-            # original_webfacet_video = WebFacet.get_webfacet_video(original_webfacet[0])
+            original_webfacet_videos = WebFacet.get_webfacet_video(original_webfacet[0])
             for video in original_webfacet_videos:
                 copied_video = VideoAsset.copy_video(video)
                 copied_video.owner = user

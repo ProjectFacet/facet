@@ -425,14 +425,12 @@
         </div>
         <!-- Right Column -->
         <div class="col-xs-12 col-lg-6">
-          <h5 class="text-center">Criterion News Stories Picked up by Partners</h5>
+          <h5 class="text-center">{{ request.user.organization }} Stories Picked up by Partners</h5>
           {% if copied_shared_stories %}
               <ul class="list-group">
-                  <li class="list-group-item"> <span class="text-xs pull-right">Arctic Times</span> Michael Smith upgraded to the $50 plan</li>
-                  <li class="list-group-item"> <span class="text-xs pull-right">Arctic Times</span> Jane Perez cancelled the $25 plan</li>
-                  <li class="list-group-item"> <span class="text-xs pull-right">Wolf Media</span> George Clinton from Facebook upgraded to the $25 plan</li>
-                  <li class="list-group-item"> <span class="text-xs pull-right">Cold Snap</span> Someone from Google cancelled the $25 plan</li>
-                  <li class="list-group-item"> <span class="text-xs pull-right">Wolf Media</span> Lucas Smith upgraded to the $25 plan</li>
+                {% for story in copied_shared_stories|slice:":5" %}
+                  <li class="list-group-item"> <span class="text-xs pull-right">{{story.partner.name}} | {{ story.copy_date|date:'g:i a' }}</span> {{story.original_story.name}}</li>
+                {% endfor %}
               </ul>
           {% else %}
             <p class="f-s-14 subtle text-center m-t-20">There are currently no stories recently used by your partners.</p>

@@ -153,6 +153,7 @@ def dashboard(request):
     old_stories = Story.objects.filter(organization = request.user.organization)[:10]
 
     copied_shared_stories = StoryCopyDetail.objects.filter(original_org=request.user.organization)
+
     # TODO: query for other user activity since last_login
 
     return render(request, 'editorial/dashboard.html', {
