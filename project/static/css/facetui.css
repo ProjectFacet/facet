@@ -63,6 +63,10 @@ a.default {
   padding-right: 0px !important;
 }
 
+.header-icon {
+  font-size: 3em;
+}
+
 /*Text Spread Utilies*/
 
 .spread-01 {

@@ -158,13 +158,13 @@
         <h4 class="m-b-20">Usage</h4>
         {% for facet in audio_usage %}
           {% if facet.type == 'WebFacet' %}
-          <a href="{% url 'story_detail' pk=facet.story.id %}#web" title="Go to Facet"><p class="small-text">{{ facet.title }}</p></a>
+          <a href="{% url 'story_detail' pk=facet.story.id %}#web" title="Go to Facet"><p class="f-s-14 m-t-10"><i class="fa fa-angle-right subtle" aria-hidden="true"></i> {{ facet.title }}</p></a>
           {% elif facet.type == 'PrintFacet' %}
-          <a href="{% url 'story_detail' pk=facet.story.id %}#print" title="Go to Facet"><p class="small-text">{{ facet.title }}</p></a>
+          <a href="{% url 'story_detail' pk=facet.story.id %}#print" title="Go to Facet"><p class="f-s-14 m-t-10"><i class="fa fa-angle-right subtle" aria-hidden="true"></i> {{ facet.title }}</p></a>
           {% elif facet.type == 'AudioFacet' %}
-          <a href="{% url 'story_detail' pk=facet.story.id %}#audio" title="Go to Facet"><p class="small-text">{{ facet.title }}</p></a>
+          <a href="{% url 'story_detail' pk=facet.story.id %}#audio" title="Go to Facet"><p class="f-s-14 m-t-10"><i class="fa fa-angle-right subtle" aria-hidden="true"></i> {{ facet.title }}</p></a>
           {% elif facet.type == 'VideoFacet' %}
-          <a href="{% url 'story_detail' pk=facet.story.id %}#video" title="Go to Facet"><p class="small-text">{{ facet.title }}</p></a>
+          <a href="{% url 'story_detail' pk=facet.story.id %}#video" title="Go to Facet"><p class="f-s-14 m-t-10"><i class="fa fa-angle-right subtle" aria-hidden="true"></i> {{ facet.title }}</p></a>
           {% endif %}
         {% endfor %}
       </div>

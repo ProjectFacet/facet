@@ -42,7 +42,7 @@
                     <div class="overlay bg-dark centered">
                         <div class="title f-w-800 capitalize"><a href="{% url 'image_asset_detail' pk=image.id %}">{{ image.asset_title }}</a></div>
                         <div class="asset-description f-w-500 hidden-sm-down"> {{ image.asset_description }} </div>
-                        <div class="link hidden-sm-down"><a href="{% url 'image_asset_detail' pk=image.id %}"><p class="color-lighter f-w-900">See Detail <i class="fa fa-angle-right"></i></p></a></div>
+                        <div class="link hidden-sm-down"><a href="{% url 'image_asset_detail' pk=image.id %}"><p class="color-lighter f-w-900"><i class="fa fa-angle-right"></i> Details</p></a></div>
                     </div>
                 </div>
               {% endif %}
@@ -54,24 +54,24 @@
             <div id="document-asset-library">
             {% for document in documents %}
                 <div class="col-xs-6 col-sm-6 col-md-4 col-lg-2">
-                    {% if document.type == "PDF" %}
-                    <div class="icon"><i class="fa fa-file-pdf-o"></i></div>
-                    {% elif document.type == "WORD"}
-                    <div class="icon"><i class="fa fa-file-word-o"></i></div>
-                    {% elif document.type == "TXT" %}
-                    <div class="icon"><i class="fa fa-file-text-o"></i></div>
-                    {% elif document.type == "CSV"}
-                    <div class="icon"><i class="fa fa-file-excel-o"></i></div>
-                    {% elif document.type == "XLS" %}
-                    <div class="icon"><i class="fa fa-file-excel-o"></i></div>
-                    {% elif document.type == "OTHER"}
-                    <div class="icon"><i class="fa fa-file-o"></i></div>
+                  <div class="overlay bg-dark centered">
+                    {% if document.doc_type == "PDF" %}
+                    <div class="icon"><i class="fa fa-file-pdf-o header-icon text-center m-b-10"></i></div>
+                    {% elif document.doc_type == "WORD" %}
+                    <div class="icon"><i class="fa fa-file-word-o header-icon text-center m-b-10"></i></div>
+                    {% elif document.doc_type == "TXT" %}
+                    <div class="icon"><i class="fa fa-file-text-o header-icon text-center m-b-10"></i></div>
+                    {% elif document.doc_type == "CSV"}
+                    <div class="icon"><i class="fa fa-file-excel-o header-icon text-center m-b-10"></i></div>
+                    {% elif document.doc_type == "XLS" %}
+                    <div class="icon"><i class="fa fa-file-excel-o header-icon text-center m-b-10"></i></div>
+                    {% elif document.doc_type == "OTHER"}
+                    <div class="icon"><i class="fa fa-file-o header-icon text-center m-b-10"></i></div>
                     {% endif %}
-                    <div class="overlay bg-dark centered">
-                        <div class="title f-w-800 capitalize"><a href="{% url 'document_asset_detail' pk=document.id %}">{{ document.asset_title }}</a></div>
-                        <div class="asset-description f-w-500 hidden-sm-down"> {{ document.asset_description }} </div>
-                        <div class="link hidden-sm-down"><a href="{% url 'document_asset_detail' pk=document.id %}"><p class="color-lighter f-w-900">See Detail <i class="fa fa-angle-right"></i></p></a></div>
-                    </div>
+                    <div class="title f-w-800 capitalize"><a href="{% url 'document_asset_detail' pk=document.id %}">{{ document.asset_title }}</a></div>
+                    <div class="asset-description f-w-500 hidden-sm-down"> {{ document.asset_description }} </div>
+                    <div class="link hidden-sm-down"><a href="{% url 'document_asset_detail' pk=document.id %}"><p class="subtle f-s-14 m-t-10"><i class="fa fa-angle-right subtle" aria-hidden="true"></i> Details</p></a></div>
+                  </div>
                 </div>
             {% endfor %}
             </div>
@@ -142,10 +142,13 @@
               {% if audio.audio_type == 'SC' %}
               <a href="{{ audio.link }}" title="{{ audio.asset_description }}" target="_blank"><i class="fa fa-soundcloud sameline"></i> <span class="small-text dark sameline">{{ audio.asset_title }}</span></a>
               {% endif %}
+              <a href="{% url 'audio_asset_detail' pk=audio.id %}" title="{{ audio.asset_description }}"><p class="subtle f-s-14 m-t-10"><i class="fa fa-angle-right subtle" aria-hidden="true"></i> Details</p></a>
 
             </div>
             <div class="col-xs-1">
-              <a href="{% url 'audio_asset_detail' pk=audio.id %}" title="{{ audio.asset_description }}"><i class="fa fa-info-circle sameline"></i></a>
+              {% comment %}
+              <a href="{% url 'audio_asset_detail' pk=audio.id %}" title="{{ audio.asset_description }}"><p class="subtle f-s-14 m-t-10"><i class="fa fa-angle-right subtle" aria-hidden="true"></i> Details</p></a>
+              {% endcomment %}
             </div>
 
             {% endfor %}
@@ -276,7 +279,7 @@
               </script>
               {% endif %}
 
-              <a href="{% url 'video_asset_detail' pk=video.id %}" title="{{ video.asset_description }}"><p class="subtle f-s-12 m-t-10">More Details</p></a>
+              <a href="{% url 'video_asset_detail' pk=video.id %}" title="{{ video.asset_description }}"><p class="subtle f-s-14 m-t-10"><i class="fa fa-angle-right subtle" aria-hidden="true"></i> Details</p></a>
             </div>
 
             {% endfor %}
