@@ -1,4 +1,4 @@
-<!-- Image Asset Modal -->
+<!-- Image Asset Modal -->
 
 <div class="modal fade" id="ImageAssetModal" tabindex="-1" role="dialog" aria-labelledby="ImageAssetModal">
   <div class="modal-dialog modal-lg" role="document">
@@ -158,7 +158,7 @@ $('#ImageAssetModal').on('show.bs.modal', function (event) {
                 '{% endfor %}'
 
     var videofacetHidden = '{% for videofacet in story.videofacetstory.all %}' +
-                '<input type="hidden" name="vfacet" value="{{ videofacet.pk }}" />' +
+                '<input type="hidden" name="videofacet" value="{{ videofacet.pk }}" />' +
                 '<input  type="hidden" name="type" value="videofacet" />' +
                 '{% endfor %}'
 

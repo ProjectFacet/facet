@@ -22,6 +22,7 @@
                 <!-- Left Col -->
                 <div class="col-md-6">
 
+                  {% comment %}
                   <fieldset class="form-group m-b-10">
                     <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ videoassetform.video.label_tag }}</label>
                     {{ videoassetform.video }}
@@ -29,6 +30,7 @@
                       <small class="text-muted">{{ videoassetform.video.errors }}</small>
                     {% endif %}
                   </fieldset>
+                  {% endcomment %}
 
                   <fieldset class="form-group m-b-10">
                     <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ videoassetform.link.label_tag }}</label>

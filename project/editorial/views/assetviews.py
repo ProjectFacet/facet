@@ -3,6 +3,8 @@
     editorial/views/assetviews.py
 """
 
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
 from django.core.mail import send_mail
@@ -71,7 +73,7 @@ def image_asset_detail(request, pk):
             editimageform.save()
             #record action for activity stream
             action.send(request.user, verb="updated", action_object=image)
-            return redirect('asset_detail', pk=image.id)
+            return redirect('image_asset_detail', pk=image.id)
     else:
         editimageform = ImageAssetForm(instance=image)
 
@@ -217,14 +219,17 @@ def add_image(request):
                 facet_id = request.POST.get('videofacet')
                 facet = get_object_or_404(VideoFacet, id=facet_id)
 
+            #create list of img instances
+            img_instances = []
             # connect image to facet
             for image in images:
                 img_ins = get_object_or_404(ImageAsset, id=image)
+                img_instances.append(img_ins)
                 facet.image_assets.add(img_ins)
             facet.save()
 
             # record action for activity stream
-            action.send(request.user, verb="added image", action_object=images[0], target=facet)
+            action.send(request.user, verb="added image", action_object=img_instances[0], target=facet)
 
     return redirect('story_detail', pk=facet.story.id)
 

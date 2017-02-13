@@ -3,6 +3,8 @@
     editorial/views/communicationviews.py
 """
 
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
 from django.core.mail import send_mail
@@ -41,9 +43,13 @@ from editorial.models import (
 def private_message_new(request):
     """ Private messaging method. """
 
+    print "0"
     if request.method == 'POST':
-        privatemessageform=PrivateMessageForm(request.POST or None)
+        print "1"
+        privatemessageform = PrivateMessageForm(request.POST or None)
+        print "2"
         if privatemessageform.is_valid():
+            print "valid"
             message_subject = request.POST.get('subject')
             message_text = request.POST.get('text')
             send_to = request.POST.get('recipient')

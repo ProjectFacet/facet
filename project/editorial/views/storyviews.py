@@ -3,6 +3,8 @@
     editorial/views/storyviews.py
 """
 
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
 from django.core.mail import send_mail

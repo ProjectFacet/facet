@@ -4,7 +4,7 @@
 
 
 from editorial.forms import PrivateMessageForm, UserNoteForm
-from actstream.models import any_stream
+from actstream.models import any_stream, model_stream
 from editorial.models import Organization, User
 from django.contrib.sessions.models import Session
 from django.utils import timezone
@@ -19,7 +19,7 @@ def include_private_message_form(request):
 
 def include_activity_stream(request):
     if request.user.is_authenticated():
-        activity_stream = any_stream(request.user)
+        activity_stream = model_stream(request.user)
         return {'activitystream': activity_stream }
     else: return {}
 

@@ -1074,9 +1074,13 @@ class Story(models.Model):
         return story_audio
 
 
+    # @property
+    # def description(self):
+    #     return "{description}".format(description=self.story_description)
+
     @property
     def description(self):
-        return "{description}".format(description=self.story_description)
+        return self.story_description
 
     @property
     def search_title(self):
@@ -1392,7 +1396,7 @@ class WebFacet(models.Model):
 
     @property
     def description(self):
-        return "{desc}".format(desc=self.wf_description)
+        return self.wf_description
 
     @property
     def search_title(self):
@@ -1700,7 +1704,7 @@ class PrintFacet(models.Model):
 
     @property
     def description(self):
-        return "{desc}".format(desc=self.pf_description)
+        return self.pf_description
 
     @property
     def search_title(self):
@@ -2010,7 +2014,7 @@ class AudioFacet(models.Model):
 
     @property
     def description(self):
-        return "{desc}".format(desc=self.af_description)
+        return self.af_description
 
     @property
     def search_title(self):
@@ -2319,7 +2323,7 @@ class VideoFacet(models.Model):
 
     @property
     def description(self):
-        return "{desc}".format(desc=self.vf_description)
+        return self.vf_description
 
     @property
     def search_title(self):
@@ -2591,7 +2595,7 @@ class ImageAsset(models.Model):
 
     @property
     def description(self):
-        return "{desc}".format(desc=self.asset_description.encode('utf-8'))
+        return self.asset_description.encode('utf-8')
 
     @property
     def search_title(self):
@@ -2762,7 +2766,7 @@ class DocumentAsset(models.Model):
 
     @property
     def description(self):
-        return "{desc}".format(desc=self.asset_description.encode('utf-8'))
+        return self.asset_description.encode('utf-8')
 
     @property
     def search_title(self):
@@ -2933,7 +2937,7 @@ class AudioAsset(models.Model):
 
     @property
     def description(self):
-        return "{desc}".format(desc=self.asset_description.encode('utf-8'))
+        return self.asset_description.encode('utf-8')
 
     @property
     def search_title(self):
@@ -3108,7 +3112,7 @@ class VideoAsset(models.Model):
 
     @property
     def description(self):
-        return "{desc}".format(desc=self.asset_description.encode('utf-8'))
+        return self.asset_description.encode('utf-8')
 
     @property
     def search_title(self):
