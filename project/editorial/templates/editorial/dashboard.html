@@ -185,7 +185,7 @@
         <!-- Right Column -->
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
           <div class="bs-nav-tabs nav-tabs-default">
-              <ul class="nav nav-tabs nav-animated-border-from-left">
+              <ul class="nav nav-tabs nav-animated-border-from-left m-b-20">
                   <li class="nav-item"> <a ng-href="" class="nav-link active" data-toggle="tab" data-target="#stories-running">Running Today</a> </li>
                   <li class="nav-item"> <a ng-href="" class="nav-link" data-toggle="tab" data-target="#stories-new">New Stories</a> </li>
                   <li class="nav-item"> <a ng-href="" class="nav-link" data-toggle="tab" data-target="#stories-edit">Due for Edit</a> </li>
@@ -194,7 +194,8 @@
                   <div role="tabpanel" class="tab-pane in active p-t-0" id="stories-running">
                     {% if running_today %}
                     <!-- Full table for md and lg displays -->
-                    <table class="table table-hover hidden-sm-down" cellspacing="0" width="100%">
+                    <table class="table table-hover table-striped hidden-sm-down" cellspacing="0" width="100%">
+                        {% comment %}
                         <thead>
                             <tr>
                                 <th>Title</th>
@@ -203,6 +204,7 @@
                                 <th>Time</th>
                             </tr>
                         </thead>
+                        {% endcomment %}
                         <tfoot class="hidden">
                             <tr>
                               <th>Title</th>
@@ -236,7 +238,8 @@
                     </table>
                     <!-- End full table -->
                     <!-- Partial table for xs and sm displays -->
-                    <table class="table table-hover hidden-md-up" cellspacing="0" width="100%">
+                    <table class="table table-hover table-striped hidden-md-up" cellspacing="0" width="100%">
+                        {% comment %}
                         <thead>
                             <tr>
                                 <th>Title</th>
@@ -244,6 +247,7 @@
                                 <th>Time</th>
                             </tr>
                         </thead>
+                        {% endcomment %}
                         <tfoot class="hidden">
                             <tr>
                               <th>Title</th>
@@ -284,13 +288,15 @@
                   </div>
                   <div role="tabpanel" class="tab-pane p-t-0" id="stories-new">
                     {% if new_stories %}
-                    <table class="table table-hover" cellspacing="0" width="100%">
+                    <table class="table table-hover table-striped" cellspacing="0" width="100%">
+                        {% comment %}
                         <thead>
                             <tr>
                                 <th>Story</th>
                                 <th>Description</th>
                             </tr>
                         </thead>
+                        {% endcomment %}
                         <tfoot class="hidden">
                             <tr>
                               <th>Title</th>
@@ -318,7 +324,8 @@
                   <!-- Full table for md and lg displays -->
                   <div role="tabpanel" class="tab-pane p-t-0" id="stories-edit">
                     {% if edit_today %}
-                    <table class="table table-hover hidden-sm-down" cellspacing="0" width="100%">
+                    <table class="table table-hover table-striped hidden-sm-down" cellspacing="0" width="100%">
+                        {% comment %}
                         <thead>
                             <tr>
                                 <th>Title</th>
@@ -327,6 +334,7 @@
                                 <th>Due</th>
                             </tr>
                         </thead>
+                        {% endcomment %}
                         <tfoot class="hidden">
                             <tr>
                               <th>Title</th>
@@ -359,7 +367,8 @@
                     </table>
                   <!-- End full table -->
                   <!-- Partial table for xs and sm displays -->
-                    <table class="table table-hover hidden-md-up" cellspacing="0" width="100%">
+                    <table class="table table-hover table-striped hidden-md-up" cellspacing="0" width="100%">
+                        {% comment %}
                         <thead>
                             <tr>
                                 <th>Title</th>
@@ -367,6 +376,7 @@
                                 <th>Due</th>
                             </tr>
                         </thead>
+                        {% endcomment %}
                         <tfoot class="hidden">
                             <tr>
                               <th>Title</th>
