@@ -41,6 +41,14 @@
                   </fieldset>
 
                   <fieldset class="form-group m-b-10">
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ videoassetform.embed.label_tag }}</label>
+                    {{ videoassetform.embed }}
+                    {% if videoassetform.embed.errors %}
+                      <small class="text-muted">{{ videoassetform.embed.errors }}</small>
+                    {% endif %}
+                  </fieldset>
+
+                  <fieldset class="form-group m-b-10">
                     <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ videoassetform.asset_title.label_tag }}</label>
                     {{ videoassetform.asset_title }}
                     {% if videoassetform.asset_title.errors %}
