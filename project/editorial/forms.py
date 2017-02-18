@@ -671,6 +671,7 @@ class PrivateMessageForm(forms.ModelForm):
     """ Message form for private messages. """
 
     def __init__(self, *args, **kwargs):
+        print "kwargs: ", kwargs
         self.request = kwargs.pop("request")
         super(PrivateMessageForm, self).__init__(*args, **kwargs)
         if self.request.user.organization:
@@ -688,6 +689,7 @@ class PrivateMessageForm(forms.ModelForm):
                 attrs={'id':'private-comment', 'required': True, 'placeholder': 'Message', 'class': 'form-control', 'rows':10}
             ),
         }
+
 
 class OrganizationCommentForm(forms.ModelForm):
     """ Comment form for organization. """

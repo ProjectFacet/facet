@@ -43,13 +43,9 @@ from editorial.models import (
 def private_message_new(request):
     """ Private messaging method. """
 
-    print "0"
     if request.method == 'POST':
-        print "1"
-        privatemessageform = PrivateMessageForm(request.POST or None)
-        print "2"
+        privatemessageform = PrivateMessageForm(request.POST, request=request)
         if privatemessageform.is_valid():
-            print "valid"
             message_subject = request.POST.get('subject')
             message_text = request.POST.get('text')
             send_to = request.POST.get('recipient')
@@ -57,7 +53,7 @@ def private_message_new(request):
             discussion = Discussion.objects.create_discussion('PRI')
             message = PrivateMessage.objects.create_private_message(user=request.user, recipient=recipient, discussion=discussion, subject=message_subject, text=message_text)
             message.save()
-    return redirect('/discussion')
+    return redirect('/inbox')
 
 
 def create_privatecomment_reply(request):
