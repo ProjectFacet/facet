@@ -110,6 +110,7 @@
         <!-- Right Column -->
         <div class="col-md-2">
 
+        <!-- Save Button -->
         <div class="row">
           <div class="col-xs-12">
             <div class="save-button m-b-20">
@@ -365,7 +366,6 @@
     </div>
     <!-- Webfacet Video -->
     <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
-      {% comment %}
       <div class="section-title m-b-20">
         <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">Video</label>
         <a href="#" data-toggle="modal" data-target="#VideoAssetModal" data-facet="audiofacet_video" title="Add Video"><i class="fa fa-plus sameline subtle"></i></a>
@@ -373,23 +373,138 @@
       <div id="audiofacet-video">
         <div class="row">
           {% for video in audiofacet_video %}
-            <div class="col-md-1">
-                <label>
-                    {% if video.video_type == 'MP4' %}
-                    <a href="" title="{{ video.asset_description }}" target="_blank"><h3><i class="fa fa-video-camera dark"></i></h3></a>
-                    {% endif %}
-                    {% if video.video_type == 'YT' %}
-                    <a href="" title="{{ video.asset_description }}" target="_blank"><h3><i class="fa fa-youtube-play dark"></i></h3></a>
-                    {% endif %}
-                    {% if video.video_type == 'VIM' %}
-                    <a href="" title="{{ video.asset_description }}" target="_blank"><h3><i class="fa fa-vimeo-square dark"></i></h3></a>
-                    {% endif %}
-                  </label>
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+            {% if video.video_type == 'MP4' %}
+            <div id="jp_container_video_{{video.pk}}" class="jp-flat-video m-b-10" role="application" aria-label="media player">
+              <div id="jplayer_video_{{video.pk}}" class="jp-jplayer"></div>
+              <div class="jp-gui">
+                <div class="jp-play-control jp-control">
+                  <button class="jp-play jp-button" role="button" aria-label="play" tabindex="0"></button>
+                </div>
+                <div class="jp-bar">
+                  <div class="jp-seek-bar jp-seek-bar-display"></div>
+                  <div class="jp-seek-bar">
+                    <div class="jp-play-bar"></div>
+                    <div class="jp-details"><span class="jp-title" aria-label="title"></span></div>
+                    <div class="jp-timing"><span class="jp-duration" role="timer" aria-label="duration"></span></div>
+                  </div>
+                </div>
+                <div class="jp-screen-control jp-control">
+                  <button class="jp-full-screen jp-button" role="button" aria-label="full screen" tabindex="0"></button>
+                </div>
+              </div>
+              <div class="jp-no-solution">
+                Media Player Error<br />
+                Update your browser or Flash plugin
+              </div>
             </div>
+            <script>
+                $(document).ready(function($) {
+                $("#jplayer_video_{{video.pk}}").jPlayer({
+                  ready: function(event) {
+                    var $this = $(this).jPlayer("setMedia", {
+                      title: "Big Buck Bunny Trailer",
+                      m4v: "http://jplayer.org/video/m4v/Big_Buck_Bunny_Trailer.m4v",
+                      ogv: "http://jplayer.org/video/ogv/Big_Buck_Bunny_Trailer.ogv",
+                      webmv: "http://jplayer.org/video/webm/Big_Buck_Bunny_Trailer.webm",
+                      poster: "http://jplayer.org/video/poster/Big_Buck_Bunny_Trailer_480x270.png"
+                    });
+
+                    // Fix GUI when Full Screen button is hidden.
+                    if(event.jPlayer.status.noFullWindow) {
+                      var $anc = $($this.jPlayer("option", "cssSelectorAncestor"));
+                      $anc.find('.jp-screen-control').hide();
+                      $anc.find('.jp-bar').css({"right":"0"});
+                    }
+
+                    // Fix the responsive size for iOS and Flash.
+                    var fix_iOS_flash = function() {
+                      var w = $this.data("jPlayer").ancestorJq.width(),
+                        h = w * 9 / 16; // Change to suit your aspect ratio. Used 16:9 HDTV ratio.
+                      $this.jPlayer("option", "size", {
+                        width: w + "px",
+                        height: h + "px"
+                      });
+                    };
+                    var plt = $.jPlayer.platform;
+                    if(plt.ipad || plt.iphone || plt.ipod || event.jPlayer.flash.used) {
+                      $(window).on("resize", function() {
+                        fix_iOS_flash();
+                      });
+                      fix_iOS_flash();
+                    }
+                  },
+                  timeFormat: {
+                    padMin: false
+                  },
+                  swfPath: "js",
+                  supplied: "webmv, ogv, m4v",
+                  cssSelectorAncestor: "#jp_container_video_{{video.pk}}",
+                  // See the CSS for more info on changing the size.
+                  size: {
+                    width: "100%",
+                    height: "auto",
+                    cssClass: "jp-flat-video-responsive"
+                  },
+                  sizeFull: {
+                    cssClass: "jp-flat-video-full"
+                  },
+                  autohide: {
+                    full: false,
+                    restored: false
+                  },
+                  // While playing, allow the GUI to hide
+                  play: function() {
+                    $(this).jPlayer("option", "autohide", {
+                      full: true,
+                      restored: true
+                    });
+                    // Avoid multiple jPlayers playing together.
+                    $(this).jPlayer("pauseOthers");
+                  },
+                  // When paused, show the GUI
+                  pause: function() {
+                    $(this).jPlayer("option", "autohide", {
+                      full: false,
+                      restored: false
+                    });
+                  },
+                  // Enable clicks on the video to toggle play/pause
+                  click: function(event) {
+                    if(event.jPlayer.status.paused) {
+                      $(this).jPlayer("play");
+                    } else {
+                      $(this).jPlayer("pause");
+                    }
+                  },
+                  useStateClassSkin: true,
+                  autoBlur: false,
+                  smoothPlayBar: !($.jPlayer.browser.msie && $.jPlayer.browser.version < 9), // IE8 did not like the hidden animated progress bar.
+                  remainingDuration: true,
+                  keyEnabled: true,
+                  keyBindings: {
+                    // Disable some of the default key controls
+                    loop: null,
+                    muted: null,
+                    volumeUp: null,
+                    volumeDown: null
+                  }
+                });
+              });
+            </script>
+            {% endif %}
+
+            {% if video.video_type == 'YOUTUBE' %}
+            <a href="{{ video.link }}" title="View {{ video.asset_title }}" class="embedded-video"><h5><i class="fa fa-youtube-play dark"></i> {{ video.asset_title }}</h5></a>
+            {% endif %}
+            {% if video.video_type == 'VIMEO' %}
+            <a href="{{ video.link }}" title="View {{ video.asset_title }}" class="embedded-video"><h5><i class="fa fa-vimeo dark"></i> {{ video.asset_title }}</h5></a>
+            {% endif %}
+          </div>
+
           {% endfor %}
         </div>
       </div>
-      {% endcomment %}
     </div>
   </div>
 
