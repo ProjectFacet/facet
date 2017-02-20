@@ -110,6 +110,7 @@
         <!-- Right Column -->
         <div class="col-md-2">
 
+        <!-- Save Button -->
         <div class="row">
           <div class="col-xs-12">
             <div class="save-button m-b-20">
@@ -493,6 +494,15 @@
               });
             </script>
             {% endif %}
+
+            {% if video.video_type == 'YOUTUBE' %}
+            <a href="{{ video.link }}" title="View {{ video.asset_title }}" class="embedded-video"><h5><i class="fa fa-youtube-play dark"></i> {{ video.asset_title }}</h5></a>
+            {% endif %}
+            {% if video.video_type == 'VIMEO' %}
+            <a href="{{ video.link }}" title="View {{ video.asset_title }}" class="embedded-video"><h5><i class="fa fa-vimeo dark"></i> {{ video.asset_title }}</h5></a>
+            {% endif %}
+
+
           </div>
 
           {% endfor %}

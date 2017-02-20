@@ -150,7 +150,7 @@
           </script>
         {% endif %}
 
-        {% if video.video_type == 'YOUTUBE' %}
+        {% if video.video_type == 'YOUTUBE' or 'VIMEO' %}
           <span class="hidden-sm-up">
           {% video video.link '100%x200' %}
           </span>

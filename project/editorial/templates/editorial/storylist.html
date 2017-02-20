@@ -42,75 +42,82 @@
         </tr>
       </thead>
       <tbody>
-      {% for story in stories %}
-        {% if story.webfacetstory.all or story.printfacetstory.all or story.audiofacetstory.all or story.videofacetstory.all %}
-          {% for facet in story.webfacetstory.all %}
-            <tr>
-              <td><a href="{% url 'story_detail' pk=facet.story.id %}">{{ facet.story.name }}</a></th>
-              <td>{{ facet.type}}</td>
-              <td><a href="{% url 'story_detail' pk=facet.story.id %}#web" data-toggle="tooltip" title="{{ facet.wf_description }}">{{ facet.title }}</a></td>
-              <td>{{ facet.credit.all.0.credit_name }}</td>
-              <td>{{ facet.due_edit|date:'n/j, g:i a' }}</td>
-              <td>{{ facet.run_date|date:'n/j, g:i a'}}</td>
-              <td>{{ facet.status }}</td>
-              <td>{% if facet.story.share == True %}<i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</td>
-              <td>{% if facet.story.collaborate == True %}<i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</td>
-            </tr>
-          {% endfor %}
-          {% for facet in story.printfacetstory.all %}
-            <tr>
-              <td><a href="{% url 'story_detail' pk=facet.story.id %}">{{ facet.story.name }}</a></th>
-              <td>{{ facet.type}}</td>
-              <td><a href="{% url 'story_detail' pk=facet.story.id %}#print" data-toggle="tooltip" title="{{ facet.pf_description }}">{{ facet.title }}</a></td>
-              <td>{{ facet.credit.all.0.credit_name }}</td>
-              <td>{{ facet.due_edit|date:'n/j, g:i a' }}</td>
-              <td>{{ facet.run_date|date:'n/j, g:i a'}}</td>
-              <td>{{ facet.status }}</td>
-              <td>{% if facet.story.share == True %}<i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</td>
-              <td>{% if facet.story.collaborate == True %}<i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</td>
-            </tr>
-          {% endfor %}
-          {% for facet in story.audiofacetstory.all %}
-            <tr>
-              <td><a href="{% url 'story_detail' pk=facet.story.id %}">{{ facet.story.name }}</a></th>
-              <td>{{ facet.type}}</td>
-              <td><a href="{% url 'story_detail' pk=facet.story.id %}#audio" data-toggle="tooltip" title="{{ facet.af_description }}">{{ facet.title }}</a></td>
-              <td>{{ facet.credit.all.0.credit_name }}</td>
-              <td>{{ facet.due_edit|date:'n/j, g:i a' }}</td>
-              <td>{{ facet.run_date|date:'n/j, g:i a'}}</td>
-              <td>{{ facet.status }}</td>
-              <td>{% if facet.story.share == True %}<i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</td>
-              <td>{% if facet.story.collaborate == True %}<i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</td>
-            </tr>
-          {% endfor %}
-          {% for facet in story.videofacetstory.all %}
-            <tr>
-              <td><a href="{% url 'story_detail' pk=facet.story.id %}">{{ facet.story.name }}</a></td>
-              <td>{{ facet.type}}</td>
-              <td><a href="{% url 'story_detail' pk=facet.story.id %}#video" data-toggle="tooltip" title="{{ facet.vf_description }}">{{ facet.title }}</a></td>
-              <td>{{ facet.credit.all.0.credit_name }}</td>
-              <td>{{ facet.due_edit|date:'n/j, g:i a' }}</td>
-              <td>{{ facet.run_date|date:'n/j, g:i a'}}</td>
-              <td>{{ facet.status }}</td>
-              <td>{% if facet.story.share == True %}<i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</td>
-              <td>{% if facet.story.collaborate == True %}<i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</td>
-            </tr>
-          {% endfor %}
-        {% else %}
-            <tr>
-              <td><a href="{% url 'story_detail' pk=story.id %}">{{ story.name }}</a></td>
-              <td><i class="tiny-text">Create a facet</i></td>
-              <td></td>
-              <td>{{ story.owner.credit_name }}</td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td>{% if story.share == True %}<i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</td>
-              <td>{% if story.collaborate == True %}<i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</td>
-            </tr>
-        {% endif %}
 
-      {% endfor %}
+
+        {% for story in stories %}
+          {% if story.webfacetstory.all or story.printfacetstory.all or story.audiofacetstory.all or story.videofacetstory.all %}
+
+            {% for facet in story.webfacetstory.all %}
+              <tr>
+                <td><a href="{% url 'story_detail' pk=facet.story.id %}">{{ facet.story.name }}</a></th>
+                <td>{{ facet.type}}</td>
+                <td><a href="{% url 'story_detail' pk=facet.story.id %}#web" data-toggle="tooltip" title="{{ facet.wf_description }}">{{ facet.title }}</a></td>
+                <td>{{ facet.credit.all.0.credit_name }}</td>
+                <td>{{ facet.due_edit|date:'n/j, g:i a' }}</td>
+                <td>{{ facet.run_date|date:'n/j, g:i a'}}</td>
+                <td>{{ facet.status }}</td>
+                <td>{% if facet.story.share == True %}<i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</td>
+                <td>{% if facet.story.collaborate == True %}<i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</td>
+              </tr>
+            {% endfor %}
+            {% for facet in story.printfacetstory.all %}
+              <tr>
+                <td><a href="{% url 'story_detail' pk=facet.story.id %}">{{ facet.story.name }}</a></th>
+                <td>{{ facet.type}}</td>
+                <td><a href="{% url 'story_detail' pk=facet.story.id %}#print" data-toggle="tooltip" title="{{ facet.pf_description }}">{{ facet.title }}</a></td>
+                <td>{{ facet.credit.all.0.credit_name }}</td>
+                <td>{{ facet.due_edit|date:'n/j, g:i a' }}</td>
+                <td>{{ facet.run_date|date:'n/j, g:i a'}}</td>
+                <td>{{ facet.status }}</td>
+                <td>{% if facet.story.share == True %}<i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</td>
+                <td>{% if facet.story.collaborate == True %}<i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</td>
+              </tr>
+            {% endfor %}
+            {% for facet in story.audiofacetstory.all %}
+              <tr>
+                <td><a href="{% url 'story_detail' pk=facet.story.id %}">{{ facet.story.name }}</a></th>
+                <td>{{ facet.type}}</td>
+                <td><a href="{% url 'story_detail' pk=facet.story.id %}#audio" data-toggle="tooltip" title="{{ facet.af_description }}">{{ facet.title }}</a></td>
+                <td>{{ facet.credit.all.0.credit_name }}</td>
+                <td>{{ facet.due_edit|date:'n/j, g:i a' }}</td>
+                <td>{{ facet.run_date|date:'n/j, g:i a'}}</td>
+                <td>{{ facet.status }}</td>
+                <td>{% if facet.story.share == True %}<i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</td>
+                <td>{% if facet.story.collaborate == True %}<i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</td>
+              </tr>
+            {% endfor %}
+            {% for facet in story.videofacetstory.all %}
+              <tr>
+                <td><a href="{% url 'story_detail' pk=facet.story.id %}">{{ facet.story.name }}</a></td>
+                <td>{{ facet.type}}</td>
+                <td><a href="{% url 'story_detail' pk=facet.story.id %}#video" data-toggle="tooltip" title="{{ facet.vf_description }}">{{ facet.title }}</a></td>
+                <td>{{ facet.credit.all.0.credit_name }}</td>
+                <td>{{ facet.due_edit|date:'n/j, g:i a' }}</td>
+                <td>{{ facet.run_date|date:'n/j, g:i a'}}</td>
+                <td>{{ facet.status }}</td>
+                <td>{% if facet.story.share == True %}<i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</td>
+                <td>{% if facet.story.collaborate == True %}<i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</td>
+              </tr>
+            {% endfor %}
+
+          {% else %}
+              <tr>
+                <td><a href="{% url 'story_detail' pk=story.id %}">{{ story.name }}</a></td>
+                <td><i class="tiny-text">Create a facet</i></td>
+                <td></td>
+                <td>{{ story.owner.credit_name }}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>{% if story.share == True %}<i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</td>
+                <td>{% if story.collaborate == True %}<i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</td>
+              </tr>
+          {% endif %}
+
+        {% endfor %}
+
+
+
       </tbody>
     </table>
     <!-- End Full table for md and lg displays -->

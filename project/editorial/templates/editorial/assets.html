@@ -284,7 +284,7 @@
                 <!-- End of Hardcoded Videos -->
               {% endif %}
 
-              {% if video.video_type == 'YOUTUBE' %}
+              {% if video.video_type == 'YOUTUBE' or 'VIMEO' %}
                 {% video video.link 'tiny' %}
               {% endif %}
 

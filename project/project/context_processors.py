@@ -12,7 +12,6 @@ from django.utils import timezone
 def include_private_message_form(request):
     if request.user.is_authenticated():
         privatemessageform = PrivateMessageForm(request=request)
-        print "pmf: ", privatemessageform
         usernoteform = UserNoteForm()
         return {'privatemessageform': privatemessageform, 'usernoteform': usernoteform}
     else:

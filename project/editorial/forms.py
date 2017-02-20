@@ -671,7 +671,6 @@ class PrivateMessageForm(forms.ModelForm):
     """ Message form for private messages. """
 
     def __init__(self, *args, **kwargs):
-        print "kwargs: ", kwargs
         self.request = kwargs.pop("request")
         super(PrivateMessageForm, self).__init__(*args, **kwargs)
         if self.request.user.organization:

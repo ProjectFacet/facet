@@ -665,7 +665,6 @@ class Network(models.Model):
 #   (A Facet is always part of a story, even if there is only one facet.)
 #-----------------------------------------------------------------------#
 
-
 @python_2_unicode_compatible
 class Series(models.Model):
     """ A specific series.
@@ -1323,7 +1322,7 @@ class WebFacet(models.Model):
     def get_webfacet_video(self):
         """Retrieve all video objects associated with a webfacet."""
 
-        webfacet_video = AudioAsset.objects.filter(webfacet=self)
+        webfacet_video = VideoAsset.objects.filter(webfacet=self)
         return webfacet_video
 
     def get_webfacet_download(self):
