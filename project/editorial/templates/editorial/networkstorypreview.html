@@ -1,0 +1,29 @@
+<div class="modal fade" id="previewModal" tabindex="-1" role="dialog" aria-labelledby="previewModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title"> *placeholder title* </h4>
+            </div>
+            <div class="modal-body"> *placeholder content* </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Story Preview Modal JS -->
+<script>
+  $('#previewModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget) // Button that triggered the modal
+    var modaltitle = button.data('modaltitle') // Extract info from data-* attributes
+    var modalcontent = button.data('modalcontent')
+
+    var modal = $(this)
+    modal.find('.modal-title').replaceWith('<h4>Preview: ' + modaltitle + '</h4>')
+    modal.find('.modal-body').html(modalcontent)
+  })
+</script>
