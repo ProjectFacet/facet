@@ -1631,7 +1631,7 @@ class PrintFacet(models.Model):
     def get_printfacet_video(self):
         """Retrieve all video objects associated with a printfacet."""
 
-        printfacet_video = AudioAsset.objects.filter(printfacet=self)
+        printfacet_video = VideoAsset.objects.filter(printfacet=self)
         return printfacet_video
 
     def get_printfacet_download(self):
@@ -1940,7 +1940,7 @@ class AudioFacet(models.Model):
     def get_audiofacet_video(self):
         """Retrieve all video objects associated with a audiofacet."""
 
-        audiofacet_video = AudioAsset.objects.filter(audiofacet=self)
+        audiofacet_video = VideoAsset.objects.filter(audiofacet=self)
         return audiofacet_video
 
     def get_audiofacet_download(self):
@@ -2250,7 +2250,7 @@ class VideoFacet(models.Model):
     def get_videofacet_video(self):
         """Retrieve all video objects associated with a videofacet."""
 
-        videofacet_video = AudioAsset.objects.filter(videofacet=self)
+        videofacet_video = VideoAsset.objects.filter(videofacet=self)
         return videofacet_video
 
     def get_videofacet_download(self):
