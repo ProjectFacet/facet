@@ -444,9 +444,6 @@ def story_detail(request, pk):
         videofacet_audio = []
         videofacet_video = []
 
-    print "pfi: ", printfacet_images
-    print "pfv: ", printfacet_video
-
     storydownloadform = StoryDownloadForm(story=story)
 
     return render(request, 'editorial/storydetail.html', {
