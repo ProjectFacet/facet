@@ -149,6 +149,11 @@ def dashboard(request):
     shared_networkstories = [story for story in shared_networkstories if story.organization != organization]
     networkstories = set(shared_networkstories)
 
+    shared_networkstory_facets = []
+    for story in networkstories:
+        ns_facet = story.get_story_facets()
+        shared_networkstory_facets.extend(ns_facet)
+
     # query for any new content created since last_login
     new_stories = Story.objects.filter(creation_date__gte=request.user.last_login)[:8]
     # if no new stories, display 10 most recent stories
@@ -169,6 +174,7 @@ def dashboard(request):
         'edit_today': edit_today,
         'shared_networkstories': shared_networkstories,
         'copied_shared_stories': copied_shared_stories,
+        'shared_networkstory_facets': shared_networkstory_facets,
     })
 
 #----------------------------------------------------------------------#

@@ -9,7 +9,7 @@
             </div>
             <div class="modal-body"> *placeholder content* </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -21,9 +21,11 @@
     var button = $(event.relatedTarget) // Button that triggered the modal
     var modaltitle = button.data('modaltitle') // Extract info from data-* attributes
     var modalcontent = button.data('modalcontent')
+    // var modalstoryid = button.data('storyid')
 
     var modal = $(this)
     modal.find('.modal-title').replaceWith('<h4>Preview: ' + modaltitle + '</h4>')
     modal.find('.modal-body').html(modalcontent)
+    // modal.find('.modal-footer').replaceWith('<form action="/story/copy/' + modalstoryid + '/" method="POST" class="sameline">{% csrf_token %}<button class="btn btn-info" type="submit"><i class="fa fa-clone"></i> Copy</button></form> <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>')
   })
 </script>

@@ -1054,7 +1054,7 @@ class Story(models.Model):
         return story_documents
 
     def get_story_audio(self):
-        """Return all documents associated with a story."""
+        """Return all audio associated with a story."""
 
         story_audio = []
         webfacet = self.webfacetstory.all()[0]
@@ -1071,6 +1071,25 @@ class Story(models.Model):
         story_documents.extend(videofacet_audio)
 
         return story_audio
+
+    def get_story_facets(self):
+        """Return all existing facets associated with a story."""
+
+        story_facets = []
+        if self.webfacetstory.all():
+            webfacet = self.webfacetstory.all()[0]
+            story_facets.append(webfacet)
+        if self.printfacetstory.all():
+            printfacet = self.printfacetstory.all()[0]
+            story_facets.append(printfacet)
+        if self.audiofacetstory.all():
+            audiofacet = self.audiofacetstory.all()[0]
+            story_facets.append(audiofacet)
+        if self.videofacetstory.all():
+            videofacet = self.videofacetstory.all()[0]
+            story_facets.append(videfacet)
+
+        return story_facets
 
 
     # @property

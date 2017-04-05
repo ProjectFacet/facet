@@ -366,8 +366,16 @@
           <h5 class="text-center">New Network Stories</h5>
           {% if shared_networkstories %}
             <ul class="list-group m-10">
-              {% for story in shared_networkstories|slice:":5" %}
-                <li class="list-group-item"> <span class="text-xs pull-right">{{story.organization.name}}</span> {{story.name}}</li>
+              {% for facet in shared_networkstory_facets|slice:":5" %}
+                {% if facet.type == 'WebFacet' %}
+                  <li class="list-group-item"> <span class="text-xs pull-right">{{facet.organization.name}}</span> <span class="color-default f-s-12 m-r-10">Web</span> {{facet.title}} {% if facet.story.ready_to_share %}<button type="button" class="clear clear-button m-l-10 subtle" data-toggle="modal" data-target="#previewModal" data-modaltitle="{{ facet.title }}" data-modalcontent="{{ facet.wf_content }}" data-storyid="{{ facet.story.id }}"><i class="fa fa-eye"></i></button>{% endif %}</li>
+                {% elif facet.type == 'PrintFacet' %}
+                  <li class="list-group-item"> <span class="text-xs pull-right">{{facet.organization.name}}</span> <span class="color-default f-s-12 m-r-10">Print</span> {{facet.title}} {% if facet.story.ready_to_share %}<button type="button" class="clear clear-button m-l-10 subtle" data-toggle="modal" data-target="#previewModal" data-modaltitle="{{ facet.title }}" data-modalcontent="{{ facet.pf_content }}" data-storyid="{{ facet.story.id }}"><i class="fa fa-eye"></i></button>{% endif %}</li>
+                {% elif facet.type == 'AudioFacet' %}
+                  <li class="list-group-item"> <span class="text-xs pull-right">{{facet.organization.name}}</span> <span class="color-default f-s-12 m-r-10">Audio</span> {{facet.title}} {% if facet.story.ready_to_share %}<button type="button" class="clear clear-button m-l-10 subtle" data-toggle="modal" data-target="#previewModal" data-modaltitle="{{ facet.title }}" data-modalcontent="{{ facet.af_content }}" data-storyid="{{ facet.story.id }}"><i class="fa fa-eye"></i></button>{% endif %}</li>
+                {% elif facet.type == 'VideoFacet' %}
+                  <li class="list-group-item"> <span class="text-xs pull-right">{{facet.organization.name}}</span> <span class="color-default f-s-12 m-r-10">Video</span> {{facet.title}} {% if facet.story.ready_to_share %}<button type="button" class="clear clear-button m-l-10 subtle" data-toggle="modal" data-target="#previewModal" data-modaltitle="{{ facet.title }}" data-modalcontent="{{ facet.vf_content }}" data-storyid="{{ facet.story.id }}"><i class="fa fa-eye"></i></button>{% endif %}</li>
+                {% endif %}
               {% endfor %}
             </ul>
           {% else %}
@@ -403,9 +411,7 @@
               <h5 class="text-center">New Network Stories</h5>
               {% if shared_networkstories %}
                 <ul class="list-group m-10">
-                  {% for story in shared_networkstories|slice:":5" %}
-                    <li class="list-group-item"> <span class="text-xs pull-right">{{story.organization.name}}</span> {{story.name}}</li>
-                  {% endfor %}
+
                 </ul>
               {% else %}
                 <p class="f-s-14 subtle m-t-20 text-center">Once you create or join a network, new stories from your partners will appear here.</p>
@@ -434,3 +440,13 @@
     {% endif %}
 
     {% endblock content %}
+
+    <!-- ================================================= -->
+                      <!-- MODALS -->
+    <!-- ================================================= -->
+
+    {% block modals %}
+
+    {% include "editorial/networkstorypreview.html" %}
+
+    {% endblock modals %}
