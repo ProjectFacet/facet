@@ -25,8 +25,16 @@ def include_activity_stream(request):
 
 def include_logged_in_users(request):
     if request.user.is_authenticated():
+        active_sessions = Session.objects.filter(expire_date__gte=timezone.now())
+        user_id_list = []
+        for session in active_sessions:
+            data = session.get_decoded()
+            user_id_list.append(data.get('_auth_user_id', None))
+        # Query all logged in users based on id list
+        current_users = User.objects.filter(id__in=user_id_list)
         org_users = Organization.get_org_users(request.user.organization)
-        return {'org_users': org_users}
+        return {'org_users': org_users,
+                'current_users': current_users}
     else: return {}
 
 

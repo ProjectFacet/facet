@@ -296,56 +296,155 @@
                             <ul class="nav nav-tabs nav-animated-border-from-center">
                                 <li class="nav-item"> <a class="nav-link active" data-toggle="tab" data-target="#rtab-left">Activity</a> </li>
                                 <li class="nav-item"> <a class="nav-link" data-toggle="tab" data-target="#rtab-center">Users</a> </li>
-                                <li class="nav-item"> <a class="nav-link" data-toggle="tab" data-target="#rtab-right">Social</a> </li>
+                                {% comment %}<li class="nav-item"> <a class="nav-link" data-toggle="tab" data-target="#rtab-right">Social</a> </li>{% endcomment%}
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane fade in active" id="rtab-left">
-                                    <h5>Recent</h5>
+                                    <h5>Recent Activity</h5>
                                     <div class="timeline-widget-4">
                                       {% for activity in activitystream %}
                                         <div class="row {% cycle 'bg-odd-color' 'bg-even-color' %}">
+
                                             {% if activity.verb == 'created' or activity.verb == 'added note' or activity.verb == 'added' %}
                                                 <div class="col-xs-12 timeline timeline-info">
+                                                  <div class="p-10">
+                                                      {% if activity.action_object.type == 'User' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} User: {{activity.action_object.credit_name }}</p>
+                                                      {% elif activity.action_object.type == 'Organization' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} Organization: {{activity.action_object.name }}</p>
+                                                      {% elif activity.action_object.type == 'Network' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} Network: {{activity.action_object.name }}</p>
+                                                      {% elif activity.action_object.type == 'Series' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} Series: {{activity.action_object.name }}</p>
+                                                      {% elif activity.action_object.type == 'Story' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} Story: {{activity.action_object.name }}</p>
+                                                      {% elif activity.action_object.type == 'WebFacet' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} WebFacet: {{activity.action_object.title }}</p>
+                                                      {% elif activity.action_object.type == 'PrintFacet' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} PrintFacet: {{activity.action_object.title }}</p>
+                                                      {% elif activity.action_object.type == 'AudioFacet' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} AudioFacet: {{activity.action_object.title }}</p>
+                                                      {% elif activity.action_object.type == 'VideoFacet' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} VideoFacet: {{activity.action_object.title }}</p>
+                                                      {% elif activity.action_object.type == 'Image' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} Image: {{activity.action_object.asset_title }}</p>
+                                                      {% elif activity.action_object.type == 'Document' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} Document: {{activity.action_object.asset_title }}</p>
+                                                      {% elif activity.action_object.type == 'Audio' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} Audio: {{activity.action_object.asset_title }}</p>
+                                                      {% elif activity.action_object.type == 'Video' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} Audio: {{activity.action_object.asset_title }}</p>
+                                                      {% endif %}
+
+                                                      <p class="text-sm text-muted">{{ activity.timestamp|timesince }} </p>
+                                                  </div>
+                                                </div>
                                             {% elif activity.verb == 'edited' or activity.verb == 'shared' or activity.verb == 'picked up' %}
                                                 <div class="col-xs-12 timeline timeline-success">
+                                                  <div class="p-10">
+                                                      {% if activity.action_object.type == 'User' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} User: {{activity.action_object.credit_name }}</p>
+                                                      {% elif activity.action_object.type == 'Organization' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} Organization: {{activity.action_object.name }}</p>
+                                                      {% elif activity.action_object.type == 'Network' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} Network: {{activity.action_object.name }}</p>
+                                                      {% elif activity.action_object.type == 'Series' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} Series: {{activity.action_object.name }}</p>
+                                                      {% elif activity.action_object.type == 'Story' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} Story: {{activity.action_object.name }}</p>
+                                                      {% elif activity.action_object.type == 'WebFacet' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} WebFacet: {{activity.action_object.title }}</p>
+                                                      {% elif activity.action_object.type == 'PrintFacet' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} PrintFacet: {{activity.action_object.title }}</p>
+                                                      {% elif activity.action_object.type == 'AudioFacet' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} AudioFacet: {{activity.action_object.title }}</p>
+                                                      {% elif activity.action_object.type == 'VideoFacet' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} VideoFacet: {{activity.action_object.title }}</p>
+                                                      {% elif activity.action_object.type == 'Image' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} Image: {{activity.action_object.asset_title }}</p>
+                                                      {% elif activity.action_object.type == 'Document' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} Document: {{activity.action_object.asset_title }}</p>
+                                                      {% elif activity.action_object.type == 'Audio' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} Audio: {{activity.action_object.asset_title }}</p>
+                                                      {% elif activity.action_object.type == 'Video' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} Audio: {{activity.action_object.asset_title }}</p>
+                                                      {% endif %}
+
+                                                      <p class="text-sm text-muted">{{ activity.timestamp|timesince }} </p>
+                                                  </div>
+                                                </div>
                                             {% elif activity.verb == 'commented on' %}
                                                 <div class="col-xs-12 timeline timeline-warning">
+                                                  <div class="p-10">
+                                                      {% if activity.action_object.type == 'User' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} User: {{activity.action_object.credit_name }}</p>
+                                                      {% elif activity.action_object.type == 'Organization' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} Organization: {{activity.action_object.name }}</p>
+                                                      {% elif activity.action_object.type == 'Network' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} Network: {{activity.action_object.name }}</p>
+                                                      {% elif activity.action_object.type == 'Series' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} Series: {{activity.action_object.name }}</p>
+                                                      {% elif activity.action_object.type == 'Story' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} Story: {{activity.action_object.name }}</p>
+                                                      {% elif activity.action_object.type == 'WebFacet' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} WebFacet: {{activity.action_object.title }}</p>
+                                                      {% elif activity.action_object.type == 'PrintFacet' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} PrintFacet: {{activity.action_object.title }}</p>
+                                                      {% elif activity.action_object.type == 'AudioFacet' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} AudioFacet: {{activity.action_object.title }}</p>
+                                                      {% elif activity.action_object.type == 'VideoFacet' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} VideoFacet: {{activity.action_object.title }}</p>
+                                                      {% elif activity.action_object.type == 'Image' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} Image: {{activity.action_object.asset_title }}</p>
+                                                      {% elif activity.action_object.type == 'Document' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} Document: {{activity.action_object.asset_title }}</p>
+                                                      {% elif activity.action_object.type == 'Audio' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} Audio: {{activity.action_object.asset_title }}</p>
+                                                      {% elif activity.action_object.type == 'Video' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} Audio: {{activity.action_object.asset_title }}</p>
+                                                      {% endif %}
+
+                                                      <p class="text-sm text-muted">{{ activity.timestamp|timesince }} </p>
+                                                  </div>
+                                                </div>
                                             {% elif activity.verb == 'uploaded image' or activity.verb == 'uploaded document' or activity.verb == 'uploaded audio' or activity.verb == 'added image' or activity.verb == 'added document' or activity.verb == 'added audio' %}
                                                 <div class="col-xs-12 timeline timeline-danger">
-                                            {% endif %}
-                                                    <div class="p-10">
-                                                        {% if activity.action_object.type == 'User' %}
-                                                          <p>{{ activity.actor }} {{ activity.verb }} User: {{activity.action_object.credit_name }}</p>
-                                                        {% elif activity.action_object.type == 'Organization' %}
-                                                          <p>{{ activity.actor }} {{ activity.verb }} Organization: {{activity.action_object.name }}</p>
-                                                        {% elif activity.action_object.type == 'Network' %}
-                                                          <p>{{ activity.actor }} {{ activity.verb }} Network: {{activity.action_object.name }}</p>
-                                                        {% elif activity.action_object.type == 'Series' %}
-                                                          <p>{{ activity.actor }} {{ activity.verb }} Series: {{activity.action_object.name }}</p>
-                                                        {% elif activity.action_object.type == 'Story' %}
-                                                          <p>{{ activity.actor }} {{ activity.verb }} Story: {{activity.action_object.name }}</p>
-                                                        {% elif activity.action_object.type == 'WebFacet' %}
-                                                          <p>{{ activity.actor }} {{ activity.verb }} WebFacet: {{activity.action_object.title }}</p>
-                                                        {% elif activity.action_object.type == 'PrintFacet' %}
-                                                          <p>{{ activity.actor }} {{ activity.verb }} PrintFacet: {{activity.action_object.title }}</p>
-                                                        {% elif activity.action_object.type == 'AudioFacet' %}
-                                                          <p>{{ activity.actor }} {{ activity.verb }} AudioFacet: {{activity.action_object.title }}</p>
-                                                        {% elif activity.action_object.type == 'VideoFacet' %}
-                                                          <p>{{ activity.actor }} {{ activity.verb }} VideoFacet: {{activity.action_object.title }}</p>
-                                                        {% elif activity.action_object.type == 'Image' %}
-                                                          <p>{{ activity.actor }} {{ activity.verb }} Image: {{activity.action_object.asset_title }}</p>
-                                                        {% elif activity.action_object.type == 'Document' %}
-                                                          <p>{{ activity.actor }} {{ activity.verb }} Document: {{activity.action_object.asset_title }}</p>
-                                                        {% elif activity.action_object.type == 'Audio' %}
-                                                          <p>{{ activity.actor }} {{ activity.verb }} Audio: {{activity.action_object.asset_title }}</p>
-                                                        {% elif activity.action_object.type == 'Video' %}
-                                                          <p>{{ activity.actor }} {{ activity.verb }} Audio: {{activity.action_object.asset_title }}</p>
-                                                        {% endif %}
+                                                  <div class="p-10">
+                                                      {% if activity.action_object.type == 'User' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} User: {{activity.action_object.credit_name }}</p>
+                                                      {% elif activity.action_object.type == 'Organization' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} Organization: {{activity.action_object.name }}</p>
+                                                      {% elif activity.action_object.type == 'Network' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} Network: {{activity.action_object.name }}</p>
+                                                      {% elif activity.action_object.type == 'Series' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} Series: {{activity.action_object.name }}</p>
+                                                      {% elif activity.action_object.type == 'Story' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} Story: {{activity.action_object.name }}</p>
+                                                      {% elif activity.action_object.type == 'WebFacet' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} WebFacet: {{activity.action_object.title }}</p>
+                                                      {% elif activity.action_object.type == 'PrintFacet' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} PrintFacet: {{activity.action_object.title }}</p>
+                                                      {% elif activity.action_object.type == 'AudioFacet' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} AudioFacet: {{activity.action_object.title }}</p>
+                                                      {% elif activity.action_object.type == 'VideoFacet' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} VideoFacet: {{activity.action_object.title }}</p>
+                                                      {% elif activity.action_object.type == 'Image' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} Image: {{activity.action_object.asset_title }}</p>
+                                                      {% elif activity.action_object.type == 'Document' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} Document: {{activity.action_object.asset_title }}</p>
+                                                      {% elif activity.action_object.type == 'Audio' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} Audio: {{activity.action_object.asset_title }}</p>
+                                                      {% elif activity.action_object.type == 'Video' %}
+                                                        <p>{{ activity.actor }} {{ activity.verb }} Audio: {{activity.action_object.asset_title }}</p>
+                                                      {% endif %}
 
-                                                        <p class="text-sm text-muted">{{ activity.timestamp|timesince }} </p>
-                                                    </div>
+                                                      <p class="text-sm text-muted">{{ activity.timestamp|timesince }} </p>
+                                                  </div>
                                                 </div>
+                                            {% endif %}
+
                                         </div>
+
                                       {% endfor %}
                                     </div>
                                 </div>
@@ -354,7 +453,7 @@
                                     <div class="user-widget-8">
                                         <div class="row">
                                             <div class="col-xs-12 bs-media">
-                                                {% for user in org_users %}
+                                                {% for user in current_users %}
 
                                                   <div class="media">
                                                       <a class="media-left"> <i class="fa fa-circle icon color-success"></i>
@@ -380,6 +479,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                {% comment %}
                                 <div class="tab-pane fade" id="rtab-right">
                                     <h5>Twitter</h5>
                                     <div class="m-b-10">
@@ -459,6 +559,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                {% endcomment %}
                             </div>
                         </div>
                     </div>
