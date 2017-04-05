@@ -10,7 +10,7 @@
 {% block breadcrumb %}
 <div>
     <ol class="breadcrumb icon-angle-right icon-th">
-        <li class="fadeIn"> Dashboard </li>
+        <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
         <li class="fadeIn"><a href="{% url 'series_list' %}" title="View Series"> Series </a></li>
         <li class="fadeIn"><a href="{% url 'series_detail' series.id %}" title="View {{series.name}}"> {{ series.name }} </a></li>
         <li class="fadeIn"><a href={% url 'series_notes' pk=series.id %} title="You are here"> {{ series.name }} Notes </a></li>

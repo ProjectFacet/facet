@@ -11,7 +11,7 @@
 {% block breadcrumb %}
 <div>
     <ol class="breadcrumb icon-angle-right icon-th">
-        <li class="fadeIn"> Dashboard </li>
+        <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
         <li class="fadeIn"> Content </li>
         <li class="fadeIn"><a href="{% url 'schedule' %}" title="You are Here"> Schedule </a></li>
     </ol>

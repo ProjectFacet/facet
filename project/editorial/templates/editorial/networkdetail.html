@@ -11,7 +11,7 @@
 {% block breadcrumb %}
 <div>
     <ol class="breadcrumb icon-angle-right icon-th">
-        <li class="fadeIn"> Dashboard </li>
+        <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
         <li class="fadeIn"><a href="{% url 'network_list' %}" title="You are here"> Networks </a></li>
         <li class="fadeIn"><a href="{% url 'network_detail' network.id %}" title="You are here"> {{ network.name }} | {{ network.network_description }}</a></li>
     </ol>

@@ -10,7 +10,7 @@
 {% block breadcrumb %}
 <div>
     <ol class="breadcrumb icon-angle-right icon-th">
-      <li class="fadeIn"> Dashboard </li>
+      <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
       <li class="hidden-md-down"><a href="{% url 'org_new' %}">Create Organization</a></li>
     </ol>
 </div>
