@@ -113,26 +113,12 @@
     <h4 class="m-b-20">Organizations <a href="#" data-toggle="modal" data-target="#inviteOrgToNetworkModal" title="Invite an Organization to this Network"><i class="fa fa-plus sameline dark"></i></a></h4>
     <div class="row">
       {% for org in network.organizations.all %}
-      <div class="col-xs-12"> <!-- Start of Team Card -->
+      <div class="col-xs-3">
         <div class="m-b-20">
-          <!-- User Card -->
-          <div class="user-widget-1">
-            <div class="row">
-                <div class="col-xs-12">
-                  <h5 class="text-bold color-white text-center spread-025">{{ org.name}}</h5>
-                    <a class="media-left media-middle"> {% if org.logo %}<img class="centered img-rounded h-100 w-100" src="{{ org.display_logo.url }}" alt="organization logo">{% else %}{% endif %} </a>
-                    <div class="media-body">
-                        <div class="p-10">
-                            <p> <i class="fa fa-map-marker color-white"></i> <span class="color-white">{{ org.location }}</span> </p>
-                            <p> <i class="fa fa-info-circle color-white"></i> <span class="color-white">{{ org.description }}</span> </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-          </div>
-          <!-- End of User Card -->
+          <!-- Org Logo -->
+          <button class="media-left media-middle clear-button" id="trigger-overlay" type="button"> {% if org.logo %}<img class="centered img-rounded h-100 w-100" src="{{ org.display_logo.url }}" alt="{{ org.name }} logo">{% else %} {{ org.name}} {% endif %} </button>
         </div>
-      </div> <!-- End of Org Card -->
+      </div>
       {% endfor %}
     </div>
 
@@ -140,9 +126,18 @@
 
 </div> <!-- End of Row -->
 
+{% comment %}
+<div class="overlay overlay-hugeinc">
+			<button type="button" class="overlay-close">Close</button>
+			<h1>SOMETHING AWESOME IS HAPPENING</h1>
+</div>
+{% endcomment %}
+
 {% endblock %}
 
-
+<!-------------------------------------------->
+<!--               Modals                   -->
+<!-------------------------------------------->
 {% block modals %}
 <!-- Add Note Modal -->
 <div class="modal fade" id="addNetworkNote" tabindex="-1" role="dialog" aria-labelledby="addNetworkNoteModalLabel">
@@ -209,5 +204,8 @@
 </div>
 <!-- END View Note Modals -->
 {% endfor %}
+
+<!-- OVERLAY -->
+
 
 {% endblock modals %}
