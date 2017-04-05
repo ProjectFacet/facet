@@ -142,9 +142,6 @@ def dashboard(request):
         running_today = []
         edit_today = []
 
-    print running_today
-    print edit_today
-
     shared_networkstories = []
     for network in networks:
         stories = Network.get_network_shared_stories(network)

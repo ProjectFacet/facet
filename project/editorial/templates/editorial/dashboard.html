@@ -22,7 +22,10 @@
 {% block content %}
     <!-- Row One -->
     <div class="row m-b-40">
-        <!-- Left Column -->
+        <!-- ========================== -->
+        <!--         Left Column        -->
+        <!--      Discussion Feed       -->
+        <!-- ========================== -->
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
           <div class="bs-nav-tabs nav-tabs-default">
               <ul class="nav nav-tabs nav-animated-border-from-left">
@@ -30,75 +33,7 @@
                   <li class="nav-item"> <a ng-href="" class="nav-link active" data-toggle="tab" data-target="#discussion-tab">Discussion</a> </li>
               </ul>
               <div class="tab-content">
-                {% comment %}
-                  <!-- <div role="tabpanel" class="tab-pane in active" id="activity-tab">
-                    Activity Feed
-                    <div class="m-b-20">
-                        <div class="activity-widget-3">
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <div class="media">
-                                        <a class="media-left"> <img class="media-object img-circle h-40 w-40" alt="User" src="{{ request.user.display_photo.url }}"> </a>
-                                        <div class="media-body">
-                                            <h5>Abe created a new Story Local election candidate profiles</h5>
-                                            <p class="text-muted">A few seconds ago</p>
-                                        </div>
-                                        <div class="media-right"><i class="fa fa-plus color-success" aria-hidden="true"></i></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <div class="media">
-                                        <a class="media-left"> <img class="media-object img-circle h-40 w-40" alt="User" src="{{ request.user.display_photo.url }}"> </a>
-                                        <div class="media-body">
-                                            <h5>Christina updated WebFacet New research shows changing dependence on subsistence hunting.</h5>
-                                            <p class="text-muted">2 hours ago</p>
-                                        </div>
-                                        <div class="media-right"><i class="fa fa-refresh color-default" aria-hidden="true"></i></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <div class="media">
-                                        <a class="media-left"> <img class="media-object img-circle h-40 w-40" alt="User" src="{{ request.user.display_photo.url }}"> </a>
-                                        <div class="media-body">
-                                            <h5>Victoria edited VideoFacet Fisherman speak out following trial</h5>
-                                            <p class="text-muted">3 hours ago</p>
-                                        </div>
-                                        <div class="media-right"><i class="fa fa-pencil color-warning" aria-hidden="true"></i></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <div class="media">
-                                        <a class="media-left"> <img class="media-object img-circle h-40 w-40" alt="User" src="{{ request.user.display_photo.url }}"> </a>
-                                        <div class="media-body">
-                                            <h5>Katie archived story Gravitational Waves finally observed </h5>
-                                            <p class="text-muted">4 hours ago</p>
-                                        </div>
-                                        <div class="media-right"><i class="fa fa-minus color-danger" aria-hidden="true"></i></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <div class="media">
-                                        <a class="media-left"> <img class="media-object img-circle h-40 w-40" alt="User" src="{{ request.user.display_photo.url }}"> </a>
-                                        <div class="media-body">
-                                            <h5>Alex uploaded graphics to WebFacet How researchers use traditional place names and knowledge</h5>
-                                            <p class="text-muted">5 hours ago</p>
-                                        </div>
-                                        <div class="media-right"><i class="fa fa-upload color-info" aria-hidden="true"></i></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                  </div> -->
-                  {% endcomment %}
+
                   <div role="tabpanel" class="tab-pane in active" id="discussion-tab">
                     <div class="m-b-20">
                         {% if all_comments %}
@@ -182,7 +117,10 @@
           </div>
         </div>
 
-        <!-- Right Column -->
+        <!-- ========================== -->
+        <!--        Right Column        -->
+        <!-- Running, New, Edit Stories -->
+        <!-- ========================== -->
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
           <div class="bs-nav-tabs nav-tabs-default">
               <ul class="nav nav-tabs nav-animated-border-from-left m-b-20">
@@ -420,7 +358,10 @@
     {% if networks %}
     <div class="row m-b-40">
         <h4 class="m-l-10 m-b-20"> Partnerships</h4>
-        <!-- Left Column -->
+        <!-- ========================== -->
+        <!--         Left Column        -->
+        <!-- New Network Stories Feed   -->
+        <!-- ========================== -->
         <div class="col-xs-12 col-lg-6">
           <h5 class="text-center">New Network Stories</h5>
           {% if shared_networkstories %}
@@ -433,7 +374,10 @@
             <p class="f-s-14 subtle m-t-20 text-center">There are currently no new shared stories available from your partners.</p>
           {% endif %}
         </div>
-        <!-- Right Column -->
+        <!-- ========================== -->
+        <!--        Right Column        -->
+        <!--  Content Picked Up Feed    -->
+        <!-- ========================== -->
         <div class="col-xs-12 col-lg-6">
           <h5 class="text-center">{{ request.user.organization }} Stories Picked up by Partners</h5>
           {% if copied_shared_stories %}
@@ -451,7 +395,10 @@
     {% else %}
     <div class="row m-b-40">
         <h4 class="m-l-10 m-b-20"> Partnerships</h4>
-        <!-- Left Column -->
+        <!-- ========================== -->
+        <!--         Left Column        -->
+        <!-- New Network Stories Feed   -->
+        <!-- ========================== -->
         <div class="col-xs-12 col-lg-6">
               <h5 class="text-center">New Network Stories</h5>
               {% if shared_networkstories %}
@@ -465,16 +412,17 @@
                 <p class="f-s-16 subtle text-center italic">Click here to create a <a href="{% url 'network_new' %}" title="Create New Network" class="default">network</a>.</p>
               {% endif %}
         </div>
-        <!-- Right Column -->
+        <!-- ========================== -->
+        <!--        Right Column        -->
+        <!--  Content Picked Up Feed    -->
+        <!-- ========================== -->
         <div class="col-xs-12 col-lg-6">
           <h5 class="text-center">Criterion News Stories Picked up by Partners</h5>
           {% if copied_shared_stories %}
               <ul class="list-group">
-                  <li class="list-group-item"> <span class="text-xs pull-right">Arctic Times</span> Michael Smith upgraded to the $50 plan</li>
-                  <li class="list-group-item"> <span class="text-xs pull-right">Arctic Times</span> Jane Perez cancelled the $25 plan</li>
-                  <li class="list-group-item"> <span class="text-xs pull-right">Wolf Media</span> George Clinton from Facebook upgraded to the $25 plan</li>
-                  <li class="list-group-item"> <span class="text-xs pull-right">Cold Snap</span> Someone from Google cancelled the $25 plan</li>
-                  <li class="list-group-item"> <span class="text-xs pull-right">Wolf Media</span> Lucas Smith upgraded to the $25 plan</li>
+                {% for story in copied_shared_stories|slice:":5" %}
+                  <li class="list-group-item"> <span class="text-xs pull-right">{{story.partner.name}} | {{ story.copy_date|date:'g:i a' }}</span> {{story.original_story.name}}</li>
+                {% endfor %}
               </ul>
           {% else %}
             <p class="f-s-14 subtle text-center m-t-20">Once you join or create a network, you will be able to see which of your shared content is used by your partners.</p>
