@@ -113,153 +113,158 @@
   <!-- ====================================== -->
     <nav class="navbar navbar-fixed-top navbar-1">
       <a class="navbar-brand" href="#"><img src="{% static 'images/logo/brand-text-light.png' %}" alt="Facet Logo" class="logo p-t-5" width="125px"></a>
-      {% comment %}
+
+
       <div class="navbar-header">
-        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#collapsebar">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
+        <button class="navbar-toggler hidden-sm-up" type="button" data-toggle="collapse" data-target="#collapsebar">
+          <i class="fa fa-align-justify" aria-hidden="true"></i>
         </button>
-        <a class="navbar-brand" href="#">Facet</a>
+        <!-- <button type="button" class="navbar-toggler clear clear-button m-l-10 m-t-10" data-toggle="collapse" data-target="#collapsebar">
+          <i class="fa fa-align-justify" aria-hidden="true"></i>
+        </button> -->
       </div>
 
-      <div class="collapse navbar-collapse" id="collapsebar">
-      {% endcomment %}
-                        {% if request.user.is_authenticated %}
-                                <!---------------->
-                                <!-- Pull left  -->
-                                <!---------------->
-                                <ul class="nav navbar-nav pull-left hidden-lg-down">
-                                  <li class="nav-item">
-                                      <a class="nav-link" href="{% url 'dashboard' %}"> Dashboard </a>
-                                  </li>
-                                </ul>
+      <!-------------------->
+      <!-- Full size menu -->
+      <!-------------------->
+      <div class="collapse navbar-collapse navbar-toggleable-sm" id="collapsebar">
 
-                                <ul class="nav navbar-nav pull-left hidden-lg-down">
-                                  <li class="nav-item dropdown dropdown-menu-right">
-                                      <a class="nav-link dropdown-toggle no-after f-s-16" data-toggle="dropdown"> Content </a>
-                                      <div class="dropdown-menu dropdown-menu-scale from-right dropdown-menu-right">
-                                          <a class="dropdown-item" href="{% url 'schedule' %}" title="View Schedule"> <span class="title">Schedule</span> </a>
-                                          <a class="dropdown-item" href="{% url 'story_list' %}" title="View Story List"> </span> <span class="title">Stories</span> </a>
-                                          <a class="dropdown-item" href="{% url 'series_list' %}" title="View Series List"> </span> <span class="title">Series</span> </a>
-                                          <a class="dropdown-item" href="{% url 'collaborations' %}" title="View Content in Collaboration"> </span> <span class="title">Collaborations</span> </a>
-                                      </div>
-                                  </li>
-                                </ul>
+              {% if request.user.is_authenticated %}
+                  <!---------------->
+                  <!-- Pull left  -->
+                  <!---------------->
+                  <ul class="nav navbar-nav pull-left">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'dashboard' %}"> Dashboard </a>
+                    </li>
+                  </ul>
 
-                                <ul class="nav navbar-nav pull-left hidden-lg-down">
-                                  <li class="nav-item">
-                                      <a class="nav-link" href="{% url 'asset_library' %}" title="View Media Library"> Media </a>
-                                  </li>
-                                </ul>
+                  <ul class="nav navbar-nav pull-left">
+                    <li class="nav-item dropdown dropdown-menu-right">
+                        <a class="nav-link dropdown-toggle no-after f-s-16" data-toggle="dropdown"> Content </a>
+                        <div class="dropdown-menu dropdown-menu-scale from-right dropdown-menu-right">
+                            <a class="dropdown-item" href="{% url 'schedule' %}" title="View Schedule"> <span class="title">Schedule</span> </a>
+                            <a class="dropdown-item" href="{% url 'story_list' %}" title="View Story List"> </span> <span class="title">Stories</span> </a>
+                            <a class="dropdown-item" href="{% url 'series_list' %}" title="View Series List"> </span> <span class="title">Series</span> </a>
+                            <a class="dropdown-item" href="{% url 'collaborations' %}" title="View Content in Collaboration"> </span> <span class="title">Collaborations</span> </a>
+                        </div>
+                    </li>
+                  </ul>
 
-                                <ul class="nav navbar-nav pull-left hidden-lg-down">
-                                  <li class="nav-item dropdown dropdown-menu-right">
-                                      <a class="nav-link dropdown-toggle no-after f-s-16" data-toggle="dropdown"> Networks </a>
-                                      <div class="dropdown-menu dropdown-menu-scale from-right dropdown-menu-right">
-                                          <a class="dropdown-item" href="{% url 'network_list' %}" title="View Networks"> <span class="title"> Networks </span> </a>
-                                          <a class="dropdown-item" href="{% url 'network_stories' %}" title="View Network Content"> </span> <span class="title"> Network Content </span> </a>
-                                      </div>
-                                  </li>
-                                </ul>
+                  <ul class="nav navbar-nav pull-left">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'asset_library' %}" title="View Media Library"> Media </a>
+                    </li>
+                  </ul>
 
-                                <ul class="nav navbar-nav pull-left hidden-lg-down">
-                                  <li class="nav-item">
-                                      <a class="nav-link" href="{% url 'team_list' %}" title="View Teams and Collaborators"> Teams </a>
-                                  </li>
-                                </ul>
+                  <ul class="nav navbar-nav pull-left">
+                    <li class="nav-item dropdown dropdown-menu-right">
+                        <a class="nav-link dropdown-toggle no-after f-s-16" data-toggle="dropdown"> Networks </a>
+                        <div class="dropdown-menu dropdown-menu-scale from-right dropdown-menu-right">
+                            <a class="dropdown-item" href="{% url 'network_list' %}" title="View Networks"> <span class="title"> Networks </span> </a>
+                            <a class="dropdown-item" href="{% url 'network_stories' %}" title="View Network Content"> </span> <span class="title"> Network Content </span> </a>
+                        </div>
+                    </li>
+                  </ul>
 
-                                <ul class="nav navbar-nav pull-left hidden-lg-down">
-                                  <li class="nav-item">
-                                      <a class="nav-link" href="{% url 'inbox' %}" title="You are here"> Inbox </a>
-                                  </li>
-                                </ul>
+                  <ul class="nav navbar-nav pull-left">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'team_list' %}" title="View Teams and Collaborators"> Teams </a>
+                    </li>
+                  </ul>
 
-                                <ul class="nav navbar-nav pull-left hidden-lg-down">
-                                  <li class="nav-item dropdown dropdown-menu-right">
-                                      <a class="nav-link dropdown-toggle no-after f-s-16" data-toggle="dropdown"> Create New Content </a>
-                                      <div class="dropdown-menu dropdown-menu-scale from-right dropdown-menu-right">
-                                          <a class="dropdown-item" href="{% url 'series_new' %}" title="Create New Series"> <span class="title"> New Series </span> </a>
-                                          <a class="dropdown-item" href="{% url 'story_new' %}" title="Create New Story"> </span> <span class="title"> New Story </span> </a>
-                                      </div>
-                                  </li>
-                                </ul>
+                  <ul class="nav navbar-nav pull-left">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'inbox' %}" title="You are here"> Inbox </a>
+                    </li>
+                  </ul>
 
-                                <ul class="nav navbar-nav pull-left toggle-search">
-                                    <li class="nav-item">
-                                        <a class="nav-link" data-click="toggle-search"> <i class="zmdi zmdi-search"></i> </a>
-                                    </li>
-                                </ul>
+                  <ul class="nav navbar-nav pull-left">
+                    <li class="nav-item dropdown dropdown-menu-right">
+                        <a class="nav-link dropdown-toggle no-after f-s-16" data-toggle="dropdown"> Create New Content </a>
+                        <div class="dropdown-menu dropdown-menu-scale from-right dropdown-menu-right">
+                            <a class="dropdown-item" href="{% url 'series_new' %}" title="Create New Series"> <span class="title"> New Series </span> </a>
+                            <a class="dropdown-item" href="{% url 'story_new' %}" title="Create New Story"> </span> <span class="title"> New Story </span> </a>
+                        </div>
+                    </li>
+                  </ul>
 
-                                <div class="navbar-drawer pull-left hidden-lg-down">
-                                    <form action="{% url 'search' %}" class="form-inline navbar-form">
-                                        <input id="searchbox" type="text" name="q" class="form-control" value="{{request.GET.q}}" placeholder="Search"> </form>
-                                </div>
-                                <!---------------->
-                                <!-- Pull Right -->
-                                <!---------------->
-                                <ul class="nav navbar-nav pull-right hidden-lg-down">
-                                  <li class="nav-item dropdown dropdown-menu-right">
-                                      <a class="nav-link dropdown-toggle no-after" data-toggle="dropdown"> <span class="zmdi zmdi-settings"></span> </a>
-                                      <div class="dropdown-menu dropdown-menu-scale from-right dropdown-menu-right">
-                                          {% if request.user.organization %}
-                                            <a class="dropdown-item" href="{% url 'org_detail' pk=request.user.organization.id %}"> <span class="title">Organization</span> </a>
-                                            {% if request.user.organization.owner = request.user %}
-                                              <a class="dropdown-item" href="{% url 'org_edit' pk=request.user.organization.id %}"> </span> <span class="title">Manage Organization</span> </a>
-                                            {% endif %}
-                                          {% endif %}
-                                          <a class="dropdown-item" href="{% url 'network_new' %}"> </span> <span class="title">Create Network</span> </a>
-                                      </div>
-                                  </li>
-                                </ul>
+                  <ul class="nav navbar-nav pull-left">
+                      <li class="nav-item">
+                          <a class="nav-link" data-click="toggle-search"> <i class="zmdi zmdi-search"></i> </a>
+                      </li>
+                  </ul>
 
-                                <ul class="nav navbar-nav pull-right toggle-fullscreen-mode">
-                                    <li class="nav-item">
-                                        <a class="nav-link" data-click="toggle-fullscreen-mode"> <i class="zmdi zmdi-fullscreen"></i> </a>
-                                    </li>
-                                </ul>
+                  <div class="navbar-drawer pull-left">
+                      <form action="{% url 'search' %}" class="form-inline navbar-form">
+                          <input id="searchbox" type="text" name="q" class="form-control" value="{{request.GET.q}}" placeholder="Search"> </form>
+                  </div>
+                  <!---------------->
+                  <!-- Pull Right -->
+                  <!---------------->
+                  <ul class="nav navbar-nav pull-right">
+                    <li class="nav-item dropdown dropdown-menu-right">
+                        <a class="nav-link dropdown-toggle no-after" data-toggle="dropdown"> <span class="zmdi zmdi-settings"></span> </a>
+                        <div class="dropdown-menu dropdown-menu-scale from-right dropdown-menu-right">
+                            {% if request.user.organization %}
+                              <a class="dropdown-item" href="{% url 'org_detail' pk=request.user.organization.id %}"> <span class="title">Organization</span> </a>
+                              {% if request.user.organization.owner = request.user %}
+                                <a class="dropdown-item" href="{% url 'org_edit' pk=request.user.organization.id %}"> </span> <span class="title">Manage Organization</span> </a>
+                              {% endif %}
+                            {% endif %}
+                            <a class="dropdown-item" href="{% url 'network_new' %}"> </span> <span class="title">Create Network</span> </a>
+                        </div>
+                    </li>
+                  </ul>
 
-                                <ul class="nav navbar-nav pull-right hidden-lg-down">
-                                    <li class="nav-item dropdown dropdown-menu-right">
-                                        <a class="nav-link dropdown-toggle no-after" data-toggle="modal" data-target="#addUserNote" href="#" title="Add a note"> <span class="fa fa-sticky-note"></span> </a>
-                                    </li>
-                                </ul>
+                  <ul class="nav navbar-nav pull-right hidden-sm-down toggle-fullscreen-mode">
+                      <li class="nav-item">
+                          <a class="nav-link" data-click="toggle-fullscreen-mode"> <i class="zmdi zmdi-fullscreen"></i> </a>
+                      </li>
+                  </ul>
 
-                                <ul class="nav navbar-nav pull-right hidden-lg-down">
-                                    <li class="nav-item dropdown dropdown-menu-right">
-                                        <a class="nav-link dropdown-toggle no-after" data-toggle="modal" data-target="#sendPrivateMessage" href="#" title="Send a private message"> <span class="fa fa-comment"></span> </a>
-                                    </li>
-                                </ul>
+                  <ul class="nav navbar-nav pull-right hidden-sm-down">
+                      <li class="nav-item dropdown dropdown-menu-right">
+                          <a class="nav-link dropdown-toggle no-after" data-toggle="modal" data-target="#addUserNote" href="#" title="Add a note"> <span class="fa fa-sticky-note"></span> </a>
+                      </li>
+                  </ul>
 
-                                <ul class="nav navbar-nav pull-right hidden-lg-down navbar-notifications">
-                                    <li class="nav-item">
-                                        <a class="nav-link" data-click="toggle-right-sidebar"> <i class="zmdi zmdi-notifications-active"></i></a>
-                                    </li>
-                                </ul>
+                  <ul class="nav navbar-nav pull-right hidden-sm-down">
+                      <li class="nav-item dropdown dropdown-menu-right">
+                          <a class="nav-link dropdown-toggle no-after" data-toggle="modal" data-target="#sendPrivateMessage" href="#" title="Send a private message"> <span class="fa fa-comment"></span> </a>
+                      </li>
+                  </ul>
 
-                                <ul class="nav navbar-nav pull-right hidden-lg-down navbar-profile">
-                                    <li class="nav-item dropdown">
-                                        <a class="nav-link dropdown-toggle no-after" data-toggle="dropdown">
-                                          {% if request.user.display_photo %}
-                                          <img class="img-circle img-fluid profile-image" src="{{ request.user.display_photo.url }}">
-                                          {% elif request.user.first_name %}
-                                          <p>{{request.user.first_name}}</p>
-                                          {% else %}
-                                          <i class="fa fa-user" aria-hidden="true"></i>
-                                          {% endif %}
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-scale from-right dropdown-menu-right">
-                                            <a class="dropdown-item animated fadeIn" href="{% url 'inbox' %}" title="View Inbox"> <i class="zmdi zmdi-email"></i> <span class="dropdown-text">Inbox</span> </a>
-                                            <a class="dropdown-item animated fadeIn" href="{% url 'user_edit' pk=request.user.id %}"> <i class="zmdi zmdi-settings-square"></i> <span class="dropdown-text">Profile</span> </a>
-                                            <a class="dropdown-item animated fadeIn" href="#"> <i class="zmdi zmdi-alarm"></i> <span class="dropdown-text">Lock screen</span> </a>
-                                            <a class="dropdown-item animated fadeIn" href="/accounts/logout"> <i class="zmdi zmdi-power"></i> <span class="dropdown-text">Logout</span> </a>
-                                        </div>
-                                    </li>
-                                </ul>
-                          {% else %}
-                          <li><a href="/accounts/login/" class="pull-right thin">Login</a></li>
-                          {% endif %}
-        <!-- </div> -->
+                  <ul class="nav navbar-nav pull-right hidden-sm-down navbar-notifications">
+                      <li class="nav-item">
+                          <a class="nav-link" data-click="toggle-right-sidebar"> <i class="zmdi zmdi-notifications-active"></i></a>
+                      </li>
+                  </ul>
+
+                  <ul class="nav navbar-nav pull-right navbar-profile">
+                      <li class="nav-item dropdown">
+                          <a class="nav-link dropdown-toggle no-after" data-toggle="dropdown">
+                            {% if request.user.display_photo %}
+                            <img class="img-circle img-fluid profile-image" src="{{ request.user.display_photo.url }}">
+                            {% elif request.user.first_name %}
+                            <p>{{request.user.first_name}}</p>
+                            {% else %}
+                            <i class="fa fa-user" aria-hidden="true"></i>
+                            {% endif %}
+                          </a>
+                          <div class="dropdown-menu dropdown-menu-scale from-right dropdown-menu-right">
+                              <a class="dropdown-item animated fadeIn" href="{% url 'inbox' %}" title="View Inbox"> <i class="zmdi zmdi-email"></i> <span class="dropdown-text">Inbox</span> </a>
+                              <a class="dropdown-item animated fadeIn" href="{% url 'user_edit' pk=request.user.id %}"> <i class="zmdi zmdi-settings-square"></i> <span class="dropdown-text">Profile</span> </a>
+                              <a class="dropdown-item animated fadeIn" href="#"> <i class="zmdi zmdi-alarm"></i> <span class="dropdown-text">Lock screen</span> </a>
+                              <a class="dropdown-item animated fadeIn" href="/accounts/logout"> <i class="zmdi zmdi-power"></i> <span class="dropdown-text">Logout</span> </a>
+                          </div>
+                      </li>
+                  </ul>
+            {% else %}
+            <li><a href="/accounts/login/" class="pull-right thin">Login</a></li>
+            {% endif %}
+        </div>
+
 
     </nav>
     <!-- ====================================== -->
