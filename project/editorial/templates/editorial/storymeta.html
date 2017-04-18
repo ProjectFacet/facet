@@ -112,7 +112,7 @@
             {% for user in story.team.all %}
             <div class="col-md-4">
               {% if user.display_photo %}
-              <img class="media-object img-circle" width="32" src="{{ user.display_photo.url }}" alt="user">
+              <img class="media-object img-circle" width="64" src="{{ user.display_photo.url }}" alt="user">
               {% else %}
               {% endif %}
               <small class="subtle">{{ user.first_name }}</small>
@@ -134,6 +134,9 @@
               {% for network in story.share_with.all %}
                 <div class="col-md-4">
                 <p><a href="{% url 'network_detail' pk=network.id %}">{{ network.name }}</a></p>
+                {% comment %}
+                {% if org.logo %}<img class="centered img-rounded" width="64" src="{{ org.display_logo.url }}" alt="{{ org.name }} logo">{% else %} {{ org.name}} {% endif %}
+                {% endcomment %}
                 </div>
               {% endfor %}
               </div>
@@ -142,7 +145,7 @@
               <p>Collaboration: <span class="sameline bright">{% if story.collaborate == True %} <i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</span></p>
               <p>Collaborating With:</p>
               {% for collaborator in story.collaborate_with.all %}
-              <p>{{ collaborator }}</p>
+              {% if collaborator.logo %}<img class="centered img-rounded" width="64" src="{{ collaborator.display_logo.url }}" alt="{{ collaborator.name }} logo">{% else %} {{ collaborator.name}} {% endif %}
               {% endfor %}
             </div>
             {% endif %}
