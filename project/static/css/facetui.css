@@ -8,6 +8,12 @@
   background: #5bc0de;
 }
 
+.glyphicon-calendar {
+  color: white !important;
+}
+
+
+
 #stories-list_length > label:nth-child(1) > select:nth-child(1) {
   width: 75px;
   display: inline-block;

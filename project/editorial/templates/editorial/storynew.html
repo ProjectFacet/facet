@@ -76,7 +76,7 @@
                 <!-- Series Select -->
                 <fieldset class="form-group m-b-20 m-l-20" id="fieldset-story-series">
                   <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
-                    <label class="capitalize pull-left">{{ storyform.series.label_tag }}</label>
+                    <label class="capitalize pull-left subtle f-s-14">{{ storyform.series.label_tag }}</label>
                   </div>
                   <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
                     {{ storyform.series }}
@@ -88,8 +88,8 @@
             </div>
             <div class="row m-b-20">
               <!-- <div class="form-group custom-form"> -->
-                <div class="col-xs-2">
-                  <label class="capitalize">Embargo:</label>
+                <div class="col-xs-3">
+                  <label class="capitalize btn-danger-100 subtle f-s-14">Embargo:</label>
                   {{ storyform.embargo }}
                   {% if storyform.embargo.errors %}
                     <div class="alert alert-warning" role="alert">
@@ -97,10 +97,10 @@
                     </div>
                   {% endif %}
                 </div>
-                <div class="col-xs-2">
-                  <label class="sameline">Embargo Date:</label>
+                <div class="col-xs-3">
+                  <label class="sameline btn-danger-100 subtle f-s-14">Embargo Date:</label>
                 </div>
-                <div class="col-xs-8">
+                <div class="col-xs-6">
                   {{ storyform.embargo_datetime }}
                   {% if storyform.embargo_datetime.errors %}
                     <small class="text-muted">{{ storyform.embargo_datetime.errors }}</small>
@@ -113,7 +113,7 @@
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                     <!-- Sensitive -->
                     <div class="form-group custom-form">
-                      <label class="capitalize">{{ storyform.sensitive.label_tag }}</label>
+                      <label class="capitalize btn-danger-100 subtle f-s-14">{{ storyform.sensitive.label_tag }}</label>
                       {{ storyform.sensitive }}
                       {% if storyform.sensitive.errors %}
                         <small class="text-muted">{{ storyform.sensitive.errors }}</small>
@@ -121,7 +121,7 @@
                     </div>
                     <!-- Archive -->
                     <div class="form-group custom-form">
-                      <label class="capitalize">{{ storyform.archived.label_tag }}</label>
+                      <label class="capitalize subtle f-s-14">{{ storyform.archived.label_tag }}</label>
                       {{ storyform.archived }}
                       {% if storyform.archived.errors %}
                         <small class="text-muted">{{ storyform.archived.errors }}</small>
@@ -204,7 +204,7 @@
         <h5>Start or join a network to enable sharing or collaboration.</h5>
         {% endif %}
 
-        <a href="{% url 'story_new' %}" title="Cancel"><button class="save btn btn-default m-t-40 m-r-10 pull-right">Cancel</button></a>
+        <a href="{% url 'story_new' %}" title="Cancel"><button class="save btn btn-danger-100 m-t-40 m-r-10 pull-right">Cancel</button></a>
         <button type="submit" class="save btn btn-default m-t-40 m-r-10 pull-right">Save</button>
       </div>
 
