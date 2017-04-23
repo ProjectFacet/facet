@@ -70,7 +70,7 @@
     <div class="col-xs-12 col-lg-10">
       <div id="inbox-main">
 
-              <div class="inbox-header">
+             <div class="inbox-header">
                   <h3> Inbox </h3>
                   <div class="m-b-20">
                       <div class="btn-group pull-right">
@@ -94,7 +94,7 @@
                               <td>
                                   <a href="{% url 'message_html' message.pk %}" id="specific-message"> <span class="email-contact">{{ message.user.credit_name }}</span> </a>
                               </td>
-                              <td class="subject"><a href="" class="specific-message">{{ message.subject }}</a> </td>
+                              <td class="subject"><a href="{% url 'message_html' message.pk %}" id="specific-message">{{ message.subject }}</a> </td>
                               <td class="text-right">{{ message.date|date:'D, M j' }} at {{ message.date|date:'g:i a' }}</td>
                           </tr>
                           {% endfor %}

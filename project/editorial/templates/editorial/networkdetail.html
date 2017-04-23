@@ -116,7 +116,7 @@
       <div class="col-xs-3">
         <div class="m-b-20">
           <!-- Org Logo -->
-          <button class="media-left media-middle clear-button" id="trigger-overlay" type="button"> {% if org.logo %}<img class="centered img-rounded h-100 w-100" src="{{ org.display_logo.url }}" alt="{{ org.name }} logo">{% else %} {{ org.name}} {% endif %} </button>
+          <button class="media-left media-middle clear-button" id="trigger-overlay" type="button"> {% if org.logo %}<img class="centered img-rounded" width=64 src="{{ org.display_logo.url }}" alt="{{ org.name }} logo">{% else %} {{ org.name}} {% endif %} </button>
         </div>
       </div>
       {% endfor %}
