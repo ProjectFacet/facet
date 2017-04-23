@@ -92,9 +92,9 @@
                                       <input type="checkbox"><span class="c-indicator c-indicator-default"></span> </label>
                               </td>
                               <td>
-                                  <a href="{% url 'message_html' message.pk %}" id="specific-message"> <span class="email-contact">{{ message.user.credit_name }}</span> </a>
+                                  <a href="{% url 'message_html' message.pk %}" class="specific-message"> <span class="email-contact">{{ message.user.credit_name }}</span> </a>
                               </td>
-                              <td class="subject"><a href="{% url 'message_html' message.pk %}" id="specific-message">{{ message.subject }}</a> </td>
+                              <td class="subject"><a href="{% url 'message_html' message.pk %}" class="specific-message">{{ message.subject }}</a> </td>
                               <td class="text-right">{{ message.date|date:'D, M j' }} at {{ message.date|date:'g:i a' }}</td>
                           </tr>
                           {% endfor %}
@@ -121,7 +121,7 @@
 
 <script>
 $(function() {
-    $("#specific-message").click(function(event) {
+    $(".specific-message").click(function(event) {
         console.log("specific messages");
         event.preventDefault();
         var page_url = jQuery(this).attr("href")
