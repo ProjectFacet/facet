@@ -125,7 +125,7 @@ def dashboard(request):
     # query for new comments since last_login from any discussions the user has participated in
     recent_comments = User.recent_comments(request.user)
     # if no new comments, display 10 most recent older comments
-    older_comments = User.inbox_comments(request.user)[:10]
+    older_comments = User.inbox_comments(request.user)[:4]
 
     if organization:
         # retrieve all organization comments

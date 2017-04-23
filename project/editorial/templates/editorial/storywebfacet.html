@@ -161,14 +161,13 @@
               <div class="row">
                 {% for comment in webcomments %}
                   <div class="col-md-10">
-                    <p>{{ comment.text }} <span class="f-s-12 subtle">| {{ comment.date|date:'D, M j g:i a' }}</span></p>
+                    <p class="f-s-12">{{ comment.text }} <span class="f-s-10 color-default">| {{ comment.date|date:'D, M j g:i a' }}</span></p>
                   </div>
                   <div class="col-md-2">
                     {% if comment.user.display_photo %}
-                    <img class="media-object img-circle" width="32" src="{{ comment.user.display_photo.url }}" alt="user">
+                    <a href="" title="{{ comment.user.first_name }}"><img class="media-object img-circle neg-m-l-10" width="32" src="{{ comment.user.display_photo.url }}" alt="user"></a>
                     {% else %}
                     {% endif %}
-                    <p class="f-s-12 subtle">{{ comment.user.first_name }}</p>
                   </div>
                 {% endfor %}
               </div>

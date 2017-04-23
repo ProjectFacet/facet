@@ -160,16 +160,15 @@
               {% if printcomments %}
                 <div class="row">
                   {% for comment in printcomments %}
-                    <div class="col-md-10">
-                      <p>{{ comment.text }} <span class="f-s-12 subtle">| {{ comment.date|date:'D, M j g:i a' }}</span></p>
-                    </div>
-                    <div class="col-md-2">
-                      {% if comment.user.display_photo %}
-                      <img class="media-object img-circle" width="32" src="{{ comment.user.display_photo.url }}" alt="user">
-                      {% else %}
-                      {% endif %}
-                      <p class="f-s-12 subtle">{{ comment.user.first_name }}</p>
-                    </div>
+                  <div class="col-md-10">
+                    <p class="f-s-12">{{ comment.text }} <span class="f-s-10 color-default">| {{ comment.date|date:'D, M j g:i a' }}</span></p>
+                  </div>
+                  <div class="col-md-2">
+                    {% if comment.user.display_photo %}
+                    <a href="" title="{{ comment.user.first_name }}"><img class="media-object img-circle neg-m-l-10" width="32" src="{{ comment.user.display_photo.url }}" alt="user"></a>
+                    {% else %}
+                    {% endif %}
+                  </div>
                   {% endfor %}
                 </div>
               {% endif %}
@@ -205,7 +204,7 @@
           <div class="edit-history">
             {% if printhistory %}
               {% for entry in printhistory %}
-              <p class="tiny-text">{{ entry.history_date }}
+              <p class="f-s-12 f-s-300 subtle">{{ entry.history_date }}
               {% endfor %}
             {% endif %}
           </div>

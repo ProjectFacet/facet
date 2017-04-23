@@ -73,6 +73,7 @@
               {% if request.user.organization == story.organization %}<a href="{% url 'story_edit' pk=story.id %}"><button class="btn btn-sm bg-default btn-block m-b-10 f-s-12"><i class="fa fa-pencil" aria-hidden="true"></i>
               Edit</button></a>{% endif %}
               <a href="#" data-toggle="modal" data-target="#downloadStory" title="Download"><button class="btn btn-sm bg-success btn-block m-b-10 f-s-12"><i class="fa fa-cloud-download" aria-hidden="true"></i> Download</button></a>
+              {% comment %}
               {% for webfacet in story.webfacetstory.all %}
                 {% if webfacet.status == "Ready" and webfacet.pushed_to_wp == False %}
                 <form action="{% url 'webfacet_json' %}" method="POST" class="post-form" role="form" id="wordpress-form-false">
@@ -89,6 +90,7 @@
                 </form>
                 {% endif %}
               {% endfor %}
+              {% endcomment %}
             </div>
           </div>
           <hr>

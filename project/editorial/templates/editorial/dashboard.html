@@ -38,7 +38,7 @@
                     <div class="m-b-20">
                         {% if all_comments %}
                         <div class="activity-widget-3">
-                            {% for comment in all_comments %}
+                            {% for comment in older_comments %}
                             <div class="row">
                                 <div class="col-xs-12">
                                     <div class="media">
@@ -50,7 +50,7 @@
                                           {% endif %}
                                         </a>
                                         <div class="media-body">
-                                            <p class="f-w-300 f-s-16">{{ comment.text }}</p>
+                                            <p class="f-w-300 f-s-14">{{ comment.text }}</p>
                                             <p class="f-w-400 f-s-12">
                                               {% if comment.discussion.organization_discussion.all %}
                                                 {% for organization in comment.discussion.organization_discussion.all %}
@@ -128,7 +128,7 @@
                   <li class="nav-item"> <a ng-href="" class="nav-link" data-toggle="tab" data-target="#stories-new">New Stories</a> </li>
                   <li class="nav-item"> <a ng-href="" class="nav-link" data-toggle="tab" data-target="#stories-edit">Due for Edit</a> </li>
               </ul>
-              <div class="tab-content">
+              <div class="tab-content f-s-12">
                   <div role="tabpanel" class="tab-pane in active p-t-0" id="stories-running">
                     {% if running_today %}
                     <!-- Full table for md and lg displays -->
@@ -225,7 +225,7 @@
 
                   </div>
                   <div role="tabpanel" class="tab-pane p-t-0" id="stories-new">
-                    {% if new_stories %}
+                    {% if old_stories %}
                     <table class="table table-hover table-striped" cellspacing="0" width="100%">
                         {% comment %}
                         <thead>
@@ -356,7 +356,7 @@
 
     <!-- Row Two -->
     {% if networks %}
-    <div class="row m-b-40">
+    <div class="row m-b-40 f-s-12">
         <h4 class="m-l-10 m-b-20"> Partnerships</h4>
         <!-- ========================== -->
         <!--         Left Column        -->
