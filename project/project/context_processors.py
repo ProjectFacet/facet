@@ -20,6 +20,7 @@ def include_private_message_form(request):
 def include_activity_stream(request):
     if request.user.is_authenticated():
         activity_stream = model_stream(request.user)
+        org_activity_stream =[]
         return {'activitystream': activity_stream }
     else: return {}
 

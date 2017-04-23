@@ -10,25 +10,27 @@
 
           <!-- VideoFacet Title -->
           <fieldset class="form-group m-b-10">
-            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ videoform.title.label_tag }}</label>
+            <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ videoform.title.label_tag }}</label>
             {{ videoform.title }}
             {% if videoform.title.errors %}
               <small class="text-muted">{{ videoform.title.errors }}</small>
             {% endif %}
           </fieldset>
 
+          {% comment %}
           <!-- VideoFacet Code -->
           <fieldset class="form-group m-b-10">
-            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ videoform.code.label_tag }}</label>
+            <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ videoform.code.label_tag }}</label>
             {{ videoform.code }}
             {% if videoform.code.errors %}
               <small class="text-muted">{{ videoform.code.errors }}</small>
             {% endif %}
           </fieldset>
+          {% endcomment %}
 
           <!-- VideoFacet Credit -->
           <fieldset class="form-group m-b-10">
-            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ videoform.credit.label_tag }}</label>
+            <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ videoform.credit.label_tag }}</label>
             {{ videoform.credit }}
             {% if videoform.credit.errors %}
               <small class="text-muted">{{ videoform.credit.errors }}</small>
@@ -37,7 +39,7 @@
 
           <!-- VideoFacet Editor -->
           <fieldset class="form-group m-b-10">
-            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ videoform.editor.label_tag }}</label>
+            <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ videoform.editor.label_tag }}</label>
             {{ videoform.editor }}
             {% if videoform.editor.errors %}
               <small class="text-muted">{{ videoform.editor.errors }}</small>
@@ -46,7 +48,7 @@
 
           <!-- VideoFacet Description -->
           <fieldset class="form-group m-b-10">
-            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">Description</label>
+            <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">Description</label>
             {{ videoform.vf_description }}
             {% if videoform.vf_description.errors %}
               <small class="text-muted">{{ videoform.vf_description.errors }}</small>
@@ -55,25 +57,16 @@
 
           <!-- VideoFacet Excerpt -->
           <fieldset class="form-group m-b-10">
-            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ videoform.excerpt.label_tag }}</label>
+            <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ videoform.excerpt.label_tag }}</label>
             {{ videoform.excerpt }}
             {% if videoform.excerpt.errors %}
               <small class="text-muted">{{ videoform.excerpt.errors }}</small>
             {% endif %}
           </fieldset>
 
-          <!-- VideoFacet Length -->
-          <fieldset class="form-group m-b-10">
-            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ videoform.length.label_tag }}</label>
-            {{ videoform.length }}
-            {% if videoform.length.errors %}
-              <small class="text-muted">{{ videoform.length.errors }}</small>
-            {% endif %}
-          </fieldset>
-
           <!-- VideoFacet Share Note -->
           <fieldset class="form-group m-b-10">
-            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ videoform.share_note.label_tag }}</label>
+            <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ videoform.share_note.label_tag }}</label>
             {{ videoform.share_note }}
             {% if videoform.share_note.errors %}
               <small class="text-muted">{{ videoform.share_note.errors }}</small>
@@ -96,7 +89,7 @@
 
           <!-- VideoFacet Keywords -->
           <fieldset class="form-group m-b-10">
-            {% comment %}<label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ videoform.keywords.label_tag }}</label>{% endcomment %}
+            {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ videoform.keywords.label_tag }}</label>{% endcomment %}
             {{ videoform.keywords }}
             {% if videoform.keywords.errors %}
               <small class="text-muted">{{ videoform.keywords.errors }}</small>
@@ -124,7 +117,7 @@
             <!-- VideoFacet Status -->
             <div class="col-xs-12">
             <fieldset class="form-group m-b-20">
-              <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ videoform.status.label_tag }}</label>
+              <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ videoform.status.label_tag }}</label>
               {{ videoform.status }}
               {% if videoform.status.errors %}
                 <small class="text-muted">{{ videoform.status.errors }}</small>
@@ -136,10 +129,8 @@
           <div class="row profile-row">
             <!-- VideoFacet Due Edit -->
             <fieldset class="form-group m-b-10">
-              <div class="col-xs-3">
-                <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ videoform.due_edit.label_tag }}</label>
-              </div>
-              <div class="col-xs-9">
+              <div class="col-xs-12">
+                <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ videoform.due_edit.label_tag }}</label>
                 {{ videoform.due_edit }}
                 {% if videoform.due_edit.errors %}
                 <small class="text-muted">{{ videoform.due_edit.errors }}</small>
@@ -151,10 +142,8 @@
           <div class="row profile-row">
             <!-- VideoFacet Run Date -->
             <fieldset class="form-group m-b-10">
-              <div class="col-xs-3">
-                <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ videoform.run_date.label_tag }}</label>
-              </div>
-              <div class="col-xs-9">
+              <div class="col-xs-12">
+                <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ videoform.run_date.label_tag }}</label>
                 {{ videoform.run_date }}
                 {% if videoform.run_date.errors %}
                 <small class="text-muted">{{ videoform.run_date.errors }}</small>

@@ -10,25 +10,27 @@
 
           <!-- PrintFacet Title -->
           <fieldset class="form-group m-b-10">
-            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ printform.title.label_tag }}</label>
+            <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ printform.title.label_tag }}</label>
             {{ printform.title }}
             {% if printform.title.errors %}
               <small class="text-muted">{{ printform.title.errors }}</small>
             {% endif %}
           </fieldset>
 
+          {% comment %}
           <!-- PrintFacet Code -->
           <fieldset class="form-group m-b-10">
-            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ printform.code.label_tag }}</label>
+            <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ printform.code.label_tag }}</label>
             {{ printform.code }}
             {% if printform.code.errors %}
               <small class="text-muted">{{ printform.code.errors }}</small>
             {% endif %}
           </fieldset>
+          {% endcomment %}
 
           <!-- PrintFacet Credit -->
           <fieldset class="form-group m-b-10">
-            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ printform.credit.label_tag }}</label>
+            <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ printform.credit.label_tag }}</label>
             {{ printform.credit }}
             {% if printform.credit.errors %}
               <small class="text-muted">{{ printform.credit.errors }}</small>
@@ -37,7 +39,7 @@
 
           <!-- PrintFacet Editor -->
           <fieldset class="form-group m-b-10">
-            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ printform.editor.label_tag }}</label>
+            <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ printform.editor.label_tag }}</label>
             {{ printform.editor }}
             {% if printform.editor.errors %}
               <small class="text-muted">{{ printform.editor.errors }}</small>
@@ -46,7 +48,7 @@
 
           <!-- PrintFacet Description -->
           <fieldset class="form-group m-b-10">
-            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">Description</label>
+            <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">Description</label>
             {{ printform.pf_description }}
             {% if printform.pf_description.errors %}
               <small class="text-muted">{{ printform.pf_description.errors }}</small>
@@ -55,25 +57,16 @@
 
           <!-- PrintFacet Excerpt -->
           <fieldset class="form-group m-b-10">
-            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ printform.excerpt.label_tag }}</label>
+            <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ printform.excerpt.label_tag }}</label>
             {{ printform.excerpt }}
             {% if printform.excerpt.errors %}
               <small class="text-muted">{{ printform.excerpt.errors }}</small>
             {% endif %}
           </fieldset>
 
-          <!-- PrintFacet Length -->
-          <fieldset class="form-group m-b-10">
-            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ printform.length.label_tag }}</label>
-            {{ printform.length }}
-            {% if printform.length.errors %}
-              <small class="text-muted">{{ printform.length.errors }}</small>
-            {% endif %}
-          </fieldset>
-
           <!-- PrintFacet Share Note -->
           <fieldset class="form-group m-b-10">
-            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ printform.share_note.label_tag }}</label>
+            <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ printform.share_note.label_tag }}</label>
             {{ printform.share_note }}
             {% if printform.share_note.errors %}
               <small class="text-muted">{{ printform.share_note.errors }}</small>
@@ -96,7 +89,7 @@
 
           <!-- PrintFacet Keywords -->
           <fieldset class="form-group m-b-10">
-            {% comment %}<label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ printform.keywords.label_tag }}</label>{% endcomment %}
+            {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ printform.keywords.label_tag }}</label>{% endcomment %}
             {{ printform.keywords }}
             {% if printform.keywords.errors %}
               <small class="text-muted">{{ printform.keywords.errors }}</small>
@@ -124,7 +117,7 @@
           <!-- PrintFacet Status -->
           <div class="col-xs-12">
           <fieldset class="form-group m-b-20">
-            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ printform.status.label_tag }}</label>
+            <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ printform.status.label_tag }}</label>
             {{ printform.status }}
             {% if printform.status.errors %}
               <small class="text-muted">{{ printform.status.errors }}</small>
@@ -136,10 +129,8 @@
         <div class="row profile-row">
           <!-- PrintFacet Due Edit -->
           <fieldset class="form-group m-b-10">
-            <div class="col-xs-3">
-              <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ printform.due_edit.label_tag }}</label>
-            </div>
-            <div class="col-xs-9">
+            <div class="col-xs-12">
+              <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ printform.due_edit.label_tag }}</label>
               {{ printform.due_edit }}
               {% if printform.due_edit.errors %}
               <small class="text-muted">{{ printform.due_edit.errors }}</small>
@@ -151,10 +142,8 @@
         <div class="row profile-row">
           <!-- PrintFacet Run Date -->
           <fieldset class="form-group m-b-10">
-            <div class="col-xs-3">
-              <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ printform.run_date.label_tag }}</label>
-            </div>
-            <div class="col-xs-9">
+            <div class="col-xs-12">
+              <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ printform.run_date.label_tag }}</label>
               {{ printform.run_date }}
               {% if printform.run_date.errors %}
               <small class="text-muted">{{ printform.run_date.errors }}</small>
@@ -167,7 +156,7 @@
           </form>
 
           <div class="discussion">
-          <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">Discussion</label>
+          <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">Discussion</label>
               {% if printcomments %}
                 <div class="row">
                   {% for comment in printcomments %}

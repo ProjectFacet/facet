@@ -1184,11 +1184,6 @@ class WebFacet(models.Model):
         blank=True,
     )
 
-    length = models.IntegerField(
-        help_text='Length of the webfacet.',
-        blank=True,
-    )
-
     keywords = ArrayField(
         models.CharField(max_length=100),
         default=list,
@@ -1501,11 +1496,6 @@ class PrintFacet(models.Model):
         blank=True,
     )
 
-    length = models.IntegerField(
-        help_text='Length of the printfacet.',
-        blank=True,
-    )
-
     keywords = ArrayField(
         models.CharField(max_length=100),
         default=list,
@@ -1806,11 +1796,6 @@ class AudioFacet(models.Model):
 
     af_content = models.TextField(
         help_text='Content of the audiofacet.',
-        blank=True,
-    )
-
-    length = models.IntegerField(
-        help_text='Runtime of the audiofacet.',
         blank=True,
     )
 
@@ -2116,11 +2101,6 @@ class VideoFacet(models.Model):
 
     vf_content = models.TextField(
         help_text='Content of the videofacet.',
-        blank=True,
-    )
-
-    length = models.IntegerField(
-        help_text='Runtime of the videofacet.',
         blank=True,
     )
 

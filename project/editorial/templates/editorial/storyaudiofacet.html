@@ -10,25 +10,27 @@
 
           <!-- AudioFacet Title -->
           <fieldset class="form-group m-b-10">
-            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audioform.title.label_tag }}</label>
+            <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ audioform.title.label_tag }}</label>
             {{ audioform.title }}
             {% if audioform.title.errors %}
               <small class="text-muted">{{ audioform.title.errors }}</small>
             {% endif %}
           </fieldset>
 
+          {% comment %}
           <!-- AudioFacet Code -->
           <fieldset class="form-group m-b-10">
-            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audioform.code.label_tag }}</label>
+            <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ audioform.code.label_tag }}</label>
             {{ audioform.code }}
             {% if audioform.code.errors %}
               <small class="text-muted">{{ audioform.code.errors }}</small>
             {% endif %}
           </fieldset>
+          {% endcomment %}
 
           <!-- AudioFacet Credit -->
           <fieldset class="form-group m-b-10">
-            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audioform.credit.label_tag }}</label>
+            <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ audioform.credit.label_tag }}</label>
             {{ audioform.credit }}
             {% if audioform.credit.errors %}
               <small class="text-muted">{{ audioform.credit.errors }}</small>
@@ -37,7 +39,7 @@
 
           <!-- AudioFacet Editor -->
           <fieldset class="form-group m-b-10">
-            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audioform.editor.label_tag }}</label>
+            <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ audioform.editor.label_tag }}</label>
             {{ audioform.editor }}
             {% if audioform.editor.errors %}
               <small class="text-muted">{{ audioform.editor.errors }}</small>
@@ -46,7 +48,7 @@
 
           <!-- AudioFacet Description -->
           <fieldset class="form-group m-b-10">
-            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">Description</label>
+            <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">Description</label>
             {{ audioform.af_description }}
             {% if audioform.af_description.errors %}
               <small class="text-muted">{{ audioform.af_description.errors }}</small>
@@ -55,25 +57,16 @@
 
           <!-- AudioFacet Excerpt -->
           <fieldset class="form-group m-b-10">
-            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audioform.excerpt.label_tag }}</label>
+            <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ audioform.excerpt.label_tag }}</label>
             {{ audioform.excerpt }}
             {% if audioform.excerpt.errors %}
               <small class="text-muted">{{ audioform.excerpt.errors }}</small>
             {% endif %}
           </fieldset>
 
-          <!-- AudioFacet Length -->
-          <fieldset class="form-group m-b-10">
-            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audioform.length.label_tag }}</label>
-            {{ audioform.length }}
-            {% if audioform.length.errors %}
-              <small class="text-muted">{{ audioform.length.errors }}</small>
-            {% endif %}
-          </fieldset>
-
           <!-- AudioFacet Share Note -->
           <fieldset class="form-group m-b-10">
-            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audioform.share_note.label_tag }}</label>
+            <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ audioform.share_note.label_tag }}</label>
             {{ audioform.share_note }}
             {% if audioform.share_note.errors %}
               <small class="text-muted">{{ audioform.share_note.errors }}</small>
@@ -96,7 +89,7 @@
 
           <!-- AudioFacet Keywords -->
           <fieldset class="form-group m-b-10">
-            {% comment %}<label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audioform.keywords.label_tag }}</label>{% endcomment %}
+            {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ audioform.keywords.label_tag }}</label>{% endcomment %}
             {{ audioform.keywords }}
             {% if audioform.keywords.errors %}
               <small class="text-muted">{{ audioform.keywords.errors }}</small>
@@ -124,7 +117,7 @@
           <!-- AudioFacet Status -->
           <div class="col-xs-12">
           <fieldset class="form-group m-b-20">
-            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audioform.status.label_tag }}</label>
+            <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ audioform.status.label_tag }}</label>
             {{ audioform.status }}
             {% if audioform.status.errors %}
               <small class="text-muted">{{ audioform.status.errors }}</small>
@@ -136,10 +129,8 @@
         <div class="row profile-row">
           <!-- AudioFacet Due Edit -->
           <fieldset class="form-group m-b-10">
-            <div class="col-xs-3">
-              <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audioform.due_edit.label_tag }}</label>
-            </div>
-            <div class="col-xs-9">
+            <div class="col-xs-12">
+              <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ audioform.due_edit.label_tag }}</label>
               {{ audioform.due_edit }}
               {% if audioform.due_edit.errors %}
               <small class="text-muted">{{ audioform.due_edit.errors }}</small>
@@ -151,10 +142,8 @@
         <div class="row profile-row">
           <!-- AudioFacet Run Date -->
           <fieldset class="form-group m-b-10">
-            <div class="col-xs-3">
-              <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audioform.run_date.label_tag }}</label>
-            </div>
-            <div class="col-xs-9">
+            <div class="col-xs-12">
+              <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ audioform.run_date.label_tag }}</label>
               {{ audioform.run_date }}
               {% if audioform.run_date.errors %}
               <small class="text-muted">{{ audioform.run_date.errors }}</small>

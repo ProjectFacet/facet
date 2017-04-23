@@ -383,7 +383,7 @@ def add_audio(request):
             facet.save()
 
             # record action for activity stream
-            action.send(request.user, verb="added audio", action_object=audio, target=facet)
+            action.send(request.user, verb="added audio", action_object=audio[0], target=facet)
 
     return redirect('story_detail', pk=facet.story.id)
 
@@ -460,6 +460,6 @@ def add_video(request):
             facet.save()
 
             # record action for activity stream
-            action.send(request.user, verb="added video", action_object=video, target=facet)
+            action.send(request.user, verb="added video", action_object=video[0], target=facet)
 
     return redirect('story_detail', pk=facet.story.id)

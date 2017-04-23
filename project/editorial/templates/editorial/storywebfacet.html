@@ -10,25 +10,27 @@
 
           <!-- WebFacet Title -->
           <fieldset class="form-group m-b-10">
-            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ webform.title.label_tag }}</label>
+            <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ webform.title.label_tag }}</label>
             {{ webform.title }}
             {% if webform.title.errors %}
               <small class="text-muted">{{ webform.title.errors }}</small>
             {% endif %}
           </fieldset>
 
+          {% comment %}
           <!-- WebFacet Code -->
           <fieldset class="form-group m-b-10">
-            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ webform.code.label_tag }}</label>
+            <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ webform.code.label_tag }}</label>
             {{ webform.code }}
             {% if webform.code.errors %}
               <small class="text-muted">{{ webform.code.errors }}</small>
             {% endif %}
           </fieldset>
+          {% endcomment %}
 
           <!-- WebFacet Credit -->
           <fieldset class="form-group m-b-10">
-            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ webform.credit.label_tag }}</label>
+            <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ webform.credit.label_tag }}</label>
             {{ webform.credit }}
             {% if webform.credit.errors %}
               <small class="text-muted">{{ webform.credit.errors }}</small>
@@ -37,7 +39,7 @@
 
           <!-- WebFacet Editor -->
           <fieldset class="form-group m-b-10">
-            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ webform.editor.label_tag }}</label>
+            <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ webform.editor.label_tag }}</label>
             {{ webform.editor }}
             {% if webform.editor.errors %}
               <small class="text-muted">{{ webform.editor.errors }}</small>
@@ -46,7 +48,7 @@
 
           <!-- WebFacet Description -->
           <fieldset class="form-group m-b-10">
-            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">Description</label>
+            <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">Description</label>
             {{ webform.wf_description }}
             {% if webform.wf_description.errors %}
               <small class="text-muted">{{ webform.wf_description.errors }}</small>
@@ -55,25 +57,16 @@
 
           <!-- WebFacet Excerpt -->
           <fieldset class="form-group m-b-10">
-            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ webform.excerpt.label_tag }}</label>
+            <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ webform.excerpt.label_tag }}</label>
             {{ webform.excerpt }}
             {% if webform.excerpt.errors %}
               <small class="text-muted">{{ webform.excerpt.errors }}</small>
             {% endif %}
           </fieldset>
 
-          <!-- WebFacet Length -->
-          <fieldset class="form-group m-b-10">
-            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ webform.length.label_tag }}</label>
-            {{ webform.length }}
-            {% if webform.length.errors %}
-              <small class="text-muted">{{ webform.length.errors }}</small>
-            {% endif %}
-          </fieldset>
-
           <!-- WebFacet Share Note -->
           <fieldset class="form-group m-b-10">
-            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ webform.share_note.label_tag }}</label>
+            <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ webform.share_note.label_tag }}</label>
             {{ webform.share_note }}
             {% if webform.share_note.errors %}
               <small class="text-muted">{{ webform.share_note.errors }}</small>
@@ -96,7 +89,7 @@
 
           <!-- WebFacet Keywords -->
           <fieldset class="form-group m-b-10">
-            {% comment %}<label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ webform.keywords.label_tag }}</label>{% endcomment %}
+            {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ webform.keywords.label_tag }}</label>{% endcomment %}
             {{ webform.keywords }}
             {% if webform.keywords.errors %}
               <small class="text-muted">{{ webform.keywords.errors }}</small>
@@ -124,7 +117,7 @@
             <!-- WebFacet Status -->
             <div class="col-xs-12">
             <fieldset class="form-group m-b-20">
-              <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ webform.status.label_tag }}</label>
+              <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ webform.status.label_tag }}</label>
               {{ webform.status }}
               {% if webform.status.errors %}
                 <small class="text-muted">{{ webform.status.errors }}</small>
@@ -136,10 +129,8 @@
           <div class="row profile-row">
             <!-- WebFacet Due Edit -->
             <fieldset class="form-group m-b-10">
-              <div class="col-xs-3">
-                <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ webform.due_edit.label_tag }}</label>
-              </div>
-              <div class="col-xs-9">
+              <div class="col-xs-12">
+                <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ webform.due_edit.label_tag }}</label>
                 {{ webform.due_edit }}
                 {% if webform.due_edit.errors %}
                 <small class="text-muted">{{ webform.due_edit.errors }}</small>
@@ -151,10 +142,8 @@
           <div class="row profile-row">
             <!-- WebFacet Run Date -->
             <fieldset class="form-group m-b-10">
-              <div class="col-xs-3">
-                <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ webform.run_date.label_tag }}</label>
-              </div>
-              <div class="col-xs-9">
+              <div class="col-xs-12">
+                <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ webform.run_date.label_tag }}</label>
                 {{ webform.run_date }}
                 {% if webform.run_date.errors %}
                 <small class="text-muted">{{ webform.run_date.errors }}</small>
@@ -167,7 +156,7 @@
           </form>
 
           <div class="discussion">
-            <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">Discussion</label>
+            <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">Discussion</label>
             {% if webcomments %}
               <div class="row">
                 {% for comment in webcomments %}

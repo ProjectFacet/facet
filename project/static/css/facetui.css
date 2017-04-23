@@ -12,6 +12,9 @@
   color: white !important;
 }
 
+.form-control {
+  font-size: 12px;
+}
 
 
 #stories-list_length > label:nth-child(1) > select:nth-child(1) {
@@ -31,6 +34,10 @@ a.subtle {
   color: #4C5561 !important;
 }
 
+.subtle {
+  color: #4C5561 !important;
+}
+
 .left-rule {
   border-left: 1px solid #3c414f;
 }
@@ -39,8 +46,8 @@ a.subtle {
   border-right: 1px solid #3c414f;
 }
 
-.height-100 {
-  height: 100px;
+.height-150 {
+  height: 150px;
   overflow: hidden;
 }
 
@@ -203,7 +210,7 @@ input[type="checkbox"] {
 }
 
 #wf_content_ifr, #pf_content_ifr, #af_content_ifr, #vf_content_ifr {
-  height: 600px !important;
+  height: 450px !important;
 }
 
 #wf_dueedit_picker {

@@ -48,9 +48,9 @@
           {% if story.webfacetstory.all or story.printfacetstory.all or story.audiofacetstory.all or story.videofacetstory.all %}
 
             {% for facet in story.webfacetstory.all %}
-              <tr>
+              <tr class="f-s-14">
                 <td><a href="{% url 'story_detail' pk=facet.story.id %}">{{ facet.story.name }}</a></th>
-                <td>{{ facet.type}}</td>
+                <td><p class="text-subtle">Web</p></td>
                 <td><a href="{% url 'story_detail' pk=facet.story.id %}#web" data-toggle="tooltip" title="{{ facet.wf_description }}">{{ facet.title }}</a></td>
                 <td>{{ facet.credit.all.0.credit_name }}</td>
                 <td>{{ facet.due_edit|date:'n/j, g:i a' }}</td>
@@ -61,9 +61,9 @@
               </tr>
             {% endfor %}
             {% for facet in story.printfacetstory.all %}
-              <tr>
+              <tr class="f-s-14">
                 <td><a href="{% url 'story_detail' pk=facet.story.id %}">{{ facet.story.name }}</a></th>
-                <td>{{ facet.type}}</td>
+                <td><p class="f-s-14 text-subtle">Print</p></td>
                 <td><a href="{% url 'story_detail' pk=facet.story.id %}#print" data-toggle="tooltip" title="{{ facet.pf_description }}">{{ facet.title }}</a></td>
                 <td>{{ facet.credit.all.0.credit_name }}</td>
                 <td>{{ facet.due_edit|date:'n/j, g:i a' }}</td>
@@ -74,9 +74,9 @@
               </tr>
             {% endfor %}
             {% for facet in story.audiofacetstory.all %}
-              <tr>
+              <tr class="f-s-14">
                 <td><a href="{% url 'story_detail' pk=facet.story.id %}">{{ facet.story.name }}</a></th>
-                <td>{{ facet.type}}</td>
+                <td><p class="f-s-14 text-subtle">Audio</p></td>
                 <td><a href="{% url 'story_detail' pk=facet.story.id %}#audio" data-toggle="tooltip" title="{{ facet.af_description }}">{{ facet.title }}</a></td>
                 <td>{{ facet.credit.all.0.credit_name }}</td>
                 <td>{{ facet.due_edit|date:'n/j, g:i a' }}</td>
@@ -87,9 +87,9 @@
               </tr>
             {% endfor %}
             {% for facet in story.videofacetstory.all %}
-              <tr>
+              <tr class="f-s-14">
                 <td><a href="{% url 'story_detail' pk=facet.story.id %}">{{ facet.story.name }}</a></td>
-                <td>{{ facet.type}}</td>
+                <td><p class="f-s-14 text-subtle">Video</p></td>
                 <td><a href="{% url 'story_detail' pk=facet.story.id %}#video" data-toggle="tooltip" title="{{ facet.vf_description }}">{{ facet.title }}</a></td>
                 <td>{{ facet.credit.all.0.credit_name }}</td>
                 <td>{{ facet.due_edit|date:'n/j, g:i a' }}</td>
@@ -101,9 +101,9 @@
             {% endfor %}
 
           {% else %}
-              <tr>
+              <tr class="f-s-14">
                 <td><a href="{% url 'story_detail' pk=story.id %}">{{ story.name }}</a></td>
-                <td><i class="tiny-text">Create a facet</i></td>
+                <td><i class="f-s-12 text-subtle">Create a facet</i></td>
                 <td></td>
                 <td>{{ story.owner.credit_name }}</td>
                 <td></td>
