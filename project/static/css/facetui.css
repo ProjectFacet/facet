@@ -110,6 +110,10 @@ a.default {
   margin-left: -10px !important;
 }
 
+.neg-m-r-10 {
+  margin-right: -10px !important;
+}
+
 .neg-m-l-20 {
   margin-left: -20px !important;
 }

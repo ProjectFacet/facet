@@ -33,7 +33,7 @@
       <div class="post-comment">
             <div class="row">
               <form action="{% url 'create_storycomment' %}" method="POST" class="post-form" role="form">
-                <div class="col-md-10">
+                <div class="col-md-10 neg-m-r-10">
                     {% csrf_token %}
                     <div class="form-group">
                     {{ storycommentform.text }}
@@ -45,7 +45,7 @@
                     {% endif %}
                     <input type="hidden" name="story" value="{{ story.pk }}" />
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-2 neg-m-l-10">
                     <div class="form-group">
                       <button type="submit" class="btn btn-default btn-lg" name="storycommentform">
                           <i class="fa fa-paper-plane"></i>
@@ -65,13 +65,14 @@
         <div class="col-md-12">
           <h4 class="m-b-20"> Details</h4>
           <div class="row">
-            <div class="col-md-10">
+            <div class="col-md-9">
               <h5 class="m-b-20">{{ story.name }}</h5>
               <h6 class="m-b-10"><i>{{ story.story_description }}</i></h6>
             </div>
-            <div class="col-md-2" id="story-commands">
-              {% if request.user.organization == story.organization %}<a href="{% url 'story_edit' pk=story.id %}"><button class="btn btn-sm bg-default btn-block m-b-10">Edit</button></a>{% endif %}
-              <a href="#" data-toggle="modal" data-target="#downloadStory" title="Download"><button class="btn btn-sm bg-success btn-block m-b-10">Download</button></a>
+            <div class="col-md-3" id="story-commands">
+              {% if request.user.organization == story.organization %}<a href="{% url 'story_edit' pk=story.id %}"><button class="btn btn-sm bg-default btn-block m-b-10 f-s-12"><i class="fa fa-pencil" aria-hidden="true"></i>
+              Edit</button></a>{% endif %}
+              <a href="#" data-toggle="modal" data-target="#downloadStory" title="Download"><button class="btn btn-sm bg-success btn-block m-b-10 f-s-12"><i class="fa fa-cloud-download" aria-hidden="true"></i> Download</button></a>
               {% for webfacet in story.webfacetstory.all %}
                 {% if webfacet.status == "Ready" and webfacet.pushed_to_wp == False %}
                 <form action="{% url 'webfacet_json' %}" method="POST" class="post-form" role="form" id="wordpress-form-false">
@@ -93,7 +94,7 @@
           <hr>
         </div>
         <div class="col-md-6">
-          <p>Series: <span class="sameline bright">{% if story.series %}<a href="{% url 'series_detail' pk=story.series.id %}" title="View Series: {{story.series.name}}">{{ story.series.name }}</a>{% else %} <span class="tiny-text">Not currently part of a series</span>{% endif %}</p>
+          <p>Series: <span class="sameline bright">{% if story.series %}<a href="{% url 'series_detail' pk=story.series.id %}" title="View Series: {{story.series.name}}">{{ story.series.name }}</a>{% else %} <span class="f-s-12 subtle">Not currently part of a series</span>{% endif %}</p>
           <p>Original: <span class="sameline bright">{% if story.original_story == True %} <i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</span></p>
           {% if story.original_story == False %}
           <p>Origin: <span class="sameline bright">Original Org</span></p>

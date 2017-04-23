@@ -188,7 +188,7 @@
           <div class="comment">
               <div class="row">
                 <form action="{% url 'create_printcomment' %}" method="POST" class="post-form" role="form">
-                  <div class="col-md-10">
+                  <div class="col-md-10 neg-m-r-10">
                       {% csrf_token %}
                       <div class="form-group">
                       {{ printcommentform.text }}
@@ -200,7 +200,7 @@
                       {% endif %}
                       <input type="hidden" name="story" value="{{ story.pk }}" />
                   </div>
-                  <div class="col-md-2">
+                  <div class="col-md-2 neg-m-l-10">
                       <div class="form-group">
                         <button type="submit" class="btn btn-default btn-sm" id="printcomment-submit" name="printcommentform">
                             <i class="fa fa-paper-plane"></i>

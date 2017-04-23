@@ -445,7 +445,7 @@ hr {
 }
 
 .content-right-10 {
-  margin-right: -10;
+  margin-right: -10px !important;
 }
 
 .subtract-right-75 {
@@ -466,6 +466,10 @@ hr {
 
 .content-bottom-25 {
   margin-bottom: 25px;
+}
+
+.content-left-10 {
+  margin-left: -10px !important;
 }
 
 .add-left-10 {
