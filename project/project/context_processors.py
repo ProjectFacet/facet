@@ -32,7 +32,10 @@ def include_logged_in_users(request):
             user_id_list.append(data.get('_auth_user_id', None))
         # Query all logged in users based on id list
         current_users = User.objects.filter(id__in=user_id_list)
-        org_users = Organization.get_org_users(request.user.organization)
+        if request.user.organization:
+            org_users = Organization.get_org_users(request.user.organization)
+        else:
+            org_users = []
         return {'org_users': org_users,
                 'current_users': current_users}
     else: return {}

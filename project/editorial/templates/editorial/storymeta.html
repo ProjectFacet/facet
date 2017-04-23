@@ -111,7 +111,7 @@
           <p>Team:</p>
             <div class="row">
             {% for user in story.team.all %}
-            <div class="col-md-4">
+            <div class="col-md-4 text-center">
               {% if user.display_photo %}
               <img class="media-object img-circle" width="64" src="{{ user.display_photo.url }}" alt="user">
               {% else %}

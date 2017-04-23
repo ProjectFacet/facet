@@ -1087,7 +1087,7 @@ class Story(models.Model):
             story_facets.append(audiofacet)
         if self.videofacetstory.all():
             videofacet = self.videofacetstory.all()[0]
-            story_facets.append(videfacet)
+            story_facets.append(videofacet)
 
         return story_facets
 
@@ -3467,7 +3467,7 @@ class Comment(models.Model):
     """An individual comment.
 
     Comments can be made on a seriesplan, storyplan, webfacet,
-    audiofacet, videfacet, or between one or more people privately.
+    audiofacet, videofacet, or between one or more people privately.
     """
 
     user = models.ForeignKey(
