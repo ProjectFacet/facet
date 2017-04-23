@@ -27,6 +27,10 @@ a.default {
   color: #5bc0de !important;
 }
 
+a.subtle {
+  color: #4C5561 !important;
+}
+
 .left-rule {
   border-left: 1px solid #3c414f;
 }
@@ -94,7 +98,7 @@ a.default {
   letter-spacing: 1em;
 }
 
-.subtle {
+.subtle, .subtle-text {
   color: #4C5561;
 }
 
