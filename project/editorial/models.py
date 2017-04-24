@@ -1383,7 +1383,6 @@ class WebFacet(models.Model):
         Credit: {credit}\n
         Code: {code}\n
         Excerpt: {excerpt}\n
-        Length: {length}\n
         Keywords: {keywords}\n
         Status: {status}\n
         Due Edit: {dueedit}\n
@@ -1399,7 +1398,7 @@ class WebFacet(models.Model):
         {content}
         """.format(title=title, desc=description, story=self.story, owner=self.owner,
         organization=self.organization.name, original=self.original_webfacet, editor=self.editor,
-        credit=credits, code=self.code, excerpt=excerpt, length=self.length,
+        credit=credits, code=self.code, excerpt=excerpt,
         keywords=self.keywords, status=self.status, dueedit=self.due_edit, rundate=self.run_date,
         sharenote=share_note, images=images, captions=self.captions, documents=documents,
         audiofiles=audiofiles, content=content)
@@ -1687,7 +1686,6 @@ class PrintFacet(models.Model):
         Credit: {credit}\n
         Code: {code}\n
         Excerpt: {excerpt}\n
-        Length: {length}\n
         Keywords: {keywords}\n
         Status: {status}\n
         Due Edit: {dueedit}\n
@@ -1703,7 +1701,7 @@ class PrintFacet(models.Model):
         {content}
         """.format(title=title, desc=description, story=self.story, owner=self.owner,
         organization=self.organization.name, original=self.original_printfacet, editor=self.editor,
-        credit=credits, code=self.code, excerpt=excerpt, length=self.length,
+        credit=credits, code=self.code, excerpt=excerpt,
         keywords=self.keywords, status=self.status, dueedit=self.due_edit, rundate=self.run_date,
         sharenote=share_note, images=images, captions=self.captions, documents=documents,
         audiofiles=audiofiles, content=content)
@@ -1991,7 +1989,6 @@ class AudioFacet(models.Model):
         Credit: {credit}\n
         Code: {code}\n
         Excerpt: {excerpt}\n
-        Length: {length}\n
         Keywords: {keywords}\n
         Status: {status}\n
         Due Edit: {dueedit}\n
@@ -2007,7 +2004,7 @@ class AudioFacet(models.Model):
         {content}
         """.format(title=title, desc=description, story=self.story, owner=self.owner,
         organization=self.organization.name, original=self.original_audiofacet, editor=self.editor,
-        credit=credits, code=self.code, excerpt=excerpt, length=self.length,
+        credit=credits, code=self.code, excerpt=excerpt,
         keywords=self.keywords, status=self.status, dueedit=self.due_edit, rundate=self.run_date,
         sharenote=share_note, images=images, captions=self.captions, documents=documents,
         audiofiles=audiofiles, content=content)
@@ -2296,7 +2293,6 @@ class VideoFacet(models.Model):
         Credit: {credit}\n
         Code: {code}\n
         Excerpt: {excerpt}\n
-        Length: {length}\n
         Keywords: {keywords}\n
         Status: {status}\n
         Due Edit: {dueedit}\n
@@ -2312,7 +2308,7 @@ class VideoFacet(models.Model):
         {content}
         """.format(title=title, desc=description, story=self.story, owner=self.owner,
         organization=self.organization.name, original=self.original_videofacet, editor=self.editor,
-        credit=credits, code=self.code, excerpt=excerpt, length=self.length,
+        credit=credits, code=self.code, excerpt=excerpt,
         keywords=self.keywords, status=self.status, dueedit=self.due_edit, rundate=self.run_date,
         sharenote=share_note, images=images, captions=self.captions, documents=documents,
         audiofiles=audiofiles, content=content)
