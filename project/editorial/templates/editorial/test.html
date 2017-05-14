@@ -25,90 +25,25 @@
 <div class="row m-b-40">
   <div class="col-xs-12">
 
-    {% for audio in audiofiles %}
-      {% if audio.audio_type == 'WAV' or audio.audio_type == 'MP3' %}
-      <div id="jplayer_audio_{{audio.pk}}" class="jp-jplayer"></div>
-
-      <div id="jp_container_audio_{{audio.pk}}" class="jp-flat-audio" role="application" aria-label="media player">
-        <div class="jp-play-control jp-control">
-          <button class="jp-play jp-button" role="button" aria-label="play" tabindex="0"></button>
-        </div>
-        <div class="jp-bar">
-          <div class="jp-seek-bar jp-seek-bar-display"></div>
-          <div class="jp-seek-bar">
-            <div class="jp-play-bar"></div>
-            <div class="jp-details"><span class="jp-title" aria-label="title"></span></div>
-            <div class="jp-timing"><span class="jp-duration" role="timer" aria-label="duration"></span></div>
-          </div>
-        </div>
-        <div class="jp-no-solution">
-          Media Player Error<br />
-          Update your browser or Flash plugin
-        </div>
-      </div>
-      <script>
-      jQuery(document).ready(function($) {
-        $("#jplayer_audio_{{audio.pk}}").jPlayer({
-          ready: function(event) {
-            $(this).jPlayer("setMedia", {
-              title: "{{audio.asset_title}}",
-              wav: "{{audio.audio.url}}",
-              mp3: "{{audio.audio.url}}",
-            });
-          },
-          play: function() { // Avoid multiple jPlayers playing together.
-            $(this).jPlayer("pauseOthers");
-          },
-          timeFormat: {
-            padMin: false
-          },
-          swfPath: "js",
-          supplied: "wav, mp3",
-          cssSelectorAncestor: "#jp_container_audio_{{audio.pk}}",
-          useStateClassSkin: true,
-          autoBlur: false,
-          smoothPlayBar: true,
-          remainingDuration: true,
-          keyEnabled: true,
-          keyBindings: {
-            // Disable some of the default key controls
-            loop: null,
-            muted: null,
-            volumeUp: null,
-            volumeDown: null
-          },
-          wmode: "window"
-        });
-      });
-      </script>
-      {% endif %}
-    {% endfor %}
+    <section>
+			<p><button id="trigger-overlay" type="button" class="btn btn-lg btn-default">Open Overlay</button></p>
+		</section>
 
 
-    {% comment %}
-    <div id="jquery_jplayer_audio_1" class="jp-jplayer"></div>
 
-    <div id="jp_container_audio_1" class="jp-flat-audio" role="application" aria-label="media player">
-      <div class="jp-play-control jp-control">
-        <button class="jp-play jp-button" role="button" aria-label="play" tabindex="0"></button>
-      </div>
-      <div class="jp-bar">
-        <div class="jp-seek-bar jp-seek-bar-display"></div>
-        <div class="jp-seek-bar">
-          <div class="jp-play-bar"></div>
-          <div class="jp-details"><span class="jp-title" aria-label="title"></span></div>
-          <div class="jp-timing"><span class="jp-duration" role="timer" aria-label="duration"></span></div>
-        </div>
-      </div>
-      <div class="jp-no-solution">
-        Media Player Error<br />
-        Update your browser or Flash plugin
-      </div>
-    </div>
-    {% endcomment %}
 
 
   </div>
+</div>
+
+<div class="overlay overlay-hugeinc">
+			<button type="button" class="overlay-close">Close</button>
+
+			<div class="row">
+				<div class="col-xs-12 col-sm-4 col-sm-offset-4 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4">
+					<h1 class="center">SOMETHING ELSE</h1>
+				</div>
+			</div>
 </div>
 
 

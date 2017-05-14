@@ -5,7 +5,9 @@
 	height: 100%;
 	top: 0;
 	left: 0;
-	background: rgba(38,41,50,1);
+	background: rgba(38,41,50,0.95);
+	margin-top: -40px;
+	padding: 50px;
 }
 
 /* Overlay closing cross */
@@ -13,8 +15,8 @@
 	width: 80px;
 	height: 80px;
 	position: absolute;
-	right: 20px;
-	top: 20px;
+	right: 60px;
+	top: 60px;
 	overflow: hidden;
 	border: none;
 	background: url(../images/cross.png) no-repeat center center;
@@ -22,6 +24,7 @@
 	color: transparent;
 	outline: none;
 	z-index: 100;
+	margin-top: -40px;
 }
 
 /* Menu style */
@@ -77,6 +80,7 @@
 	visibility: visible;
 	-webkit-transition: opacity 0.5s;
 	transition: opacity 0.5s;
+	margin-top: -40px;
 }
 
 .overlay-hugeinc nav {

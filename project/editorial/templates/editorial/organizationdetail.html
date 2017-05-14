@@ -122,11 +122,14 @@
             <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3"> <!-- Start of Team Card -->
               <div class="m-b-20">
                 <!-- User Image -->
-                <a href="{% url 'user_detail' user.id %}"> {% if user.display_photo %}<img class="centered img-rounded" width=50 src="{{ user.display_photo.url }}" alt="profile image">{% else %}{% endif %} </a>
+                <a href="{% url 'user_detail' user.id %}"> {% if user.display_photo %}<img class="image-center img-rounded m-b-5" width=50 src="{{ user.display_photo.url }}" alt="{{ user.credit_name }} profile image">{% else %}{% endif %} </a>
                 <p class="f-s-12 subtle text-center"><a href="{% url 'user_detail' user.id %}">{{ user.credit_name }}</a></p>
                 <!-- End of User Image -->
               </div>
             </div> <!-- End of Team Card -->
+          {% endif %}
+          {% if forloop.counter|divisibleby:"4" and not forloop.last %}
+            </div><div class="row">
           {% endif %}
         {% endfor %}
       </div>

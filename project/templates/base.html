@@ -42,6 +42,9 @@
     <!-- Datatables -->
     <!-- <link href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css"> -->
 
+    <!-- SweetAlert Styles -->
+    <link rel="stylesheet" href="{% static 'bower_components/sweetalert2/dist/sweetalert2.css' %}">
+
     <!-- Chart Styles -->
     <link rel="stylesheet" href="{% static 'bower_components/chartist/dist/chartist.min.css' %}">
 
@@ -102,6 +105,8 @@
 
     <!-- Overlay Scripts -->
     <script src="{% static 'color-overlay/scripts/modernizr.custom.js' %}"></script>
+    <script src="{% static 'color-overlay/scripts/classie.js' %}"></script>
+    <script src="{% static 'color-overlay/scripts/overlaymain.js' %}"></script>
 
     {% block head %}
     <!-- Child Head Items -->
@@ -690,7 +695,8 @@
     <!-- <script src="{% static 'scripts/index.js' %}"></script> -->
     <!-- <script src="{% static 'bower_components/fullcalendar/dist/fullcalendar.js' %}"></script> -->
     <!-- <script src="{% static 'scripts/extras-calendar.js' %}"></script> -->
-
+    <script src="{% static 'scripts/alerts_and_notifications.js' %}"></script>
+    <script src="{% static 'color-overlay/scripts/classie.js' %}"></script>
     <!-- Overlay Scripts -->
     <script src="{% static 'color-overlay/scripts/classie.js' %}"></script>
     <script src="{% static 'color-overlay/scripts/overlaymain.js' %}"></script>
