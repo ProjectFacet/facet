@@ -2,12 +2,15 @@
 .overlay {
 	position: fixed;
 	width: 100%;
-	height: 100%;
+	height: 900px;
 	top: 0;
 	left: 0;
-	background: rgba(38,41,50,0.95);
+	/*background: rgba(38,41,50,1);*/
+	/*Test Purposes*/
+	background: rgba(161,198,4,1);
 	margin-top: -40px;
 	padding: 50px;
+	z-index: 99;
 }
 
 /* Overlay closing cross */

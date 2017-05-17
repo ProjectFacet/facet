@@ -25,6 +25,39 @@
 <div class="row m-b-40">
   <div class="col-xs-12">
 
+    {% for person in organization.user_set.all %}
+      <div class="row m-b-20">
+        <div class="col-xs-1">
+          {% if person.display_photo %}
+          <img class="media-object img-rounded" width="64" src="{{ person.display_photo.url }}" alt="user">
+          {% else %}
+          {% endif %}
+        </div>
+        <div class="col-xs-11" id="overlay_btn_parent">
+            <button id="trigger-overlay" type="button" class="btn btn-sm btn-success f-s-12" data-btn-overlay='{
+              "creditname": "{{ person.credit_name }}",
+              "photo": "{{ person.display_photo.url }}",
+              "phone": "{{ person.credit_name }}",
+              "title": "{{ person.title }}",
+              "bio": "{{ person.bio }}",
+              "location": "{{ person.location }}",
+              "expertise": "{{ person.expertise }}",
+              "facebook": "{{ person.facebook }}",
+              "twitter": "{{ person.twitter }}",
+              "github": "{{ person.github }}",
+              "linkedin": "{{ person.linkedin }}",
+              "instagram": "{{ person.instagram }}",
+              "snapchat": "{{ person.snapchat }}",
+              "vine": "{{ person.vine }}",
+            }'>
+              <i class="fa fa-arrows-alt" aria-hidden="true"></i>
+              Overlay
+            </button>
+        </div>
+      </div>
+    {% endfor %}
+
+
     <section>
 			<p><button id="trigger-overlay" type="button" class="btn btn-lg btn-default">Open Overlay</button></p>
 		</section>

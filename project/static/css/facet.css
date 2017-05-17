@@ -35,6 +35,8 @@ body {
   height: 100%;
   background-color: #2c333f;
   color: #fff;
+  /* Margin bottom by footer height */
+  margin-bottom: 20px !important;
 }
 
 hr {
@@ -43,6 +45,18 @@ hr {
   border-color: #54657E;
   margin-top: 10px;
   margin-bottom: 10px;
+}
+
+.footer {
+  /*position: absolute !important;
+  bottom: 0 !important;
+  width: 100% !important;
+  /* Set the fixed height of the footer here */
+  /*height: 20px !important;
+  line-height: 20px !important; */
+  /* Vertically center the text there */
+  /*background-color: inherit !important;*/
+  z-index: 99 !important;
 }
 
 /*Usually used with hr*/
