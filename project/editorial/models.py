@@ -661,9 +661,197 @@ class Network(models.Model):
 
 #-----------------------------------------------------------------------#
 #   Content:
-#   Series, Story, WebFacet, PrintFacet, AudioFacet, VideoFacet
+#   Project, Series, Story, WebFacet, PrintFacet, AudioFacet, VideoFacet
 #   (A Facet is always part of a story, even if there is only one facet.)
 #-----------------------------------------------------------------------#
+
+#----------------------------------------------------------------------#
+#  PROJECT
+#----------------------------------------------------------------------#
+
+@python_2_unicode_compatible
+class Project(models.Model):
+    """ A project.
+
+    Projects are a large-scale organizational component made up of multiple series and or stories. The primary use
+    is as an organization mechanism for large scale complex collaborative projects. Projects can have series, stories,
+    assets, notes, discussions, governing documents, calendars and meta information.
+    """
+
+    name = models.CharField(
+        max_length=75,
+        help_text='The name identifying the project.'
+    )
+
+    project_description = models.TextField(
+        blank=True,
+        help_text='Short description of a project.',
+    )
+
+    project_logo = models.ImageField(
+        upload_to='projects',
+        blank=True,
+    )
+
+    display_photo = ImageSpecField(
+        source='project_logo',
+        processors=[SmartResize(500,500)],
+        format='JPEG',
+    )
+
+    owner = models.ForeignKey(
+        User,
+        related_name='project_owner',
+        help_text='The user that created the project.'
+    )
+
+    organization = models.ForeignKey(
+        Organization,
+        related_name='project_organization',
+        help_text='The org'
+    )
+
+    team = models.ManyToManyField(
+        User,
+        related_name='project_team_member',
+        help_text='User contributing to the project.',
+        blank=True,
+    )
+
+    creation_date = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    # For now a boolean for sensitive or not. May have levels of sensitivity later.
+    sensitivity = models.BooleanField(
+        default=False,
+        help_text='Is a project sensitive, for limited viewing?'
+    )
+
+    share = models.BooleanField(
+        default=False,
+        help_text='The project is being shared with a network.'
+    )
+
+    share_with = models.ManyToManyField(
+        Network,
+        related_name='project_shared_with_network',
+        help_text='Network ids that a project is shared with.',
+        blank=True,
+    )
+
+    share_with_date = models.DateTimeField(
+        help_text="Estimated date the project will be available",
+        blank=True,
+        null=True,
+    )
+
+    collaborate = models.BooleanField(
+        default=False,
+        help_text='The project is being collaborated on with a network.'
+    )
+
+    collaborate_with = models.ManyToManyField(
+        Organization,
+        related_name='project_collaborated_with_organization',
+        help_text='Organization ids that a project is open to collaboration with.',
+        blank=True,
+    )
+
+    archived = models.BooleanField(
+        default=False,
+        help_text='Is the content no longer active and needed?'
+    )
+
+    discussion = models.ForeignKey(
+        'Discussion',
+        help_text='Id of planning discussion for a project.',
+        blank=True,
+        null=True,
+    )
+
+    #project social media and digital presence
+
+    website = models.URLField(
+        max_length=250,
+        blank=True,
+    )
+
+    github = models.URLField(
+        max_length=300,
+        blank=True,
+    )
+
+    facebook = models.URLField(
+        max_length=250,
+        blank=True,
+    )
+
+    twitter = models.URLField(
+        max_length=250,
+        blank=True,
+    )
+
+    instagram = models.URLField(
+        max_length=250,
+        blank=True,
+    )
+
+    snapchat = models.URLField(
+        max_length=250,
+        blank=True,
+    )
+
+    youtube = models.URLField(
+        max_length=250,
+        blank=True,
+    )
+
+    #Assets
+    governing_document_assets = models.ManyToManyField(
+        'GoverningDocumentAsset',
+        blank=True,
+    )
+
+    project_document_assets = models.ManyToManyField(
+        'ProjectDocumentAsset',
+        blank=True,
+    )
+
+    class Meta:
+        verbose_name = 'Project'
+        verbose_name_plural = "Projects"
+        ordering = ['name']
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+      return reverse('project_detail', kwargs={'pk': self.id})
+
+    def get_project_team(self):
+     """Return queryset with org users and users from collaboration orgs for a series."""
+
+     collaborators = self.collaborate_with.all()
+     project_team = User.objects.filter(Q(Q(organization=self.organization) | Q(organization__in=collaborators)))
+     return project_team
+
+    @property
+    def description(self):
+        return "{description}".format(description=self.project_description)
+
+    @property
+    def search_title(self):
+        return self.name
+
+    @property
+    def type(self):
+        return "Project"
+
+#----------------------------------------------------------------------#
+#  SERIES
+#----------------------------------------------------------------------#
+
 
 @python_2_unicode_compatible
 class Series(models.Model):
@@ -3118,6 +3306,235 @@ class VideoAsset(models.Model):
 
 
 #----------------------------------------------------------------------#
+# GoverningDocumentAsset
+
+class GoverningDocumentAssetManager(models.Manager):
+    """Custom manager for GoverningDocumentAsset."""
+
+    def create_governingdocumentasset(self, owner, organization, asset_title, asset_description, asset_attribution, document, doc_type, keywords):
+        """Method for quick creation of a document asset."""
+        documentasset=self.create(owner=owner, organization=organization, asset_title=asset_title, asset_description=asset_description, asset_attribution=asset_attribution, document=document, doc_type=doc_type, keywords=keywords)
+        return documentasset
+
+
+@python_2_unicode_compatible
+class GoverningDocumentAsset(models.Model):
+    """ Uploaded Governing Document Asset. """
+
+    owner = models.ForeignKey(
+        User,
+        related_name='governing_document_asset_owner',
+    )
+
+    organization = models.ForeignKey(
+        Organization,
+        related_name='governing_document_asset_organization'
+    )
+
+    original = models.BooleanField(
+        default=True,
+        help_text='This content originally belonged to this organization.'
+    )
+
+    asset_title = models.CharField(
+        max_length=200,
+        help_text='Text for file name. Name it intuitively.',
+        blank=True,
+    )
+
+    asset_description = models.TextField(
+        max_length=300,
+        help_text='What is the asset.',
+        blank=True,
+    )
+
+    attribution = models.TextField(
+        max_length=200,
+        help_text='The appropriate information for crediting the asset.',
+        blank=True,
+    )
+
+    document = models.FileField(
+        upload_to='governing documents',
+        blank=True,
+    )
+
+    #Choices for Asset type
+    PDF = 'PDF'
+    WORD = 'WORD DOC'
+    TXT =  'TEXT'
+    CSV = 'COMMA SEPARATED'
+    XLS = 'EXCEL'
+    OTHER = 'OTHER'
+
+    DOCUMENT_TYPE_CHOICES = (
+        (PDF, 'Adobe PDF'),
+        (WORD, 'Word Doc'),
+        (TXT, 'Text File'),
+        (CSV, 'Comma Separated'),
+        (XLS, 'Excel File'),
+        (OTHER, 'Other'),
+    )
+
+    doc_type = models.CharField(
+        max_length=20,
+        choices = DOCUMENT_TYPE_CHOICES,
+        help_text='The kind of document.'
+    )
+
+    creation_date = models.DateTimeField(
+        auto_now_add=True,
+        help_text='When the asset was created.'
+    )
+
+    keywords = ArrayField(
+        models.CharField(max_length=100),
+        default=list,
+        help_text='List of keywords for search.',
+        blank=True,
+    )
+
+    objects = GoverningDocumentAssetManager()
+
+    class Meta:
+        verbose_name = "Governing Document"
+        verbose_name_plural = "Governing Documents"
+
+    def __str__(self):
+        return self.asset_title
+
+    # def get_absolute_url(self):
+    #     return reverse('document_asset_detail', kwargs={'pk': self.id})
+
+    @property
+    def description(self):
+        return self.asset_description.encode('utf-8')
+
+    @property
+    def search_title(self):
+        return self.asset_title
+
+    @property
+    def type(self):
+        return "Governing Document"
+
+
+
+#----------------------------------------------------------------------#
+# ProjectDocumentAsset
+
+class ProjectDocumentAssetManager(models.Manager):
+    """Custom manager for ProjectDocumentAsset."""
+
+    def create_projectdocumentasset(self, owner, organization, asset_title, asset_description, asset_attribution, document, doc_type, keywords):
+        """Method for quick creation of a document asset."""
+        documentasset=self.create(owner=owner, organization=organization, asset_title=asset_title, asset_description=asset_description, asset_attribution=asset_attribution, document=document, doc_type=doc_type, keywords=keywords)
+        return documentasset
+
+
+@python_2_unicode_compatible
+class ProjectDocumentAsset(models.Model):
+    """ Uploaded Project Document Asset. """
+
+    owner = models.ForeignKey(
+        User,
+        related_name='project_document_asset_owner',
+    )
+
+    organization = models.ForeignKey(
+        Organization,
+        related_name='project_document_asset_organization'
+    )
+
+    original = models.BooleanField(
+        default=True,
+        help_text='This content originally belonged to this organization.'
+    )
+
+    asset_title = models.CharField(
+        max_length=200,
+        help_text='Text for file name. Name it intuitively.',
+        blank=True,
+    )
+
+    asset_description = models.TextField(
+        max_length=300,
+        help_text='What is the asset.',
+        blank=True,
+    )
+
+    attribution = models.TextField(
+        max_length=200,
+        help_text='The appropriate information for crediting the asset.',
+        blank=True,
+    )
+
+    document = models.FileField(
+        upload_to='project documents',
+        blank=True,
+    )
+
+    #Choices for Asset type
+    PDF = 'PDF'
+    WORD = 'WORD DOC'
+    TXT =  'TEXT'
+    CSV = 'COMMA SEPARATED'
+    XLS = 'EXCEL'
+    OTHER = 'OTHER'
+
+    DOCUMENT_TYPE_CHOICES = (
+        (PDF, 'Adobe PDF'),
+        (WORD, 'Word Doc'),
+        (TXT, 'Text File'),
+        (CSV, 'Comma Separated'),
+        (XLS, 'Excel File'),
+        (OTHER, 'Other'),
+    )
+
+    doc_type = models.CharField(
+        max_length=20,
+        choices = DOCUMENT_TYPE_CHOICES,
+        help_text='The kind of document.'
+    )
+
+    creation_date = models.DateTimeField(
+        auto_now_add=True,
+        help_text='When the asset was created.'
+    )
+
+    keywords = ArrayField(
+        models.CharField(max_length=100),
+        default=list,
+        help_text='List of keywords for search.',
+        blank=True,
+    )
+
+    objects = ProjectDocumentAssetManager()
+
+    class Meta:
+        verbose_name = "Project Document"
+        verbose_name_plural = "Project Documents"
+
+    def __str__(self):
+        return self.asset_title
+
+    # def get_absolute_url(self):
+    #     return reverse('document_asset_detail', kwargs={'pk': self.id})
+
+    @property
+    def description(self):
+        return self.asset_description.encode('utf-8')
+
+    @property
+    def search_title(self):
+        return self.asset_title
+
+    @property
+    def type(self):
+        return "Project Document"
+
+
+#----------------------------------------------------------------------#
 #   Notes:
 #   Note, NetworkNote, OrganizationNote, UserNote, SeriesNote, StoryNote
 #----------------------------------------------------------------------#
@@ -3226,6 +3643,27 @@ class UserNote(Note):
         return "User Note"
 
 
+class ProjectNote(Note):
+    """ General purpose notes for a project."""
+
+    owner=models.ForeignKey(
+        User,
+        related_name='projectnote_owner'
+    )
+
+    organization=models.ForeignKey(
+        Organization,
+        related_name="projectnote_org"
+    )
+
+    def get_absolute_url(self):
+        return reverse('org_detail', kwargs={'pk': self.organization.id})
+
+    @property
+    def type(self):
+        return "Project Note"
+
+
 class SeriesNote(Note):
     """ A note attached to a series."""
 
@@ -3310,6 +3748,7 @@ class Discussion(models.Model):
     ORGANIZATION = 'ORG'
     NETWORK = 'NET'
     PRIVATE = 'PRI'
+    PROJECT = 'PRO'
     SERIESPLAN = 'SER'
     STORYPLAN = 'STO'
     WEBFACET = 'WF'
@@ -3321,6 +3760,7 @@ class Discussion(models.Model):
         (ORGANIZATION, 'Organization Conversation'),
         (NETWORK, 'Network Conversation'),
         (PRIVATE, 'Private Conversation'),
+        (PROJECT, 'Project Conversation'),
         (SERIESPLAN, 'Series Conversation'),
         (STORYPLAN, 'Story Conversation'),
         (WEBFACET, 'WebFacet Conversation'),
