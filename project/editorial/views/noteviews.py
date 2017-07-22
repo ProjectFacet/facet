@@ -21,6 +21,7 @@ from editorial.forms import (
     NetworkNoteForm,
     OrganizationNoteForm,
     UserNoteForm,
+    ProjectNoteForm,
     SeriesNoteForm,
     StoryNoteForm,)
 
@@ -28,8 +29,10 @@ from editorial.models import (
     User,
     Organization,
     Network,
+    Project,
     Series,
     Story,
+    ProjectNote,
     SeriesNote,
     StoryNote,
     NetworkNote,
@@ -128,6 +131,46 @@ def create_user_note(request):
             usernote.owner = request.user
             usernote.save()
             return redirect('user_notes', pk=request.user.pk)
+
+
+#----------------------------------------------------------------------#
+#   Project Note Views
+#----------------------------------------------------------------------#
+
+def project_notes(request, pk):
+    """ Display all of the notes for an project. """
+
+    project = get_object_or_404(Project, pk=pk)
+    projectnoteform = ProjectNoteForm()
+    projectnotes = ProjectNote.objects.filter(project_id=project.id)
+
+    return render(request, 'editorial/projectnotes.html', {
+        'project': project,
+        'projectnoteform': projectnoteform,
+        'projectnotes': projectnotes,
+    })
+
+
+def create_project_note(request):
+    """ Post a note to an project."""
+
+    if request.method == "POST":
+        form = ProjectNoteForm(request.POST or None)
+        if form.is_valid():
+            project_id = request.POST.get('project')
+            project = get_object_or_404(Project, pk=project_id)
+            projectnote = form.save(commit=False)
+            projectnote.owner = request.user
+            projectnote.organization = request.user.organization
+            projectnote.project = project
+            projectnote.save()
+
+            # record action for activity story_team
+            action.send(request.user, verb="added note", action_object=projectnote, target=project)
+
+            return redirect('project_detail', pk=project.id)
+
+
 
 #----------------------------------------------------------------------#
 #   Series Note Views

@@ -12,6 +12,7 @@ from views import (
     organizationviews,
     userviews,
     networkviews,
+    projectviews,
     seriesviews,
     storyviews,
     assetviews,
@@ -131,14 +132,14 @@ urlpatterns = [
     #----------------------------------------------------------------------#
     #   Project URLS
     #----------------------------------------------------------------------#
-    # url(r'^project/new/$', projectviews.project_new, name='project_new'),
-    # url(r'^projects$', projectviews.series_list, name='project_list'),
-    # url(r'^project/(?P<pk>[0-9]+)/$', projectviews.project_detail, name='project_detail'),
-    # url(r'^project/(?P<pk>[0-9]+)/edit/$', projectviews.project_edit, name='project_edit'),
-    # url(r'^project/(?P<pk>[0-9]+)/delete/$', projectviews.project_delete, name='project_delete'),
-    # url(r'^project/(?P<pk>[0-9]+)/notes/$', noteviews.project_notes, name='project_notes'),
-    # url(r'^project/(?P<pk>[0-9]+)/note/(?P<note_type>[-\w]+)/content$', noteviews.note_content_html, name='note_content_html'),
-    # url(r'^project/note/new/$', noteviews.create_project_note, name='create_project_note'),
+    url(r'^project/new/$', projectviews.project_new, name='project_new'),
+    url(r'^projects$', projectviews.project_list, name='project_list'),
+    url(r'^project/(?P<pk>[0-9]+)/$', projectviews.project_detail, name='project_detail'),
+    url(r'^project/(?P<pk>[0-9]+)/edit/$', projectviews.project_edit, name='project_edit'),
+    url(r'^project/(?P<pk>[0-9]+)/delete/$', projectviews.project_delete, name='project_delete'),
+    url(r'^project/(?P<pk>[0-9]+)/notes/$', noteviews.project_notes, name='project_notes'),
+    url(r'^project/(?P<pk>[0-9]+)/note/(?P<note_type>[-\w]+)/content$', noteviews.note_content_html, name='note_content_html'),
+    url(r'^project/note/new/$', noteviews.create_project_note, name='create_project_note'),
     #----------------------------------------------------------------------#
     #   Series URLS
     #----------------------------------------------------------------------#

@@ -22,7 +22,7 @@ from editorial.forms import (
     ProjectNoteForm,)
 
 from editorial.models import (
-    Project
+    Project,
     Series,
     Story,
     Comment,
