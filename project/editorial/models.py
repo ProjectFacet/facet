@@ -6,7 +6,7 @@
     - User, Organization, Network
 
     Content:
-    - Series, Story, WebFacet, PrintFacet, AudioFacet, VideoFacet
+    - Projects, Series, Story, WebFacet, PrintFacet, AudioFacet, VideoFacet
 
     Contributor Associations:
     - WebFacetContributors, PrintFacetContributors, AudioFacetContributors,
@@ -693,7 +693,7 @@ class Project(models.Model):
         blank=True,
     )
 
-    display_photo = ImageSpecField(
+    display_logo = ImageSpecField(
         source='project_logo',
         processors=[SmartResize(500,500)],
         format='JPEG',

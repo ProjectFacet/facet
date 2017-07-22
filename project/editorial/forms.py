@@ -15,6 +15,7 @@ from editorial.models import (
     User,
     Organization,
     Network,
+    Project,
     Story,
     Series,
     WebFacet,
@@ -26,6 +27,7 @@ from editorial.models import (
     NetworkNote,
     OrganizationNote,
     UserNote,
+    ProjectNote,
     SeriesNote,
     StoryNote,
     ImageAsset,
@@ -151,6 +153,40 @@ class InviteToNetworkForm(forms.Form):
     """ Send private message inviting an organization to a network."""
 
     invited_user = forms.CharField(max_length=100)
+
+
+# ------------------------------ #
+#          Project Forms          #
+# ------------------------------ #
+
+class ProjectForm(forms.ModelForm):
+    """ Form to create a new project. """
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request")
+        super(ProjectForm, self).__init__(*args, **kwargs)
+        self.fields['collaborate_with'].queryset = Organization.get_org_collaborators(self.request.user.organization)
+        self.fields['team'].queryset = Organization.get_org_users(self.request.user.organization)
+
+    class Meta:
+        model = Project
+        fields = ['name', 'project_description', 'collaborate', 'collaborate_with', 'team']
+        widgets = {
+            'name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Project Name'}),
+            'project_description': Textarea(attrs={'class': 'form-control', 'placeholder': 'Description'}),
+            'team': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select form-control facet-select', 'id':'project-team', 'data-placeholder': 'Select Project Team'}),
+            'collaborate': CheckboxInput(attrs={'class': 'c-indicator c-indicator-default'}),
+            'collaborate_with': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select form-control facet-select', 'id':'collaborate-with', 'data-placeholder': 'Select Collaborators'}),
+            }
+
+    class Media:
+        css = {
+            'all': ('css/bootstrap-datetimepicker.css', 'css/chosen.min.css')
+        }
+        js = ('scripts/chosen.jquery.min.js',)
+
+
+
 
 # ------------------------------ #
 #          Series Forms          #
@@ -706,6 +742,20 @@ class NetworkCommentForm(forms.ModelForm):
             ),
         }
 
+
+class ProjectCommentForm():
+    """ Project comment form."""
+
+    class Meta:
+        model = Comment
+        fields = ['text']
+        widgets = {
+            'text': Textarea(
+                attrs={'id':'project-comment', 'required': True, 'placeholder': 'Comment', 'class': 'form-control', 'rows':2}
+            ),
+        }
+
+
 class SeriesCommentForm(forms.ModelForm):
     """ Comment form. """
 
@@ -814,6 +864,23 @@ class OrganizationNoteForm(forms.ModelForm):
                 attrs={'id':'on-text', 'required': True, 'placeholder': 'Note', 'class': 'form-control', 'rows':10}
             ),
         }
+
+
+class ProjectNoteForm(forms.ModelForm):
+    """ Note form for a project note. """
+
+    class Meta:
+        model=ProjectNote
+        fields = ['title', 'text', 'keywords']
+        widgets = {
+            'title': Textarea(
+                attrs={'id': 'project-note-title', 'required': True, 'placeholder': 'Note Title', 'class': 'form-control', 'rows': 1}
+            ),
+            'text': Textarea(
+                attrs={'id':'project-note-text', 'required': True, 'placeholder': 'Note', 'class': 'form-control', 'rows':10}
+            ),
+        }
+
 
 class SeriesNoteForm(forms.ModelForm):
     """ Note form for a series note. """
