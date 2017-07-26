@@ -1,0 +1,236 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load bootstrap3 %}
+
+<!-------------------------------------------->
+<!--      BREADCRUMB NAVIGATION             -->
+<!-------------------------------------------->
+
+{% block breadcrumb %}
+<div>
+    <ol class="breadcrumb icon-angle-right icon-th">
+        <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
+        <li class="fadeIn"><a href="{% url 'project_list' %}" title="View Project"> Project </a></li>
+        <li class="fadeIn"><a href="{% url 'project_detail' project.id %}" title="You are Here"> {{ project.name }} </a></li>
+    </ol>
+</div>
+{% endblock breadcrumb %}
+
+<!-------------------------------------------->
+<!--            Main Section                -->
+<!-------------------------------------------->
+
+{% block content %}
+
+<div class="row m-b-40">
+
+    <!-- Left Column -->
+    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+      <div class="row">
+        <!-- Discussion Column -->
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 right-rule">
+          <h4 class="m-b-20"> Discussion</h4>
+          <div class="comments" data-toggle="slimScroll" style="height:400px" data-color="#5D9CEC" data-allow-page-scroll="false">
+              {% if projectcomments %}
+              {% for comment in projectcomments %}
+              <div class="row m-b-10">
+                  <div class="col-xs-12">
+                      <div class="media">
+                          <a class="media-left">
+                            {% if comment.user.display_photo %}
+                              <img class="media-object img-circle h-40 w-40" src="{{ comment.user.display_photo.url }}" alt="user">
+                            {% else %}
+                              <p class="f-w-300 f-s-12">{{ comment.user.first_name }}</p>
+                            {% endif %}
+                          </a>
+                          <div class="media-body">
+                              <p class="f-w-300 f-s-16">{{ comment.text }}
+                              <span class="f-w-400 f-s-12 color-default p-r-40" style="float: right;">
+                                {{ comment.date|date:'N j' }} at {{ comment.date|date:'g:i a' }}
+                              </span>
+                              </p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              {% endfor %}
+              {% endif %}
+          </div>
+          <div class="post-comment">
+                <div class="row">
+                  <form action="{% url 'create_projectcomment' %}" method="POST" class="post-form" role="form">
+                    <div class="col-md-10">
+                        {% csrf_token %}
+                        <div class="form-group">
+                          {{ projectcommentform.text }}
+                        </div>
+                        {% if projectcommentform.text.errors %}
+                          <div class="alert alert-warning" role="alert">
+                          {{ projectcommentform.text.errors }}
+                          </div>
+                        {% endif %}
+                        <input type="hidden" name="project" value="{{ project.pk }}" />
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                          <button type="submit" class="btn btn-default btn-lg" name="projectcommentform">
+                              <i class="fa fa-paper-plane"></i>
+                          </button>
+                        </div>
+                        <!-- <input type="submit" name="projectcommentform" value="Post Comment"/> -->
+                    </div>
+                  </form>
+                </div>
+            </div>
+        </div>
+        <!-- Details Column -->
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 right-rule">
+          <h4 class="m-b-20"> Details</h4>
+          <div class="row">
+            <div class="col-md-10">
+              <h5 class="thin m-b-10"><i>{{ project.name }}</i></h5>
+              <h6 class="thin m-b-10"><i>{{ project.project_description }}</i></h6>
+            </div>
+            <div class="col-md-2">
+              {% if request.user.organization == project.organization %}
+                <a href="{% url 'project_edit' pk=project.id %}"><button class="btn btn-sm bg-default btn-block m-b-10">Edit</button></a>
+              {% endif %}
+              {% if request.user.organization == project.organization %}
+                <form action="{% url 'project_delete' pk=project.id %}" method="POST" class="post-form">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-sm btn-block bg-danger-100">Delete</button>
+                </form>
+              {% endif %}
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <hr>
+              <p>Created: <span class="sameline bright">{{ project.creation_date|date:'D M j g:i a' }}</span></p>
+              <p>Archived: <span class="sameline bright">{% if project.archived == True %} <i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</span></p>
+              <p>Sensitive: <span class="sameline bright">{% if project.sensitive == True %} <i class="fa fa-check-square-o"></i>{% else %}  <i class="fa fa-square-o"></i>{% endif %}</span></p>
+            </div>
+            <div class="col-md-6">
+              <hr>
+              <p>Collaboration: <span class="sameline bright">{% if project.collaborate == True %} <i class="fa fa-check-square-o"></i>{% else %} <i class="fa fa-square-o"></i>{% endif %}</span></p>
+              <p>Partners: </p>
+              {% for collaborator in project.collaborate_with.all %}
+              <p>- {{ collaborator.name }}</p>
+              {% endfor %}
+            </div>
+            <div class="col-md-12">
+            <hr>
+            <p>Team: </p>
+            <div class="row">
+            {% for user in project.team.all %}
+            <div class="col-md-1">
+              {% if user.display_photo %}
+              <img class="media-object img-circle" width="32" src="{{ user.display_photo.url }}" alt="user">
+              {% else %}
+              {% endif %}
+              <p class="tiny-text">{{ user.first_name }}</p>
+            </div>
+            {% endfor %}
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <hr>
+        <!-- Notes Column -->
+        <div class="col-xs-12">
+          <div class="projectnotes">
+            <h4 class="m-b-20">Notes <a data-toggle="modal" data-target="#addProjectNote" title="Add Project Note"><i class="fa fa-plus sameline dark"></i></a></h4>
+            <div class="displaynotes">
+            {% for note in projectnotes|slice:":6" %}
+                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                  <div class="card bs-card">
+                      <div class="card-block">
+                          <a data-toggle="modal" data-target="#addNote{{note.id}}" title="View Organization Note"><h4 class="f-s-16 f-w-500 m-b-20">{{ note.title }}</h4></a>
+                          <p class="card-text color-default f-s-12">{{ note.owner.credit_name }}
+                              <br>{{ note.creation_date|date:'N j' }}, {{ note.creation_date|date:'g:i a' }}</p>
+                      </div>
+                  </div>
+                </div><!-- /.cols -->
+            {% endfor %}
+            <a href="{% url 'project_notes' pk=project.id %}" class="link-text m-b-40"><small>See all notes...</small></a>
+          </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- End of Left column -->
+
+    <!-- Right Column -->
+    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+
+      <h4 class="m-b-20"> Stories <a href="{% url 'story_new' %}" title="Add A Story"><i class="fa fa-plus sameline dark"></i></a></h4>
+        <table class="table table-hover" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th>Story</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tfoot class="hidden">
+                <tr>
+                  <th>Title</th>
+                  <th>Facets</th>
+                </tr>
+            </tfoot>
+            <tbody>
+              {% for story in project.story_set.all %}
+                <tr>
+                  <td><a href="{% url 'story_detail' story.id %}">{{ story.name }}</a></td>
+                  <td>
+                    {% if story.webfacetstory.all or story.printfacetstory.all or story.audiofacetstory.all or story.videofacetstory.all %}
+                      {% for facet in story.webfacetstory.all %}
+                      <a href="{% url 'story_detail' pk=facet.story.id %}#web" title="{{ facet.wf_description }}"><p class="color-default sameline">Web</p></a>
+                      {% endfor %}
+                      {% for facet in story.printfacetstory.all %}
+                      <a href="{% url 'story_detail' pk=facet.story.id %}#print" title="{{ facet.pf_description }}"><p class="color-default sameline">Print</p></a>
+                      {% endfor %}
+                      {% for facet in story.audiofacetstory.all %}
+                      <a href="{% url 'story_detail' pk=facet.story.id %}#audio" title="{{ facet.af_description }}"><p class="color-default sameline">Audio</p></a>
+                      {% endfor %}
+                      {% for facet in story.videofacetstory.all %}
+                      <a href="{% url 'story_detail' pk=facet.story.id %}#video" title="{{ facet.vf_description }}"><p class="color-default sameline">Video</p></a>
+                      {% endfor %}
+                    {% endif %}
+
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <!-- End of Right Column -->
+</div>
+
+{% endblock %}
+
+{% block modals %}
+<!-- Add Note Modal -->
+<div class="modal fade" id="addProjectNote" tabindex="-1" role="dialog" aria-labelledby="addProjectNoteModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h5 class="modal-title" id="addUserModalLabel">Add a note for this project</h5>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'create_project_note' %}" method="POST" class="post-form">
+        {% csrf_token %}
+        {% bootstrap_form projectnoteform %}
+        <input type="hidden" name="project" value="{{ project.pk }}" />
+        <button type="submit" class="btn btn-primary">Post Note</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock modals %}

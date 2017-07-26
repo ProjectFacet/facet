@@ -85,6 +85,8 @@ def project_detail(request, pk):
     projectnoteform = ProjectNoteForm()
     projectnotes = ProjectNote.objects.filter(project=project)[:10]
     projectcommentform = ProjectCommentForm()
+    print "PCF: ", projectcommentform
+    print "TYPE: ", type(projectcommentform)
     projectcomments = Comment.objects.filter(discussion=project.discussion).order_by('-date')
 
     return render(request, 'editorial/projectdetail.html', {

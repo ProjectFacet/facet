@@ -111,6 +111,23 @@ def create_networkcomment(request):
         return redirect('network_detail', pk=network.id)
 
 
+def create_projectcomment(request):
+    """ Regular form posting method."""
+
+    if request.method == 'POST':
+        comment_text = request.POST.get('text')
+        project_id = request.POST.get('project')
+        project = get_object_or_404(Project, id=project_id)
+        discussion = get_object_or_404(Discussion, id=project.discussion.id)
+        comment = Comment.objects.create_comment(user=request.user, discussion=discussion, text=comment_text)
+        comment.save()
+
+        # record action for activity stream
+        action.send(request.user, verb="commented on", action_object=project)
+
+        return redirect('project_detail', pk=project.id)
+
+
 def create_seriescomment(request):
     """ Regular form posting method."""
 

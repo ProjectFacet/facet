@@ -3656,8 +3656,13 @@ class ProjectNote(Note):
         related_name="projectnote_org"
     )
 
+    project = models.ForeignKey(
+        Project,
+        related_name="projectnote",
+    )
+
     def get_absolute_url(self):
-        return reverse('org_detail', kwargs={'pk': self.organization.id})
+        return reverse('project_detail', kwargs={'pk': self.project.id})
 
     @property
     def type(self):

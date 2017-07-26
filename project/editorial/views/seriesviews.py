@@ -99,6 +99,8 @@ def series_detail(request, pk):
     seriesnoteform = SeriesNoteForm()
     seriesnotes = SeriesNote.objects.filter(series=series)[:10]
     seriescommentform = SeriesCommentForm()
+    print "SCF: ", seriescommentform
+    print "TYPE: ", type(seriescommentform)
     seriescomments = Comment.objects.filter(discussion=series.discussion).order_by('-date')
 
     return render(request, 'editorial/seriesdetail.html', {

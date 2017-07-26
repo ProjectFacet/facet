@@ -15,6 +15,7 @@ class EditorialAppConfig(AppConfig):
         """Add models to search. Add models to Activity Stream."""
 
         for model_name in [
+            "Project",
             "Series",
             "Story",
             "WebFacet",
@@ -25,6 +26,7 @@ class EditorialAppConfig(AppConfig):
             "NetworkNote",
             "OrganizationNote",
             "UserNote",
+            "ProjectNote",
             "SeriesNote",
             "StoryNote",
         ]:
@@ -33,6 +35,7 @@ class EditorialAppConfig(AppConfig):
         registry.register(self.get_model('User'))
         registry.register(self.get_model('Organization'))
         registry.register(self.get_model('Network'))
+        registry.register(self.get_model('Project'))
         registry.register(self.get_model('Series'))
         registry.register(self.get_model('Story'))
         registry.register(self.get_model('WebFacet'))
@@ -45,6 +48,7 @@ class EditorialAppConfig(AppConfig):
         registry.register(self.get_model('VideoAsset'))
         registry.register(self.get_model('OrganizationNote'))
         registry.register(self.get_model('NetworkNote'))
+        registry.register(self.get_model('ProjectNote'))
         registry.register(self.get_model('SeriesNote'))
         registry.register(self.get_model('StoryNote'))
         registry.register(self.get_model('Comment'))

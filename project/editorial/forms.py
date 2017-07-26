@@ -743,7 +743,7 @@ class NetworkCommentForm(forms.ModelForm):
         }
 
 
-class ProjectCommentForm():
+class ProjectCommentForm(forms.ModelForm):
     """ Project comment form."""
 
     class Meta:

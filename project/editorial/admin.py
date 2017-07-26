@@ -6,12 +6,14 @@ from models import (
     Organization,
     OrganizationNote,
     Network,
+    Project,
     Series,
     Story,
     WebFacet,
     PrintFacet,
     AudioFacet,
     VideoFacet,
+    ProjectNote,
     SeriesNote,
     StoryNote,
     ImageAsset,
@@ -31,12 +33,14 @@ admin.site.register(User)
 admin.site.register(Organization)
 admin.site.register(OrganizationNote)
 admin.site.register(Network)
+admin.site.register(Project)
 admin.site.register(Series)
 admin.site.register(Story)
 admin.site.register(WebFacet)
 admin.site.register(PrintFacet)
 admin.site.register(AudioFacet)
 admin.site.register(VideoFacet)
+admin.site.register(ProjectNote)
 admin.site.register(SeriesNote)
 admin.site.register(StoryNote)
 admin.site.register(ImageAsset)
