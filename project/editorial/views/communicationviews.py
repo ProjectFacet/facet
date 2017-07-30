@@ -22,6 +22,7 @@ from editorial.forms import (
 from editorial.models import (
     User,
     Network,
+    Project,
     Series,
     Story,
     WebFacet,
