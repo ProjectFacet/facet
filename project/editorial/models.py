@@ -89,7 +89,7 @@ class User(AbstractUser):
 
     title = models.CharField(
         max_length=100,
-        help_text='Professional title',
+        help_text='Professional title.',
         blank=True,
     )
 
@@ -128,7 +128,7 @@ class User(AbstractUser):
 
     display_photo = ImageSpecField(
         source='photo',
-        processors=[SmartResize(500,500)],
+        processors=[SmartResize(500, 500)],
         format='JPEG',
     )
 
@@ -208,11 +208,10 @@ class User(AbstractUser):
         user_stories = Story.objects.filter(Q(Q(owner=self) | Q(team=self)))
         return user_stories
 
-
     def inbox_comments(self):
         """ Return list of comments from discussions the user is a participant in."""
 
-        discussion_ids = {cd['discussion_id'] for cd in Comment.objects.filter(user_id=self.id).values('discussion_id')}
+        discussion_ids = Comment.objects.filter(user_id=self.id).values('discussion_id')
         user_comments = Comment.objects.filter(user_id=self.id)
         all_comments = Comment.objects.filter(discussion_id__in=discussion_ids)
         inbox_comments = all_comments.exclude(id__in=user_comments)
@@ -222,7 +221,7 @@ class User(AbstractUser):
         """Return list of comments from discussions the user is a participant in
         since the user's last login."""
 
-        discussion_ids = {cd['discussion_id'] for cd in Comment.objects.filter(user_id=self.id).values('discussion_id')}
+        discussion_ids = Comment.objects.filter(user_id=self.id).values('discussion_id')
         user_comments = Comment.objects.filter(user_id=self.id)
         all_comments = Comment.objects.filter(discussion_id__in=discussion_ids, date__gte=self.last_login)
         recent_comments = all_comments.exclude(id__in=user_comments)
@@ -237,7 +236,6 @@ class User(AbstractUser):
         org_collaborators = Organization.get_org_collaborators(organization)
         contact_list = User.objects.filter(Q(Q(organization=org_collaborators) | Q(organization=organization)))
         return contact_list
-
 
     def private_messages_received(self):
         """ Return all private messages a user is a recipient of."""
@@ -269,7 +267,6 @@ class User(AbstractUser):
     @property
     def search_title(self):
         return self.credit_name
-
 
     @property
     def type(self):
@@ -310,7 +307,7 @@ class Organization(models.Model):
 
     display_logo = ImageSpecField(
         source='logo',
-        processors=[SmartResize(500,500)],
+        processors=[SmartResize(500, 500)],
         format='JPEG',
     )
 
@@ -355,7 +352,7 @@ class Organization(models.Model):
         return self.name
 
     def get_absolute_url(self):
-      return reverse('org_detail', kwargs={'pk': self.id})
+        return reverse('org_detail', kwargs={'pk': self.id})
 
     def get_org_users(self):
         """ Return queryset of all users in an organization."""
@@ -378,7 +375,6 @@ class Organization(models.Model):
     #     content = Network.get_network_shared_stories(network__in=networks)
     #     print "content: ", content
     #     return content
-
 
     def get_org_collaborators(self):
         """ Return list of all organizations that are members of the same networks as self."""
@@ -459,6 +455,9 @@ class Organization(models.Model):
 
     def get_facet_comments(self):
         """Retrieve all comments for facets belonging to stories of an organization."""
+
+        # WJB XXX: this seems inefficient, we should reduce to dicsussion fields on orig
+        # querysets
 
         org_facets = []
         webfacets = WebFacet.objects.filter(Q(organization=self))
@@ -613,7 +612,7 @@ class Network(models.Model):
 
     display_logo = ImageSpecField(
         source='logo',
-        processors=[SmartResize(500,500)],
+        processors=[SmartResize(500, 500)],
         format='JPEG',
     )
 
@@ -639,12 +638,12 @@ class Network(models.Model):
         return self.name
 
     def get_absolute_url(self):
-      return reverse('network_detail', kwargs={'pk': self.id})
+        return reverse('network_detail', kwargs={'pk': self.id})
 
     def get_network_shared_stories(self):
         """ Return list of stories shared with a network. """
 
-        network_stories = Story.objects.filter(share_with = self.id)
+        network_stories = Story.objects.filter(share_with=self.id)
         return network_stories
 
     @property
@@ -695,7 +694,7 @@ class Project(models.Model):
 
     display_logo = ImageSpecField(
         source='project_logo',
-        processors=[SmartResize(500,500)],
+        processors=[SmartResize(500, 500)],
         format='JPEG',
     )
 
@@ -827,14 +826,14 @@ class Project(models.Model):
         return self.name
 
     def get_absolute_url(self):
-      return reverse('project_detail', kwargs={'pk': self.id})
+        return reverse('project_detail', kwargs={'pk': self.id})
 
     def get_project_team(self):
-     """Return queryset with org users and users from collaboration orgs for a series."""
+        """Return queryset with org users and users from collaboration orgs for a series."""
 
-     collaborators = self.collaborate_with.all()
-     project_team = User.objects.filter(Q(Q(organization=self.organization) | Q(organization__in=collaborators)))
-     return project_team
+        collaborators = self.collaborate_with.all()
+        project_team = User.objects.filter(Q(Q(organization=self.organization) | Q(organization__in=collaborators)))
+        return project_team
 
     @property
     def description(self):
@@ -952,14 +951,14 @@ class Series(models.Model):
         return self.name
 
     def get_absolute_url(self):
-      return reverse('series_detail', kwargs={'pk': self.id})
+        return reverse('series_detail', kwargs={'pk': self.id})
 
     def get_series_team(self):
-     """Return queryset with org users and users from collaboration orgs for a series."""
+        """Return queryset with org users and users from collaboration orgs for a series."""
 
-     collaborators = self.collaborate_with.all()
-     series_team = User.objects.filter(Q(Q(organization=self.organization) | Q(organization__in=collaborators)))
-     return series_team
+        collaborators = self.collaborate_with.all()
+        series_team = User.objects.filter(Q(Q(organization=self.organization) | Q(organization__in=collaborators)))
+        return series_team
 
     @property
     def description(self):
@@ -983,7 +982,7 @@ class Story(models.Model):
 
     A story is the one or more facets that make up a particular story.
     Sharing and collaboration is controlled at the story level.
-    The story also controls the sensivity and embargo status of the content.
+    The story also controls the sensitivity and embargo status of the content.
     """
 
     series = models.ForeignKey(
@@ -1011,7 +1010,7 @@ class Story(models.Model):
 
     name = models.CharField(
         max_length=250,
-        help_text='The name by which the story is identified'
+        help_text='The name by which the story is identified.'
     )
 
     story_description = models.TextField(
@@ -1105,7 +1104,7 @@ class Story(models.Model):
         return self.name
 
     def get_absolute_url(self):
-      return reverse('story_detail', kwargs={'pk': self.id})
+        return reverse('story_detail', kwargs={'pk': self.id})
 
     def copy_story(self):
         """ Create a copy of a story for a partner organization in a network.
@@ -1144,15 +1143,15 @@ class Story(models.Model):
 
         # loop over m2m and get the values as string
         team = self.team.all()
-        team = [ user.credit_name for user in team]
+        team = [user.credit_name for user in team]
         team = ",".join(team)
 
         share_with = self.share_with.all()
-        share_with = [ org.name for org in share_with ]
+        share_with = [org.name for org in share_with]
         share_with = ",".join(share_with)
 
         collaborate_with = self.share_with.all()
-        collaborate_with = [ org.name for org in collaborate_with ]
+        collaborate_with = [org.name for org in collaborate_with]
         collaborate_with = ",".join(collaborate_with)
 
         # verify the text area fields have correct encoding
@@ -1160,10 +1159,7 @@ class Story(models.Model):
         # print "NAME: ", name
         description = self.story_description.encode('utf-8')
 
-        if self.series:
-            series_name = self.series.name
-        else:
-            series_name = ""
+        series_name = self.series.name if self.series else ""
 
         story_download = """
         Story
@@ -1278,11 +1274,6 @@ class Story(models.Model):
             story_facets.append(videofacet)
 
         return story_facets
-
-
-    # @property
-    # def description(self):
-    #     return "{description}".format(description=self.story_description)
 
     @property
     def description(self):
@@ -1471,7 +1462,6 @@ class WebFacet(models.Model):
         default=False,
         help_text='Whether the webfacet has been pushed to the organization WordPress site.',
     )
-
 
     class Meta:
         verbose_name = 'Webfacet'
@@ -1785,7 +1775,7 @@ class PrintFacet(models.Model):
         return self.title
 
     def get_absolute_url(self):
-      return reverse('story_detail', kwargs={'pk': self.story.id})
+        return reverse('story_detail', kwargs={'pk': self.story.id})
 
     def copy_printfacet(self):
         """ Create a copy of a printfacet for a partner organization in a network."""
@@ -2088,7 +2078,7 @@ class AudioFacet(models.Model):
         return self.title
 
     def get_absolute_url(self):
-      return reverse('story_detail', kwargs={'pk': self.story.id})
+        return reverse('story_detail', kwargs={'pk': self.story.id})
 
     def copy_audiofacet(self):
         """ Create a copy of a audiofacet for a partner organization in a network."""
@@ -2392,7 +2382,7 @@ class VideoFacet(models.Model):
         return self.title
 
     def get_absolute_url(self):
-      return reverse('story_detail', kwargs={'pk': self.story.id})
+        return reverse('story_detail', kwargs={'pk': self.story.id})
 
     def copy_videofacet(self):
         """ Create a copy of a videofacet for a partner organization in a network."""
@@ -2742,7 +2732,6 @@ class ImageAsset(models.Model):
         image_copy.save()
         return image_copy
 
-
     def get_image_download_info(self):
         """Return rst of image information for download."""
 
@@ -2897,7 +2886,6 @@ class DocumentAsset(models.Model):
         document_usage.extend(document_videofacets)
         return document_usage
 
-
     def copy_document(self):
         """ Create a copy of a document for a partner organization in a network.
 
@@ -2912,7 +2900,6 @@ class DocumentAsset(models.Model):
         document_copy.original = False
         document_copy.save()
         return document_copy
-
 
     def get_document_download_info(self):
         """Return rst of document information for download."""
@@ -3068,7 +3055,6 @@ class AudioAsset(models.Model):
         audio_usage.extend(audio_videofacets)
         return audio_usage
 
-
     def copy_audio(self):
         """ Create a copy of an audiofile for a partner organization in a network.
 
@@ -3084,7 +3070,6 @@ class AudioAsset(models.Model):
         audio_copy.save()
         return audio_copy
 
-
     def get_audio_download_info(self):
         """Return rst of audio information for download."""
 
@@ -3092,7 +3077,7 @@ class AudioAsset(models.Model):
         description = self.asset_description.encode('utf-8')
         attribution = self.attribution.encode('utf-8')
 
-        audio_info="""
+        audio_info = """
         Audio
         =======
         {title}.jpg
@@ -3237,13 +3222,11 @@ class VideoAsset(models.Model):
         video_webfacets = WebFacet.objects.filter(Q(video_assets=self))
         video_printfacets = PrintFacet.objects.filter(Q(video_assets=self))
         video_videofacets = VideoFacet.objects.filter(Q(video_assets=self))
-        video_videofacets = VideoFacet.objects.filter(Q(video_assets=self))
         video_usage.extend(video_webfacets)
         video_usage.extend(video_printfacets)
         video_usage.extend(video_videofacets)
         video_usage.extend(video_videofacets)
         return video_usage
-
 
     def copy_video(self):
         """ Create a copy of a video for a partner organization in a network.
@@ -3584,6 +3567,7 @@ class Note(models.Model):
     @property
     def search_title(self):
         return self.title
+
 
 class NetworkNote(Note):
     """ General purpose notes for a network."""
