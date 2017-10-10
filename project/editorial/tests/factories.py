@@ -40,12 +40,16 @@ class UserFactory(factory.DjangoModelFactory):
     expertise = ["Writing", "Editing"]
     # notes = []   # FIXME
     photo = factory.django.ImageField()
-    facebook = factory.LazyAttribute(lambda c: "http://facebook.com/%s" % slugify(c.first_name))
+    facebook = factory.LazyAttribute(
+        lambda c: "http://facebook.com/%s" % slugify(c.first_name))
     twitter = factory.LazyAttribute(lambda c: "http://twitter.com/%s" % slugify(c.first_name))
     github = factory.LazyAttribute(lambda c: "http://github.com/%s" % slugify(c.first_name))
-    linkedin = factory.LazyAttribute(lambda c: "http://linkedin.com/%s" % slugify(c.first_name))
-    instagram = factory.LazyAttribute(lambda c: "http://instagram.com/%s" % slugify(c.first_name))
-    snapchat = factory.LazyAttribute(lambda c: "http://snapchat.com/%s" % slugify(c.first_name))
+    linkedin = factory.LazyAttribute(
+        lambda c: "http://linkedin.com/%s" % slugify(c.first_name))
+    instagram = factory.LazyAttribute(
+        lambda c: "http://instagram.com/%s" % slugify(c.first_name))
+    snapchat = factory.LazyAttribute(
+        lambda c: "http://snapchat.com/%s" % slugify(c.first_name))
     vine = factory.LazyAttribute(lambda c: "http://vine.com/%s" % slugify(c.first_name))
     website = factory.LazyAttribute(lambda c: "http://www.%s.com/" % slugify(c.first_name))
 
@@ -58,6 +62,15 @@ class UserFactory(factory.DjangoModelFactory):
         except models.User.DoesNotExist:
             manager = cls._get_manager(model_class)
             return manager.create_user(*args, **kwargs)
+
+
+class DiscussionFactory(factory.DjangoModelFactory):
+    """Factory for making demo discussions."""
+
+    class Meta:
+        model = models.Discussion
+
+    discussion_type = "???"
 
 
 class OrganizationFactory(factory.DjangoModelFactory):
@@ -76,15 +89,59 @@ class OrganizationFactory(factory.DjangoModelFactory):
     facebook = factory.LazyAttribute(lambda c: "http://facebook.com/%s" % slugify(c.name))
     twitter = factory.LazyAttribute(lambda c: "http://twitter.com/%s" % slugify(c.name))
     website = factory.LazyAttribute(lambda c: "http://www.%s.com/" % slugify(c.name))
-    discussion = factory.SubFactory('editorial.tests.factories.DiscussionFactory', discussion_type="ORG")
+    discussion = factory.SubFactory(DiscussionFactory, discussion_type="ORG")
 
 
-class DiscussionFactory(factory.DjangoModelFactory):
-    """Factory for making demo discussions."""
+class NetworkFactory(factory.DjangoModelFactory):
+    """Factory for making network."""
 
     class Meta:
-        model = models.Discussion
+        model = models.Network
+        django_get_or_create = ['name']
 
-    discussion_type = "???"
+    name = "Baltimore Co-Op"
+    owner_organization = factory.SubFactory(OrganizationFactory)
+    creation_date = make_aware(datetime(2017, 1, 1))
+    network_description = "Description of network."
+    logo = factory.django.ImageField()
+    # organizations = [] ...
+    discussion = factory.SubFactory(DiscussionFactory, discussion_type='NET')
+
+    @factory.post_generation
+    def organizations(self, create, extracted, **kwargs):
+        if not create:
+            # Simple build, do nothing.
+            return
+
+        if extracted:
+            # A list of groups were passed in, use them
+            for org in extracted:
+                self.organizations.add(org)
 
 
+class StoryFactory(factory.DjangoModelFactory):
+    """Factory for making stories."""
+
+    class Meta:
+        model = models.Story
+        django_get_or_create = ['name']
+
+    # series = [] ...
+    owner = factory.SubFactory(UserFactory)
+    organization = factory.SubFactory(OrganizationFactory)
+    original_story = True
+    name = "Cute Kitten Rescued"
+    story_description = "Description of story."
+    embargo = False
+    embargo_datetime = None
+    creation_date = make_aware(datetime(2017, 1, 1))
+    # team = ...
+    sensitive = False
+    share = False
+    share_with_date = None
+    ready_to_share = False
+    # share_with = ...
+    collaborate = False
+    # collaborate_with = ...
+    archived = False
+    discussion = factory.SubFactory(DiscussionFactory, discussion_type='STO')

@@ -775,11 +775,12 @@ class Network(models.Model):
 
 @python_2_unicode_compatible
 class Project(models.Model):
-    """ A project.
+    """A project.
 
-    Projects are a large-scale organizational component made up of multiple series and or stories. The primary use
-    is as an organization mechanism for large scale complex collaborative projects. Projects can have series, stories,
-    assets, notes, discussions, governing documents, calendars and meta information.
+    Projects are a large-scale organizational component made up of multiple series and/or
+    stories. The primary use is as an organization mechanism for large scale complex
+    collaborative projects. Projects can have series, stories, assets, notes, discussions,
+    governing documents, calendars and meta information.
     """
 
     name = models.CharField(
@@ -1083,7 +1084,7 @@ class Series(models.Model):
 
 @python_2_unicode_compatible
 class Story(models.Model):
-    """ The unit of a story.
+    """The unit of a story.
 
     A story is the one or more facets that make up a particular story.
     Sharing and collaboration is controlled at the story level.
@@ -1299,6 +1300,8 @@ class Story(models.Model):
         """Return queryset with org users and users from collaboration orgs for a story.
         Used in selecting credit and editors for a facet.
         """
+
+        # FIXME WJB: why is this not used in get_story_download?
 
         collaborators = self.collaborate_with.all()
         story_team = User.objects.filter(Q(Q(organization=self.organization) | Q(organization__in=collaborators)))
