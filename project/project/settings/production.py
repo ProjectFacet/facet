@@ -1,4 +1,4 @@
-""" Development settings for facet project. """
+"""Production settings for facet project."""
 
 from .settings import *
 
@@ -44,9 +44,11 @@ if unset_secrets:
 # MODULES #
 # -------------------------------------------------------------- #
 
-INSTALLED_APPS = INSTALLED_APPS + (
-    'storages', # for use with S3
-)
+# FIXME from WJB: this should prob migrate to base settings
+
+INSTALLED_APPS += [
+    'storages',  # for use with S3
+]
 
 # -------------------------------------------------------------- #
 # DEBUGGING #
@@ -62,13 +64,9 @@ DEBUG = False
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 
-
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 
 STATIC_URL = "https://%s/" % AWS_S3_CUSTOM_DOMAIN
-
-TINYMCE_JS_ROOT = os.path.join(STATIC_URL, 'scripts/tiny_mce/')
-TINYMCE_JS_URL = os.path.join(STATIC_URL, 'scripts/tiny_mce/tinymce.min.js')
 
 # -------------------------------------------------------------- #
 # APPLICATION DEFINITION? #
@@ -77,7 +75,7 @@ TINYMCE_JS_URL = os.path.join(STATIC_URL, 'scripts/tiny_mce/tinymce.min.js')
 ALLOWED_HOSTS = [
     "facet-katie-dev.us-west-1.elasticbeanstalk.com",
     "facet-dev.us-west-1.elasticbeanstalk.com",
-    ]
+]
 
 # -------------------------------------------------------------- #
 # DATABASE #
@@ -88,9 +86,9 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': os.environ.get('RDS_DB_NAME', 'facet'),
         'USER': os.environ.get('RDS_USERNAME', 'localhost'),
-        'PASSWORD': os.environ.get('RDS_PASSWORD', 5432),
+        'PASSWORD': os.environ.get('RDS_PASSWORD', 'collaborate'),
         'HOST': os.environ.get('RDS_HOSTNAME', 'facet'),
-        'PORT': os.environ.get('RDS_PORT', 'collaborate'),
+        'PORT': os.environ.get('RDS_PORT', 5432),
     }
 }
 
@@ -109,7 +107,6 @@ DATABASES = {
 # }
 
 
-
 # -------------------------------------------------------------- #
 # EMAIL #
 # -------------------------------------------------------------- #
@@ -122,3 +119,4 @@ EMAIL_HOST_PASSWORD = os.environ['AWS_EMAIL_HOST_PASSWORD']
 EMAIL_PORT = 465
 EMAIL_USE_TLS = True
 AWS_SES_REGION_ENDPOINT = 'email-smtp.us-west-2.amazonaws.com'
+SERVER_EMAIL = DEFAULT_FROM_EMAIL = os.environ['EMAIL_HOST_USER']

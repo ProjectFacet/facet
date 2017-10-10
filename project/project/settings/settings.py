@@ -1,4 +1,4 @@
-""" Base settings for Facet. Development and Production inherit from this. """
+"""Base settings for Facet. Development and Production inherit from this."""
 
 import os
 
@@ -19,19 +19,13 @@ STATICFILES_DIRS = [os.path.join(PROJECT_DIR, "static")]
 # EMAIL #
 # -------------------------------------------------------------- #
 
-# SECURITY WARNING: keep the secret key used in production secret!
-# Dev purposes only, will be replaced...
-SECRET_KEY = os.environ.get('SECRET_KEY', "abcdef")
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
 MEDIA_ROOT = GIT_DIR + "/media/"
 MEDIA_URL = "/media/"
 
 ALLOWED_HOSTS = []
 # Application definition
 
-INSTALLED_APPS = (
+INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -53,8 +47,9 @@ INSTALLED_APPS = (
     'watson',
     'embed_video',
     'actstream',
-    'project',
-)
+
+    # 'project',   # FIXME from WJB: normally, site proj not in installed_apps
+]
 
 SITE_ID = 1
 
@@ -70,7 +65,6 @@ MIDDLEWARE_CLASSES = (
     'simple_history.middleware.HistoryRequestMiddleware',
 )
 
-# TINYMCE_JS_ROOT = '/static/scripts/tiny_mce/'
 TINYMCE_JS_ROOT = os.path.join(STATIC_URL, 'scripts/tiny_mce/')
 TINYMCE_JS_URL = os.path.join(STATIC_URL, 'scripts/tiny_mce/tinymce.min.js')
 TINYMCE_DEFAULT_CONFIG = {
@@ -117,8 +111,7 @@ ACCOUNT_AUTHENTICATION_METHOD = "email"
 # EMAIL #
 # -------------------------------------------------------------- #
 
-SERVER_EMAIL = DEFAULT_FROM_EMAIL = os.environ.get('EMAIL_HOST_USER',
-                                                   "facet-mail@example.com")
+SERVER_EMAIL = DEFAULT_FROM_EMAIL = "facet-mail@example.com"
 
 # -------------------------------------------------------------- #
 # DJANGO REST FRAMEWORK #
@@ -143,7 +136,6 @@ ACTSTREAM_SETTINGS = {
     'USE_JSONFIELD': True,
     'GFK_FETCH_DEPTH': 2,
 }
-
 
 # -------------------------------------------------------------- #
 # OTHER SETTINGS #
