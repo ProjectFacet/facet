@@ -2713,8 +2713,58 @@ class Task(models.Model):
 #  EVENT
 #-----------------------------------------------------------------------#
 
+class Event(models.Model):
+    """An event.
+    An event can be assigned to an Organization, Project, Series or Story.
+    """
 
+    title = models.TextField(
+        help_text='Title of the event.'
+    )
 
+    description = models.TextField(
+        help_text='Description of the event.',
+        blank=True,
+    )
+
+    team = models.ManyToManyField(
+        # There can be multiple users assigned to an event.
+        User,
+        related_name='eventteam',
+        help_text='The users assigned to an event.',
+        blank=True,
+    )
+
+    creation_date = models.DateTimeField(
+        auto_now_add=True,
+        help_text='Date and time event is created.',
+        blank=True,
+    )
+
+    event_date = models.DateTimeField(
+        help_text='Date and time of the event.',
+        blank=True,
+    )
+
+    venue = models.TextField(
+        help_text = 'The location of the event.'
+        blank=True,
+    )
+
+    # a task can be associated with a project, series, story or an event.
+    #TODO Add connection to P, Se, St, or E
+
+    #TODO Add Notes to note class to be attached to Events
+
+    #TODO Add Document and Image assets for events to Assets section.
+
+    @property
+    def title(self):
+        return self.title
+
+    @property
+    def type(self):
+        return "Event"
 
 #-----------------------------------------------------------------------#
 #  SOCIAL POST
