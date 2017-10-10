@@ -43,11 +43,13 @@ from django.utils import timezone
 from django.shortcuts import get_object_or_404
 from itertools import chain
 from embed_video.fields import EmbedVideoField
+from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.models import ContentType
 
-#----------------------------------------------------------------------#
+#-----------------------------------------------------------------------#
 #   People:
 #   User, Organization, Network
-#----------------------------------------------------------------------#
+#-----------------------------------------------------------------------#
 
 @python_2_unicode_compatible
 class User(AbstractUser):
@@ -272,7 +274,7 @@ class User(AbstractUser):
     def type(self):
         return "User"
 
-#----------------------------------------------------------------------#
+#-----------------------------------------------------------------------#
 
 @python_2_unicode_compatible
 class Organization(models.Model):
@@ -571,7 +573,7 @@ class Organization(models.Model):
     def type(self):
         return "Organization"
 
-#----------------------------------------------------------------------#
+#-----------------------------------------------------------------------#
 
 @python_2_unicode_compatible
 class Network(models.Model):
@@ -658,15 +660,116 @@ class Network(models.Model):
     def type(self):
         return "Network"
 
+
+#--------------------------------------------------------------------------#
+#   Platforms:
+#   Social accounts connected to Users, Organizations, Projects and Series.
+#   Ex. Users can have social media accounts, Organizations will often
+#   have multiple accounts on any single platform, a special project or series
+#   may have a unique social presence.
+#--------------------------------------------------------------------------#
+
+class PlatformAccount(models.Model):
+    """ A Platform Account.
+
+    Platform accounts are the types and urls of different social media
+    and platform accounts. Platform accounts can be connected to a user,
+    organization, project or series. The attributes should always be the same
+    regardless of model it's associated with.
+    """
+
+    # Choices for Platform.
+    FACEBOOK = 'Facebook'
+    TWITTER = 'Twitter'
+    YOUTUBE = 'YouTube'
+    VIMEO = 'Vimeo'
+    SNAPCHAT = 'Snapchat'
+    LINKEDIN = 'LinkedIn'
+    GITHUB = 'Github'
+    REDDIT = 'Reddit'
+    INSTAGRAM = 'Instagram'
+    PINTEREST = 'Pinterest'
+    FLICKR = 'Flickr'
+    BEHANCE = 'Behance'
+    TUMBLR = 'Tumblr'
+    PLATFORM_CHOICES = (
+        (FACEBOOK, 'Facebook'),
+        (TWITTER, 'Twitter'),
+        (YOUTUBE, 'YouTube'),
+        (VIMEO, 'Vimeo'),
+        (SNAPCHAT, 'Snapchat'),
+        (LINKEDIN, 'LinkedIn'),
+        (GITHUB, 'Github'),
+        (REDDIT, 'Reddit'),
+        (INSTAGRAM, 'Instagram'),
+        (PINTEREST,'Pinterest'),
+        (FLICKR, 'Flickr'),
+        (BEHANCE, 'Behance'),
+        (TUMBLR, 'Tumblr'),
+    )
+
+    platform = models.CharField(
+        max_length=50,
+        choices=PLATFORM_CHOICES,
+        help_text='Platform choice.'
+    )
+
+    url = models.URLField(
+        max_length=250,
+        blank=True,
+    )
+
+    description = models.TextField(
+        blank=True,
+        help_text='Short description of the purpose of the account.',
+    )
+
+    # if a social account is associated with an Organization, Project or Series
+    team = models.ManyToManyField(
+        User,
+        related_name='social_team_member',
+        help_text='User that contributes to this account.',
+        blank=True,
+    )
+
+    # a platform account can be connected to a User, Organization or Project
+    # this could be structured like this, with Abstract Base Class or using contenttypes
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        blank=True,
+    )
+
+    organization = models.ForeignKey(
+        Organization,
+        on_delete=models.CASCADE,
+        blank=True,
+    )
+
+    project = models.ForeignKey(
+        'Project',
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+    )
+
+    @property
+    def description(self):
+        return self.description
+
+    @property
+    def type(self):
+        return "Platform Account"
+
 #-----------------------------------------------------------------------#
 #   Content:
 #   Project, Series, Story, WebFacet, PrintFacet, AudioFacet, VideoFacet
 #   (A Facet is always part of a story, even if there is only one facet.)
 #-----------------------------------------------------------------------#
 
-#----------------------------------------------------------------------#
+#-----------------------------------------------------------------------#
 #  PROJECT
-#----------------------------------------------------------------------#
+#-----------------------------------------------------------------------#
 
 @python_2_unicode_compatible
 class Project(models.Model):
@@ -847,9 +950,9 @@ class Project(models.Model):
     def type(self):
         return "Project"
 
-#----------------------------------------------------------------------#
+#-----------------------------------------------------------------------#
 #  SERIES
-#----------------------------------------------------------------------#
+#-----------------------------------------------------------------------#
 
 
 @python_2_unicode_compatible
@@ -972,9 +1075,9 @@ class Series(models.Model):
     def type(self):
         return "Series"
 
-#----------------------------------------------------------------------#
+#-----------------------------------------------------------------------#
 #  STORY
-#----------------------------------------------------------------------#
+#-----------------------------------------------------------------------#
 
 @python_2_unicode_compatible
 class Story(models.Model):
@@ -1287,9 +1390,9 @@ class Story(models.Model):
     def type(self):
         return "Story"
 
-#----------------------------------------------------------------------#
+#-----------------------------------------------------------------------#
 #   WEBFACET
-#----------------------------------------------------------------------#
+#-----------------------------------------------------------------------#
 
 @python_2_unicode_compatible
 class WebFacet(models.Model):
@@ -1596,9 +1699,9 @@ class WebFacet(models.Model):
     def type(self):
         return "WebFacet"
 
-#----------------------------------------------------------------------#
+#-----------------------------------------------------------------------#
 #   PRINTFACET
-#----------------------------------------------------------------------#
+#-----------------------------------------------------------------------#
 
 @python_2_unicode_compatible
 class PrintFacet(models.Model):
@@ -1898,9 +2001,9 @@ class PrintFacet(models.Model):
     def type(self):
         return "PrintFacet"
 
-#----------------------------------------------------------------------#
+#-----------------------------------------------------------------------#
 #   AUDIOFACET
-#----------------------------------------------------------------------#
+#-----------------------------------------------------------------------#
 
 @python_2_unicode_compatible
 class AudioFacet(models.Model):
@@ -2202,9 +2305,9 @@ class AudioFacet(models.Model):
     def type(self):
         return "AudioFacet"
 
-#----------------------------------------------------------------------#
+#-----------------------------------------------------------------------#
 #   VIDEOFACET
-#----------------------------------------------------------------------#
+#-----------------------------------------------------------------------#
 
 @python_2_unicode_compatible
 class VideoFacet(models.Model):
@@ -2506,11 +2609,196 @@ class VideoFacet(models.Model):
         return "VideoFacet"
 
 
-#----------------------------------------------------------------------#
+#-----------------------------------------------------------------------#
+#   Secondary Content:
+#   Tasks, Events, Social Posts
+#-----------------------------------------------------------------------#
+
+#-----------------------------------------------------------------------#
+#  TASK
+#-----------------------------------------------------------------------#
+
+class Task(models.Model):
+    """A Task.
+
+    A task is an action item assigned to a team and to a project, series,
+    story or an event.
+    """
+
+    title = models.TextField(
+        help_text='Title of the task.'
+    )
+
+    text = models.TextField(
+        help_text='Content of the task.',
+        blank=True,
+    )
+
+    assigned_to = models.ManyToManyField(
+        # There can be multiple users listed as the credit.
+        User,
+        related_name='taskassigneduser',
+        help_text='The users assigned to the task.',
+        blank=True,
+    )
+
+    # Choices for Task status.
+    IDENTIFIED = 'Identified'
+    IN_PROGRESS = 'In Progress'
+    COMPLETE = 'Complete'
+    TASK_STATUS_CHOICES = (
+        (IDENTIFIED, 'Identified'),
+        (IN_PROGRESS, 'In Progress'),
+        (COMPLETE, 'Complete'),
+    )
+
+    task_status = models.CharField(
+        max_length=50,
+        choices=TASK_STATUS_CHOICES,
+        help_text='Task status.'
+    )
+
+    important = models.BooleanField(
+        default=False,
+        help_text='Whether a task is important.'
+    )
+
+    creation_date = models.DateTimeField(
+        auto_now_add=True,
+        help_text='Date and time task is created.',
+        blank=True,
+    )
+
+    due_date = models.DateTimeField(
+        help_text='Date and time task is to be completed.',
+        blank=True,
+    )
+
+    inprogress_date = models.DateTimeField(
+        help_text='Date and time task status is changed to in progress.',
+        blank=True,
+    )
+
+    completion_date = models.DateTimeField(
+        auto_now_add=True,
+        help_text='Date and time task status is changed to complete.',
+        blank=True,
+    )
+
+    # a task can be associated with a project, series, story or an event.
+    #TODO Add connection to P, Se, St, or E
+
+    @property
+    def task_title(self):
+        return self.title
+
+    @property
+    def type(self):
+        return "Task"
+
+
+#-----------------------------------------------------------------------#
+#  EVENT
+#-----------------------------------------------------------------------#
+
+class Event(models.Model):
+    """An event.
+
+    An event can be assigned to an Organization, Project, Series or Story.
+    """
+
+    title = models.TextField(
+        help_text='Title of the event.'
+    )
+
+    description = models.TextField(
+        help_text='Description of the event.',
+        blank=True,
+    )
+
+    team = models.ManyToManyField(
+        # There can be multiple users assigned to an event.
+        User,
+        related_name='eventteam',
+        help_text='The users assigned to an event.',
+        blank=True,
+    )
+
+    creation_date = models.DateTimeField(
+        auto_now_add=True,
+        help_text='Date and time event is created.',
+        blank=True,
+    )
+
+    event_date = models.DateTimeField(
+        help_text='Date and time of the event.',
+        blank=True,
+    )
+
+    venue = models.TextField(
+        help_text = 'The location of the event.',
+        blank=True,
+    )
+
+    # a task can be associated with a project, series, story or an event.
+    #TODO Add connection to P, Se, St, or E
+
+    #TODO Add Notes to note class to be attached to Events
+
+    #TODO Add Document and Image assets for events to Assets section.
+
+    @property
+    def title(self):
+        return self.title
+
+    @property
+    def type(self):
+        return "Event"
+
+#-----------------------------------------------------------------------#
+#  SOCIAL POST
+#-----------------------------------------------------------------------#
+
+class SocialPost(models.Model):
+    """A social post.
+
+    A social post to promote a project, series, story or event.
+    """
+
+    FACEBOOK = 'Facebook'
+    TWITTER = 'Twitter'
+    INSTAGRAM = 'Instagram'
+    SOCIAL_ACCOUNT_CHOICES = (
+        (FACEBOOK, 'Facebook'),
+        (TWITTER, 'Twitter'),
+        (INSTAGRAM, 'Instagram'),
+    )
+
+    social_platform = models.CharField(
+        max_length=50,
+        choices=SOCIAL_ACCOUNT_CHOICES,
+        help_text='Platform the post is created for.'
+    )
+
+    text = models.TextField(
+        help_text='Content of the post.'
+    )
+
+    # a social post can be associated with a project, series, story or an event.
+    #TODO Add connection to P, Se, St, or E
+
+    #TODO Add Image assets for social posts to Assets section.
+
+    @property
+    def type(self):
+        return "Social Post."
+
+
+#-----------------------------------------------------------------------#
 #   Contributor Associations:
 #   WebFacetContributor, PrintFacetContributor,
 #   AudioFacetContributor, VideoFacetContributor
-#----------------------------------------------------------------------#
+#-----------------------------------------------------------------------#
 
 @python_2_unicode_compatible
 class WebFacetContributor(models.Model):
@@ -2608,10 +2896,14 @@ class VideoFacetContributor(models.Model):
                                         )
 
 
-#----------------------------------------------------------------------#
+#-----------------------------------------------------------------------#
 #   Assets:
 #   ImageAsset, DocumentAsset, AudioAsset, VideoAsset,
-#----------------------------------------------------------------------#
+#-----------------------------------------------------------------------#
+
+#-----------------------------------------------------------------------#
+#   Image Asset
+#-----------------------------------------------------------------------#
 
 class ImageAssetManager(models.Manager):
     """Custom manager for ImageAsset."""
@@ -2776,8 +3068,9 @@ class ImageAsset(models.Model):
     def type(self):
         return "Image"
 
-#----------------------------------------------------------------------#
+#-----------------------------------------------------------------------#
 # DocumentAsset
+#-----------------------------------------------------------------------#
 
 class DocumentAssetManager(models.Manager):
     """Custom manager for DocumentAsset."""
@@ -2945,8 +3238,9 @@ class DocumentAsset(models.Model):
     def type(self):
         return "Document"
 
-#----------------------------------------------------------------------#
+#-----------------------------------------------------------------------#
 # AudioAsset
+#-----------------------------------------------------------------------#
 
 class AudioAssetManager(models.Manager):
     """Custom manager for AudioAsset."""
@@ -3114,8 +3408,9 @@ class AudioAsset(models.Model):
     def type(self):
         return "Audio"
 
-#----------------------------------------------------------------------#
+#-----------------------------------------------------------------------#
 #VideoAsset
+#-----------------------------------------------------------------------#
 
 class VideoAssetManager(models.Manager):
     """Custom manager for VideoAsset."""
@@ -3288,7 +3583,7 @@ class VideoAsset(models.Model):
         return "Video"
 
 
-#----------------------------------------------------------------------#
+#-----------------------------------------------------------------------#
 # GoverningDocumentAsset
 
 class GoverningDocumentAssetManager(models.Manager):
@@ -3403,7 +3698,7 @@ class GoverningDocumentAsset(models.Model):
 
 
 
-#----------------------------------------------------------------------#
+#-----------------------------------------------------------------------#
 # ProjectDocumentAsset
 
 class ProjectDocumentAssetManager(models.Manager):
@@ -3517,10 +3812,10 @@ class ProjectDocumentAsset(models.Model):
         return "Project Document"
 
 
-#----------------------------------------------------------------------#
+#-----------------------------------------------------------------------#
 #   Notes:
 #   Note, NetworkNote, OrganizationNote, UserNote, SeriesNote, StoryNote
-#----------------------------------------------------------------------#
+#-----------------------------------------------------------------------#
 
 
 @python_2_unicode_compatible
@@ -3715,10 +4010,10 @@ class StoryNote(Note):
     def type(self):
         return "Story Note"
 
-#----------------------------------------------------------------------#
+#-----------------------------------------------------------------------#
 #   Discussion:
 #   Discussion, PrivateDiscussion, PrivateMessage, Comment, CommentReadStatus
-#----------------------------------------------------------------------#
+#-----------------------------------------------------------------------#
 
 class DiscussionManager(models.Manager):
     """ Custom manager for discussions."""
@@ -3936,12 +4231,12 @@ class CommentReadStatus(models.Model):
                                 )
 
 
-#----------------------------------------------------------------------#
+#-----------------------------------------------------------------------#
 #   CopyDetails:
 #   SeriesCopyDetail, StoryCopyDetail, WebFacetCopyDetail,
 #   PrintFacetCopyDetail, AudioFacetCopyDetail, VideoFacetCopyDetail,
 #   ImageAssetCopyDetail, DocumentAssetCopyDetail, AudioFacetCopyDetail
-#----------------------------------------------------------------------#
+#-----------------------------------------------------------------------#
 
 class SeriesCopyDetailManager(models.Manager):
     """Custom manager to create copy records for series. """
