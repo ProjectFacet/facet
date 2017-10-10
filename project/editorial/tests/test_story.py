@@ -3,7 +3,42 @@ from datetime import datetime
 from django.test import TestCase
 from django.utils.timezone import make_aware
 
-from .factories import UserFactory, OrganizationFactory, NetworkFactory, StoryFactory
+from .factories import UserFactory, OrganizationFactory, NetworkFactory, StoryFactory, \
+    SeriesFactory
+
+
+class SeriesModelTestCase(TestCase):
+    """Test basic features of `Series` model."""
+
+    def test_model(self):
+        """Test instantiation."""
+
+        sr = SeriesFactory()
+        sr.full_clean()
+
+    def test_str(self):
+        """Test str()."""
+
+        sr = SeriesFactory()
+        self.assertEqual(str(sr), "American Pets")
+
+    def test_basic(self):
+        """Basic info."""
+
+        sr = SeriesFactory()
+        self.assertEqual(sr.description, "Description of series.")
+        self.assertEqual(sr.search_title, "American Pets")
+        self.assertEqual(sr.type, "Series")
+
+    def test_team(self):
+        """Test team."""
+
+        sr = SeriesFactory()
+        team = sr.get_series_team()
+
+        # FIXME
+
+        # self.assertEqual(sr.organization, "")
 
 
 class StoryModelTestCase(TestCase):
@@ -41,13 +76,13 @@ class StoryModelTestCase(TestCase):
         s.creation_date = make_aware(datetime(2017, 1, 1))
 
         self.assertEqual(s.get_story_download(),
-        """
+                         """
         Story
         ========
         Cute Kitten Rescued
         --------------
         Description: Description of story.
-        Series: 
+        Series: American Pets
         Owner: Credit Gwen Ifill
         Organization: Baltimore Sun
         Original: True

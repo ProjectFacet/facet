@@ -1001,6 +1001,8 @@ class Series(models.Model):
     )
 
     # For now a boolean for sensitive or not. May have levels of sensitivity later.
+
+    # FIXME WJB: mismatch of name with Story .sensitive
     sensitivity = models.BooleanField(
         default=False,
         help_text='Is a series sensitive, for limited viewing?'

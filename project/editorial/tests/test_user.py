@@ -111,8 +111,6 @@ class OrganizationModelTestCase(TestCase):
 
         u2 = UserFactory(first_name="Bob", last_name="Woodward")
         o = OrganizationFactory()
-        self.u.organization = o
-        self.u.save()
         u2.organization = o
         u2.save()
 

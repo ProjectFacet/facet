@@ -91,6 +91,14 @@ class OrganizationFactory(factory.DjangoModelFactory):
     website = factory.LazyAttribute(lambda c: "http://www.%s.com/" % slugify(c.name))
     discussion = factory.SubFactory(DiscussionFactory, discussion_type="ORG")
 
+    @factory.post_generation
+    def add_owner_to_org(self, create, extracted, **kwargs):
+        if not create:
+            # Simple build, do nothing.
+            return
+        self.owner.organization = self
+        self.owner.save()
+
 
 class NetworkFactory(factory.DjangoModelFactory):
     """Factory for making network."""
@@ -119,6 +127,63 @@ class NetworkFactory(factory.DjangoModelFactory):
                 self.organizations.add(org)
 
 
+class SeriesFactory(factory.DjangoModelFactory):
+    """Factory for making series."""
+
+    class Meta:
+        model = models.Series
+        django_get_or_create = ['name']
+
+    name = "American Pets"
+    series_description = "Description of series."
+    owner = factory.SubFactory(UserFactory)
+    organization = factory.SubFactory(OrganizationFactory)
+    # team ...
+    creation_date = make_aware(datetime(2017, 1, 1))
+    sensitivity = False
+    share = False
+    # share_with = ...
+    share_with_date = None
+    collaborate = False
+    # collaborate_with = ...
+    archived = False
+    discussion = factory.SubFactory(DiscussionFactory, discussion_type='SER')
+
+    @factory.post_generation
+    def team(self, create, extracted, **kwargs):
+        if not create:
+            # Simple build, do nothing.
+            return
+
+        if extracted:
+            # A list of groups were passed in, use them
+            for user in extracted:
+                self.team.add(user)
+
+    @factory.post_generation
+    def share_with(self, create, extracted, **kwargs):
+        if not create:
+            # Simple build, do nothing.
+            return
+
+        if extracted:
+            # A list of groups were passed in, use them
+            for network in extracted:
+                self.share_with.add(network)
+
+    @factory.post_generation
+    def collaborate_with(self, create, extracted, **kwargs):
+        if not create:
+            # Simple build, do nothing.
+            return
+
+        if extracted:
+            # A list of groups were passed in, use them
+            for org in extracted:
+                self.collaborate_with.add(org)
+
+
+
 class StoryFactory(factory.DjangoModelFactory):
     """Factory for making stories."""
 
@@ -126,7 +191,7 @@ class StoryFactory(factory.DjangoModelFactory):
         model = models.Story
         django_get_or_create = ['name']
 
-    # series = [] ...
+    series = factory.SubFactory(SeriesFactory)
     owner = factory.SubFactory(UserFactory)
     organization = factory.SubFactory(OrganizationFactory)
     original_story = True
