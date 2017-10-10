@@ -109,3 +109,16 @@ DATABASES = {
 # }
 
 
+
+# -------------------------------------------------------------- #
+# EMAIL #
+# -------------------------------------------------------------- #
+
+EMAIL_BACKEND = 'django_smtp_ssl.SSLEmailBackend'
+
+EMAIL_HOST = 'email-smtp.us-west-2.amazonaws.com'
+EMAIL_HOST_USER = os.environ['AWS_EMAIL_HOST_USER']
+EMAIL_HOST_PASSWORD = os.environ['AWS_EMAIL_HOST_PASSWORD']
+EMAIL_PORT = 465
+EMAIL_USE_TLS = True
+AWS_SES_REGION_ENDPOINT = 'email-smtp.us-west-2.amazonaws.com'

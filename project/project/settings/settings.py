@@ -21,7 +21,7 @@ STATICFILES_DIRS = [os.path.join(PROJECT_DIR, "static")]
 
 # SECURITY WARNING: keep the secret key used in production secret!
 # Dev purposes only, will be replaced...
-SECRET_KEY = os.environ['SECRET_KEY']
+SECRET_KEY = os.environ.get('SECRET_KEY', "abcdef")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -39,7 +39,6 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
-    'debug_toolbar',
     'bootstrap3',
     'imagekit',
     'editorial.apps.EditorialAppConfig',
@@ -118,18 +117,8 @@ ACCOUNT_AUTHENTICATION_METHOD = "email"
 # EMAIL #
 # -------------------------------------------------------------- #
 
-EMAIL_BACKEND = 'django_smtp_ssl.SSLEmailBackend'
-
-EMAIL_HOST = 'email-smtp.us-west-2.amazonaws.com'
-EMAIL_HOST_USER = os.environ['AWS_EMAIL_HOST_USER']
-EMAIL_HOST_PASSWORD = os.environ['AWS_EMAIL_HOST_PASSWORD']
-EMAIL_PORT = 465
-EMAIL_USE_TLS = True
-AWS_SES_REGION_ENDPOINT = 'email-smtp.us-west-2.amazonaws.com'
-
-SERVER_EMAIL = os.environ['EMAIL_HOST_USER']
-DEFAULT_FROM_EMAIL = os.environ['EMAIL_HOST_USER']
-
+SERVER_EMAIL = DEFAULT_FROM_EMAIL = os.environ.get('EMAIL_HOST_USER',
+                                                   "facet-mail@example.com")
 
 # -------------------------------------------------------------- #
 # DJANGO REST FRAMEWORK #

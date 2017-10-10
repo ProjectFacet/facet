@@ -1,0 +1,2 @@
+-r base.txt
+factory-boy==2.9.2

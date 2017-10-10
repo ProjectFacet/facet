@@ -669,97 +669,97 @@ class Network(models.Model):
 #   may have a unique social presence.
 #--------------------------------------------------------------------------#
 
-class PlatformAccount(models.Model):
-    """ A Platform Account.
-
-    Platform accounts are the types and urls of different social media
-    and platform accounts. Platform accounts can be connected to a user,
-    organization, project or series. The attributes should always be the same
-    regardless of model it's associated with.
-    """
-
-    # Choices for Platform.
-    FACEBOOK = 'Facebook'
-    TWITTER = 'Twitter'
-    YOUTUBE = 'YouTube'
-    VIMEO = 'Vimeo'
-    SNAPCHAT = 'Snapchat'
-    LINKEDIN = 'LinkedIn'
-    GITHUB = 'Github'
-    REDDIT = 'Reddit'
-    INSTAGRAM = 'Instagram'
-    PINTEREST = 'Pinterest'
-    FLICKR = 'Flickr'
-    BEHANCE = 'Behance'
-    TUMBLR = 'Tumblr'
-    PLATFORM_CHOICES = (
-        (FACEBOOK, 'Facebook'),
-        (TWITTER, 'Twitter'),
-        (YOUTUBE, 'YouTube'),
-        (VIMEO, 'Vimeo'),
-        (SNAPCHAT, 'Snapchat'),
-        (LINKEDIN, 'LinkedIn'),
-        (GITHUB, 'Github'),
-        (REDDIT, 'Reddit'),
-        (INSTAGRAM, 'Instagram'),
-        (PINTEREST,'Pinterest'),
-        (FLICKR, 'Flickr'),
-        (BEHANCE, 'Behance'),
-        (TUMBLR, 'Tumblr'),
-    )
-
-    platform = models.CharField(
-        max_length=50,
-        choices=PLATFORM_CHOICES,
-        help_text='Platform choice.'
-    )
-
-    url = models.URLField(
-        max_length=250,
-        blank=True,
-    )
-
-    description = models.TextField(
-        blank=True,
-        help_text='Short description of the purpose of the account.',
-    )
-
-    # if a social account is associated with an Organization, Project or Series
-    team = models.ManyToManyField(
-        User,
-        related_name='social_team_member',
-        help_text='User that contributes to this account.',
-        blank=True,
-    )
-
-    # a platform account can be connected to a User, Organization or Project
-    # this could be structured like this, with Abstract Base Class or using contenttypes
-    user = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        blank=True,
-    )
-
-    organization = models.ForeignKey(
-        Organization,
-        on_delete=models.CASCADE,
-        blank=True,
-    )
-
-    project = models.ForeignKey(
-        'Project',
-        on_delete=models.CASCADE,
-        blank=True,
-        null=True,
-    )
-
-    @property
-    def description(self):
-        return self.description
-
-    @property
-    def type(self):
-        return "Platform Account"
+# class PlatformAccount(models.Model):
+#     """ A Platform Account.
+#
+#     Platform accounts are the types and urls of different social media
+#     and platform accounts. Platform accounts can be connected to a user,
+#     organization, project or series. The attributes should always be the same
+#     regardless of model it's associated with.
+#     """
+#
+#     # Choices for Platform.
+#     FACEBOOK = 'Facebook'
+#     TWITTER = 'Twitter'
+#     YOUTUBE = 'YouTube'
+#     VIMEO = 'Vimeo'
+#     SNAPCHAT = 'Snapchat'
+#     LINKEDIN = 'LinkedIn'
+#     GITHUB = 'Github'
+#     REDDIT = 'Reddit'
+#     INSTAGRAM = 'Instagram'
+#     PINTEREST = 'Pinterest'
+#     FLICKR = 'Flickr'
+#     BEHANCE = 'Behance'
+#     TUMBLR = 'Tumblr'
+#     PLATFORM_CHOICES = (
+#         (FACEBOOK, 'Facebook'),
+#         (TWITTER, 'Twitter'),
+#         (YOUTUBE, 'YouTube'),
+#         (VIMEO, 'Vimeo'),
+#         (SNAPCHAT, 'Snapchat'),
+#         (LINKEDIN, 'LinkedIn'),
+#         (GITHUB, 'Github'),
+#         (REDDIT, 'Reddit'),
+#         (INSTAGRAM, 'Instagram'),
+#         (PINTEREST,'Pinterest'),
+#         (FLICKR, 'Flickr'),
+#         (BEHANCE, 'Behance'),
+#         (TUMBLR, 'Tumblr'),
+#     )
+#
+#     platform = models.CharField(
+#         max_length=50,
+#         choices=PLATFORM_CHOICES,
+#         help_text='Platform choice.'
+#     )
+#
+#     url = models.URLField(
+#         max_length=250,
+#         blank=True,
+#     )
+#
+#     description = models.TextField(
+#         blank=True,
+#         help_text='Short description of the purpose of the account.',
+#     )
+#
+#     # if a social account is associated with an Organization, Project or Series
+#     team = models.ManyToManyField(
+#         User,
+#         related_name='social_team_member',
+#         help_text='User that contributes to this account.',
+#         blank=True,
+#     )
+#
+#     # a platform account can be connected to a User, Organization or Project
+#     # this could be structured like this, with Abstract Base Class or using contenttypes
+#     user = models.ForeignKey(
+#         User,
+#         on_delete=models.CASCADE,
+#         blank=True,
+#     )
+#
+#     organization = models.ForeignKey(
+#         Organization,
+#         on_delete=models.CASCADE,
+#         blank=True,
+#     )
+#
+#     project = models.ForeignKey(
+#         'Project',
+#         on_delete=models.CASCADE,
+#         blank=True,
+#         null=True,
+#     )
+#
+#     @property
+#     def description(self):
+#         return self.description
+#
+#     @property
+#     def type(self):
+#         return "Platform Account"
 
 #-----------------------------------------------------------------------#
 #   Content:
@@ -2617,181 +2617,181 @@ class VideoFacet(models.Model):
 #-----------------------------------------------------------------------#
 #  TASK
 #-----------------------------------------------------------------------#
-
-class Task(models.Model):
-    """A Task.
-
-    A task is an action item assigned to a team and to a project, series,
-    story or an event.
-    """
-
-    title = models.TextField(
-        help_text='Title of the task.'
-    )
-
-    text = models.TextField(
-        help_text='Content of the task.',
-        blank=True,
-    )
-
-    assigned_to = models.ManyToManyField(
-        # There can be multiple users listed as the credit.
-        User,
-        related_name='taskassigneduser',
-        help_text='The users assigned to the task.',
-        blank=True,
-    )
-
-    # Choices for Task status.
-    IDENTIFIED = 'Identified'
-    IN_PROGRESS = 'In Progress'
-    COMPLETE = 'Complete'
-    TASK_STATUS_CHOICES = (
-        (IDENTIFIED, 'Identified'),
-        (IN_PROGRESS, 'In Progress'),
-        (COMPLETE, 'Complete'),
-    )
-
-    task_status = models.CharField(
-        max_length=50,
-        choices=TASK_STATUS_CHOICES,
-        help_text='Task status.'
-    )
-
-    important = models.BooleanField(
-        default=False,
-        help_text='Whether a task is important.'
-    )
-
-    creation_date = models.DateTimeField(
-        auto_now_add=True,
-        help_text='Date and time task is created.',
-        blank=True,
-    )
-
-    due_date = models.DateTimeField(
-        help_text='Date and time task is to be completed.',
-        blank=True,
-    )
-
-    inprogress_date = models.DateTimeField(
-        help_text='Date and time task status is changed to in progress.',
-        blank=True,
-    )
-
-    completion_date = models.DateTimeField(
-        auto_now_add=True,
-        help_text='Date and time task status is changed to complete.',
-        blank=True,
-    )
-
-    # a task can be associated with a project, series, story or an event.
-    #TODO Add connection to P, Se, St, or E
-
-    @property
-    def task_title(self):
-        return self.title
-
-    @property
-    def type(self):
-        return "Task"
+#
+# class Task(models.Model):
+#     """A Task.
+#
+#     A task is an action item assigned to a team and to a project, series,
+#     story or an event.
+#     """
+#
+#     title = models.TextField(
+#         help_text='Title of the task.'
+#     )
+#
+#     text = models.TextField(
+#         help_text='Content of the task.',
+#         blank=True,
+#     )
+#
+#     assigned_to = models.ManyToManyField(
+#         # There can be multiple users listed as the credit.
+#         User,
+#         related_name='taskassigneduser',
+#         help_text='The users assigned to the task.',
+#         blank=True,
+#     )
+#
+#     # Choices for Task status.
+#     IDENTIFIED = 'Identified'
+#     IN_PROGRESS = 'In Progress'
+#     COMPLETE = 'Complete'
+#     TASK_STATUS_CHOICES = (
+#         (IDENTIFIED, 'Identified'),
+#         (IN_PROGRESS, 'In Progress'),
+#         (COMPLETE, 'Complete'),
+#     )
+#
+#     task_status = models.CharField(
+#         max_length=50,
+#         choices=TASK_STATUS_CHOICES,
+#         help_text='Task status.'
+#     )
+#
+#     important = models.BooleanField(
+#         default=False,
+#         help_text='Whether a task is important.'
+#     )
+#
+#     creation_date = models.DateTimeField(
+#         auto_now_add=True,
+#         help_text='Date and time task is created.',
+#         blank=True,
+#     )
+#
+#     due_date = models.DateTimeField(
+#         help_text='Date and time task is to be completed.',
+#         blank=True,
+#     )
+#
+#     inprogress_date = models.DateTimeField(
+#         help_text='Date and time task status is changed to in progress.',
+#         blank=True,
+#     )
+#
+#     completion_date = models.DateTimeField(
+#         auto_now_add=True,
+#         help_text='Date and time task status is changed to complete.',
+#         blank=True,
+#     )
+#
+#     # a task can be associated with a project, series, story or an event.
+#     #TODO Add connection to P, Se, St, or E
+#
+#     @property
+#     def task_title(self):
+#         return self.title
+#
+#     @property
+#     def type(self):
+#         return "Task"
 
 
 #-----------------------------------------------------------------------#
 #  EVENT
 #-----------------------------------------------------------------------#
 
-class Event(models.Model):
-    """An event.
-
-    An event can be assigned to an Organization, Project, Series or Story.
-    """
-
-    title = models.TextField(
-        help_text='Title of the event.'
-    )
-
-    description = models.TextField(
-        help_text='Description of the event.',
-        blank=True,
-    )
-
-    team = models.ManyToManyField(
-        # There can be multiple users assigned to an event.
-        User,
-        related_name='eventteam',
-        help_text='The users assigned to an event.',
-        blank=True,
-    )
-
-    creation_date = models.DateTimeField(
-        auto_now_add=True,
-        help_text='Date and time event is created.',
-        blank=True,
-    )
-
-    event_date = models.DateTimeField(
-        help_text='Date and time of the event.',
-        blank=True,
-    )
-
-    venue = models.TextField(
-        help_text = 'The location of the event.',
-        blank=True,
-    )
-
-    # a task can be associated with a project, series, story or an event.
-    #TODO Add connection to P, Se, St, or E
-
-    #TODO Add Notes to note class to be attached to Events
-
-    #TODO Add Document and Image assets for events to Assets section.
-
-    @property
-    def title(self):
-        return self.title
-
-    @property
-    def type(self):
-        return "Event"
+# class Event(models.Model):
+#     """An event.
+#
+#     An event can be assigned to an Organization, Project, Series or Story.
+#     """
+#
+#     title = models.TextField(
+#         help_text='Title of the event.'
+#     )
+#
+#     description = models.TextField(
+#         help_text='Description of the event.',
+#         blank=True,
+#     )
+#
+#     team = models.ManyToManyField(
+#         # There can be multiple users assigned to an event.
+#         User,
+#         related_name='eventteam',
+#         help_text='The users assigned to an event.',
+#         blank=True,
+#     )
+#
+#     creation_date = models.DateTimeField(
+#         auto_now_add=True,
+#         help_text='Date and time event is created.',
+#         blank=True,
+#     )
+#
+#     event_date = models.DateTimeField(
+#         help_text='Date and time of the event.',
+#         blank=True,
+#     )
+#
+#     venue = models.TextField(
+#         help_text = 'The location of the event.',
+#         blank=True,
+#     )
+#
+#     # a task can be associated with a project, series, story or an event.
+#     #TODO Add connection to P, Se, St, or E
+#
+#     #TODO Add Notes to note class to be attached to Events
+#
+#     #TODO Add Document and Image assets for events to Assets section.
+#
+#     @property
+#     def title(self):
+#         return self.title
+#
+#     @property
+#     def type(self):
+#         return "Event"
 
 #-----------------------------------------------------------------------#
 #  SOCIAL POST
 #-----------------------------------------------------------------------#
 
-class SocialPost(models.Model):
-    """A social post.
-
-    A social post to promote a project, series, story or event.
-    """
-
-    FACEBOOK = 'Facebook'
-    TWITTER = 'Twitter'
-    INSTAGRAM = 'Instagram'
-    SOCIAL_ACCOUNT_CHOICES = (
-        (FACEBOOK, 'Facebook'),
-        (TWITTER, 'Twitter'),
-        (INSTAGRAM, 'Instagram'),
-    )
-
-    social_platform = models.CharField(
-        max_length=50,
-        choices=SOCIAL_ACCOUNT_CHOICES,
-        help_text='Platform the post is created for.'
-    )
-
-    text = models.TextField(
-        help_text='Content of the post.'
-    )
-
-    # a social post can be associated with a project, series, story or an event.
-    #TODO Add connection to P, Se, St, or E
-
-    #TODO Add Image assets for social posts to Assets section.
-
-    @property
-    def type(self):
-        return "Social Post."
+# class SocialPost(models.Model):
+#     """A social post.
+#
+#     A social post to promote a project, series, story or event.
+#     """
+#
+#     FACEBOOK = 'Facebook'
+#     TWITTER = 'Twitter'
+#     INSTAGRAM = 'Instagram'
+#     SOCIAL_ACCOUNT_CHOICES = (
+#         (FACEBOOK, 'Facebook'),
+#         (TWITTER, 'Twitter'),
+#         (INSTAGRAM, 'Instagram'),
+#     )
+#
+#     social_platform = models.CharField(
+#         max_length=50,
+#         choices=SOCIAL_ACCOUNT_CHOICES,
+#         help_text='Platform the post is created for.'
+#     )
+#
+#     text = models.TextField(
+#         help_text='Content of the post.'
+#     )
+#
+#     # a social post can be associated with a project, series, story or an event.
+#     #TODO Add connection to P, Se, St, or E
+#
+#     #TODO Add Image assets for social posts to Assets section.
+#
+#     @property
+#     def type(self):
+#         return "Social Post."
 
 
 #-----------------------------------------------------------------------#
