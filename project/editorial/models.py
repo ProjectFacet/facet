@@ -733,30 +733,25 @@ class PlatformAccount(models.Model):
         blank=True,
     )
 
-    # a platform account can be connected to a User, Organization, Project or Series
+    # a platform account can be connected to a User, Organization or Project
     # this could be structured like this, with Abstract Base Class or using contenttypes
     user = models.ForeignKey(
         User,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
         blank=True,
     )
 
     organization = models.ForeignKey(
         Organization,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
         blank=True,
     )
 
     project = models.ForeignKey(
-        Project,
-        on_delete=models.CASCADE
+        'Project',
+        on_delete=models.CASCADE,
         blank=True,
-    )
-
-    series = models.ForeignKey(
-        Series,
-        on_delete=models.CASCADE
-        blank=True,
+        null=True,
     )
 
     @property
@@ -2751,7 +2746,7 @@ class Event(models.Model):
     )
 
     venue = models.TextField(
-        help_text = 'The location of the event.'
+        help_text = 'The location of the event.',
         blank=True,
     )
 
