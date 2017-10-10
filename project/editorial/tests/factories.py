@@ -183,7 +183,6 @@ class SeriesFactory(factory.DjangoModelFactory):
                 self.collaborate_with.add(org)
 
 
-
 class StoryFactory(factory.DjangoModelFactory):
     """Factory for making stories."""
 

@@ -138,7 +138,7 @@ class OrganizationModelTestCase(TestCase):
         n3 = NetworkFactory(name="LA Co-Op", organizations=[o])
 
         # Network we're not in & don't own
-        n4 = NetworkFactory(name="LA Co-Op", owner_organization=o2, organizations=[])
+        n4 = NetworkFactory(name="Alaska Co-Op", owner_organization=o2, organizations=[])
 
         nets = o.get_org_networks()
 
