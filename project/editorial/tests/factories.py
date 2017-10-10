@@ -22,7 +22,15 @@ class UserFactory(factory.DjangoModelFactory):
         lambda u: "%s@%s.om" % (slugify(u.first_name), slugify(u.first_name)))
     password = "secret"
 
+    # There's is a circular dependency on users/organizations, so we can't create an
+    # org when we create the first user for the org. To create a user with an organization,
+    # do this:
+    #   u = UserFactory()
+    #   o = OrganizationFactory()
+    #   u.organization = o
+    #
     # organization = factory.SubFactory('editorial.tests.factories.OrganizationFactory')
+
     user_type = "Editor"
     credit_name = factory.LazyAttribute(lambda c: "Credit %s %s" % (c.first_name, c.last_name))
     title = "Managing Editor"
@@ -68,15 +76,15 @@ class OrganizationFactory(factory.DjangoModelFactory):
     facebook = factory.LazyAttribute(lambda c: "http://facebook.com/%s" % slugify(c.name))
     twitter = factory.LazyAttribute(lambda c: "http://twitter.com/%s" % slugify(c.name))
     website = factory.LazyAttribute(lambda c: "http://www.%s.com/" % slugify(c.name))
-    discussion = factory.SubFactory('editorial.tests.factories.OrgDiscussionFactory')
+    discussion = factory.SubFactory('editorial.tests.factories.DiscussionFactory', discussion_type="ORG")
 
 
-class OrgDiscussionFactory(factory.DjangoModelFactory):
+class DiscussionFactory(factory.DjangoModelFactory):
     """Factory for making demo discussions."""
 
     class Meta:
         model = models.Discussion
 
-    discussion_type = "ORG"
+    discussion_type = "???"
 
 

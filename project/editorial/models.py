@@ -260,10 +260,12 @@ class User(AbstractUser):
 
     @property
     def description(self):
+        org = self.organization.name if self.organization else "(No org)"
+
         return "{user}, {title}, {org}".format(
                                         user=self.credit_name,
                                         title=self.title,
-                                        org=self.organization.name
+                                        org=org,
                                         )
 
     @property

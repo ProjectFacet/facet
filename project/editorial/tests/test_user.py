@@ -2,7 +2,7 @@
 
 from django.test import TestCase
 
-from .factories import UserFactory
+from .factories import UserFactory, OrganizationFactory
 
 
 class UserModelTestCase(TestCase):
@@ -24,9 +24,18 @@ class UserModelTestCase(TestCase):
         """Basic info."""
 
         u = UserFactory()
-        self.assertEqual(u.description, "Gwen Ifill, Baltimore Sun")
+        self.assertEqual(u.description, "Credit Gwen Ifill, Managing Editor, (No org)")
         self.assertEqual(u.search_title, "Credit Gwen Ifill")
         self.assertEqual(u.type, "User")
+
+    def test_with_org(self):
+        """Test with an organization."""
+
+        u = UserFactory()
+        o = OrganizationFactory()
+        u.organization = o
+
+        self.assertEqual(u.description, "Credit Gwen Ifill, Managing Editor, Baltimore Sun")
 
     def test_get_user_content(self):
         """Test for matching content."""
