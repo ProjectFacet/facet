@@ -757,6 +757,13 @@ class PlatformAccount(models.Model):
         blank=True,
     )
 
+    @property
+    def description(self):
+        return self.description
+
+    @property
+    def type(self):
+        return "Platform Account"
 
 #-----------------------------------------------------------------------#
 #   Content:
@@ -2624,11 +2631,88 @@ class VideoFacet(models.Model):
 #  TASK
 #-----------------------------------------------------------------------#
 
+class Task(models.Model):
+    """A Task.
+    A task is an action item assigned to a team and to a project, series,
+    story or an event.
+    """
+
+    title = models.TextField(
+        help_text='Title of the task.'
+    )
+
+    text = models.TextField(
+        help_text='Content of the task.',
+        blank=True,
+    )
+
+    assigned_to = models.ManyToManyField(
+        # There can be multiple users listed as the credit.
+        User,
+        related_name='taskassigneduser',
+        help_text='The users assigned to the task.',
+        blank=True,
+    )
+
+    # Choices for Task status.
+    IDENTIFIED = 'Identified'
+    IN_PROGRESS = 'In Progress'
+    COMPLETE = 'Complete'
+    TASK_STATUS_CHOICES = (
+        (IDENTIFIED, 'Identified'),
+        (IN_PROGRESS, 'In Progress'),
+        (COMPLETE, 'Complete'),
+    )
+
+    task_status = models.CharField(
+        max_length=50,
+        choices=TASK_STATUS_CHOICES,
+        help_text='Task status.'
+    )
+
+    important = models.BooleanField(
+        default=False,
+        help_text='Whether a task is important.'
+    )
+
+    creation_date = models.DateTimeField(
+        auto_now_add=True,
+        help_text='Date and time task is created.',
+        blank=True,
+    )
+
+    due_date = models.DateTimeField(
+        help_text='Date and time task is to be completed.',
+        blank=True,
+    )
+
+    inprogress_date = models.DateTimeField(
+        help_text='Date and time task status is changed to in progress.',
+        blank=True,
+    )
+
+    completion_date = models.DateTimeField(
+        auto_now_add=True,
+        help_text='Date and time task status is changed to complete.',
+        blank=True,
+    )
+
+    # a task can be associated with a project, series, story or an event.
+    #TODO Add connection to P, Se, St, or E
+
+    @property
+    def task_title(self):
+        return self.title
+
+    @property
+    def type(self):
+        return "Task"
 
 
 #-----------------------------------------------------------------------#
 #  EVENT
 #-----------------------------------------------------------------------#
+
 
 
 
@@ -2744,6 +2828,10 @@ class VideoFacetContributor(models.Model):
 #-----------------------------------------------------------------------#
 #   Assets:
 #   ImageAsset, DocumentAsset, AudioAsset, VideoAsset,
+#-----------------------------------------------------------------------#
+
+#-----------------------------------------------------------------------#
+#   Image Asset
 #-----------------------------------------------------------------------#
 
 class ImageAssetManager(models.Manager):
@@ -2912,6 +3000,7 @@ class ImageAsset(models.Model):
 
 #-----------------------------------------------------------------------#
 # DocumentAsset
+#-----------------------------------------------------------------------#
 
 class DocumentAssetManager(models.Manager):
     """Custom manager for DocumentAsset."""
@@ -3083,6 +3172,7 @@ class DocumentAsset(models.Model):
 
 #-----------------------------------------------------------------------#
 # AudioAsset
+#-----------------------------------------------------------------------#
 
 class AudioAssetManager(models.Manager):
     """Custom manager for AudioAsset."""
@@ -3254,6 +3344,7 @@ class AudioAsset(models.Model):
 
 #-----------------------------------------------------------------------#
 #VideoAsset
+#-----------------------------------------------------------------------#
 
 class VideoAssetManager(models.Manager):
     """Custom manager for VideoAsset."""
