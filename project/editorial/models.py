@@ -43,7 +43,7 @@ from django.utils import timezone
 from django.shortcuts import get_object_or_404
 from itertools import chain
 from embed_video.fields import EmbedVideoField
-from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 
 #-----------------------------------------------------------------------#
@@ -922,8 +922,7 @@ class Project(models.Model):
         auto_now_add=True,
     )
 
-    # For now a boolean for sensitive or not. May have levels of sensitivity later.
-    sensitivity = models.BooleanField(
+    sensitive = models.BooleanField(
         default=False,
         help_text='Is a project sensitive, for limited viewing?'
     )
