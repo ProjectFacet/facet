@@ -1019,7 +1019,7 @@ class Project(models.Model):
     )
 
     #Tasks
-    tasks = GenericRelation(Task)
+    # tasks = GenericRelation(Task)
 
     # Events
     # events = GenericRelation(Event)
@@ -1149,7 +1149,7 @@ class Series(models.Model):
     )
 
     #Tasks
-    tasks = GenericRelation(Task)
+    # tasks = GenericRelation(Task)
 
     # Events
     # events = GenericRelation(Event)
@@ -1308,7 +1308,7 @@ class Story(models.Model):
     )
 
     #Tasks
-    tasks = GenericRelation(Task)
+    # tasks = GenericRelation(Task)
 
     # Events
     # events = GenericRelation(Event)
