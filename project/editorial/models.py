@@ -381,6 +381,9 @@ class Organization(models.Model):
         null=True,
     )
 
+    # Events
+    # events = GenericRelation(Event)
+
     class Meta:
         verbose_name = 'Organization'
         verbose_name_plural = "Organizations"
@@ -759,12 +762,35 @@ class Network(models.Model):
 
 
 #--------------------------------------------------------------------------#
-#   Platforms:
+#   Platforms and PlatformAccounts
 #   Social accounts connected to Users, Organizations, Projects and Series.
 #   Ex. Users can have social media accounts, Organizations will often
 #   have multiple accounts on any single platform, a special project or series
 #   may have a unique social presence.
 #--------------------------------------------------------------------------#
+
+# class Platform(models.Model):
+#     """A platform.
+#
+#     Lookup table with details for each major platform. Instances populate
+#     options in PlatformAccount.
+#     Ex. Facebook, Twitter, YouTube, Vimeo, Snapchat, LinkedIn, Github, Reddit
+#     Instagram, Pinterest, Flickr, Behance, Tumblr
+#     """
+#
+#     name = models.CharField(
+#        max_length=250,
+#        help_text='Name of the platform.''
+#     )
+#
+#     # code for font awesome icon for the platform
+#     # ex. 'fa-facebook' is the Font Awesome icon for Facebook
+#     icon_code = models.CharField(
+#         max_length=50,
+#         blank=True,
+#         help_text='text for font-awesome icon for the platform'
+#     )
+
 
 # class PlatformAccount(models.Model):
 #     """ A Platform Account.
@@ -781,40 +807,8 @@ class Network(models.Model):
 #        help_text='Short name to identify the social account.''
 #    )
 #
-#     # Choices for Platform.
-#     FACEBOOK = 'Facebook'
-#     TWITTER = 'Twitter'
-#     YOUTUBE = 'YouTube'
-#     VIMEO = 'Vimeo'
-#     SNAPCHAT = 'Snapchat'
-#     LINKEDIN = 'LinkedIn'
-#     GITHUB = 'Github'
-#     REDDIT = 'Reddit'
-#     INSTAGRAM = 'Instagram'
-#     PINTEREST = 'Pinterest'
-#     FLICKR = 'Flickr'
-#     BEHANCE = 'Behance'
-#     TUMBLR = 'Tumblr'
-#     PLATFORM_CHOICES = (
-#         (FACEBOOK, 'Facebook'),
-#         (TWITTER, 'Twitter'),
-#         (YOUTUBE, 'YouTube'),
-#         (VIMEO, 'Vimeo'),
-#         (SNAPCHAT, 'Snapchat'),
-#         (LINKEDIN, 'LinkedIn'),
-#         (GITHUB, 'Github'),
-#         (REDDIT, 'Reddit'),
-#         (INSTAGRAM, 'Instagram'),
-#         (PINTEREST,'Pinterest'),
-#         (FLICKR, 'Flickr'),
-#         (BEHANCE, 'Behance'),
-#         (TUMBLR, 'Tumblr'),
-#     )
-#
-#     platform = models.CharField(
-#         max_length=50,
-#         choices=PLATFORM_CHOICES,
-#         help_text='Platform choice.'
+#     platform = models.ForeignKey(
+#        Platform
 #     )
 #
 #     url = models.URLField(
@@ -1027,6 +1021,9 @@ class Project(models.Model):
     #Tasks
     tasks = GenericRelation(Task)
 
+    # Events
+    # events = GenericRelation(Event)
+
     class Meta:
         verbose_name = 'Project'
         verbose_name_plural = "Projects"
@@ -1153,6 +1150,9 @@ class Series(models.Model):
 
     #Tasks
     tasks = GenericRelation(Task)
+
+    # Events
+    # events = GenericRelation(Event)
 
     class Meta:
         verbose_name = 'Series'
@@ -1309,6 +1309,9 @@ class Story(models.Model):
 
     #Tasks
     tasks = GenericRelation(Task)
+
+    # Events
+    # events = GenericRelation(Event)
 
     class Meta:
         verbose_name = 'Story'
@@ -2876,12 +2879,19 @@ class VideoFacet(models.Model):
 #     #Tasks
 #     tasks = GenericRelation(Task)
 #
-#     # a task can be associated with a project, series, story or an event.
-#     #TODO Add connection to P, Se, St, or E
-#
+#     # Notes
 #     #TODO Add Notes to note class to be attached to Events
 #
+#     # Assets
 #     #TODO Add Document and Image assets for events to Assets section.
+#
+#     # an event can be associated with an organization, project, series or story.
+#     # using contenttypes and generic relations to connect to one of
+#     # several possible foreign keys and to easily query all the tasks for
+#     # one of the associated models (organization, project, series or story)
+#     content_type = models.ForeignKey(ContentType)
+#     object_id = models.PositiveIntegerField()
+#     content_object=GenericForeignKey('content_type', 'object_id')
 #
 #     @property
 #     def title(self):
