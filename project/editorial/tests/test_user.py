@@ -158,7 +158,7 @@ class OrganizationModelTestCase(TestCase):
 
         n1 = NetworkFactory(organizations=[o2])
 
-        collabs = o.get_org_collaborators()
+        collabs = o.get_org_collaborators_vocab()
         self.assertSequenceEqual(collabs, [o2])
 
     def test_libraries(self):

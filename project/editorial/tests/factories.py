@@ -140,7 +140,7 @@ class SeriesFactory(factory.DjangoModelFactory):
     organization = factory.SubFactory(OrganizationFactory)
     # team ...
     creation_date = make_aware(datetime(2017, 1, 1))
-    sensitivity = False
+    sensitive = False
     share = False
     # share_with = ...
     share_with_date = None
