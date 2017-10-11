@@ -922,8 +922,7 @@ class Project(models.Model):
         auto_now_add=True,
     )
 
-    # For now a boolean for sensitive or not. May have levels of sensitivity later.
-    sensitivity = models.BooleanField(
+    sensitive = models.BooleanField(
         default=False,
         help_text='Is a project sensitive, for limited viewing?'
     )
