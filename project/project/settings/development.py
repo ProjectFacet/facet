@@ -4,7 +4,7 @@ from django.conf import settings
 from django.test.runner import DiscoverRunner
 from django.core.mail.utils import DNS_NAME
 
-from .settings import *
+from .base import *
 
 
 SECRET_KEY = "abcdef"

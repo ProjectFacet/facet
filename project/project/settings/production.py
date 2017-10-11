@@ -1,6 +1,6 @@
 """Production settings for facet project."""
 
-from .settings import *
+from .base import *
 
 # -------------------------------------------------------------- #
 # KEYS #
