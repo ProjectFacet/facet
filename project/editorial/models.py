@@ -60,6 +60,9 @@ class User(AbstractUser):
     users, create and manage networks and shift users from active
     to inactive. A general user creates and collaborates on content.
     """
+    # FIXME This structure for a user needs revision in order to
+    # account for a user being on a team or being an independent (contractor)
+    # See github issue #60 for more detail
 
     # Made optional for users not pushing content to an org (freelancers)
     organization = models.ForeignKey(
@@ -187,7 +190,11 @@ class User(AbstractUser):
 
     def get_user_content(self):
         """Return list of all content user is associated with as
-        owner, editor, team or credit."""
+        owner, editor or credit.
+
+        Results are used to display relevant content for a user on
+        their dashboard and user profile.
+        """
 
         user_content = []
         series = Series.objects.filter(Q(Q(owner=self) | Q(team=self)))
@@ -204,14 +211,26 @@ class User(AbstractUser):
         user_content.extend(videofacets)
         return user_content
 
+
+    # This is repetitive of get_user_content.
+    # FIXME (for HB) revise get_user_content to include projects and replace get_user_stories in views
     def get_user_stories(self):
         """Return list of stories that a user is associated with."""
 
         user_stories = Story.objects.filter(Q(Q(owner=self) | Q(team=self)))
         return user_stories
 
+    # TODO complete get_user_assets
+    # def get_user_assets(self):
+    #     """Return assets that a user is associated with."""
+    #     pass
+
     def inbox_comments(self):
-        """ Return list of comments from discussions the user is a participant in."""
+        """ Return list of comments from discussions the user is a participant in.
+
+        Collects all relevant comments for a specific user to show in their
+        dashboard and inbox.
+        """
 
         discussion_ids = Comment.objects.filter(user_id=self.id).values('discussion_id')
         user_comments = Comment.objects.filter(user_id=self.id)
@@ -221,7 +240,10 @@ class User(AbstractUser):
 
     def recent_comments(self):
         """Return list of comments from discussions the user is a participant in
-        since the user's last login."""
+        since the user's last login.
+
+        For display on primary dashboard.
+        """
 
         discussion_ids = Comment.objects.filter(user_id=self.id).values('discussion_id')
         user_comments = Comment.objects.filter(user_id=self.id)
@@ -229,9 +251,12 @@ class User(AbstractUser):
         recent_comments = all_comments.exclude(id__in=user_comments)
         return recent_comments
 
-    def get_user_contact_list(self):
+    # formerly get_user_contact_list
+    def get_user_contact_list_vocab(self):
         """ Return queryset containing all users a specific user can contact.
         This includes any user that's a member of an organization in network.
+
+        This vocab list populates the to selection for messaging.
         """
 
         organization = self.organization
@@ -240,19 +265,28 @@ class User(AbstractUser):
         return contact_list
 
     def private_messages_received(self):
-        """ Return all private messages a user is a recipient of."""
+        """ Return all private messages a user is a recipient of.
+
+        Displayed in user inbox under 'inbox'.
+        """
 
         messages_received = PrivateMessage.objects.filter(recipient=self)
         return messages_received
 
     def private_messages_sent(self):
-        """ Return all private messages a user is a recipient of."""
+        """ Return all private messages a user has sent.
+
+        Displayed in user inbox under 'sent'.
+        """
 
         messages_sent = PrivateMessage.objects.filter(user=self)
         return messages_sent
 
     def get_user_searchable_content(self):
-        """ Return queryset of user specific content that is searchable."""
+        """ Return queryset of user specific content that is searchable.
+
+        A user can return their own notes in search results.
+        """
 
         usernotes = UserNote.objects.filter(Q(owner=self))
 
@@ -359,13 +393,20 @@ class Organization(models.Model):
         return reverse('org_detail', kwargs={'pk': self.id})
 
     def get_org_users(self):
-        """ Return queryset of all users in an organization."""
+        """ Return queryset of all users in an organization.
+
+        Used for organization dashboards, team views and context processors.
+        """
 
         organization_users = User.objects.filter(organization=self)
         return organization_users
 
     def get_org_networks(self):
-        """ Return list of all the networks that an organization is owner of or member of."""
+        """ Return list of all the networks that an organization is connected to as
+        owner or member of.
+
+        Used for dashboard, network dashboards and network content.
+        """
 
         all_organization_networks = Network.objects.filter(Q(Q(owner_organization=self) | Q(organizations=self)))
         # not necessary but leaving in for now, check to make sure unique list of networks
@@ -380,8 +421,13 @@ class Organization(models.Model):
     #     print "content: ", content
     #     return content
 
-    def get_org_collaborators(self):
-        """ Return list of all organizations that are members of the same networks as self."""
+    # formerly get_org_collaborators
+    def get_org_collaborators_vocab(self):
+        """ Return list of all organizations that are members of the same networks as self.
+
+        Used to for selecting organizations to collaborate with and for displaying partners
+        in team dashboard. Also used to create get_user_contact_list_vocab.
+        """
 
         # get list of networks that an org is a member of
         networks = Organization.get_org_networks(self)
@@ -394,25 +440,37 @@ class Organization(models.Model):
         return unique_collaborators
 
     def get_org_image_library(self):
-        """ Return list of all images associated with an organization. """
+        """ Return list of all images associated with an organization.
+
+        Used to display images in media gallery.
+        """
 
         images = ImageAsset.objects.filter(organization=self)
         return images
 
     def get_org_document_library(self):
-        """ Return list of all documents associated with an organization. """
+        """ Return list of all documents associated with an organization.
+
+        Used to display documents in media gallery.
+        """
 
         documents = DocumentAsset.objects.filter(organization=self)
         return documents
 
     def get_org_audio_library(self):
-        """ Return list of all audio files associated with an organization. """
+        """ Return list of all audio files associated with an organization.
+
+        Used to display audio in media gallery.
+        """
 
         audio = AudioAsset.objects.filter(organization=self)
         return audio
 
     def get_org_video_library(self):
-        """ Return list of all video files associated with an organization. """
+        """ Return list of all video files associated with an organization.
+
+        Used to display videos in media gallery.
+        """
 
         videos = VideoAsset.objects.filter(organization=self)
         return videos
@@ -420,7 +478,8 @@ class Organization(models.Model):
     def get_org_user_comments(self):
         """Retrieve all the comments associated with users of an organization.
 
-        Effectively 'all' comments for an organization.
+        Effectively 'all' comments for an organization. Used in user inbox
+        to display streams of all comments.
         """
 
         users = Organization.get_org_users(self)
@@ -428,13 +487,19 @@ class Organization(models.Model):
         return org_user_comments
 
     def get_org_comments(self):
-        """Retrieve all organization comments."""
+        """Retrieve all organization comments.
+
+        Used to display all organization comments in dashboard and inbox.
+        """
 
         organization_comments = Comment.objects.filter(discussion__discussion_type='ORG', user__organization=self)
         return organization_comments
 
     def get_network_comments(self):
-        """Retrieve all comments for networks an organization is a member of."""
+        """Retrieve all comments for networks an organization is a member of.
+
+        Used to display all network comments in dashboard and inbox.
+        """
 
         networks = Organization.get_org_networks(self)
         network_discussions = [network.discussion for network in networks]
@@ -442,7 +507,10 @@ class Organization(models.Model):
         return network_comments
 
     def get_story_comments(self):
-        """Retrieve all comments for stories belonging to an organization."""
+        """Retrieve all comments for stories belonging to an organization.
+
+        Used to display all story comments in dashboard and inbox.
+        """
 
         org_stories = Story.objects.filter(organization=self)
         story_discussions = [story.discussion for story in org_stories]
@@ -450,7 +518,10 @@ class Organization(models.Model):
         return story_comments
 
     def get_series_comments(self):
-        """Retrieve all comments for series belonging to an organization."""
+        """Retrieve all comments for series belonging to an organization.
+
+        Used to display all series comments in dashboard and inbox.
+        """
 
         org_series = Series.objects.filter(organization=self)
         series_discussions = [series.discussion for series in org_series]
@@ -458,10 +529,14 @@ class Organization(models.Model):
         return series_comments
 
     def get_facet_comments(self):
-        """Retrieve all comments for facets belonging to stories of an organization."""
+        """Retrieve all comments for facets belonging to stories of an organization.
 
-        # WJB XXX: this seems inefficient, we should reduce to dicsussion fields on orig
+        Used to display all facet comments in dashboard and inbox.
+        """
+
+        # WJB XXX: this seems inefficient, we should reduce to discussion fields on orig
         # querysets
+        # FIXME to be revised after facet refactoring
 
         org_facets = []
         webfacets = WebFacet.objects.filter(Q(organization=self))
@@ -477,7 +552,11 @@ class Organization(models.Model):
         return facet_comments
 
     def get_org_collaborative_content(self):
-        """ Return list of all content that an org is a collaborator on."""
+        """ Return list of all content that an org is a collaborator on.
+
+        All of the collaborative content an organization is participating in
+        is displaying in a collaborative content dashboard.
+        """
 
         org_collaborative_content = []
         external_stories = Story.objects.filter(Q(collaborate_with=self))
@@ -488,7 +567,11 @@ class Organization(models.Model):
         return org_collaborative_content
 
     def get_org_stories_running_today(self):
-        """Return list of content scheduled to run today."""
+        """Return list of content scheduled to run today.
+
+        Used to display content scheduled to run on any given day
+        on the primary dashboard.
+        """
 
         # establish timeliness of content
         today = timezone.now().date()
@@ -497,6 +580,7 @@ class Organization(models.Model):
         today_end = datetime.combine(tomorrow, time())
 
         # facets where run_date=today
+        # FIXME to be simplified after facet refactoring
         running_today = []
         webfacet_run_today = WebFacet.objects.filter(run_date__range=(today_start, today_end), organization=self)
         printfacet_run_today = PrintFacet.objects.filter(run_date__range=(today_start, today_end), organization=self)
@@ -510,7 +594,11 @@ class Organization(models.Model):
         return running_today
 
     def get_org_stories_due_for_edit_today(self):
-        """Return list of content scheduled for edit today."""
+        """Return list of content scheduled for edit today.
+
+        Used to display content scheduled for edit on any given day
+        on the primary dashboard.
+        """
 
         # establish timeliness of content
         today = timezone.now().date()
@@ -582,11 +670,15 @@ class Network(models.Model):
     """ A group of organizations.
 
     A network is a collection of two or more organizations seeking to create a sharing
-    or collaborating relationship. Sharing means the organization can add content that has been
-    marked for sharing to that network. Collaborating means that any user from the guest network
-    organization(s) can participate in the editorial process on the host organization's content that has been
-    selected as collaborative. At the conclusion of the editorial process, the guest can add the final
-    version of the content to their own account.
+    or collaborating relationship.
+
+    Sharing means the source organization has made the content available to other
+    members of the network.
+
+    An organization can opt to collaborate with one of more members of a Network.
+    Collaboration means that a user from a collaborating organization can participate
+    in the editorial process on the host organization's content. They can edit, upload
+    assets and participate in any relevant discussions.
     """
 
     owner_organization = models.ForeignKey(
@@ -645,7 +737,10 @@ class Network(models.Model):
         return reverse('network_detail', kwargs={'pk': self.id})
 
     def get_network_shared_stories(self):
-        """ Return list of stories shared with a network. """
+        """ Return list of stories shared with a network.
+
+        This is used to populate the network content dashboard.
+        """
 
         network_stories = Story.objects.filter(share_with=self.id)
         return network_stories
@@ -679,6 +774,12 @@ class Network(models.Model):
 #     organization, project or series. The attributes should always be the same
 #     regardless of model it's associated with.
 #     """
+#
+#    name = models.CharField(
+#        max_length=250,
+#        db_index=True,
+#        help_text='Short name to identify the social account.''
+#    )
 #
 #     # Choices for Platform.
 #     FACEBOOK = 'Facebook'
@@ -780,7 +881,7 @@ class Project(models.Model):
     Projects are a large-scale organizational component made up of multiple series and/or
     stories. The primary use is as an organization mechanism for large scale complex
     collaborative projects. Projects can have series, stories, assets, notes, discussions,
-    governing documents, calendars and meta information.
+    governing documents, events, calendars and meta information.
     """
 
     name = models.CharField(
@@ -935,7 +1036,7 @@ class Project(models.Model):
         return reverse('project_detail', kwargs={'pk': self.id})
 
     def get_project_team(self):
-        """Return queryset with org users and users from collaboration orgs for a series."""
+        """Return queryset with org users and users from collaboration orgs for a project."""
 
         collaborators = self.collaborate_with.all()
         project_team = User.objects.filter(Q(Q(organization=self.organization) | Q(organization__in=collaborators)))
@@ -1000,10 +1101,7 @@ class Series(models.Model):
         auto_now_add=True,
     )
 
-    # For now a boolean for sensitive or not. May have levels of sensitivity later.
-
-    # FIXME WJB: mismatch of name with Story .sensitive
-    sensitivity = models.BooleanField(
+    sensitive = models.BooleanField(
         default=False,
         help_text='Is a series sensitive, for limited viewing?'
     )
@@ -1224,6 +1322,8 @@ class Story(models.Model):
         story copy detail record.
         """
 
+        # FIXME Copied stories need to maintain attribution of team
+
         story_copy = get_object_or_404(Story, id=self.id)
         # Set the id = None to create the copy the story instance
         story_copy.id = None
@@ -1247,7 +1347,8 @@ class Story(models.Model):
         return story_copy
 
     def get_story_download(self):
-        """ Return rst formatted string for downloading story meta."""
+        """ Return rst formatted string for downloading story meta.
+        """
 
         # loop over m2m and get the values as string
         team = self.team.all()
@@ -1298,12 +1399,11 @@ class Story(models.Model):
         collaborate=self.collaborate, collaboratewith=collaborate_with, archived=self.archived)
         return story_download
 
-    def get_story_team(self):
+    # formerly get_story_team
+    def get_story_team_vocab(self):
         """Return queryset with org users and users from collaboration orgs for a story.
         Used in selecting credit and editors for a facet.
         """
-
-        # FIXME WJB: why is this not used in get_story_download?
 
         collaborators = self.collaborate_with.all()
         story_team = User.objects.filter(Q(Q(organization=self.organization) | Q(organization__in=collaborators)))
@@ -1368,6 +1468,8 @@ class Story(models.Model):
 
     def get_story_facets(self):
         """Return all existing facets associated with a story."""
+
+        # FIXME to be refactored after refactoring facets
 
         story_facets = []
         if self.webfacetstory.all():
@@ -1586,6 +1688,8 @@ class WebFacet(models.Model):
 
     def copy_webfacet(self):
         """ Create a copy of a webfacet for a partner organization in a network."""
+
+        # FIXME Copied facet should also carry over credit and editor.
 
         webfacet_copy = get_object_or_404(WebFacet, id=self.id)
         # set the id=None to create the copy of the webfacet instance
@@ -1890,6 +1994,8 @@ class PrintFacet(models.Model):
     def copy_printfacet(self):
         """ Create a copy of a printfacet for a partner organization in a network."""
 
+        # FIXME Copied facet should also carry over credit and editor.
+
         printfacet_copy = get_object_or_404(PrintFacet, id=self.id)
         # set the id=None to create the copy of the printfacet instance
         printfacet_copy.id=None
@@ -2192,6 +2298,8 @@ class AudioFacet(models.Model):
 
     def copy_audiofacet(self):
         """ Create a copy of a audiofacet for a partner organization in a network."""
+
+        # FIXME Copied facet should also carry over credit and editor.
 
         audiofacet_copy = get_object_or_404(AudioFacet, id=self.id)
         # set the id=None to create the copy of the audiofacet instance
@@ -2497,6 +2605,8 @@ class VideoFacet(models.Model):
     def copy_videofacet(self):
         """ Create a copy of a videofacet for a partner organization in a network."""
 
+        # FIXME Copied facet should also carry over credit and editor.
+
         videofacet_copy = get_object_or_404(VideoFacet, id=self.id)
         # set the id=None to create the copy of the videofacet instance
         videofacet_copy.id=None
@@ -2624,84 +2734,86 @@ class VideoFacet(models.Model):
 #-----------------------------------------------------------------------#
 #  TASK
 #-----------------------------------------------------------------------#
-#
-# class Task(models.Model):
-#     """A Task.
-#
-#     A task is an action item assigned to a team and to a project, series,
-#     story or an event.
-#     """
-#
-#     title = models.TextField(
-#         help_text='Title of the task.'
-#     )
-#
-#     text = models.TextField(
-#         help_text='Content of the task.',
-#         blank=True,
-#     )
-#
-#     assigned_to = models.ManyToManyField(
-#         # There can be multiple users listed as the credit.
-#         User,
-#         related_name='taskassigneduser',
-#         help_text='The users assigned to the task.',
-#         blank=True,
-#     )
-#
-#     # Choices for Task status.
-#     IDENTIFIED = 'Identified'
-#     IN_PROGRESS = 'In Progress'
-#     COMPLETE = 'Complete'
-#     TASK_STATUS_CHOICES = (
-#         (IDENTIFIED, 'Identified'),
-#         (IN_PROGRESS, 'In Progress'),
-#         (COMPLETE, 'Complete'),
-#     )
-#
-#     task_status = models.CharField(
-#         max_length=50,
-#         choices=TASK_STATUS_CHOICES,
-#         help_text='Task status.'
-#     )
-#
-#     important = models.BooleanField(
-#         default=False,
-#         help_text='Whether a task is important.'
-#     )
-#
-#     creation_date = models.DateTimeField(
-#         auto_now_add=True,
-#         help_text='Date and time task is created.',
-#         blank=True,
-#     )
-#
-#     due_date = models.DateTimeField(
-#         help_text='Date and time task is to be completed.',
-#         blank=True,
-#     )
-#
-#     inprogress_date = models.DateTimeField(
-#         help_text='Date and time task status is changed to in progress.',
-#         blank=True,
-#     )
-#
-#     completion_date = models.DateTimeField(
-#         auto_now_add=True,
-#         help_text='Date and time task status is changed to complete.',
-#         blank=True,
-#     )
-#
-#     # a task can be associated with a project, series, story or an event.
-#     #TODO Add connection to P, Se, St, or E
-#
-#     @property
-#     def task_title(self):
-#         return self.title
-#
-#     @property
-#     def type(self):
-#         return "Task"
+
+class Task(models.Model):
+    """A Task.
+
+    A task is an action item assigned to a team and to a project, series,
+    story or an event.
+    """
+
+    owner = models.ForeignKey(
+      User,
+      related_name='taskowner'
+    )
+
+    title = models.TextField(
+        help_text='Title of the task.'
+    )
+
+    text = models.TextField(
+        help_text='Content of the task.',
+        blank=True,
+    )
+
+    assigned_to = models.ManyToManyField(
+        # There can be multiple users listed as assigned to the task.
+        User,
+        related_name='taskassigneduser',
+        help_text='The users assigned to the task.',
+        blank=True,
+    )
+
+    # Choices for Task status.
+    IDENTIFIED = 'Identified'
+    IN_PROGRESS = 'In Progress'
+    COMPLETE = 'Complete'
+    TASK_STATUS_CHOICES = (
+        (IDENTIFIED, 'Identified'),
+        (IN_PROGRESS, 'In Progress'),
+        (COMPLETE, 'Complete'),
+    )
+
+    task_status = models.CharField(
+        max_length=50,
+        choices=TASK_STATUS_CHOICES,
+        help_text='Task status.'
+    )
+
+    important = models.BooleanField(
+        default=False,
+        help_text='Whether a task is important.'
+    )
+
+    creation_date = models.DateTimeField(
+        auto_now_add=True,
+        help_text='Date and time task is created.',
+        blank=True,
+    )
+
+    due_date = models.DateTimeField(
+        help_text='Date and time task is to be completed.',
+        blank=True,
+    )
+
+    inprogress_date = models.DateTimeField(
+        help_text='Date and time task status is changed to in progress.',
+        blank=True,
+    )
+
+    completion_date = models.DateTimeField(
+        auto_now_add=True,
+        help_text='Date and time task status is changed to complete.',
+        blank=True,
+    )
+
+    # a task can be associated with a project, series, story or an event.
+    #TODO Add connection to P, Se, St, or E
+
+    @property
+    def task_title(self):
+        return self.title
+
 
 
 #-----------------------------------------------------------------------#
@@ -2757,10 +2869,7 @@ class VideoFacet(models.Model):
 #     @property
 #     def title(self):
 #         return self.title
-#
-#     @property
-#     def type(self):
-#         return "Event"
+
 
 #-----------------------------------------------------------------------#
 #  SOCIAL POST
