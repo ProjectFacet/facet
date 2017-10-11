@@ -209,3 +209,126 @@ class StoryFactory(factory.DjangoModelFactory):
     # collaborate_with = ...
     archived = False
     discussion = factory.SubFactory(DiscussionFactory, discussion_type='STO')
+
+    @factory.post_generation
+    def team(self, create, extracted, **kwargs):
+        if not create:
+            # Simple build, do nothing.
+            return
+
+        if extracted:
+            # A list of groups were passed in, use them
+            for user in extracted:
+                self.team.add(user)
+
+    @factory.post_generation
+    def share_with(self, create, extracted, **kwargs):
+        if not create:
+            # Simple build, do nothing.
+            return
+
+        if extracted:
+            # A list of groups were passed in, use them
+            for network in extracted:
+                self.share_with.add(network)
+
+    @factory.post_generation
+    def collaborate_with(self, create, extracted, **kwargs):
+        if not create:
+            # Simple build, do nothing.
+            return
+
+        if extracted:
+            # A list of groups were passed in, use them
+            for org in extracted:
+                self.collaborate_with.add(org)
+
+
+class ProjectFactory(factory.DjangoModelFactory):
+    """Factory for making projects."""
+
+    class Meta:
+        model = models.Project
+        django_get_or_create = ['name']
+
+    name = "Cover Congress"
+    project_description = "Description of project."
+    project_logo = factory.django.ImageField()
+    owner = factory.SubFactory(UserFactory)
+    organization = factory.SubFactory(OrganizationFactory)
+    # team = ...
+    creation_date = make_aware(datetime(2017, 1, 1))
+    sensitive = False
+    share = False
+    # share_with = ...
+    share_with_date = None
+    collaborate = False
+    # collaborate_with = ...
+    archived = False
+    discussion = factory.SubFactory(DiscussionFactory, discussion_type='STO')
+
+    website = factory.LazyAttribute(lambda c: "http://www.%s.com/" % slugify(c.name))
+    github = factory.LazyAttribute(lambda c: "http://github.com/%s" % slugify(c.name))
+    facebook = factory.LazyAttribute(lambda c: "http://facebook.com/%s" % slugify(c.name))
+    twitter = factory.LazyAttribute(lambda c: "http://twitter.com/%s" % slugify(c.name))
+    instagram = factory.LazyAttribute(lambda c: "http://instagram.com/%s" % slugify(c.name))
+    snapchat = factory.LazyAttribute(lambda c: "http://snapchat.com/%s" % slugify(c.name))
+    youtube = factory.LazyAttribute(lambda c: "http://youtube.com/%s" % slugify(c.name))
+
+    # governing_document_assets = [...]
+    # project_document_assets = [...]
+
+    @factory.post_generation
+    def team(self, create, extracted, **kwargs):
+        if not create:
+            # Simple build, do nothing.
+            return
+
+        if extracted:
+            # A list of groups were passed in, use them
+            for user in extracted:
+                self.team.add(user)
+
+    @factory.post_generation
+    def share_with(self, create, extracted, **kwargs):
+        if not create:
+            # Simple build, do nothing.
+            return
+
+        if extracted:
+            # A list of groups were passed in, use them
+            for network in extracted:
+                self.share_with.add(network)
+
+    @factory.post_generation
+    def collaborate_with(self, create, extracted, **kwargs):
+        if not create:
+            # Simple build, do nothing.
+            return
+
+        if extracted:
+            # A list of groups were passed in, use them
+            for org in extracted:
+                self.collaborate_with.add(org)
+
+    @factory.post_generation
+    def governing_document_assets(self, create, extracted, **kwargs):
+        if not create:
+            # Simple build, do nothing.
+            return
+
+        if extracted:
+            # A list of groups were passed in, use them
+            for asset in extracted:
+                self.governing_document_assets.add(asset)
+
+    @factory.post_generation
+    def project_document_assets(self, create, extracted, **kwargs):
+        if not create:
+            # Simple build, do nothing.
+            return
+
+        if extracted:
+            # A list of groups were passed in, use them
+            for asset in extracted:
+                self.project_document_assets.add(asset)

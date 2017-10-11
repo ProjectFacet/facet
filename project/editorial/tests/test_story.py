@@ -4,7 +4,7 @@ from django.test import TestCase
 from django.utils.timezone import make_aware
 
 from .factories import UserFactory, OrganizationFactory, NetworkFactory, StoryFactory, \
-    SeriesFactory
+    SeriesFactory, ProjectFactory
 
 
 class SeriesModelTestCase(TestCase):
@@ -116,3 +116,37 @@ class StoryModelTestCase(TestCase):
         """Return all existing facets associated with a story."""
 
         # FIXME
+
+
+class ProjectModelTestCase(TestCase):
+    """Test basic features of `Project` model."""
+
+    def test_model(self):
+        """Test instantiation."""
+
+        p = ProjectFactory()
+        p.full_clean()
+
+    def test_str(self):
+        """Test str()."""
+
+        p = ProjectFactory()
+        self.assertEqual(str(p), "Cover Congress")
+
+    def test_basic(self):
+        """Basic info."""
+
+        p = ProjectFactory()
+        self.assertEqual(p.description, "Description of project.")
+        self.assertEqual(p.search_title, "Cover Congress")
+        self.assertEqual(p.type, "Project")
+
+    def test_team(self):
+        """Test team."""
+
+        sr = SeriesFactory()
+        team = sr.get_series_team()
+
+        # FIXME
+
+        # self.assertEqual(sr.organization, "")
