@@ -43,7 +43,7 @@ from django.utils import timezone
 from django.shortcuts import get_object_or_404
 from itertools import chain
 from embed_video.fields import EmbedVideoField
-from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 
 #-----------------------------------------------------------------------#
@@ -1019,7 +1019,7 @@ class Project(models.Model):
     )
 
     #Tasks
-    tasks = GenericRelation(Task)
+    # tasks = GenericRelation(Task)
 
     # Events
     # events = GenericRelation(Event)
@@ -1149,7 +1149,7 @@ class Series(models.Model):
     )
 
     #Tasks
-    tasks = GenericRelation(Task)
+    # tasks = GenericRelation(Task)
 
     # Events
     # events = GenericRelation(Event)
@@ -1308,7 +1308,7 @@ class Story(models.Model):
     )
 
     #Tasks
-    tasks = GenericRelation(Task)
+    # tasks = GenericRelation(Task)
 
     # Events
     # events = GenericRelation(Event)
