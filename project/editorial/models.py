@@ -961,7 +961,7 @@ class Project(models.Model):
         blank=True,
     )
 
-    #Assets
+    # Assets
     governing_document_assets = models.ManyToManyField(
         'GoverningDocumentAsset',
         blank=True,
@@ -973,10 +973,10 @@ class Project(models.Model):
     )
 
     # Tasks
-    # tasks = GenericRelation(Task)
+    tasks = GenericRelation('Task')
 
     # Events
-    # events = GenericRelation(Event)
+    events = GenericRelation('Event')
 
     class Meta:
         verbose_name = 'Project'
@@ -2862,6 +2862,9 @@ class Event(models.Model):
 #-----------------------------------------------------------------------#
 #  SOCIAL POST
 #-----------------------------------------------------------------------#
+
+# FIXME Leaving this commented out for now to think about how to best
+# relate or make use of Platform and PlatformAccount in the options.
 
 # class SocialPost(models.Model):
 #     """A social post.
