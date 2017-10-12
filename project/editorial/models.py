@@ -942,39 +942,8 @@ class Project(models.Model):
         null=True,
     )
 
-    #project social media and digital presence
-
+    # project site if different than organization
     website = models.URLField(
-        max_length=250,
-        blank=True,
-    )
-
-    github = models.URLField(
-        max_length=300,
-        blank=True,
-    )
-
-    facebook = models.URLField(
-        max_length=250,
-        blank=True,
-    )
-
-    twitter = models.URLField(
-        max_length=250,
-        blank=True,
-    )
-
-    instagram = models.URLField(
-        max_length=250,
-        blank=True,
-    )
-
-    snapchat = models.URLField(
-        max_length=250,
-        blank=True,
-    )
-
-    youtube = models.URLField(
         max_length=250,
         blank=True,
     )
