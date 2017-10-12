@@ -6,6 +6,8 @@ from models import (
     Organization,
     OrganizationNote,
     Network,
+    Platform,
+    PlatformAccount,
     Project,
     Series,
     Story,
@@ -33,6 +35,8 @@ admin.site.register(User)
 admin.site.register(Organization)
 admin.site.register(OrganizationNote)
 admin.site.register(Network)
+admin.site.register(Platform)
+admin.site.register(PlatformAccount)
 admin.site.register(Project)
 admin.site.register(Series)
 admin.site.register(Story)
