@@ -756,6 +756,11 @@ class Platform(models.Model):
         help_text='text for font-awesome icon for the platform'
     )
 
+    class Meta:
+        verbose_name = 'Platform'
+        verbose_name_plural = "Platforms"
+        ordering = ['name']
+
     def __str__(self):
         return self.name
 
@@ -822,6 +827,14 @@ class PlatformAccount(models.Model):
         blank=True,
         null=True,
     )
+
+    class Meta:
+        verbose_name = 'Platform Account'
+        verbose_name_plural = "Platform Accounts"
+        ordering = ['name']
+
+    def __str__(self):
+        return self.name
 
     @property
     def description(self):
@@ -2688,90 +2701,97 @@ class VideoFacet(models.Model):
 #  TASK
 #-----------------------------------------------------------------------#
 
-# class Task(models.Model):
-#     """A Task.
-#
-#     A task is an action item assigned to a team and to a project, series,
-#     story or an event.
-#     """
-#
-#     owner = models.ForeignKey(
-#       User,
-#       related_name='taskowner'
-#     )
-#
-#     title = models.TextField(
-#         help_text='Title of the task.'
-#     )
-#
-#     text = models.TextField(
-#         help_text='Content of the task.',
-#         blank=True,
-#     )
-#
-#     assigned_to = models.ManyToManyField(
-#         # There can be multiple users listed as assigned to the task.
-#         User,
-#         related_name='taskassigneduser',
-#         help_text='The users assigned to the task.',
-#         blank=True,
-#     )
-#
-#     # Choices for Task status.
-#     IDENTIFIED = 'Identified'
-#     IN_PROGRESS = 'In Progress'
-#     COMPLETE = 'Complete'
-#     TASK_STATUS_CHOICES = (
-#         (IDENTIFIED, 'Identified'),
-#         (IN_PROGRESS, 'In Progress'),
-#         (COMPLETE, 'Complete'),
-#     )
-#
-#     task_status = models.CharField(
-#         max_length=50,
-#         choices=TASK_STATUS_CHOICES,
-#         help_text='Task status.'
-#     )
-#
-#     important = models.BooleanField(
-#         default=False,
-#         help_text='Whether a task is important.'
-#     )
-#
-#     creation_date = models.DateTimeField(
-#         auto_now_add=True,
-#         help_text='Date and time task is created.',
-#         blank=True,
-#     )
-#
-#     due_date = models.DateTimeField(
-#         help_text='Date and time task is to be completed.',
-#         blank=True,
-#     )
-#
-#     inprogress_date = models.DateTimeField(
-#         help_text='Date and time task status is changed to in progress.',
-#         blank=True,
-#     )
-#
-#     completion_date = models.DateTimeField(
-#         auto_now_add=True,
-#         help_text='Date and time task status is changed to complete.',
-#         blank=True,
-#     )
-#
-#     # a task can be associated with a project, series, story or an event.
-#     # using contenttypes and generic relations to easily connect to one of
-#     # several possible foreign keys and to easily query all the tasks for
-#     # one of the associated models (project, series, story, event)
-#     content_type = models.ForeignKey(ContentType)
-#     object_id = models.PositiveIntegerField()
-#     content_object=GenericForeignKey('content_type', 'object_id')
-#
-#     @property
-#     def task_title(self):
-#         return self.title
+class Task(models.Model):
+    """A Task.
 
+    A task is an action item assigned to a project, series,
+    story or an event. A task has an assigned team of users.
+    """
+
+    owner = models.ForeignKey(
+      User,
+      related_name='taskowner'
+    )
+
+    title = models.TextField(
+        help_text='Title of the task.'
+    )
+
+    text = models.TextField(
+        help_text='Content of the task.',
+        blank=True,
+    )
+
+    assigned_to = models.ManyToManyField(
+        # There can be multiple users listed as assigned to the task.
+        User,
+        related_name='taskassigneduser',
+        help_text='The users assigned to the task.',
+        blank=True,
+    )
+
+    # Choices for Task status.
+    IDENTIFIED = 'Identified'
+    IN_PROGRESS = 'In Progress'
+    COMPLETE = 'Complete'
+    TASK_STATUS_CHOICES = (
+        (IDENTIFIED, 'Identified'),
+        (IN_PROGRESS, 'In Progress'),
+        (COMPLETE, 'Complete'),
+    )
+
+    task_status = models.CharField(
+        max_length=50,
+        choices=TASK_STATUS_CHOICES,
+        help_text='Task status.'
+    )
+
+    important = models.BooleanField(
+        default=False,
+        help_text='Whether a task is important.'
+    )
+
+    creation_date = models.DateTimeField(
+        auto_now_add=True,
+        help_text='Date and time task is created.',
+        blank=True,
+    )
+
+    due_date = models.DateTimeField(
+        help_text='Date and time task is to be completed.',
+        blank=True,
+    )
+
+    inprogress_date = models.DateTimeField(
+        help_text='Date and time task status is changed to in progress.',
+        blank=True,
+    )
+
+    completion_date = models.DateTimeField(
+        auto_now_add=True,
+        help_text='Date and time task status is changed to complete.',
+        blank=True,
+    )
+
+    # a task can be associated with a project, series, story or an event.
+    # using contenttypes and generic relations to easily connect to one of
+    # several possible foreign keys and to easily query all the tasks for
+    # one of the associated models (project, series, story, event)
+    content_type = models.ForeignKey(ContentType)
+    object_id = models.PositiveIntegerField()
+    content_object=GenericForeignKey('content_type', 'object_id')
+
+    class Meta:
+        verbose_name = 'Task'
+        verbose_name_plural = "Tasks"
+        ordering = ['title']
+
+    def __str__(self):
+        return self.title
+
+    @property
+    def task_title(self):
+        return self.title
 
 
 #-----------------------------------------------------------------------#
