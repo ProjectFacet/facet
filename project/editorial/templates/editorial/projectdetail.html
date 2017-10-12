@@ -25,13 +25,42 @@
 
 <div class="row m-b-40">
 
-    <!-- Left Column -->
-    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+  <!-- Left Column -->
+
+    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+      <!-- Detail -->
+      <div class="row m-b-50">
+        <div class="col-xs-12">
+          <h4 class="m-b-20">Detail</h4>
+          <p class="f-s-18 f-w-400 thin m-b-20">{{ project.name }}</p>
+          <p class="f-s-16 f-w-300 thin m-b-20"><i>{{ project.project_description }}</i></p>
+          <p class="m-b-20"><span class="f-s-16 f-w-600 subtle slim-margin">Created:</span> <span class="sameline bright f-s-16 f-w-300">{{ project.creation_date|date:'D M j g:i a' }}</span></p>
+          <p>
+            <span class="sameline subtle">{% if project.sensitive == True %} <i class="fa fa-check-square-o subtle"></i>{% else %}  <i class="fa fa-square subtle"></i>{% endif %}</span>  Sensitive
+            <span class="sameline subtle">{% if project.archived == True %} <i class="fa fa-check-square-o subtle"></i>{% else %}<i class="fa fa-square subtle"></i>{% endif %}</span>  Archive
+            <span class="sameline subtle">{% if project.collaborate == True %} <i class="fa fa-check-square-o subtle"></i>{% else %} <i class="fa fa-square subtle"></i>{% endif %}</span>  Collaborate
+          </p>
+          <p class="f-s-16 f-w-600 subtle slim-margin m-b-10">Partners: </p>
+              {% for collaborator in project.collaborate_with.all %}
+              <p>{{ collaborator.name }}</p>
+              {% endfor %}
+          <p class="f-s-16 f-w-600 subtle slim-margin m-b-10">Team: </p>
+          {% for user in project.team.all %}
+            <div class="col-md-1">
+              {% if user.display_photo %}
+              <img class="media-object img-circle" width="32" src="{{ user.display_photo.url }}" alt="user">
+              {% else %}
+              <p class="tiny-text">{{ user.first_name }}</p>
+              {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+      </div>
+      <!-- Discussion -->
       <div class="row">
-        <!-- Discussion Column -->
-        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 right-rule">
-          <h4 class="m-b-20"> Discussion</h4>
-          <div class="comments" data-toggle="slimScroll" style="height:400px" data-color="#5D9CEC" data-allow-page-scroll="false">
+        <div class="col-xs-12">
+          <h4 class="m-b-20">Discussion</h4>
+          <div>
               {% if projectcomments %}
               {% for comment in projectcomments %}
               <div class="row m-b-10">
@@ -84,68 +113,40 @@
                 </div>
             </div>
         </div>
-        <!-- Details Column -->
-        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 right-rule">
-          <h4 class="m-b-20"> Details</h4>
-          <div class="row">
-            <div class="col-md-10">
-              <h5 class="thin m-b-10"><i>{{ project.name }}</i></h5>
-              <h6 class="thin m-b-10"><i>{{ project.project_description }}</i></h6>
-            </div>
-            <div class="col-md-2">
-              {% if request.user.organization == project.organization %}
-                <a href="{% url 'project_edit' pk=project.id %}"><button class="btn btn-sm bg-default btn-block m-b-10">Edit</button></a>
-              {% endif %}
-              {% if request.user.organization == project.organization %}
-                <form action="{% url 'project_delete' pk=project.id %}" method="POST" class="post-form">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-sm btn-block bg-danger-100">Delete</button>
-                </form>
-              {% endif %}
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6">
-              <hr>
-              <p>Created: <span class="sameline bright">{{ project.creation_date|date:'D M j g:i a' }}</span></p>
-              <p>Archived: <span class="sameline bright">{% if project.archived == True %} <i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</span></p>
-              <p>Sensitive: <span class="sameline bright">{% if project.sensitive == True %} <i class="fa fa-check-square-o"></i>{% else %}  <i class="fa fa-square-o"></i>{% endif %}</span></p>
-            </div>
-            <div class="col-md-6">
-              <hr>
-              <p>Collaboration: <span class="sameline bright">{% if project.collaborate == True %} <i class="fa fa-check-square-o"></i>{% else %} <i class="fa fa-square-o"></i>{% endif %}</span></p>
-              <p>Partners: </p>
-              {% for collaborator in project.collaborate_with.all %}
-              <p>- {{ collaborator.name }}</p>
-              {% endfor %}
-            </div>
-            <div class="col-md-12">
-            <hr>
-            <p>Team: </p>
-            <div class="row">
-            {% for user in project.team.all %}
-            <div class="col-md-1">
-              {% if user.display_photo %}
-              <img class="media-object img-circle" width="32" src="{{ user.display_photo.url }}" alt="user">
-              {% else %}
-              {% endif %}
-              <p class="tiny-text">{{ user.first_name }}</p>
-            </div>
-            {% endfor %}
-            </div>
-            </div>
-          </div>
+      </div>
+    </div>
+    <!-- End of Left Column -->
+
+    <!-- Middle Column -->
+    <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+      <!-- Tasks -->
+      <div class="row">
+        <div class="col-xs-12">
+          <h4 class="m-l-50 m-b-20">Tasks</h4>
+        </div>
+      </div>
+      <div class="row m-b-50">
+        <!-- Identified Tasks -->
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+          <p class="f-s-14 f-w-300 spread-01 text-center m-b-20">Identified</p>
+        </div>
+        <!-- In Progress Tasks -->
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+          <p class="f-s-14 f-w-300 spread-01 text-center m-b-20">In Progress</p>
+        </div>
+        <!-- Complete Tasks -->
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+          <p class="f-s-14 f-w-300 spread-01 text-center m-b-20">Complete</p>
         </div>
       </div>
       <div class="row">
-        <hr>
-        <!-- Notes Column -->
-        <div class="col-xs-12">
+        <!-- Notes -->
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
           <div class="projectnotes">
-            <h4 class="m-b-20">Notes <a data-toggle="modal" data-target="#addProjectNote" title="Add Project Note"><i class="fa fa-plus sameline dark"></i></a></h4>
+            <h4 class="m-l-50 m-b-20">Notes <a data-toggle="modal" data-target="#addProjectNote" title="Add Project Note"><i class="fa fa-plus sameline subtle"></i></a></h4>
             <div class="displaynotes">
             {% for note in projectnotes|slice:":6" %}
-                <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
+                <div class="col-xs-12">
                   <div class="card bs-card">
                       <div class="card-block">
                           <a data-toggle="modal" data-target="#addNote{{note.id}}" title="View Organization Note"><h4 class="f-s-16 f-w-500 m-b-20">{{ note.title }}</h4></a>
@@ -155,31 +156,45 @@
                   </div>
                 </div><!-- /.cols -->
             {% endfor %}
-            <a href="{% url 'project_notes' pk=project.id %}" class="link-text m-b-40"><small>See all notes...</small></a>
+            <a href="{% url 'project_notes' pk=project.id %}" class="link-text m-l-50 m-b-40"><small>See all notes...</small></a>
           </div>
+          </div>
+        </div>
+        <!-- Calendar -->
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+          <h4 class="m-b-20">Calendar</h4>
+        </div>
+        <!-- Engagement -->
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+          <h4 class="m-b-20">Engagement</h4>
+          <div class="row m-b-20">
+            <div class="col-xs-12">
+              <p class="f-s-16 f-w-600 subtle slim-margin">Events:</p>
+            </div>
+          </div>
+          <div class="row m-b-20">
+            <div class="col-xs-12">
+              <p class="f-s-16 f-w-600 subtle slim-margin">Social Posts:</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
-    <!-- End of Left column -->
+    <!-- End of Middle Column -->
 
     <!-- Right Column -->
-    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-
-      <h4 class="m-b-20"> Stories <a href="{% url 'story_new' %}" title="Add A Story"><i class="fa fa-plus sameline dark"></i></a></h4>
-        <table class="table table-hover" cellspacing="0" width="100%">
+    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+      <!-- Content -->
+      <div class="row">
+        <div class="col-xs-12">
+          <h4 class="m-b-20">Story <a href="{% url 'story_new' %}" title="Add A Story"><i class="fa fa-plus sameline subtle"></i></a></h4>
+          <table class="table table-hover" cellspacing="0" width="100%">
             <thead>
                 <tr>
                     <th>Story</th>
                     <th>Description</th>
                 </tr>
             </thead>
-            <tfoot class="hidden">
-                <tr>
-                  <th>Title</th>
-                  <th>Facets</th>
-                </tr>
-            </tfoot>
             <tbody>
               {% for story in project.story_set.all %}
                 <tr>
@@ -204,9 +219,18 @@
                 </tr>
               {% endfor %}
             </tbody>
-        </table>
+          </table>
+        </div>
+      </div>
+      <!-- Project Media -->
+      <div class="row">
+        <div class="col-xs-12">
+          <h4 class="m-b-20">Project Media</h4>
+        </div>
+      </div>
     </div>
     <!-- End of Right Column -->
+
 </div>
 
 {% endblock %}

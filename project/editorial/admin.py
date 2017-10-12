@@ -15,6 +15,8 @@ from models import (
     PrintFacet,
     AudioFacet,
     VideoFacet,
+    Task,
+    Event,
     ProjectNote,
     SeriesNote,
     StoryNote,
@@ -44,6 +46,8 @@ admin.site.register(WebFacet)
 admin.site.register(PrintFacet)
 admin.site.register(AudioFacet)
 admin.site.register(VideoFacet)
+admin.site.register(Task)
+admin.site.register(Event)
 admin.site.register(ProjectNote)
 admin.site.register(SeriesNote)
 admin.site.register(StoryNote)

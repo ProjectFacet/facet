@@ -1151,6 +1151,12 @@ class Story(models.Model):
     The story also controls the sensitivity and embargo status of the content.
     """
 
+    project = models.ForeignKey(
+        Project,
+        blank=True,
+        null=True,
+    )
+
     series = models.ForeignKey(
         Series,
         blank=True,

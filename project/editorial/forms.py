@@ -24,6 +24,8 @@ from editorial.models import (
     PrintFacet,
     AudioFacet,
     VideoFacet,
+    Task,
+    Event,
     PrivateMessage,
     Comment,
     NetworkNote,
