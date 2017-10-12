@@ -191,7 +191,7 @@ def team_list(request):
     # the user's organization
     organization = request.user.organization
     networks = Organization.get_org_networks(organization)
-    partners = Organization.get_org_collaborators(organization)
+    partners = Organization.get_org_collaborators_vocab(organization)
 
     # form for adding a new user to the team
     adduserform = AddUserForm()

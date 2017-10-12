@@ -260,7 +260,7 @@ class User(AbstractUser):
         """
 
         organization = self.organization
-        org_collaborators = Organization.get_org_collaborators(organization)
+        org_collaborators = Organization.get_org_collaborators_vocab(organization)
         contact_list = User.objects.filter(Q(Q(organization=org_collaborators) | Q(organization=organization)))
         return contact_list
 

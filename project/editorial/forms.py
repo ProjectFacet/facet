@@ -165,7 +165,7 @@ class ProjectForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop("request")
         super(ProjectForm, self).__init__(*args, **kwargs)
-        self.fields['collaborate_with'].queryset = Organization.get_org_collaborators(self.request.user.organization)
+        self.fields['collaborate_with'].queryset = Organization.get_org_collaborators_vocab(self.request.user.organization)
         self.fields['team'].queryset = Organization.get_org_users(self.request.user.organization)
 
     class Meta:
@@ -198,7 +198,7 @@ class SeriesForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop("request")
         super(SeriesForm, self).__init__(*args, **kwargs)
-        self.fields['collaborate_with'].queryset = Organization.get_org_collaborators(self.request.user.organization)
+        self.fields['collaborate_with'].queryset = Organization.get_org_collaborators_vocab(self.request.user.organization)
         self.fields['team'].queryset = Organization.get_org_users(self.request.user.organization)
 
     class Meta:
@@ -229,7 +229,7 @@ class StoryForm(forms.ModelForm):
         self.request = kwargs.pop("request")
         super(StoryForm, self).__init__(*args, **kwargs)
         self.fields['share_with'].queryset = Organization.get_org_networks(self.request.user.organization)
-        self.fields['collaborate_with'].queryset = Organization.get_org_collaborators(self.request.user.organization)
+        self.fields['collaborate_with'].queryset = Organization.get_org_collaborators_vocab(self.request.user.organization)
         self.fields['team'].queryset = Organization.get_org_users(self.request.user.organization)
 
     series = forms.ModelChoiceField(
@@ -702,7 +702,7 @@ class PrivateMessageForm(forms.ModelForm):
         self.request = kwargs.pop("request")
         super(PrivateMessageForm, self).__init__(*args, **kwargs)
         if self.request.user.organization:
-            self.fields['recipient'].queryset = User.get_user_contact_list(self.request.user)
+            self.fields['recipient'].queryset = User.get_user_contact_list_vocab(self.request.user)
 
 
     class Meta:
