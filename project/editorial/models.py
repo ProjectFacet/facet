@@ -972,12 +972,6 @@ class Project(models.Model):
         blank=True,
     )
 
-    # Tasks
-    tasks = GenericRelation('Task')
-
-    # Events
-    events = GenericRelation('Event')
-
     class Meta:
         verbose_name = 'Project'
         verbose_name_plural = "Projects"
@@ -1101,12 +1095,6 @@ class Series(models.Model):
         blank=True,
         null=True,
     )
-
-    #Tasks
-    # tasks = GenericRelation(Task)
-
-    # Events
-    # events = GenericRelation(Event)
 
     class Meta:
         verbose_name = 'Series'
@@ -1266,12 +1254,6 @@ class Story(models.Model):
         blank=True,
         null=True,
     )
-
-    #Tasks
-    # tasks = GenericRelation(Task)
-
-    # Events
-    # events = GenericRelation(Event)
 
     class Meta:
         verbose_name = 'Story'
@@ -2780,12 +2762,33 @@ class Task(models.Model):
     )
 
     # a task can be associated with a project, series, story or an event.
-    # using contenttypes and generic relations to easily connect to one of
-    # several possible foreign keys and to easily query all the tasks for
-    # one of the associated models (project, series, story, event)
-    content_type = models.ForeignKey(ContentType)
-    object_id = models.PositiveIntegerField()
-    content_object=GenericForeignKey('content_type', 'object_id')
+    project = models.ForeignKey(
+        Project,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+    )
+
+    series = models.ForeignKey(
+        Series,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+    )
+
+    story = models.ForeignKey(
+        Story,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+    )
+
+    event = models.ForeignKey(
+        'Event',
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+    )
 
     class Meta:
         verbose_name = 'Task'
@@ -2839,9 +2842,6 @@ class Event(models.Model):
         blank=True,
     )
 
-    # Tasks
-    tasks = GenericRelation(Task)
-
     # Notes
     #TODO Add Notes to note class to be attached to Events
 
@@ -2849,12 +2849,34 @@ class Event(models.Model):
     #TODO Add Document and Image assets for events to Assets section.
 
     # an event can be associated with an organization, project, series or story.
-    # using contenttypes and generic relations to connect to one of
-    # several possible foreign keys and to easily query all the tasks for
-    # one of the associated models (organization, project, series or story)
-    content_type = models.ForeignKey(ContentType)
-    object_id = models.PositiveIntegerField()
-    content_object=GenericForeignKey('content_type', 'object_id')
+
+    organization = models.ForeignKey(
+        Organization,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+    )
+
+    project = models.ForeignKey(
+        Project,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+    )
+
+    series = models.ForeignKey(
+        Series,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+    )
+
+    story = models.ForeignKey(
+        Story,
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+    )
 
     class Meta:
         verbose_name = 'Event'

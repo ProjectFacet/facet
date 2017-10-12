@@ -156,7 +156,7 @@
                   </div>
                 </div><!-- /.cols -->
             {% endfor %}
-            <a href="{% url 'project_notes' pk=project.id %}" class="link-text m-l-50 m-b-40"><small>See all notes...</small></a>
+            <a href="{% url 'project_notes' pk=project.id %}" class="link-text m-b-40 subtle"><small>See all notes...</small></a>
           </div>
           </div>
         </div>
@@ -188,18 +188,13 @@
       <div class="row">
         <div class="col-xs-12">
           <h4 class="m-b-20">Story <a href="{% url 'story_new' %}" title="Add A Story"><i class="fa fa-plus sameline subtle"></i></a></h4>
-          <table class="table table-hover" cellspacing="0" width="100%">
-            <thead>
-                <tr>
-                    <th>Story</th>
-                    <th>Description</th>
-                </tr>
-            </thead>
+          <table class="table table-hover table-sm table-unbordered" cellspacing="0" width="100%">
             <tbody>
               {% for story in project.story_set.all %}
                 <tr>
-                  <td><a href="{% url 'story_detail' story.id %}">{{ story.name }}</a></td>
+                  <td><a href="{% url 'story_detail' story.id %}" class="f-s-14">{{ story.name }}</a></td>
                   <td>
+                    {% comment %}
                     {% if story.webfacetstory.all or story.printfacetstory.all or story.audiofacetstory.all or story.videofacetstory.all %}
                       {% for facet in story.webfacetstory.all %}
                       <a href="{% url 'story_detail' pk=facet.story.id %}#web" title="{{ facet.wf_description }}"><p class="color-default sameline">Web</p></a>
@@ -214,6 +209,8 @@
                       <a href="{% url 'story_detail' pk=facet.story.id %}#video" title="{{ facet.vf_description }}"><p class="color-default sameline">Video</p></a>
                       {% endfor %}
                     {% endif %}
+                    {% endcomment %}
+                    <span class="f-s-14 subtle">{{ story.description }}</span>
 
                   </td>
                 </tr>
