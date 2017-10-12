@@ -15,6 +15,8 @@ from editorial.models import (
     User,
     Organization,
     Network,
+    Platform,
+    PlatformAccount,
     Project,
     Story,
     Series,
@@ -77,7 +79,7 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'username', 'credit_name', 'title', 'phone', 'email', 'bio', 'location',
-                 'expertise', 'website', 'facebook', 'github', 'twitter', 'linkedin', 'instagram', 'snapchat', 'vine', 'photo']
+                 'expertise', 'website', 'photo']
         widgets = {
             'first_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'First Name'}),
             'last_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Last Name'}),
@@ -88,13 +90,6 @@ class UserProfileForm(forms.ModelForm):
             'email': TextInput(attrs={'class': 'form-control', 'placeholder': 'Email'}),
             'phone': TextInput(attrs={'class': 'form-control', 'placeholder': 'Phone'}),
             'website': TextInput(attrs={'class': 'form-control', 'placeholder': 'Website'}),
-            'github': TextInput(attrs={'class': 'form-control', 'placeholder': 'Github Profile Link'}),
-            'facebook': TextInput(attrs={'class': 'form-control', 'placeholder': 'Facebook Profile Link'}),
-            'twitter': TextInput(attrs={'class': 'form-control', 'placeholder': 'Twitter Profile Link'}),
-            'linkedin': TextInput(attrs={'class': 'form-control', 'placeholder': 'LinkedIn Profile Link'}),
-            'instagram': TextInput(attrs={'class': 'form-control', 'placeholder': 'Instagram Profile Link'}),
-            'snapchat': TextInput(attrs={'class': 'form-control', 'placeholder': 'Snapchat Profile Link'}),
-            'vine': TextInput(attrs={'class': 'form-control', 'placeholder': 'Vine Profile Link'}),
             'bio': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Professional Bio'}),
             'expertise': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Expertise'}),
         }

@@ -137,41 +137,6 @@ class User(AbstractUser):
         format='JPEG',
     )
 
-    facebook = models.URLField(
-        max_length=250,
-        blank=True,
-    )
-
-    twitter = models.URLField(
-        max_length=250,
-        blank=True,
-    )
-
-    github = models.URLField(
-        max_length=300,
-        blank=True,
-    )
-
-    linkedin = models.URLField(
-        max_length=250,
-        blank=True,
-    )
-
-    instagram = models.URLField(
-        max_length=250,
-        blank=True,
-    )
-
-    snapchat = models.URLField(
-        max_length=250,
-        blank=True,
-    )
-
-    vine = models.URLField(
-        max_length=250,
-        blank=True,
-    )
-
     website = models.URLField(
         max_length=250,
         blank=True,
@@ -790,6 +755,9 @@ class Platform(models.Model):
         blank=True,
         help_text='text for font-awesome icon for the platform'
     )
+
+    def __str__(self):
+        return self.name
 
 
 class PlatformAccount(models.Model):
