@@ -983,12 +983,25 @@ class Project(models.Model):
     def get_absolute_url(self):
         return reverse('project_detail', kwargs={'pk': self.id})
 
-    def get_project_team(self):
+    def get_project_team_vocab(self):
         """Return queryset with org users and users from collaboration orgs for a project."""
 
         collaborators = self.collaborate_with.all()
         project_team = User.objects.filter(Q(Q(organization=self.organization) | Q(organization__in=collaborators)))
         return project_team
+
+    def get_project_images(self):
+        """Return all image assets associated with facets that are part of a project."""
+
+        # get all stories associated with a project
+        project_stories=Story.objects.filter(Q(project=self))
+        # get all image assets associated with those stories.
+        project_images = []
+        for story in project_stories:
+            images=Story.get_story_images(story)
+            project_images.extend(images)
+        return project_images
+
 
     @property
     def description(self):
@@ -1367,14 +1380,26 @@ class Story(models.Model):
         """Return all the images associated with a story."""
 
         story_images = []
-        webfacet = self.webfacetstory.all()[0]
-        webfacet_images = WebFacet.get_webfacet_images(webfacet)
-        printfacet = self.printfacetstory.all()[0]
-        printfacet_images = PrintFacet.get_printfacet_images(printfacet)
-        audiofacet = self.audiofacetstory.all()[0]
-        audiofacet_images = AudioFacet.get_audiofacet_images(audiofacet)
-        videofacet = self.videofacetstory.all()[0]
-        videofacet_images = VideoFacet.get_videofacet_images(videofacet)
+        if self.webfacetstory.all():
+            webfacet = self.webfacetstory.all()[0]
+            webfacet_images = WebFacet.get_webfacet_images(webfacet)
+        else:
+            webfacet_images = []
+        if self.printfacetstory.all():
+            printfacet = self.printfacetstory.all()[0]
+            printfacet_images = PrintFacet.get_printfacet_images(printfacet)
+        else:
+            printfacet_images = []
+        if self.audiofacetstory.all():
+            audiofacet = self.audiofacetstory.all()[0]
+            audiofacet_images = AudioFacet.get_audiofacet_images(audiofacet)
+        else:
+            audiofacet_images = []
+        if self.videofacetstory.all():
+            videofacet = self.videofacetstory.all()[0]
+            videofacet_images = VideoFacet.get_videofacet_images(videofacet)
+        else:
+            videofacet_images = []
         story_images.extend(webfacet_images)
         story_images.extend(printfacet_images)
         story_images.extend(audiofacet_images)
@@ -1419,6 +1444,24 @@ class Story(models.Model):
         story_documents.extend(videofacet_audio)
 
         return story_audio
+
+    def get_story_video(self):
+        """ Return all video associated with a story."""
+
+        story_video = []
+        webfacet = self.webfacetstory.all()[0]
+        webfacet_video = WebFacet.get_webfacet_video(webfacet)
+        printfacet = self.printfacetstory.all()[0]
+        printfacet_video = PrintFacet.get_printfacet_video(printfacet)
+        audiofacet = self.audiofacetstory.all()[0]
+        audiofacet_video = AudioFacet.get_audiofacet_video(audiofacet)
+        videofacet = self.videofacetstory.all()[0]
+        videofacet_video = VideoFacet.get_videofacet_video(videofacet)
+        story_documents.extend(webfacet_video)
+        story_documents.extend(printfacet_video)
+        story_documents.extend(audiofacet_video)
+        story_documents.extend(videofacet_video)
+
 
     def get_story_facets(self):
         """Return all existing facets associated with a story."""

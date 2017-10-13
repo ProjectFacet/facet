@@ -100,7 +100,7 @@
                   {% for image in images %}
                     <div class="col-md-2">
                       <label>
-                        <img class="img-responsive img-thumbnail" src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}">
+                        {% if image.display_photo %}<img class="img-responsive img-thumbnail" src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}">{% endif %}
                         <input type="checkbox" name="images" value="{{ image.id }}">
                       </label>
                     </div>

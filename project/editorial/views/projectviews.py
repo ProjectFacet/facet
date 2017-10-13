@@ -90,6 +90,7 @@ def project_detail(request, pk):
     projectcommentform = ProjectCommentForm()
     projectevents = Event.objects.filter(project=project)
     projectcomments = Comment.objects.filter(discussion=project.discussion).order_by('-date')
+    project_images = Project.get_project_images(project)
 
     return render(request, 'editorial/projectdetail.html', {
         'project': project,
@@ -98,6 +99,7 @@ def project_detail(request, pk):
         'projectcomments': projectcomments,
         'projectcommentform': projectcommentform,
         'projectevents': projectevents,
+        'project_images': project_images,
     })
 
 
