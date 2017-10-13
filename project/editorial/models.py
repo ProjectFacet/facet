@@ -1002,6 +1002,41 @@ class Project(models.Model):
             project_images.extend(images)
         return project_images
 
+    def get_project_documents(self):
+        """Return all document assets associated with facets that are part of a project."""
+
+        # get all stories associated with a project
+        project_stories=Story.objects.filter(Q(project=self))
+        # get all document assets associated with those stories.
+        project_documents = []
+        for story in project_stories:
+            documents=Story.get_story_documents(story)
+            project_documents.extend(documents)
+        return project_documents
+
+    def get_project_audio(self):
+        """Return all audio assets associated with facets that are part of a project."""
+
+        # get all stories associated with a project
+        project_stories=Story.objects.filter(Q(project=self))
+        # get all audio assets associated with those stories.
+        project_audio = []
+        for story in project_stories:
+            audio=Story.get_story_audio(story)
+            project_audio.extend(audio)
+        return project_audio
+
+    def get_project_video(self):
+        """Return all video assets associated with facets that are part of a project."""
+
+        # get all stories associated with a project
+        project_stories=Story.objects.filter(Q(project=self))
+        # get all video assets associated with those stories.
+        project_video = []
+        for story in project_stories:
+            videos=Story.get_story_video(story)
+            project_video.extend(videos)
+        return project_video
 
     @property
     def description(self):
@@ -1411,14 +1446,26 @@ class Story(models.Model):
         """Return all documents associated with a story."""
 
         story_documents = []
-        webfacet = self.webfacetstory.all()[0]
-        webfacet_documents = WebFacet.get_webfacet_documents(webfacet)
-        printfacet = self.printfacetstory.all()[0]
-        printfacet_documents = PrintFacet.get_printfacet_documents(printfacet)
-        audiofacet = self.audiofacetstory.all()[0]
-        audiofacet_documents = AudioFacet.get_audiofacet_documents(audiofacet)
-        videofacet = self.videofacetstory.all()[0]
-        videofacet_documents = VideoFacet.get_videofacet_documents(videofacet)
+        if self.webfacetstory.all():
+            webfacet = self.webfacetstory.all()[0]
+            webfacet_documents = WebFacet.get_webfacet_documents(webfacet)
+        else:
+            webfacet_documents = []
+        if self.printfacetstory.all():
+            printfacet = self.printfacetstory.all()[0]
+            printfacet_documents = PrintFacet.get_printfacet_documents(printfacet)
+        else:
+            printfacet_documents = []
+        if self.audiofacetstory.all():
+            audiofacet = self.audiofacetstory.all()[0]
+            audiofacet_documents = AudioFacet.get_audiofacet_documents(audiofacet)
+        else:
+            audiofacet_documents = []
+        if self.videofacetstory.all():
+            videofacet = self.videofacetstory.all()[0]
+            videofacet_documents = VideoFacet.get_videofacet_documents(videofacet)
+        else:
+            videofacet_documents = []
         story_documents.extend(webfacet_documents)
         story_documents.extend(printfacet_documents)
         story_documents.extend(audiofacet_documents)
@@ -1430,18 +1477,30 @@ class Story(models.Model):
         """Return all audio associated with a story."""
 
         story_audio = []
-        webfacet = self.webfacetstory.all()[0]
-        webfacet_audio = WebFacet.get_webfacet_audio(webfacet)
-        printfacet = self.printfacetstory.all()[0]
-        printfacet_audio = PrintFacet.get_printfacet_audio(printfacet)
-        audiofacet = self.audiofacetstory.all()[0]
-        audiofacet_audio = AudioFacet.get_audiofacet_audio(audiofacet)
-        videofacet = self.videofacetstory.all()[0]
-        videofacet_audio = VideoFacet.get_videofacet_audio(videofacet)
-        story_documents.extend(webfacet_audio)
-        story_documents.extend(printfacet_audio)
-        story_documents.extend(audiofacet_audio)
-        story_documents.extend(videofacet_audio)
+        if self.webfacetstory.all():
+            webfacet = self.webfacetstory.all()[0]
+            webfacet_audio = WebFacet.get_webfacet_audio(webfacet)
+        else:
+            webfacet_audio = []
+        if self.printfacetstory.all():
+            printfacet = self.printfacetstory.all()[0]
+            printfacet_audio = PrintFacet.get_printfacet_audio(printfacet)
+        else:
+            printfacet_audio = []
+        if self.audiofacetstory.all():
+            audiofacet = self.audiofacetstory.all()[0]
+            audiofacet_audio = AudioFacet.get_audiofacet_audio(audiofacet)
+        else:
+            audiofacet_audio = []
+        if self.videofacetstory.all():
+            videofacet = self.videofacetstory.all()[0]
+            videofacet_audio = VideoFacet.get_videofacet_audio(videofacet)
+        else:
+            videofacet_audio = []
+        story_audio.extend(webfacet_audio)
+        story_audio.extend(printfacet_audio)
+        story_audio.extend(audiofacet_audio)
+        story_audio.extend(videofacet_audio)
 
         return story_audio
 
@@ -1449,18 +1508,32 @@ class Story(models.Model):
         """ Return all video associated with a story."""
 
         story_video = []
-        webfacet = self.webfacetstory.all()[0]
-        webfacet_video = WebFacet.get_webfacet_video(webfacet)
-        printfacet = self.printfacetstory.all()[0]
-        printfacet_video = PrintFacet.get_printfacet_video(printfacet)
-        audiofacet = self.audiofacetstory.all()[0]
-        audiofacet_video = AudioFacet.get_audiofacet_video(audiofacet)
-        videofacet = self.videofacetstory.all()[0]
-        videofacet_video = VideoFacet.get_videofacet_video(videofacet)
-        story_documents.extend(webfacet_video)
-        story_documents.extend(printfacet_video)
-        story_documents.extend(audiofacet_video)
-        story_documents.extend(videofacet_video)
+        if self.webfacetstory.all():
+            webfacet = self.webfacetstory.all()[0]
+            webfacet_video = WebFacet.get_webfacet_video(webfacet)
+        else:
+            webfacet_video = []
+        if self.printfacetstory.all():
+            printfacet = self.printfacetstory.all()[0]
+            printfacet_video = PrintFacet.get_printfacet_video(printfacet)
+        else:
+            printfacet_video = []
+        if self.audiofacetstory.all():
+            audiofacet = self.audiofacetstory.all()[0]
+            audiofacet_video = AudioFacet.get_audiofacet_video(audiofacet)
+        else:
+            audiofacet_video = []
+        if self.videofacetstory.all():
+            videofacet = self.videofacetstory.all()[0]
+            videofacet_video = VideoFacet.get_videofacet_video(videofacet)
+        else:
+            videofacet_video = []
+        story_video.extend(webfacet_video)
+        story_video.extend(printfacet_video)
+        story_video.extend(audiofacet_video)
+        story_video.extend(videofacet_video)
+
+        return story_video
 
 
     def get_story_facets(self):

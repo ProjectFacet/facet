@@ -91,6 +91,9 @@ def project_detail(request, pk):
     projectevents = Event.objects.filter(project=project)
     projectcomments = Comment.objects.filter(discussion=project.discussion).order_by('-date')
     project_images = Project.get_project_images(project)
+    project_documents = Project.get_project_documents(project)
+    project_audio = Project.get_project_audio(project)
+    project_video = Project.get_project_video(project)
 
     return render(request, 'editorial/projectdetail.html', {
         'project': project,
