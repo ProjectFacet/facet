@@ -1038,6 +1038,13 @@ class Project(models.Model):
             project_video.extend(videos)
         return project_video
 
+    def get_project_tasks(self):
+        """Return all tasks associated with a project."""
+
+        project_tasks=Task.objects.filter(Q(project=self))
+        return project_tasks
+
+
     @property
     def description(self):
         return "{description}".format(description=self.project_description)
@@ -2869,12 +2876,14 @@ class Task(models.Model):
     inprogress_date = models.DateTimeField(
         help_text='Date and time task status is changed to in progress.',
         blank=True,
+        null=True,
     )
 
     completion_date = models.DateTimeField(
         auto_now_add=True,
         help_text='Date and time task status is changed to complete.',
         blank=True,
+        null=True,
     )
 
     # a task can be associated with a project, series, story or an event.

@@ -228,8 +228,10 @@ def add_image(request):
                 facet.image_assets.add(img_ins)
             facet.save()
 
+            action_image=get_object_or_404(ImageAsset, id=images[0])
+
             # record action for activity stream
-            action.send(request.user, verb="added image", action_object=img_instances[0], target=facet)
+            action.send(request.user, verb="added image", action_object=action_image, target=facet)
 
     return redirect('story_detail', pk=facet.story.id)
 
@@ -305,8 +307,10 @@ def add_document(request):
                 facet.document_assets.add(doc_ins)
             facet.save()
 
+            action_doc = get_object_or_404(DocumentAsset, id=documents[0])
+
             # record action for activity stream
-            action.send(request.user, verb="added document", action_object=documents[0], target=facet)
+            action.send(request.user, verb="added document", action_object=action_doc, target=facet)
 
     return redirect('story_detail', pk=facet.story.id)
 
@@ -382,8 +386,10 @@ def add_audio(request):
                 facet.audio_assets.add(audio_ins)
             facet.save()
 
+            action_audio=get_object_or_404(AudioAsset, id=audio_list[0])
+
             # record action for activity stream
-            action.send(request.user, verb="added audio", action_object=audio[0], target=facet)
+            action.send(request.user, verb="added audio", action_object=action_audio, target=facet)
 
     return redirect('story_detail', pk=facet.story.id)
 
@@ -459,7 +465,9 @@ def add_video(request):
                 facet.video_assets.add(video_ins)
             facet.save()
 
+            action_video=get_object_or_404(VideoAsset, id=videos[0])
+
             # record action for activity stream
-            action.send(request.user, verb="added video", action_object=video[0], target=facet)
+            action.send(request.user, verb="added video", action_object=action_video, target=facet)
 
     return redirect('story_detail', pk=facet.story.id)
