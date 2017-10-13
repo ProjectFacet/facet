@@ -278,8 +278,8 @@ class WebFacetForm(forms.ModelForm):
         self.request = kwargs.pop("request")
         self.story = kwargs.pop("story")
         super(WebFacetForm, self).__init__(*args, **kwargs)
-        self.fields['credit'].queryset = Story.get_story_team(self.story)
-        self.fields['editor'].queryset = Story.get_story_team(self.story)
+        self.fields['credit'].queryset = Story.get_story_team_vocab(self.story)
+        self.fields['editor'].queryset = Story.get_story_team_vocab(self.story)
 
 
     due_edit = forms.DateTimeField(
@@ -345,8 +345,8 @@ class PrintFacetForm(forms.ModelForm):
         self.request = kwargs.pop("request")
         self.story = kwargs.pop("story")
         super(PrintFacetForm, self).__init__(*args, **kwargs)
-        self.fields['credit'].queryset = Story.get_story_team(self.story)
-        self.fields['editor'].queryset = Story.get_story_team(self.story)
+        self.fields['credit'].queryset = Story.get_story_team_vocab(self.story)
+        self.fields['editor'].queryset = Story.get_story_team_vocab(self.story)
 
     due_edit = forms.DateTimeField(
         required=False,
@@ -411,8 +411,8 @@ class AudioFacetForm(forms.ModelForm):
         self.request = kwargs.pop("request")
         self.story = kwargs.pop("story")
         super(AudioFacetForm, self).__init__(*args, **kwargs)
-        self.fields['credit'].queryset = Story.get_story_team(self.story)
-        self.fields['editor'].queryset = Story.get_story_team(self.story)
+        self.fields['credit'].queryset = Story.get_story_team_vocab(self.story)
+        self.fields['editor'].queryset = Story.get_story_team_vocab(self.story)
 
     due_edit = forms.DateTimeField(
         required=False,
@@ -477,8 +477,8 @@ class VideoFacetForm(forms.ModelForm):
         self.request = kwargs.pop("request")
         self.story = kwargs.pop("story")
         super(VideoFacetForm, self).__init__(*args, **kwargs)
-        self.fields['credit'].queryset = Story.get_story_team(self.story)
-        self.fields['editor'].queryset = Story.get_story_team(self.story)
+        self.fields['credit'].queryset = Story.get_story_team_vocab(self.story)
+        self.fields['editor'].queryset = Story.get_story_team_vocab(self.story)
 
     due_edit = forms.DateTimeField(
         required=False,

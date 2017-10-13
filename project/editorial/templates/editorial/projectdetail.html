@@ -34,8 +34,8 @@
           <h4 class="m-b-20">Detail</h4>
           <p class="f-s-18 f-w-400 thin m-b-20">{{ project.name }}</p>
           <p class="f-s-16 f-w-300 thin m-b-20"><i>{{ project.project_description }}</i></p>
-          <p class="m-b-20"><span class="f-s-16 f-w-600 subtle slim-margin">Created:</span> <span class="sameline bright f-s-16 f-w-300">{{ project.creation_date|date:'D M j g:i a' }}</span></p>
-          <p>
+          <p class="m-b-20"><span class="f-s-16 f-w-600 subtle slim-margin">Project Start:</span> <span class="sameline bright f-s-14 f-w-300">{{ project.creation_date|date:'D M j g:i a' }}</span></p>
+          <p style="margin-left:-10px;">
             <span class="sameline subtle">{% if project.sensitive == True %} <i class="fa fa-check-square-o subtle"></i>{% else %}  <i class="fa fa-square subtle"></i>{% endif %}</span>  Sensitive
             <span class="sameline subtle">{% if project.archived == True %} <i class="fa fa-check-square-o subtle"></i>{% else %}<i class="fa fa-square subtle"></i>{% endif %}</span>  Archive
             <span class="sameline subtle">{% if project.collaborate == True %} <i class="fa fa-check-square-o subtle"></i>{% else %} <i class="fa fa-square subtle"></i>{% endif %}</span>  Collaborate
@@ -46,7 +46,7 @@
               {% endfor %}
           <p class="f-s-16 f-w-600 subtle slim-margin m-b-10">Team: </p>
           {% for user in project.team.all %}
-            <div class="col-md-1">
+            <div class="col-xs-1">
               {% if user.display_photo %}
               <img class="media-object img-circle" width="32" src="{{ user.display_photo.url }}" alt="user">
               {% else %}
