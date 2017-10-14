@@ -30,7 +30,7 @@
     <div class="col-xs-12 col-sm-12 col-md-3 col-lg-2">
       <!-- Detail -->
       <div class="row m-b-50">
-        <div class="col-xs-12">
+        <div class="col-xs-12 detail-container">
           <h4 class="m-b-20">Detail</h4>
           <p class="f-s-18 f-w-400 thin m-b-20">{{ project.name }}</p>
           <p class="f-s-16 f-w-300 thin m-b-20"><i>{{ project.project_description }}</i></p>
@@ -60,7 +60,7 @@
       <div class="row">
         <div class="col-xs-12">
           <h4 class="m-b-20">Discussion</h4>
-          <div>
+          <div class="discussion-container">
               {% if projectcomments %}
               {% for comment in projectcomments %}
               <div class="row m-b-10">
@@ -86,7 +86,7 @@
               {% endfor %}
               {% endif %}
           </div>
-          <div class="row post-comment">
+          <div class="row m-t-20 post-comment">
               <form action="{% url 'create_projectcomment' %}" method="POST" class="post-form" role="form">
                 <div class="col-xs-12">
                     {% csrf_token %}
@@ -122,30 +122,87 @@
       <div class="row m-b-50">
         <!-- Identified Tasks -->
         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-          <p class="f-s-14 f-w-300 spread-01 text-center m-b-20">Identified</p>
-          {% for task in project_tasks %}
-            {% if task.task_status == "Identified"  %}
-              <p>{{ task.title }}</p>
-            {% endif %}
-          {% endfor %}
+            <div class="col-xs-12 task-col">
+              <p class="f-s-14 f-w-300 spread-01 text-center m-b-20">Identified</p>
+              <div class="displaytasks">
+                {% for task in project_tasks %}
+                    {% if task.task_status == "Identified"  %}
+                      <div class="card bs-card">
+                        <div class="card-block">
+                          {% if task.important == True %}
+                            <span class="label"><i class="fa fa-star" aria-hidden="true"></i></span>
+                          {% else %}
+                            <span class="label"><i class="fa fa-star-o" aria-hidden="true"></i></span>
+                          {% endif %}
+                          <h4 class="f-s-14 f-w-300 m-b-10"> {{ task.title }} </h4>
+                          <p class="card-text f-s-12">{{ task.text|truncatechars:100 }}</p>
+                          {% for user in task.assigned_to.all %}
+                            {% if user.display_photo %}
+                              <img class="img-circle" width="32" src="{{ user.display_photo.url }}" alt="user">
+                            {% endif %}
+                          {% endfor %}
+                        </div>
+                      </div>
+                    {% endif %}
+                {% endfor %}
+              </div>
+          </div>
         </div>
         <!-- In Progress Tasks -->
         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-          <p class="f-s-14 f-w-300 spread-01 text-center m-b-20">In Progress</p>
-          {% for task in project_tasks %}
-            {% if task.task_status == "In Progress"  %}
-              <p>{{ task.title }}</p>
-            {% endif %}
-          {% endfor %}
+            <div class="col-xs-12 task-col">
+              <p class="f-s-14 f-w-300 spread-01 text-center m-b-20">In Progress</p>
+              <div class="displaytasks">
+                {% for task in project_tasks %}
+                    {% if task.task_status == "In Progress"  %}
+                      <div class="card bs-card">
+                        <div class="card-block">
+                          {% if task.important == True %}
+                            <span class="label"><i class="fa fa-star" aria-hidden="true"></i></span>
+                          {% else %}
+                            <span class="label"><i class="fa fa-star-o" aria-hidden="true"></i></span>
+                          {% endif %}
+                          <h4 class="f-s-14 f-w-300 m-b-10"> {{ task.title }} </h4>
+                          <p class="card-text f-s-12">{{ task.text|truncatechars:100 }}</p>
+                          {% for user in task.assigned_to.all %}
+                            {% if user.display_photo %}
+                              <img class="img-circle" width="32" src="{{ user.display_photo.url }}" alt="user">
+                            {% endif %}
+                          {% endfor %}
+                        </div>
+                      </div>
+                    {% endif %}
+                {% endfor %}
+              </div>
+        </div>
         </div>
         <!-- Complete Tasks -->
         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-          <p class="f-s-14 f-w-300 spread-01 text-center m-b-20">Complete</p>
-          {% for task in project_tasks %}
-            {% if task.task_status == "Complete"  %}
-              <p>{{ task.title }}</p>
-            {% endif %}
-          {% endfor %}
+            <div class="col-xs-12 task-col">
+              <p class="f-s-14 f-w-300 spread-01 text-center m-b-20">Complete</p>
+                <div class="displaytasks">
+                  {% for task in project_tasks %}
+                      {% if task.task_status == "Complete"  %}
+                        <div class="card bs-card">
+                          <div class="card-block">
+                            {% if task.important == True %}
+                              <span class="label"><i class="fa fa-star" aria-hidden="true"></i></span>
+                            {% else %}
+                              <span class="label"><i class="fa fa-star-o" aria-hidden="true"></i></span>
+                            {% endif %}
+                            <h4 class="f-s-14 f-w-300 m-b-10"> {{ task.title }} </h4>
+                            <p class="card-text f-s-12">{{ task.text|truncatechars:100 }}</p>
+                            {% for user in task.assigned_to.all %}
+                              {% if user.display_photo %}
+                                <img class="img-circle" width="32" src="{{ user.display_photo.url }}" alt="user">
+                              {% endif %}
+                            {% endfor %}
+                          </div>
+                        </div>
+                      {% endif %}
+                  {% endfor %}
+                </div>
+            </div>
         </div>
       </div>
       <div class="row">
@@ -154,11 +211,11 @@
           <div class="projectnotes">
             <h4 class="m-l-50 m-b-20">Notes <a data-toggle="modal" data-target="#addProjectNote" title="Add Project Note"><i class="fa fa-plus sameline subtle"></i></a></h4>
             <div class="displaynotes">
-            {% for note in projectnotes|slice:":6" %}
+            {% for note in projectnotes|slice:":3" %}
                 <div class="col-xs-12">
                   <div class="card bs-card">
                       <div class="card-block">
-                          <a data-toggle="modal" data-target="#addNote{{note.id}}" title="View Organization Note"><h4 class="f-s-16 f-w-500 m-b-20">{{ note.title }}</h4></a>
+                          <a data-toggle="modal" data-target="#viewNote{{note.id}}" title="View Organization Note"><h4 class="f-s-16 f-w-500 m-b-20">{{ note.title }}</h4></a>
                           <p class="card-text color-default f-s-12">{{ note.owner.credit_name }}
                               <br>{{ note.creation_date|date:'N j, g:i a' }}</p>
                       </div>
@@ -200,7 +257,7 @@
     <div class="col-xs-12 col-sm-12 col-md-3 col-lg-2">
       <!-- Content -->
       <div class="row">
-        <div class="col-xs-12">
+        <div class="col-xs-12 content-container">
           <h4 class="m-b-20">Content <a href="{% url 'story_new' %}" title="Add A Story"><i class="fa fa-plus sameline subtle"></i></a></h4>
           <table class="table table-hover table-sm table-unbordered" cellspacing="0" width="100%">
             <tbody>
@@ -574,4 +631,29 @@
     </div>
   </div>
 </div>
+
+{% for note in projectnotes %}
+<!-- View Note Modals -->
+<div class="modal fade" id="viewNote{{note.id}}" tabindex="-1" role="dialog" aria-labelledby="viewNote{{note.id}}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="viewNote{{note.id}}Label">{{ note.title }}</h4>
+      </div>
+      <div class="modal-body">
+        {{ note.text|linebreaksbr }}
+      </div>
+      <div class="modal-footer">
+        <p class="tiny-text">{{ note.owner }} | {{ note.creation_date|date:'D M j g:i a' }}<p>
+        <small>Keywords: {% for keyword in note.keywords %}{{ keyword }}, {% endfor %}</small>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- END View Note Modals -->
+{% endfor %}
+
+
+
 {% endblock modals %}

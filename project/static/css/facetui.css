@@ -226,3 +226,34 @@ img.image-center {
   margin-left: auto !important;
   margin-right: auto !important;
 }
+
+.task-col {
+  background-color: #1c1f26 !important;
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+  height: 450px !important;
+  max-height: 450px !important;
+  overflow: scroll !important;
+}
+
+.detail-container {
+  min-height: 400px !important;
+  max-height: 400px !important;
+}
+
+.discussion-container {
+  overflow: scroll !important;
+  min-height: 400px !important;
+  max-height: 400px !important;
+}
+
+.content-container {
+  min-height: 400px !important;
+  max-height: 400px !important;
+}
+
+
+::-webkit-scrollbar {
+    width: 0px;
+    background: transparent; /* make scrollbar transparent */
+}
