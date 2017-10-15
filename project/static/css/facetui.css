@@ -229,11 +229,15 @@ img.image-center {
 
 .task-col {
   background-color: #1c1f26 !important;
-  padding-top: 10px !important;
   padding-bottom: 10px !important;
   height: 450px !important;
   max-height: 450px !important;
   overflow: scroll !important;
+}
+
+.task-header {
+  background-color: #1c1f26 !important;
+  padding-top: 10px !important;
 }
 
 .detail-container {
@@ -252,8 +256,36 @@ img.image-center {
   max-height: 400px !important;
 }
 
+.cal-container {
+  min-height: 400px !important;
+  max-height: 600px !important;
+}
+
 
 ::-webkit-scrollbar {
     width: 0px;
     background: transparent; /* make scrollbar transparent */
+}
+
+.fc-day-header, .fc-day-number{
+  font-weight: 300 !important;
+  font-size: 12px !important;
+}
+
+.fc-right {
+  font-size: 18px !important;
+  font-weight: 300 !important;
+}
+
+.fc-time {
+  display: none !important;
+}
+
+.fc-right h2 {
+  font-size:18px !important;
+  font-weight: 400 !important;
+}
+
+.fc-day-grid-container {
+  height: 100% !important;
 }

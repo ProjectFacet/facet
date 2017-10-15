@@ -33,7 +33,8 @@ from django.db.models import Q
 from django.contrib.postgres.fields import ArrayField
 from simple_history.models import HistoricalRecords
 from model_utils.models import TimeStampedModel
-from datetime import datetime, timedelta, time
+import time
+from datetime import datetime, timedelta
 from imagekit.models import ProcessedImageField, ImageSpecField
 from pilkit.processors import ResizeToFit, SmartResize
 from django.contrib.auth.models import AbstractUser
@@ -1044,6 +1045,30 @@ class Project(models.Model):
         project_tasks=Task.objects.filter(Q(project=self))
         return project_tasks
 
+    def get_project_stories(self):
+        """Return all stories associated with a project."""
+
+        project_stories=Story.objects.filter(Q(project=self))
+        return project_stories
+
+    def get_project_story_events(self):
+        """Return all story events associated with a project."""
+
+        project_stories=Project.get_project_stories(self)
+        print "PROJECT STORIES: ", project_stories
+        project_facet_schedule = []
+
+        for story in project_stories:
+            print "STORY: ", story
+            story_schedule=Story.get_story_schedule(story)
+            project_facet_schedule.extend(story_schedule)
+        print "******************************"
+        print "******************************"
+        print "PFS: ", project_facet_schedule
+        print "******************************"
+        print "******************************"
+
+        return project_facet_schedule
 
     @property
     def description(self):
@@ -1563,6 +1588,183 @@ class Story(models.Model):
             story_facets.append(videofacet)
 
         return story_facets
+
+    def get_story_schedule(self):
+        """Return all the deadlines for the facets of a story."""
+
+        data = []
+        story = get_object_or_404(Story, pk=self.id)
+        # Web Facet Schedules
+        if story.webfacetstory.all():
+            print "IM AT WEB"
+            for webfacet in story.webfacetstory.all():
+                credit = {}
+                for user in webfacet.credit.all():
+                    credit['id'] = []
+                    credit['id'].append(user.credit_name)
+                    credit['id'].append(user.get_absolute_url())
+                print credit
+                if webfacet.due_edit:
+                    edit_event_dict = {}
+                    edit_event_dict['id'] = webfacet.id
+                    edit_event_dict['title'] = webfacet.title.encode('utf-8')
+                    edit_event_dict['description'] = webfacet.description.encode('utf-8')
+                    edit_event_dict['due-edit'] = time.mktime(webfacet.due_edit.timetuple())
+                    edit_event_dict['editor'] = webfacet.editor.credit_name
+                    edit_event_dict['credit'] = credit
+                    edit_event_dict['url'] = webfacet.get_absolute_url()
+                    edit_event_dict['start'] = time.mktime(webfacet.due_edit.timetuple()) * 1000
+                    edit_event_dict['end'] = (time.mktime(webfacet.due_edit.timetuple()) * 1000) + 60
+                    edit_event_dict['overlap'] = True
+                    edit_event_dict['allDay'] = False
+                    edit_event_dict['backgroundColor'] = '#00aced'
+                    edit_event_dict['textColor'] = '#fff'
+                    data.append(edit_event_dict)
+                if webfacet.run_date:
+                    run_event_dict = {}
+                    run_event_dict['id'] = webfacet.id
+                    run_event_dict['title'] = webfacet.title.encode('utf-8')
+                    run_event_dict['description'] = webfacet.description.encode('utf-8')
+                    run_event_dict['due-edit'] = time.mktime(webfacet.due_edit.timetuple())
+                    run_event_dict['editor'] = webfacet.editor.credit_name
+                    run_event_dict['credit'] = credit
+                    run_event_dict['url'] = webfacet.get_absolute_url()
+                    run_event_dict['class'] = 'event_run'
+                    run_event_dict['start'] = time.mktime(webfacet.run_date.timetuple()) * 1000
+                    run_event_dict['end'] = (time.mktime(webfacet.run_date.timetuple()) * 1000) + 60
+                    run_event_dict['overlap'] = True
+                    run_event_dict['backgroundColor'] = '#5cb85c'
+                    run_event_dict['textColor'] = '#fff'
+                    data.append(run_event_dict)
+        # Print Facet Schedules
+        if story.printfacetstory.all():
+            print "IM AT PRINT"
+            for printfacet in story.printfacetstory.all():
+                credit = {}
+                for user in printfacet.credit.all():
+                    credit['id'] = []
+                    credit['id'].append(user.credit_name)
+                    credit['id'].append(user.get_absolute_url())
+                print credit
+                if printfacet.due_edit:
+                    edit_event_dict = {}
+                    edit_event_dict['id'] = printfacet.id
+                    edit_event_dict['title'] = printfacet.title.encode('utf-8')
+                    edit_event_dict['description'] = printfacet.description.encode('utf-8')
+                    edit_event_dict['due-edit'] = time.mktime(printfacet.due_edit.timetuple())
+                    edit_event_dict['editor'] = printfacet.editor.credit_name
+                    edit_event_dict['credit'] = credit
+                    edit_event_dict['url'] = printfacet.get_absolute_url()
+                    edit_event_dict['class'] = 'event_edit'
+                    edit_event_dict['start'] = time.mktime(printfacet.due_edit.timetuple()) * 1000
+                    edit_event_dict['end'] = (time.mktime(printfacet.due_edit.timetuple()) * 1000) + 60
+                    edit_event_dict['overlap'] = True
+                    edit_event_dict['backgroundColor'] = '#00aced'
+                    edit_event_dict['textColor'] = '#fff'
+                    data.append(edit_event_dict)
+                if printfacet.run_date:
+                    run_event_dict = {}
+                    run_event_dict['id'] = printfacet.id
+                    run_event_dict['title'] = printfacet.title.encode('utf-8')
+                    run_event_dict['description'] = printfacet.description.encode('utf-8')
+                    run_event_dict['due-edit'] = time.mktime(printfacet.due_edit.timetuple())
+                    run_event_dict['editor'] = printfacet.editor.credit_name
+                    run_event_dict['credit'] = credit
+                    run_event_dict['url'] = printfacet.get_absolute_url()
+                    run_event_dict['class'] = 'event_run'
+                    run_event_dict['start'] = time.mktime(printfacet.run_date.timetuple()) * 1000
+                    run_event_dict['end'] = (time.mktime(printfacet.run_date.timetuple()) * 1000) + 60
+                    run_event_dict['overlap'] = True
+                    run_event_dict['backgroundColor'] = '#5cb85c'
+                    run_event_dict['textColor'] = '#fff'
+                    data.append(run_event_dict)
+        # Audio Facet Schedules
+        if story.audiofacetstory.all():
+            print "IM AT AUDIO"
+            for audiofacet in story.audiofacetstory.all():
+                credit = {}
+                for user in audiofacet.credit.all():
+                    credit['id'] = []
+                    credit['id'].append(user.credit_name)
+                    credit['id'].append(user.get_absolute_url())
+                print credit
+                if audiofacet.due_edit:
+                    edit_event_dict = {}
+                    edit_event_dict['id'] = audiofacet.id
+                    edit_event_dict['title'] = audiofacet.title.encode('utf-8')
+                    edit_event_dict['description'] = audiofacet.description.encode('utf-8')
+                    edit_event_dict['due-edit'] = time.mktime(audiofacet.due_edit.timetuple())
+                    edit_event_dict['editor'] = audiofacet.editor.credit_name
+                    edit_event_dict['credit'] = credit
+                    edit_event_dict['url'] = audiofacet.get_absolute_url()
+                    edit_event_dict['class'] = 'event_edit'
+                    edit_event_dict['start'] = time.mktime(audiofacet.due_edit.timetuple()) * 1000
+                    edit_event_dict['end'] = (time.mktime(audiofacet.due_edit.timetuple()) * 1000) + 60
+                    edit_event_dict['overlap'] = True
+                    edit_event_dict['backgroundColor'] = '#00aced'
+                    edit_event_dict['textColor'] = '#fff'
+                    data.append(edit_event_dict)
+                if audiofacet.run_date:
+                    run_event_dict = {}
+                    run_event_dict['id'] = audiofacet.id
+                    run_event_dict['title'] = audiofacet.title.encode('utf-8')
+                    run_event_dict['description'] = audiofacet.description.encode('utf-8')
+                    run_event_dict['due-edit'] = time.mktime(audiofacet.due_edit.timetuple())
+                    run_event_dict['editor'] = audiofacet.editor.credit_name
+                    run_event_dict['credit'] = credit
+                    run_event_dict['url'] = audiofacet.get_absolute_url()
+                    run_event_dict['class'] = 'event_run'
+                    run_event_dict['start'] = time.mktime(audiofacet.run_date.timetuple()) * 1000
+                    run_event_dict['end'] = (time.mktime(audiofacet.run_date.timetuple()) * 1000) + 60
+                    run_event_dict['overlap'] = True
+                    run_event_dict['backgroundColor'] = '#5cb85c'
+                    run_event_dict['textColor'] = '#fff'
+                    data.append(run_event_dict)
+        # Video Facet Schedules
+        if story.videofacetstory.all():
+            print "IM AT VIDEO"
+            for videofacet in story.videofacetstory.all():
+                credit = {}
+                for user in videofacet.credit.all():
+                    credit['id'] = []
+                    credit['id'].append(user.credit_name)
+                    credit['id'].append(user.get_absolute_url())
+                print credit
+                if videofacet.due_edit:
+                    edit_event_dict = {}
+                    edit_event_dict['id'] = videofacet.id
+                    edit_event_dict['title'] = videofacet.title.encode('utf-8')
+                    edit_event_dict['description'] = videofacet.description.encode('utf-8')
+                    edit_event_dict['due-edit'] = time.mktime(videofacet.due_edit.timetuple())
+                    edit_event_dict['editor'] = videofacet.editor.credit_name
+                    edit_event_dict['credit'] = credit
+                    edit_event_dict['url'] = videofacet.get_absolute_url()
+                    edit_event_dict['class'] = 'event_edit'
+                    edit_event_dict['start'] = time.mktime(videofacet.due_edit.timetuple()) * 1000
+                    edit_event_dict['end'] = (time.mktime(videofacet.due_edit.timetuple()) * 1000) + 60
+                    edit_event_dict['overlap'] = True
+                    edit_event_dict['backgroundColor'] = '#00aced'
+                    edit_event_dict['textColor'] = '#fff'
+                    data.append(edit_event_dict)
+                if videofacet.run_date:
+                    run_event_dict = {}
+                    run_event_dict['id'] = videofacet.id
+                    run_event_dict['title'] = videofacet.title.encode('utf-8')
+                    run_event_dict['description'] = videofacet.description.encode('utf-8')
+                    run_event_dict['due-edit'] = time.mktime(videofacet.due_edit.timetuple())
+                    run_event_dict['editor'] = videofacet.editor.credit_name
+                    run_event_dict['credit'] = credit
+                    run_event_dict['url'] = videofacet.get_absolute_url()
+                    run_event_dict['class'] = 'event_run'
+                    run_event_dict['start'] = time.mktime(videofacet.run_date.timetuple()) * 1000
+                    run_event_dict['end'] = (time.mktime(videofacet.run_date.timetuple()) * 1000) + 60
+                    run_event_dict['overlap'] = True
+                    run_event_dict['backgroundColor'] = '#5cb85c'
+                    run_event_dict['textColor'] = '#fff'
+                    data.append(run_event_dict)
+
+        return data
+
 
     @property
     def description(self):

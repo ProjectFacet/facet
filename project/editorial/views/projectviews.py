@@ -111,6 +111,23 @@ def project_detail(request, pk):
     })
 
 
+def project_schedule(request, pk):
+    """Generate a JSON object containing entries to display on project calendar."""
+
+    print "IM YOUR SCHEDULE"
+    project = get_object_or_404(Project, pk=pk)
+    project_calendar = Project.get_project_story_events(project)
+    print "I GOT YOUR STORY EVENTS"
+
+    print "------------------------------"
+    print "------------------------------"
+    print "PROJECT CAL: ", project_calendar
+    print "------------------------------"
+    print "------------------------------"
+
+    return HttpResponse(json.dumps(project_calendar), content_type='application/json')
+
+
 def project_edit(request, pk):
     """ Edit project page."""
 

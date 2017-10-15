@@ -34,11 +34,11 @@
           <h4 class="m-b-20">Detail</h4>
           <p class="f-s-18 f-w-400 thin m-b-20">{{ project.name }}</p>
           <p class="f-s-14 f-w-300 thin"><i>{{ project.project_description }}</i></p>
-          <p class="m-b-20"><span class="f-s-14 f-w-500 subtle slim-margin m-b-10">Project Start:</span> <span class="sameline bright f-s-12 f-w-300">{{ project.creation_date|date:'D M j g:i a' }}</span></p>
+          <p class="m-b-20"><span class="f-s-14 f-w-500 subtle slim-margin m-b-10">Project Start:</span> <span class="sameline bright f-s-12 f-w-300">{{ project.creation_date|date:'N d, Y' }}</span></p>
           <p style="margin-left:-10px;">
             <span class="sameline subtle">{% if project.sensitive == True %} <i class="fa fa-check-square-o subtle"></i>{% else %}  <i class="fa fa-square subtle"></i>{% endif %}</span><span class="f-s-14 f-w-500 slim-margin m-b-10"> Sensitive</span>
-            <span class="sameline subtle">{% if project.archived == True %} <i class="fa fa-check-square-o subtle"></i>{% else %}<i class="fa fa-square subtle"></i>{% endif %}</span><span class="f-s-14 f-w-500 slim-margin m-b-10"> Archive</span>
-            <span class="sameline subtle">{% if project.collaborate == True %} <i class="fa fa-check-square-o subtle"></i>{% else %} <i class="fa fa-square subtle"></i>{% endif %}</span><span class="f-s-14 f-w-500 slim-margin m-b-10"> Collaborate</span>
+            <br><span class="sameline subtle">{% if project.archived == True %} <i class="fa fa-check-square-o subtle"></i>{% else %}<i class="fa fa-square subtle"></i>{% endif %}</span><span class="f-s-14 f-w-500 slim-margin m-b-10"> Archive</span>
+            <br><span class="sameline subtle">{% if project.collaborate == True %} <i class="fa fa-check-square-o subtle"></i>{% else %} <i class="fa fa-square subtle"></i>{% endif %}</span><span class="f-s-14 f-w-500 slim-margin m-b-10"> Collaborate</span>
           </p>
           {% if project.collaborate == True %}
           <p class="f-s-14 f-w-500 subtle slim-margin m-b-10">Partners: </p>
@@ -122,8 +122,10 @@
       <div class="row m-b-50">
         <!-- Identified Tasks -->
         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+            <div class="col-xs-12 task-header">
+              <p class="f-s-14 f-w-300 spread-01 text-center">Identified</p>
+            </div>
             <div class="col-xs-12 task-col">
-              <p class="f-s-14 f-w-300 spread-01 text-center m-b-20">Identified</p>
               <div class="displaytasks">
                 {% for task in project_tasks %}
                     {% if task.task_status == "Identified"  %}
@@ -150,8 +152,10 @@
         </div>
         <!-- In Progress Tasks -->
         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+          <div class="col-xs-12 task-header">
+            <p class="f-s-14 f-w-300 spread-01 text-center">In Progress</p>
+          </div>
             <div class="col-xs-12 task-col">
-              <p class="f-s-14 f-w-300 spread-01 text-center m-b-20">In Progress</p>
               <div class="displaytasks">
                 {% for task in project_tasks %}
                     {% if task.task_status == "In Progress"  %}
@@ -178,8 +182,10 @@
         </div>
         <!-- Complete Tasks -->
         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+          <div class="col-xs-12 task-header">
+            <p class="f-s-14 f-w-300 spread-01 text-center">Complete</p>
+          </div>
             <div class="col-xs-12 task-col">
-              <p class="f-s-14 f-w-300 spread-01 text-center m-b-20">Complete</p>
                 <div class="displaytasks">
                   {% for task in project_tasks %}
                       {% if task.task_status == "Complete"  %}
@@ -227,8 +233,9 @@
           </div>
         </div>
         <!-- Calendar -->
-        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 cal-container">
           <h4 class="m-b-20">Calendar</h4>
+          <div id="calendar"></div>
         </div>
         <!-- Engagement -->
         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
@@ -608,6 +615,41 @@
 
   </script>
 
+  <script>
+  (function() {
+      'use strict';
+
+      $(function() {
+          var events_array = $.get('{% url "project_schedule" project.id %}')
+          $('#calendar').fullCalendar({
+              dayClick: function(date, jsEvent, view) {
+                  console.log('Clicked on: ' + date.format());
+                  console.log('Event: ', jsEvent);
+                  console.log('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+                  console.log('Current view: ' + view.name);
+                  //$(this).css('background-color', 'red');
+              },
+              header: {
+                  left: 'prev,next',
+                  center: '',
+                  right: 'title'
+              },
+              // defaultDate: '2016-03-12',
+              defaultView: 'month',
+              editable: true,
+              events: '{% url "project_schedule" project.id %}',
+              // events: [{
+              //     title: 'Click for Google',
+              //     url: 'http://google.com/',
+              //     start: '2016-08-28'
+              // }]
+          });
+
+      });
+
+
+  })();
+  </script>
 
 
 {% endblock %}
