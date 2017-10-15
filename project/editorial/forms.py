@@ -748,7 +748,7 @@ class ProjectCommentForm(forms.ModelForm):
         fields = ['text']
         widgets = {
             'text': Textarea(
-                attrs={'id':'project-comment', 'required': True, 'placeholder': 'Comment', 'class': 'form-control', 'rows':2}
+                attrs={'id':'project-comment', 'required': True, 'placeholder': 'Comment', 'class': 'form-control', 'rows':1}
             ),
         }
 

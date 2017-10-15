@@ -238,7 +238,7 @@ img.image-center {
 
 .detail-container {
   min-height: 400px !important;
-  max-height: 400px !important;
+  max-height: 800px !important;
 }
 
 .discussion-container {
