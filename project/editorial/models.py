@@ -1055,18 +1055,11 @@ class Project(models.Model):
         """Return all story events associated with a project."""
 
         project_stories=Project.get_project_stories(self)
-        print "PROJECT STORIES: ", project_stories
         project_facet_schedule = []
 
         for story in project_stories:
-            print "STORY: ", story
             story_schedule=Story.get_story_schedule(story)
             project_facet_schedule.extend(story_schedule)
-        print "******************************"
-        print "******************************"
-        print "PFS: ", project_facet_schedule
-        print "******************************"
-        print "******************************"
 
         return project_facet_schedule
 
@@ -1566,7 +1559,6 @@ class Story(models.Model):
         story_video.extend(videofacet_video)
 
         return story_video
-
 
     def get_story_facets(self):
         """Return all existing facets associated with a story."""
