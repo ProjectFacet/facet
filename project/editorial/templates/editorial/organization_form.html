@@ -32,13 +32,13 @@
         <fieldset class="form-group m-b-20">
           {% comment %}
           <div class="col-xs-2">
-            <label>{{ orgform.name.label_tag }}</label>
+            <label>{{ form.name.label_tag }}</label>
           </div>
           {% endcomment %}
           <div class="col-xs-12">
-            {{ orgform.name }}
-            {% if orgform.name.errors %}
-            <small class="text-muted">{{ orgform.name.errors }}</small>
+            {{ form.name }}
+            {% if form.name.errors %}
+            <small class="text-muted">{{ form.name.errors }}</small>
             {% endif %}
           </div>
         </fieldset>
@@ -46,13 +46,13 @@
         <fieldset class="form-group m-b-20">
           {% comment %}
           <div class="col-xs-2">
-            <label>{{ orgform.location.label_tag }}</label>
+            <label>{{ form.location.label_tag }}</label>
           </div>
           {% endcomment %}
           <div class="col-xs-12">
-            {{ orgform.location }}
-            {% if orgform.location.errors %}
-            <small class="text-muted">{{ orgform.location.errors }}</small>
+            {{ form.location }}
+            {% if form.location.errors %}
+            <small class="text-muted">{{ form.location.errors }}</small>
             {% endif %}
           </div>
         </fieldset>
@@ -64,9 +64,9 @@
           </div>
           {% endcomment %}
           <div class="col-xs-12">
-            {{ orgform.org_description }}
-            {% if orgform.org_description.errors %}
-            <small class="text-muted">{{ orgform.org_description.errors }}</small>
+            {{ form.org_description }}
+            {% if form.org_description.errors %}
+            <small class="text-muted">{{ form.org_description.errors }}</small>
             {% endif %}
           </div>
         </fieldset>
@@ -76,10 +76,10 @@
             <label class="subtle">Logo </label>
           </div>
           <div class="col-xs-10">
-          {{ orgform.logo }}
-          {% if orgform.logo.errors %}
+          {{ form.logo }}
+          {% if form.logo.errors %}
             <div class="alert alert-warning" role="alert">
-            {{ orgform.logo.errors }}
+            {{ form.logo.errors }}
             </div>
           {% endif %}
           </div>

@@ -40,17 +40,17 @@ class UserFactory(factory.DjangoModelFactory):
     expertise = ["Writing", "Editing"]
     # notes = []   # FIXME
     photo = factory.django.ImageField()
-    facebook = factory.LazyAttribute(
-        lambda c: "http://facebook.com/%s" % slugify(c.first_name))
-    twitter = factory.LazyAttribute(lambda c: "http://twitter.com/%s" % slugify(c.first_name))
-    github = factory.LazyAttribute(lambda c: "http://github.com/%s" % slugify(c.first_name))
-    linkedin = factory.LazyAttribute(
-        lambda c: "http://linkedin.com/%s" % slugify(c.first_name))
-    instagram = factory.LazyAttribute(
-        lambda c: "http://instagram.com/%s" % slugify(c.first_name))
-    snapchat = factory.LazyAttribute(
-        lambda c: "http://snapchat.com/%s" % slugify(c.first_name))
-    vine = factory.LazyAttribute(lambda c: "http://vine.com/%s" % slugify(c.first_name))
+    # facebook = factory.LazyAttribute(
+    #     lambda c: "http://facebook.com/%s" % slugify(c.first_name))
+    # twitter = factory.LazyAttribute(lambda c: "http://twitter.com/%s" % slugify(c.first_name))
+    # github = factory.LazyAttribute(lambda c: "http://github.com/%s" % slugify(c.first_name))
+    # linkedin = factory.LazyAttribute(
+    #     lambda c: "http://linkedin.com/%s" % slugify(c.first_name))
+    # instagram = factory.LazyAttribute(
+    #     lambda c: "http://instagram.com/%s" % slugify(c.first_name))
+    # snapchat = factory.LazyAttribute(
+    #     lambda c: "http://snapchat.com/%s" % slugify(c.first_name))
+    # vine = factory.LazyAttribute(lambda c: "http://vine.com/%s" % slugify(c.first_name))
     website = factory.LazyAttribute(lambda c: "http://www.%s.com/" % slugify(c.first_name))
 
     @classmethod
@@ -86,8 +86,8 @@ class OrganizationFactory(factory.DjangoModelFactory):
     logo = factory.django.ImageField()
     location = "Baltimore, Maryland"
     creation_date = make_aware(datetime(2017, 1, 1))
-    facebook = factory.LazyAttribute(lambda c: "http://facebook.com/%s" % slugify(c.name))
-    twitter = factory.LazyAttribute(lambda c: "http://twitter.com/%s" % slugify(c.name))
+    # facebook = factory.LazyAttribute(lambda c: "http://facebook.com/%s" % slugify(c.name))
+    # twitter = factory.LazyAttribute(lambda c: "http://twitter.com/%s" % slugify(c.name))
     website = factory.LazyAttribute(lambda c: "http://www.%s.com/" % slugify(c.name))
     discussion = factory.SubFactory(DiscussionFactory, discussion_type="ORG")
 
@@ -268,12 +268,12 @@ class ProjectFactory(factory.DjangoModelFactory):
     discussion = factory.SubFactory(DiscussionFactory, discussion_type='STO')
 
     website = factory.LazyAttribute(lambda c: "http://www.%s.com/" % slugify(c.name))
-    github = factory.LazyAttribute(lambda c: "http://github.com/%s" % slugify(c.name))
-    facebook = factory.LazyAttribute(lambda c: "http://facebook.com/%s" % slugify(c.name))
-    twitter = factory.LazyAttribute(lambda c: "http://twitter.com/%s" % slugify(c.name))
-    instagram = factory.LazyAttribute(lambda c: "http://instagram.com/%s" % slugify(c.name))
-    snapchat = factory.LazyAttribute(lambda c: "http://snapchat.com/%s" % slugify(c.name))
-    youtube = factory.LazyAttribute(lambda c: "http://youtube.com/%s" % slugify(c.name))
+    # github = factory.LazyAttribute(lambda c: "http://github.com/%s" % slugify(c.name))
+    # facebook = factory.LazyAttribute(lambda c: "http://facebook.com/%s" % slugify(c.name))
+    # twitter = factory.LazyAttribute(lambda c: "http://twitter.com/%s" % slugify(c.name))
+    # instagram = factory.LazyAttribute(lambda c: "http://instagram.com/%s" % slugify(c.name))
+    # snapchat = factory.LazyAttribute(lambda c: "http://snapchat.com/%s" % slugify(c.name))
+    # youtube = factory.LazyAttribute(lambda c: "http://youtube.com/%s" % slugify(c.name))
 
     # governing_document_assets = [...]
     # project_document_assets = [...]
@@ -332,3 +332,37 @@ class ProjectFactory(factory.DjangoModelFactory):
             # A list of groups were passed in, use them
             for asset in extracted:
                 self.project_document_assets.add(asset)
+
+
+class TaskFactory(factory.DjangoModelFactory):
+    """Factory for making tasks."""
+
+    class Meta:
+        model = models.Task
+        django_get_or_create = ['title']
+
+    title = "Get photos"
+    owner = factory.SubFactory(UserFactory)
+    text = "take pictures"
+    # assigned_to = ...
+    task_status = "In Progress"
+    important = False
+    creation_date = make_aware(datetime(2017, 1, 1))
+    due_date = make_aware(datetime(2017, 1, 1))
+    inprogress_date = make_aware(datetime(2017, 1, 10))
+    completion_date = make_aware(datetime(2017, 1, 25))
+    # project = ...
+    # series = ...
+    # story = ...
+    # event = ...
+
+    @factory.post_generation
+    def assigned_to(self, create, extracted, **kwargs):
+        if not create:
+            # Simple build, do nothing.
+            return
+
+        if extracted:
+            # A list of groups were passed in, use them
+            for user in extracted:
+                self.assigned_to.add(user)

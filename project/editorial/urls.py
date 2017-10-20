@@ -113,9 +113,9 @@ urlpatterns = [
     #----------------------------------------------------------------------#
     #   Organization URLS
     #----------------------------------------------------------------------#
-    url(r'^organization/new$', organizationviews.org_new, name="org_new"),
-    url(r'^organization/(?P<pk>[0-9]+)/$', organizationviews.org_detail, name='org_detail'),
-    url(r'^organization/(?P<pk>[0-9]+)/edit/$', organizationviews.org_edit, name='org_edit'),
+    url(r'^organization/new$', organizationviews.OrganizationCreateView.as_view(), name="org_new"),
+    url(r'^organization/(?P<pk>[0-9]+)/$', organizationviews.OrganizationDetailView.as_view(), name='org_detail'),
+    url(r'^organization/(?P<pk>[0-9]+)/edit/$', organizationviews.OrganizationUpdateView.as_view(), name='org_edit'),
     url(r'^organization/(?P<pk>[0-9]+)/notes/$', noteviews.org_notes, name='org_notes'),
     url(r'^organization/(?P<pk>[0-9]+)/note/(?P<note_type>[-\w]+)/content$', noteviews.note_content_html, name='note_content_html'),
     url(r'^organization/note/new/$', noteviews.create_org_note, name='create_org_note'),
