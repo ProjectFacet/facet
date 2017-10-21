@@ -3450,6 +3450,12 @@ class Task(models.Model):
     story or an event. A task has an assigned team of users.
     """
 
+    organization = models.ForeignKey(
+        Organization,
+        blank=True,
+        null=True,
+    )
+
     owner = models.ForeignKey(
       User,
       related_name='taskowner'
@@ -3546,6 +3552,12 @@ class Task(models.Model):
         null=True,
     )
 
+    upload = models.FileField(
+        upload_to="task/%Y/%m/%d/",
+        null=True,
+        blank=True,
+    )
+
     class Meta:
         verbose_name = 'Task'
         verbose_name_plural = "Tasks"
@@ -3579,6 +3591,17 @@ class Event(models.Model):
     An event can be assigned to an Organization, Project, Series or Story.
     """
 
+    organization = models.ForeignKey(
+        Organization,
+        blank=True,
+        null=True,
+    )
+
+    owner = models.ForeignKey(
+      User,
+      related_name='eventowner'
+    )
+
     name = models.TextField(
         help_text='Name of the event.'
     )
@@ -3586,6 +3609,26 @@ class Event(models.Model):
     description = models.TextField(
         help_text='Description of the event.',
         blank=True,
+    )
+
+    # Choices for event type.
+    # Hosting: An event that is managed by an organization.
+    # Example: Live studio taping open to the public
+    # Reporting: An external event that is being covered for a story.
+    # Example: Press conference at the police department
+    HOSTING = 'Hosting'
+    REPORTING = 'Reporting'
+    OTHER = 'Other'
+    EVENT_TYPE_CHOICES = (
+        (HOSTING, 'Hosting'),
+        (REPORTING, 'Reporting'),
+        (OTHER, 'Other'),
+    )
+
+    event_type = models.CharField(
+        max_length=50,
+        choices=EVENT_TYPE_CHOICES,
+        help_text='Kind of event.'
     )
 
     team = models.ManyToManyField(
@@ -3612,14 +3655,16 @@ class Event(models.Model):
         blank=True,
     )
 
+    upload = models.FileField(
+        upload_to="event/%Y/%m/%d/",
+        null=True,
+        blank=True,
+    )
+
     # Notes
     #TODO Add Notes to note class to be attached to Events
 
-    # Assets
-    #TODO Add Document and Image assets for events to Assets section.
-
     # an event can be associated with an organization, project, series or story.
-
     organization = models.ForeignKey(
         Organization,
         on_delete=models.CASCADE,
@@ -3655,6 +3700,21 @@ class Event(models.Model):
 
     def __str__(self):
         return self.name
+
+    def clean(self):
+        """Enforce that there is one relationship."""
+
+        super(Event, self).clean()
+
+        count = (
+            (1 if self.organization else 0) +
+            (1 if self.project else 0) +
+            (1 if self.series else 0) +
+            (1 if self.story else 0)
+        )
+
+        if count != 1:
+            raise ValidationError("Events can only relate to one thing.")
 
 
 #-----------------------------------------------------------------------#
@@ -3694,9 +3754,6 @@ class Event(models.Model):
 #
 #     #TODO Add Image assets for social posts to Assets section.
 #
-#     @property
-#     def type(self):
-#         return "Social Post."
 
 
 #-----------------------------------------------------------------------#

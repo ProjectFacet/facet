@@ -11,7 +11,12 @@
 <div>
     <ol class="breadcrumb icon-angle-right icon-th">
       <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
-      <li class="hidden-md-down"><a href="{% url 'org_new' %}">Create Organization</a></li>
+      {% if not organization %}
+      <li class="hidden-md-down">Create Organization</li>
+      {% elif organization %}
+      <li class="fadeIn"><a href="{% url 'org_detail' pk=request.user.organization.id %}" title="View Organization Detail"> Organization </a></li>
+      <li class="hidden-md-down">Manage {{ organization.name }}</li>
+      {% endif %}
     </ol>
 </div>
 {% endblock breadcrumb %}
@@ -21,7 +26,9 @@
 <!-------------------------------------------->
 
 {% block content %}
-<!-- Row One -->
+
+<!-- If organization/create -->
+{% if not organization %}
 <div class="row m-b-40">
   <div class="col-xs-12">
     <div class="row">
@@ -92,6 +99,123 @@
     </div>
   </div>
 </div>
+{% endif %}
+<!-- End if organization/create -->
+
+<!-- If organization/new -->
+{% if organization %}
+<div class="row m-b-40">
+  <!-- Left Side -->
+  <div class="col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-5 col-md-offset-1 col-lg-5 col-lg-offset-1">
+    <h4 class="m-b-20">Organization</h1>
+    <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
+        <!-- Organization Name -->
+        <fieldset class="form-group m-b-20">
+          <div class="col-xs-2">
+            <label class="f-s-14 subtle">{{ form.name.label_tag }}</label>
+          </div>
+          <div class="col-xs-10">
+            {{ form.name }}
+            {% if form.name.errors %}
+            <small class="text-muted">{{ form.name.errors }}</small>
+            {% endif %}
+          </div>
+        </fieldset>
+        <!-- Organization Location -->
+        <fieldset class="form-group m-b-20">
+          <div class="col-xs-2">
+            <label class="f-s-14 subtle">{{ form.location.label_tag }}</label>
+          </div>
+          <div class="col-xs-10">
+            {{ form.location }}
+            {% if form.location.errors %}
+            <small class="text-muted">{{ form.location.errors }}</small>
+            {% endif %}
+          </div>
+        </fieldset>
+        <!-- Organization Description -->
+        <fieldset class="form-group m-b-20">
+          <div class="col-xs-2">
+            <label class="f-s-14 subtle">Description: </label>
+          </div>
+          <div class="col-xs-10">
+            {{ form.org_description }}
+            {% if form.org_description.errors %}
+            <small class="text-muted">{{ form.org_description.errors }}</small>
+            {% endif %}
+          </div>
+        </fieldset>
+        <!-- Organization Logo -->
+        <div class="form-group custom-form m-b-40">
+          <div class="col-xs-2">
+            <label class="f-s-14 subtle">Logo: </label>
+          </div>
+          <div class="col-xs-10">
+          {{ form.logo }}
+          {% if form.logo.errors %}
+            <div class="alert alert-warning" role="alert">
+            {{ form.logo.errors }}
+            </div>
+          {% endif %}
+          </div>
+        </div>
+
+        <a href="{% url 'org_detail' pk=request.user.organization.id %}"><button class="save btn btn-danger-300 m-t-20 pull-right">Cancel</button></a>
+        <button type="submit" class="save btn btn-default m-t-20 m-r-10 pull-right">Save</button>
+
+      </form>
+  </div>
+  <!-- Right Side -->
+  <div class="col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-4 col-md-offset-1 col-lg-4 col-lg-offset-1">
+    <h4 class="m-b-20">Team</h4>
+    {% for person in team_members %}
+      <div class="row m-b-20">
+        <div class="col-xs-2">
+          {% if person.display_photo %}
+          <img class="media-object img-rounded" width="100%" src="{{ person.display_photo.url }}" alt="user">
+          {% else %}
+          {% endif %}
+        </div>
+        <div class="col-xs-4">
+          <span class="m-t-10"><a href="{% url 'user_detail' person.id %}" title="{{ person.credit_name }}'s Profile">{{ person.credit_name }}</a></span></br>
+          <small class="color-default">{{ person.title }}</small>
+
+        </div>
+        <div class="col-xs-6">
+          <a href="{% url 'user_edit' person.id %}" title="Edit {{ person.credit_name }}'s Profile">
+            <button class="btn btn-sm btn-primary">
+              <i class="fa fa-pencil" aria-hidden="true"></i>
+              Edit
+            </button>
+          </a>
+          {% if person.is_active == True %}
+            <form action="{% url 'user_deactivate' %}" method="POST" class="post-form sameline" onsubmit="return confirm('Do you want to deactivate this user?');">
+              <input type="hidden" name="user_id" value="{{ person.id }}" />
+              <button class="btn btn-sm btn-warning f-s-12">
+                <i class="fa fa-minus-circle" aria-hidden="true"></i>
+                Deactivate
+              </button>
+            </form>
+
+          {% elif person.is_active == False %}
+
+            <form action="{% url 'user_activate' %}" method="POST" class="post-form sameline" onsubmit="return confirm('Do you want to activate this user?');">
+              <input type="hidden" name="user_id" value="{{ person.id }}" />
+              <button class="btn btn-xs btn-success f-s-12">
+                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                Activate
+              </button>
+            </form>
+
+          {% endif %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% endif %}
+<!-- End if organization/new -->
 
 
 <script>
