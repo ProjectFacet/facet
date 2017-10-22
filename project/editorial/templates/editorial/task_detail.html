@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load bootstrap3 %}
+
+<!-------------------------------------------->
+<!--      BREADCRUMB NAVIGATION             -->
+<!-------------------------------------------->
+
+{% block breadcrumb %}
+<div>
+    <ol class="breadcrumb icon-angle-right icon-th">
+        <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
+    </ol>
+</div>
+{% endblock breadcrumb %}
+
+<!-------------------------------------------->
+<!--            Main Section                -->
+<!-------------------------------------------->
+
+{% block content %}
+
+
+{% endblock %}
+
+{% block modals %}
+
+{% comment %}
+{% for note in projectnotes %}
+<!-- View Note Modals -->
+<div class="modal fade" id="viewNote{{note.id}}" tabindex="-1" role="dialog" aria-labelledby="viewNote{{note.id}}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="viewNote{{note.id}}Label">{{ note.title }}</h4>
+      </div>
+      <div class="modal-body">
+        {{ note.text|linebreaksbr }}
+      </div>
+      <div class="modal-footer">
+        <p class="tiny-text">{{ note.owner }} | {{ note.creation_date|date:'D M j g:i a' }}<p>
+        <small>Keywords: {% for keyword in note.keywords %}{{ keyword }}, {% endfor %}</small>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- END View Note Modals -->
+{% endfor %}
+{% endcomment %}
+
+{% endblock modals %}

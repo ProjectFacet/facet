@@ -18,6 +18,9 @@ class EditorialAppConfig(AppConfig):
             "Project",
             "Series",
             "Story",
+            "Facet",
+            "Task",
+            "Event",
             "WebFacet",
             "PrintFacet",
             "AudioFacet",
@@ -38,6 +41,9 @@ class EditorialAppConfig(AppConfig):
         registry.register(self.get_model('Project'))
         registry.register(self.get_model('Series'))
         registry.register(self.get_model('Story'))
+        registry.register(self.get_model('Facet'))
+        registry.register(self.get_model('Task'))
+        registry.register(self.get_model('Event'))
         registry.register(self.get_model('WebFacet'))
         registry.register(self.get_model('PrintFacet'))
         registry.register(self.get_model('AudioFacet'))

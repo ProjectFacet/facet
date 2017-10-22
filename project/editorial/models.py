@@ -3452,8 +3452,6 @@ class Task(models.Model):
 
     organization = models.ForeignKey(
         Organization,
-        blank=True,
-        null=True,
     )
 
     owner = models.ForeignKey(
@@ -3461,8 +3459,8 @@ class Task(models.Model):
       related_name='taskowner'
     )
 
-    title = models.TextField(
-        help_text='Title of the task.'
+    name = models.TextField(
+        help_text='Name of the task.'
     )
 
     text = models.TextField(
@@ -3488,7 +3486,7 @@ class Task(models.Model):
         (COMPLETE, 'Complete'),
     )
 
-    task_status = models.CharField(
+    status = models.CharField(
         max_length=50,
         choices=TASK_STATUS_CHOICES,
         help_text='Task status.'
@@ -3561,10 +3559,10 @@ class Task(models.Model):
     class Meta:
         verbose_name = 'Task'
         verbose_name_plural = "Tasks"
-        ordering = ['title']
+        ordering = ['name']
 
     def __str__(self):
-        return self.title
+        return self.name
 
     def clean(self):
         """Enforce that there is one relationship."""

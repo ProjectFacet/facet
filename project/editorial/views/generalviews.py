@@ -53,6 +53,9 @@ from editorial.models import (
     Network,
     Series,
     Story,
+    Task,
+    Event,
+    Facet,
     WebFacet,
     PrintFacet,
     AudioFacet,
@@ -100,9 +103,11 @@ def test(request):
 
     # the user's organization
     organization = request.user.organization
+    tasks = Task.objects.filter(organization=request.user.organization)
 
     return render(request, 'editorial/test.html', {
         'organization': organization,
+        'tasks': tasks,
     })
 
 

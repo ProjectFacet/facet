@@ -183,8 +183,6 @@ class ProjectForm(forms.ModelForm):
         js = ('scripts/chosen.jquery.min.js',)
 
 
-
-
 # ------------------------------ #
 #          Series Forms          #
 # ------------------------------ #
@@ -534,6 +532,88 @@ class VideoFacetForm(forms.ModelForm):
     #      'scripts/moment.js',
     #      'scripts/jquery.datetimepicker.js',
     #      'scripts/bootstrap-datetimepicker.js',)
+
+
+# ------------------------------ #
+#          Task Forms          #
+# ------------------------------ #
+
+class TaskForm(forms.ModelForm):
+    """ Form to create a new task. """
+
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request")
+        super(TaskForm, self).__init__(*args, **kwargs)
+        self.fields['assigned_to'].queryset = Organization.get_org_users(self.request.user.organization)
+        self.fields['project'].empty_label='Select a Project'
+        self.fields['series'].empty_label='Select a Series'
+        self.fields['story'].empty_label='Select a Story'
+        self.fields['event'].empty_label='Select an Event'
+
+    projects = forms.ModelChoiceField(
+        queryset=Project.objects.all(),
+        widget=forms.Select,
+        required=False,
+    )
+
+    series = forms.ModelChoiceField(
+        queryset=Series.objects.all(),
+        widget=forms.Select,
+        required=False,
+    )
+
+    stories = forms.ModelChoiceField(
+        queryset=Story.objects.all(),
+        widget=forms.Select,
+        required=False,
+    )
+
+    events = forms.ModelChoiceField(
+        queryset=Event.objects.all(),
+        widget=forms.Select,
+        required=False,
+    )
+
+    due_date = forms.DateTimeField(
+        required=False,
+        widget=OurDateTimePicker(
+            options={'format': 'YYYY-MM-DD HH:mm'},
+            attrs={'id': 'task_duedate_picker'}
+        )
+    )
+
+    class Meta:
+        model = Task
+        fields = [
+            'name',
+            'text',
+            'assigned_to',
+            'status',
+            'important',
+            'due_date',
+            'upload',
+            'project',
+            'series',
+            'story',
+            'event',
+        ]
+        widgets = {
+            'name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Title'}),
+            'text': Textarea(attrs={'class': 'form-control', 'rows':20, 'placeholder': 'Details'}),
+            'assigned_to': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select form-control facet-select', 'id':'task-team', 'data-placeholder': 'Assign People'}),
+            'status': Select(attrs={'class': 'form-control'}),
+            'important': CheckboxInput(attrs={'class': 'c-indicator c-indicator-default'}),
+            'project': Select(attrs={'class': 'c-select custom-select', 'id':'task-projects'}),
+            'series': Select(attrs={'class': 'c-select custom-select', 'id':'task-series'}),
+            'story': Select(attrs={'class': 'c-select custom-select', 'id':'task-stories'}),
+            'event': Select(attrs={'class': 'c-select custom-select', 'id':'task-events'}),
+            }
+
+    class Media:
+        css = {
+            'all': ('css/bootstrap-datetimepicker.css', 'css/chosen.min.css')
+        }
+        js = ('scripts/chosen.jquery.min.js',)
 
 
 # ------------------------------ #

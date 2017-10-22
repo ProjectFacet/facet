@@ -1,0 +1,191 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load bootstrap3 %}
+
+<!-------------------------------------------->
+<!--      BREADCRUMB NAVIGATION             -->
+<!-------------------------------------------->
+
+{% block breadcrumb %}
+<div>
+    <ol class="breadcrumb icon-angle-right icon-th">
+        <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
+    </ol>
+</div>
+{% endblock breadcrumb %}
+
+<!-------------------------------------------->
+<!--            Main Section                -->
+<!-------------------------------------------->
+
+{% block content %}
+
+<!-- If organization/create -->
+{% if not task %}
+
+<div class="row">
+  <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
+    <div class="form-row">
+      <!-- Left Columm -->
+      <div class="form-group col-xs-12 col-sm-12 col-md-2 col-lg-2">
+        <!-- Task name -->
+        <div class="form-group">
+          {% comment %}
+            <label>{{ form.name.label_tag }}</label>
+          {% endcomment %}
+            {{ form.name }}
+            {% if form.name.errors %}
+            <small class="text-muted">{{ form.name.errors }}</small>
+            {% endif %}
+        </div>
+        <!-- Team Selection -->
+        <div class="form-group">
+          {% comment %}
+            <label class="capitalize">{{ form.assigned_to.label_tag }}</label>
+          {% endcomment %}
+            {{ form.assigned_to }}
+            {% if form.assigned_to.errors %}
+              <small class="text-muted">{{ form.assigned_to.errors }}</small>
+            {% endif %}
+        </div>
+        <!-- Important -->
+        <div class="form-group">
+          <div class="form-check">
+            <label class="form-check-label">
+              <input class="form-check-input" type="checkbox"> Important
+            </label>
+            {% if form.important.errors %}
+              <small class="text-muted">{{ form.important.errors }}</small>
+            {% endif %}
+          </div>
+        </div>
+        <!-- Due Date -->
+        <div class="form-group">
+            <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.due_date.label_tag }}</label>
+              {{ form.due_date }}
+              {% if form.due_date.errors %}
+                <small class="text-muted">{{ form.due_date.errors }}</small>
+              {% endif %}
+        </div>
+        <!-- Upload -->
+        <div class="form-group custom-form m-t-20">
+          <div class="col-xs-12">
+            <label class="subtle">Upload </label>
+          </div>
+          <div class="col-xs-12">
+          {{ form.upload }}
+          {% if form.upload.errors %}
+            <div class="alert alert-warning" role="alert">
+            {{ form.upload.errors }}
+            </div>
+          {% endif %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Center Column -->
+      <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+        <!-- Task Text -->
+        <div class="form-group">
+        {% comment %}
+          <label>{{ form.text.label_tag }}</label>
+        {% endcomment %}
+        {{ form.text }}
+        {% if form.text.errors %}
+          <small class="text-muted">{{ form.text.errors }}</small>
+        {% endif %}
+        </div>
+      </div>
+
+      <!-- Right Column -->
+
+      <!-- Save Button -->
+      <div class="form-group col-xs-12 col-sm-12 col-md-2 col-lg-2">
+      <div class="row">
+        <div class="col-xs-12 m-b-40">
+          <button type="submit" class="btn btn-info content-bottom-10 btn btn-block no-border">Save</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 m-b-40">
+          <p class="f-s-14 subtle">Associate the task with a Project, Series, Story or Event</p>
+          <!-- Project Select -->
+          <div class="form-group" id="fieldset-task-projects">
+            {% comment %}
+              <label class="capitalize pull-left subtle f-s-14">{{ form.project.label_tag }}</label>
+            {% endcomment %}
+            {{ form.project }}
+            {% if form.project.errors %}
+              <small class="text-muted">{{ form.project.errors }}</small>
+            {% endif %}
+          </div>
+          <!-- Series Select -->
+          <div class="form-group" id="fieldset-task-series">
+            {% comment %}
+              <label class="capitalize pull-left subtle f-s-14">{{ form.series.label_tag }}</label>
+            {% endcomment %}
+            {{ form.series }}
+            {% if form.series.errors %}
+              <small class="text-muted">{{ form.series.errors }}</small>
+            {% endif %}
+          </div>
+          <!-- Story Select -->
+          <div class="form-group" id="fieldset-task-stories">
+            {% comment %}
+              <label class="capitalize pull-left subtle f-s-14">{{ form.story.label_tag }}</label>
+            {% endcomment %}
+            {{ form.story }}
+            {% if form.story.errors %}
+              <small class="text-muted">{{ form.story.errors }}</small>
+            {% endif %}
+          </div>
+          <!-- Event Select -->
+          <div class="form-group" id="fieldset-task-events">
+            {% comment %}
+              <label class="capitalize pull-left subtle f-s-14">{{ form.event.label_tag }}</label>
+            {% endcomment %}
+            {{ form.event }}
+            {% if form.event.errors %}
+              <small class="text-muted">{{ form.event.errors }}</small>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+    </div>
+  </form>
+</div>
+{% endif %}
+<!-- End if organization/create -->
+
+<!-- If organization/new -->
+{% if task %}
+
+{% endif %}
+<!-- End if organization/new -->
+
+
+<script>
+$(".chosen-select").chosen()
+</script>
+
+
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+                  <!-- JS SCRIPTS -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
+
+
+
+{% endblock %}
+
+{% block modals %}
+
+
+{% endblock modals %}

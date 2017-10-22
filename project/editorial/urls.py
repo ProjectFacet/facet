@@ -15,6 +15,7 @@ from views import (
     projectviews,
     seriesviews,
     storyviews,
+    taskviews,
     assetviews,
     pushcontentviews,
     communicationviews,
@@ -166,6 +167,20 @@ urlpatterns = [
     url(r'^story/(?P<pk>[0-9]+)/note/(?P<note_type>[-\w]+)/content$', noteviews.note_content_html, name='note_content_html'),
     url(r'^story/note/new/$', noteviews.create_story_note, name='create_story_note'),
     url(r'^story/(?P<pk>[0-9]+)/team/json$', storyviews.story_team_options_json, name='story_team_options_json'),
+    #----------------------------------------------------------------------#
+    #   Task URLS
+    #----------------------------------------------------------------------#
+    url(r'^task/new/$', taskviews.task_new, name='task_new'),
+    url(r'^task/(?P<pk>[0-9]+)/$', taskviews.task_detail, name='task_detail'),
+    # Project Tasks
+    # url(r'^project/(?P<pk>[0-9]+)/tasks/$', taskviews.project_tasks, name='project_tasks'),
+    # Series Tasks
+    # url(r'^project/(?P<pk>[0-9]+)/tasks/$', taskviews.series_tasks, name='series_tasks'),
+    # Story Tasks
+    # url(r'^project/(?P<pk>[0-9]+)/tasks/$', taskviews.story_tasks, name='story_tasks'),
+    # Event Tasks
+    # url(r'^project/(?P<pk>[0-9]+)/tasks/$', taskviews.event_tasks, name='event_tasks'),
+
     #----------------------------------------------------------------------#
     #   Update URLS
     #----------------------------------------------------------------------#
