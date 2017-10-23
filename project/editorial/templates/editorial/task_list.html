@@ -11,6 +11,21 @@
 <div>
     <ol class="breadcrumb icon-angle-right icon-th">
         <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
+        {% if project_tasks %}
+        <li class="fadeIn"><a href="{% url 'project_list' %}" title="Go to Project List"> Projects </a></li>
+        <li class="fadeIn"><a href="{% url 'project_detail' pk=project.id %}" title="Go to {{project.name}}"> {{project.name}} </a></li>
+        {% elif series_tasks %}
+        <li class="fadeIn"><a href="{% url 'series_list' %}" title="Go to Series List"> Series </a></li>
+        <li class="fadeIn"><a href="{% url 'series_detail' pk=series.id %}" title="Go to {{series.name}}"> {{series.name}} </a></li>
+        {% elif story_tasks %}
+        <li class="fadeIn"><a href="{% url 'story_list' %}" title="Go to Story List"> Stories </a></li>
+        <li class="fadeIn"><a href="{% url 'story_detail' pk=story.id %}" title="Go to {{story.name}}"> {{story.name}} </a></li>
+        {% elif event_tasks %}
+        <li class="fadeIn"><a href="{% url 'event_list' %}" title="Go to Event List"> Events </a></li>
+        <li class="fadeIn"><a href="{% url 'event_detail' pk=event.id %}" title="Go to {{event.name}}"> {{event.name}} </a></li>
+        {% endif %}
+        <li class="fadeIn"> Tasks</li>
+
     </ol>
 </div>
 {% endblock breadcrumb %}
@@ -21,44 +36,40 @@
 
 {% block content %}
 
-{% if project_tasks %}
-<h5>Project Tasks </h5>
-{% elif series_tasks %}
-<h5>Series Tasks</h5>
-{% elif story_tasks %}
-<h5>Story Tasks</h5>
-{% elif event_tasks %}
-<h5>Event Tasks</h5>
-{% endif %}
 
-<div class="row m-t-20 m-b-20">
+{% if project_tasks %}
+<div class="row">
   <div class="col-xs-12">
-    <div class="col-xs-12 col-sm-6 col-lg-3">
-      <h5>Sidebar</h5>
-    </div>
-    <div class="col-xs-12 col-sm-6 col-lg-3">
-        <h5 class="m-b-20">Identified</h5>
+    <h5 class="m-b-20"> {{ project.name }} Tasks<span class="pull-right">Add new task to {{project.name}} <i class="fa fa-plus" aria-hidden="true"></i></span></h5>
+    <progress class="progress-xs progress progress-default" value="{{ progress }}" max="100">{{ progress }}%</progress>
+  </div>
+</div>
+<div class="row m-t-20 m-b-20">
+    <div class="col-xs-12 col-sm-6 col-lg-4">
+        <h5 class="m-b-20 underline-warning underline-120">Identified <span class="subtle f-s-14 f-w-600">( {{ identified_ct}} )</span></h5>
         <div class="activity-widget-5">
             <div class="row">
                 <div class="col-xs-12 bs-media" id="board-1">
-                  {% for task in tasks %}
-                    {% if task.task_status == "Identified"  %}
+                  {% for task in project_tasks %}
+                    {% if task.status == "Identified"  %}
                     <div class="media">
+                        <a href="{% url 'task_detail' task.id %}" title="View more detail">
                         <div class="media-body">
                             <h5 class="media-heading">
                               {% if task.important == True %}
-                                <span class="label"><i class="fa fa-star" aria-hidden="true"></i></span>
+                                <span class="label f-s-16"><i class="fa fa-star" aria-hidden="true"></i></span>
                               {% else %}
-                                <span class="label"><i class="fa fa-star-o" aria-hidden="true"></i></span>
+                                <span class="label f-s-16"><i class="fa fa-star-o" aria-hidden="true"></i></span>
                               {% endif %}
-                              {{ task.title }}
+                              <span class="f-s-18 f-w-600">{{ task.name }}</span>
                             </h5>
-                            <p>{{ task.text|truncatechars:150 }}</p>
-                            <p class="color-default f-s-12 m-t-10">Due: {{ task.due_date|date:'D, N j, g:i a' }}</p>
+                            <p class="f-s-14">{{ task.text|truncatechars:150 }}</p>
+                            <p class="color-warning-300 f-s-12 m-t-10">Due: {{ task.due_date|date:'D, N j, g:i a' }}</p>
                         </div>
+                        </a>
                         {% for user in task.assigned_to.all %}
                           {% if user.display_photo %}
-                            <img class="img-circle w-40 h-40 m-t-10" src="{{ user.display_photo.url }}" alt="user">
+                            <a href="{% url 'user_detail' user.id %}" title="See user profile"><img class="img-circle w-40 h-40 m-t-10" src="{{ user.display_photo.url }}" alt="user"></a>
                           {% endif %}
                         {% endfor %}
                     </div>
@@ -68,29 +79,31 @@
             </div>
         </div>
     </div>
-    <div class="col-xs-12 col-sm-6 col-lg-3">
-        <h5 class="m-b-20">In Progress</h5>
+    <div class="col-xs-12 col-sm-6 col-lg-4">
+        <h5 class="m-b-20 underline-primary underline-120">In Progress <span class="subtle f-s-14 f-w-600">( {{ inprogress_ct}} )</span></h5>
         <div class="activity-widget-5">
             <div class="row">
                 <div class="col-xs-12 bs-media" id="board-2">
-                  {% for task in tasks %}
-                    {% if task.task_status == "In Progress"  %}
+                  {% for task in project_tasks %}
+                    {% if task.status == "In Progress"  %}
                     <div class="media">
+                        <a href="{% url 'task_detail' task.id %}" title="View more detail">
                         <div class="media-body">
                             <h5 class="media-heading">
                               {% if task.important == True %}
-                                <span class="label"><i class="fa fa-star" aria-hidden="true"></i></span>
+                                <span class="label f-s-16"><i class="fa fa-star" aria-hidden="true"></i></span>
                               {% else %}
-                                <span class="label"><i class="fa fa-star-o" aria-hidden="true"></i></span>
+                                <span class="label f-s-16"><i class="fa fa-star-o" aria-hidden="true"></i></span>
                               {% endif %}
-                              {{ task.title }}
+                              <span class="f-s-18 f-w-600">{{ task.name }}</span>
                             </h5>
-                            <p>{{ task.text|truncatechars:150 }}</p>
-                            <p class="color-default f-s-12 m-t-10">Due: {{ task.due_date|date:'D, N j, g:i a' }}</p>
+                            <p class="f-s-14">{{ task.text|truncatechars:150 }}</p>
+                            <p class="color-primary-500 f-s-12 m-t-10">Due: {{ task.due_date|date:'D, N j, g:i a' }}</p>
                         </div>
+                        </a>
                         {% for user in task.assigned_to.all %}
                           {% if user.display_photo %}
-                            <img class="img-circle w-40 h-40 m-t-10" src="{{ user.display_photo.url }}" alt="user">
+                            <a href="{% url 'user_detail' user.id %}" title="See user profile"><img class="img-circle w-40 h-40 m-t-10" src="{{ user.display_photo.url }}" alt="user"></a>
                           {% endif %}
                         {% endfor %}
                     </div>
@@ -101,29 +114,358 @@
             </div>
         </div>
     </div>
-    <div class="col-xs-12 col-sm-6 col-lg-3">
-        <h5 class="m-b-20">Complete</h5>
+    <div class="col-xs-12 col-sm-6 col-lg-4">
+        <h5 class="m-b-20 underline-success underline-120">Complete <span class="subtle f-s-14 f-w-600">( {{ complete_ct}} )</span></h5>
         <div class="activity-widget-5">
             <div class="row">
                 <div class="col-xs-12 bs-media" id="board-3">
-                  {% for task in tasks %}
-                    {% if task.task_status == "Complete"  %}
+                  {% for task in project_tasks %}
+                    {% if task.status == "Complete"  %}
+                    <div class="media">
+                        <a href="{% url 'task_detail' task.id %}" title="View more detail">
+                        <div class="media-body">
+                            <h5 class="media-heading">
+                              {% if task.important == True %}
+                                <span class="label f-s-16"><i class="fa fa-star" aria-hidden="true"></i></span>
+                              {% else %}
+                                <span class="label f-s-16"><i class="fa fa-star-o" aria-hidden="true"></i></span>
+                              {% endif %}
+                              <span class="f-s-18 f-w-600">{{ task.name }}</span>
+                            </h5>
+                            <p class="f-s-14">{{ task.text|truncatechars:150 }}</p>
+                            <p class="color-success-300 f-s-12 m-t-10">Due: {{ task.due_date|date:'D, N j, g:i a' }}</p>
+                        </div>
+                        </a>
+                        {% for user in task.assigned_to.all %}
+                          {% if user.display_photo %}
+                            <a href="{% url 'user_detail' user.id %}" title="See user profile"><img class="img-circle w-40 h-40 m-t-10" src="{{ user.display_photo.url }}" alt="user"></a>
+                          {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                  {% endfor %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% if series_tasks %}
+<div class="row">
+  <div class="col-xs-12">
+    <h5 class="m-b-20"> {{ series.name }} Tasks<span class="pull-right">Add new task to {{series.name}} <i class="fa fa-plus" aria-hidden="true"></i></span></h5>
+    <progress class="progress-xs progress progress-default" value="{{ progress }}" max="100">{{ progress }}%</progress>
+  </div>
+</div>
+<div class="row m-t-20 m-b-20">
+    <div class="col-xs-12 col-sm-6 col-lg-4">
+      <h5 class="m-b-20 underline-warning underline-120">Identified <span class="subtle f-s-14 f-w-600">( {{ identified_ct}} )</span></h5>
+        <div class="activity-widget-5">
+            <div class="row">
+                <div class="col-xs-12 bs-media" id="board-1">
+                  {% for task in series_tasks %}
+                    {% if task.status == "Identified"  %}
                     <div class="media">
                         <div class="media-body">
                             <h5 class="media-heading">
                               {% if task.important == True %}
-                                <span class="label"><i class="fa fa-star" aria-hidden="true"></i></span>
+                                <span class="label f-s-16"><i class="fa fa-star" aria-hidden="true"></i></span>
                               {% else %}
-                                <span class="label"><i class="fa fa-star-o" aria-hidden="true"></i></span>
+                                <span class="label f-s-16"><i class="fa fa-star-o" aria-hidden="true"></i></span>
                               {% endif %}
-                              {{ task.title }}
+                              <span class="f-s-18 f-w-600">{{ task.name }}</span>
                             </h5>
-                            <p>{{ task.text|truncatechars:150 }}</p>
-                            <p class="color-default f-s-12 m-t-10">Due: {{ task.due_date|date:'D, N j, g:i a' }}</p>
+                            <p class="f-s-14">{{ task.text|truncatechars:150 }}</p>
+                            <p class="color-warning-300 f-s-12 m-t-10">Due: {{ task.due_date|date:'D, N j, g:i a' }}</p>
                         </div>
                         {% for user in task.assigned_to.all %}
                           {% if user.display_photo %}
-                            <img class="img-circle w-40 h-40 m-t-10" src="{{ user.display_photo.url }}" alt="user">
+                            <a href="{% url 'user_detail' user.id %}" title="See user profile"><img class="img-circle w-40 h-40 m-t-10" src="{{ user.display_photo.url }}" alt="user"></a>
+                          {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-lg-4">
+      <h5 class="m-b-20 underline-primary underline-120">In Progress <span class="subtle f-s-14 f-w-600">( {{ inprogress_ct}} )</span></h5>
+        <div class="activity-widget-5">
+            <div class="row">
+                <div class="col-xs-12 bs-media" id="board-2">
+                  {% for task in series_tasks %}
+                    {% if task.status == "In Progress"  %}
+                    <div class="media">
+                        <div class="media-body">
+                            <h5 class="media-heading">
+                              {% if task.important == True %}
+                                <span class="label f-s-16"><i class="fa fa-star" aria-hidden="true"></i></span>
+                              {% else %}
+                                <span class="label f-s-16"><i class="fa fa-star-o" aria-hidden="true"></i></span>
+                              {% endif %}
+                              <span class="f-s-18 f-w-600">{{ task.name }}</span>
+                            </h5>
+                            <p class="f-s-14">{{ task.text|truncatechars:150 }}</p>
+                            <p class="color-primary-500 f-s-12 m-t-10">Due: {{ task.due_date|date:'D, N j, g:i a' }}</p>
+                        </div>
+                        {% for user in task.assigned_to.all %}
+                          {% if user.display_photo %}
+                            <a href="{% url 'user_detail' user.id %}" title="See user profile"><img class="img-circle w-40 h-40 m-t-10" src="{{ user.display_photo.url }}" alt="user"></a>
+                          {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                  {% endfor %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-lg-4">
+      <h5 class="m-b-20 underline-success underline-120">Complete <span class="subtle f-s-14 f-w-600">( {{ complete_ct}} )</span></h5>
+        <div class="activity-widget-5">
+            <div class="row">
+                <div class="col-xs-12 bs-media" id="board-3">
+                  {% for task in series_tasks %}
+                    {% if task.status == "Complete"  %}
+                    <div class="media">
+                        <div class="media-body">
+                            <h5 class="media-heading">
+                              {% if task.important == True %}
+                                <span class="label f-s-16"><i class="fa fa-star" aria-hidden="true"></i></span>
+                              {% else %}
+                                <span class="label f-s-16"><i class="fa fa-star-o" aria-hidden="true"></i></span>
+                              {% endif %}
+                              <span class="f-s-18 f-w-600">{{ task.name }}</span>
+                            </h5>
+                            <p class="f-s-14">{{ task.text|truncatechars:150 }}</p>
+                            <p class="color-success-300 f-s-12 m-t-10">Due: {{ task.due_date|date:'D, N j, g:i a' }}</p>
+                        </div>
+                        {% for user in task.assigned_to.all %}
+                          {% if user.display_photo %}
+                            <a href="{% url 'user_detail' user.id %}" title="See user profile"><img class="img-circle w-40 h-40 m-t-10" src="{{ user.display_photo.url }}" alt="user"></a>
+                          {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                  {% endfor %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% if story_tasks %}
+<div class="row">
+  <div class="col-xs-12">
+    <h5 class="m-b-20"> {{ story.name }} Tasks<span class="pull-right">Add new task to {{story.name}} <i class="fa fa-plus" aria-hidden="true"></i></span></h5>
+    <progress class="progress-xs progress progress-default" value="{{ progress }}" max="100">{{ progress }}%</progress>
+  </div>
+</div>
+<div class="row m-t-20 m-b-20">
+    <div class="col-xs-12 col-sm-6 col-lg-4">
+      <h5 class="m-b-20 underline-warning underline-120">Identified <span class="subtle f-s-14 f-w-600">( {{ identified_ct}} )</span></h5>
+        <div class="activity-widget-5">
+            <div class="row">
+                <div class="col-xs-12 bs-media" id="board-1">
+                  {% for task in story_tasks %}
+                    {% if task.status == "Identified"  %}
+                    <div class="media">
+                        <div class="media-body">
+                            <h5 class="media-heading">
+                              {% if task.important == True %}
+                                <span class="label f-s-16"><i class="fa fa-star" aria-hidden="true"></i></span>
+                              {% else %}
+                                <span class="label f-s-16"><i class="fa fa-star-o" aria-hidden="true"></i></span>
+                              {% endif %}
+                              <span class="f-s-18 f-w-600">{{ task.name }}</span>
+                            </h5>
+                            <p class="f-s-14">{{ task.text|truncatechars:150 }}</p>
+                            <p class="color-warning-300 f-s-12 m-t-10">Due: {{ task.due_date|date:'D, N j, g:i a' }}</p>
+                        </div>
+                        {% for user in task.assigned_to.all %}
+                          {% if user.display_photo %}
+                            <a href="{% url 'user_detail' user.id %}" title="See user profile"><img class="img-circle w-40 h-40 m-t-10" src="{{ user.display_photo.url }}" alt="user"></a>
+                          {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-lg-4">
+      <h5 class="m-b-20 underline-primary underline-120">In Progress <span class="subtle f-s-14 f-w-600">( {{ inprogress_ct}} )</span></h5>
+        <div class="activity-widget-5">
+            <div class="row">
+                <div class="col-xs-12 bs-media" id="board-2">
+                  {% for task in story_tasks %}
+                    {% if task.status == "In Progress"  %}
+                    <div class="media">
+                        <div class="media-body">
+                            <h5 class="media-heading">
+                              {% if task.important == True %}
+                                <span class="label f-s-16"><i class="fa fa-star" aria-hidden="true"></i></span>
+                              {% else %}
+                                <span class="label f-s-16"><i class="fa fa-star-o" aria-hidden="true"></i></span>
+                              {% endif %}
+                              <span class="f-s-18 f-w-600">{{ task.name }}</span>
+                            </h5>
+                            <p class="f-s-14">{{ task.text|truncatechars:150 }}</p>
+                            <p class="color-primary-500 f-s-12 m-t-10">Due: {{ task.due_date|date:'D, N j, g:i a' }}</p>
+                        </div>
+                        {% for user in task.assigned_to.all %}
+                          {% if user.display_photo %}
+                            <a href="{% url 'user_detail' user.id %}" title="See user profile"><img class="img-circle w-40 h-40 m-t-10" src="{{ user.display_photo.url }}" alt="user"></a>
+                          {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                  {% endfor %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-lg-4">
+      <h5 class="m-b-20 underline-success underline-120">Complete <span class="subtle f-s-14 f-w-600">( {{ complete_ct}} )</span></h5>
+        <div class="activity-widget-5">
+            <div class="row">
+                <div class="col-xs-12 bs-media" id="board-3">
+                  {% for task in story_tasks %}
+                    {% if task.status == "Complete"  %}
+                    <div class="media">
+                        <div class="media-body">
+                            <h5 class="media-heading">
+                              {% if task.important == True %}
+                                <span class="label f-s-16"><i class="fa fa-star" aria-hidden="true"></i></span>
+                              {% else %}
+                                <span class="label f-s-16"><i class="fa fa-star-o" aria-hidden="true"></i></span>
+                              {% endif %}
+                              <span class="f-s-18 f-w-600">{{ task.name }}</span>
+                            </h5>
+                            <p class="f-s-14">{{ task.text|truncatechars:150 }}</p>
+                            <p class="color-success-300 f-s-12 m-t-10">Due: {{ task.due_date|date:'D, N j, g:i a' }}</p>
+                        </div>
+                        {% for user in task.assigned_to.all %}
+                          {% if user.display_photo %}
+                            <a href="{% url 'user_detail' user.id %}" title="See user profile"><img class="img-circle w-40 h-40 m-t-10" src="{{ user.display_photo.url }}" alt="user"></a>
+                          {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                  {% endfor %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% if event_tasks %}
+<div class="row">
+  <div class="col-xs-12">
+    <h5 class="m-b-20"> {{ event.name }} Tasks<span class="pull-right">Add new task to {{event.name}} <i class="fa fa-plus" aria-hidden="true"></i></span></h5>
+    <progress class="progress-xs progress progress-default" value="{{ progress }}" max="100">{{ progress }}%</progress>
+  </div>
+</div>
+<div class="row m-t-20 m-b-20">
+    <div class="col-xs-12 col-sm-6 col-lg-4">
+      <h5 class="m-b-20 underline-warning underline-120">Identified <span class="subtle f-s-14 f-w-600">( {{ identified_ct}} )</span></h5>
+        <div class="activity-widget-5">
+            <div class="row">
+                <div class="col-xs-12 bs-media" id="board-1">
+                  {% for task in event_tasks %}
+                    {% if task.status == "Identified"  %}
+                    <div class="media">
+                        <div class="media-body">
+                            <h5 class="media-heading">
+                              {% if task.important == True %}
+                                <span class="label f-s-16"><i class="fa fa-star" aria-hidden="true"></i></span>
+                              {% else %}
+                                <span class="label f-s-16"><i class="fa fa-star-o" aria-hidden="true"></i></span>
+                              {% endif %}
+                              <span class="f-s-18 f-w-600">{{ task.name }}</span>
+                            </h5>
+                            <p class="f-s-14">{{ task.text|truncatechars:150 }}</p>
+                            <p class="color-warning-300 f-s-12 m-t-10">Due: {{ task.due_date|date:'D, N j, g:i a' }}</p>
+                        </div>
+                        {% for user in task.assigned_to.all %}
+                          {% if user.display_photo %}
+                            <a href="{% url 'user_detail' user.id %}" title="See user profile"><img class="img-circle w-40 h-40 m-t-10" src="{{ user.display_photo.url }}" alt="user"></a>
+                          {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-lg-4">
+      <h5 class="m-b-20 underline-primary underline-120">In Progress <span class="subtle f-s-14 f-w-600">( {{ inprogress_ct}} )</span></h5>
+        <div class="activity-widget-5">
+            <div class="row">
+                <div class="col-xs-12 bs-media" id="board-2">
+                  {% for task in event_tasks %}
+                    {% if task.status == "In Progress"  %}
+                    <div class="media">
+                        <div class="media-body">
+                            <h5 class="media-heading">
+                              {% if task.important == True %}
+                                <span class="label f-s-16"><i class="fa fa-star" aria-hidden="true"></i></span>
+                              {% else %}
+                                <span class="label f-s-16"><i class="fa fa-star-o" aria-hidden="true"></i></span>
+                              {% endif %}
+                              <span class="f-s-18 f-w-600">{{ task.name }}</span>
+                            </h5>
+                            <p class="f-s-14">{{ task.text|truncatechars:150 }}</p>
+                            <p class="color-primary-500 f-s-12 m-t-10">Due: {{ task.due_date|date:'D, N j, g:i a' }}</p>
+                        </div>
+                        {% for user in task.assigned_to.all %}
+                          {% if user.display_photo %}
+                            <a href="{% url 'user_detail' user.id %}" title="See user profile"><img class="img-circle w-40 h-40 m-t-10" src="{{ user.display_photo.url }}" alt="user"></a>
+                          {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                  {% endfor %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-lg-4">
+      <h5 class="m-b-20 underline-success underline-120">Complete <span class="subtle f-s-14 f-w-600">( {{ complete_ct}} )</span></h5>
+        <div class="activity-widget-5">
+            <div class="row">
+                <div class="col-xs-12 bs-media" id="board-3">
+                  {% for task in event_tasks %}
+                    {% if task.status == "Complete"  %}
+                    <div class="media">
+                        <div class="media-body">
+                            <h5 class="media-heading">
+                              {% if task.important == True %}
+                                <span class="label f-s-16"><i class="fa fa-star" aria-hidden="true"></i></span>
+                              {% else %}
+                                <span class="label f-s-16"><i class="fa fa-star-o" aria-hidden="true"></i></span>
+                              {% endif %}
+                              <span class="f-s-18 f-w-600">{{ task.name }}</span>
+                            </h5>
+                            <p class="f-s-14">{{ task.text|truncatechars:150 }}</p>
+                            <p class="color-success-300 f-s-12 m-t-10">Due: {{ task.due_date|date:'D, N j, g:i a' }}</p>
+                        </div>
+                        {% for user in task.assigned_to.all %}
+                          {% if user.display_photo %}
+                            <a href="{% url 'user_detail' user.id %}" title="See user profile"><img class="img-circle w-40 h-40 m-t-10" src="{{ user.display_photo.url }}" alt="user"></a>
                           {% endif %}
                         {% endfor %}
                     </div>
@@ -136,6 +478,7 @@
     </div>
 
   </div>
+{% endif %}
 
 
 

@@ -289,3 +289,7 @@ img.image-center {
 .fc-day-grid-container {
   height: 100% !important;
 }
+
+[data-palette="palette-2"] .progress[value] {
+  background-color: #5bc0de !important
+}

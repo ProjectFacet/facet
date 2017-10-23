@@ -31,7 +31,7 @@ from editorial.models import (
     )
 
 #----------------------------------------------------------------------#
-#   Project Views
+#   Task Views
 #----------------------------------------------------------------------#
 
 # class TaskCreateView(generic.CreateView):
@@ -125,40 +125,97 @@ def task_detail(request, pk):
     })
 
 
+# reduce duplication if possible
 def project_task_list(request, pk):
     """Display all the tasks associated with a project.
 
     """
+
+    project = get_object_or_404(Project, pk=pk)
     tasks = Task.objects.filter(project=pk)
+    count = tasks.count()
+    # FIXME how to get count for each status without doing three of the following
+    identified_ct = Task.objects.filter(project=pk, status="Identified").count()
+    inprogress_ct = Task.objects.filter(project=pk, status="In Progress").count()
+    complete_ct = Task.objects.filter(project=pk, status="Complete").count()
+    # ratio of complete to total number of tasks
+    progress = 100 * float(complete_ct)/float(count)
     return render(request, 'editorial/task_list.html', {
+        'project': project,
         'project_tasks': tasks,
+        'progress': progress,
+        'identified_ct': identified_ct,
+        'inprogress_ct': inprogress_ct,
+        'complete_ct': complete_ct,
     })
 
 def series_task_list(request, pk):
     """Display all the tasks associated with a story.
 
     """
+
+    series = get_object_or_404(Series, pk=pk)
     tasks = Task.objects.filter(series=pk)
+    count = tasks.count()
+    # FIXME how to get count for each status without doing three of the following
+    identified_ct = Task.objects.filter(series=pk, status="Identified").count()
+    inprogress_ct = Task.objects.filter(series=pk, status="In Progress").count()
+    complete_ct = Task.objects.filter(series=pk, status="Complete").count()
+    # ratio of complete to total number of tasks
+    progress = 100 * float(complete_ct)/float(count)
     return render(request, 'editorial/task_list.html', {
+        'series': series,
         'series_tasks': tasks,
+        'progress': progress,
+        'identified_ct': identified_ct,
+        'inprogress_ct': inprogress_ct,
+        'complete_ct': complete_ct,
     })
 
 def story_task_list(request, pk):
     """Display all the tasks associated with a series.
 
     """
+
+    story = get_object_or_404(Story, pk=pk)
     tasks = Task.objects.filter(story=pk)
+    count = tasks.count()
+    # FIXME how to get count for each status without doing three of the following
+    identified_ct = Task.objects.filter(story=pk, status="Identified").count()
+    inprogress_ct = Task.objects.filter(story=pk, status="In Progress").count()
+    complete_ct = Task.objects.filter(story=pk, status="Complete").count()
+    # ratio of complete to total number of tasks
+    progress = 100 * float(complete_ct)/float(count)
     return render(request, 'editorial/task_list.html', {
+        'story': story,
         'story_tasks': tasks,
+        'progress': progress,
+        'identified_ct': identified_ct,
+        'inprogress_ct': inprogress_ct,
+        'complete_ct': complete_ct,
     })
 
 def event_task_list(request, pk):
     """Display all the tasks associated with an event.
 
     """
+
+    event = get_object_or_404(Event, pk=pk)
     tasks = Task.objects.filter(event=pk)
+    count = tasks.count()
+    # FIXME how to get count for each status without doing three of the following
+    identified_ct = Task.objects.filter(event=pk, status="Identified").count()
+    inprogress_ct = Task.objects.filter(event=pk, status="In Progress").count()
+    complete_ct = Task.objects.filter(event=pk, status="Complete").count()
+    # ratio of complete to total number of tasks
+    progress = 100 * float(complete_ct)/float(count)
     return render(request, 'editorial/task_list.html', {
+        'event': event,
         'event_tasks': tasks,
+        'progress': progress,
+        'identified_ct': identified_ct,
+        'inprogress_ct': inprogress_ct,
+        'complete_ct': complete_ct,
     })
 
 

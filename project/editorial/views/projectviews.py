@@ -42,7 +42,6 @@ def project_list(request):
     """
 
     projects = Project.objects.filter(organization=request.user.organization)
-    print "PROJECTS: ", projects
 
     return render(request, 'editorial/projectlist.html', {'projects': projects})
 
