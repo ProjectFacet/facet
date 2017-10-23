@@ -545,6 +545,7 @@ class TaskForm(forms.ModelForm):
         self.request = kwargs.pop("request")
         super(TaskForm, self).__init__(*args, **kwargs)
         self.fields['assigned_to'].queryset = Organization.get_org_users(self.request.user.organization)
+        self.fields['status'].empty_label='Task Status'
         self.fields['project'].empty_label='Select a Project'
         self.fields['series'].empty_label='Select a Series'
         self.fields['story'].empty_label='Select a Story'
@@ -601,7 +602,7 @@ class TaskForm(forms.ModelForm):
             'name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Title'}),
             'text': Textarea(attrs={'class': 'form-control', 'rows':20, 'placeholder': 'Details'}),
             'assigned_to': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select form-control facet-select', 'id':'task-team', 'data-placeholder': 'Assign People'}),
-            'status': Select(attrs={'class': 'form-control'}),
+            'status': Select(attrs={'class': 'c-select', 'id':'task-projects'}),
             'important': CheckboxInput(attrs={'class': 'c-indicator c-indicator-default'}),
             'project': Select(attrs={'class': 'c-select custom-select', 'id':'task-projects'}),
             'series': Select(attrs={'class': 'c-select custom-select', 'id':'task-series'}),

@@ -68,12 +68,12 @@ def task_new(request):
         task.organization = request.user.organization
         task.creation_date = timezone.now()
         task.save()
-        taskform.save_m2m()
+        form.save_m2m()
 
         # record action for activity stream
         action.send(request.user, verb="created", action_object=task)
 
-        return redirect('task_detail', pk=project.pk)
+        return redirect('task_detail', pk=task.pk)
     else:
         form = TaskForm(request=request)
     return render(request, 'editorial/task_form.html', {'form': form})
@@ -85,35 +85,81 @@ def task_detail(request, pk):
     Displays the tasks information.
     """
 
-    task = get_object_or_404(Task, pk=pk)
+    # FIXME q for J: Having a hard time figuring out how to translate this try except view to cbv
 
-    return render(request, 'editorial/task_form.html', {
+    try:
+        task = get_object_or_404(Task, pk=pk)
+        form = TaskForm(request=request, instance=task)
+        # discussion = ...
+        # comments = ...
+
+        if request.method == "POST":
+            if 'form' in request.POST:
+                form = TaskForm(data=request.POST, instance=task, request=request, task=task)
+                if form.is_valid():
+                    form.save()
+                    # record action for activity stream
+                    action.send(request.user, verb="updated", action_object=task)
+                    return redirect('task_detail', pk=pk)
+
+    except:
+        # except Task.DoesNotExist:
+        #display form a save a new task
+        if request.method == "POST":
+            if 'form' in request.POST:
+                form=TaskForm(data=request.POST, request=request)
+                if form.is_valid():
+                    task = form.save(commit=False)
+                    task.owner = request.user
+                    task.organization = request.user.organization
+                    task.creation_date = timezone.now()
+                    task.save()
+                    form.save_m2m()
+                    # record action for activity stream
+                    action.send(request.user, verb="created", action_object=task)
+                    return redirect('task_detail', pk=project.pk)
+
+    return render(request, 'editorial/task_detail.html', {
         'task': task,
+        'form': form,
     })
 
 
-def task_edit(request, pk):
-    """ Edit project page."""
+def project_task_list(request, pk):
+    """Display all the tasks associated with a project.
 
-    pass
-    # project = get_object_or_404(Project, pk=pk)
-    #
-    # if request.method =="POST":
-    #     projectform = ProjectForm(data=request.POST, instance=project, request=request)
-    #     if projectform.is_valid():
-    #         projectform.save()
-    #
-    #         # record action for activity stream
-    #         action.send(request.user, verb="edited", action_object=project)
-    #
-    #         return redirect('project_detail', pk=project.id)
-    # else:
-    #     projectform = ProjectForm(instance=project, request=request)
-    #
-    # return render(request, 'editorial/projectedit.html', {
-    #     'project': project,
-    #     'projectform': projectform,
-    #     })
+    """
+    tasks = Task.objects.filter(project=pk)
+    return render(request, 'editorial/task_list.html', {
+        'project_tasks': tasks,
+    })
+
+def series_task_list(request, pk):
+    """Display all the tasks associated with a story.
+
+    """
+    tasks = Task.objects.filter(series=pk)
+    return render(request, 'editorial/task_list.html', {
+        'series_tasks': tasks,
+    })
+
+def story_task_list(request, pk):
+    """Display all the tasks associated with a series.
+
+    """
+    tasks = Task.objects.filter(story=pk)
+    return render(request, 'editorial/task_list.html', {
+        'story_tasks': tasks,
+    })
+
+def event_task_list(request, pk):
+    """Display all the tasks associated with an event.
+
+    """
+    tasks = Task.objects.filter(event=pk)
+    return render(request, 'editorial/task_list.html', {
+        'event_tasks': tasks,
+    })
 
 
 def task_delete(request, pk):

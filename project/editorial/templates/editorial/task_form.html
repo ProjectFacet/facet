@@ -108,6 +108,19 @@
         </div>
       </div>
       <div class="row">
+        <div class="col-xs-12">
+          <!-- Status Select -->
+          <div class="form-group" id="fieldset-task-projects">
+
+              <label class="capitalize pull-left subtle f-s-14">{{ form.status.label_tag }}</label>
+            {{ form.status }}
+            {% if form.status.errors %}
+              <small class="text-muted">{{ form.status.errors }}</small>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="row">
         <div class="col-xs-12 m-b-40">
           <p class="f-s-14 subtle">Associate the task with a Project, Series, Story or Event</p>
           <!-- Project Select -->

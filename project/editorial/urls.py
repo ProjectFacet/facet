@@ -173,13 +173,13 @@ urlpatterns = [
     url(r'^task/new/$', taskviews.task_new, name='task_new'),
     url(r'^task/(?P<pk>[0-9]+)/$', taskviews.task_detail, name='task_detail'),
     # Project Tasks
-    # url(r'^project/(?P<pk>[0-9]+)/tasks/$', taskviews.project_tasks, name='project_tasks'),
+    url(r'^project/(?P<pk>[0-9]+)/tasks/$', taskviews.project_task_list, name='project_task_list'),
     # Series Tasks
-    # url(r'^project/(?P<pk>[0-9]+)/tasks/$', taskviews.series_tasks, name='series_tasks'),
+    url(r'^series/(?P<pk>[0-9]+)/tasks/$', taskviews.series_task_list, name='series_task_list'),
     # Story Tasks
-    # url(r'^project/(?P<pk>[0-9]+)/tasks/$', taskviews.story_tasks, name='story_tasks'),
+    url(r'^story/(?P<pk>[0-9]+)/tasks/$', taskviews.story_task_list, name='story_task_list'),
     # Event Tasks
-    # url(r'^project/(?P<pk>[0-9]+)/tasks/$', taskviews.event_tasks, name='event_tasks'),
+    url(r'^event/(?P<pk>[0-9]+)/tasks/$', taskviews.event_task_list, name='event_task_list'),
 
     #----------------------------------------------------------------------#
     #   Update URLS

@@ -3564,6 +3564,18 @@ class Task(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def search_title(self):
+        return self.name
+
+    @property
+    def description(self):
+        return self.text.encode('utf-8')
+
+    @property
+    def type(self):
+        return "Task"
+
     def clean(self):
         """Enforce that there is one relationship."""
 
@@ -3698,6 +3710,18 @@ class Event(models.Model):
 
     def __str__(self):
         return self.name
+
+    @property
+    def search_title(self):
+        return self.name
+
+    @property
+    def description(self):
+        return self.description.encode('utf-8')
+
+    @property
+    def type(self):
+        return "Event"
 
     def clean(self):
         """Enforce that there is one relationship."""
