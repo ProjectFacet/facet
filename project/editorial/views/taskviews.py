@@ -76,7 +76,7 @@ def task_new(request):
         return redirect('task_detail', pk=task.pk)
     else:
         form = TaskForm(request=request)
-    return render(request, 'editorial/task_form.html', {'form': form})
+    return render(request, 'editorial/task_detail.html', {'form': form})
 
 
 def task_detail(request, pk):
@@ -95,7 +95,7 @@ def task_detail(request, pk):
 
         if request.method == "POST":
             if 'form' in request.POST:
-                form = TaskForm(data=request.POST, instance=task, request=request, task=task)
+                form = TaskForm(data=request.POST, instance=task, request=request)
                 if form.is_valid():
                     form.save()
                     # record action for activity stream
@@ -117,7 +117,7 @@ def task_detail(request, pk):
                     form.save_m2m()
                     # record action for activity stream
                     action.send(request.user, verb="created", action_object=task)
-                    return redirect('task_detail', pk=project.pk)
+                    return redirect('task_detail', pk=task.pk)
 
     return render(request, 'editorial/task_detail.html', {
         'task': task,
@@ -134,7 +134,7 @@ def project_task_list(request, pk):
     project = get_object_or_404(Project, pk=pk)
     tasks = Task.objects.filter(project=pk)
     count = tasks.count()
-    # FIXME how to get count for each status without doing three of the following
+    # FIXME how to get count for each status without doing three filters
     identified_ct = Task.objects.filter(project=pk, status="Identified").count()
     inprogress_ct = Task.objects.filter(project=pk, status="In Progress").count()
     complete_ct = Task.objects.filter(project=pk, status="Complete").count()

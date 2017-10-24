@@ -11,6 +11,26 @@
 <div>
     <ol class="breadcrumb icon-angle-right icon-th">
         <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
+        {% if task %}
+          {% if task.project %}
+          <li class="fadeIn"><a href="{% url 'project_list' %}" title="Go to Project List"> Projects </a></li>
+          <li class="fadeIn"><a href="{% url 'project_detail' pk=task.project.id %}" title="Go to {{task.project.name}}"> {{task.project.name}} </a></li>
+          <li class="fadeIn"><a href="{% url 'project_task_list' pk=task.project.id %}" title="Go to {{task.project.name}} Tasks"> Tasks </a></li>
+          <li class="fadeIn"> {{ task.name }}</li>
+          <li class="fadeIn"> Update</li>
+          {% elif task.series %}
+          <li class="fadeIn"><a href="{% url 'series_list' %}" title="Go to Series List"> Series </a></li>
+          <li class="fadeIn"><a href="{% url 'series_detail' pk=task.series.id %}" title="Go to {{task.series.name}}"> {{task.series.name}} </a></li>
+          {% elif task.story %}
+          <li class="fadeIn"><a href="{% url 'story_list' %}" title="Go to Story List"> Stories </a></li>
+          <li class="fadeIn"><a href="{% url 'story_detail' pk=task.story.id %}" title="Go to {{task.story.name}}"> {{task.story.name}} </a></li>
+          {% elif task.event %}
+          <li class="fadeIn"><a href="{% url 'event_list' %}" title="Go to Event List"> Events </a></li>
+          <li class="fadeIn"><a href="{% url 'event_detail' pk=task.event.id %}" title="Go to {{task.event.name}}"> {{task.event.name}} </a></li>
+          {% endif %}
+        {% else %}
+        <li class="fadeIn"> New Task</li>
+        {% endif %}
     </ol>
 </div>
 {% endblock breadcrumb %}
@@ -21,9 +41,22 @@
 
 {% block content %}
 
-<!-- If organization/create -->
-{% if not task %}
+<div class="row">
+  <div class="col-xs-12">
+    <h5 class="m-b-20">{{task.name}}
+      {% if task.status == "Identified" %}
+      <i class="fa fa-circle-o color-warning-300 f-s-14" aria-hidden="true"></i>
+      {% elif task.status == "In Progress" %}
+      <i class="fa fa-circle-o-notch fa-spin color-primary-500 f-s-14" aria-hidden="true"></i>
+      {% elif task.status == "Complete" %}
+      <i class="fa fa-check-circle-o color-success-300 f-s-14" aria-hidden="true"></i>
+      {% endif %}
+    </h5>
+  </div>
+</div>
 
+
+<!-- The html for detail form is same regardless of associated object: Project, Series, Story or Event -->
 <div class="row">
   <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
     <div class="form-row">
@@ -40,6 +73,12 @@
             {% endif %}
         </div>
         <!-- Team Selection -->
+        <p>Team</p>
+        {% for user in task.assigned_to.all %}
+          {% if user.display_photo %}
+            <a href="{% url 'user_detail' user.id %}" title="See user profile"><img class="img-circle w-40 h-40 m-b-10" src="{{ user.display_photo.url }}" alt="user"></a>
+          {% endif %}
+        {% endfor %}
         <div class="form-group">
           {% comment %}
             <label class="capitalize">{{ form.assigned_to.label_tag }}</label>
@@ -61,26 +100,22 @@
           </div>
         </div>
         <!-- Due Date -->
+        <p>Due Date</p>
         <div class="form-group">
-            <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.due_date.label_tag }}</label>
               {{ form.due_date }}
               {% if form.due_date.errors %}
                 <small class="text-muted">{{ form.due_date.errors }}</small>
               {% endif %}
         </div>
         <!-- Upload -->
+        <p>Upload</p>
         <div class="form-group custom-form m-t-20">
-          <div class="col-xs-12">
-            <label class="subtle">Upload </label>
-          </div>
-          <div class="col-xs-12">
           {{ form.upload }}
           {% if form.upload.errors %}
             <div class="alert alert-warning" role="alert">
             {{ form.upload.errors }}
             </div>
           {% endif %}
-          </div>
         </div>
       </div>
 
@@ -104,15 +139,21 @@
       <div class="form-group col-xs-12 col-sm-12 col-md-2 col-lg-2">
       <div class="row">
         <div class="col-xs-12 m-b-40">
-          <button type="submit" class="btn btn-info content-bottom-10 btn btn-block no-border">Save</button>
+          {% if task.status == "Identified" %}
+          <button type="submit" class="btn btn-warning content-bottom-10 btn btn-block no-border" name="form">Save Changes</button>
+          {% elif task.status == "In Progress" %}
+          <button type="submit" class="btn btn-primary content-bottom-10 btn btn-block no-border" name="form">Save Changes</button>
+          {% elif task.status == "Complete" %}
+          <button type="submit" class="btn btn-success content-bottom-10 btn btn-block no-border" name="form">Save Changes</button>
+          {% else %}
+          <button type="submit" class="btn btn-default content-bottom-10 btn btn-block no-border" name="form">Create Task</button>
+          {% endif %}
         </div>
       </div>
       <div class="row">
         <div class="col-xs-12">
           <!-- Status Select -->
           <div class="form-group" id="fieldset-task-projects">
-
-              <label class="capitalize pull-left subtle f-s-14">{{ form.status.label_tag }}</label>
             {{ form.status }}
             {% if form.status.errors %}
               <small class="text-muted">{{ form.status.errors }}</small>
@@ -171,14 +212,8 @@
     </div>
   </form>
 </div>
-{% endif %}
-<!-- End if organization/create -->
+<!-- End of form -->
 
-<!-- If organization/new -->
-{% if task %}
-
-{% endif %}
-<!-- End if organization/new -->
 
 
 <script>

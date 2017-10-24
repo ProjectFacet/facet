@@ -599,15 +599,15 @@ class TaskForm(forms.ModelForm):
             'event',
         ]
         widgets = {
-            'name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Title'}),
-            'text': Textarea(attrs={'class': 'form-control', 'rows':20, 'placeholder': 'Details'}),
+            'name': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Title'}),
+            'text': Textarea(attrs={'class': 'form-control', 'id':'task-text', 'rows':20, 'placeholder': 'Details'}),
             'assigned_to': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select form-control facet-select', 'id':'task-team', 'data-placeholder': 'Assign People'}),
-            'status': Select(attrs={'class': 'c-select', 'id':'task-projects'}),
+            'status': Select(attrs={'class': 'custom-select', 'id':'task-status'}),
             'important': CheckboxInput(attrs={'class': 'c-indicator c-indicator-default'}),
-            'project': Select(attrs={'class': 'c-select custom-select', 'id':'task-projects'}),
-            'series': Select(attrs={'class': 'c-select custom-select', 'id':'task-series'}),
-            'story': Select(attrs={'class': 'c-select custom-select', 'id':'task-stories'}),
-            'event': Select(attrs={'class': 'c-select custom-select', 'id':'task-events'}),
+            'project': Select(attrs={'class': 'custom-select', 'id':'task-projects'}),
+            'series': Select(attrs={'class': 'custom-select', 'id':'task-series'}),
+            'story': Select(attrs={'class': 'custom-select', 'id':'task-stories'}),
+            'event': Select(attrs={'class': 'custom-select', 'id':'task-events'}),
             }
 
     class Media:
