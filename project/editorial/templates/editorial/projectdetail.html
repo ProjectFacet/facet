@@ -11,8 +11,8 @@
 <div>
     <ol class="breadcrumb icon-angle-right icon-th">
         <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
-        <li class="fadeIn"><a href="{% url 'project_list' %}" title="View Project"> Project </a></li>
-        <li class="fadeIn"><a href="{% url 'project_detail' project.id %}" title="You are Here"> {{ project.name }} </a></li>
+        <li class="fadeIn"><a href="{% url 'project_list' %}" title="View Project"> Projects </a></li>
+        <li class="fadeIn"> {{ project.name }}</li>
     </ol>
 </div>
 {% endblock breadcrumb %}
@@ -116,7 +116,7 @@
       <!-- Tasks -->
       <div class="row">
         <div class="col-xs-12">
-          <h4 class="m-l-50 m-b-20"><a href="{% url 'project_task_list' project.id %}" title="Expand to see more">Tasks <span class="f-s-12 f-w-400 subtle"> (See all tasks <i class="fa fa-expand subtle" aria-hidden="true">)</i></span></a></h4>
+          <h4 class="m-l-50 m-b-20"><a href="{% url 'project_task_list' project.id %}" title="Expand to see more">Tasks <span class="f-s-12 f-w-400 subtle"> (See all tasks <i class="fa fa-long-arrow-right subtle" aria-hidden="true">)</i></span></a></h4>
         </div>
       </div>
       <div class="row m-b-50">
@@ -336,17 +336,22 @@
       <!-- Project Media -->
       <div class="row">
         <div class="col-xs-12">
-          <h4 class="m-b-20">Story Media</h4>
+          <h4 class="m-b-20">Story Media <a href="{% url 'project_assets' project.id %}" title="View Projects"><span class="f-s-12 f-w-400 subtle"> (See all media <i class="fa fa-long-arrow-right subtle" aria-hidden="true">)</i></span></a></h4>
           <!-- Images -->
           <div class="row" id="project-thumbs">
             <div class="col-xs-12">
-              {% for image in project_images %}
+              <div class="row">
+              {% for image in project_images|slice:":6" %}
                 {% if image.display_photo %}
-                <div class="col-xs-6">
-                  <a href="{{ image.display_photo.url }}" class="thumbnail"><img src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}" class="img-fluid m-b-10"></a>
-                </div>
+                  <div class="col-xs-6">
+                    <a href="{{ image.display_photo.url }}" class="thumbnail"><img src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}" class="img-fluid m-b-10"></a>
+                  </div>
+                  {% if forloop.counter|divisibleby:"2" and not forloop.last %}
+                    </div><div class="row">
+                  {% endif %}
                 {% endif %}
               {% endfor %}
+              </div>
             </div>
           </div>
           <!-- Documents -->

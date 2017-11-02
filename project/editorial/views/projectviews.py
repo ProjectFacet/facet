@@ -120,6 +120,25 @@ def project_schedule(request, pk):
     return HttpResponse(json.dumps(project_calendar), content_type='application/json')
 
 
+def project_assets(request, pk):
+    """ Return all the assets associated with a project.
+    """
+    project = get_object_or_404(Project, pk=pk)
+    project_images = Project.get_project_images(project)
+    project_documents = Project.get_project_documents(project)
+    project_audio = Project.get_project_audio(project)
+    project_video = Project.get_project_video(project)
+
+    return render(request, 'editorial/project_assets.html', {
+        'project': project,
+        'images': project_images,
+        'documents': project_documents,
+        'audio': project_audio,
+        'video': project_video,
+})
+
+
+
 def project_edit(request, pk):
     """ Edit project page."""
 
