@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load bootstrap3 %}
+
+<!-------------------------------------------->
+<!--      BREADCRUMB NAVIGATION             -->
+<!-------------------------------------------->
+
+{% block breadcrumb %}
+<div>
+    <ol class="breadcrumb icon-angle-right icon-th">
+      <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
+      <li class="fadeIn"><a href="{% url 'project_list' %}" title="View Projects"> Projects </a></li>
+      <li class="fadeIn"><a href="{% url 'project_detail' project.id %}" title="View Projects"> {{project.name}} </a></li>
+      <li class="fadeIn"> Notes</li>
+    </ol>
+</div>
+{% endblock breadcrumb %}
+
+<!-------------------------------------------->
+<!--            Main Section                -->
+<!-------------------------------------------->
+
+{% block content %}
+
+<div class="row m-b-40">
+
+  <!-- Left Column -->
+  <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 activity-widget-4">
+    <h4 class="m-b-40">Notes <a data-toggle="modal" data-target="#addProjectNote" title="Add Project Note"><i class="fa fa-plus sameline dark"></i></a></h4>
+    {% for note in projectnotes %}
+    <div class="row">
+        <div class="col-xs-12">
+          <div class="media">
+              <div class="media-body">
+                  <a href="{% url 'note_content_html' note_type='project' pk=note.id %}" id="note-{{note.id}}" class="project_note_link"><h5 class="media-heading"> {{ note.title }} </h5></a>
+                  <small class="f-s-14">{{ note.owner.credit_name }}</small></br>
+                  <small class="color-default">{{ note.creation_date|date:'D M j g:i a' }}</small>
+              </div>
+          </div>
+        </div>
+    </div>
+    {% endfor %}
+  </div>
+  <!-- Right Column -->
+  <div class="col-xs-12 col-sm-12 col-md-9 col-lg-9">
+    <div id="note-content">
+    </div>
+  </div>
+
+</div> <!-- End of Row -->
+
+
+<script>
+$(function() {
+    $(".project_note_link").click(function(event) {
+        event.preventDefault();
+        var page_url = jQuery(this).attr("href")
+        console.log(page_url);
+        $('#note-content')
+           .load(page_url);
+    });
+});
+</script>
+
+
+{% endblock %}
+
+{% block modals %}
+<!-- Add Note Modal -->
+<div class="modal fade" id="addProjectNote" tabindex="-1" role="dialog" aria-labelledby="addProjectNoteModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h5 class="modal-title" id="addUserModalLabel">Add a note for this project</h5>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'create_project_note' %}" method="POST" class="post-form">
+        {% csrf_token %}
+        {% bootstrap_form projectnoteform %}
+        <input type="hidden" name="project" value="{{ project.pk }}" />
+        <button type="submit" class="btn btn-primary">Post Note</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock modals %}

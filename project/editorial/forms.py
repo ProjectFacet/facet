@@ -539,7 +539,7 @@ class VideoFacetForm(forms.ModelForm):
 # ------------------------------ #
 
 class TaskForm(forms.ModelForm):
-    """ Form to create a new task. """
+    """ Form to create/edit a task. """
 
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop("request")
@@ -592,18 +592,18 @@ class TaskForm(forms.ModelForm):
             'status',
             'important',
             'due_date',
-            'upload',
+            # 'upload',
             'project',
             'series',
             'story',
             'event',
         ]
         widgets = {
-            'name': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Title'}),
+            'name': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Name'}),
             'text': Textarea(attrs={'class': 'form-control', 'id':'task-text', 'rows':20, 'placeholder': 'Details'}),
-            'assigned_to': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select form-control facet-select', 'id':'task-team', 'data-placeholder': 'Assign People'}),
+            'assigned_to': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select form-control facet-select', 'id':'task-team', 'data-placeholder': 'Assign to'}),
             'status': Select(attrs={'class': 'custom-select', 'id':'task-status'}),
-            'important': CheckboxInput(attrs={'class': 'c-indicator c-indicator-default'}),
+            'important': CheckboxInput(attrs={'class': ''}),
             'project': Select(attrs={'class': 'custom-select', 'id':'task-projects'}),
             'series': Select(attrs={'class': 'custom-select', 'id':'task-series'}),
             'story': Select(attrs={'class': 'custom-select', 'id':'task-stories'}),

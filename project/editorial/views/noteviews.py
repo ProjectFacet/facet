@@ -56,6 +56,8 @@ def note_content_html(request, note_type, pk):
         note = get_object_or_404(NetworkNote, pk=pk)
     elif note_type=='user':
         note = get_object_or_404(UserNote, pk=pk)
+    elif note_type=='project':
+        note = get_object_or_404(ProjectNote, pk=pk)
     elif note_type=='series':
         note = get_object_or_404(SeriesNote, pk=pk)
     elif note_type=='story':

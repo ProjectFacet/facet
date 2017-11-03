@@ -19,7 +19,8 @@ from actstream import action
 from editorial.forms import (
     ProjectForm,
     ProjectCommentForm,
-    ProjectNoteForm,)
+    ProjectNoteForm,
+    TaskForm,)
 
 from editorial.models import (
     Project,
@@ -85,6 +86,7 @@ def project_detail(request, pk):
 
     project = get_object_or_404(Project, pk=pk)
     projectnoteform = ProjectNoteForm()
+    taskform = TaskForm(request=request)
     projectnotes = ProjectNote.objects.filter(project=project)[:10]
     projectcommentform = ProjectCommentForm()
     projectevents = Event.objects.filter(project=project)
@@ -107,6 +109,7 @@ def project_detail(request, pk):
         'project_audio': project_audio,
         'project_video': project_video,
         'project_tasks': project_tasks,
+        'taskform': taskform,
     })
 
 

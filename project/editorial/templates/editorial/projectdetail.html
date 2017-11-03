@@ -116,7 +116,9 @@
       <!-- Tasks -->
       <div class="row">
         <div class="col-xs-12">
-          <h4 class="m-l-50 m-b-20"><a href="{% url 'project_task_list' project.id %}" title="Expand to see more">Tasks <span class="f-s-12 f-w-400 subtle"> (See all tasks <i class="fa fa-long-arrow-right subtle" aria-hidden="true">)</i></span></a></h4>
+          <h4 class="m-b-20"><a data-toggle="modal" data-target="#addProjectTask" title="Add Project Task">
+            <i class="fa fa-plus sameline subtle m-r-20"></i>
+          </a><a href="{% url 'project_task_list' project.id %}" title="Expand to see more">Tasks <span class="f-s-12 f-w-400 subtle"> (See all tasks <i class="fa fa-long-arrow-right subtle" aria-hidden="true">)</i></span></a></h4>
         </div>
       </div>
       <div class="row m-b-50">
@@ -248,7 +250,15 @@
         <!-- Notes -->
         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
           <div class="projectnotes">
-            <h4 class="m-l-50 m-b-20">Notes <a data-toggle="modal" data-target="#addProjectNote" title="Add Project Note"><i class="fa fa-plus sameline subtle"></i></a></h4>
+            <h4 class="m-b-20">
+              <a data-toggle="modal" data-target="#addProjectNote" title="Add Project Note">
+                <i class="fa fa-plus sameline subtle m-r-20"></i>
+              </a>
+              Notes
+              <a href="{% url 'project_notes' pk=project.id %}" class="link-text m-b-40 subtle">
+                <span class="f-s-12 f-w-400 subtle"> (See all notes <i class="fa fa-long-arrow-right subtle" aria-hidden="true">)</i></span>
+              </a>
+            </h4>
             <div class="displaynotes">
             {% for note in projectnotes|slice:":3" %}
                 <div class="col-xs-12">
@@ -261,7 +271,6 @@
                   </div>
                 </div><!-- /.cols -->
             {% endfor %}
-            <a href="{% url 'project_notes' pk=project.id %}" class="link-text m-b-40 m-l-50 subtle"><small>See all notes...</small></a>
           </div>
           </div>
         </div>
@@ -654,45 +663,135 @@
   </script>
 
   <script>
-  (function() {
-      'use strict';
+    (function() {
+        'use strict';
 
-      $(function() {
-          var events_array = $.get('{% url "project_schedule" project.id %}')
-          $('#calendar').fullCalendar({
-              dayClick: function(date, jsEvent, view) {
-                  console.log('Clicked on: ' + date.format());
-                  console.log('Event: ', jsEvent);
-                  console.log('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
-                  console.log('Current view: ' + view.name);
-                  //$(this).css('background-color', 'red');
-              },
-              header: {
-                  left: 'prev,next',
-                  center: '',
-                  right: 'title'
-              },
-              // defaultDate: '2016-03-12',
-              defaultView: 'month',
-              editable: true,
-              events: '{% url "project_schedule" project.id %}',
-              // events: [{
-              //     title: 'Click for Google',
-              //     url: 'http://google.com/',
-              //     start: '2016-08-28'
-              // }]
-          });
+        $(function() {
+            var events_array = $.get('{% url "project_schedule" project.id %}')
+            $('#calendar').fullCalendar({
+                dayClick: function(date, jsEvent, view) {
+                    console.log('Clicked on: ' + date.format());
+                    console.log('Event: ', jsEvent);
+                    console.log('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+                    console.log('Current view: ' + view.name);
+                    //$(this).css('background-color', 'red');
+                },
+                header: {
+                    left: 'prev,next',
+                    center: '',
+                    right: 'title'
+                },
+                // defaultDate: '2016-03-12',
+                defaultView: 'month',
+                editable: true,
+                events: '{% url "project_schedule" project.id %}',
+                // events: [{
+                //     title: 'Click for Google',
+                //     url: 'http://google.com/',
+                //     start: '2016-08-28'
+                // }]
+            });
 
-      });
+        });
 
 
-  })();
+    })();
   </script>
 
 
 {% endblock %}
 
 {% block modals %}
+<!-- Add Task Modal -->
+<div class="modal fade" id="addProjectTask" tabindex="-1" role="dialog" aria-labelledby="addProjectTaskModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h5 class="modal-title" id="addTaskModalLabel">Add a task for this project</h5>
+            </div>
+            <div class="modal-body">
+              <form action="{% url 'task_new' %}" method="POST" class="post-form">
+              {% csrf_token %}
+
+              <div class="row">
+                <div class="col-xs-12">
+                      <!-- Name -->
+                      <fieldset class="form-group m-b-10">
+                        {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ taskform.name.label_tag }}</label>{% endcomment %}
+                        {{ taskform.name }}
+                        {% if taskform.name.errors %}
+                          <small class="text-muted">{{ taskform.name.errors }}</small>
+                        {% endif %}
+                      </fieldset>
+                      <!-- Details -->
+                      <fieldset class="form-group m-b-10">
+                        {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ taskform.text.label_tag }}</label>{% endcomment %}
+                        {{ taskform.text }}
+                        {% if taskform.text.errors %}
+                          <small class="text-muted">{{ taskform.text.errors }}</small>
+                        {% endif %}
+                      </fieldset>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-md-6">
+                    <!-- Importance -->
+                    <fieldset class="form-check m-b-10">
+                      <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ taskform.important.label_tag }}</label>
+                      {{ taskform.important }}
+                      {% if taskform.important.errors %}
+                        <small class="text-muted">{{ taskform.important.errors }}</small>
+                      {% endif %}
+                    </fieldset>
+                    <!-- Due Date -->
+                    <fieldset class="form-group m-b-10">
+                      <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ taskform.due_date.label_tag }}</label>
+                      {{ taskform.due_date }}
+                      {% if taskform.due_date.errors %}
+                        <small class="text-muted">{{ taskform.due_date.errors }}</small>
+                      {% endif %}
+                    </fieldset>
+                </div>
+                <div class="col-xs-12 col-md-6">
+                    <!-- Assigned To -->
+                    <fieldset class="form-group m-b-10">
+                      {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ taskform.assigned_to.label_tag }}</label>{% endcomment %}
+                      {{ taskform.assigned_to }}
+                      {% if taskform.assigned_to.errors %}
+                        <small class="text-muted">{{ taskform.assigned_to.errors }}</small>
+                      {% endif %}
+                    </fieldset>
+                    <!-- Status -->
+                    <fieldset class="form-group m-b-10">
+                      <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ taskform.status.label_tag }}</label>
+                      {{ taskform.status }}
+                      {% if taskform.status.errors %}
+                        <small class="text-muted">{{ taskform.status.errors }}</small>
+                      {% endif %}
+                    </fieldset>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12">
+                  <input type="hidden" name="project" value="{{ project.pk }}" />
+                  <button type="submit" class="btn btn-default">Add Task</button>
+                </div>
+              </div>
+
+              </form>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+    <script>
+    $(".chosen-select").chosen()
+    </script>
+</div>
+
 <!-- Add Note Modal -->
 <div class="modal fade" id="addProjectNote" tabindex="-1" role="dialog" aria-labelledby="addProjectNoteModalLabel">
   <div class="modal-dialog" role="document">
@@ -706,7 +805,7 @@
         {% csrf_token %}
         {% bootstrap_form projectnoteform %}
         <input type="hidden" name="project" value="{{ project.pk }}" />
-        <button type="submit" class="btn btn-primary">Post Note</button>
+        <button type="submit" class="btn btn-default">Post Note</button>
         </form>
       </div>
       <div class="modal-footer">
@@ -718,7 +817,7 @@
 {% for note in projectnotes %}
 <!-- View Note Modals -->
 <div class="modal fade" id="viewNote{{note.id}}" tabindex="-1" role="dialog" aria-labelledby="viewNote{{note.id}}">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>

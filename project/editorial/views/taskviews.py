@@ -63,7 +63,23 @@ def task_new(request):
     if request.method == "POST":
         form = TaskForm(request.POST, request=request)
     if form.is_valid():
+        project_id = request.POST.get('project')
+        series_id = request.POST.get('series')
+        story_id = request.POST.get('story')
+        event_id = request.POST.get('event')
         task = form.save(commit=False)
+        if project_id:
+            project = get_object_or_404(Project, pk=project_id)
+            task.project = project
+        if series_id:
+            series = get_object_or_404(Series, pk=series_id)
+            task.series = series
+        if story_id:
+            story = get_object_or_404(Story, pk=story_id)
+            task.story = story
+        if event_id:
+            event = get_object_or_404(Event, pk=event_id)
+            task.event = event
         task.owner = request.user
         task.organization = request.user.organization
         task.creation_date = timezone.now()
@@ -134,6 +150,7 @@ def project_task_list(request, pk):
     project = get_object_or_404(Project, pk=pk)
     tasks = Task.objects.filter(project=pk)
     count = tasks.count()
+    taskform = TaskForm(request=request)
     # FIXME how to get count for each status without doing three filters
     identified_ct = Task.objects.filter(project=pk, status="Identified").count()
     inprogress_ct = Task.objects.filter(project=pk, status="In Progress").count()
@@ -143,6 +160,7 @@ def project_task_list(request, pk):
     return render(request, 'editorial/task_list.html', {
         'project': project,
         'project_tasks': tasks,
+        'taskform': taskform,
         'progress': progress,
         'identified_ct': identified_ct,
         'inprogress_ct': inprogress_ct,
@@ -157,6 +175,7 @@ def series_task_list(request, pk):
     series = get_object_or_404(Series, pk=pk)
     tasks = Task.objects.filter(series=pk)
     count = tasks.count()
+    taskform = TaskForm(request=request)
     # FIXME how to get count for each status without doing three of the following
     identified_ct = Task.objects.filter(series=pk, status="Identified").count()
     inprogress_ct = Task.objects.filter(series=pk, status="In Progress").count()
@@ -166,6 +185,7 @@ def series_task_list(request, pk):
     return render(request, 'editorial/task_list.html', {
         'series': series,
         'series_tasks': tasks,
+        'taskform': taskform,
         'progress': progress,
         'identified_ct': identified_ct,
         'inprogress_ct': inprogress_ct,
@@ -180,6 +200,7 @@ def story_task_list(request, pk):
     story = get_object_or_404(Story, pk=pk)
     tasks = Task.objects.filter(story=pk)
     count = tasks.count()
+    taskform = TaskForm(request=request)
     # FIXME how to get count for each status without doing three of the following
     identified_ct = Task.objects.filter(story=pk, status="Identified").count()
     inprogress_ct = Task.objects.filter(story=pk, status="In Progress").count()
@@ -189,6 +210,7 @@ def story_task_list(request, pk):
     return render(request, 'editorial/task_list.html', {
         'story': story,
         'story_tasks': tasks,
+        'taskform': taskform,
         'progress': progress,
         'identified_ct': identified_ct,
         'inprogress_ct': inprogress_ct,
@@ -203,6 +225,7 @@ def event_task_list(request, pk):
     event = get_object_or_404(Event, pk=pk)
     tasks = Task.objects.filter(event=pk)
     count = tasks.count()
+    taskform = TaskForm(request=request)
     # FIXME how to get count for each status without doing three of the following
     identified_ct = Task.objects.filter(event=pk, status="Identified").count()
     inprogress_ct = Task.objects.filter(event=pk, status="In Progress").count()
@@ -212,6 +235,7 @@ def event_task_list(request, pk):
     return render(request, 'editorial/task_list.html', {
         'event': event,
         'event_tasks': tasks,
+        'taskform': taskform,
         'progress': progress,
         'identified_ct': identified_ct,
         'inprogress_ct': inprogress_ct,
