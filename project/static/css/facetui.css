@@ -143,7 +143,8 @@ a.subtle {
   border-color: #424756 !important;
   color: #fff !important;
   font-size: 14px;
-  min-width: 250px !important;
+  min-width: 200px !important;
+  width: 100% !important;
 }
 
 .chosen-container-multi .chosen-choices li.search-choice {
@@ -159,7 +160,8 @@ a.subtle {
 .chosen-container-multi .chosen-choices, .chosen-container-multi .chosen-choices li.search-field input[type="text"] {
   font-size: 14px;
   font-weight: 400;
-  min-width: 250px !important;
+  min-width: 200px !important;
+  width: 100% !important;
 }
 
 .search-choice-close {
