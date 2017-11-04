@@ -141,6 +141,16 @@ def project_assets(request, pk):
 })
 
 
+def project_stories(request,pk):
+    """Return all stories associated with a project."""
+
+    project = get_object_or_404(Project, pk=pk)
+
+    return render(request, 'editorial/project_stories.html', {
+        'project': project,
+    })
+
+
 
 def project_edit(request, pk):
     """ Edit project page."""

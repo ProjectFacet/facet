@@ -144,6 +144,7 @@ urlpatterns = [
     url(r'^project/note/new/$', noteviews.create_project_note, name='create_project_note'),
     url(r'^project/(?P<pk>[0-9]+)/schedule/$', projectviews.project_schedule, name='project_schedule'),
     url(r'^project/(?P<pk>[0-9]+)/assets/$', projectviews.project_assets, name='project_assets'),
+    url(r'^project/(?P<pk>[0-9]+)/stories/$', projectviews.project_stories, name='project_stories'),
     #----------------------------------------------------------------------#
     #   Series URLS
     #----------------------------------------------------------------------#

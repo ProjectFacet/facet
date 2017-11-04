@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load bootstrap3 %}
+{% load embed_video_tags %}
+
+<!-------------------------------------------->
+<!--      BREADCRUMB NAVIGATION             -->
+<!-------------------------------------------->
+
+{% block breadcrumb %}
+<div>
+    <ol class="breadcrumb icon-angle-right icon-th">
+      <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
+      <li class="fadeIn"><a href="{% url 'project_list' %}" title="View Projects"> Projects </a></li>
+      <li class="fadeIn"><a href="{% url 'project_detail' project.id %}" title="View Projects"> {{project.name}} </a></li>
+      <li class="fadeIn"> Stories</li>
+
+    </ol>
+</div>
+{% endblock breadcrumb %}
+
+<!-------------------------------------------->
+<!--            Main Section                -->
+<!-------------------------------------------->
+
+{% block content %}
+
+
+<div class="row">
+{% for story in project.story_set.all %}
+<div class="col-lg-3">
+<div class="card bs-card">
+  {% if project.collaborate == 'True' %}
+  <span class="label label-default">{{story.organization.name}}</span>
+  {% else %}
+  {% endif %}
+  <img class="card-img-top" src="https://unsplash.it/900/600?image=111" alt="Card image cap"> 
+  <div class="card-block"> 
+    <img class="m-b-10 middle-user-img img-circle h-50 w-50" src="assets/faces/m5.png"> 
+    <h4 class="card-title p-t-10 m-b-20"> {{ story.name }} </h4> 
+    <p class="card-text">{{ story.description|truncatechars:200 }}</p> 
+    <p class="card-text"> <br>{{ story.creation_date|date:'D, N j, g:i a' }}</p> 
+  </div> 
+</div>
+</div>
+{% endfor %}
+</div>
+
+
+{% endblock %}
