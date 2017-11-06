@@ -16,6 +16,7 @@ from views import (
     seriesviews,
     storyviews,
     taskviews,
+    eventviews,
     assetviews,
     pushcontentviews,
     communicationviews,
@@ -145,6 +146,7 @@ urlpatterns = [
     url(r'^project/(?P<pk>[0-9]+)/schedule/$', projectviews.project_schedule, name='project_schedule'),
     url(r'^project/(?P<pk>[0-9]+)/assets/$', projectviews.project_assets, name='project_assets'),
     url(r'^project/(?P<pk>[0-9]+)/stories/$', projectviews.project_stories, name='project_stories'),
+    url(r'^project/(?P<pk>[0-9]+)/events/$', projectviews.project_events, name='project_events'),
     #----------------------------------------------------------------------#
     #   Series URLS
     #----------------------------------------------------------------------#
@@ -174,14 +176,15 @@ urlpatterns = [
     #----------------------------------------------------------------------#
     url(r'^task/new/$', taskviews.task_new, name='task_new'),
     url(r'^task/(?P<pk>[0-9]+)/$', taskviews.task_detail, name='task_detail'),
-    # Project Tasks
     url(r'^project/(?P<pk>[0-9]+)/tasks/$', taskviews.project_task_list, name='project_task_list'),
-    # Series Tasks
     url(r'^series/(?P<pk>[0-9]+)/tasks/$', taskviews.series_task_list, name='series_task_list'),
-    # Story Tasks
     url(r'^story/(?P<pk>[0-9]+)/tasks/$', taskviews.story_task_list, name='story_task_list'),
-    # Event Tasks
     url(r'^event/(?P<pk>[0-9]+)/tasks/$', taskviews.event_task_list, name='event_task_list'),
+    #----------------------------------------------------------------------#
+    #   Event URLS
+    #----------------------------------------------------------------------#
+    url(r'^event/new/$', eventviews.event_new, name='event_new'),
+    url(r'^event/(?P<pk>[0-9]+)/$', eventviews.event_detail, name='event_detail'),
 
     #----------------------------------------------------------------------#
     #   Update URLS

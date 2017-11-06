@@ -286,7 +286,7 @@
             <div class="col-xs-12">
               <p class="f-s-16 f-w-600 subtle slim-margin">Events:</p>
               {% for event in projectevents %}
-              <p><i class="fa fa-calendar" aria-hidden="true"></i>  {{ event.name }}
+              <p><i class="fa fa-calendar" aria-hidden="true"></i>  <a href="{% url 'event_detail' pk=event.id %}" title="See event details">{{ event.name }}</a>
                 <br><span class="card-text color-default f-s-12"> {{ event.event_date|date:'N j, g:i a'}}</span></p>
               {% endfor %}
             </div>

@@ -3616,7 +3616,7 @@ class Event(models.Model):
         help_text='Name of the event.'
     )
 
-    description = models.TextField(
+    text = models.TextField(
         help_text='Description of the event.',
         blank=True,
     )
@@ -3665,18 +3665,13 @@ class Event(models.Model):
         blank=True,
     )
 
-    upload = models.FileField(
-        upload_to="event/%Y/%m/%d/",
-        null=True,
-        blank=True,
-    )
-
     # Notes
     #TODO Add Notes to note class to be attached to Events
 
     # an event can be associated with an organization, project, series or story.
-    organization = models.ForeignKey(
+    evt_organization = models.ForeignKey(
         Organization,
+        related_name='evt_organization',
         on_delete=models.CASCADE,
         blank=True,
         null=True,

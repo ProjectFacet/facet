@@ -150,6 +150,18 @@ def project_stories(request,pk):
         'project': project,
     })
 
+def project_events(request,pk):
+    """Return all events all types associated with a project."""
+
+
+    project = get_object_or_404(Project, pk=pk)
+    events = Events.objects.filter(project=project)
+
+    return render(request, 'editorial/project_events.html', {
+        'project': project,
+        'events': events,
+    })
+
 
 
 def project_edit(request, pk):
