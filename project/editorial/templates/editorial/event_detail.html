@@ -135,7 +135,7 @@
       <div class="row">
         <div class="col-xs-12">
           <!-- Status Select -->
-          <div class="form-group" id="fieldset- event-projects">
+          <div class="form-group" id="fieldset-event-projects">
             {{ form.event_type }}
             {% if form.event_type.errors %}
               <small class="text-muted">{{ form.event_type.errors }}</small>
@@ -145,47 +145,30 @@
       </div>
       <div class="row">
         <div class="col-xs-12 m-b-40">
-          <p class="f-s-14 subtle">Associate the  event with an Organization Project, Series or Story.</p>
-          <!-- Project Select -->
-          <div class="form-group" id="fieldset- event-projects">
-            {% comment %}
-              <label class="capitalize pull-left subtle f-s-14">{{ form.project.label_tag }}</label>
-            {% endcomment %}
-            {{ form.project }}
-            {% if form.project.errors %}
-              <small class="text-muted">{{ form.project.errors }}</small>
-            {% endif %}
-          </div>
-          <!-- Series Select -->
-          <div class="form-group" id="fieldset- event-series">
-            {% comment %}
-              <label class="capitalize pull-left subtle f-s-14">{{ form.series.label_tag }}</label>
-            {% endcomment %}
-            {{ form.series }}
-            {% if form.series.errors %}
-              <small class="text-muted">{{ form.series.errors }}</small>
-            {% endif %}
-          </div>
-          <!-- Story Select -->
-          <div class="form-group" id="fieldset- event-stories">
-            {% comment %}
-              <label class="capitalize pull-left subtle f-s-14">{{ form.story.label_tag }}</label>
-            {% endcomment %}
-            {{ form.story }}
-            {% if form.story.errors %}
-              <small class="text-muted">{{ form.story.errors }}</small>
-            {% endif %}
-          </div>
-          <!-- Event Select -->
-          <div class="form-group" id="fieldset- event-events">
-            {% comment %}
-              <label class="capitalize pull-left subtle f-s-14">{{ form.event.label_tag }}</label>
-            {% endcomment %}
-            {{ form.event }}
-            {% if form.event.errors %}
-              <small class="text-muted">{{ form.event.errors }}</small>
-            {% endif %}
-          </div>
+          {% comment %}
+            <p class="f-s-14 subtle">Associate the event with an Organization Project, Series or Story.</p>
+            <!-- Project Select -->
+            <div class="form-group" id="fieldset-event-projects">
+              {{ form.project }}
+              {% if form.project.errors %}
+                <small class="text-muted">{{ form.project.errors }}</small>
+              {% endif %}
+            </div>
+            <!-- Series Select -->
+            <div class="form-group" id="fieldset-event-series">
+              {{ form.series }}
+              {% if form.series.errors %}
+                <small class="text-muted">{{ form.series.errors }}</small>
+              {% endif %}
+            </div>
+            <!-- Story Select -->
+            <div class="form-group" id="fieldset-event-stories">
+              {{ form.story }}
+              {% if form.story.errors %}
+                <small class="text-muted">{{ form.story.errors }}</small>
+              {% endif %}
+            </div>
+          {% endcomment %}
         </div>
       </div>
 
