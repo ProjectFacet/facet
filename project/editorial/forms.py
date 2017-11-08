@@ -40,6 +40,27 @@ from editorial.models import (
     VideoAsset
     )
 
+
+
+class FacetFormTODO(forms.ModelForm):
+    """Form for a facet. Dynamically selects fields based on template."""
+
+    # use template field initial data to decide which fields to show
+    # add to __init__ dynamic fields list
+    # create api call for fields-to-show (ignore common)
+
+    common_fields = ['title']
+
+
+
+
+
+
+
+
+
+
+
 # ------------------------------ #
 #        Parent Forms            #
 # ------------------------------ #

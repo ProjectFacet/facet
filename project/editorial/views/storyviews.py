@@ -168,14 +168,15 @@ def story_detail(request, pk):
 
     story = get_object_or_404(Story, pk=pk)
     storynoteform = StoryNoteForm()
-    storynotes = StoryNote.objects.filter(story=story)
+    storynotes = StoryNote.objects.filter(story=story)    # story.storynote_set
     storycommentform = StoryCommentForm()
     storydiscussion = get_object_or_404(Discussion, id=story.discussion.id)
     storycomments = Comment.objects.filter(discussion=storydiscussion).order_by('-date')
 
-    notes = StoryNote.objects.filter(story=story)
+    notes = StoryNote.objects.filter(story=story)     # XXX dup
 
     images = Organization.get_org_image_library(request.user.organization)
+    # images = request.user.organization.get_org_image_library()
     documents = Organization.get_org_document_library(request.user.organization)
     audiofiles = Organization.get_org_audio_library(request.user.organization)
     videos = Organization.get_org_video_library(request.user.organization)
