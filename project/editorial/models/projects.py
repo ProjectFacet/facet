@@ -134,17 +134,7 @@ class Project(models.Model):
         max_length=250,
         blank=True,
     )
-
-    # # Assets
-    # governing_document_assets = models.ManyToManyField(
-    #     'GoverningDocumentAsset',
-    #     blank=True,
-    # )
-    #
-    # project_document_assets = models.ManyToManyField(
-    #     'ProjectDocumentAsset',
-    #     blank=True,
-    # )
+    
 
     class Meta:
         verbose_name = 'Project'

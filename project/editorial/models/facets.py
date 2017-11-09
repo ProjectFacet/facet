@@ -28,17 +28,16 @@ from . import User, Organization, Network, Project, Series, Story
 #-----------------------------------------------------------------------#
 
 
-
-class FacetTemplate(models.Model):
-    """Template for facets.
-
-    A template is a collection of fields so that when adding/editing a facet,
-    only appropriate fields are shown.
-    """
-
-    name = models.CharField(
-        max_length=50,
-    )
+# class FacetTemplate(models.Model):
+#     """Template for facets.
+#
+#     A template is a collection of fields so that when adding/editing a facet,
+#     only appropriate fields are shown.
+#     """
+#
+#     name = models.CharField(
+#         max_length=50,
+#     )
 
     # Organization  null=system-wide
     # Owner
@@ -80,9 +79,9 @@ class Facet(models.Model):
         help_text='Organization that owns this facet.'
     )
 
-    template = models.ForeignKey(
-        FacetTemplate,
-    )
+    # template = models.ForeignKey(
+    #     FacetTemplate,
+    # )
 
     story = models.ForeignKey(
         Story,
