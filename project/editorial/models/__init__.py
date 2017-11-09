@@ -28,27 +28,27 @@
 
 """
 
-from django.db import models
-from django.db.models import Q
-from django.contrib.postgres.fields import ArrayField
-from simple_history.models import HistoricalRecords
-from model_utils.models import TimeStampedModel
-import time as timemk
-from datetime import datetime, timedelta, time
-from imagekit.models import ProcessedImageField, ImageSpecField
-from pilkit.processors import ResizeToFit, SmartResize
-from django.contrib.auth.models import AbstractUser
-from django.utils.encoding import python_2_unicode_compatible
-from django.core.urlresolvers import reverse
-from django.utils import timezone
-from django.shortcuts import get_object_or_404
-from itertools import chain
-from embed_video.fields import EmbedVideoField
-from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
-from django.contrib.contenttypes.models import ContentType
-from django.core.exceptions import ValidationError
-from django.db.models.signals import post_save
-from django.dispatch import receiver
+# from django.db import models
+# from django.db.models import Q
+# from django.contrib.postgres.fields import ArrayField
+# from simple_history.models import HistoricalRecords
+# from model_utils.models import TimeStampedModel
+# import time as timemk
+# from datetime import datetime, timedelta, time
+# from imagekit.models import ProcessedImageField, ImageSpecField
+# from pilkit.processors import ResizeToFit, SmartResize
+# from django.contrib.auth.models import AbstractUser
+# from django.utils.encoding import python_2_unicode_compatible
+# from django.core.urlresolvers import reverse
+# from django.utils import timezone
+# from django.shortcuts import get_object_or_404
+# from itertools import chain
+# from embed_video.fields import EmbedVideoField
+# from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
+# from django.contrib.contenttypes.models import ContentType
+# from django.core.exceptions import ValidationError
+# from django.db.models.signals import post_save
+# from django.dispatch import receiver
 
 
 from .people import User, Organization, Network

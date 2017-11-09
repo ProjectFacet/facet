@@ -12,9 +12,6 @@ from django.dispatch import receiver
 
 
 
-from .assets import ImageAsset, VideoAsset, AudioAsset, DocumentAsset
-
-
 #-----------------------------------------------------------------------#
 #   People:
 #   User, Organization, Network
@@ -130,6 +127,8 @@ class User(AbstractUser):
         their dashboard and user profile.
         """
 
+        from . import Series, Story, WebFacet, PrintFacet, AudioFacet, VideoFacet
+
         user_content = []
         series = Series.objects.filter(Q(Q(owner=self) | Q(team=self)))
         stories = Story.objects.filter(Q(Q(owner=self) | Q(team=self)))
@@ -151,6 +150,8 @@ class User(AbstractUser):
     def get_user_stories(self):
         """Return list of stories that a user is associated with."""
 
+        from . import Story
+
         user_stories = Story.objects.filter(Q(Q(owner=self) | Q(team=self)))
         return user_stories
 
@@ -166,6 +167,8 @@ class User(AbstractUser):
         dashboard and inbox.
         """
 
+        from . import Comment
+
         discussion_ids = Comment.objects.filter(user_id=self.id).values('discussion_id')
         user_comments = Comment.objects.filter(user_id=self.id)
         all_comments = Comment.objects.filter(discussion_id__in=discussion_ids)
@@ -178,6 +181,8 @@ class User(AbstractUser):
 
         For display on primary dashboard.
         """
+
+        from . import Comment
 
         discussion_ids = Comment.objects.filter(user_id=self.id).values('discussion_id')
         user_comments = Comment.objects.filter(user_id=self.id)
@@ -204,6 +209,8 @@ class User(AbstractUser):
         Displayed in user inbox under 'inbox'.
         """
 
+        from . import PrivateMessage
+
         messages_received = PrivateMessage.objects.filter(recipient=self)
         return messages_received
 
@@ -212,6 +219,8 @@ class User(AbstractUser):
 
         Displayed in user inbox under 'sent'.
         """
+
+        from . import PrivateMessage
 
         messages_sent = PrivateMessage.objects.filter(user=self)
         return messages_sent
@@ -704,3 +713,5 @@ class Network(models.Model):
     @property
     def type(self):
         return "Network"
+
+
