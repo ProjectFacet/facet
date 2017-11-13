@@ -42,20 +42,15 @@ from editorial.models import (
 
 
 
-class FacetFormTODO(forms.ModelForm):
-    """Form for a facet. Dynamically selects fields based on template."""
-
-    # use template field initial data to decide which fields to show
-    # add to __init__ dynamic fields list
-    # create api call for fields-to-show (ignore common)
-
-    common_fields = ['title']
-
-
-
-
-
-
+# class FacetFormTODO(forms.ModelForm):
+#     """Form for a facet. Dynamically selects fields based on template."""
+#
+#     # use template field initial data to decide which fields to show
+#     # add to __init__ dynamic fields list
+#     # create api call for fields-to-show (ignore common)
+#
+#     common_fields = ['title']
+#
 
 
 
@@ -159,7 +154,6 @@ class NetworkForm(forms.ModelForm):
             'name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Network Name'}),
             'network_description': Textarea(attrs={'class': 'form-control', 'placeholder': 'Description'}),
             }
-
 
 
 class AddToNetworkForm(forms.Form):
@@ -638,7 +632,6 @@ class TaskForm(forms.ModelForm):
         js = ('scripts/chosen.jquery.min.js',)
 
 
-
 # ------------------------------ #
 #          Event Forms           #
 # ------------------------------ #
@@ -715,8 +708,6 @@ class EventForm(forms.ModelForm):
         js = ('scripts/chosen.jquery.min.js',)
 
 
-
-
 # ------------------------------ #
 #          Asset Forms           #
 # ------------------------------ #
@@ -727,18 +718,18 @@ class ImageAssetForm(forms.ModelForm):
     class Meta:
         model = ImageAsset
         fields = [
-            'asset_title',
-            'asset_description',
+            'title',
+            'description',
             'attribution',
             'photo',
-            'image_type',
+            'asset_type',
             'keywords',
         ]
         widgets = {
-            'asset_title': TextInput(attrs={'class': 'form-control', 'placeholder': 'Asset Title'}),
-            'asset_description': Textarea(attrs={'class': 'form-control', 'rows':3, 'placeholder': 'Description'}),
+            'title': TextInput(attrs={'class': 'form-control', 'placeholder': 'Asset Title'}),
+            'description': Textarea(attrs={'class': 'form-control', 'rows':3, 'placeholder': 'Description'}),
             'attribution': Textarea(attrs={'class': 'form-control', 'rows':3, 'placeholder': 'Attribution'}),
-            'image_type': Select(attrs={'class': 'form-control'}),
+            'asset_type': Select(attrs={'class': 'form-control'}),
             'keywords': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Keywords'}),
         }
 
@@ -763,18 +754,18 @@ class DocumentAssetForm(forms.ModelForm):
     class Meta:
         model = DocumentAsset
         fields = [
-            'asset_title',
-            'asset_description',
+            'title',
+            'description',
             'attribution',
             'document',
-            'doc_type',
+            'asset_type',
             'keywords',
         ]
         widgets = {
-            'asset_title': TextInput(attrs={'class': 'form-control', 'placeholder': 'Asset Title'}),
-            'asset_description': Textarea(attrs={'class': 'form-control', 'rows':3, 'placeholder': 'Description'}),
+            'title': TextInput(attrs={'class': 'form-control', 'placeholder': 'Asset Title'}),
+            'description': Textarea(attrs={'class': 'form-control', 'rows':3, 'placeholder': 'Description'}),
             'attribution': Textarea(attrs={'class': 'form-control', 'rows':3, 'placeholder': 'Attribution'}),
-            'doc_type': Select(attrs={'class': 'form-control'}),
+            'asset_type': Select(attrs={'class': 'form-control'}),
             'keywords': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Keywords'}),
         }
 
@@ -799,20 +790,20 @@ class AudioAssetForm(forms.ModelForm):
     class Meta:
         model = AudioAsset
         fields = [
-            'asset_title',
-            'asset_description',
+            'title',
+            'description',
             'attribution',
             'audio',
             'link',
-            'audio_type',
+            'asset_type',
             'keywords',
         ]
         widgets = {
-            'asset_title': TextInput(attrs={'class': 'form-control', 'placeholder': 'Asset Title'}),
-            'asset_description': Textarea(attrs={'class': 'form-control', 'rows':3, 'placeholder': 'Description'}),
+            'title': TextInput(attrs={'class': 'form-control', 'placeholder': 'Asset Title'}),
+            'description': Textarea(attrs={'class': 'form-control', 'rows':3, 'placeholder': 'Description'}),
             'attribution': Textarea(attrs={'class': 'form-control', 'rows':3, 'placeholder': 'Attribution'}),
             'link': TextInput(attrs={'class': 'form-control', 'placeholder': 'Link'}),
-            'audio_type': Select(attrs={'class': 'form-control'}),
+            'asset_type': Select(attrs={'class': 'form-control'}),
             'keywords': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Keywords'}),
         }
 
@@ -837,20 +828,20 @@ class VideoAssetForm(forms.ModelForm):
     class Meta:
         model = VideoAsset
         fields = [
-            'asset_title',
-            'asset_description',
+            'title',
+            'description',
             'attribution',
             'video',
             'link',
-            'video_type',
+            'asset_type',
             'keywords',
         ]
         widgets = {
-            'asset_title': TextInput(attrs={'class': 'form-control', 'placeholder': 'Asset Title'}),
-            'asset_description': Textarea(attrs={'class': 'form-control', 'rows':3, 'placeholder': 'Description'}),
+            'title': TextInput(attrs={'class': 'form-control', 'placeholder': 'Asset Title'}),
+            'description': Textarea(attrs={'class': 'form-control', 'rows':3, 'placeholder': 'Description'}),
             'attribution': Textarea(attrs={'class': 'form-control', 'rows':3, 'placeholder': 'Attribution'}),
             'link': TextInput(attrs={'class': 'form-control', 'placeholder': 'Link'}),
-            'video_type': Select(attrs={'class': 'form-control'}),
+            'asset_type': Select(attrs={'class': 'form-control'}),
             'keywords': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Keywords'}),
         }
 

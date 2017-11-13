@@ -10,6 +10,7 @@ from .people import User, Organization
 
 #-----------------------------------------------------------------------#
 #   Assets:
+#   BaseAsset, BaseAssetMetadata, BaseImage, BaseDocument, BaseAudio, BaseVideo
 #   ImageAsset, DocumentAsset, AudioAsset, VideoAsset,
 #-----------------------------------------------------------------------#
 
@@ -25,13 +26,13 @@ class BaseAsset(models.Model):
         Organization,
     )
 
-    asset_title = models.CharField(
+    title = models.CharField(
         max_length=200,
         help_text='Text for file name. Name it intuitively.',
         blank=True,
     )
 
-    asset_description = models.TextField(
+    description = models.TextField(
         max_length=300,
         help_text='What is the asset. (If a photo or graphic, it should be the caption.)',
         blank=True,
@@ -46,15 +47,11 @@ class BaseAsset(models.Model):
         abstract = True
 
     def __str__(self):
-        return self.asset_title
-
-    @property
-    def description(self):
-        return self.asset_description.encode('utf-8')
+        return self.title
 
     @property
     def search_title(self):
-        return self.asset_title
+        return self.title
 
 
 class BaseAssetMetadata(models.Model):
@@ -85,11 +82,14 @@ class BaseAssetMetadata(models.Model):
         abstract = True
 
     def copy_image(self):
-        """ Create a copy of an image for a partner organization in a network.
+        """ Create a copy of an asset for a partner organization in a network.
 
-        Copied images keep all associated information. Organization is set to
+        Copied assets keep all associated information. Organization is set to
         the copier's organization and the original flag is set to false.
-        Triggering a copy also triggers the creation of an image copy detail record."""
+        Triggering a copy also triggers the creation of an asset copy detail record."""
+
+        # FIXME Q for J:
+        # Unclear how to generalize this for base when there are still 4 asset types
 
         image_copy = get_object_or_404(ImageAsset, id=self.id)
         #set the id = None to create the copy of the image instance
@@ -99,27 +99,26 @@ class BaseAssetMetadata(models.Model):
         image_copy.save()
         return image_copy
 
-    def get_image_download_info(self):
-        """Return rst of image information for download."""
+    def get_asset_download_info(self):
+        """Return rst of asset information for download."""
 
-        title = self.asset_title.encode('utf-8')
-        description = self.asset_description.encode('utf-8')
+        title = self.title.encode('utf-8')
+        description = self.description.encode('utf-8')
         attribution = self.attribution.encode('utf-8')
 
-        image_info="""
-        Image
+        asset_info="""
+        {type}
         =======
         {title}.jpg
         Description: {description}
         Attribution: {attribution}
-        Type: {type}
         Creation Date: {date}
         Owner: {owner}
         Organization: {organization}
         Original: {original}
         Keywords: {keywords}
         """.format(title=title, description=description, attribution=attribution,
-        type=self.image_type, date=self.creation_date, owner=self.owner,
+        type=asset_type, date=self.creation_date, owner=self.owner,
         organization=self.organization.name, original=self.original,
         keywords=self.keywords)
 
@@ -157,10 +156,10 @@ class BaseImage(BaseAsset):
 class ImageAssetManager(models.Manager):
     """Custom manager for ImageAsset."""
 
-    def create_imageasset(self, owner, organization, asset_title, asset_description, asset_attribution, photo, image_type, keywords):
+    def create_imageasset(self, owner, organization, title, description, attribution, photo, asset_type, keywords):
         """Method for quick creation of an image asset."""
 
-        imageasset=self.create(owner=owner, organization=organization, asset_title=asset_title, asset_description=asset_description, asset_attribution=asset_attribution, photo=photo, image_type=image_type, keywords=keywords)
+        imageasset=self.create(owner=owner, organization=organization, title=title, description=description, attribution=attribution, photo=photo, asset_type=asset_type, keywords=keywords)
         return imageasset
 
 
@@ -171,14 +170,14 @@ class ImageAsset(BaseImage, BaseAssetMetadata):
     PHOTO = 'PIC'
     GRAPHIC = 'GRAPH'
 
-    IMAGE_TYPE_CHOICES = (
+    ASSET_TYPE_CHOICES = (
         (PHOTO, 'Photograph'),
-        (GRAPHIC, 'Graphic'),
+        (GRAPHIC, 'Graphic or Illustration'),
     )
 
-    image_type = models.CharField(
+    asset_type = models.CharField(
         max_length=20,
-        choices = IMAGE_TYPE_CHOICES,
+        choices = ASSET_TYPE_CHOICES,
         help_text='The kind of image.'
     )
 
@@ -187,8 +186,10 @@ class ImageAsset(BaseImage, BaseAssetMetadata):
     def get_image_usage(self):
         """Return facets an image is associated with."""
 
-        image_usage = []
+        # After Facet refactor
+        # image_usage = Facet.objects.filter(Q(image_assets=self))
 
+        image_usage = []
         image_webfacets = WebFacet.objects.filter(Q(image_assets=self))
         image_printfacets = PrintFacet.objects.filter(Q(image_assets=self))
         image_audiofacets = AudioFacet.objects.filter(Q(image_assets=self))
@@ -205,9 +206,6 @@ class ImageAsset(BaseImage, BaseAssetMetadata):
 
 class SimpleImage(BaseImage):
     """Simple image (with some metadata) for attaching to tasks, events, etc."""
-
-    def get_absolute_url(self):
-        return reverse('XXX_image_asset_detail', kwargs={'pk': self.id})
 
 
 #-----------------------------------------------------------------------#
@@ -236,9 +234,9 @@ class BaseDocumentAsset(BaseAsset):
 class DocumentAssetManager(models.Manager):
     """Custom manager for DocumentAsset."""
 
-    def create_documentasset(self, owner, organization, asset_title, asset_description, asset_attribution, document, doc_type, keywords):
+    def create_documentasset(self, owner, organization, title, description, attribution, document, asset_type, keywords):
         """Method for quick creation of a document asset."""
-        documentasset=self.create(owner=owner, organization=organization, asset_title=asset_title, asset_description=asset_description, asset_attribution=asset_attribution, document=document, doc_type=doc_type, keywords=keywords)
+        documentasset=self.create(owner=owner, organization=organization, title=title, description=description, attribution=attribution, document=document, asset_type=asset_type, keywords=keywords)
         return documentasset
 
 
@@ -253,7 +251,7 @@ class DocumentAsset(BaseDocumentAsset, BaseAssetMetadata):
     XLS = 'EXCEL'
     OTHER = 'OTHER'
 
-    DOCUMENT_TYPE_CHOICES = (
+    ASSET_TYPE_CHOICES = (
         (PDF, 'Adobe PDF'),
         (WORD, 'Word Doc'),
         (TXT, 'Text File'),
@@ -262,9 +260,9 @@ class DocumentAsset(BaseDocumentAsset, BaseAssetMetadata):
         (OTHER, 'Other'),
     )
 
-    doc_type = models.CharField(
+    asset_type = models.CharField(
         max_length=20,
-        choices = DOCUMENT_TYPE_CHOICES,
+        choices = ASSET_TYPE_CHOICES,
         help_text='The kind of document.'
     )
 
@@ -273,8 +271,10 @@ class DocumentAsset(BaseDocumentAsset, BaseAssetMetadata):
     def get_document_usage(self):
         """Return facets a document is associated with."""
 
-        document_usage = []
+        # After Facet refactor
+        # document_usage = Facet.objects.filter(Q(document_assets=self))
 
+        document_usage = []
         document_webfacets = WebFacet.objects.filter(Q(document_assets=self))
         document_printfacets = PrintFacet.objects.filter(Q(document_assets=self))
         document_audiofacets = AudioFacet.objects.filter(Q(document_assets=self))
@@ -291,7 +291,6 @@ class DocumentAsset(BaseDocumentAsset, BaseAssetMetadata):
 
 class SimpleDocument(BaseDocumentAsset):
     """Simple Document (file upload, attached to events, tasks, etc.)"""
-
 
 
 #-----------------------------------------------------------------------#
@@ -325,9 +324,9 @@ class BaseAudio(BaseAsset):
 class AudioAssetManager(models.Manager):
     """Custom manager for AudioAsset."""
 
-    def create_audioasset(self, owner, organization, asset_title, asset_description, asset_attribution, audio, audio_type, keywords):
+    def create_audioasset(self, owner, organization, title, description, attribution, audio, asset_type, keywords):
         """Method for quick creation of a audio asset."""
-        audioasset=self.create(owner=owner, organization=organization, asset_title=asset_title, asset_description=asset_description, asset_attribution=asset_attribution, audio=audio, audio_type=audio_type, keywords=keywords)
+        audioasset=self.create(owner=owner, organization=organization, title=title, description=description, attribution=attribution, audio=audio, asset_type=asset_type, keywords=keywords)
         return audioasset
 
 
@@ -339,15 +338,15 @@ class AudioAsset(BaseAudio, BaseAssetMetadata):
     WAV = 'WAV'
     SOUNDCLOUD = 'SC'
 
-    AUDIO_TYPE_CHOICES = (
+    ASSET_TYPE_CHOICES = (
         (MP3, 'mp3'),
         (WAV, 'wav'),
         (SOUNDCLOUD, 'SoundCloud')
     )
 
-    audio_type = models.CharField(
+    asset_type = models.CharField(
         max_length=20,
-        choices = AUDIO_TYPE_CHOICES,
+        choices = ASSET_TYPE_CHOICES,
         help_text='The kind of audio.'
     )
 
@@ -356,8 +355,10 @@ class AudioAsset(BaseAudio, BaseAssetMetadata):
     def get_audio_usage(self):
         """Return facets an audio file is associated with."""
 
-        audio_usage = []
+        # After Facet refactor
+        # audio_usage = Facet.objects.filter(Q(audio_assets=self))
 
+        audio_usage = []
         audio_webfacets = WebFacet.objects.filter(Q(audio_assets=self))
         audio_printfacets = PrintFacet.objects.filter(Q(audio_assets=self))
         audio_audiofacets = AudioFacet.objects.filter(Q(audio_assets=self))
@@ -370,6 +371,7 @@ class AudioAsset(BaseAudio, BaseAssetMetadata):
 
     # def get_absolute_url(self):
     #     return reverse('asset_detail', kwargs={'pk': self.id})
+
 
 class SimpleAudio(BaseAudio):
     """Simple Audio (attaches to an event, task, etc.)"""
@@ -411,9 +413,9 @@ class BaseVideo(BaseAsset):
 class VideoAssetManager(models.Manager):
     """Custom manager for VideoAsset."""
 
-    def create_videoasset(self, owner, organization, asset_title, asset_description, asset_attribution, video, video_type, keywords):
+    def create_videoasset(self, owner, organization, title, description, attribution, video, asset_type, keywords):
         """Method for quick creation of a video asset."""
-        videoasset=self.create(owner=owner, organization=organization, asset_title=asset_title, asset_description=asset_description, asset_attribution=asset_attribution, video=video, video_type=video_type, keywords=keywords)
+        videoasset=self.create(owner=owner, organization=organization, title=title, description=description, attribution=attribution, video=video, asset_type=asset_type, keywords=keywords)
         return videoasset
 
 
@@ -425,15 +427,15 @@ class VideoAsset(BaseVideo, BaseAssetMetadata):
     YT = 'YOUTUBE'
     VIM = 'VIMEO'
 
-    VIDEO_TYPE_CHOICES = (
+    ASSET_TYPE_CHOICES = (
         (MP4, 'mp4'),
         (YT, 'YouTube'),
         (VIM, 'Vimeo')
     )
 
-    video_type = models.CharField(
+    asset_type = models.CharField(
         max_length=20,
-        choices = VIDEO_TYPE_CHOICES,
+        choices = ASSET_TYPE_CHOICES,
         help_text='The kind of video.'
     )
 
@@ -442,8 +444,10 @@ class VideoAsset(BaseVideo, BaseAssetMetadata):
     def get_video_usage(self):
         """Return facets an video file is associated with."""
 
-        video_usage = []
+        # After Facet refactor
+        # video_usage = Facet.objects.filter(Q(video_assets=self))
 
+        video_usage = []
         video_webfacets = WebFacet.objects.filter(Q(video_assets=self))
         video_printfacets = PrintFacet.objects.filter(Q(video_assets=self))
         video_videofacets = VideoFacet.objects.filter(Q(video_assets=self))

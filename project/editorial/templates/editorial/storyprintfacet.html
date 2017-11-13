@@ -235,7 +235,7 @@
           {% for image in printfacet.image_assets.all %}
             {% if image.display_photo %}
             <div class="col-xs-4">
-              <a href="{{ image.display_photo.url }}" class="thumbnail"><img src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}" class="img-fluid"></a>
+              <a href="{{ image.display_photo.url }}" class="thumbnail"><img src="{{ image.display_photo.url }}" alt="{{ image.description }}" class="img-fluid"></a>
             </div>
             {% endif %}
           {% endfor %}
@@ -254,23 +254,23 @@
           {% for document in printfacet_documents %}
             <div class="col-md-1">
                 <label>
-                    {% if document.doc_type == 'OTHER' %}
-                    <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-file-o dark"></i></h3></a>
+                    {% if document.asset_type == 'OTHER' %}
+                    <a href="{{ document.document.url }}" title="{{ document.description }}" target="_blank"><h3><i class="fa fa-file-file-o dark"></i></h3></a>
                     {% endif %}
-                    {% if document.doc_type == 'TEXT' %}
-                    <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-text-o dark"></i></h3></a>
+                    {% if document.asset_type == 'TEXT' %}
+                    <a href="{{ document.document.url }}" title="{{ document.description }}" target="_blank"><h3><i class="fa fa-file-text-o dark"></i></h3></a>
                     {% endif %}
-                    {% if document.doc_type == 'WORD DOC' %}
-                    <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-word-o dark"></i></h3></a>
+                    {% if document.asset_type == 'WORD DOC' %}
+                    <a href="{{ document.document.url }}" title="{{ document.description }}" target="_blank"><h3><i class="fa fa-file-word-o dark"></i></h3></a>
                     {% endif %}
-                    {% if document.doc_type == 'EXCEL' %}
-                    <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-excel-o dark"></i></h3></a>
+                    {% if document.asset_type == 'EXCEL' %}
+                    <a href="{{ document.document.url }}" title="{{ document.description }}" target="_blank"><h3><i class="fa fa-file-excel-o dark"></i></h3></a>
                     {% endif %}
-                    {% if document.doc_type == 'PDF' %}
-                    <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-pdf-o dark"></i></h3></a>
+                    {% if document.asset_type == 'PDF' %}
+                    <a href="{{ document.document.url }}" title="{{ document.description }}" target="_blank"><h3><i class="fa fa-file-pdf-o dark"></i></h3></a>
                     {% endif %}
-                    {% if document.doc_type == 'COMMA SEPARATED' %}
-                    <a href="{{ document.document.url }}" title="{{ document.asset_description }}" target="_blank"><h3><i class="fa fa-file-o dark"></i></h3></a>
+                    {% if document.asset_type == 'COMMA SEPARATED' %}
+                    <a href="{{ document.document.url }}" title="{{ document.description }}" target="_blank"><h3><i class="fa fa-file-o dark"></i></h3></a>
                     {% endif %}
                   </label>
             </div>
@@ -288,7 +288,7 @@
         <div class="row">
           {% for audio in printfacet_audio %}
             <div class="col-xs-6">
-              {% if audio.audio_type == 'MP3' or audio.audio_type == 'WAV' %}
+              {% if audio.asset_type == 'MP3' or audio.asset_type == 'WAV' %}
               <div id="jplayer_audio_{{audio.pk}}" class="jp-jplayer"></div>
 
               <div id="jp_container_audio_{{audio.pk}}" class="jp-flat-audio" role="application" aria-label="media player">
@@ -313,7 +313,7 @@
                 $("#jplayer_audio_{{audio.pk}}").jPlayer({
                   ready: function(event) {
                     $(this).jPlayer("setMedia", {
-                      title: "{{audio.asset_title}}",
+                      title: "{{audio.title}}",
                       wav: "{{audio.audio.url}}",
                       mp3: "{{audio.audio.url}}",
                     });
@@ -344,8 +344,8 @@
               });
               </script>
               {% endif %}
-                {% if audio.audio_type == 'SC' %}
-                <a href="{{ audio.link }}" title="{{ audio.asset_description }}" target="_blank"><i class="fa fa-soundcloud sameline"></i> <span class="small-text dark sameline">{{ audio.asset_title }}</span></a>
+                {% if audio.asset_type == 'SC' %}
+                <a href="{{ audio.link }}" title="{{ audio.description }}" target="_blank"><i class="fa fa-soundcloud sameline"></i> <span class="small-text dark sameline">{{ audio.title }}</span></a>
                 {% endif %}
             </div>
           {% endfor %}
@@ -362,7 +362,7 @@
         <div class="row">
           {% for video in printfacet_video %}
           <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-            {% if video.video_type == 'MP4' %}
+            {% if video.asset_type == 'MP4' %}
             <div id="jp_container_video_{{video.pk}}" class="jp-flat-video m-b-10" role="application" aria-label="media player">
               <div id="jplayer_video_{{video.pk}}" class="jp-jplayer"></div>
               <div class="jp-gui">
@@ -482,11 +482,11 @@
             </script>
             {% endif %}
 
-            {% if video.video_type == 'YOUTUBE' %}
-            <a href="{{ video.link }}" title="View {{ video.asset_title }}" class="embedded-video"><h5><i class="fa fa-youtube-play dark"></i> {{ video.asset_title }}</h5></a>
+            {% if video.asset_type == 'YOUTUBE' %}
+            <a href="{{ video.link }}" title="View {{ video.title }}" class="embedded-video"><h5><i class="fa fa-youtube-play dark"></i> {{ video.title }}</h5></a>
             {% endif %}
-            {% if video.video_type == 'VIMEO' %}
-            <a href="{{ video.link }}" title="View {{ video.asset_title }}" class="embedded-video"><h5><i class="fa fa-vimeo dark"></i> {{ video.asset_title }}</h5></a>
+            {% if video.asset_type == 'VIMEO' %}
+            <a href="{{ video.link }}" title="View {{ video.title }}" class="embedded-video"><h5><i class="fa fa-vimeo dark"></i> {{ video.title }}</h5></a>
             {% endif %}
           </div>
 

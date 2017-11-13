@@ -108,37 +108,37 @@ def create_download(request, pk):
         if story.videofacetstory.all():
             z.writestr("videostory.txt", videofacet_txt)
         for image in select_all_images:
-            z.writestr("{image}.jpg".format(image=image.asset_title), image.photo.read())
+            z.writestr("{image}.jpg".format(image=image.title), image.photo.read())
             new_info = ImageAsset.get_image_download_info(image)
             image_txt += new_info
         for document in select_all_documents:
-            if document.doc_type == "PDF":
-                z.writestr("{document}.pdf".format(document=document.asset_title), document.document.read())
+            if document.asset_type == "PDF":
+                z.writestr("{document}.pdf".format(document=document.title), document.document.read())
                 new_info = DocumentAsset.get_document_download_info(document)
                 document_txt += new_info
-            if document.doc_type == "WORD":
-                z.writestr("{document}.docx".format(document=document.asset_title), document.document.read())
+            if document.asset_type == "WORD":
+                z.writestr("{document}.docx".format(document=document.title), document.document.read())
                 new_info = DocumentAsset.get_document_download_info(document)
                 document_txt += new_info
-            if document.doc_type == "TXT":
-                z.writestr("{document}.txt".format(document=document.asset_title), document.document.read())
+            if document.asset_type == "TXT":
+                z.writestr("{document}.txt".format(document=document.title), document.document.read())
                 new_info = DocumentAsset.get_document_download_info(document)
                 document_txt += new_info
-            if document.doc_type == "CSV":
-                z.writestr("{document}.csv".format(document=document.asset_title), document.document.read())
+            if document.asset_type == "CSV":
+                z.writestr("{document}.csv".format(document=document.title), document.document.read())
                 new_info = DocumentAsset.get_document_download_info(document)
                 document_txt += new_info
-            if document.doc_type == "XLS":
-                z.writestr("{document}.xls".format(document=document.asset_title), document.document.read())
+            if document.asset_type == "XLS":
+                z.writestr("{document}.xls".format(document=document.title), document.document.read())
                 new_info = DocumentAsset.get_document_download_info(document)
                 document_txt += new_info
         for audiofile in select_all_audio:
-            if audiofile.audio_type == "MP3":
-                z.writestr("{audiofile}.mp3".format(audiofile=document.asset_title), audiofile.audio.read())
+            if audiofile.asset_type == "MP3":
+                z.writestr("{audiofile}.mp3".format(audiofile=document.title), audiofile.audio.read())
                 new_info = AudioAsset.get_audio_download_info(audiofile)
                 audio_txt += new_info
-            if audiofile.audio_type == "WAV":
-                z.writestr("{audiofile}.wav".format(audiofile=document.asset_title), audiofile.audio.read())
+            if audiofile.asset_type == "WAV":
+                z.writestr("{audiofile}.wav".format(audiofile=document.title), audiofile.audio.read())
                 new_info = AudioAsset.get_audio_download_info(audiofile)
                 audio_txt += new_info
 
@@ -154,37 +154,37 @@ def create_download(request, pk):
         if story.webfacetstory.all():
             z.writestr("webstory.txt", webfacet_txt)
         for image in webfacet_images:
-            z.writestr("{image}.jpg".format(image=image.asset_title), image.photo.read())
+            z.writestr("{image}.jpg".format(image=image.title), image.photo.read())
             new_info = ImageAsset.get_image_download_info(image)
             image_txt += new_info
         for document in webfacet_documents:
-            if document.doc_type == "PDF":
-                z.writestr("{document}.pdf".format(document=document.asset_title), document.document.read())
+            if document.asset_type == "PDF":
+                z.writestr("{document}.pdf".format(document=document.title), document.document.read())
                 new_info = DocumentAsset.get_document_download_info(document)
                 document_txt += new_info
-            if document.doc_type == "WORD":
-                z.writestr("{document}.docx".format(document=document.asset_title), document.document.read())
+            if document.asset_type == "WORD":
+                z.writestr("{document}.docx".format(document=document.title), document.document.read())
                 new_info = DocumentAsset.get_document_download_info(document)
                 document_txt += new_info
-            if document.doc_type == "TXT":
-                z.writestr("{document}.txt".format(document=document.asset_title), document.document.read())
+            if document.asset_type == "TXT":
+                z.writestr("{document}.txt".format(document=document.title), document.document.read())
                 new_info = DocumentAsset.get_document_download_info(document)
                 document_txt += new_info
-            if document.doc_type == "CSV":
-                z.writestr("{document}.csv".format(document=document.asset_title), document.document.read())
+            if document.asset_type == "CSV":
+                z.writestr("{document}.csv".format(document=document.title), document.document.read())
                 new_info = DocumentAsset.get_document_download_info(document)
                 document_txt += new_info
-            if document.doc_type == "XLS":
-                z.writestr("{document}.xls".format(document=document.asset_title), document.document.read())
+            if document.asset_type == "XLS":
+                z.writestr("{document}.xls".format(document=document.title), document.document.read())
                 new_info = DocumentAsset.get_document_download_info(document)
                 document_txt += new_info
         for audiofile in webfacet_audio:
-            if audiofile.audio_type == "MP3":
-                z.writestr("{audiofile}.mp3".format(audiofile=document.asset_title), audiofile.audio.read())
+            if audiofile.asset_type == "MP3":
+                z.writestr("{audiofile}.mp3".format(audiofile=document.title), audiofile.audio.read())
                 new_info = AudioAsset.get_audio_download_info(audiofile)
                 audio_txt += new_info
-            if audiofile.audio_type == "WAV":
-                z.writestr("{audiofile}.wav".format(audiofile=document.asset_title), audiofile.audio.read())
+            if audiofile.asset_type == "WAV":
+                z.writestr("{audiofile}.wav".format(audiofile=document.title), audiofile.audio.read())
                 new_info = AudioAsset.get_audio_download_info(audiofile)
                 audio_txt += new_info
 
@@ -199,37 +199,37 @@ def create_download(request, pk):
         if story.printfacetstory.all():
             z.writestr("printstory.txt", printfacet_txt)
         for image in printfacet_images:
-            z.writestr("{image}.jpg".format(image=image.asset_title), image.photo.read())
+            z.writestr("{image}.jpg".format(image=image.title), image.photo.read())
             new_info = ImageAsset.get_image_download_info(image)
             image_txt += new_info
         for document in printfacet_documents:
-            if document.doc_type == "PDF":
-                z.writestr("{document}.pdf".format(document=document.asset_title), document.document.read())
+            if document.asset_type == "PDF":
+                z.writestr("{document}.pdf".format(document=document.title), document.document.read())
                 new_info = DocumentAsset.get_document_download_info(document)
                 document_txt += new_info
-            if document.doc_type == "WORD":
-                z.writestr("{document}.docx".format(document=document.asset_title), document.document.read())
+            if document.asset_type == "WORD":
+                z.writestr("{document}.docx".format(document=document.title), document.document.read())
                 new_info = DocumentAsset.get_document_download_info(document)
                 document_txt += new_info
-            if document.doc_type == "TXT":
-                z.writestr("{document}.txt".format(document=document.asset_title), document.document.read())
+            if document.asset_type == "TXT":
+                z.writestr("{document}.txt".format(document=document.title), document.document.read())
                 new_info = DocumentAsset.get_document_download_info(document)
                 document_txt += new_info
-            if document.doc_type == "CSV":
-                z.writestr("{document}.csv".format(document=document.asset_title), document.document.read())
+            if document.asset_type == "CSV":
+                z.writestr("{document}.csv".format(document=document.title), document.document.read())
                 new_info = DocumentAsset.get_document_download_info(document)
                 document_txt += new_info
-            if document.doc_type == "XLS":
-                z.writestr("{document}.xls".format(document=document.asset_title), document.document.read())
+            if document.asset_type == "XLS":
+                z.writestr("{document}.xls".format(document=document.title), document.document.read())
                 new_info = DocumentAsset.get_document_download_info(document)
                 document_txt += new_info
         for audiofile in printfacet_audio:
-            if audiofile.audio_type == "MP3":
-                z.writestr("{audiofile}.mp3".format(audiofile=document.asset_title), audiofile.audio.read())
+            if audiofile.asset_type == "MP3":
+                z.writestr("{audiofile}.mp3".format(audiofile=document.title), audiofile.audio.read())
                 new_info = AudioAsset.get_audio_download_info(audiofile)
                 audio_txt += new_info
-            if audiofile.audio_type == "WAV":
-                z.writestr("{audiofile}.wav".format(audiofile=document.asset_title), audiofile.audio.read())
+            if audiofile.asset_type == "WAV":
+                z.writestr("{audiofile}.wav".format(audiofile=document.title), audiofile.audio.read())
                 new_info = AudioAsset.get_audio_download_info(audiofile)
                 audio_txt += new_info
 
@@ -245,37 +245,37 @@ def create_download(request, pk):
         if story.audiofacetstory.all():
             z.writestr("audiostory.txt", audiofacet_txt)
         for image in audiofacet_images:
-            z.writestr("{image}.jpg".format(image=image.asset_title), image.photo.read())
+            z.writestr("{image}.jpg".format(image=image.title), image.photo.read())
             new_info = ImageAsset.get_image_download_info(image)
             image_txt += new_info
         for document in audiofacet_documents:
-            if document.doc_type == "PDF":
-                z.writestr("{document}.pdf".format(document=document.asset_title), document.document.read())
+            if document.asset_type == "PDF":
+                z.writestr("{document}.pdf".format(document=document.title), document.document.read())
                 new_info = DocumentAsset.get_document_download_info(document)
                 document_txt += new_info
-            if document.doc_type == "WORD":
-                z.writestr("{document}.docx".format(document=document.asset_title), document.document.read())
+            if document.asset_type == "WORD":
+                z.writestr("{document}.docx".format(document=document.title), document.document.read())
                 new_info = DocumentAsset.get_document_download_info(document)
                 document_txt += new_info
-            if document.doc_type == "TXT":
-                z.writestr("{document}.txt".format(document=document.asset_title), document.document.read())
+            if document.asset_type == "TXT":
+                z.writestr("{document}.txt".format(document=document.title), document.document.read())
                 new_info = DocumentAsset.get_document_download_info(document)
                 document_txt += new_info
-            if document.doc_type == "CSV":
-                z.writestr("{document}.csv".format(document=document.asset_title), document.document.read())
+            if document.asset_type == "CSV":
+                z.writestr("{document}.csv".format(document=document.title), document.document.read())
                 new_info = DocumentAsset.get_document_download_info(document)
                 document_txt += new_info
-            if document.doc_type == "XLS":
-                z.writestr("{document}.xls".format(document=document.asset_title), document.document.read())
+            if document.asset_type == "XLS":
+                z.writestr("{document}.xls".format(document=document.title), document.document.read())
                 new_info = DocumentAsset.get_document_download_info(document)
                 document_txt += new_info
         for audiofile in audiofacet_audio:
-            if audiofile.audio_type == "MP3":
-                z.writestr("{audiofile}.mp3".format(audiofile=document.asset_title), audiofile.audio.read())
+            if audiofile.asset_type == "MP3":
+                z.writestr("{audiofile}.mp3".format(audiofile=document.title), audiofile.audio.read())
                 new_info = AudioAsset.get_audio_download_info(audiofile)
                 audio_txt += new_info
-            if audiofile.audio_type == "WAV":
-                z.writestr("{audiofile}.wav".format(audiofile=document.asset_title), audiofile.audio.read())
+            if audiofile.asset_type == "WAV":
+                z.writestr("{audiofile}.wav".format(audiofile=document.title), audiofile.audio.read())
                 new_info = AudioAsset.get_audio_download_info(audiofile)
                 audio_txt += new_info
 
@@ -291,37 +291,37 @@ def create_download(request, pk):
         if story.videofacetstory.all():
             z.writestr("videostory.txt", videofacet_txt)
         for image in videofacet_images:
-            z.writestr("{image}.jpg".format(image=image.asset_title), image.photo.read())
+            z.writestr("{image}.jpg".format(image=image.title), image.photo.read())
             new_info = ImageAsset.get_image_download_info(image)
             image_txt += new_info
         for document in videofacet_documents:
-            if document.doc_type == "PDF":
-                z.writestr("{document}.pdf".format(document=document.asset_title), document.document.read())
+            if document.asset_type == "PDF":
+                z.writestr("{document}.pdf".format(document=document.title), document.document.read())
                 new_info = DocumentAsset.get_document_download_info(document)
                 document_txt += new_info
-            if document.doc_type == "WORD":
-                z.writestr("{document}.docx".format(document=document.asset_title), document.document.read())
+            if document.asset_type == "WORD":
+                z.writestr("{document}.docx".format(document=document.title), document.document.read())
                 new_info = DocumentAsset.get_document_download_info(document)
                 document_txt += new_info
-            if document.doc_type == "TXT":
-                z.writestr("{document}.txt".format(document=document.asset_title), document.document.read())
+            if document.asset_type == "TXT":
+                z.writestr("{document}.txt".format(document=document.title), document.document.read())
                 new_info = DocumentAsset.get_document_download_info(document)
                 document_txt += new_info
-            if document.doc_type == "CSV":
-                z.writestr("{document}.csv".format(document=document.asset_title), document.document.read())
+            if document.asset_type == "CSV":
+                z.writestr("{document}.csv".format(document=document.title), document.document.read())
                 new_info = DocumentAsset.get_document_download_info(document)
                 document_txt += new_info
-            if document.doc_type == "XLS":
-                z.writestr("{document}.xls".format(document=document.asset_title), document.document.read())
+            if document.asset_type == "XLS":
+                z.writestr("{document}.xls".format(document=document.title), document.document.read())
                 new_info = DocumentAsset.get_document_download_info(document)
                 document_txt += new_info
         for audiofile in videofacet_audio:
-            if audiofile.audio_type == "MP3":
-                z.writestr("{audiofile}.mp3".format(audiofile=document.asset_title), audiofile.audio.read())
+            if audiofile.asset_type == "MP3":
+                z.writestr("{audiofile}.mp3".format(audiofile=document.title), audiofile.audio.read())
                 new_info = AudioAsset.get_audio_download_info(audiofile)
                 audio_txt += new_info
-            if audiofile.audio_type == "WAV":
-                z.writestr("{audiofile}.wav".format(audiofile=document.asset_title), audiofile.audio.read())
+            if audiofile.asset_type == "WAV":
+                z.writestr("{audiofile}.wav".format(audiofile=document.title), audiofile.audio.read())
                 new_info = AudioAsset.get_audio_download_info(audiofile)
                 audio_txt += new_info
 
@@ -364,7 +364,7 @@ def create_download(request, pk):
     print "Images: ", images
     if images:
         for image in images:
-            z.writestr("{image}.jpg".format(image=image.asset_title), image.photo.read())
+            z.writestr("{image}.jpg".format(image=image.title), image.photo.read())
             new_info = ImageAsset.get_image_download_info(image)
             image_txt += new_info
 
@@ -377,24 +377,24 @@ def create_download(request, pk):
     print "Documents: ", documents
     if documents:
         for document in documents:
-            if document.doc_type == "PDF":
-                z.writestr("{document}.pdf".format(document=document.asset_title), document.document.read())
+            if document.asset_type == "PDF":
+                z.writestr("{document}.pdf".format(document=document.title), document.document.read())
                 new_info = DocumentAsset.get_document_download_info(document)
                 document_txt += new_info
-            if document.doc_type == "WORD":
-                z.writestr("{document}.docx".format(document=document.asset_title), document.document.read())
+            if document.asset_type == "WORD":
+                z.writestr("{document}.docx".format(document=document.title), document.document.read())
                 new_info = DocumentAsset.get_document_download_info(document)
                 document_txt += new_info
-            if document.doc_type == "TXT":
-                z.writestr("{document}.txt".format(document=document.asset_title), document.document.read())
+            if document.asset_type == "TXT":
+                z.writestr("{document}.txt".format(document=document.title), document.document.read())
                 new_info = DocumentAsset.get_document_download_info(document)
                 document_txt += new_info
-            if document.doc_type == "CSV":
-                z.writestr("{document}.csv".format(document=document.asset_title), document.document.read())
+            if document.asset_type == "CSV":
+                z.writestr("{document}.csv".format(document=document.title), document.document.read())
                 new_info = DocumentAsset.get_document_download_info(document)
                 document_txt += new_info
-            if document.doc_type == "XLS":
-                z.writestr("{document}.xls".format(document=document.asset_title), document.document.read())
+            if document.asset_type == "XLS":
+                z.writestr("{document}.xls".format(document=document.title), document.document.read())
                 new_info = DocumentAsset.get_document_download_info(document)
                 document_txt += new_info
 
@@ -408,12 +408,12 @@ def create_download(request, pk):
     print "Audiofiles: ", audiofiles
     if audiofiles:
         for audiofile in audiofiles:
-            if audiofile.audio_type == "MP3":
-                z.writestr("{audiofile}.mp3".format(audiofile=document.asset_title), audiofile.audio.read())
+            if audiofile.asset_type == "MP3":
+                z.writestr("{audiofile}.mp3".format(audiofile=document.title), audiofile.audio.read())
                 new_info = AudioAsset.get_audio_download_info(audiofile)
                 audio_txt += new_info
-            if audiofile.audio_type == "WAV":
-                z.writestr("{audiofile}.wav".format(audiofile=document.asset_title), audiofile.audio.read())
+            if audiofile.asset_type == "WAV":
+                z.writestr("{audiofile}.wav".format(audiofile=document.title), audiofile.audio.read())
                 new_info = AudioAsset.get_audio_download_info(audiofile)
                 audio_txt += new_info
 

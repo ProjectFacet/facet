@@ -121,7 +121,7 @@
                   {% for image in webfacet_images %}
                     <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
                       <label>
-                        <img class="img-responsive img-thumbnail" src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}">
+                        <img class="img-responsive img-thumbnail" src="{{ image.display_photo.url }}" alt="{{ image.description }}">
                         <input type="checkbox" name="images" value="{{ image.id }}">
                       </label>
                     </div>
@@ -135,7 +135,7 @@
                   {% for document in webfacet_documents %}
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                       <label>
-                        <i class="fa fa-file sameline" aria-hidden="true"></i> <span class="sameline">{{ document.asset_title }}</span>
+                        <i class="fa fa-file sameline" aria-hidden="true"></i> <span class="sameline">{{ document.title }}</span>
                         <input type="checkbox" name="documents" value="{{ document.id }}">
                       </label>
                     </div>
@@ -149,7 +149,7 @@
                   {% for audio in webfacet_audio %}
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                       <label>
-                        <i class="fa fa-play sameline" aria-hidden="true"></i> <span class="sameline">{{ audio.asset_title }}</span>
+                        <i class="fa fa-play sameline" aria-hidden="true"></i> <span class="sameline">{{ audio.title }}</span>
                         <input type="checkbox" name="audiofiles" value="{{ audio.id }}">
                       </label>
                     </div>
@@ -180,7 +180,7 @@
               {% for image in printfacet_images %}
                 <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
                   <label>
-                    <img class="img-responsive img-thumbnail" src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}">
+                    <img class="img-responsive img-thumbnail" src="{{ image.display_photo.url }}" alt="{{ image.description }}">
                     <input type="checkbox" name="images" value="{{ image.id }}">
                   </label>
                 </div>
@@ -193,7 +193,7 @@
                   {% for document in printfacet_documents %}
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                       <label>
-                        <i class="fa fa-file sameline" aria-hidden="true"></i> <span class="sameline">{{ document.asset_title }}</span>
+                        <i class="fa fa-file sameline" aria-hidden="true"></i> <span class="sameline">{{ document.title }}</span>
                         <input type="checkbox" name="documents" value="{{ document.id }}">
                       </label>
                     </div>
@@ -207,7 +207,7 @@
                   {% for audio in printfacet_audio %}
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                       <label>
-                        <i class="fa fa-play sameline" aria-hidden="true"></i> <span class="sameline">{{ audio.asset_title }}</span>
+                        <i class="fa fa-play sameline" aria-hidden="true"></i> <span class="sameline">{{ audio.title }}</span>
                         <input type="checkbox" name="audiofiles" value="{{ audio.id }}">
                       </label>
                     </div>
@@ -238,7 +238,7 @@
               {% for image in audiofacet_images %}
                 <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
                   <label>
-                    <img class="img-responsive img-thumbnail" src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}">
+                    <img class="img-responsive img-thumbnail" src="{{ image.display_photo.url }}" alt="{{ image.description }}">
                     <input type="checkbox" name="images" value="{{ image.id }}">
                   </label>
                 </div>
@@ -251,7 +251,7 @@
                   {% for document in audiofacet_documents %}
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                       <label>
-                        <i class="fa fa-file sameline" aria-hidden="true"></i> <span class="sameline">{{ document.asset_title }}</span>
+                        <i class="fa fa-file sameline" aria-hidden="true"></i> <span class="sameline">{{ document.title }}</span>
                         <input type="checkbox" name="documents" value="{{ document.id }}">
                       </label>
                     </div>
@@ -265,7 +265,7 @@
                   {% for audio in audiofacet_audio %}
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                       <label>
-                        <i class="fa fa-play sameline" aria-hidden="true"></i> <span class="sameline">{{ audio.asset_title }}</span>
+                        <i class="fa fa-play sameline" aria-hidden="true"></i> <span class="sameline">{{ audio.title }}</span>
                         <input type="checkbox" name="audiofiles" value="{{ audio.id }}">
                       </label>
                     </div>
@@ -296,7 +296,7 @@
               {% for image in videofacet_images %}
                 <div class="col-xs-6 col-sm-4 col-md-4 col-lg-4">
                   <label>
-                    <img class="img-responsive img-thumbnail" src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}">
+                    <img class="img-responsive img-thumbnail" src="{{ image.display_photo.url }}" alt="{{ image.description }}">
                     <input type="checkbox" name="images" value="{{ image.id }}">
                   </label>
                 </div>
@@ -309,7 +309,7 @@
                   {% for document in videofacet_documents %}
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                       <label>
-                        <i class="fa fa-file sameline" aria-hidden="true"></i> <span class="sameline">{{ document.asset_title }}</span>
+                        <i class="fa fa-file sameline" aria-hidden="true"></i> <span class="sameline">{{ document.title }}</span>
                         <input type="checkbox" name="documents" value="{{ document.id }}">
                       </label>
                     </div>
@@ -323,7 +323,7 @@
                   {% for audio in videofacet_audio %}
                     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                       <label>
-                        <i class="fa fa-play sameline" aria-hidden="true"></i> <span class="sameline">{{ audio.asset_title }}</span>
+                        <i class="fa fa-play sameline" aria-hidden="true"></i> <span class="sameline">{{ audio.title }}</span>
                         <input type="checkbox" name="audiofiles" value="{{ audio.id }}">
                       </label>
                     </div>

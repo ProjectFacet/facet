@@ -51,18 +51,18 @@
                   </fieldset>
 
                   <fieldset class="form-group m-b-10">
-                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ videoassetform.asset_title.label_tag }}</label>
-                    {{ videoassetform.asset_title }}
-                    {% if videoassetform.asset_title.errors %}
-                      <small class="text-muted">{{ videoassetform.asset_title.errors }}</small>
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ videoassetform.title.label_tag }}</label>
+                    {{ videoassetform.title }}
+                    {% if videoassetform.title.errors %}
+                      <small class="text-muted">{{ videoassetform.title.errors }}</small>
                     {% endif %}
                   </fieldset>
 
                   <fieldset class="form-group m-b-10">
-                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ videoassetform.video_type.label_tag }}</label>
-                    {{ videoassetform.video_type }}
-                    {% if videoassetform.video_type.errors %}
-                      <small class="text-muted">{{ videoassetform.video_type.errors }}</small>
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ videoassetform.asset_type.label_tag }}</label>
+                    {{ videoassetform.asset_type }}
+                    {% if videoassetform.asset_type.errors %}
+                      <small class="text-muted">{{ videoassetform.asset_type.errors }}</small>
                     {% endif %}
                   </fieldset>
 
@@ -80,10 +80,10 @@
                 <div class="col-md-6">
 
                   <fieldset class="form-group m-b-10">
-                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ videoassetform.asset_description.label_tag }}</label>
-                    {{ videoassetform.asset_description }}
-                    {% if videoassetform.asset_description.errors %}
-                      <small class="text-muted">{{ videoassetform.asset_description.errors }}</small>
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ videoassetform.description.label_tag }}</label>
+                    {{ videoassetform.description }}
+                    {% if videoassetform.description.errors %}
+                      <small class="text-muted">{{ videoassetform.description.errors }}</small>
                     {% endif %}
                   </fieldset>
 
@@ -121,7 +121,7 @@
                   <div class="row video-library">
                   {% for video in videos %}
                     <div class="col-md-3">
-                      {% if video.video_type == 'MP4' %}
+                      {% if video.asset_type == 'MP4' %}
                         <div id="jp_container_video_{{video.pk}}" class="jp-flat-video" role="application" aria-label="media player">
                           <div id="jplayer_video_{{video.pk}}" class="jp-jplayer"></div>
                           <div class="jp-gui">
@@ -241,14 +241,14 @@
                         </script>
                       {% endif %}
 
-                      {% if video.video_type == 'YOUTUBE' %}
+                      {% if video.asset_type == 'YOUTUBE' %}
                         {% video video.link '100%x150' %}
-                        <p class="subtle f-s-14 m-t-10"><i class="fa fa-youtube-play subtle"></i> {{ video.asset_title }}</p>
+                        <p class="subtle f-s-14 m-t-10"><i class="fa fa-youtube-play subtle"></i> {{ video.title }}</p>
                       {% endif %}
 
-                      {% if video.video_type == 'VIMEO' %}
+                      {% if video.asset_type == 'VIMEO' %}
                         {% video video.link '100%x150' %}
-                        <p class="subtle f-s-14 m-t-10"><i class="fa fa-vimeo subtle"></i> {{ video.asset_title }}</p>
+                        <p class="subtle f-s-14 m-t-10"><i class="fa fa-vimeo subtle"></i> {{ video.title }}</p>
                       {% endif %}
 
 

@@ -30,18 +30,18 @@
                 </fieldset>
 
                 <fieldset class="form-group m-b-10">
-                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ documentassetform.asset_title.label_tag }}</label>
-                  {{ documentassetform.asset_title }}
-                  {% if documentassetform.asset_title.errors %}
-                    <small class="text-muted">{{ documentassetform.asset_title.errors }}</small>
+                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ documentassetform.title.label_tag }}</label>
+                  {{ documentassetform.title }}
+                  {% if documentassetform.title.errors %}
+                    <small class="text-muted">{{ documentassetform.title.errors }}</small>
                   {% endif %}
                 </fieldset>
 
                 <fieldset class="form-group m-b-10">
-                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ documentassetform.doc_type.label_tag }}</label>
-                  {{ documentassetform.doc_type }}
-                  {% if documentassetform.doc_type.errors %}
-                    <small class="text-muted">{{ documentassetform.doc_type.errors }}</small>
+                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ documentassetform.asset_type.label_tag }}</label>
+                  {{ documentassetform.asset_type }}
+                  {% if documentassetform.asset_type.errors %}
+                    <small class="text-muted">{{ documentassetform.asset_type.errors }}</small>
                   {% endif %}
                 </fieldset>
 
@@ -59,10 +59,10 @@
               <div class="col-md-6">
 
                 <fieldset class="form-group m-b-10">
-                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ documentassetform.asset_description.label_tag }}</label>
-                  {{ documentassetform.asset_description }}
-                  {% if documentassetform.asset_description.errors %}
-                    <small class="text-muted">{{ documentassetform.asset_description.errors }}</small>
+                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ documentassetform.description.label_tag }}</label>
+                  {{ documentassetform.description }}
+                  {% if documentassetform.description.errors %}
+                    <small class="text-muted">{{ documentassetform.description.errors }}</small>
                   {% endif %}
                 </fieldset>
 
@@ -100,7 +100,7 @@
                   {% for document in documents %}
                     <div class="col-md-2">
                       <label>
-                        <img class="img-responsive" src="{{ document.display_photo.url }}" alt="{{ document.asset_title }}">
+                        <img class="img-responsive" src="{{ document.display_photo.url }}" alt="{{ document.title }}">
                         <input type="checkbox" name="documents" value="{{ document.id }}">
                       </label>
                     </div>

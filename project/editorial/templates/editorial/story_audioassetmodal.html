@@ -39,18 +39,18 @@
                   </fieldset>
 
                   <fieldset class="form-group m-b-10">
-                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audioassetform.asset_title.label_tag }}</label>
-                    {{ audioassetform.asset_title }}
-                    {% if audioassetform.asset_title.errors %}
-                      <small class="text-muted">{{ audioassetform.asset_title.errors }}</small>
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audioassetform.title.label_tag }}</label>
+                    {{ audioassetform.title }}
+                    {% if audioassetform.title.errors %}
+                      <small class="text-muted">{{ audioassetform.title.errors }}</small>
                     {% endif %}
                   </fieldset>
 
                   <fieldset class="form-group m-b-10">
-                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audioassetform.audio_type.label_tag }}</label>
-                    {{ audioassetform.audio_type }}
-                    {% if audioassetform.audio_type.errors %}
-                      <small class="text-muted">{{ audioassetform.audio_type.errors }}</small>
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audioassetform.asset_type.label_tag }}</label>
+                    {{ audioassetform.asset_type }}
+                    {% if audioassetform.asset_type.errors %}
+                      <small class="text-muted">{{ audioassetform.asset_type.errors }}</small>
                     {% endif %}
                   </fieldset>
 
@@ -68,10 +68,10 @@
                 <div class="col-md-6">
 
                   <fieldset class="form-group m-b-10">
-                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audioassetform.asset_description.label_tag }}</label>
-                    {{ audioassetform.asset_description }}
-                    {% if audioassetform.asset_description.errors %}
-                      <small class="text-muted">{{ audioassetform.asset_description.errors }}</small>
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audioassetform.description.label_tag }}</label>
+                    {{ audioassetform.description }}
+                    {% if audioassetform.description.errors %}
+                      <small class="text-muted">{{ audioassetform.description.errors }}</small>
                     {% endif %}
                   </fieldset>
 
@@ -109,7 +109,7 @@
                   <div class="row audio-library">
                   {% for audio in audiofiles %}
                     <div class="col-md-3">
-                      {% if audio.audio_type == 'MP3' or audio.audio_type == 'WAV' %}
+                      {% if audio.asset_type == 'MP3' or audio.asset_type == 'WAV' %}
                       <div id="jplayer_audio_{{audio.pk}}" class="jp-jplayer"></div>
                       <div id="jp_container_audio_{{audio.pk}}" class="jp-flat-audio m-b-10" role="application" aria-label="media player">
                         <div class="jp-play-control jp-control">
@@ -133,7 +133,7 @@
                         $("#jplayer_audio_{{audio.pk}}").jPlayer({
                           ready: function(event) {
                             $(this).jPlayer("setMedia", {
-                              title: "{{audio.asset_title}}",
+                              title: "{{audio.title}}",
                               wav: "{{audio.audio.url}}",
                               mp3: "{{audio.audio.url}}",
                             });

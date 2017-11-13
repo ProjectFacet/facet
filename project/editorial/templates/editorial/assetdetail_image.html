@@ -12,7 +12,7 @@
     <ol class="breadcrumb icon-angle-right icon-th">
       <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
       <li class="fadeIn"><a href="{% url 'asset_library' %}" title="Return to Media Library"> Media Library </a></li>
-      <li class="fadeIn"><a href="{% url 'image_asset_detail' image.id %}" title="You are here">Image: {{image.asset_title}}  </a></li>
+      <li class="fadeIn"><a href="{% url 'image_asset_detail' image.id %}" title="You are here">Image: {{image.title}}  </a></li>
     </ol>
 </div>
 {% endblock breadcrumb %}
@@ -29,7 +29,7 @@
   <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
       <h4 class="m-b-20">Image</h4>
     {% if image.display_photo %}
-        <a class="image-popup-vertical-fit" href="{{ image.display_photo.url }}" title="{{ image.asset_description}}"><img class="img-fluid" src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}"></a>
+        <a class="image-popup-vertical-fit" href="{{ image.display_photo.url }}" title="{{ image.description}}"><img class="img-fluid" src="{{ image.display_photo.url }}" alt="{{ image.description }}"></a>
     {% endif %}
   </div>
 
@@ -60,21 +60,21 @@
                   {% endcomment %}
 
                   <div class="form-group custom-form">
-                    <a href="#" data-toggle="tooltip" title="{{ editimageform.asset_title.help_text }}"><span class="field-label">{{ editimageform.asset_title.label_tag }}</span></a>
-                    {{ editimageform.asset_title }}
-                    {% if editimageform.asset_title.errors %}
+                    <a href="#" data-toggle="tooltip" title="{{ editimageform.title.help_text }}"><span class="field-label">{{ editimageform.title.label_tag }}</span></a>
+                    {{ editimageform.title }}
+                    {% if editimageform.title.errors %}
                       <div class="alert alert-warning" role="alert">
-                      {{ editimageform.asset_title.errors }}
+                      {{ editimageform.title.errors }}
                       </div>
                     {% endif %}
                   </div>
 
                   <div class="form-group custom-form">
-                    <a href="#" data-toggle="tooltip" title="{{ editimageform.image_type.help_text }}"><span class="field-label">{{ editimageform.image_type.label_tag }}</span></a>
-                    {{ editimageform.image_type }}
-                    {% if editimageform.image_type.errors %}
+                    <a href="#" data-toggle="tooltip" title="{{ editimageform.asset_type.help_text }}"><span class="field-label">{{ editimageform.asset_type.label_tag }}</span></a>
+                    {{ editimageform.asset_type }}
+                    {% if editimageform.asset_type.errors %}
                       <div class="alert alert-warning" role="alert">
-                      {{ editimageform.image_type.errors }}
+                      {{ editimageform.asset_type.errors }}
                       </div>
                     {% endif %}
                   </div>
@@ -95,11 +95,11 @@
                 <!-- Right Col -->
                 <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                   <div class="form-group custom-form">
-                    <a href="#" data-toggle="tooltip" title="{{ editimageform.asset_description.help_text }}"><span class="field-label">{{ editimageform.asset_description.label_tag }}</span></a>
-                    {{ editimageform.asset_description }}
-                    {% if editimageform.asset_description.errors %}
+                    <a href="#" data-toggle="tooltip" title="{{ editimageform.description.help_text }}"><span class="field-label">{{ editimageform.description.label_tag }}</span></a>
+                    {{ editimageform.description }}
+                    {% if editimageform.description.errors %}
                       <div class="alert alert-warning" role="alert">
-                      {{ editimageform.asset_description.errors }}
+                      {{ editimageform.description.errors }}
                       </div>
                     {% endif %}
                   </div>

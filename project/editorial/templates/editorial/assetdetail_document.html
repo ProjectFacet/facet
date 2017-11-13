@@ -12,7 +12,7 @@
     <ol class="breadcrumb icon-angle-right icon-th">
       <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
       <li class="fadeIn"><a href="{% url 'asset_library' %}" title="Return to Media Library"> Media Library </a></li>
-      <li class="fadeIn"><a href="{% url 'document_asset_detail' document.id %}" title="You are here">Document: {{document.asset_title}}  </a></li>
+      <li class="fadeIn"><a href="{% url 'document_asset_detail' document.id %}" title="You are here">Document: {{document.title}}  </a></li>
     </ol>
 </div>
 {% endblock breadcrumb %}
@@ -58,18 +58,18 @@
                   {% endcomment %}
 
                   <fieldset class="form-group m-b-10">
-                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ editdocumentform.asset_title.label_tag }}</label>
-                    {{ editdocumentform.asset_title }}
-                    {% if editdocumentform.asset_title.errors %}
-                      <small class="text-muted">{{ editdocumentform.asset_title.errors }}</small>
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ editdocumentform.title.label_tag }}</label>
+                    {{ editdocumentform.title }}
+                    {% if editdocumentform.title.errors %}
+                      <small class="text-muted">{{ editdocumentform.title.errors }}</small>
                     {% endif %}
                   </fieldset>
 
                   <fieldset class="form-group m-b-10">
-                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ editdocumentform.doc_type.label_tag }}</label>
-                    {{ editdocumentform.doc_type }}
-                    {% if editdocumentform.doc_type.errors %}
-                      <small class="text-muted">{{ editdocumentform.doc_type.errors }}</small>
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ editdocumentform.asset_type.label_tag }}</label>
+                    {{ editdocumentform.asset_type }}
+                    {% if editdocumentform.asset_type.errors %}
+                      <small class="text-muted">{{ editdocumentform.asset_type.errors }}</small>
                     {% endif %}
                   </fieldset>
 
@@ -87,10 +87,10 @@
                 <!-- Right Col -->
                 <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
                   <fieldset class="form-group m-b-10">
-                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ editdocumentform.asset_description.label_tag }}</label>
-                    {{ editdocumentform.asset_description }}
-                    {% if editdocumentform.asset_description.errors %}
-                      <small class="text-muted">{{ editdocumentform.asset_description.errors }}</small>
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ editdocumentform.description.label_tag }}</label>
+                    {{ editdocumentform.description }}
+                    {% if editdocumentform.description.errors %}
+                      <small class="text-muted">{{ editdocumentform.description.errors }}</small>
                     {% endif %}
                   </fieldset>
 

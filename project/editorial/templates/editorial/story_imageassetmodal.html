@@ -30,18 +30,18 @@
                 </fieldset>
 
                 <fieldset class="form-group m-b-10">
-                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin"><span class="field-label">{{ imageassetform.asset_title.label_tag }}</label>
-                  {{ imageassetform.asset_title }}
-                  {% if imageassetform.asset_title.errors %}
-                    <small class="text-muted">{{ imageassetform.asset_title.errors }}</small>
+                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin"><span class="field-label">{{ imageassetform.title.label_tag }}</label>
+                  {{ imageassetform.title }}
+                  {% if imageassetform.title.errors %}
+                    <small class="text-muted">{{ imageassetform.title.errors }}</small>
                   {% endif %}
                 </fieldset>
 
                 <fieldset class="form-group m-b-10">
-                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ imageassetform.image_type.label_tag }}</label>
-                  {{ imageassetform.image_type }}
-                  {% if imageassetform.image_type.errors %}
-                    <small class="text-muted">{{ imageassetform.image_type.errors }}</small>
+                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ imageassetform.asset_type.label_tag }}</label>
+                  {{ imageassetform.asset_type }}
+                  {% if imageassetform.asset_type.errors %}
+                    <small class="text-muted">{{ imageassetform.asset_type.errors }}</small>
                   {% endif %}
                 </fieldset>
 
@@ -59,10 +59,10 @@
               <div class="col-md-6">
 
                 <fieldset class="form-group m-b-10">
-                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ imageassetform.asset_description.label_tag }}</label>
-                  {{ imageassetform.asset_description }}
-                  {% if imageassetform.asset_description.errors %}
-                    <small class="text-muted">{{ imageassetform.asset_description.errors }}</small>
+                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ imageassetform.description.label_tag }}</label>
+                  {{ imageassetform.description }}
+                  {% if imageassetform.description.errors %}
+                    <small class="text-muted">{{ imageassetform.description.errors }}</small>
                   {% endif %}
                 </fieldset>
 
@@ -100,7 +100,7 @@
                   {% for image in images %}
                     <div class="col-md-2">
                       <label>
-                        {% if image.display_photo %}<img class="img-responsive img-thumbnail" src="{{ image.display_photo.url }}" alt="{{ image.asset_description }}">{% endif %}
+                        {% if image.display_photo %}<img class="img-responsive img-thumbnail" src="{{ image.display_photo.url }}" alt="{{ image.description }}">{% endif %}
                         <input type="checkbox" name="images" value="{{ image.id }}">
                       </label>
                     </div>
