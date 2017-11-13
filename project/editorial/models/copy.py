@@ -1,33 +1,30 @@
 from django.db import models
 from django.db.models import Q
-# from django.contrib.postgres.fields import ArrayField
-# from simple_history.models import HistoricalRecords
 from model_utils.models import TimeStampedModel
 import time as timemk
 from datetime import datetime, timedelta, time
 from imagekit.models import ProcessedImageField, ImageSpecField
-# from pilkit.processors import ResizeToFit, SmartResize
-# from django.contrib.auth.models import AbstractUser
 from django.utils.encoding import python_2_unicode_compatible
 from django.core.urlresolvers import reverse
 from django.utils import timezone
 from django.shortcuts import get_object_or_404
-# from itertools import chain
-# from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
-# from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ValidationError
-# from django.db.models.signals import post_save
-# from django.dispatch import receiver
 
 from . import User, Organization, Network, Project, Series, Story
 from . import Facet, WebFacet, PrintFacet, AudioFacet, VideoFacet   # XXX
 from . import DocumentAsset, ImageAsset, AudioAsset, VideoAsset
 
 #-----------------------------------------------------------------------#
-#   CopyDetails:
-#   SeriesCopyDetail, StoryCopyDetail, WebFacetCopyDetail,
-#   PrintFacetCopyDetail, AudioFacetCopyDetail, VideoFacetCopyDetail,
-#   ImageAssetCopyDetail, DocumentAssetCopyDetail, AudioFacetCopyDetail
+#   Copy Details:
+#   SeriesCopyDetail, StoryCopyDetail
+#   FacetCopyDetail
+#   WebFacetCopyDetail, PrintFacetCopyDetail, AudioFacetCopyDetail, VideoFacetCopyDetail
+#   ImageAssetCopyDetail, DocumentAssetCopyDetail, AudioFacetCopyDetail, VideoAssetCopyDetail
+#-----------------------------------------------------------------------#
+
+
+#-----------------------------------------------------------------------#
+#    SERIES
 #-----------------------------------------------------------------------#
 
 class SeriesCopyDetailManager(models.Manager):
@@ -86,6 +83,10 @@ class SeriesCopyDetail(models.Model):
                                 )
 
 
+#-----------------------------------------------------------------------#
+#    STORY
+#-----------------------------------------------------------------------#
+
 class StoryCopyDetailManager(models.Manager):
     """Custom manager to create copy records for stories. """
 
@@ -140,6 +141,65 @@ class StoryCopyDetail(models.Model):
                                 story=self.original_story,
                                 )
 
+
+#-----------------------------------------------------------------------#
+#    FACET
+#-----------------------------------------------------------------------#
+
+class FacetCopyDetailManager(models.Manager):
+    """Custom manager for Facet Copy Details."""
+
+    def create_facet_copy_record(self, original_org, partner, original_facet, partner_facet):
+        """Method for quick creation of facet copy detail record."""
+        facet_copy_detail=self.create(original_org=original_org, partner=partner, original_facet=original_facet, partner_facet=partner_facet)
+        return facet_copy_detail
+
+
+@python_2_unicode_compatible
+class FacetCopyDetail(models.Model):
+    """ The details of a each copy of a facet. """
+
+    original_org = models.ForeignKey(
+        Organization,
+        help_text='Organization that originally created the content.',
+        related_name='original_facet_organization',
+    )
+
+    original_facet = models.ForeignKey(
+        Facet,
+        help_text='Original copy of the facet.',
+        related_name='original_facet_detail',
+    )
+
+    partner = models.ForeignKey(
+        Organization,
+        help_text='Organization that made the copy.',
+        related_name='facet_copying_organization',
+    )
+
+    partner_facet = models.ForeignKey(
+        Facet,
+        help_text='The new version of the facet saved by the partner organization.',
+        related_name='facet_copy',
+    )
+
+    copy_date = models.DateTimeField(
+        auto_now_add=True,
+        help_text='Datetime when copy was made.'
+    )
+
+    objects = FacetCopyDetailManager()
+
+    def __str__(self):
+        return "Copyinfo for {copyorg} \'s copy of facet: {facet}".format(
+                                copyorg=self.partner.name,
+                                facet=self.original_facet,
+                                )
+
+
+#-----------------------------------------------------------------------#
+#    OLD TO BE REMOVED
+#-----------------------------------------------------------------------#
 
 class WebFacetCopyDetailManager(models.Manager):
     """Custom manager for WebFacet Copy Details."""
@@ -344,6 +404,10 @@ class VideoFacetCopyDetail(models.Model):
                                 videofacet=self.original_videofacet,
                                 )
 
+
+#-----------------------------------------------------------------------#
+#    ASSETS
+#-----------------------------------------------------------------------#
 
 class ImageAssetCopyDetailManager(models.Manager):
     """Custom manager for ImageAsset Copy Details."""
