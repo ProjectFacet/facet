@@ -42,7 +42,7 @@ from . import User, Organization, Network, Project, Series, Story
 
 # TODO: add a few out-of-box templates
 # ALL have these fields:
-# BASE = name, headline, description, editor, credi, team, content, status, due_edit, run_date, keywords, assets
+# BASE = name, headline, description, editor, credit, team, content, status, due_edit, run_date, keywords, assets
 # "Web article" = BASE + update_notes, excerpt, share_note, content_license, related_links, github_link, embeds, pushed_to_wp
 # "Video" = BASE + usage_rights
 # "Audio" = BASE + producer

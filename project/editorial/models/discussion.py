@@ -47,6 +47,8 @@ class Discussion(models.Model):
     SERIES = 'SER'
     STORY = 'STO'
     FACET = 'F'
+    TASK = 'TSK'
+    EVENT = 'EV'
     WEBFACET = 'WF'
     PRINTFACET = 'PF'
     AUDIOFACET = 'AF'
@@ -60,6 +62,8 @@ class Discussion(models.Model):
         (SERIES, 'Series Conversation'),
         (STORY, 'Story Conversation'),
         (FACET, 'Facet Conversation'),
+        (TASK, 'Task Conversation'),
+        (EVENT, 'Event Conversation'),
         (WEBFACET, 'WebFacet Conversation'),
         (PRINTFACET, 'PrintFacet Conversation'),
         (AUDIOFACET, 'AudioFacet Conversation'),

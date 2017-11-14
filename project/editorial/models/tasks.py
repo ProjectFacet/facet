@@ -134,7 +134,7 @@ class Task(models.Model):
 
     discussion = models.ForeignKey(
         'Discussion',
-        help_text='Id of discussion for the facet.',
+        help_text='Id of discussion for the task.',
         blank=True,
         null=True,
     )
