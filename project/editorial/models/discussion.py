@@ -19,8 +19,7 @@ from django.core.exceptions import ValidationError
 # from django.db.models.signals import post_save
 # from django.dispatch import receiver
 
-from . import User, Organization
-
+from .people import User
 
 #-----------------------------------------------------------------------#
 #   Discussion:
@@ -45,8 +44,9 @@ class Discussion(models.Model):
     NETWORK = 'NET'
     PRIVATE = 'PRI'
     PROJECT = 'PRO'
-    SERIESPLAN = 'SER'
-    STORYPLAN = 'STO'
+    SERIES = 'SER'
+    STORY = 'STO'
+    FACET = 'F'
     WEBFACET = 'WF'
     PRINTFACET = 'PF'
     AUDIOFACET = 'AF'
@@ -57,8 +57,9 @@ class Discussion(models.Model):
         (NETWORK, 'Network Conversation'),
         (PRIVATE, 'Private Conversation'),
         (PROJECT, 'Project Conversation'),
-        (SERIESPLAN, 'Series Conversation'),
-        (STORYPLAN, 'Story Conversation'),
+        (SERIES, 'Series Conversation'),
+        (STORY, 'Story Conversation'),
+        (FACET, 'Facet Conversation'),
         (WEBFACET, 'WebFacet Conversation'),
         (PRINTFACET, 'PrintFacet Conversation'),
         (AUDIOFACET, 'AudioFacet Conversation'),

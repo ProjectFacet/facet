@@ -3,7 +3,7 @@
     Models
     ======
     People: User, Organization, Network
-    (TODO) Freelancers: Freelancer, FreelancerInfo
+    Contributors: ContributorInfo, OrganizationContributorInfo
     Platforms: Platform, PlatformAccount
     Projects: Project
     Series: Series
@@ -38,9 +38,7 @@ from .platforms import Platform, PlatformAccount
 from .tasks import Task
 from .events import Event
 from .copy import *   # XXX
-
-# from .freelancers import FreelancerInfo, OrganizationFreelancerInfo
-
+from .contributors import ContributorInfo, OrganizationContributorInfo
 
 
 #-----------------------------------------------------------------------#

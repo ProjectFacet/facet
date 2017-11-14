@@ -10,7 +10,7 @@ from django.shortcuts import get_object_or_404
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-
+from .discussion import Discussion, Comment, PrivateMessage
 
 #-----------------------------------------------------------------------#
 #   People:
@@ -40,10 +40,21 @@ class User(AbstractUser):
     ADMIN = 'Admin'
     EDITOR = 'Editor'
     STAFF = 'Staff'
+    CONTRIBUTOR = 'Contributor'
     USER_TYPE_CHOICES = (
         (ADMIN, 'Admin'),
         (EDITOR, 'Editor'),
         (STAFF, 'Staff'),
+        (CONTRIBUTOR, 'Contributor'),
+    )
+
+    # relevant for editors of organizations managing contributors
+    # relevant for user accounts of contributors
+    # user will appear in public search results for editors accepting contact
+    # from contributors and vice versa
+    public = models.BooleanField(
+        default=False,
+        help_text='If an editor or contributor, is the user publicly listed?',
     )
 
     user_type = models.CharField(
@@ -237,7 +248,7 @@ class User(AbstractUser):
 
     @property
     def description(self):
-        org = self.organization.name if self.organization else "(No org)"
+        org = self.organization.name if self.organization else "Contributor"
 
         return "{user}, {title}, {org}".format(
                                         user=self.credit_name,
@@ -713,5 +724,3 @@ class Network(models.Model):
     @property
     def type(self):
         return "Network"
-
-
