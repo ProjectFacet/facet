@@ -86,8 +86,12 @@ class Event(models.Model):
         blank=True,
     )
 
-    # Notes
-    #TODO Add Notes to note class to be attached to Events
+    discussion = models.ForeignKey(
+        'Discussion',
+        help_text='Id of discussion for the event.',
+        blank=True,
+        null=True,
+    )
 
     # an event can be associated with an organization, project, series or story.
     # this can be different than organization that makes the event in the db

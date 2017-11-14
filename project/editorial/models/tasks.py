@@ -132,10 +132,11 @@ class Task(models.Model):
         null=True,
     )
 
-    upload = models.FileField(
-        upload_to="task/%Y/%m/%d/",
-        null=True,
+    discussion = models.ForeignKey(
+        'Discussion',
+        help_text='Id of discussion for the facet.',
         blank=True,
+        null=True,
     )
 
     class Meta:

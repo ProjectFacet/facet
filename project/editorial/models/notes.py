@@ -218,3 +218,65 @@ class StoryNote(Note):
     @property
     def type(self):
         return "Story Note"
+
+
+class TaskNote(Note):
+    """ Planning notes and conversation for a task. """
+
+    owner = models.ForeignKey(
+        User,
+        related_name='storynote_owner'
+    )
+
+    organization=models.ForeignKey(
+        Organization,
+        related_name="storynote_org"
+    )
+
+    task = models.ForeignKey(
+        Task,
+    )
+
+    def __str__(self):
+        return "TaskNote: {tasknote} for Task: {task}".format(
+                                tasknote=self.id,
+                                task=self.story.id,
+                                )
+
+    def get_absolute_url(self):
+        return reverse('task_detail', kwargs={'pk': self.task.id})
+
+    @property
+    def type(self):
+        return "Task Note"
+
+
+class EventNote(Note):
+    """ Planning notes and conversation for a event. """
+
+    owner = models.ForeignKey(
+        User,
+        related_name='storynote_owner'
+    )
+
+    organization=models.ForeignKey(
+        Organization,
+        related_name="storynote_org"
+    )
+
+    event = models.ForeignKey(
+        Event,
+    )
+
+    def __str__(self):
+        return "EventNote: {eventnote} for Task: {event}".format(
+                                eventnote=self.id,
+                                event=self.event.id,
+                                )
+
+    def get_absolute_url(self):
+        return reverse('event_detail', kwargs={'pk': self.event.id})
+
+    @property
+    def type(self):
+        return "Event Note"

@@ -98,6 +98,13 @@ class Facet(models.Model):
         blank=True,
     )
 
+    discussion = models.ForeignKey(
+        'Discussion',
+        help_text='Id of discussion for the facet.',
+        blank=True,
+        null=True,
+    )
+
     # populated by user
     name = models.TextField(
         # displayed on form as label
