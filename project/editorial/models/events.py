@@ -1,23 +1,14 @@
 from django.db import models
 from django.db.models import Q
-# from django.contrib.postgres.fields import ArrayField
-# from simple_history.models import HistoricalRecords
 from model_utils.models import TimeStampedModel
 import time as timemk
 from datetime import datetime, timedelta, time
 from imagekit.models import ProcessedImageField, ImageSpecField
-# from pilkit.processors import ResizeToFit, SmartResize
-# from django.contrib.auth.models import AbstractUser
 from django.utils.encoding import python_2_unicode_compatible
 from django.core.urlresolvers import reverse
 from django.utils import timezone
 from django.shortcuts import get_object_or_404
-# from itertools import chain
-# from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
-# from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ValidationError
-# from django.db.models.signals import post_save
-# from django.dispatch import receiver
 
 from . import User, Organization, Network, Project, Series, Story
 
@@ -51,11 +42,11 @@ class Event(models.Model):
         blank=True,
     )
 
-    # Choices for event type.
+    # Choices for event type:
     # Hosting: An event that is managed by an organization.
-    # Example: Live studio taping open to the public
+    # Ex - Live studio taping open to the public
     # Reporting: An external event that is being covered for a story.
-    # Example: Press conference at the police department
+    # Ex - Press conference at the police department
     HOSTING = 'Hosting'
     REPORTING = 'Reporting'
     OTHER = 'Other'
@@ -99,6 +90,9 @@ class Event(models.Model):
     #TODO Add Notes to note class to be attached to Events
 
     # an event can be associated with an organization, project, series or story.
+    # this can be different than organization that makes the event in the db
+    # ex. a user from an org partnering with other orgs is the one to make the event
+    # that's being hosted by another organization for the collaborative project.
     evt_organization = models.ForeignKey(
         Organization,
         related_name='evt_organization',
@@ -139,10 +133,6 @@ class Event(models.Model):
     @property
     def search_title(self):
         return self.name
-
-    @property
-    def description(self):
-        return self.description.encode('utf-8')
 
     @property
     def type(self):

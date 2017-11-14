@@ -6,18 +6,11 @@ from model_utils.models import TimeStampedModel
 import time as timemk
 from datetime import datetime, timedelta, time
 from imagekit.models import ProcessedImageField, ImageSpecField
-# from pilkit.processors import ResizeToFit, SmartResize
-# from django.contrib.auth.models import AbstractUser
 from django.utils.encoding import python_2_unicode_compatible
 from django.core.urlresolvers import reverse
 from django.utils import timezone
 from django.shortcuts import get_object_or_404
-# from itertools import chain
-# from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
-# from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ValidationError
-# from django.db.models.signals import post_save
-# from django.dispatch import receiver
 
 from . import User, Organization, Network, Project, Series, Story
 
@@ -48,7 +41,12 @@ from . import User, Organization, Network, Project, Series, Story
     # creation_date
 
 # TODO: add a few out-of-box templates
-#   "Video Facet" = these fields
+# ALL have these fields:
+# BASE = name, headline, description, editor, credi, team, content, status, due_edit, run_date, keywords, assets
+# "Web article" = BASE + update_notes, excerpt, share_note, content_license, related_links, github_link, embeds, pushed_to_wp
+# "Video" = BASE + usage_rights
+# "Audio" = BASE + producer
+# "Print" = BASE + update_notes, share_note, edit_note, content_license, sidebar_content
 
 
 
@@ -212,7 +210,7 @@ class Facet(models.Model):
     # optional fields
     # ------------------------#
 
-    update_notes  = models.TextField(
+    update_note  = models.TextField(
         help_text='Text commenting regarding any updates or corrections made to the facet.',
         blank=True,
     )
@@ -279,7 +277,7 @@ class Facet(models.Model):
         blank=True,
     )
 
-    edit_notes = models.TextField(
+    edit_note = models.TextField(
         help_text='Information regarding allowable extent of editing and suggestions for specific kinds of edits.',
         blank=True,
     )
@@ -412,47 +410,44 @@ class Facet(models.Model):
 
         # FIXME Copied facet should also carry over credit and editor.
 
-        webfacet_copy = get_object_or_404(WebFacet, id=self.id)
-        # set the id=None to create the copy of the webfacet instance
-        webfacet_copy.id=None
-        webfacet_copy.save()
+        facet_copy = get_object_or_404(Facet, id=self.id)
+        # set the id=None to create the copy of the facet instance
+        facet_copy.id=None
+        facet_copy.save()
         # clear attributes for the copying Organization
-        webfacet_copy.original_content=False
-        webfacet_copy.code = ''
-        webfacet_copy.status= 'NR'
-        webfacet_copy.due_edit = None
-        webfacet_copy.run_date = None
-        webfacet_copy.discussion = Discussion.objects.create_discussion("WF")
-        webfacet_copy.edit_history = webfacet_copy.edit_history.all()
-        webfacet_copy.save()
+        facet_copy.original_content=False
+        facet_copy.code = ''
+        facet_copy.status= 'NR'
+        facet_copy.due_edit = None
+        facet_copy.run_date = None
+        facet_copy.discussion = Discussion.objects.create_discussion("WF")
+        facet_copy.edit_history = facet_copy.edit_history.all()
+        facet_copy.save()
 
-        return webfacet_copy
+        return facet_copy
 
-    def get_webfacet_images(self):
+    def get_facet_images(self):
         """Retrieve all images objects associated with a webfacet."""
 
         return self.imageasset_set.all()
 
-    def get_webfacet_documents(self):
+    def get_facet_documents(self):
         """Retrieve all documents objects associated with a webfacet."""
 
-        webfacet_documents = DocumentAsset.objects.filter(webfacet=self)
-        return webfacet_documents
+        return self.documentasset_set.all()
 
-    def get_webfacet_audio(self):
+    def get_facet_audio(self):
         """Retrieve all audio objects associated with a webfacet."""
 
-        webfacet_audio = AudioAsset.objects.filter(webfacet=self)
-        return webfacet_audio
+        return self.audioasset_set.all()
 
-    def get_webfacet_video(self):
+    def get_facet_video(self):
         """Retrieve all video objects associated with a webfacet."""
 
-        webfacet_video = VideoAsset.objects.filter(webfacet=self)
-        return webfacet_video
+        return self.videoasset_set.all()
 
-    def get_webfacet_download(self):
-        """ Return rst formatted string for downloading webfacet and its meta."""
+    def get_facet_download(self):
+        """ Return rst formatted string for downloading facet and its meta."""
 
         # loop over m2m and get the values as string
         credits = self.credit.all()
@@ -460,29 +455,29 @@ class Facet(models.Model):
         credits = ",".join(credits)
 
         # loop over m2m and get the values as string
-        images = WebFacet.get_webfacet_images(self)
+        images = Facet.get_facet_images(self)
         images = [image.asset_title for image in images]
         images = ",".join(images)
 
         # loop over m2m and get the values as string
-        documents = WebFacet.get_webfacet_documents(self)
+        documents = Facet.get_facet_documents(self)
         documents = [document.asset_title for document in documents]
         documents = ",".join(documents)
 
         # loop over m2m and get the values as string
-        audiofiles = WebFacet.get_webfacet_audio(self)
+        audiofiles = Facet.get_facet_audio(self)
         audiofiles = [audiofile.asset_title for audiofile in audiofiles]
         audiofiles = ",".join(audiofiles)
 
         # verify the text area fields have correct encoding
         title = self.title.encode('utf-8')
-        description = self.wf_description.encode('utf-8')
+        description = self.description.encode('utf-8')
         excerpt = self.excerpt.encode('utf-8')
-        share_note = self.share_note.encode('utf-8')
-        content = self.wf_content.encode('utf-8')
+        share_note = self.share_notes.encode('utf-8')
+        content = self.content.encode('utf-8')
 
-        webfacet_download = """
-        WebFacet
+        facet_download = """
+        Facet
         ========
         {title}
         --------------
@@ -509,17 +504,13 @@ class Facet(models.Model):
         -------
         {content}
         """.format(title=title, desc=description, story=self.story, owner=self.owner,
-        organization=self.organization.name, original=self.original_webfacet, editor=self.editor,
+        organization=self.organization.name, original=self.original_facet, editor=self.editor,
         credit=credits, code=self.code, excerpt=excerpt,
         keywords=self.keywords, status=self.status, dueedit=self.due_edit, rundate=self.run_date,
-        sharenote=share_note, images=images, captions=self.captions, documents=documents,
+        sharenotes=share_note, images=images, captions=self.captions, documents=documents,
         audiofiles=audiofiles, content=content)
 
-        return webfacet_download
-
-    @property
-    def description(self):
-        return self.wf_description
+        return facet_download
 
     @property
     def search_title(self):
@@ -528,11 +519,6 @@ class Facet(models.Model):
     @property
     def type(self):
         return "WebFacet"
-
-
-
-
-
 
 
 #-----------------------------------------------------------------------#
@@ -562,7 +548,6 @@ class FacetContributor(models.Model):
                                         contributor=self.user.credit_name,
                                         )
 
-
 #-----------------------------------------------------------------------#
 #   CONTENT LICENSE
 #-----------------------------------------------------------------------#
@@ -572,7 +557,7 @@ class ContentLicense(models.Model):
     """Content License for facets.
 
     Facets can have a related content license. The data for this model
-    includes the 7 7 established variations of the Creative Commons license;
+    includes the 7 established variations of the Creative Commons license;
     these have a blank Organziation field.
 
     Organizations can also create their own content licenses/reuse terms and
@@ -608,7 +593,6 @@ class ContentLicense(models.Model):
 
     def __str__(self):
         return self.name
-
 
 #-----------------------------------------------------------------------#
 #   WEBFACET
@@ -1835,8 +1819,6 @@ class VideoFacet(models.Model):
     @property
     def type(self):
         return "VideoFacet"
-
-
 
 #-----------------------------------------------------------------------#
 #   Contributor Associations:
