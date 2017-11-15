@@ -18,7 +18,7 @@ from .people import User, Organization
 #-----------------------------------------------------------------------#
 
 
-class ContractorInfo(User):
+class ContractorInfo(models.Model):
     """A User who is a freelancer or contractor has a ContractorInfo
     record on Facet.
 
@@ -27,9 +27,9 @@ class ContractorInfo(User):
     """
 
     # user account created for the contractor
-    # user = models.ForeignKey(
-    #     User,
-    # )
+    user = models.OneToOneField(
+        User,
+    )
 
     resume = models.FileField(
         upload_to='resumes/%Y/%m/%d',
@@ -70,6 +70,14 @@ class OrganizationContractorInfo(models.Model):
     The data captured here is intended to reflect an Organization's internal
     notes regarding a Contractor.
     """
+
+    organization = models.ForeignKey(
+        "Organization",
+    )
+
+    contractor_info = models.ForeignKey(
+        "ContractorInfo",
+    )
 
     w9_on_file = models.BooleanField(
         default=False,
