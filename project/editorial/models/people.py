@@ -10,7 +10,7 @@ from django.shortcuts import get_object_or_404
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-from .discussion import Discussion, Comment, PrivateMessage
+# from .discussion import Discussion, Comment, PrivateMessage
 
 #-----------------------------------------------------------------------#
 #   People:
@@ -220,10 +220,12 @@ class User(AbstractUser):
         Displayed in user inbox under 'inbox'.
         """
 
-        from . import PrivateMessage
+        return self.private_message_recipient.all()
 
-        messages_received = PrivateMessage.objects.filter(recipient=self)
-        return messages_received
+        # from . import PrivateMessage
+        #
+        # messages_received = PrivateMessage.objects.filter(recipient=self)
+        # return messages_received
 
     def private_messages_sent(self):
         """ Return all private messages a user has sent.

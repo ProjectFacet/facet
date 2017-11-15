@@ -225,16 +225,16 @@ class TaskNote(Note):
 
     owner = models.ForeignKey(
         User,
-        related_name='storynote_owner'
+        related_name='tasknote_owner'
     )
 
     organization=models.ForeignKey(
         Organization,
-        related_name="storynote_org"
+        related_name="tasknote_org"
     )
 
     task = models.ForeignKey(
-        Task,
+        "Task",
     )
 
     def __str__(self):
@@ -256,16 +256,16 @@ class EventNote(Note):
 
     owner = models.ForeignKey(
         User,
-        related_name='storynote_owner'
+        related_name='eventnote_owner'
     )
 
     organization=models.ForeignKey(
         Organization,
-        related_name="storynote_org"
+        related_name="eventnote_org"
     )
 
     event = models.ForeignKey(
-        Event,
+        "Event",
     )
 
     def __str__(self):
