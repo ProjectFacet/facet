@@ -38,7 +38,7 @@ from .platforms import Platform, PlatformAccount
 from .tasks import Task
 from .events import Event
 from .copy import *   # XXX
-# from .contractors import ContractorInfo, OrganizationContractorInfo
+from .contractors import ContractorInfo, OrganizationContractorInfo
 
 
 #-----------------------------------------------------------------------#
