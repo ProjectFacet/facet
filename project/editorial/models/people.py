@@ -213,7 +213,6 @@ class User(AbstractUser):
         return self.private_message_recipient.all()
 
 
-
     def private_messages_sent(self):
         """ Return all private messages a user has sent.
 
@@ -246,9 +245,6 @@ class User(AbstractUser):
     @property
     def type(self):
         return "User"
-
-
-
 
 
 #-----------------------------------------------------------------------#
@@ -422,11 +418,18 @@ class Organization(models.Model):
         to display streams of all comments.
         """
 
-        from .discussion import Comment
+        # from .discussion import Comment
+        # users = self.get_org_users()
+        # org_user_comments = Comment.objects.filter(Q(user__in=users))
+        # return org_user_comments
 
         users = self.get_org_users()
-        org_user_comments = self.comment.filter(Q(user__in=users))
+        org_user_comments = []
+        for user in users:
+            user_comment = user.comment_set.all()
+            org_user_comments.extend(user_comment)
         return org_user_comments
+
 
     def get_org_comments(self):
         """Retrieve all organization comments.
@@ -434,9 +437,18 @@ class Organization(models.Model):
         Used to display all organization comments in dashboard and inbox.
         """
 
-        from . import Comment
-        organization_comments = Comment.objects.filter(discussion__discussion_type='ORG', user__organization=self)
+        # from .discussion import Comment
+        # users = self.get_org_users()
+        # org_user_comments = Comment.objects.filter(Q(user__in=users))
+        # return org_user_comments
+
+        org_user_comments = self.get_org_user_comments()
+        organization_comments = []
+        for comment in org_user_comments:
+            if comment.discussion.discussion_type == 'ORG':
+                organization_comments.append(comment)
         return organization_comments
+
 
     def get_network_comments(self):
         """Retrieve all comments for networks an organization is a member of.
@@ -444,7 +456,7 @@ class Organization(models.Model):
         Used to display all network comments in dashboard and inbox.
         """
 
-        networks = Organization.get_org_networks(self)
+        networks = self.get_org_networks()
         network_discussions = [network.discussion for network in networks]
         network_comments = Comment.objects.filter(discussion__in=network_discussions)
         return network_comments
@@ -465,7 +477,8 @@ class Organization(models.Model):
 
         Used to display all series comments in dashboard and inbox.
         """
-
+        from .series import Series
+        from .discussion import Comment
         org_series = Series.objects.filter(organization=self)
         series_discussions = [series.discussion for series in org_series]
         series_comments = Comment.objects.filter(discussion__in=series_discussions)
@@ -476,20 +489,13 @@ class Organization(models.Model):
 
         Used to display all facet comments in dashboard and inbox.
         """
-
+        from .facets import Facet
+        from .discussion import Comment
         # WJB XXX: this seems inefficient, we should reduce to discussion fields on orig
         # querysets
         # FIXME to be revised after facet refactoring
 
-        org_facets = []
-        webfacets = WebFacet.objects.filter(Q(organization=self))
-        printfacets = PrintFacet.objects.filter(Q(organization=self))
-        audiofacets = AudioFacet.objects.filter(Q(organization=self))
-        videofacets = VideoFacet.objects.filter(Q(organization=self))
-        org_facets.extend(webfacets)
-        org_facets.extend(printfacets)
-        org_facets.extend(audiofacets)
-        org_facets.extend(videofacets)
+        org_facets = Facet.objects.filter(organization=self)
         facet_discussions = [facet.discussion for facet in org_facets]
         facet_comments = Comment.objects.filter(discussion__in=facet_discussions)
         return facet_comments
@@ -501,9 +507,11 @@ class Organization(models.Model):
         is displaying in a collaborative content dashboard.
         """
 
+        from .story import Story
         org_collaborative_content = []
         external_stories = Story.objects.filter(Q(collaborate_with=self))
-        internal_stories = Story.objects.filter(organization=self).filter(collaborate=True)
+        internal_stories = self.story_set.filter(organization=self).filter(collaborate=True)
+        # internal_stories = Story.objects.filter(organization=self).filter(collaborate=True)
         org_collaborative_content.extend(external_stories)
         org_collaborative_content.extend(internal_stories)
 

@@ -1,23 +1,14 @@
 from django.db import models
 from django.db.models import Q
-# from django.contrib.postgres.fields import ArrayField
-# from simple_history.models import HistoricalRecords
 from model_utils.models import TimeStampedModel
 import time as timemk
 from datetime import datetime, timedelta, time
 from imagekit.models import ProcessedImageField, ImageSpecField
-# from pilkit.processors import ResizeToFit, SmartResize
-# from django.contrib.auth.models import AbstractUser
 from django.utils.encoding import python_2_unicode_compatible
 from django.core.urlresolvers import reverse
 from django.utils import timezone
 from django.shortcuts import get_object_or_404
-# from itertools import chain
-# from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
-# from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ValidationError
-# from django.db.models.signals import post_save
-# from django.dispatch import receiver
 
 from . import User, Organization, Network, Project, Series
 
@@ -99,21 +90,20 @@ class PlatformAccount(models.Model):
     )
 
     # a platform account can be connected to a User, Organization or Project
-    # using this method to connect platform accounts to another model in order
-    # to easily see which models this is connected to without have to search
-    # other models to see if there's a GenericForeignKey.
-    # Can change later if compelling reason.
+    # a platform account must be true for one of these.
 
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         blank=True,
+        null=True,
     )
 
     organization = models.ForeignKey(
         Organization,
         on_delete=models.CASCADE,
         blank=True,
+        null=True,
     )
 
     project = models.ForeignKey(
