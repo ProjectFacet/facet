@@ -134,7 +134,7 @@ class Project(models.Model):
         max_length=250,
         blank=True,
     )
-    
+
 
     class Meta:
         verbose_name = 'Project'
@@ -157,8 +157,10 @@ class Project(models.Model):
     def get_project_images(self):
         """Return all image assets associated with facets that are part of a project."""
 
+        from .story import Story
+
         # get all stories associated with a project
-        project_stories=Story.objects.filter(Q(project=self))
+        project_stories = self.story_set.all()
         # get all image assets associated with those stories.
         project_images = []
         for story in project_stories:
@@ -170,11 +172,11 @@ class Project(models.Model):
         """Return all document assets associated with facets that are part of a project."""
 
         # get all stories associated with a project
-        project_stories=Story.objects.filter(Q(project=self))
+        project_stories = self.story_set.all()
         # get all document assets associated with those stories.
         project_documents = []
         for story in project_stories:
-            documents=Story.get_story_documents(story)
+            documents=story.get_story_documents()
             project_documents.extend(documents)
         return project_documents
 
@@ -182,11 +184,11 @@ class Project(models.Model):
         """Return all audio assets associated with facets that are part of a project."""
 
         # get all stories associated with a project
-        project_stories=Story.objects.filter(Q(project=self))
+        project_stories = self.story_set.all()
         # get all audio assets associated with those stories.
         project_audio = []
         for story in project_stories:
-            audio=Story.get_story_audio(story)
+            audio=story.get_story_audio()
             project_audio.extend(audio)
         return project_audio
 
@@ -194,37 +196,25 @@ class Project(models.Model):
         """Return all video assets associated with facets that are part of a project."""
 
         # get all stories associated with a project
-        project_stories=Story.objects.filter(Q(project=self))
+        project_stories = self.story_set.all()
         # get all video assets associated with those stories.
         project_video = []
         for story in project_stories:
-            videos=Story.get_story_video(story)
+            videos=story.get_story_video()
             project_video.extend(videos)
         return project_video
 
     def get_project_tasks(self):
         """Return all tasks associated with a project."""
-
-        project_tasks=Task.objects.filter(Q(project=self))
-        return project_tasks
+        return self.task_set.all()
 
     def get_project_stories(self):
         """Return all stories associated with a project."""
-
-        project_stories=Story.objects.filter(Q(project=self))
-        return project_stories
+        return self.story_set.all()
 
     def get_project_story_events(self):
         """Return all story events associated with a project."""
-
-        project_stories=Project.get_project_stories(self)
-        project_facet_schedule = []
-
-        for story in project_stories:
-            story_schedule=Story.get_story_schedule(story)
-            project_facet_schedule.extend(story_schedule)
-
-        return project_facet_schedule
+        return self.event_set.all()
 
     @property
     def description(self):

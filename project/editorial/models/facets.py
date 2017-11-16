@@ -13,6 +13,7 @@ from django.shortcuts import get_object_or_404
 from django.core.exceptions import ValidationError
 
 from . import User, Organization, Network, Project, Series, Story
+from .assets import ImageAsset, DocumentAsset, AudioAsset, VideoAsset
 
 #-----------------------------------------------------------------------#
 #-----------------------------------------------------------------------#
@@ -485,24 +486,24 @@ class Facet(models.Model):
         return facet_copy
 
     def get_facet_images(self):
-        """Retrieve all images objects associated with a webfacet."""
+        """Retrieve all images objects associated with a facet."""
 
-        return self.imageasset_set.all()
+        return self.image_assets.all()
 
     def get_facet_documents(self):
-        """Retrieve all documents objects associated with a webfacet."""
+        """Retrieve all documents objects associated with a facet."""
 
-        return self.documentasset_set.all()
+        return self.document_assets.all()
 
     def get_facet_audio(self):
-        """Retrieve all audio objects associated with a webfacet."""
+        """Retrieve all audio objects associated with a facet."""
 
-        return self.audioasset_set.all()
+        return self.audio_assets.all()
 
     def get_facet_video(self):
-        """Retrieve all video objects associated with a webfacet."""
+        """Retrieve all video objects associated with a facet."""
 
-        return self.videoasset_set.all()
+        return self.video_assets.all()
 
     def get_facet_download(self):
         """ Return rst formatted string for downloading facet and its meta."""
@@ -576,7 +577,7 @@ class Facet(models.Model):
 
     @property
     def type(self):
-        return "WebFacet"
+        return "Facet"
 
 
 #-----------------------------------------------------------------------#
@@ -863,26 +864,22 @@ class WebFacet(models.Model):
     def get_webfacet_images(self):
         """Retrieve all images objects associated with a webfacet."""
 
-        webfacet_images = ImageAsset.objects.filter(webfacet=self)
-        return webfacet_images
+        return self.ImageAsset_set.all()
 
     def get_webfacet_documents(self):
         """Retrieve all documents objects associated with a webfacet."""
 
-        webfacet_documents = DocumentAsset.objects.filter(webfacet=self)
-        return webfacet_documents
+        return self.DocumentAsset_set.all()
 
     def get_webfacet_audio(self):
         """Retrieve all audio objects associated with a webfacet."""
 
-        webfacet_audio = AudioAsset.objects.filter(webfacet=self)
-        return webfacet_audio
+        return self.AudioAsset_set.all()
 
     def get_webfacet_video(self):
         """Retrieve all video objects associated with a webfacet."""
 
-        webfacet_video = VideoAsset.objects.filter(webfacet=self)
-        return webfacet_video
+        return self.VideoAsset_set.all()
 
     def get_webfacet_download(self):
         """ Return rst formatted string for downloading webfacet and its meta."""

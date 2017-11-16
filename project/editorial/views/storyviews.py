@@ -60,6 +60,16 @@ from editorial.models import (
 #   Story Views
 #----------------------------------------------------------------------#
 
+# class StoryListView(DetailView):
+#     """ Displays a filterable table of stories.
+#
+#     Initial display organizes content by story>facet>est. run date
+#     Filterable by story name, facet type, facet name, due for edit, est. run date, credit,
+#     editor, status.
+#     """
+
+
+
 def story_list(request):
     """ Displays a filterable table of stories.
 
@@ -74,38 +84,6 @@ def story_list(request):
         'stories': stories,
         }
     )
-
-
-# def story_new(request):
-#     """ Create story page. """
-#
-#     organization = request.user.organization
-#     org_partners = Organization.get_org_networks(organization)
-#     series = Series.objects.all()
-#
-#     if request.method == "POST":
-#         storyform = StoryForm(request.POST, request=request)
-#         #import pdb; pdb.set_trace()
-#         if storyform.is_valid():
-#             story = storyform.save(commit=False)
-#             story.owner = request.user
-#             story.organization = request.user.organization
-#             discussion = Discussion.objects.create_discussion("STO")
-#             story.discussion = discussion
-#             story.save()
-#             storyform.save_m2m()
-#
-#             # record action for activity stream
-#             action.send(request.user, verb="created", action_object=story)
-#
-#             return redirect('story_detail', pk=story.pk)
-#     else:
-#         storyform = StoryForm(request=request)
-#     return render(request, 'editorial/storynew.html', {
-#         'storyform': storyform,
-#         'series': series,
-#         'org_partners': org_partners,
-#         })
 
 
 class StoryCreateView(CreateView):
@@ -171,33 +149,6 @@ class StoryUpdateView(UpdateView):
 
         action.send(self.request.user, verb="edited", action_object=self.object)
         return super(StoryUpdateView, self).get_success_url()
-
-
-# def story_edit(request, pk):
-#     """ Edit story page. """
-#
-#     organization = request.user.organization
-#     org_partners = Organization.get_org_networks(organization)
-#
-#     story = get_object_or_404(Story, pk=pk)
-#
-#     if request.method == "POST":
-#         storyform = StoryForm(data=request.POST, instance=story, request=request)
-#         if storyform.is_valid():
-#             storyform.save()
-#
-#             # record action for activity stream
-#             action.send(request.user, verb="edited", action_object=story)
-#
-#             return redirect('story_detail', pk=story.id)
-#     else:
-#         storyform = StoryForm(instance=story, request=request)
-#
-#     return render(request, 'editorial/storyedit.html', {
-#         'story': story,
-#         'storyform': storyform,
-#         'org_partners': org_partners,
-#     })
 
 
 def story_delete(request, pk):

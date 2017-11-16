@@ -89,13 +89,13 @@ def project_detail(request, pk):
     taskform = TaskForm(request=request)
     projectnotes = ProjectNote.objects.filter(project=project)[:10]
     projectcommentform = ProjectCommentForm()
-    projectevents = Event.objects.filter(project=project)
     projectcomments = Comment.objects.filter(discussion=project.discussion).order_by('-date')
-    project_images = Project.get_project_images(project)
-    project_documents = Project.get_project_documents(project)
-    project_audio = Project.get_project_audio(project)
-    project_video = Project.get_project_video(project)
-    project_tasks = Project.get_project_tasks(project)
+    project_images = project.get_project_images()
+    project_documents = project.get_project_documents()
+    project_audio = project.get_project_audio()
+    project_video = project.get_project_video()
+    project_tasks = project.get_project_tasks()
+    project_events = Event.objects.filter(project=project)
 
     return render(request, 'editorial/projectdetail.html', {
         'project': project,
@@ -103,7 +103,7 @@ def project_detail(request, pk):
         'projectnotes': projectnotes,
         'projectcomments': projectcomments,
         'projectcommentform': projectcommentform,
-        'projectevents': projectevents,
+        'projectevents': project_events,
         'project_images': project_images,
         'project_documents': project_documents,
         'project_audio': project_audio,

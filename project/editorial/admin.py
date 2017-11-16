@@ -11,6 +11,7 @@ from models import (
     Project,
     Series,
     Story,
+    Facet,
     WebFacet,
     PrintFacet,
     AudioFacet,
@@ -51,6 +52,7 @@ admin.site.register(PlatformAccount)
 admin.site.register(Project)
 admin.site.register(Series)
 admin.site.register(Story)
+admin.site.register(Facet)
 admin.site.register(WebFacet)
 admin.site.register(PrintFacet)
 admin.site.register(AudioFacet)
