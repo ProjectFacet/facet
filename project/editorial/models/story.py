@@ -256,7 +256,7 @@ class Story(models.Model):
         """
 
         collaborators = self.collaborate_with.all()
-        story_team = User.objects.filter(Q(Q(organization=self.organization) | Q(organization__in=collaborators)))
+        story_team = self.team.filter(Q(Q(organization=self.organization) | Q(organization__in=collaborators)))
         return story_team
 
     def get_story_images(self):

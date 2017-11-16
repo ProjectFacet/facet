@@ -65,7 +65,7 @@ def image_asset_detail(request, pk):
     """ Display detail information for a specific image asset."""
 
     image = get_object_or_404(ImageAsset, id=pk)
-    image_usage = ImageAsset.get_image_usage(image)
+    image_usage = image.get_image_usage()
 
     if request.method =="POST":
         editimageform = ImageAssetForm(data=request.POST, instance=image)

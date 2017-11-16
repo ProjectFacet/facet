@@ -180,20 +180,7 @@ class ImageAsset(BaseImage, BaseAssetMetadata):
 
     def get_image_usage(self):
         """Return facets an image is associated with."""
-
-        # After Facet refactor
-        # image_usage = Facet.objects.filter(Q(image_assets=self))
-
-        image_usage = []
-        image_webfacets = WebFacet.objects.filter(Q(image_assets=self))
-        image_printfacets = PrintFacet.objects.filter(Q(image_assets=self))
-        image_audiofacets = AudioFacet.objects.filter(Q(image_assets=self))
-        image_videofacets = VideoFacet.objects.filter(Q(image_assets=self))
-        image_usage.extend(image_webfacets)
-        image_usage.extend(image_printfacets)
-        image_usage.extend(image_audiofacets)
-        image_usage.extend(image_videofacets)
-        return image_usage
+        return self.facet_set.all()
 
     def get_absolute_url(self):
         return reverse('image_asset_detail', kwargs={'pk': self.id})
@@ -265,23 +252,10 @@ class DocumentAsset(BaseDocumentAsset, BaseAssetMetadata):
 
     def get_document_usage(self):
         """Return facets a document is associated with."""
+        return self.facet_set.all()
 
-        # After Facet refactor
-        # document_usage = Facet.objects.filter(Q(document_assets=self))
-
-        document_usage = []
-        document_webfacets = WebFacet.objects.filter(Q(document_assets=self))
-        document_printfacets = PrintFacet.objects.filter(Q(document_assets=self))
-        document_audiofacets = AudioFacet.objects.filter(Q(document_assets=self))
-        document_videofacets = VideoFacet.objects.filter(Q(document_assets=self))
-        document_usage.extend(document_webfacets)
-        document_usage.extend(document_printfacets)
-        document_usage.extend(document_audiofacets)
-        document_usage.extend(document_videofacets)
-        return document_usage
-
-    # def get_absolute_url(self):
-    #     return reverse('document_asset_detail', kwargs={'pk': self.id})
+    def get_absolute_url(self):
+        return reverse('document_asset_detail', kwargs={'pk': self.id})
 
 
 class SimpleDocument(BaseDocumentAsset):
@@ -349,23 +323,10 @@ class AudioAsset(BaseAudio, BaseAssetMetadata):
 
     def get_audio_usage(self):
         """Return facets an audio file is associated with."""
+        return self.facet_set.all()
 
-        # After Facet refactor
-        # audio_usage = Facet.objects.filter(Q(audio_assets=self))
-
-        audio_usage = []
-        audio_webfacets = WebFacet.objects.filter(Q(audio_assets=self))
-        audio_printfacets = PrintFacet.objects.filter(Q(audio_assets=self))
-        audio_audiofacets = AudioFacet.objects.filter(Q(audio_assets=self))
-        audio_videofacets = VideoFacet.objects.filter(Q(audio_assets=self))
-        audio_usage.extend(audio_webfacets)
-        audio_usage.extend(audio_printfacets)
-        audio_usage.extend(audio_audiofacets)
-        audio_usage.extend(audio_videofacets)
-        return audio_usage
-
-    # def get_absolute_url(self):
-    #     return reverse('asset_detail', kwargs={'pk': self.id})
+    def get_absolute_url(self):
+        return reverse('asset_detail', kwargs={'pk': self.id})
 
 
 class SimpleAudio(BaseAudio):
@@ -438,19 +399,7 @@ class VideoAsset(BaseVideo, BaseAssetMetadata):
 
     def get_video_usage(self):
         """Return facets an video file is associated with."""
-
-        # After Facet refactor
-        # video_usage = Facet.objects.filter(Q(video_assets=self))
-
-        video_usage = []
-        video_webfacets = WebFacet.objects.filter(Q(video_assets=self))
-        video_printfacets = PrintFacet.objects.filter(Q(video_assets=self))
-        video_videofacets = VideoFacet.objects.filter(Q(video_assets=self))
-        video_usage.extend(video_webfacets)
-        video_usage.extend(video_printfacets)
-        video_usage.extend(video_videofacets)
-        video_usage.extend(video_videofacets)
-        return video_usage
+        return self.facet_set.all()
 
 
 class SimpleVideo(BaseVideo):

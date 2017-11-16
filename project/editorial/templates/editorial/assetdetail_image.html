@@ -125,6 +125,7 @@
         <hr class="content-lower-25">
         <h4 class="m-b-20">Usage</h4>
         {% for facet in image_usage %}
+          {{ facet.name }}
           {% if facet.type == 'WebFacet' %}
           <a href="{% url 'story_detail' pk=facet.story.id %}#web" title="Go to Facet"><p class="f-s-14 m-t-10"><i class="fa fa-angle-right subtle" aria-hidden="true"></i> {{ facet.title }}</p></a>
           {% elif facet.type == 'PrintFacet' %}
