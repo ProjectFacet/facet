@@ -81,23 +81,18 @@ class BaseAssetMetadata(models.Model):
     class Meta:
         abstract = True
 
-    def copy_image(self):
-        """ Create a copy of an asset for a partner organization in a network.
+    def copy(self):
+        """Create a copy of an asset for a partner organization in a network.
 
         Copied assets keep all associated information. Organization is set to
         the copier's organization and the original flag is set to false.
         Triggering a copy also triggers the creation of an asset copy detail record."""
 
-        # FIXME Q for J:
-        # Unclear how to generalize this for base when there are still 4 asset types
-
-        image_copy = get_object_or_404(ImageAsset, id=self.id)
         #set the id = None to create the copy of the image instance
-        image_copy.id = None
-        image_copy.save()
-        image_copy.original = False
-        image_copy.save()
-        return image_copy
+        self.id = None
+        self.original = False
+        self.save()
+        return self
 
     def get_asset_download_info(self):
         """Return rst of asset information for download."""
@@ -122,7 +117,7 @@ class BaseAssetMetadata(models.Model):
         organization=self.organization.name, original=self.original,
         keywords=self.keywords)
 
-        return image_info
+        return asset_info
 
 #-----------------------------------------------------------------------#
 #   Image Asset

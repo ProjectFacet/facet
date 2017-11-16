@@ -22,13 +22,19 @@ from views import (
     communicationviews,
     noteviews,
     downloadviews,
-    scheduleviews)
+    scheduleviews,
+    facets,
+    )
 
 from . import api
 
 from views.searchviews import EditorialSearchView
 
 urlpatterns = [
+    url(r'^facet-add/$', facets.FacetPreCreateView.as_view(), name="facet_precreate"),
+    url(r'^facet-add/(?P<template_id>\d+)/$', facets.FacetCreateView.as_view(), name="facet_add"),
+    url(r'^facet-edit/(?P<pk>\d+)/$', facets.FacetUpdateView.as_view(), name="facet_edit"),
+
     #----------------------------------------------------------------------#
     #   Test URL - Used for non-destructive testing of templates/queries
     #----------------------------------------------------------------------#
@@ -162,10 +168,10 @@ urlpatterns = [
     #----------------------------------------------------------------------#
     #   Story URLS
     #----------------------------------------------------------------------#
-    url(r'^story/new/$', storyviews.story_new, name='story_new'),
+    url(r'^story/new/$', storyviews.StoryCreateView.as_view(), name='story_new'),
     url(r'^stories$', storyviews.story_list, name='story_list'),
     url(r'^story/(?P<pk>[0-9]+)/$', storyviews.story_detail, name='story_detail'),
-    url(r'^story/(?P<pk>[0-9]+)/edit/$', storyviews.story_edit, name='story_edit'),
+    url(r'^story/(?P<pk>[0-9]+)/edit/$', storyviews.StoryUpdateView.as_view(), name='story_edit'),
     url(r'^story/(?P<pk>[0-9]+)/delete/$', storyviews.story_delete, name='story_delete'),
     url(r'^story/(?P<pk>[0-9]+)/notes/$', noteviews.story_notes, name='story_notes'),
     url(r'^story/(?P<pk>[0-9]+)/note/(?P<note_type>[-\w]+)/content$', noteviews.note_content_html, name='note_content_html'),

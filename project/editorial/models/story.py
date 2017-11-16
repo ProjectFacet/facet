@@ -404,6 +404,13 @@ class Story(models.Model):
 
         return story_facets
 
+
+        return self.facet_set.all()
+
+        # {% for facet in story.get_story_facets %}
+        #    <a href="{{ facet.get_absolute_url }}">{{ facet.name }}</a>
+        # {% endfor %}
+
     def get_story_schedule(self):
         """Return all the deadlines for the facets of a story."""
 

@@ -10,7 +10,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.utils import timezone
-from django.views.generic import TemplateView , UpdateView, DetailView
+from django.views.generic import TemplateView , UpdateView, DetailView, CreateView
 from django.views.decorators.csrf import csrf_exempt
 import datetime
 import json
@@ -76,63 +76,128 @@ def story_list(request):
     )
 
 
-def story_new(request):
-    """ Create story page. """
+# def story_new(request):
+#     """ Create story page. """
+#
+#     organization = request.user.organization
+#     org_partners = Organization.get_org_networks(organization)
+#     series = Series.objects.all()
+#
+#     if request.method == "POST":
+#         storyform = StoryForm(request.POST, request=request)
+#         #import pdb; pdb.set_trace()
+#         if storyform.is_valid():
+#             story = storyform.save(commit=False)
+#             story.owner = request.user
+#             story.organization = request.user.organization
+#             discussion = Discussion.objects.create_discussion("STO")
+#             story.discussion = discussion
+#             story.save()
+#             storyform.save_m2m()
+#
+#             # record action for activity stream
+#             action.send(request.user, verb="created", action_object=story)
+#
+#             return redirect('story_detail', pk=story.pk)
+#     else:
+#         storyform = StoryForm(request=request)
+#     return render(request, 'editorial/storynew.html', {
+#         'storyform': storyform,
+#         'series': series,
+#         'org_partners': org_partners,
+#         })
 
-    organization = request.user.organization
-    org_partners = Organization.get_org_networks(organization)
 
-    series = Series.objects.all()
-    if request.method == "POST":
-        storyform = StoryForm(request.POST, request=request)
-        #import pdb; pdb.set_trace()
-        if storyform.is_valid():
-            story = storyform.save(commit=False)
-            story.owner = request.user
-            story.organization = request.user.organization
-            discussion = Discussion.objects.create_discussion("STO")
-            story.discussion = discussion
-            story.save()
-            storyform.save_m2m()
+class StoryCreateView(CreateView):
+    """Create a story."""
 
-            # record action for activity stream
-            action.send(request.user, verb="created", action_object=story)
+    model = Story
+    form_class = StoryForm
 
-            return redirect('story_detail', pk=story.pk)
-    else:
-        storyform = StoryForm(request=request)
-    return render(request, 'editorial/storynew.html', {
-        'storyform': storyform,
-        'series': series,
-        'org_partners': org_partners,
-        })
+    def get_form_kwargs(self):
+        """Pass current user organization to the form."""
+
+        kw = super(StoryCreateView, self).get_form_kwargs()
+        kw.update({'organization': self.request.user.organization})
+        return kw
+
+    def org_partners(self):
+        """Get list of networks for the current user."""
+
+        return self.request.user.organization.get_org_networks()
+
+    def series(self):
+        return Series.objects.all()
+
+    def form_valid(self, form):
+        """Save -- but first adding owner and organization."""
+
+        self.object = story = form.save(commit=False)
+
+        discussion = Discussion.objects.create_discussion("STO")
+        story.discussion = discussion
+
+        story.owner = self.request.user
+        story.organization = self.request.user.organization
+
+        story.save()
+        form.save_m2m()
+
+        action.send(self.request.user, verb="created", action_object=self.object)
+
+        return redirect(self.get_success_url())
 
 
-def story_edit(request, pk):
-    """ Edit story page. """
+class StoryUpdateView(UpdateView):
+    """Update a story."""
 
-    organization = request.user.organization
-    org_partners = Organization.get_org_networks(organization)
+    model = Story
+    form_class = StoryForm
 
-    story = get_object_or_404(Story, pk=pk)
+    def get_form_kwargs(self):
+        """Pass current user organization to the form."""
 
-    if request.method == "POST":
-        storyform = StoryForm(data=request.POST, instance=story, request=request)
-        if storyform.is_valid():
-            storyform.save()
+        kw = super(StoryUpdateView, self).get_form_kwargs()
+        kw.update({'organization': self.request.user.organization})
+        return kw
 
-            # record action for activity stream
-            action.send(request.user, verb="edited", action_object=story)
+    def org_partners(self):
+        """Get list of networks for the current user."""
 
-            return redirect('story_detail', pk=story.id)
-    else:
-        storyform = StoryForm(instance=story, request=request)
+        return self.request.user.organization.get_org_networks()
 
-    return render(request, 'editorial/storyedit.html', {
-        'story': story,
-        'storyform': storyform,
-        'org_partners': org_partners,
-    })
+    def get_success_url(self):
+        """Record action for activity stream."""
+
+        action.send(self.request.user, verb="edited", action_object=self.object)
+        return super(StoryUpdateView, self).get_success_url()
+
+
+# def story_edit(request, pk):
+#     """ Edit story page. """
+#
+#     organization = request.user.organization
+#     org_partners = Organization.get_org_networks(organization)
+#
+#     story = get_object_or_404(Story, pk=pk)
+#
+#     if request.method == "POST":
+#         storyform = StoryForm(data=request.POST, instance=story, request=request)
+#         if storyform.is_valid():
+#             storyform.save()
+#
+#             # record action for activity stream
+#             action.send(request.user, verb="edited", action_object=story)
+#
+#             return redirect('story_detail', pk=story.id)
+#     else:
+#         storyform = StoryForm(instance=story, request=request)
+#
+#     return render(request, 'editorial/storyedit.html', {
+#         'story': story,
+#         'storyform': storyform,
+#         'org_partners': org_partners,
+#     })
 
 
 def story_delete(request, pk):
@@ -157,6 +222,26 @@ def story_team_options_json(request, pk):
         story_team[item.id]=item.credit_name
     print story_team
     return HttpResponse(json.dumps(story_team), content_type = "application/json")
+
+
+# move to cbv (DetailView)
+# that removes need to get story
+# still need to get other forms (comments, assets, ectc)
+#
+
+
+class StoryDetailView(DetailView):
+    model = Story
+
+    def image_assets(self):
+        # {% with imgs=images_assets %}
+        #    {{ imgs.images }}
+        #    {{ images.form }}
+        # {% endwith %}
+        images = self.request.user.organization.get_org_image_library()
+        form = ImageAssetForm()
+        return {'images': images, 'form': form}
+
 
 
 def story_detail(request, pk):

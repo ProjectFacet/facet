@@ -21,34 +21,83 @@ from . import User, Organization, Network, Project, Series, Story
 #-----------------------------------------------------------------------#
 
 
-# class FacetTemplate(models.Model):
-#     """Template for facets.
-#
-#     A template is a collection of fields so that when adding/editing a facet,
-#     only appropriate fields are shown.
-#     """
-#
-#     name = models.CharField(
-#         max_length=50,
-#     )
+@python_2_unicode_compatible
+class FacetTemplate(models.Model):
+    """Template for facets.
 
-    # Organization  null=system-wide
-    # Owner
-    # Description
-    # Fields [arrayfield]  ["runtime", "editor", etc]
-    #   does not contain always-common fields [title, credit, body, etc]
+    A template is a collection of fields so that when adding/editing a facet,
+    only appropriate fields are shown.
+    """
 
-    # creation_date
+    name = models.CharField(
+        max_length=50,
+    )
 
-# TODO: add a few out-of-box templates
-# ALL have these fields:
-# BASE = name, headline, description, editor, credit, team, content, status, due_edit, run_date, keywords, assets
-# "Web article" = BASE + update_notes, excerpt, share_note, content_license, related_links, github_link, embeds, pushed_to_wp
-# "Video" = BASE + usage_rights
-# "Audio" = BASE + producer
-# "Print" = BASE + update_notes, share_note, edit_note, content_license, sidebar_content
+    # A template without an organization is a "site-wide" template;
+    # when listing templates for an organization, list the site-wide and
+    # ones that match the organization.
+    organization = models.ForeignKey(
+        "Organization",
+        blank=True,
+        null=True,
+    )
+
+    owner = models.ForeignKey(
+        "User",
+        blank=True,
+        null=True,
+    )
+
+    description = models.CharField(
+        max_length=100,
+        blank=True,
+    )
+
+    fields_used = ArrayField(
+        models.CharField(max_length=50),
+        default=list,
+        help_text='Fields used by this template.',
+        blank=True,
+    )
+
+    creation_date = models.DateTimeField(
+        auto_now_add=True,
+        help_text='When template was created.',
+        blank=True,
+    )
+
+    is_active = models.BooleanField(
+        default=True,
+    )
+
+    class Meta:
+        ordering = ['id']
+        unique_together = ['name', 'organization']
+
+    def __str__(self):
+        return self.name
 
 
+# field which will appear on all facet-editing forms -- and therefore do not
+# need to be in the "fields_used" for a template.
+
+COMMON_FIELDS = {
+    "name",
+    "headline",
+    "description",
+    "editor",
+    "credit",
+    # "team",
+    "content",
+    "status",
+    "due_edit",
+    "run_date",
+    "keywords",
+    "owner",
+    "organization",
+    "template",
+    "story",
+}
 
 class Facet(models.Model):
     """A version of a story.
@@ -77,9 +126,9 @@ class Facet(models.Model):
         help_text='Organization that owns this facet.'
     )
 
-    # template = models.ForeignKey(
-    #     FacetTemplate,
-    # )
+    template = models.ForeignKey(
+        FacetTemplate,
+    )
 
     story = models.ForeignKey(
         Story,
@@ -266,6 +315,7 @@ class Facet(models.Model):
         'ContentLicense',
         related_name='facetlicense',
         blank=True,
+        null=True,
     )
 
     related_links = models.TextField(
@@ -338,6 +388,7 @@ class Facet(models.Model):
         User,
         related_name='facetproducer',
         blank=True,
+        null=True,
     )
 
     # ------------------------#
@@ -409,8 +460,8 @@ class Facet(models.Model):
         return self.name
 
     def get_absolute_url(self):
+        return reverse('facet_edit', kwargs={'pk': self.id})
         return reverse('story_detail', kwargs={'pk': self.story.id})
-
 
     def copy_facet(self):
         """ Create a copy of a facet for a partner organization in a network."""
@@ -521,7 +572,7 @@ class Facet(models.Model):
 
     @property
     def search_title(self):
-        return self.title
+        return self.name
 
     @property
     def type(self):

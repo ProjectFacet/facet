@@ -1,0 +1,35 @@
+{% load bootstrap3 %}
+
+<html>
+<body>
+
+
+<form method="POST">
+{% csrf_token %}
+
+
+{% bootstrap_field form.name %}
+{% bootstrap_field form.headline %}
+{% bootstrap_field form.description %}
+{% bootstrap_field form.editor %}
+{% bootstrap_field form.credit %}
+
+{% bootstrap_field form.content %}
+{% bootstrap_field form.status %}
+{% bootstrap_field form.due_edit %}
+{% bootstrap_field form.run_date %}
+{% bootstrap_field form.keywords %}
+{% bootstrap_field form.owner %}
+{% bootstrap_field form.organization %}
+{% bootstrap_field form.template %}
+{% bootstrap_field form.story %}
+
+{% for f in form.get_fields_to_show %}
+    {% bootstrap_field f %}
+{% endfor %}
+
+<input type="submit" />
+</form>
+
+</body>
+</html>

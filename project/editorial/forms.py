@@ -20,6 +20,7 @@ from editorial.models import (
     Project,
     Story,
     Series,
+    Facet,
     WebFacet,
     PrintFacet,
     AudioFacet,
@@ -37,22 +38,43 @@ from editorial.models import (
     ImageAsset,
     DocumentAsset,
     AudioAsset,
-    VideoAsset
+    VideoAsset,
+    FacetTemplate,
     )
 
+from .models.facets import COMMON_FIELDS
 
 
-# class FacetFormTODO(forms.ModelForm):
-#     """Form for a facet. Dynamically selects fields based on template."""
-#
-#     # use template field initial data to decide which fields to show
-#     # add to __init__ dynamic fields list
-#     # create api call for fields-to-show (ignore common)
-#
-#     common_fields = ['title']
-#
+def get_facet_form_for_template(template_id):
+    """Return custom facet form."""
+
+    extra_fields = FacetTemplate.objects.get(id=template_id).fields_used
+
+    class FacetForm(forms.ModelForm):
+        """Form for a facet. Dynamically selects fields based on template."""
+
+        class Meta:
+            model = Facet
+            fields = list(COMMON_FIELDS) + extra_fields
+
+        def get_fields_to_show(self):
+            """Returns list of extra fields, to display on form."""
+
+            return [self[f] for f in extra_fields]
+
+    return FacetForm
 
 
+class FacetPreCreateForm(forms.Form):
+    """Form to "pre-create" a facet; used to create correct Facet form."""
+
+    name = forms.CharField(
+        label="Facet Name",
+    )
+
+    template = forms.ModelChoiceField(
+        FacetTemplate.objects.all(),
+    )
 
 
 
@@ -236,11 +258,11 @@ class StoryForm(forms.ModelForm):
     """ Form to create a new story. """
 
     def __init__(self, *args, **kwargs):
-        self.request = kwargs.pop("request")
+        org = kwargs.pop("organization")
         super(StoryForm, self).__init__(*args, **kwargs)
-        self.fields['share_with'].queryset = Organization.get_org_networks(self.request.user.organization)
-        self.fields['collaborate_with'].queryset = Organization.get_org_collaborators_vocab(self.request.user.organization)
-        self.fields['team'].queryset = Organization.get_org_users(self.request.user.organization)
+        self.fields['share_with'].queryset = org.get_org_networks()
+        self.fields['collaborate_with'].queryset = org.get_org_collaborators_vocab()
+        self.fields['team'].queryset = org.get_org_users()
 
     series = forms.ModelChoiceField(
         queryset=Series.objects.all(),
@@ -264,7 +286,21 @@ class StoryForm(forms.ModelForm):
 
     class Meta:
         model = Story
-        fields = ['name', 'story_description', 'series', 'collaborate', 'collaborate_with','team', 'embargo', 'embargo_datetime', 'sensitive', 'share', 'ready_to_share', 'share_with', 'share_with_date', 'archived' ]
+        fields = ['name',
+                  'story_description',
+                  'series',
+                  'collaborate',
+                  'collaborate_with',
+                  'team',
+                  'embargo',
+                  'embargo_datetime',
+                  'sensitive',
+                  'share',
+                  'ready_to_share',
+                  'share_with',
+                  'share_with_date',
+                  'archived',
+        ]
         widgets = {
             'name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Story Name'}),
             'story_description': Textarea(attrs={'class': 'form-control', 'placeholder': 'Description'}),
@@ -1178,3 +1214,16 @@ class StoryDownloadForm(forms.Form):
         widget=CheckboxSelectMultiple,
         queryset = ImageAsset.objects.all()
     )
+
+
+class FacetTemplateForm(forms.ModelForm):
+    """Form for editing facet templates."""
+
+    def clean_fields_used(self):
+        """There may be spaces around entries; strip these off."""
+
+        return [f.strip() for f in self.cleaned_data['fields_used']]
+
+    class Meta:
+        model = FacetTemplate
+        fields = "__all__"

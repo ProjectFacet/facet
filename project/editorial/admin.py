@@ -25,17 +25,26 @@ from models import (
     AudioAsset,
     VideoAsset,
     Comment,
-    Discussion)
+    Discussion,
+    FacetTemplate,
+)
+
+from .forms import FacetTemplateForm
 
 
+@admin.register(User)
 class UserAdmin(admin.ModelAdmin):
-    model = User,
-    list_display = ('name', 'email')
+    list_display = ['username', 'email']
 
 
-admin.site.register(User)
+@admin.register(FacetTemplate)
+class FacetTemplateAdmin(admin.ModelAdmin):
+    list_display = ['name', 'description', 'organization']
+    form = FacetTemplateForm
+
+
 admin.site.register(Organization)
-# admin.site.register(OrganizationNote)
+admin.site.register(OrganizationNote)
 admin.site.register(Network)
 admin.site.register(Platform)
 admin.site.register(PlatformAccount)
@@ -48,9 +57,9 @@ admin.site.register(AudioFacet)
 admin.site.register(VideoFacet)
 admin.site.register(Task)
 admin.site.register(Event)
-# admin.site.register(ProjectNote)
-# admin.site.register(SeriesNote)
-# admin.site.register(StoryNote)
+admin.site.register(ProjectNote)
+admin.site.register(SeriesNote)
+admin.site.register(StoryNote)
 admin.site.register(ImageAsset)
 admin.site.register(DocumentAsset)
 admin.site.register(AudioAsset)

@@ -408,6 +408,8 @@ class Organization(models.Model):
         Used to display images in media gallery.
         """
 
+        from .assets import ImageAsset
+
         images = ImageAsset.objects.filter(organization=self)
         return images
 
@@ -416,6 +418,8 @@ class Organization(models.Model):
 
         Used to display documents in media gallery.
         """
+
+        from .assets import DocumentAsset
 
         documents = DocumentAsset.objects.filter(organization=self)
         return documents
@@ -426,6 +430,8 @@ class Organization(models.Model):
         Used to display audio in media gallery.
         """
 
+        from .assets import AudioAsset
+
         audio = AudioAsset.objects.filter(organization=self)
         return audio
 
@@ -434,6 +440,8 @@ class Organization(models.Model):
 
         Used to display videos in media gallery.
         """
+
+        from .assets import VideoAsset
 
         videos = VideoAsset.objects.filter(organization=self)
         return videos

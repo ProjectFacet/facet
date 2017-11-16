@@ -1,0 +1,16 @@
+{% load bootstrap3 %}
+
+<html>
+<body>
+
+
+<form method="POST">
+{% csrf_token %}
+
+{% bootstrap_form form %}
+
+<input type="submit" />
+</form>
+
+</body>
+</html>

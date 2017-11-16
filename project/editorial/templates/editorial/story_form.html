@@ -1,7 +1,3 @@
-
-WE THINK THIS TEMPLATE IS NOW DEAD AND EVERYTHNGI IS IN STORY_FORM
-
-
 {% extends 'base.html' %}
 
 {% load i18n %}
@@ -15,8 +11,14 @@ WE THINK THIS TEMPLATE IS NOW DEAD AND EVERYTHNGI IS IN STORY_FORM
 <div>
     <ol class="breadcrumb icon-angle-right icon-th">
         <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
+        {% if story %}
+          <li class="fadeIn"><a href="{% url 'story_list' %}" title="Got to Story Dashboard"> Stories </a></li>
+          <li class="fadeIn"><a href="{% url 'story_detail' story.id %}" title="View Story"> {{ story.name }} </a></li>
+          <li class="fadeIn"><a href="{% url 'story_edit' story.id %}" title="You are Here"> Edit {{ story.name }} </a></li>
+        {% else %}
         <li class="fadeIn"> Create New Content </li>
         <li class="fadeIn"><a href="{% url 'story_new' %}" title="You are Here"> New Story </a></li>
+        {% endif %}
     </ol>
 </div>
 {% endblock breadcrumb %}
@@ -26,6 +28,9 @@ WE THINK THIS TEMPLATE IS NOW DEAD AND EVERYTHNGI IS IN STORY_FORM
 <!-------------------------------------------->
 
 {% block content %}
+
+ERRORS={{form.errors}}
+
 
 <div class="row m-b-40">
   <div class="col-xs-12">
@@ -39,13 +44,13 @@ WE THINK THIS TEMPLATE IS NOW DEAD AND EVERYTHNGI IS IN STORY_FORM
                 <fieldset class="form-group m-b-20">
                   {% comment %}
                   <div class="col-xs-2">
-                    <label>{{ storyform.name.label_tag }}</label>
+                    <label>{{ form.name.label_tag }}</label>
                   </div>
                   {% endcomment %}
                   <div class="col-xs-12">
-                    {{ storyform.name }}
-                    {% if storyform.name.errors %}
-                    <small class="text-muted">{{ storyform.name.errors }}</small>
+                    {{ form.name }}
+                    {% if form.name.errors %}
+                    <small class="text-muted">{{ form.name.errors }}</small>
                     {% endif %}
                   </div>
                 </fieldset>
@@ -53,13 +58,13 @@ WE THINK THIS TEMPLATE IS NOW DEAD AND EVERYTHNGI IS IN STORY_FORM
                 <fieldset class="form-group m-b-20">
                   {% comment %}
                   <div class="col-xs-2">
-                    <label class="capitalize">{{ storyform.story_description.label_tag }}</label>
+                    <label class="capitalize">{{ form.story_description.label_tag }}</label>
                   </div>
                   {% endcomment %}
                   <div class="col-xs-12">
-                    {{ storyform.story_description }}
-                    {% if storyform.story_description.errors %}
-                    <small class="text-muted">{{ storyform.story_description.errors }}</small>
+                    {{ form.story_description }}
+                    {% if form.story_description.errors %}
+                    <small class="text-muted">{{ form.story_description.errors }}</small>
                     {% endif %}
                   </div>
                 </fieldset>
@@ -67,47 +72,47 @@ WE THINK THIS TEMPLATE IS NOW DEAD AND EVERYTHNGI IS IN STORY_FORM
                 <fieldset class="form-group m-b-20">
                   {% comment %}
                   <div class="col-xs-2">
-                    <label class="capitalize">{{ storyform.team.label_tag }}</label>
+                    <label class="capitalize">{{ form.team.label_tag }}</label>
                   </div>
                   {% endcomment %}
                   <div class="col-xs-12">
-                    {{ storyform.team }}
-                    {% if storyform.team.errors %}
-                    <small class="text-muted">{{ storyform.team.errors }}</small>
+                    {{ form.team }}
+                    {% if form.team.errors %}
+                    <small class="text-muted">{{ form.team.errors }}</small>
                     {% endif %}
                   </div>
                 </fieldset>
                 <!-- Series Select -->
                 <fieldset class="form-group m-b-20 m-l-20" id="fieldset-story-series">
                   <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
-                    <label class="capitalize pull-left subtle f-s-14">{{ storyform.series.label_tag }}</label>
+                    <label class="capitalize pull-left">{{ form.series.label_tag }}</label>
                   </div>
                   <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10">
-                    {{ storyform.series }}
-                    {% if storyform.series.errors %}
-                      <small class="text-muted">{{ storyform.series.errors }}</small>
+                    {{ form.series }}
+                    {% if form.series.errors %}
+                      <small class="text-muted">{{ form.series.errors }}</small>
                     {% endif %}
                   </div>
                 </fieldset>
             </div>
             <div class="row m-b-20">
               <!-- <div class="form-group custom-form"> -->
-                <div class="col-xs-3">
-                  <label class="capitalize btn-danger-100 subtle f-s-14">Embargo:</label>
-                  {{ storyform.embargo }}
-                  {% if storyform.embargo.errors %}
+                <div class="col-xs-2">
+                  <label class="capitalize">Embargo:</label>
+                  {{ form.embargo }}
+                  {% if form.embargo.errors %}
                     <div class="alert alert-warning" role="alert">
-                    {{ storyform.embargo.errors }}
+                    {{ form.embargo.errors }}
                     </div>
                   {% endif %}
                 </div>
-                <div class="col-xs-3">
-                  <label class="sameline btn-danger-100 subtle f-s-14">Embargo Date:</label>
+                <div class="col-xs-2">
+                  <label class="sameline">Embargo Date:</label>
                 </div>
-                <div class="col-xs-6">
-                  {{ storyform.embargo_datetime }}
-                  {% if storyform.embargo_datetime.errors %}
-                    <small class="text-muted">{{ storyform.embargo_datetime.errors }}</small>
+                <div class="col-xs-8">
+                  {{ form.embargo_datetime }}
+                  {% if form.embargo_datetime.errors %}
+                    <small class="text-muted">{{ form.embargo_datetime.errors }}</small>
                   {% endif %}
                 </div>
             </div>
@@ -117,18 +122,18 @@ WE THINK THIS TEMPLATE IS NOW DEAD AND EVERYTHNGI IS IN STORY_FORM
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                     <!-- Sensitive -->
                     <div class="form-group custom-form">
-                      <label class="capitalize btn-danger-100 subtle f-s-14">{{ storyform.sensitive.label_tag }}</label>
-                      {{ storyform.sensitive }}
-                      {% if storyform.sensitive.errors %}
-                        <small class="text-muted">{{ storyform.sensitive.errors }}</small>
+                      <label class="capitalize">{{ form.sensitive.label_tag }}</label>
+                      {{ form.sensitive }}
+                      {% if form.sensitive.errors %}
+                        <small class="text-muted">{{ form.sensitive.errors }}</small>
                       {% endif %}
                     </div>
                     <!-- Archive -->
                     <div class="form-group custom-form">
-                      <label class="capitalize subtle f-s-14">{{ storyform.archived.label_tag }}</label>
-                      {{ storyform.archived }}
-                      {% if storyform.archived.errors %}
-                        <small class="text-muted">{{ storyform.archived.errors }}</small>
+                      <label class="capitalize">{{ form.archived.label_tag }}</label>
+                      {{ form.archived }}
+                      {% if form.archived.errors %}
+                        <small class="text-muted">{{ form.archived.errors }}</small>
                       {% endif %}
                     </div>
                 </div>
@@ -141,43 +146,43 @@ WE THINK THIS TEMPLATE IS NOW DEAD AND EVERYTHNGI IS IN STORY_FORM
       <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
         <h4 class="m-b-20">Sharing</h4>
 
-        {% if org_partners %}
+        {% if view.org_partners %}
         <!-- To Share -->
         <fieldset class="form-group m-b-20">
-          <label class="capitalize">{{ storyform.share.label_tag }}</label>
-          {{ storyform.share }}
-          {% if storyform.share.errors %}
-            <small class="text-muted">{{ storyform.share.errors }}</small>
+          <label class="capitalize">{{ form.share.label_tag }}</label>
+          {{ form.share }}
+          {% if form.share.errors %}
+            <small class="text-muted">{{ form.share.errors }}</small>
           {% endif %}
         </fieldset>
         <!-- Ready To Share -->
         <fieldset class="form-group m-b-20">
-          <label class="capitalize">{{ storyform.ready_to_share.label_tag }}</label>
-          {{ storyform.ready_to_share }}
-          {% if storyform.ready_to_share.errors %}
-            <small class="text-muted">{{ storyform.ready_to_share.errors }}</small>
+          <label class="capitalize">{{ form.ready_to_share.label_tag }}</label>
+          {{ form.ready_to_share }}
+          {% if form.ready_to_share.errors %}
+            <small class="text-muted">{{ form.ready_to_share.errors }}</small>
           {% endif %}
         </fieldset>
         <!-- Share With -->
         <fieldset class="form-group m-b-20">
           {% comment %}
-          <label class="capitalize">{{ storyform.share_with.label_tag }}</label>
+          <label class="capitalize">{{ form.share_with.label_tag }}</label>
           {% endcomment %}
-          {{ storyform.share_with }}
-          {% if storyform.share_with.errors %}
-            <small class="text-muted">{{ storyform.share_with.errors }}</small>
+          {{ form.share_with }}
+          {% if form.share_with.errors %}
+            <small class="text-muted">{{ form.share_with.errors }}</small>
           {% endif %}
         </fieldset>
         <!-- Available to Networks -->
         <div class="row m-b-20 m-t-20">
           <fieldset class="form-group m-b-10">
             <div class="col-xs-2">
-              <label class="capitalize">{{ storyform.share_with_date.label_tag }}</label>
+              <label class="capitalize">{{ form.share_with_date.label_tag }}</label>
             </div>
             <div class="col-xs-10">
-            {{ storyform.share_with_date }}
-            {% if storyform.share_with_date.errors %}
-              <small class="text-muted">{{ storyform.share_with_date.errors }}</small>
+            {{ form.share_with_date }}
+            {% if form.share_with_date.errors %}
+              <small class="text-muted">{{ form.share_with_date.errors }}</small>
             {% endif %}
             </div>
           </fieldset>
@@ -187,20 +192,20 @@ WE THINK THIS TEMPLATE IS NOW DEAD AND EVERYTHNGI IS IN STORY_FORM
 
         <!-- To Collaborate -->
         <fieldset class="form-group m-b-20">
-          <label class="capitalize">{{ storyform.collaborate.label_tag }}</label>
-          {{ storyform.collaborate }}
-          {% if storyform.collaborate.errors %}
-            <small class="text-muted">{{ storyform.collaborate.errors }}</small>
+          <label class="capitalize">{{ form.collaborate.label_tag }}</label>
+          {{ form.collaborate }}
+          {% if form.collaborate.errors %}
+            <small class="text-muted">{{ form.collaborate.errors }}</small>
           {% endif %}
         </fieldset>
         <!-- Collaborate With -->
         <fieldset class="form-group m-b-20">
           {% comment %}
-          <label class="capitalize">{{ storyform.collaborate_with.label_tag }}</label>
+          <label class="capitalize">{{ form.collaborate_with.label_tag }}</label>
           {% endcomment %}
-          {{ storyform.collaborate_with }}
-          {% if storyform.collaborate_with.errors %}
-            <small class="text-muted">{{ storyform.collaborate_with.errors }}</small>
+          {{ form.collaborate_with }}
+          {% if form.collaborate_with.errors %}
+            <small class="text-muted">{{ form.collaborate_with.errors }}</small>
           {% endif %}
         </fieldset>
 
@@ -218,10 +223,9 @@ WE THINK THIS TEMPLATE IS NOW DEAD AND EVERYTHNGI IS IN STORY_FORM
   </div>
 </div>
 
+
 <script>
-$(".chosen-select").chosen();
+$(".chosen-select").chosen()
 </script>
-
-
 
 {% endblock %}

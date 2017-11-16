@@ -51,7 +51,7 @@ class ContractorInfo(models.Model):
     # current_location is intended for finding contractors that are near
     # a newsworthy thing. ie. "Berkely Campus" during a protest
     current_location = models.TextField(
-        help_text="Contractors specific location.",
+        help_text="Contractor's specific location.",
         blank=True,
     )
 
