@@ -14,6 +14,7 @@ from django.core.exceptions import ValidationError
 
 from . import User, Organization, Network, Project, Series, Story
 from .assets import ImageAsset, DocumentAsset, AudioAsset, VideoAsset
+from .discussion import Discussion
 
 #-----------------------------------------------------------------------#
 #-----------------------------------------------------------------------#
@@ -464,45 +465,49 @@ class Facet(models.Model):
         return reverse('facet_edit', kwargs={'pk': self.id})
         return reverse('story_detail', kwargs={'pk': self.story.id})
 
-    def copy_facet(self):
+    def copy(self):
         """ Create a copy of a facet for a partner organization in a network."""
 
-        # FIXME Copied facet should also carry over credit and editor.
+        self.id = None
+        self.original=False
+        self.code = ''
+        self.status= 'NR'
+        self.due_edit = None
+        self.run_date = None
+        self.discussion = Discussion.objects.create_discussion("F")
+        self.edit_history = facet_copy.edit_history.all()
+        self.save()
 
-        facet_copy = get_object_or_404(Facet, id=self.id)
-        # set the id=None to create the copy of the facet instance
-        facet_copy.id=None
-        facet_copy.save()
-        # clear attributes for the copying Organization
-        facet_copy.original_content=False
-        facet_copy.code = ''
-        facet_copy.status= 'NR'
-        facet_copy.due_edit = None
-        facet_copy.run_date = None
-        facet_copy.discussion = Discussion.objects.create_discussion("WF")
-        facet_copy.edit_history = facet_copy.edit_history.all()
-        facet_copy.save()
+        # facet_copy = get_object_or_404(Facet, id=self.id)
+        # # set the id=None to create the copy of the facet instance
+        # facet_copy.id=None
+        # facet_copy.save()
+        # # clear attributes for the copying Organization
+        # facet_copy.original_content=False
+        # facet_copy.code = ''
+        # facet_copy.status= 'NR'
+        # facet_copy.due_edit = None
+        # facet_copy.run_date = None
+        # facet_copy.discussion = Discussion.objects.create_discussion("WF")
+        # facet_copy.edit_history = facet_copy.edit_history.all()
+        # facet_copy.save()
 
-        return facet_copy
+        return self
 
     def get_facet_images(self):
         """Retrieve all images objects associated with a facet."""
-
         return self.image_assets.all()
 
     def get_facet_documents(self):
         """Retrieve all documents objects associated with a facet."""
-
         return self.document_assets.all()
 
     def get_facet_audio(self):
         """Retrieve all audio objects associated with a facet."""
-
         return self.audio_assets.all()
 
     def get_facet_video(self):
         """Retrieve all video objects associated with a facet."""
-
         return self.video_assets.all()
 
     def get_facet_download(self):
@@ -514,17 +519,17 @@ class Facet(models.Model):
         credits = ",".join(credits)
 
         # loop over m2m and get the values as string
-        images = Facet.get_facet_images(self)
+        images = self.image_assets.all()
         images = [image.asset_title for image in images]
         images = ",".join(images)
 
         # loop over m2m and get the values as string
-        documents = Facet.get_facet_documents(self)
+        documents = self.document_assets.all()
         documents = [document.asset_title for document in documents]
         documents = ",".join(documents)
 
         # loop over m2m and get the values as string
-        audiofiles = Facet.get_facet_audio(self)
+        audiofiles = self.audio_assets.all()
         audiofiles = [audiofile.asset_title for audiofile in audiofiles]
         audiofiles = ",".join(audiofiles)
 

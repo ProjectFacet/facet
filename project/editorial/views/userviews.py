@@ -66,7 +66,7 @@ def user_detail(request, pk):
     """
 
     user = get_object_or_404(User, pk=pk)
-    user_stories = User.get_user_stories(user)
+    # user_stories = User.get_user_stories(user)
     user_content = User.get_user_content(user)
     usernotes = UserNote.objects.filter(owner_id=user.id)[:4]
     usernoteform = UserNoteForm()
@@ -75,7 +75,7 @@ def user_detail(request, pk):
 
     return render(request, 'editorial/userdetail.html', {
         'user': user,
-        'user_stories': user_stories,
+        # 'user_stories': user_stories,
         'user_content': user_content,
         'usernotes': usernotes,
         'usernoteform': usernoteform

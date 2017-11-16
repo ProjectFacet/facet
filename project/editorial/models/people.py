@@ -29,9 +29,6 @@ class User(AbstractUser):
     users, create and manage networks and shift users from active
     to inactive. A general user creates and collaborates on content.
     """
-    # FIXME This structure for a user needs revision in order to
-    # account for a user being on a team or being an independent (contractor)
-    # See github issue #60 for more detail
 
     # Made optional for users not pushing content to an org (freelancers)
     organization = models.ForeignKey(
@@ -141,39 +138,24 @@ class User(AbstractUser):
         their dashboard and user profile.
         """
 
-        from . import Series, Story, WebFacet, PrintFacet, AudioFacet, VideoFacet
-
         user_content = []
-        projects = Project.objects.filter(Q(Q(owner=self) | Q(team=self)))
-        series = Series.objects.filter(Q(Q(owner=self) | Q(team=self)))
-        stories = Story.objects.filter(Q(Q(owner=self) | Q(team=self)))
-        facets = Facet.objects.filter(Q(Q(owner=self) | Q(team=self)))
+        projects_owner = self.project_owner.all()
+        projects_team = self.project_team_member.all()
+        series_owner = self.series_owner.all()
+        series_team = self.series_team_member.all()
+        story_owner = self.story_owner.all()
+        story_team = self.story_team_member.all()
+        facet_owner = self.facetowner.all()
+        # facet_team = self.team.all()
+        user_content.extend(projects_owner)
+        user_content.extend(projects_team)
+        user_content.extend(series_owner)
+        user_content.extend(series_team)
+        user_content.extend(story_owner)
+        user_content.extend(story_team)
+        user_content.extend(facet_owner)
 
-        webfacets = WebFacet.objects.filter(Q(Q(owner=self) | Q(editor=self) | Q(credit=self)))
-        printfacets = PrintFacet.objects.filter(Q(Q(owner=self) | Q(editor=self) | Q(credit=self)))
-        audiofacets = AudioFacet.objects.filter(Q(Q(owner=self) | Q(editor=self) | Q(credit=self)))
-        videofacets = VideoFacet.objects.filter(Q(Q(owner=self) | Q(editor=self) | Q(credit=self)))
-        user_content.extend(projects)
-        user_content.extend(series)
-        user_content.extend(stories)
-        user_content.extend(facets)
-
-        user_content.extend(webfacets)
-        user_content.extend(printfacets)
-        user_content.extend(audiofacets)
-        user_content.extend(videofacets)
         return user_content
-
-
-    # This is repetitive of get_user_content.
-    # FIXME (for HB) revise get_user_content to include projects and replace get_user_stories in views
-    def get_user_stories(self):
-        """Return list of stories that a user is associated with."""
-
-        from . import Story
-
-        user_stories = Story.objects.filter(Q(Q(owner=self) | Q(team=self)))
-        return user_stories
 
     # TODO complete get_user_assets
     # def get_user_assets(self):
@@ -189,8 +171,8 @@ class User(AbstractUser):
 
         from . import Comment
 
-        discussion_ids = Comment.objects.filter(user_id=self.id).values('discussion_id')
-        user_comments = Comment.objects.filter(user_id=self.id)
+        discussion_ids = self.comment_set.all().values('discussion_id')
+        user_comments = self.comment_set.all()
         all_comments = Comment.objects.filter(discussion_id__in=discussion_ids)
         inbox_comments = all_comments.exclude(id__in=user_comments)
         return inbox_comments
@@ -204,8 +186,8 @@ class User(AbstractUser):
 
         from . import Comment
 
-        discussion_ids = Comment.objects.filter(user_id=self.id).values('discussion_id')
-        user_comments = Comment.objects.filter(user_id=self.id)
+        discussion_ids = self.comment_set.all().values('discussion_id')
+        user_comments = self.comment_set.all()
         all_comments = Comment.objects.filter(discussion_id__in=discussion_ids, date__gte=self.last_login)
         recent_comments = all_comments.exclude(id__in=user_comments)
         return recent_comments
@@ -215,7 +197,7 @@ class User(AbstractUser):
         """ Return queryset containing all users a specific user can contact.
         This includes any user that's a member of an organization in network.
 
-        This vocab list populates the to selection for messaging.
+        This vocab list populates to selection for messaging.
         """
 
         organization = self.organization
@@ -228,34 +210,24 @@ class User(AbstractUser):
 
         Displayed in user inbox under 'inbox'.
         """
-
         return self.private_message_recipient.all()
 
-        # from . import PrivateMessage
-        #
-        # messages_received = PrivateMessage.objects.filter(recipient=self)
-        # return messages_received
+
 
     def private_messages_sent(self):
         """ Return all private messages a user has sent.
 
         Displayed in user inbox under 'sent'.
         """
+        return self.private_message_sender.all()
 
-        from . import PrivateMessage
-
-        messages_sent = PrivateMessage.objects.filter(user=self)
-        return messages_sent
 
     def get_user_searchable_content(self):
         """ Return queryset of user specific content that is searchable.
 
         A user can return their own notes in search results.
         """
-
-        usernotes = UserNote.objects.filter(Q(owner=self))
-
-        return usernotes
+        return self.usernote_owner.all()
 
     @property
     def description(self):
@@ -369,9 +341,8 @@ class Organization(models.Model):
 
         Used for organization dashboards, team views and context processors.
         """
+        return self.user_set.all()
 
-        organization_users = User.objects.filter(organization=self)
-        return organization_users
 
     def get_org_networks(self):
         """ Return list of all the networks that an organization is connected to as
@@ -385,6 +356,7 @@ class Organization(models.Model):
         organization_networks = all_organization_networks.distinct()
         return organization_networks
 
+
     # def get_org_network_content(self):
     #     """Return queryset of content shared with any network an organization is a member of excluding their own content."""
     #
@@ -392,6 +364,7 @@ class Organization(models.Model):
     #     content = Network.get_network_shared_stories(network__in=networks)
     #     print "content: ", content
     #     return content
+
 
     # formerly get_org_collaborators
     def get_org_collaborators_vocab(self):
@@ -402,7 +375,7 @@ class Organization(models.Model):
         """
 
         # get list of networks that an org is a member of
-        networks = Organization.get_org_networks(self)
+        networks = self.get_org_networks()
         # get list of organizations that are members of any of those networks
         all_organizations = Organization.objects.filter(Q(network_organization=networks))
         # remove user's organization from queryset
@@ -416,44 +389,31 @@ class Organization(models.Model):
 
         Used to display images in media gallery.
         """
-
-        from .assets import ImageAsset
-
-        images = ImageAsset.objects.filter(organization=self)
-        return images
+        return self.imageasset_set.all()
 
     def get_org_document_library(self):
         """ Return list of all documents associated with an organization.
 
         Used to display documents in media gallery.
         """
-
-        from .assets import DocumentAsset
-
-        documents = DocumentAsset.objects.filter(organization=self)
-        return documents
+        return self.documentasset_set.all()
 
     def get_org_audio_library(self):
         """ Return list of all audio files associated with an organization.
 
         Used to display audio in media gallery.
         """
-
-        from .assets import AudioAsset
-
-        audio = AudioAsset.objects.filter(organization=self)
-        return audio
+        return self.audioasset_set.all()
 
     def get_org_video_library(self):
         """ Return list of all video files associated with an organization.
 
         Used to display videos in media gallery.
         """
+        return self.videoasset_set.all()
 
-        from .assets import VideoAsset
+    #FIXME HEATHER LEFT OFF HERE OPTIMIZING QUERIES
 
-        videos = VideoAsset.objects.filter(organization=self)
-        return videos
 
     def get_org_user_comments(self):
         """Retrieve all the comments associated with users of an organization.
@@ -465,7 +425,7 @@ class Organization(models.Model):
         from .discussion import Comment
 
         users = self.get_org_users()
-        org_user_comments = Comment.objects.filter(Q(user__in=users))
+        org_user_comments = self.comment.filter(Q(user__in=users))
         return org_user_comments
 
     def get_org_comments(self):
@@ -613,33 +573,37 @@ class Organization(models.Model):
     def get_org_searchable_content(self):
         """ Return queryset of all objects that can be searched by a user."""
 
+        from .projects import Project
+        from .series import Series
+        from .story import Story
+        from .facets import Facet
+        from .notes import NetworkNote, SeriesNote, StoryNote
+
         #additional required info
-        networks = Organization.get_org_networks(self)
+        networks = self.get_org_networks()
 
         searchable_objects = []
 
+        projects = Project.objects.filter(Q(Q(organization=self) | Q(collaborate_with=self)))
         series = Series.objects.filter(Q(Q(organization=self) | Q(collaborate_with=self)))
         stories = Story.objects.filter(Q(Q(organization=self) | Q(collaborate_with=self)))
-        webfacets = WebFacet.objects.filter(Q(organization=self))
-        printfacets = PrintFacet.objects.filter(Q(organization=self))
-        audiofacets = AudioFacet.objects.filter(Q(organization=self))
-        videofacets = VideoFacet.objects.filter(Q(organization=self))
-        imageassets = ImageAsset.objects.filter(Q(organization=self))
-        networknote = NetworkNote.objects.filter(Q(network__in=networks))
-        orgnote = OrganizationNote.objects.filter(Q(organization=self))
-        seriesnote = SeriesNote.objects.filter(Q(organization=self))
-        storynote = StoryNote.objects.filter(Q(organization=self))
+        facets = self.facet_set.all()
+        # facets = Facet.objects.filter(Q(Q(organization=self) | Q(collaborate_with=self)))
+        imageassets = self.imageasset_set.all()
+        networknotes = NetworkNote.objects.filter(Q(network__in=networks))
+        orgnotes = self.orgnote_org.all()
+        seriesnotes = SeriesNote.objects.filter(Q(organization=self))
+        storynotes = StoryNote.objects.filter(Q(organization=self))
+
+        searchable_objects.append(projects)
         searchable_objects.append(series)
         searchable_objects.append(stories)
-        searchable_objects.append(webfacets)
-        searchable_objects.append(printfacets)
-        searchable_objects.append(audiofacets)
-        searchable_objects.append(videofacets)
+        searchable_objects.append(facets)
         searchable_objects.append(imageassets)
-        searchable_objects.append(networknote)
-        searchable_objects.append(orgnote)
-        searchable_objects.append(seriesnote)
-        searchable_objects.append(storynote)
+        searchable_objects.append(networknotes)
+        searchable_objects.append(orgnotes)
+        searchable_objects.append(seriesnotes)
+        searchable_objects.append(storynotes)
 
         return searchable_objects
 

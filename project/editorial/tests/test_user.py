@@ -42,11 +42,6 @@ class UserModelTestCase(TestCase):
 
         # FIXME
 
-    def test_get_user_stories(self):
-        """Test for matching content."""
-
-        # FIXME
-
     def test_inbox_comments(self):
         """Test for matching content."""
 

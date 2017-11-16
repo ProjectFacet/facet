@@ -22,9 +22,11 @@ from watson.views import SearchView as BaseWatsonSearchView
 from editorial.models import (
     User,
     Organization,
+    Project,
     Network,
     Series,
     Story,
+    Facet,
     WebFacet,
     PrintFacet,
     AudioFacet,
@@ -54,12 +56,14 @@ class EditorialSearchView(BaseWatsonSearchView):
         user = self.request.user
 
         # retrieve all content a user is allowed to search
-        searchable_org_objects = Organization.get_org_searchable_content(user_org)
-        searchable_user_objects = User.get_user_searchable_content(user)
+        searchable_org_objects = user_org.get_org_searchable_content()
+        searchable_user_objects = user.get_user_searchable_content()
+        print "**************************************"
+        print "SUO: ", searchable_user_objects
 
         # unpack the querysets from the list of querysets returned
-        series, stories, webfacets, printfacets, audiofacets, videofacets, imageassets, networknotes, orgnotes, seriesnotes, storynotes = searchable_org_objects
+        projects, series, stories, facets, imageassets, networknotes, orgnotes, seriesnotes, storynotes = searchable_org_objects
         usernotes = searchable_user_objects
 
         # pass all querysets to search method
-        return watson.search(self.query, models=[series, stories, webfacets, printfacets, audiofacets, videofacets, imageassets, networknotes, orgnotes, seriesnotes, storynotes, usernotes])
+        return watson.search(self.query, models=[projects, series, stories, facets, imageassets, networknotes, orgnotes, seriesnotes, storynotes, usernotes])

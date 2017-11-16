@@ -88,7 +88,7 @@ def document_asset_detail(request, pk):
     """ Display detail information for a specific document asset."""
 
     document = get_object_or_404(DocumentAsset, id=pk)
-    document_usage = DocumentAsset.get_document_usage(document)
+    document_usage = document.get_document_usage()
 
 
     if request.method =="POST":
@@ -112,7 +112,7 @@ def audio_asset_detail(request, pk):
     """ Display detail information for a specific audio asset."""
 
     audio = get_object_or_404(AudioAsset, id=pk)
-    audio_usage = AudioAsset.get_audio_usage(audio)
+    audio_usage = audio.get_audio_usage()
 
     if request.method =="POST":
         editaudioform = AudioAssetForm(data=request.POST, instance=audio)
@@ -135,7 +135,7 @@ def video_asset_detail(request, pk):
     """ Display detail information for a specific video asset."""
 
     video = get_object_or_404(VideoAsset, id=pk)
-    video_usage = VideoAsset.get_video_usage(video)
+    video_usage = video.get_video_usage()
 
     if request.method =="POST":
         editvideoform = VideoAssetForm(data=request.POST, instance=video)
