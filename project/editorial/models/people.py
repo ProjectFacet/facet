@@ -2,6 +2,9 @@ from django.db import models
 from django.db.models import Q
 from django.contrib.postgres.fields import ArrayField# from simple_history.models import
 from imagekit.models import ProcessedImageField, ImageSpecField
+import time as timemk
+from datetime import datetime, timedelta, time
+from django.utils import timezone
 from pilkit.processors import ResizeToFit, SmartResize
 from django.contrib.auth.models import AbstractUser
 from django.utils.encoding import python_2_unicode_compatible
@@ -141,14 +144,20 @@ class User(AbstractUser):
         from . import Series, Story, WebFacet, PrintFacet, AudioFacet, VideoFacet
 
         user_content = []
+        projects = Project.objects.filter(Q(Q(owner=self) | Q(team=self)))
         series = Series.objects.filter(Q(Q(owner=self) | Q(team=self)))
         stories = Story.objects.filter(Q(Q(owner=self) | Q(team=self)))
+        facets = Facet.objects.filter(Q(Q(owner=self) | Q(team=self)))
+
         webfacets = WebFacet.objects.filter(Q(Q(owner=self) | Q(editor=self) | Q(credit=self)))
         printfacets = PrintFacet.objects.filter(Q(Q(owner=self) | Q(editor=self) | Q(credit=self)))
         audiofacets = AudioFacet.objects.filter(Q(Q(owner=self) | Q(editor=self) | Q(credit=self)))
         videofacets = VideoFacet.objects.filter(Q(Q(owner=self) | Q(editor=self) | Q(credit=self)))
+        user_content.extend(projects)
         user_content.extend(series)
         user_content.extend(stories)
+        user_content.extend(facets)
+
         user_content.extend(webfacets)
         user_content.extend(printfacets)
         user_content.extend(audiofacets)
@@ -210,7 +219,7 @@ class User(AbstractUser):
         """
 
         organization = self.organization
-        org_collaborators = Organization.get_org_collaborators_vocab(organization)
+        org_collaborators = organization.get_org_collaborators_vocab()
         contact_list = User.objects.filter(Q(Q(organization=org_collaborators) | Q(organization=organization)))
         return contact_list
 
@@ -453,7 +462,9 @@ class Organization(models.Model):
         to display streams of all comments.
         """
 
-        users = Organization.get_org_users(self)
+        from .discussion import Comment
+
+        users = self.get_org_users()
         org_user_comments = Comment.objects.filter(Q(user__in=users))
         return org_user_comments
 
@@ -463,6 +474,7 @@ class Organization(models.Model):
         Used to display all organization comments in dashboard and inbox.
         """
 
+        from . import Comment
         organization_comments = Comment.objects.filter(discussion__discussion_type='ORG', user__organization=self)
         return organization_comments
 
@@ -544,6 +556,8 @@ class Organization(models.Model):
         on the primary dashboard.
         """
 
+        from .facets import Facet, WebFacet, PrintFacet, AudioFacet, VideoFacet
+
         # establish timeliness of content
         today = timezone.now().date()
         tomorrow = today + timedelta(1)
@@ -551,7 +565,9 @@ class Organization(models.Model):
         today_end = datetime.combine(tomorrow, time())
 
         # facets where run_date=today
-        # FIXME to be simplified after facet refactoring
+        # for move to Facet refactoring
+        # running_today = Facet.objects.filter(run_date__range=(today_start, today_end), organization=self)
+
         running_today = []
         webfacet_run_today = WebFacet.objects.filter(run_date__range=(today_start, today_end), organization=self)
         printfacet_run_today = PrintFacet.objects.filter(run_date__range=(today_start, today_end), organization=self)
@@ -571,11 +587,16 @@ class Organization(models.Model):
         on the primary dashboard.
         """
 
+        from .facets import Facet, WebFacet, PrintFacet, AudioFacet, VideoFacet
+
         # establish timeliness of content
         today = timezone.now().date()
         tomorrow = today + timedelta(1)
         today_start = datetime.combine(today, time())
         today_end = datetime.combine(tomorrow, time())
+
+        # for move to Facet refactoring
+        # edit_today = Facet.objects.filter(due_edit__range=(today_start, today_end), organization=self)
 
         edit_today = []
         webfacet_edit_today = WebFacet.objects.filter(due_edit__range=(today_start, today_end), organization=self)
@@ -719,6 +740,8 @@ class Network(models.Model):
 
         This is used to populate the network content dashboard.
         """
+
+        from .story import Story
 
         network_stories = Story.objects.filter(share_with=self.id)
         return network_stories

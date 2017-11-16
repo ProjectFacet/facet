@@ -88,7 +88,7 @@ class BaseAssetMetadata(models.Model):
         the copier's organization and the original flag is set to false.
         Triggering a copy also triggers the creation of an asset copy detail record."""
 
-        #set the id = None to create the copy of the image instance
+        #set the id = None to create the copy of the asset instance
         self.id = None
         self.original = False
         self.save()

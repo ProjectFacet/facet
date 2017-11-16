@@ -135,13 +135,13 @@ def dashboard(request):
 
     if organization:
         # retrieve all organization comments
-        all_comments = Organization.get_org_comments(organization)
+        all_comments = organization.get_org_comments()
         # query for new stories shared to network
-        networks = Organization.get_org_networks(organization)
+        networks = organization.get_org_networks()
         # facets where run_date=today
-        running_today = Organization.get_org_stories_running_today(organization)
+        running_today = organization.get_org_stories_running_today()
         # facets where due_edit=today
-        edit_today = Organization.get_org_stories_due_for_edit_today(organization)
+        edit_today = organization.get_org_stories_due_for_edit_today()
     else:
         all_comments = []
         networks = []
@@ -150,7 +150,7 @@ def dashboard(request):
 
     shared_networkstories = []
     for network in networks:
-        stories = Network.get_network_shared_stories(network)
+        stories = network.get_network_shared_stories()
         shared_networkstories.extend(stories)
     shared_networkstories = [story for story in shared_networkstories if story.organization != organization]
     networkstories = set(shared_networkstories)
