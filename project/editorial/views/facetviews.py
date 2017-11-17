@@ -54,3 +54,21 @@ class FacetUpdateView(UpdateView):
         """Get dynamic form based on this template."""
 
         return get_facet_form_for_template(self.object.template_id)
+
+
+class FacetDetailView(DetailView):
+    """Display a facet and all it fields and assets."""
+
+    model = Facet
+
+    # def image_assets(self):
+    #     # {% with imgs=images_assets %}
+    #     #    {{ imgs.images }}
+    #     #    {{ images.form }}
+    #     # {% endwith %}
+    #     image_library = self.request.user.organization.get_org_image_library()
+    #     story_images = self.get_story_images()
+    #     form = ImageAssetForm()
+    #     return {'image_library': image_library, 'story_images': story_images, 'form': form}
+
+    pass

@@ -116,17 +116,13 @@ def sent_html(request):
 def comments_html(request, comment_type):
     """Return comment feeds."""
 
-    print "comment type: ", comment_type
     organization = request.user.organization
     # returns all comments involving any user of an Organization
     all_comments = organization.get_org_user_comments()
-    print "I GOT ALL THE COMMENTS! "
 
     if comment_type=="organization":
-        print "IN COMMENT TYPE ORG"
     # returns all comments made for an Organization
         comments = organization.get_org_comments()
-        print "ALL ORG COMMENTS, ", comments
     elif comment_type=="network":
     # returns all comments for any networks an Organization is part of
         comments = organization.get_network_comments()
@@ -139,8 +135,6 @@ def comments_html(request, comment_type):
     elif comment_type=="facet":
     # returns all comments for any facets of stories of an Organization
         comments = organization.get_facet_comments()
-
-    print "COMMENTS: ", comments
 
     comments_html = render_to_string('inbox-comments.html', {
                             'comments': comments,

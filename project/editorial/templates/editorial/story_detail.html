@@ -69,19 +69,27 @@
           <!-- ================================================= -->
                           <!--   WEB TAB CONTENT   -->
           <!-- ================================================= -->
-          {% include "editorial/storywebfacet.html" %}
+          {% comment %}
+          <!-- {% include "editorial/storywebfacet.html" %} -->
+          {% endcomment %}
           <!-- ================================================= -->
                           <!--   PRINT TAB CONTENT   -->
           <!-- ================================================= -->
-          {% include "editorial/storyprintfacet.html" %}
+          {% comment%}
+          <!-- {% include "editorial/storyprintfacet.html" %} -->
+          {% endcomment %}
           <!-- ================================================= -->
                           <!--   AUDIO TAB CONTENT   -->
           <!-- ================================================= -->
-          {% include "editorial/storyaudiofacet.html" %}
+          {% comment %}
+          <!-- {% include "editorial/storyaudiofacet.html" %} -->
+          {% endcomment %}
           <!-- ================================================= -->
                           <!--   VIDEO TAB CONTENT   -->
           <!-- ================================================= -->
-          {% include "editorial/storyvideofacet.html" %}
+          {% comment %}
+          <!-- {% include "editorial/storyvideofacet.html" %} -->
+          {% endcomment %}
 
         </div><!-- End tab content -->
       </div><!-- End tabs -->
@@ -208,6 +216,7 @@
 <!-- ================================================= -->
               <!-- ADD STORYNOTE MODAL -->
 <!-- ================================================= -->
+{% comment %}
 <div class="modal fade" id="addStoryNote" tabindex="-1" role="dialog" aria-labelledby="addStoryNoteModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -228,33 +237,37 @@
     </div>
   </div>
 </div>
+{% endcomment %}
 
 <!-- ================================================= -->
                 <!-- DOWNLOAD MODAL -->
 <!-- ================================================= -->
-
+{% comment %}
 {% include "editorial/storydownloadmodal.html" %}
-
+{% endcomment %}
 <!-- ================================================= -->
             <!-- IMAGE MODAL -->
 <!-- ================================================= -->
-
+{% comment %}
 {% include "editorial/story_imageassetmodal.html" %}
-
+{% endcomment %}
 <!-- ================================================= -->
             <!-- DOCUMENT MODAL -->
 <!-- ================================================= -->
+{% comment %}
 {% include "editorial/story_documentassetmodal.html" %}
-
+{% endcomment %}
 <!-- ================================================= -->
             <!-- AUDIO MODAL -->
 <!-- ================================================= -->
+{% comment %}
 {% include "editorial/story_audioassetmodal.html" %}
-
+{% endcomment %}
 <!-- ================================================= -->
             <!-- ADD WEBFACET VIDEO MODAL -->
 <!-- ================================================= -->
-
+{% comment %}
 {% include "editorial/story_videoassetmodal.html" %}
+{% endcomment %}
 
 {% endblock modals %}

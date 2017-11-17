@@ -347,6 +347,8 @@ class Organization(models.Model):
         Used for dashboard, network dashboards and network content.
         """
 
+        from . import Network
+
         all_organization_networks = Network.objects.filter(Q(Q(owner_organization=self) | Q(organizations=self)))
         # not necessary but leaving in for now, check to make sure unique list of networks
         organization_networks = all_organization_networks.distinct()
@@ -408,8 +410,6 @@ class Organization(models.Model):
         """
         return self.videoasset_set.all()
 
-    #FIXME HEATHER LEFT OFF HERE OPTIMIZING QUERIES
-
 
     def get_org_user_comments(self):
         """Retrieve all the comments associated with users of an organization.
@@ -418,16 +418,11 @@ class Organization(models.Model):
         to display streams of all comments.
         """
 
-        # from .discussion import Comment
-        # users = self.get_org_users()
-        # org_user_comments = Comment.objects.filter(Q(user__in=users))
-        # return org_user_comments
+        from . import Comment
 
         users = self.get_org_users()
-        org_user_comments = []
-        for user in users:
-            user_comment = user.comment_set.all()
-            org_user_comments.extend(user_comment)
+        org_user_comments = Comment.objects.filter(Q(user__in=users))
+
         return org_user_comments
 
 
@@ -437,16 +432,8 @@ class Organization(models.Model):
         Used to display all organization comments in dashboard and inbox.
         """
 
-        # from .discussion import Comment
-        # users = self.get_org_users()
-        # org_user_comments = Comment.objects.filter(Q(user__in=users))
-        # return org_user_comments
-
-        org_user_comments = self.get_org_user_comments()
-        organization_comments = []
-        for comment in org_user_comments:
-            if comment.discussion.discussion_type == 'ORG':
-                organization_comments.append(comment)
+        from . import Comment
+        organization_comments = Comment.objects.filter(discussion__discussion_type='ORG', user__organization=self)
         return organization_comments
 
 
@@ -455,6 +442,8 @@ class Organization(models.Model):
 
         Used to display all network comments in dashboard and inbox.
         """
+
+        from . import Comment
 
         networks = self.get_org_networks()
         network_discussions = [network.discussion for network in networks]
@@ -467,6 +456,8 @@ class Organization(models.Model):
         Used to display all story comments in dashboard and inbox.
         """
 
+        from . import Story, Comment
+
         org_stories = Story.objects.filter(organization=self)
         story_discussions = [story.discussion for story in org_stories]
         story_comments = Comment.objects.filter(discussion__in=story_discussions)
@@ -477,8 +468,7 @@ class Organization(models.Model):
 
         Used to display all series comments in dashboard and inbox.
         """
-        from .series import Series
-        from .discussion import Comment
+        from . import Series, Comment
         org_series = Series.objects.filter(organization=self)
         series_discussions = [series.discussion for series in org_series]
         series_comments = Comment.objects.filter(discussion__in=series_discussions)
@@ -524,7 +514,7 @@ class Organization(models.Model):
         on the primary dashboard.
         """
 
-        from .facets import Facet, WebFacet, PrintFacet, AudioFacet, VideoFacet
+        from . import Facet
 
         # establish timeliness of content
         today = timezone.now().date()
@@ -533,18 +523,7 @@ class Organization(models.Model):
         today_end = datetime.combine(tomorrow, time())
 
         # facets where run_date=today
-        # for move to Facet refactoring
-        # running_today = Facet.objects.filter(run_date__range=(today_start, today_end), organization=self)
-
-        running_today = []
-        webfacet_run_today = WebFacet.objects.filter(run_date__range=(today_start, today_end), organization=self)
-        printfacet_run_today = PrintFacet.objects.filter(run_date__range=(today_start, today_end), organization=self)
-        audiofacet_run_today = AudioFacet.objects.filter(run_date__range=(today_start, today_end), organization=self)
-        videofacet_run_today = VideoFacet.objects.filter(run_date__range=(today_start, today_end), organization=self)
-        running_today.extend(webfacet_run_today)
-        running_today.extend(printfacet_run_today)
-        running_today.extend(audiofacet_run_today)
-        running_today.extend(videofacet_run_today)
+        running_today = Facet.objects.filter(run_date__range=(today_start, today_end), organization=self)
 
         return running_today
 
@@ -555,7 +534,7 @@ class Organization(models.Model):
         on the primary dashboard.
         """
 
-        from .facets import Facet, WebFacet, PrintFacet, AudioFacet, VideoFacet
+        from .facets import Facet
 
         # establish timeliness of content
         today = timezone.now().date()
@@ -563,18 +542,7 @@ class Organization(models.Model):
         today_start = datetime.combine(today, time())
         today_end = datetime.combine(tomorrow, time())
 
-        # for move to Facet refactoring
-        # edit_today = Facet.objects.filter(due_edit__range=(today_start, today_end), organization=self)
-
-        edit_today = []
-        webfacet_edit_today = WebFacet.objects.filter(due_edit__range=(today_start, today_end), organization=self)
-        printfacet_edit_today = PrintFacet.objects.filter(due_edit__range=(today_start, today_end), organization=self)
-        audiofacet_edit_today = AudioFacet.objects.filter(due_edit__range=(today_start, today_end), organization=self)
-        videofacet_edit_today = VideoFacet.objects.filter(due_edit__range=(today_start, today_end), organization=self)
-        edit_today.extend(webfacet_edit_today)
-        edit_today.extend(printfacet_edit_today)
-        edit_today.extend(audiofacet_edit_today)
-        edit_today.extend(videofacet_edit_today)
+        edit_today = Facet.objects.filter(due_edit__range=(today_start, today_end), organization=self)
 
         return edit_today
 
@@ -595,8 +563,7 @@ class Organization(models.Model):
         projects = Project.objects.filter(Q(Q(organization=self) | Q(collaborate_with=self)))
         series = Series.objects.filter(Q(Q(organization=self) | Q(collaborate_with=self)))
         stories = Story.objects.filter(Q(Q(organization=self) | Q(collaborate_with=self)))
-        facets = self.facet_set.all()
-        # facets = Facet.objects.filter(Q(Q(organization=self) | Q(collaborate_with=self)))
+        facets = Facet.objects.filter(Q(organization=self))
         imageassets = self.imageasset_set.all()
         networknotes = NetworkNote.objects.filter(Q(network__in=networks))
         orgnotes = self.orgnote_org.all()

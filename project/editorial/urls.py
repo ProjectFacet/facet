@@ -169,8 +169,8 @@ urlpatterns = [
     #   Story URLS
     #----------------------------------------------------------------------#
     url(r'^story/new/$', storyviews.StoryCreateView.as_view(), name='story_new'),
-    url(r'^stories$', storyviews.story_list, name='story_list'),
-    url(r'^story/(?P<pk>[0-9]+)/$', storyviews.story_detail, name='story_detail'),
+    url(r'^stories$', storyviews.StoryListView.as_view(), name='story_list'),
+    url(r'^story/(?P<pk>[0-9]+)/$', storyviews.StoryDetailView.as_view(), name='story_detail'),
     url(r'^story/(?P<pk>[0-9]+)/edit/$', storyviews.StoryUpdateView.as_view(), name='story_edit'),
     url(r'^story/(?P<pk>[0-9]+)/delete/$', storyviews.story_delete, name='story_delete'),
     url(r'^story/(?P<pk>[0-9]+)/notes/$', noteviews.story_notes, name='story_notes'),
