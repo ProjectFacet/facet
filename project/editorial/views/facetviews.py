@@ -1,4 +1,4 @@
-from django.views.generic import CreateView, FormView, UpdateView
+from django.views.generic import CreateView, FormView, UpdateView, DetailView, ListView
 from django.shortcuts import redirect
 from django.core.urlresolvers import reverse
 
@@ -56,13 +56,13 @@ class FacetUpdateView(UpdateView):
         return get_facet_form_for_template(self.object.template_id)
 
 
-class FacetDetailView(DetailView):
-    """Display a facet and all it fields and assets."""
-
-    model = Facet
+# class FacetDetailView(DetailView):
+#     """Display a facet and all it fields and assets."""
+#
+#     model = Facet
 
     # def image_assets(self):
-    #     # {% with imgs=images_assets %}
+    #     # {% with imgs=image_assets %}
     #     #    {{ imgs.images }}
     #     #    {{ images.form }}
     #     # {% endwith %}
@@ -70,5 +70,3 @@ class FacetDetailView(DetailView):
     #     story_images = self.get_story_images()
     #     form = ImageAssetForm()
     #     return {'image_library': image_library, 'story_images': story_images, 'form': form}
-
-    pass

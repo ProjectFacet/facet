@@ -134,7 +134,6 @@ class Facet(models.Model):
 
     story = models.ForeignKey(
         Story,
-        related_name='facetstory',
     )
 
     original = models.BooleanField(
@@ -463,7 +462,6 @@ class Facet(models.Model):
 
     def get_absolute_url(self):
         return reverse('facet_edit', kwargs={'pk': self.id})
-        return reverse('story_detail', kwargs={'pk': self.story.id})
 
     def copy(self):
         """ Create a copy of a facet for a partner organization in a network."""

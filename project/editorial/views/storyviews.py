@@ -181,34 +181,41 @@ class StoryDetailView(DetailView):
     model = Story
 
     def facets(self):
-        facets = self.get_story_facets()
-        return {'facets': facets}
+        self.object = self.get_object()
+        return self.get_story_facets()
 
-    def discussion(self):
+    def story_discussion(self):
         """Get discussion, comments and comment form for the story."""
-        discussion = self.discussion.all()
+        self.object = self.get_object()
+        discussion = self.object.discussion
+        comments = discussion.comment_set.all()
         form = StoryCommentForm()
-        return {'discussion': discussion, 'form': form}
+        return {'discussion': discussion, 'comments': comments, 'form': form}
 
-    def notes(self):
+    def story_notes(self):
         """Get notes and note form for the story."""
+        self.object = self.get_object()
         notes = self.story_notes_set.all()
         form = StoryNoteForm()
         return {'notes': notes, 'form': form}
 
-    def tasks(self):
+    def story_tasks(self):
         """Get tasks and task form for the story."""
+        self.object = self.get_object()
         tasks = self.task_set.all()
         form = TaskForm()
         return {'tasks': tasks, 'form': form}
 
-    def events(self):
+    def story_events(self):
         """Get events and event form for the story."""
+        self.object = self.get_object()
         events = self.event_set.all()
         form = EventForm()
         return {'events': events, 'form': form}
 
-    def assets(self):
+    def story_assets(self):
+        """Return all the assets associated with a story."""
+        self.object = self.get_object()
         images = self.get_story_images()
         documents = self.get_story_documents()
         audio = self.get_story_audio()

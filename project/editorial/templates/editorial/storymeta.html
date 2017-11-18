@@ -4,9 +4,9 @@
     <!-- Discussion Column -->
     <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4 right-rule">
       <h4 class="m-b-20"> Discussion</h4>
+      {% with view.story_discussion as discussion %}
       <div class="comments" data-toggle="slimScroll" style="height:400px" data-color="#5D9CEC" data-allow-page-scroll="false">
-          {% if storycomments %}
-          {% for comment in storycomments %}
+          {% for comment in discussion.comments %}
           <div class="row m-b-10">
               <div class="col-xs-12">
                   <div class="media">
@@ -28,7 +28,6 @@
               </div>
           </div>
           {% endfor %}
-          {% endif %}
       </div>
       <div class="post-comment">
             <div class="row">
@@ -36,11 +35,11 @@
                 <div class="col-md-10 neg-m-r-10">
                     {% csrf_token %}
                     <div class="form-group">
-                    {{ storycommentform.text }}
+                    {{ discussion.form.text }}
                     </div>
-                    {% if storycommentform.text.errors %}
+                    {% if discussion.form.text.errors %}
                       <div class="alert alert-warning" role="alert">
-                      {{ storycommentform.text.errors }}
+                      {{ discussion.form.text.errors }}
                       </div>
                     {% endif %}
                     <input type="hidden" name="story" value="{{ story.pk }}" />
@@ -56,6 +55,7 @@
               </form>
             </div>
         </div>
+      {% endwith %}
     </div>
 
     <!-- Details Column -->
@@ -73,24 +73,6 @@
               {% if request.user.organization == story.organization %}<a href="{% url 'story_edit' pk=story.id %}"><button class="btn btn-sm bg-default btn-block m-b-10 f-s-12"><i class="fa fa-pencil" aria-hidden="true"></i>
               Edit</button></a>{% endif %}
               <a href="#" data-toggle="modal" data-target="#downloadStory" title="Download"><button class="btn btn-sm bg-success btn-block m-b-10 f-s-12"><i class="fa fa-cloud-download" aria-hidden="true"></i> Download</button></a>
-              {% comment %}
-              {% for webfacet in story.webfacetstory.all %}
-                {% if webfacet.status == "Ready" and webfacet.pushed_to_wp == False %}
-                <form action="{% url 'webfacet_json' %}" method="POST" class="post-form" role="form" id="wordpress-form-false">
-                  <input type="hidden" id="wf_id-field" name="webfacet_id" value="{{ webfacet.pk }}" />
-                  <button id="push_webfacet_button" class="btn btn-sm bg-primary btn-block m-b-10">Wordpress</button>
-                </form>
-                {% endif %}
-                {% if webfacet.status == "Ready" and webfacet.pushed_to_wp == True %}
-                <form action="{% url 'webfacet_json' %}" method="POST" class="post-form" role="form" id="wordpress-form-true">
-                  <input type="hidden" id="wf_id-field" name="webfacet_id" value="{{ webfacet.pk }}" />
-                  <button type="submit" class="clear-button" id="push-webfacet-button">
-                    <p class="medium-dark" id="push-webfacet-text"><i class="fa fa-wordpress medium-dark" id="push-webfacet-icon"></i> Push WebFacet</p>
-                  </button>
-                </form>
-                {% endif %}
-              {% endfor %}
-              {% endcomment %}
             </div>
           </div>
           <hr>

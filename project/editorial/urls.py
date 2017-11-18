@@ -23,7 +23,7 @@ from views import (
     noteviews,
     downloadviews,
     scheduleviews,
-    facets,
+    facetviews,
     )
 
 from . import api
@@ -31,9 +31,9 @@ from . import api
 from views.searchviews import EditorialSearchView
 
 urlpatterns = [
-    url(r'^facet-add/$', facets.FacetPreCreateView.as_view(), name="facet_precreate"),
-    url(r'^facet-add/(?P<template_id>\d+)/$', facets.FacetCreateView.as_view(), name="facet_add"),
-    url(r'^facet-edit/(?P<pk>\d+)/$', facets.FacetUpdateView.as_view(), name="facet_edit"),
+    url(r'^facet/add/$', facetviews.FacetPreCreateView.as_view(), name="facet_precreate"),
+    url(r'^facet/add/(?P<template_id>\d+)/$', facetviews.FacetCreateView.as_view(), name="facet_add"),
+    url(r'^facet/edit/(?P<pk>\d+)/$', facetviews.FacetUpdateView.as_view(), name="facet_edit"),
 
     #----------------------------------------------------------------------#
     #   Test URL - Used for non-destructive testing of templates/queries
