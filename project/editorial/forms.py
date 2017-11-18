@@ -255,7 +255,7 @@ class SeriesForm(forms.ModelForm):
 # ------------------------------ #
 
 class StoryForm(forms.ModelForm):
-    """ Form to create a new story. """
+    """ Form to create/edit a new story. """
 
     def __init__(self, *args, **kwargs):
         org = kwargs.pop("organization")
@@ -592,10 +592,14 @@ class VideoFacetForm(forms.ModelForm):
 class TaskForm(forms.ModelForm):
     """ Form to create/edit a task. """
 
+
+
     def __init__(self, *args, **kwargs):
-        self.request = kwargs.pop("request")
+        print "IN TASKFORM INIT"
+        org = kwargs.pop("organization")
+        print "TASKFORM ORG: ", org
         super(TaskForm, self).__init__(*args, **kwargs)
-        self.fields['assigned_to'].queryset = Organization.get_org_users(self.request.user.organization)
+        self.fields['assigned_to'].queryset = org.get_org_users()
         self.fields['status'].empty_label='Task Status'
         self.fields['project'].empty_label='Select a Project'
         self.fields['series'].empty_label='Select a Series'
@@ -603,7 +607,7 @@ class TaskForm(forms.ModelForm):
         self.fields['event'].empty_label='Select an Event'
 
     projects = forms.ModelChoiceField(
-        queryset=Project.objects.all(),
+        queryset=Project.objects.filter(),
         widget=forms.Select,
         required=False,
     )

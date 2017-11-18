@@ -134,6 +134,9 @@ class Event(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('event_detail', kwargs={'pk': self.id})
+
     @property
     def search_title(self):
         return self.name
@@ -142,13 +145,17 @@ class Event(models.Model):
     def type(self):
         return "Event"
 
+    @property
+    def description(self):
+        return self.text
+
     def clean(self):
         """Enforce that there is one relationship."""
 
         super(Event, self).clean()
 
         count = (
-            (1 if self.organization else 0) +
+            (1 if self.evt_organization else 0) +
             (1 if self.project else 0) +
             (1 if self.series else 0) +
             (1 if self.story else 0)

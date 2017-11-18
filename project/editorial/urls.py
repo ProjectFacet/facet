@@ -173,6 +173,7 @@ urlpatterns = [
     url(r'^story/(?P<pk>[0-9]+)/$', storyviews.StoryDetailView.as_view(), name='story_detail'),
     url(r'^story/(?P<pk>[0-9]+)/edit/$', storyviews.StoryUpdateView.as_view(), name='story_edit'),
     url(r'^story/(?P<pk>[0-9]+)/delete/$', storyviews.story_delete, name='story_delete'),
+    url(r'^story/(?P<pk>[0-9]+)/schedule/$', storyviews.story_schedule, name='story_schedule'),
     url(r'^story/(?P<pk>[0-9]+)/notes/$', noteviews.story_notes, name='story_notes'),
     url(r'^story/(?P<pk>[0-9]+)/note/(?P<note_type>[-\w]+)/content$', noteviews.note_content_html, name='note_content_html'),
     url(r'^story/note/new/$', noteviews.create_story_note, name='create_story_note'),

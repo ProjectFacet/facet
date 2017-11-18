@@ -263,7 +263,7 @@ class Story(models.Model):
         """Return all the images associated with a story."""
 
         story_images = []
-        for facet in self.facetstory.all():
+        for facet in self.facet_set.all():
             images = facet.get_facet_images()
             story_images.extend(images)
         return story_images
@@ -272,7 +272,7 @@ class Story(models.Model):
         """Return all documents associated with a story."""
 
         story_documents = []
-        for facet in self.facetstory.all():
+        for facet in self.facet_set.all():
             documents = facet.get_facet_documents()
             story_documents.extend(documents)
         return story_documents
@@ -281,7 +281,7 @@ class Story(models.Model):
         """Return all audio associated with a story."""
 
         story_audio = []
-        for facet in self.facetstory.all():
+        for facet in self.facet_set.all():
             audio = facet.get_facet_audio()
             story_audio.extend(audio)
         return story_audio
@@ -290,7 +290,7 @@ class Story(models.Model):
         """ Return all video associated with a story."""
 
         story_video = []
-        for facet in self.facetstory.all():
+        for facet in self.facet_set.all():
             video = facet.get_facet_video()
             story_video.extend(video)
         return story_video
@@ -479,6 +479,11 @@ class Story(models.Model):
                     data.append(run_event_dict)
 
         return data
+
+    def get_story_events(self):
+        """Return all story events."""
+
+        return self.event_set.all()
 
 
     @property

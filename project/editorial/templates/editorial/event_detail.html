@@ -12,26 +12,31 @@
     <ol class="breadcrumb icon-angle-right icon-th">
         <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
         {% if event %}
-          {% if event.organization %}
-          <!-- <li class="fadeIn"><a href="{% url 'organization_detail' pk=event.organization.id %}" title="Go to Organization"> {{ event.organization.name }} </a></li> -->
-          <!-- <li class="fadeIn"><a href="{% url 'organization_ event_list' pk=event.organization.id %}" title="Go to {{ event.organization.name}}  events">  events </a></li> -->
-          <li class="fadeIn"> {{  event.name }}</li>
-          <li class="fadeIn"> Update</li>
+          {% if event.evt_organization %}
+            {% comment %}
+            <!-- <li class="fadeIn"><a href="{% url 'organization_detail' pk=event.organization.id %}" title="Go to Organization"> {{ event.organization.name }} </a></li> -->
+            <!-- <li class="fadeIn"><a href="{% url 'organization_ event_list' pk=event.organization.id %}" title="Go to {{ event.organization.name}}  events">  events </a></li> -->
+            {% endcomment %}
+            <li class="fadeIn"> {{  event.name }}</li>
+            <li class="fadeIn"> Update</li>
           {% elif event.project %}
-          <li class="fadeIn"><a href="{% url 'project_list' %}" title="Go to Project List"> Projects </a></li>
-          <li class="fadeIn"><a href="{% url 'project_detail' pk=event.project.id %}" title="Go to {{ event.project.name}}"> {{ event.project.name}} </a></li>
-          <!-- <li class="fadeIn"><a href="{% url 'project_events' pk=event.project.id %}" title="Go to {{ event.project.name}}  events">  events </a></li> -->
-          <li class="fadeIn"> {{  event.name }}</li>
-          <li class="fadeIn"> Update</li>
+            <li class="fadeIn"><a href="{% url 'project_detail' pk=event.project.id %}" title="Go to {{ event.project.name}}"> {{ event.project.name}} </a></li>
+            <li class="fadeIn"><a href="#" title="Go to Project Events"> Events </a></li>
+            <li class="fadeIn"> {{  event.name }}</li>
+            <li class="fadeIn"> Update</li>
           {% elif  event.series %}
-          <li class="fadeIn"><a href="{% url 'series_list' %}" title="Go to Series List"> Series </a></li>
-          <li class="fadeIn"><a href="{% url 'series_detail' pk=event.series.id %}" title="Go to {{ event.series.name}}"> {{ event.series.name}} </a></li>
+            <li class="fadeIn"><a href="{% url 'series_detail' pk=event.series.id %}" title="Go to {{ event.series.name}}"> {{ event.series.name}} </a></li>
+            <li class="fadeIn"><a href="#" title="Go to Series Events"> Events </a></li>
+            <li class="fadeIn"> {{ event.name}} </li>
+            <li class="fadeIn"> Update</li>
           {% elif  event.story %}
-          <li class="fadeIn"><a href="{% url 'story_list' %}" title="Go to Story List"> Stories </a></li>
-          <li class="fadeIn"><a href="{% url 'story_detail' pk=event.story.id %}" title="Go to {{ event.story.name}}"> {{ event.story.name}} </a></li>
+            <li class="fadeIn"><a href="{% url 'story_detail' pk=event.story.id %}" title="Go to {{ event.story.name}}"> {{ event.story.name}} </a></li>
+            <li class="fadeIn"><a href="#" title="Go to Story Events"> Events </a></li>
+            <li class="fadeIn"> {{ event.name}} </li>
+            <li class="fadeIn"> Update</li>
           {% endif %}
         {% else %}
-        <li class="fadeIn"> New  event</li>
+        <li class="fadeIn"> New event</li>
         {% endif %}
     </ol>
 </div>

@@ -36,12 +36,13 @@
 <!-- ================================================= -->
     <div class="row">
       <div class="col-xs-12">
-        <div class="bs-nav-tabs nav-tabs-default m-b-20" id="facettabs">
+        <div class="bs-nav-tabs nav-tabs-default m-b-40" id="facettabs">
           <ul class="nav nav-tabs nav-animated-border-from-left nav-tabs-sticky text-center">
-            <li class="nav-item"><a href="#storydetail" class="nav-link active" data-toggle="tab" data-target="#storydetail"><h4>Story Detail</h4></a></li>
+            <li class="nav-item"><a href="#storydetail" class="nav-link active" data-toggle="tab" data-target="#storydetail"><p class="f-r-14 f-w-300 m-b-0">Story Detail</p></a></li>
             {% for facet in story.facet_set.all %}
-            <li class="nav-item"><a href="{% url 'facet_edit' facet.id %}" class="nav-link"><h5>{{ facet.name }}</h5></a></li>
+            <li class="nav-item"><a href="{% url 'facet_edit' facet.id %}" class="nav-link"><p class="f-r-10 f-w-300 m-b-0">{{ facet.name }}</p></a></li>
             {% endfor %}
+            <li class="nav-item"><a href="#" class="nav-link"><p class="f-r-12 f-w-300 m-b-0"><i class="fa fa-plus-square" aria-hidden="true"></i></p></a></li>
           </ul>
         </div>
       </div>
@@ -143,36 +144,7 @@
 
   </script>
 
-  <!-- <script>
-    function pushToWordPress(evt) {
-      evt.preventDefault();
-      var formInputs = {
-        "webfacet_id": $("#wf_id-field").val()
-      };
-      $.post("{% url 'webfacet_json' %}",
-          formInputs
-      );
-    }
 
-    $("#wordpress-form-false").on("submit", pushToWordPress);
-  </script> -->
-
-  <!-- <script>
-    function pushToWordPress(evt) {
-
-      if(confirm('This webfacet has already been pushed to your WordPress site. Are you sure you want to push it again?')) {
-        evt.preventDefault();
-        var formInputs = {
-          "webfacet_id": $("#wf_id-field").val()
-        };
-        $.post("{% url 'webfacet_json' %}",
-            formInputs
-        );
-      }
-    }
-
-    $("#wordpress-form-true").on("submit", pushToWordPress);
-  </script> -->
 
 {% endblock %}
 
@@ -187,7 +159,8 @@
 <!-- ================================================= -->
               <!-- ADD STORYNOTE MODAL -->
 <!-- ================================================= -->
-{% comment %}
+
+{% with view.story_notes as notes %}
 <div class="modal fade" id="addStoryNote" tabindex="-1" role="dialog" aria-labelledby="addStoryNoteModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -198,7 +171,7 @@
       <div class="modal-body">
         <form action="{% url 'create_story_note' %}" method="POST" class="post-form">
         {% csrf_token %}
-        {% bootstrap_form storynoteform %}
+        {% bootstrap_form notes.form %}
         <input type="hidden" name="story" value="{{ story.pk }}" />
         <button type="submit" class="btn btn-primary m-t-20">Post Note</button>
         </form>
@@ -208,7 +181,7 @@
     </div>
   </div>
 </div>
-{% endcomment %}
+{% endwith %}
 
 <!-- ================================================= -->
                 <!-- DOWNLOAD MODAL -->
@@ -235,7 +208,7 @@
 {% include "editorial/story_audioassetmodal.html" %}
 {% endcomment %}
 <!-- ================================================= -->
-            <!-- ADD WEBFACET VIDEO MODAL -->
+            <!-- VIDEO MODAL -->
 <!-- ================================================= -->
 {% comment %}
 {% include "editorial/story_videoassetmodal.html" %}
