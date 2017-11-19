@@ -28,10 +28,7 @@ from editorial.forms import (
     )
 
 from editorial.models import (
-    WebFacet,
-    PrintFacet,
-    AudioFacet,
-    VideoFacet,
+    Facet,
     ImageAsset,
     DocumentAsset,
     AudioAsset,
@@ -167,19 +164,8 @@ def upload_image(request):
             image = imageform.save(commit=False)
 
             # retrieve the facet the image should be associated with
-            facet_type = request.POST.get('type')
-            if facet_type == "webfacet":
-                facet_id = request.POST.get('webfacet')
-                facet = get_object_or_404(WebFacet, id=facet_id)
-            elif facet_type == "printfacet":
-                facet_id = request.POST.get('printfacet')
-                facet = get_object_or_404(PrintFacet, id=facet_id)
-            elif facet_type == "audiofacet":
-                facet_id = request.POST.get('audiofacet')
-                facet = get_object_or_404(AudioFacet, id=facet_id)
-            elif facet_type == "videofacet":
-                facet_id = request.POST.get('videofacet')
-                facet = get_object_or_404(VideoFacet, id=facet_id)
+            facet_id = request.POST.get('facet')
+            facet = get_object_or_404(Facet, id=facet_id)
 
             # set request based attributes
             image.owner = request.user
@@ -204,20 +190,9 @@ def add_image(request):
         if add_image_form.is_valid():
             images = request.POST.getlist('images')
 
-            # retrieve the facet the images should be associated with
-            facet_type = request.POST.get('type')
-            if facet_type == "webfacet":
-                facet_id = request.POST.get('webfacet')
-                facet = get_object_or_404(WebFacet, id=facet_id)
-            elif facet_type == "printfacet":
-                facet_id = request.POST.get('printfacet')
-                facet = get_object_or_404(PrintFacet, id=facet_id)
-            elif facet_type == "audiofacet":
-                facet_id = request.POST.get('audiofacet')
-                facet = get_object_or_404(AudioFacet, id=facet_id)
-            elif facet_type == "videofacet":
-                facet_id = request.POST.get('videofacet')
-                facet = get_object_or_404(VideoFacet, id=facet_id)
+            # retrieve the facet the image should be associated with
+            facet_id = request.POST.get('facet')
+            facet = get_object_or_404(Facet, id=facet_id)
 
             #create list of img instances
             img_instances = []

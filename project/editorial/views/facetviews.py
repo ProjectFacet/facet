@@ -3,9 +3,14 @@ from django.shortcuts import redirect
 from django.core.urlresolvers import reverse
 
 from ..models import Facet
-from ..forms import get_facet_form_for_template, FacetPreCreateForm
-
-
+from ..forms import (
+    get_facet_form_for_template,
+    FacetPreCreateForm,
+    FacetCommentForm,
+    ImageAssetForm,
+    DocumentAssetForm,
+    AudioAssetForm,
+    VideoAssetForm,)
 
 
 class FacetCreateView(CreateView):
@@ -55,18 +60,54 @@ class FacetUpdateView(UpdateView):
 
         return get_facet_form_for_template(self.object.template_id)
 
+    def get_form_kwargs(self):
+        """Pass current user organization to the form."""
 
-# class FacetDetailView(DetailView):
-#     """Display a facet and all it fields and assets."""
-#
-#     model = Facet
+        self.object = self.get_object()
+        facet = self.object
+        kw = super(FacetUpdateView, self).get_form_kwargs()
+        kw.update({'story': facet.story})
 
-    # def image_assets(self):
-    #     # {% with imgs=image_assets %}
-    #     #    {{ imgs.images }}
-    #     #    {{ images.form }}
-    #     # {% endwith %}
-    #     image_library = self.request.user.organization.get_org_image_library()
-    #     story_images = self.get_story_images()
-    #     form = ImageAssetForm()
-    #     return {'image_library': image_library, 'story_images': story_images, 'form': form}
+        return kw
+
+    def facet_discussion(self):
+        """Get discussion, comments and comment form for the facet."""
+
+        self.object = self.get_object()
+        discussion = self.object.discussion
+        comments = discussion.comment_set.all()
+        form = FacetCommentForm()
+        return {'discussion': discussion, 'comments': comments, 'form': form}
+
+    def facet_image_assets(self):
+        """Return all image assets associated with a facet and the forms to associate more."""
+
+        self.object = self.get_object()
+        images = self.object.get_facet_images()
+        org_images = self.object.organization.get_org_image_library()
+        uploadform = ImageAssetForm()
+        return {'images': images, 'org_images': org_images, 'uploadform': uploadform}
+
+    def facet_document_assets(self):
+        """Return all document assets associated with a facet and the forms to associate more."""
+
+        self.object = self.get_object()
+        documents = self.object.get_facet_documents()
+        uploadform = DocumentAssetForm()
+        return {'documents': documents, 'uploadform': uploadform}
+
+    def facet_audio_assets(self):
+        """Return all audio assets associated with a facet and the forms to associate more."""
+
+        self.object = self.get_object()
+        audio = self.object.get_facet_audio()
+        uploadform = AudioAssetForm()
+        return {'audio': audio, 'uploadform': uploadform}
+
+    def facet_video_assets(self):
+        """Return all video assets associated with a facet and the forms to associate more."""
+
+        self.object = self.get_object()
+        videos = self.object.get_facet_video()
+        uploadform = VideoAssetForm()
+        return {'videos': videos, 'uploadform': uploadform}

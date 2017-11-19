@@ -162,76 +162,22 @@ def create_storycomment(request):
 
         return redirect('story_detail', pk=story.id)
 
-def create_webcomment(request):
+def create_facetcomment(request):
     """ Regular form posting method."""
 
     if request.method == 'POST':
         comment_text = request.POST.get('text')
         story_id = request.POST.get('story')
         story = get_object_or_404(Story, id=story_id)
-        webfacet = get_object_or_404(WebFacet, story=story)
-        discussion = get_object_or_404(Discussion, id=webfacet.discussion.id)
+        facet = get_object_or_404(Facet, story=story)
+        discussion = get_object_or_404(Discussion, id=facet.discussion.id)
         comment = Comment.objects.create_comment(user=request.user, discussion=discussion, text=comment_text)
         comment.save()
 
         # record action for activity stream
-        action.send(request.user, verb="commented on", action_object=webfacet)
+        action.send(request.user, verb="commented on", action_object=facet)
 
-        return redirect('story_detail', pk=story.id)
-
-
-def create_printcomment(request):
-    """ Regular form posting method."""
-
-    if request.method == 'POST':
-        comment_text = request.POST.get('text')
-        story_id = request.POST.get('story')
-        story = get_object_or_404(Story, id=story_id)
-        printfacet = get_object_or_404(PrintFacet, story=story)
-        discussion = get_object_or_404(Discussion, id=printfacet.discussion.id)
-        comment = Comment.objects.create_comment(user=request.user, discussion=discussion, text=comment_text)
-        comment.save()
-
-        # record action for activity stream
-        action.send(request.user, verb="commented on", action_object=printfacet)
-
-        return redirect('story_detail', pk=story.id)
-
-
-def create_audiocomment(request):
-    """ Regular form posting method."""
-
-    if request.method == 'POST':
-        comment_text = request.POST.get('text')
-        story_id = request.POST.get('story')
-        story = get_object_or_404(Story, id=story_id)
-        audiofacet = get_object_or_404(AudioFacet, story=story)
-        discussion = get_object_or_404(Discussion, id=audiofacet.discussion.id)
-        comment = Comment.objects.create_comment(user=request.user, discussion=discussion, text=comment_text)
-        comment.save()
-
-        # record action for activity stream
-        action.send(request.user, verb="commented on", action_object=audiofacet)
-
-        return redirect('story_detail', pk=story.id)
-
-
-def create_videocomment(request):
-    """ Regular form posting method."""
-
-    if request.method == 'POST':
-        comment_text = request.POST.get('text')
-        story_id = request.POST.get('story')
-        story = get_object_or_404(Story, id=story_id)
-        videofacet = get_object_or_404(VideoFacet, story=story)
-        discussion = get_object_or_404(Discussion, id=videofacet.discussion.id)
-        comment = Comment.objects.create_comment(user=request.user, discussion=discussion, text=comment_text)
-        comment.save()
-
-        # record action for activity stream
-        action.send(request.user, verb="commented on", action_object=videofacet)
-
-        return redirect('story_detail', pk=story.id)
+        return redirect('facet_edit', pk=facet.id)
 
 
 # FIXME: Needs further debugging before replacing above sections

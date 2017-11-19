@@ -1,4 +1,4 @@
-<!-- Image Asset Modal -->
+<!-- Image Asset Modal -->
 
 <div class="modal fade" id="ImageAssetModal" tabindex="-1" role="dialog" aria-labelledby="ImageAssetModal">
   <div class="modal-dialog modal-lg" role="document">
@@ -11,6 +11,7 @@
             <li class="nav-item"> <a ng-href="" class="nav-link" data-toggle="tab" data-target="#imagelibrary">Select From Library</a></li>
           </ul>
         </div>
+        {% with view.facet_image_assets as image_assets %}
         <div class="modal-body" id="imagemodalbody">
           <div class="tab-content">
             <!-- UPLOAD PANEL -->
@@ -22,34 +23,34 @@
               <div class="col-md-6">
 
                 <fieldset class="form-group m-b-10">
-                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ imageassetform.photo.label_tag }}</label>
-                  {{ imageassetform.photo }}
-                  {% if imageassetform.photo.errors %}
-                    <small class="text-muted">{{ imageassetform.photo.errors }}</small>
+                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ image_assets.uploadform.photo.label_tag }}</label>
+                  {{ image_assets.uploadform.photo }}
+                  {% if image_assets.uploadform.photo.errors %}
+                    <small class="text-muted">{{ image_assets.uploadform.photo.errors }}</small>
                   {% endif %}
                 </fieldset>
 
                 <fieldset class="form-group m-b-10">
-                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin"><span class="field-label">{{ imageassetform.title.label_tag }}</label>
-                  {{ imageassetform.title }}
-                  {% if imageassetform.title.errors %}
-                    <small class="text-muted">{{ imageassetform.title.errors }}</small>
+                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin"><span class="field-label">{{ image_assets.uploadform.title.label_tag }}</label>
+                  {{ image_assets.uploadform.title }}
+                  {% if image_assets.uploadform.title.errors %}
+                    <small class="text-muted">{{ image_assets.uploadform.title.errors }}</small>
                   {% endif %}
                 </fieldset>
 
                 <fieldset class="form-group m-b-10">
-                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ imageassetform.asset_type.label_tag }}</label>
-                  {{ imageassetform.asset_type }}
-                  {% if imageassetform.asset_type.errors %}
-                    <small class="text-muted">{{ imageassetform.asset_type.errors }}</small>
+                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ image_assets.uploadform.asset_type.label_tag }}</label>
+                  {{ image_assets.uploadform.asset_type }}
+                  {% if image_assets.uploadform.asset_type.errors %}
+                    <small class="text-muted">{{ image_assets.uploadform.asset_type.errors }}</small>
                   {% endif %}
                 </fieldset>
 
                 <fieldset class="form-group m-b-10">
-                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ imageassetform.keywords.label_tag }}</label>
-                  {{ imageassetform.keywords }}
-                  {% if imageassetform.keywords.errors %}
-                    <small class="text-muted">{{ imageassetform.keywords.errors }}</small>
+                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ image_assets.uploadform.keywords.label_tag }}</label>
+                  {{ image_assets.uploadform.keywords }}
+                  {% if image_assets.uploadform.keywords.errors %}
+                    <small class="text-muted">{{ image_assets.uploadform.keywords.errors }}</small>
                   {% endif %}
                 </fieldset>
 
@@ -59,18 +60,18 @@
               <div class="col-md-6">
 
                 <fieldset class="form-group m-b-10">
-                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ imageassetform.description.label_tag }}</label>
-                  {{ imageassetform.description }}
-                  {% if imageassetform.description.errors %}
-                    <small class="text-muted">{{ imageassetform.description.errors }}</small>
+                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ image_assets.uploadform.description.label_tag }}</label>
+                  {{ image_assets.uploadform.description }}
+                  {% if image_assets.uploadform.description.errors %}
+                    <small class="text-muted">{{ image_assets.uploadform.description.errors }}</small>
                   {% endif %}
                 </fieldset>
 
                 <fieldset class="form-group m-b-10">
-                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ imageassetform.attribution.label_tag }}</label>
-                  {{ imageassetform.attribution }}
-                  {% if imageassetform.attribution.errors %}
-                    <small class="text-muted">{{ imageassetform.attribution.errors }}</small>
+                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ image_assets.uploadform.attribution.label_tag }}</label>
+                  {{ image_assets.uploadform.attribution }}
+                  {% if image_assets.uploadform.attribution.errors %}
+                    <small class="text-muted">{{ image_assets.uploadform.attribution.errors }}</small>
                   {% endif %}
                 </fieldset>
 
@@ -79,7 +80,7 @@
               <!-- ===================================== -->
               <!-- ===================================== -->
               <div class="hidden-image-inputs">>
-                    <!-- Insert custom content via jQuery -->
+                  <input type="hidden" name="facet" value="{{ facet.pk }}" />
               </div>
               <!-- ===================================== -->
               <!-- ===================================== -->
@@ -97,7 +98,7 @@
                 <form action="{% url 'add_image' %}" method="POST" class="post-form" name="addimage">
                   {% csrf_token %}
                   <div class=" row image-library">
-                  {% for image in images %}
+                  {% for image in image_assets.org_images %}
                     <div class="col-md-2">
                       <label>
                         {% if image.display_photo %}<img class="img-responsive img-thumbnail" src="{{ image.display_photo.url }}" alt="{{ image.description }}">{% endif %}
@@ -113,7 +114,7 @@
                 <!-- ===================================== -->
                 <!-- ===================================== -->
                 <div class="hidden-image-inputs">
-                    <!-- Insert custom content via jQuery -->
+                  <input type="hidden" name="facet" value="{{ facet.pk }}" />
                 </div>
                 <!-- ===================================== -->
                 <!-- ===================================== -->
@@ -129,57 +130,10 @@
             <!-- END LIBRARY PANEL -->
           </div>
         </div>
+        {% endwith %}
         </div>
         <div class="modal-footer"></div>
       </div>
     </div>
   </div>
 </div>
-
-<script>
-$('#ImageAssetModal').on('show.bs.modal', function (event) {
-    var button = $(event.relatedTarget) // Button that triggered the modal
-    var facet = button.data('facet') // Extract info from data-* attributes
-
-    var webfacetHidden = '{% for webfacet in story.webfacetstory.all %}' +
-                '<input type="hidden" name="webfacet" value="{{ webfacet.pk }}" />' +
-                '<input  type="hidden" name="type" value="webfacet" />' +
-                '{% endfor %}'
-
-
-    var printfacetHidden = '{% for printfacet in story.printfacetstory.all %}' +
-                '<input type="hidden" name="printfacet" value="{{ printfacet.pk }}" />' +
-                '<input  type="hidden" name="type" value="printfacet" />' +
-                '{% endfor %}'
-
-    var audiofacetHidden = '{% for audiofacet in story.audiofacetstory.all %}' +
-                '<input type="hidden" name="audiofacet" value="{{ audiofacet.pk }}" />' +
-                '<input  type="hidden" name="type" value="audiofacet" />' +
-                '{% endfor %}'
-
-    var videofacetHidden = '{% for videofacet in story.videofacetstory.all %}' +
-                '<input type="hidden" name="videofacet" value="{{ videofacet.pk }}" />' +
-                '<input  type="hidden" name="type" value="videofacet" />' +
-                '{% endfor %}'
-
-
-    var modal = $(this)
-
-    if (facet == 'webfacet_image') {
-        modal.find('.hidden-image-inputs').html(webfacetHidden)
-    }
-    else if (facet == 'printfacet_image') {
-        modal.find('.hidden-image-inputs').html(printfacetHidden)
-    }
-    else if (facet == 'audiofacet_image') {
-        modal.find('.hidden-image-inputs').html(audiofacetHidden)
-    }
-    else if (facet == 'videofacet_image') {
-        modal.find('.hidden-image-inputs').html(videofacetHidden)
-    }
-    else {
-        modal.find('.hidden-image-inputs').html('<div></div>')
-    }
-})
-
-</script>

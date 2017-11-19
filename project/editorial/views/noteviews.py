@@ -32,6 +32,7 @@ from editorial.models import (
     Project,
     Series,
     Story,
+    Facet,
     ProjectNote,
     SeriesNote,
     StoryNote,
@@ -62,6 +63,8 @@ def note_content_html(request, note_type, pk):
         note = get_object_or_404(SeriesNote, pk=pk)
     elif note_type=='story':
         note = get_object_or_404(StoryNote, pk=pk)
+    elif note_type=='facet':
+        note = get_object_or_404(FacetNote, pk=pk)
 
     note_html = render_to_string('note-content.html', {
                         'note': note,

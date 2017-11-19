@@ -114,10 +114,11 @@ urlpatterns = [
     url(r'^projectcomment/new$', communicationviews.create_projectcomment, name='create_projectcomment'),
     url(r'^seriescomment/new$', communicationviews.create_seriescomment, name='create_seriescomment'),
     url(r'^storycomment/new$', communicationviews.create_storycomment, name='create_storycomment'),
-    url(r'^webcomment/new$', communicationviews.create_webcomment, name='create_webcomment'),
-    url(r'^printcomment/new$', communicationviews.create_printcomment, name='create_printcomment'),
-    url(r'^audiocomment/new$', communicationviews.create_audiocomment, name='create_audiocomment'),
-    url(r'^videocomment/new$', communicationviews.create_videocomment, name='create_videocomment'),
+    url(r'^facetcomment/new$', communicationviews.create_facetcomment, name='create_facetcomment'),
+    # url(r'^webcomment/new$', communicationviews.create_webcomment, name='create_webcomment'),
+    # url(r'^printcomment/new$', communicationviews.create_printcomment, name='create_printcomment'),
+    # url(r'^audiocomment/new$', communicationviews.create_audiocomment, name='create_audiocomment'),
+    # url(r'^videocomment/new$', communicationviews.create_videocomment, name='create_videocomment'),
     #----------------------------------------------------------------------#
     #   Organization URLS
     #----------------------------------------------------------------------#

@@ -71,13 +71,6 @@
 <!-- ================================================= -->
 <!-- ================================================= -->
 
-  <script>
-    $(window).load(function() {
-      $('.nav-tabs-sticky').stickyTabs();
-     });
-      // $('.nav-tabs-sticky').stickyTabs();
-  </script>
-
 <!-- Image popups -->
   <script>
     $(".chosen-select").chosen()
@@ -188,30 +181,6 @@
 <!-- ================================================= -->
 {% comment %}
 {% include "editorial/storydownloadmodal.html" %}
-{% endcomment %}
-<!-- ================================================= -->
-            <!-- IMAGE MODAL -->
-<!-- ================================================= -->
-{% comment %}
-{% include "editorial/story_imageassetmodal.html" %}
-{% endcomment %}
-<!-- ================================================= -->
-            <!-- DOCUMENT MODAL -->
-<!-- ================================================= -->
-{% comment %}
-{% include "editorial/story_documentassetmodal.html" %}
-{% endcomment %}
-<!-- ================================================= -->
-            <!-- AUDIO MODAL -->
-<!-- ================================================= -->
-{% comment %}
-{% include "editorial/story_audioassetmodal.html" %}
-{% endcomment %}
-<!-- ================================================= -->
-            <!-- VIDEO MODAL -->
-<!-- ================================================= -->
-{% comment %}
-{% include "editorial/story_videoassetmodal.html" %}
 {% endcomment %}
 
 {% endblock modals %}

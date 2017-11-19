@@ -53,9 +53,44 @@ def get_facet_form_for_template(template_id):
     class FacetForm(forms.ModelForm):
         """Form for a facet. Dynamically selects fields based on template."""
 
+        def __init__(self, *args, **kwargs):
+            self.story = kwargs.pop("story")
+            super(FacetForm, self).__init__(*args, **kwargs)
+            self.fields['credit'].queryset = self.story.get_story_team_vocab()
+            self.fields['editor'].queryset = self.story.get_story_team_vocab()
+
+
+        due_edit = forms.DateTimeField(
+            required=False,
+            widget=OurDateTimePicker(
+                options={'format': 'YYYY-MM-DD HH:mm'},
+                attrs={'id': 'wf_dueedit_picker'}
+            )
+        )
+
+        run_date = forms.DateTimeField(
+            required=False,
+            widget=OurDateTimePicker(
+                options={'format': 'YYYY-MM-DD HH:mm'},
+                attrs={'id': 'wf_rundate_picker'}
+            )
+        )
+
+        content = forms.CharField(widget=TinyMCE(attrs={'rows':20, 'id': 'content'}))
+
         class Meta:
             model = Facet
             fields = list(COMMON_FIELDS) + extra_fields
+
+            widgets = {
+                'name': TextInput(attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Label'}),
+                'headline': TextInput(attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Headline'}),
+                'description': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Description'}),
+                'editor': Select(attrs={'class': 'form-control'}),
+                'credit': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select form-control facet-select', 'id':'webfacet-credit', 'data-placeholder': 'Select Credited Team'}),
+                'status': Select(attrs={'class': 'form-control'}),
+                'keywords': TextInput(attrs={'class': 'form-control', 'placeholder': 'Keywords'}),
+            }
 
         def get_fields_to_show(self):
             """Returns list of extra fields, to display on form."""
@@ -320,269 +355,269 @@ class StoryForm(forms.ModelForm):
 #          Facet Forms           #
 # ------------------------------ #
 
-class WebFacetForm(forms.ModelForm):
-    """ Webfacet form. """
-
-    def __init__(self, *args, **kwargs):
-        self.request = kwargs.pop("request")
-        self.story = kwargs.pop("story")
-        super(WebFacetForm, self).__init__(*args, **kwargs)
-        self.fields['credit'].queryset = Story.get_story_team_vocab(self.story)
-        self.fields['editor'].queryset = Story.get_story_team_vocab(self.story)
-
-
-    due_edit = forms.DateTimeField(
-        required=False,
-        widget=OurDateTimePicker(
-            options={'format': 'YYYY-MM-DD HH:mm'},
-            attrs={'id': 'wf_dueedit_picker'}
-        )
-    )
-
-    run_date = forms.DateTimeField(
-        required=False,
-        widget=OurDateTimePicker(
-            options={'format': 'YYYY-MM-DD HH:mm'},
-            attrs={'id': 'wf_rundate_picker'}
-        )
-    )
-
-    wf_content = forms.CharField(widget=TinyMCE(attrs={'rows':40, 'id': 'wf_content'}))
-
-    class Meta:
-        model = WebFacet
-        fields = [
-            'code',
-            'title',
-            'excerpt',
-            'wf_description',
-            'wf_content',
-            'keywords',
-            'status',
-            'due_edit',
-            'run_date',
-            'share_note',
-            'editor',
-            'credit',
-        ]
-        widgets = {
-            'title': TextInput(attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Title'}),
-            'code': TextInput(attrs={'class': 'form-control', 'placeholder': 'Code'}),
-            'credit': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select form-control facet-select', 'id':'webfacet-credit', 'data-placeholder': 'Select Credited Team'}),
-            'editor': Select(attrs={'class': 'form-control'}),
-            'wf_description': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Description'}),
-            'excerpt': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Excerpt'}),
-            'share_note': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Share Note'}),
-            'keywords': TextInput(attrs={'class': 'form-control', 'placeholder': 'Keywords'}),
-            'status': Select(attrs={'class': 'form-control'}),
-        }
-
-    # class Media:
-    #     css = {
-    #         'all': ('css/bootstrap-datetimepicker.css', 'css/chosen.min.css')
-    #     }
-    #     js = ('scripts/chosen.jquery.min.js',
-    #      'scripts/moment.js',
-    #      'scripts/jquery.datetimepicker.js',
-    #      'scripts/bootstrap-datetimepicker.js',)
-
-
-class PrintFacetForm(forms.ModelForm):
-    """ Printfacet form. """
-
-    def __init__(self, *args, **kwargs):
-        self.request = kwargs.pop("request")
-        self.story = kwargs.pop("story")
-        super(PrintFacetForm, self).__init__(*args, **kwargs)
-        self.fields['credit'].queryset = Story.get_story_team_vocab(self.story)
-        self.fields['editor'].queryset = Story.get_story_team_vocab(self.story)
-
-    due_edit = forms.DateTimeField(
-        required=False,
-        widget=OurDateTimePicker(
-            options={'format': 'YYYY-MM-DD HH:mm'},
-            attrs={'id': 'pf_dueedit_picker'}
-        )
-    )
-
-    run_date = forms.DateTimeField(
-        required=False,
-        widget=OurDateTimePicker(
-            options={'format': 'YYYY-MM-DD HH:mm'},
-            attrs={'id': 'pf_rundate_picker'}
-        )
-    )
-
-    pf_content = forms.CharField(widget=TinyMCE(attrs={'rows':25, 'id': 'pf_content'}))
-
-    class Meta:
-        model = PrintFacet
-        fields = [
-            'code',
-            'title',
-            'excerpt',
-            'pf_description',
-            'pf_content',
-            'keywords',
-            'status',
-            'due_edit',
-            'run_date',
-            'share_note',
-            'editor',
-            'credit',
-        ]
-        widgets = {
-            'title': TextInput(attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Title'}),
-            'code': TextInput(attrs={'class': 'form-control', 'placeholder': 'Code'}),
-            'credit': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select form-control facet-select', 'id':'printfacet-credit', 'data-placeholder': 'Select Credited Team'}),
-            'editor': Select(attrs={'class': 'form-control'}),
-            'pf_description': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Description'}),
-            'excerpt': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Excerpt'}),
-            'share_note': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Share Note'}),
-            'keywords': TextInput(attrs={'class': 'form-control', 'placeholder': 'Keywords'}),
-            'status': Select(attrs={'class': 'form-control'}),
-        }
-
-    # class Media:
-    #     css = {
-    #         'all': ('css/bootstrap-datetimepicker.css', 'css/chosen.min.css')
-    #     }
-    #     js = ('scripts/chosen.jquery.min.js',
-    #      'scripts/moment.js',
-    #      'scripts/jquery.datetimepicker.js',
-    #      'scripts/bootstrap-datetimepicker.js',)
-
-
-class AudioFacetForm(forms.ModelForm):
-    """ Audiofacet form. """
-
-    def __init__(self, *args, **kwargs):
-        self.request = kwargs.pop("request")
-        self.story = kwargs.pop("story")
-        super(AudioFacetForm, self).__init__(*args, **kwargs)
-        self.fields['credit'].queryset = Story.get_story_team_vocab(self.story)
-        self.fields['editor'].queryset = Story.get_story_team_vocab(self.story)
-
-    due_edit = forms.DateTimeField(
-        required=False,
-        widget=OurDateTimePicker(
-            options={'format': 'YYYY-MM-DD HH:mm'},
-            attrs={'id': 'af_dueedit_picker'}
-        )
-    )
-
-    run_date = forms.DateTimeField(
-        required=False,
-        widget=OurDateTimePicker(
-            options={'format': 'YYYY-MM-DD HH:mm'},
-            attrs={'id': 'af_rundate_picker'}
-        )
-    )
-
-    af_content = forms.CharField(widget=TinyMCE(attrs={'rows':25, 'id': 'af_content'}))
-
-    class Meta:
-        model = AudioFacet
-        fields = [
-            'code',
-            'title',
-            'excerpt',
-            'af_description',
-            'af_content',
-            'keywords',
-            'status',
-            'due_edit',
-            'run_date',
-            'share_note',
-            'editor',
-            'credit',
-        ]
-        widgets = {
-            'title': TextInput(attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Title'}),
-            'code': TextInput(attrs={'class': 'form-control', 'placeholder': 'Code'}),
-            'credit': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select form-control facet-select', 'id':'audiofacet-credit', 'data-placeholder': 'Select Credited Team'}),
-            'editor': Select(attrs={'class': 'form-control'}),
-            'af_description': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Description'}),
-            'excerpt': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Excerpt'}),
-            'share_note': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Share Note'}),
-            'keywords': TextInput(attrs={'class': 'form-control', 'placeholder': 'Keywords'}),
-            'status': Select(attrs={'class': 'form-control'}),
-        }
-
-    # class Media:
-    #     css = {
-    #         'all': ('css/bootstrap-datetimepicker.css', 'css/chosen.min.css')
-    #     }
-    #     js = ('scripts/chosen.jquery.min.js',
-    #      'scripts/moment.js',
-    #      'scripts/jquery.datetimepicker.js',
-    #      'scripts/bootstrap-datetimepicker.js',)
-
-
-class VideoFacetForm(forms.ModelForm):
-    """ Videofacet form. """
-
-    def __init__(self, *args, **kwargs):
-        self.request = kwargs.pop("request")
-        self.story = kwargs.pop("story")
-        super(VideoFacetForm, self).__init__(*args, **kwargs)
-        self.fields['credit'].queryset = Story.get_story_team_vocab(self.story)
-        self.fields['editor'].queryset = Story.get_story_team_vocab(self.story)
-
-    due_edit = forms.DateTimeField(
-        required=False,
-        widget=OurDateTimePicker(
-            options={'format': 'YYYY-MM-DD HH:mm'},
-            attrs={'id': 'vf_dueedit_picker'}
-        )
-    )
-
-    run_date = forms.DateTimeField(
-        required=False,
-        widget=OurDateTimePicker(
-            options={'format': 'YYYY-MM-DD HH:mm'},
-            attrs={'id': 'vf_rundate_picker'}
-        )
-    )
-
-    vf_content = forms.CharField(widget=TinyMCE(attrs={'rows':25, 'id': 'vf_content'}))
-
-    class Meta:
-        model = VideoFacet
-        fields = [
-            'code',
-            'title',
-            'excerpt',
-            'vf_description',
-            'vf_content',
-            'keywords',
-            'status',
-            'due_edit',
-            'run_date',
-            'share_note',
-            'editor',
-            'credit',
-        ]
-        widgets = {
-            'title': TextInput(attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Title'}),
-            'code': TextInput(attrs={'class': 'form-control', 'placeholder': 'Code'}),
-            'credit': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select form-control facet-select', 'id':'videofacet-credit', 'data-placeholder': 'Select Credited Team'}),
-            'editor': Select(attrs={'class': 'form-control'}),
-            'vf_description': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Description'}),
-            'excerpt': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Excerpt'}),
-            'share_note': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Share Note'}),
-            'keywords': TextInput(attrs={'class': 'form-control', 'placeholder': 'Keywords'}),
-            'status': Select(attrs={'class': 'form-control'}),
-        }
-
-    # class Media:
-    #     css = {
-    #         'all': ('css/bootstrap-datetimepicker.css', 'css/chosen.min.css')
-    #     }
-    #     js = ('scripts/chosen.jquery.min.js',
-    #      'scripts/moment.js',
-    #      'scripts/jquery.datetimepicker.js',
-    #      'scripts/bootstrap-datetimepicker.js',)
+# class WebFacetForm(forms.ModelForm):
+#     """ Webfacet form. """
+#
+#     def __init__(self, *args, **kwargs):
+#         self.request = kwargs.pop("request")
+#         self.story = kwargs.pop("story")
+#         super(WebFacetForm, self).__init__(*args, **kwargs)
+#         self.fields['credit'].queryset = Story.get_story_team_vocab(self.story)
+#         self.fields['editor'].queryset = Story.get_story_team_vocab(self.story)
+#
+#
+#     due_edit = forms.DateTimeField(
+#         required=False,
+#         widget=OurDateTimePicker(
+#             options={'format': 'YYYY-MM-DD HH:mm'},
+#             attrs={'id': 'wf_dueedit_picker'}
+#         )
+#     )
+#
+#     run_date = forms.DateTimeField(
+#         required=False,
+#         widget=OurDateTimePicker(
+#             options={'format': 'YYYY-MM-DD HH:mm'},
+#             attrs={'id': 'wf_rundate_picker'}
+#         )
+#     )
+#
+#     wf_content = forms.CharField(widget=TinyMCE(attrs={'rows':40, 'id': 'wf_content'}))
+#
+#     class Meta:
+#         model = WebFacet
+#         fields = [
+#             'code',
+#             'title',
+#             'excerpt',
+#             'wf_description',
+#             'wf_content',
+#             'keywords',
+#             'status',
+#             'due_edit',
+#             'run_date',
+#             'share_note',
+#             'editor',
+#             'credit',
+#         ]
+#         widgets = {
+#             'title': TextInput(attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Title'}),
+#             'code': TextInput(attrs={'class': 'form-control', 'placeholder': 'Code'}),
+#             'credit': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select form-control facet-select', 'id':'webfacet-credit', 'data-placeholder': 'Select Credited Team'}),
+#             'editor': Select(attrs={'class': 'form-control'}),
+#             'wf_description': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Description'}),
+#             'excerpt': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Excerpt'}),
+#             'share_note': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Share Note'}),
+#             'keywords': TextInput(attrs={'class': 'form-control', 'placeholder': 'Keywords'}),
+#             'status': Select(attrs={'class': 'form-control'}),
+#         }
+#
+#     # class Media:
+#     #     css = {
+#     #         'all': ('css/bootstrap-datetimepicker.css', 'css/chosen.min.css')
+#     #     }
+#     #     js = ('scripts/chosen.jquery.min.js',
+#     #      'scripts/moment.js',
+#     #      'scripts/jquery.datetimepicker.js',
+#     #      'scripts/bootstrap-datetimepicker.js',)
+#
+#
+# class PrintFacetForm(forms.ModelForm):
+#     """ Printfacet form. """
+#
+#     def __init__(self, *args, **kwargs):
+#         self.request = kwargs.pop("request")
+#         self.story = kwargs.pop("story")
+#         super(PrintFacetForm, self).__init__(*args, **kwargs)
+#         self.fields['credit'].queryset = Story.get_story_team_vocab(self.story)
+#         self.fields['editor'].queryset = Story.get_story_team_vocab(self.story)
+#
+#     due_edit = forms.DateTimeField(
+#         required=False,
+#         widget=OurDateTimePicker(
+#             options={'format': 'YYYY-MM-DD HH:mm'},
+#             attrs={'id': 'pf_dueedit_picker'}
+#         )
+#     )
+#
+#     run_date = forms.DateTimeField(
+#         required=False,
+#         widget=OurDateTimePicker(
+#             options={'format': 'YYYY-MM-DD HH:mm'},
+#             attrs={'id': 'pf_rundate_picker'}
+#         )
+#     )
+#
+#     pf_content = forms.CharField(widget=TinyMCE(attrs={'rows':25, 'id': 'pf_content'}))
+#
+#     class Meta:
+#         model = PrintFacet
+#         fields = [
+#             'code',
+#             'title',
+#             'excerpt',
+#             'pf_description',
+#             'pf_content',
+#             'keywords',
+#             'status',
+#             'due_edit',
+#             'run_date',
+#             'share_note',
+#             'editor',
+#             'credit',
+#         ]
+#         widgets = {
+#             'title': TextInput(attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Title'}),
+#             'code': TextInput(attrs={'class': 'form-control', 'placeholder': 'Code'}),
+#             'credit': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select form-control facet-select', 'id':'printfacet-credit', 'data-placeholder': 'Select Credited Team'}),
+#             'editor': Select(attrs={'class': 'form-control'}),
+#             'pf_description': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Description'}),
+#             'excerpt': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Excerpt'}),
+#             'share_note': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Share Note'}),
+#             'keywords': TextInput(attrs={'class': 'form-control', 'placeholder': 'Keywords'}),
+#             'status': Select(attrs={'class': 'form-control'}),
+#         }
+#
+#     # class Media:
+#     #     css = {
+#     #         'all': ('css/bootstrap-datetimepicker.css', 'css/chosen.min.css')
+#     #     }
+#     #     js = ('scripts/chosen.jquery.min.js',
+#     #      'scripts/moment.js',
+#     #      'scripts/jquery.datetimepicker.js',
+#     #      'scripts/bootstrap-datetimepicker.js',)
+#
+#
+# class AudioFacetForm(forms.ModelForm):
+#     """ Audiofacet form. """
+#
+#     def __init__(self, *args, **kwargs):
+#         self.request = kwargs.pop("request")
+#         self.story = kwargs.pop("story")
+#         super(AudioFacetForm, self).__init__(*args, **kwargs)
+#         self.fields['credit'].queryset = Story.get_story_team_vocab(self.story)
+#         self.fields['editor'].queryset = Story.get_story_team_vocab(self.story)
+#
+#     due_edit = forms.DateTimeField(
+#         required=False,
+#         widget=OurDateTimePicker(
+#             options={'format': 'YYYY-MM-DD HH:mm'},
+#             attrs={'id': 'af_dueedit_picker'}
+#         )
+#     )
+#
+#     run_date = forms.DateTimeField(
+#         required=False,
+#         widget=OurDateTimePicker(
+#             options={'format': 'YYYY-MM-DD HH:mm'},
+#             attrs={'id': 'af_rundate_picker'}
+#         )
+#     )
+#
+#     af_content = forms.CharField(widget=TinyMCE(attrs={'rows':25, 'id': 'af_content'}))
+#
+#     class Meta:
+#         model = AudioFacet
+#         fields = [
+#             'code',
+#             'title',
+#             'excerpt',
+#             'af_description',
+#             'af_content',
+#             'keywords',
+#             'status',
+#             'due_edit',
+#             'run_date',
+#             'share_note',
+#             'editor',
+#             'credit',
+#         ]
+#         widgets = {
+#             'title': TextInput(attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Title'}),
+#             'code': TextInput(attrs={'class': 'form-control', 'placeholder': 'Code'}),
+#             'credit': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select form-control facet-select', 'id':'audiofacet-credit', 'data-placeholder': 'Select Credited Team'}),
+#             'editor': Select(attrs={'class': 'form-control'}),
+#             'af_description': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Description'}),
+#             'excerpt': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Excerpt'}),
+#             'share_note': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Share Note'}),
+#             'keywords': TextInput(attrs={'class': 'form-control', 'placeholder': 'Keywords'}),
+#             'status': Select(attrs={'class': 'form-control'}),
+#         }
+#
+#     # class Media:
+#     #     css = {
+#     #         'all': ('css/bootstrap-datetimepicker.css', 'css/chosen.min.css')
+#     #     }
+#     #     js = ('scripts/chosen.jquery.min.js',
+#     #      'scripts/moment.js',
+#     #      'scripts/jquery.datetimepicker.js',
+#     #      'scripts/bootstrap-datetimepicker.js',)
+#
+#
+# class VideoFacetForm(forms.ModelForm):
+#     """ Videofacet form. """
+#
+#     def __init__(self, *args, **kwargs):
+#         self.request = kwargs.pop("request")
+#         self.story = kwargs.pop("story")
+#         super(VideoFacetForm, self).__init__(*args, **kwargs)
+#         self.fields['credit'].queryset = Story.get_story_team_vocab(self.story)
+#         self.fields['editor'].queryset = Story.get_story_team_vocab(self.story)
+#
+#     due_edit = forms.DateTimeField(
+#         required=False,
+#         widget=OurDateTimePicker(
+#             options={'format': 'YYYY-MM-DD HH:mm'},
+#             attrs={'id': 'vf_dueedit_picker'}
+#         )
+#     )
+#
+#     run_date = forms.DateTimeField(
+#         required=False,
+#         widget=OurDateTimePicker(
+#             options={'format': 'YYYY-MM-DD HH:mm'},
+#             attrs={'id': 'vf_rundate_picker'}
+#         )
+#     )
+#
+#     vf_content = forms.CharField(widget=TinyMCE(attrs={'rows':25, 'id': 'vf_content'}))
+#
+#     class Meta:
+#         model = VideoFacet
+#         fields = [
+#             'code',
+#             'title',
+#             'excerpt',
+#             'vf_description',
+#             'vf_content',
+#             'keywords',
+#             'status',
+#             'due_edit',
+#             'run_date',
+#             'share_note',
+#             'editor',
+#             'credit',
+#         ]
+#         widgets = {
+#             'title': TextInput(attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Title'}),
+#             'code': TextInput(attrs={'class': 'form-control', 'placeholder': 'Code'}),
+#             'credit': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select form-control facet-select', 'id':'videofacet-credit', 'data-placeholder': 'Select Credited Team'}),
+#             'editor': Select(attrs={'class': 'form-control'}),
+#             'vf_description': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Description'}),
+#             'excerpt': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Excerpt'}),
+#             'share_note': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Share Note'}),
+#             'keywords': TextInput(attrs={'class': 'form-control', 'placeholder': 'Keywords'}),
+#             'status': Select(attrs={'class': 'form-control'}),
+#         }
+#
+#     # class Media:
+#     #     css = {
+#     #         'all': ('css/bootstrap-datetimepicker.css', 'css/chosen.min.css')
+#     #     }
+#     #     js = ('scripts/chosen.jquery.min.js',
+#     #      'scripts/moment.js',
+#     #      'scripts/jquery.datetimepicker.js',
+#     #      'scripts/bootstrap-datetimepicker.js',)
 
 
 # ------------------------------ #
@@ -990,8 +1025,7 @@ class StoryCommentForm(forms.ModelForm):
             ),
         }
 
-
-class WebFacetCommentForm(forms.ModelForm):
+class FacetCommentForm(forms.ModelForm):
     """ Comment form. """
 
     class Meta:
@@ -999,45 +1033,10 @@ class WebFacetCommentForm(forms.ModelForm):
         fields = ['text']
         widgets = {
             'text': Textarea(
-                attrs={'id':'wf-comment', 'required': True, 'placeholder': 'Comment', 'class': 'form-control', 'rows':2}
+                attrs={'id':'comment', 'required': True, 'placeholder': 'Comment', 'class': 'form-control', 'rows':2}
             ),
         }
 
-class PrintFacetCommentForm(forms.ModelForm):
-    """ Comment form. """
-
-    class Meta:
-        model = Comment
-        fields = ['text']
-        widgets = {
-            'text': Textarea(
-                attrs={'id':'pf-comment', 'required': True, 'placeholder': 'Comment', 'class': 'form-control', 'rows':2}
-            ),
-        }
-
-class AudioFacetCommentForm(forms.ModelForm):
-    """ Comment form. """
-
-    class Meta:
-        model = Comment
-        fields = ['text']
-        widgets = {
-            'text': Textarea(
-                attrs={'id':'af-comment', 'required': True, 'placeholder': 'Comment', 'class': 'form-control', 'rows':2}
-            ),
-        }
-
-class VideoFacetCommentForm(forms.ModelForm):
-    """ Comment form. """
-
-    class Meta:
-        model = Comment
-        fields = ['text']
-        widgets = {
-            'text': Textarea(
-                attrs={'id':'vf-comment', 'required': True, 'placeholder': 'Comment', 'class': 'form-control', 'rows':2}
-            ),
-        }
 
 # ------------------------------ #
 #           Note Forms           #

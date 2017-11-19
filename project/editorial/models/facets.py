@@ -494,6 +494,7 @@ class Facet(models.Model):
 
     def get_facet_images(self):
         """Retrieve all images objects associated with a facet."""
+
         return self.image_assets.all()
 
     def get_facet_documents(self):
