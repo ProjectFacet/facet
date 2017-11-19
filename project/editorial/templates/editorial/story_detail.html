@@ -39,6 +39,7 @@
         <div class="bs-nav-tabs nav-tabs-default m-b-40" id="facettabs">
           <ul class="nav nav-tabs nav-animated-border-from-left nav-tabs-sticky text-center">
             <li class="nav-item"><a href="#storydetail" class="nav-link active" data-toggle="tab" data-target="#storydetail"><p class="f-r-14 f-w-300 m-b-0">Story Detail</p></a></li>
+            <li class="nav-item"><p class="f-r-14 f-w-400 m-b-0 m-l-20 m-r-10"> | </p></li>
             {% for facet in story.facet_set.all %}
             <li class="nav-item"><a href="{% url 'facet_edit' facet.id %}" class="nav-link"><p class="f-r-10 f-w-300 m-b-0">{{ facet.name }}</p></a></li>
             {% endfor %}
@@ -74,30 +75,6 @@
 <!-- Image popups -->
   <script>
     $(".chosen-select").chosen()
-
-    $('#webimage-thumbs').magnificPopup({
-      delegate: 'a',
-      type: 'image',
-      gallery: {enabled:true}
-    });
-
-    $('#printimage-thumbs').magnificPopup({
-      delegate: 'a',
-      type: 'image',
-      gallery: {enabled:true}
-    });
-
-    $('#audioimage-thumbs').magnificPopup({
-      delegate: 'a',
-      type: 'image',
-      gallery: {enabled:true}
-    });
-
-    $('#videoimage-thumbs').magnificPopup({
-      delegate: 'a',
-      type: 'image',
-      gallery: {enabled:true}
-    });
 
     $('.image-library').magnificPopup({
       delegate: 'a',

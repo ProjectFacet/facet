@@ -32,7 +32,7 @@ from .discussion import Discussion, Comment, PrivateMessage
 from .projects import Project
 from .series import Series
 from .story import Story
-from .facets import Facet, FacetTemplate, WebFacet, AudioFacet, VideoFacet, PrintFacet # XXX
+from .facets import Facet, FacetTemplate, WebFacet, AudioFacet, VideoFacet, PrintFacet, ContentLicense
 from .notes import OrganizationNote, ProjectNote, SeriesNote, StoryNote, UserNote, NetworkNote
 from .platforms import Platform, PlatformAccount
 from .tasks import Task

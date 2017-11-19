@@ -95,8 +95,6 @@ COMMON_FIELDS = {
     "due_edit",
     "run_date",
     "keywords",
-    "owner",
-    "organization",
     "template",
     "story",
 }
@@ -330,7 +328,7 @@ class Facet(models.Model):
         blank=True,
     )
 
-    source = models.TextField(
+    sources = models.TextField(
         help_text='List of sources in the facet.',
         blank=True,
     )
@@ -366,10 +364,10 @@ class Facet(models.Model):
     )
 
     # push to CMS history
-    pushed_to_wp = models.BooleanField(
-        default=False,
-        help_text='Whether the facet has been pushed to the organization WordPress site.',
-    )
+    # pushed_to_wp = models.BooleanField(
+    #     default=False,
+    #     help_text='Whether the facet has been pushed to the organization WordPress site.',
+    # )
 
     # ------------------------#
     # print specific fields

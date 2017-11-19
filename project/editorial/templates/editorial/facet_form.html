@@ -42,9 +42,10 @@
   <div class="col-xs-12">
     <div class="bs-nav-tabs nav-tabs-default m-b-40" id="facettabs">
       <ul class="nav nav-tabs nav-animated-border-from-left nav-tabs-sticky text-center">
-        <li class="nav-item"><a href="{% url 'story_detail' facet.story.id %}"><p class="f-r-14 f-w-300 m-b-0">Story Detail</p></a></li>
+        <li class="nav-item"><a href="{% url 'story_detail' facet.story.id %}"><p class="f-r-14 f-w-300 m-b-0">Story Detail </p></a></li>
+        <li class="nav-item"><p class="f-r-14 f-w-400 m-b-0 m-l-20 m-r-10"> | </p></li>
         {% for facet in facet.story.facet_set.all %}
-        <li class="nav-item"><a href="{% url 'facet_edit' facet.id %}" class="nav-link"><p class="f-r-10 f-w-300 m-b-0">{{ facet.name }}</p></a></li>
+        <li class="nav-item"><a href="{% url 'facet_edit' facet.id %}" class="nav-link"><p class="f-r-10 f-w-300 m-b-0"> {{ facet.name }} </p></a></li>
         {% endfor %}
         <li class="nav-item"><a href="#" class="nav-link"><p class="f-r-12 f-w-300 m-b-0"><i class="fa fa-plus-square" aria-hidden="true"></i></p></a></li>
       </ul>
@@ -90,6 +91,24 @@
               {{ form.credit }}
               {% if form.credit.errors %}
                 <small class="text-muted">{{ form.credit.errors }}</small>
+              {% endif %}
+            </fieldset>
+
+            <!-- Facet Due Edit -->
+            <fieldset class="form-group m-b-10">
+              <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.due_edit.label_tag }}</label>
+              {{ form.due_edit }}
+              {% if form.due_edit.errors %}
+              <small class="text-muted">{{ form.due_edit.errors }}</small>
+              {% endif %}
+            </fieldset>
+
+            <!-- Facet Run Date -->
+            <fieldset class="form-group m-b-10">
+              <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.run_date.label_tag }}</label>
+              {{ form.run_date }}
+              {% if form.run_date.errors %}
+              <small class="text-muted">{{ form.run_date.errors }}</small>
               {% endif %}
             </fieldset>
 
@@ -165,34 +184,10 @@
 
           </div>
 
-            <div class="row profile-row">
-              <!-- Facet Due Edit -->
-              <fieldset class="form-group m-b-10">
-                <div class="col-xs-12">
-                  <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.due_edit.label_tag }}</label>
-                  {{ form.due_edit }}
-                  {% if form.due_edit.errors %}
-                  <small class="text-muted">{{ form.due_edit.errors }}</small>
-                  {% endif %}
-                </div>
-              </fieldset>
-            </div>
-
-            <div class="row profile-row">
-              <!-- Facet Run Date -->
-              <fieldset class="form-group m-b-10">
-                <div class="col-xs-12">
-                  <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.run_date.label_tag }}</label>
-                  {{ form.run_date }}
-                  {% if form.run_date.errors %}
-                  <small class="text-muted">{{ form.run_date.errors }}</small>
-                  {% endif %}
-                </div>
-              </fieldset>
-            </div>
             <!-- Facet Discussion -->
             <div class="row">
               <div class="col-xs-12">
+                <p class="f-r-12 f-w-300">Discussion</p>
                 {% with view.facet_discussion as discussion %}
                 <!-- Display Comments -->
                 <div class="discussion">
@@ -262,7 +257,7 @@
                       <a href="{{ image.display_photo.url }}" class="thumbnail"><img src="{{ image.display_photo.url }}" alt="{{ image.description }}" class="img-fluid"></a>
                     </div>
                     {% if forloop.counter|divisibleby:"3" and not forloop.last %}
-                      </div><div class="row">
+                      </div><div class="row m-b-10">
                     {% endif %}
                   {% endif %}
                 {% endfor %}
@@ -274,26 +269,33 @@
           {% with view.facet_document_assets as facet_documents %}
           <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
             <p class="f-r-12 f-w-300 m-b-20">Documents <a href="#" data-toggle="modal" data-target="#DocumentAssetModal" data-facet="facet_document" title="Add Document"><i class="fa fa-plus sameline subtle"></i></a></p>
+            <div class="row m-b-10">
             {% for document in facet_documents.documents %}
+            <div class="col-xs-12 col-sm-6">
                 {% if document.asset_type == 'OTHER' %}
-                <a href="{{ document.document.url }}" title="{{ document.description }}" target="_blank"><p class="f-w-300 m-l-10"><i class="fa fa-file-file-o dark"></i> {{ document.title }}</p></a>
+                    <a href="{{ document.document.url }}" title="{{ document.description }}" target="_blank"><p class="f-w-300 m-l-10"><i class="fa fa-file-file-o dark"></i> {{ document.title }}</p></a>
                 {% endif %}
                 {% if document.asset_type == 'TEXT' %}
-                <a href="{{ document.document.url }}" title="{{ document.description }}" target="_blank"><p class="f-w-300 m-l-10"><i class="fa fa-file-text-o dark"></i> {{ document.title }}</p></a>
+                    <a href="{{ document.document.url }}" title="{{ document.description }}" target="_blank"><p class="f-w-300 m-l-10"><i class="fa fa-file-text-o dark"></i> {{ document.title }}</p></a>
                 {% endif %}
                 {% if document.asset_type == 'WORD DOC' %}
-                <a href="{{ document.document.url }}" title="{{ document.description }}" target="_blank"><p class="f-w-300 m-l-10"><i class="fa fa-file-word-o dark"></i> {{ document.title }}</p></a>
+                    <a href="{{ document.document.url }}" title="{{ document.description }}" target="_blank"><p class="f-w-300 m-l-10"><i class="fa fa-file-word-o dark"></i> {{ document.title }}</p></a>
                 {% endif %}
                 {% if document.asset_type == 'EXCEL' %}
-                <a href="{{ document.document.url }}" title="{{ document.description }}" target="_blank"><p class="f-w-300 m-l-10"><i class="fa fa-file-excel-o dark"></i> {{ document.title }}</p></a>
+                    <a href="{{ document.document.url }}" title="{{ document.description }}" target="_blank"><p class="f-w-300 m-l-10"><i class="fa fa-file-excel-o dark"></i> {{ document.title }}</p></a>
                 {% endif %}
                 {% if document.asset_type == 'PDF' %}
-                <a href="{{ document.document.url }}" title="{{ document.description }}" target="_blank"><p class="f-w-300 m-l-10"><i class="fa fa-file-pdf-o dark"></i> {{ document.title }}</p></a>
+                    <a href="{{ document.document.url }}" title="{{ document.description }}" target="_blank"><p class="f-w-300 m-l-10"><i class="fa fa-file-pdf-o dark"></i> {{ document.title }}</p></a>
                 {% endif %}
                 {% if document.asset_type == 'COMMA SEPARATED' %}
-                <a href="{{ document.document.url }}" title="{{ document.description }}" target="_blank"><p class="f-w-300 m-l-10"><i class="fa fa-file-o dark"></i> {{ document.title }}</p></a>
+                    <a href="{{ document.document.url }}" title="{{ document.description }}" target="_blank"><p class="f-w-300 m-l-10"><i class="fa fa-file-o dark"></i> {{ document.title }}</p></a>
                 {% endif %}
+              {% if forloop.counter|divisibleby:"2" and not forloop.last %}
+                </div><div class="row m-b-10">
+              {% endif %}
+            </div>
             {% endfor %}
+            </div>
           </div>
           {% endwith %}
           <!-- Audio Assets -->
@@ -301,10 +303,11 @@
           <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
             <p class="f-r-12 f-w-300 m-b-20">Audio <a href="#" data-toggle="modal" data-target="#AudioAssetModal" data-facet="facet_audio" title="Add Audio"><i class="fa fa-plus sameline subtle"></i></a></p>
             {% for audio in facet_audio.audio %}
-                {% if audio.asset_type == 'MP3' or audio.asset_type == 'WAV' %}
+            <div class="col-xs-12 col-sm-6">
+              {% if audio.asset_type == 'MP3' or audio.asset_type == 'WAV' %}
                   <div id="jplayer_audio_{{audio.pk}}" class="jp-jplayer"></div>
 
-                  <div id="jp_container_audio_{{audio.pk}}" class="jp-flat-audio" role="application" aria-label="media player">
+                  <div id="jp_container_audio_{{audio.pk}}" class="jp-flat-audio m-t-10" role="application" aria-label="media player">
                     <div class="jp-play-control jp-control">
                       <button class="jp-play jp-button" role="button" aria-label="play" tabindex="0"></button>
                     </div>
@@ -358,8 +361,12 @@
                   </script>
                 {% endif %}
                 {% if audio.asset_type == 'SC' %}
-                  <a href="{{ audio.link }}" title="{{ audio.description }}" target="_blank"><i class="fa fa-soundcloud sameline"></i> <span class="small-text dark sameline">{{ audio.title }}</span></a>
+                    <a href="{{ audio.link }}" title="{{ audio.description }}" target="_blank"><i class="fa fa-soundcloud sameline"></i> <span class="small-text dark sameline">{{ audio.title }}</span></a>
                 {% endif %}
+              {% if forloop.counter|divisibleby:"2" and not forloop.last %}
+                </div><div class="row m-b-10">
+              {% endif %}
+            </div>
             {% endfor %}
           </div>
           {% endwith %}
@@ -367,140 +374,138 @@
           {% with view.facet_video_assets as facet_video %}
           <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
             <p class="f-r-12 f-w-300 m-b-20">Video <a href="#" data-toggle="modal" data-target="#VideoAssetModal" data-facet="facet_video" title="Add Video"><i class="fa fa-plus sameline subtle"></i></a></p>
-            {% for video in facet_video.video %}
-            <div class="col-xs-12">
-              {% if video.asset_type == 'MP4' %}
-              <div id="jp_container_video_{{video.pk}}" class="jp-flat-video m-b-10" role="application" aria-label="media player">
-                <div id="jplayer_video_{{video.pk}}" class="jp-jplayer"></div>
-                <div class="jp-gui">
-                  <div class="jp-play-control jp-control">
-                    <button class="jp-play jp-button" role="button" aria-label="play" tabindex="0"></button>
-                  </div>
-                  <div class="jp-bar">
-                    <div class="jp-seek-bar jp-seek-bar-display"></div>
-                    <div class="jp-seek-bar">
-                      <div class="jp-play-bar"></div>
-                      <div class="jp-details"><span class="jp-title" aria-label="title"></span></div>
-                      <div class="jp-timing"><span class="jp-duration" role="timer" aria-label="duration"></span></div>
-                    </div>
-                  </div>
-                  <div class="jp-screen-control jp-control">
-                    <button class="jp-full-screen jp-button" role="button" aria-label="full screen" tabindex="0"></button>
-                  </div>
-                </div>
-                <div class="jp-no-solution">
-                  Media Player Error<br />
-                  Update your browser or Flash plugin
-                </div>
-              </div>
-              <script>
-                  $(document).ready(function($) {
-                  $("#jplayer_video_{{video.pk}}").jPlayer({
-                    ready: function(event) {
-                      var $this = $(this).jPlayer("setMedia", {
-                        title: "Big Buck Bunny Trailer",
-                        m4v: "http://jplayer.org/video/m4v/Big_Buck_Bunny_Trailer.m4v",
-                        ogv: "http://jplayer.org/video/ogv/Big_Buck_Bunny_Trailer.ogv",
-                        webmv: "http://jplayer.org/video/webm/Big_Buck_Bunny_Trailer.webm",
-                        poster: "http://jplayer.org/video/poster/Big_Buck_Bunny_Trailer_480x270.png"
-                      });
+            {% for video in facet_video.videos %}
+                <div class="col-xs-12 col-sm-6">
+                  {% if video.asset_type == 'MP4' %}
+                      <div id="jp_container_video_{{video.pk}}" class="jp-flat-video" role="application" aria-label="media player">
+                        <div id="jplayer_video_{{video.pk}}" class="jp-jplayer"></div>
+                        <div class="jp-gui">
+                          <div class="jp-play-control jp-control">
+                            <button class="jp-play jp-button" role="button" aria-label="play" tabindex="0"></button>
+                          </div>
+                          <div class="jp-bar">
+                            <div class="jp-seek-bar jp-seek-bar-display"></div>
+                            <div class="jp-seek-bar">
+                              <div class="jp-play-bar"></div>
+                              <div class="jp-details"><span class="jp-title" aria-label="title"></span></div>
+                              <div class="jp-timing"><span class="jp-duration" role="timer" aria-label="duration"></span></div>
+                            </div>
+                          </div>
+                          <div class="jp-screen-control jp-control">
+                            <button class="jp-full-screen jp-button" role="button" aria-label="full screen" tabindex="0"></button>
+                          </div>
+                        </div>
+                        <div class="jp-no-solution">
+                          Media Player Error<br />
+                          Update your browser or Flash plugin
+                        </div>
+                      </div>
+                      <script>
+                          $(document).ready(function($) {
+                          $("#jplayer_video_{{video.pk}}").jPlayer({
+                            ready: function(event) {
+                              var $this = $(this).jPlayer("setMedia", {
+                                title: "Big Buck Bunny Trailer",
+                                m4v: "http://jplayer.org/video/m4v/Big_Buck_Bunny_Trailer.m4v",
+                                ogv: "http://jplayer.org/video/ogv/Big_Buck_Bunny_Trailer.ogv",
+                                webmv: "http://jplayer.org/video/webm/Big_Buck_Bunny_Trailer.webm",
+                                poster: "http://jplayer.org/video/poster/Big_Buck_Bunny_Trailer_480x270.png"
+                              });
 
-                      // Fix GUI when Full Screen button is hidden.
-                      if(event.jPlayer.status.noFullWindow) {
-                        var $anc = $($this.jPlayer("option", "cssSelectorAncestor"));
-                        $anc.find('.jp-screen-control').hide();
-                        $anc.find('.jp-bar').css({"right":"0"});
-                      }
+                              // Fix GUI when Full Screen button is hidden.
+                              if(event.jPlayer.status.noFullWindow) {
+                                var $anc = $($this.jPlayer("option", "cssSelectorAncestor"));
+                                $anc.find('.jp-screen-control').hide();
+                                $anc.find('.jp-bar').css({"right":"0"});
+                              }
 
-                      // Fix the responsive size for iOS and Flash.
-                      var fix_iOS_flash = function() {
-                        var w = $this.data("jPlayer").ancestorJq.width(),
-                          h = w * 9 / 16; // Change to suit your aspect ratio. Used 16:9 HDTV ratio.
-                        $this.jPlayer("option", "size", {
-                          width: w + "px",
-                          height: h + "px"
+                              // Fix the responsive size for iOS and Flash.
+                              var fix_iOS_flash = function() {
+                                var w = $this.data("jPlayer").ancestorJq.width(),
+                                  h = w * 9 / 16; // Change to suit your aspect ratio. Used 16:9 HDTV ratio.
+                                $this.jPlayer("option", "size", {
+                                  width: w + "px",
+                                  height: h + "px"
+                                });
+                              };
+                              var plt = $.jPlayer.platform;
+                              if(plt.ipad || plt.iphone || plt.ipod || event.jPlayer.flash.used) {
+                                $(window).on("resize", function() {
+                                  fix_iOS_flash();
+                                });
+                                fix_iOS_flash();
+                              }
+                            },
+                            timeFormat: {
+                              padMin: false
+                            },
+                            swfPath: "js",
+                            supplied: "webmv, ogv, m4v",
+                            cssSelectorAncestor: "#jp_container_video_{{video.pk}}",
+                            // See the CSS for more info on changing the size.
+                            size: {
+                              width: "100%",
+                              height: "auto",
+                              cssClass: "jp-flat-video-responsive"
+                            },
+                            sizeFull: {
+                              cssClass: "jp-flat-video-full"
+                            },
+                            autohide: {
+                              full: false,
+                              restored: false
+                            },
+                            // While playing, allow the GUI to hide
+                            play: function() {
+                              $(this).jPlayer("option", "autohide", {
+                                full: true,
+                                restored: true
+                              });
+                              // Avoid multiple jPlayers playing together.
+                              $(this).jPlayer("pauseOthers");
+                            },
+                            // When paused, show the GUI
+                            pause: function() {
+                              $(this).jPlayer("option", "autohide", {
+                                full: false,
+                                restored: false
+                              });
+                            },
+                            // Enable clicks on the video to toggle play/pause
+                            click: function(event) {
+                              if(event.jPlayer.status.paused) {
+                                $(this).jPlayer("play");
+                              } else {
+                                $(this).jPlayer("pause");
+                              }
+                            },
+                            useStateClassSkin: true,
+                            autoBlur: false,
+                            smoothPlayBar: !($.jPlayer.browser.msie && $.jPlayer.browser.version < 9), // IE8 did not like the hidden animated progress bar.
+                            remainingDuration: true,
+                            keyEnabled: true,
+                            keyBindings: {
+                              // Disable some of the default key controls
+                              loop: null,
+                              muted: null,
+                              volumeUp: null,
+                              volumeDown: null
+                            }
+                          });
                         });
-                      };
-                      var plt = $.jPlayer.platform;
-                      if(plt.ipad || plt.iphone || plt.ipod || event.jPlayer.flash.used) {
-                        $(window).on("resize", function() {
-                          fix_iOS_flash();
-                        });
-                        fix_iOS_flash();
-                      }
-                    },
-                    timeFormat: {
-                      padMin: false
-                    },
-                    swfPath: "js",
-                    supplied: "webmv, ogv, m4v",
-                    cssSelectorAncestor: "#jp_container_video_{{video.pk}}",
-                    // See the CSS for more info on changing the size.
-                    size: {
-                      width: "100%",
-                      height: "auto",
-                      cssClass: "jp-flat-video-responsive"
-                    },
-                    sizeFull: {
-                      cssClass: "jp-flat-video-full"
-                    },
-                    autohide: {
-                      full: false,
-                      restored: false
-                    },
-                    // While playing, allow the GUI to hide
-                    play: function() {
-                      $(this).jPlayer("option", "autohide", {
-                        full: true,
-                        restored: true
-                      });
-                      // Avoid multiple jPlayers playing together.
-                      $(this).jPlayer("pauseOthers");
-                    },
-                    // When paused, show the GUI
-                    pause: function() {
-                      $(this).jPlayer("option", "autohide", {
-                        full: false,
-                        restored: false
-                      });
-                    },
-                    // Enable clicks on the video to toggle play/pause
-                    click: function(event) {
-                      if(event.jPlayer.status.paused) {
-                        $(this).jPlayer("play");
-                      } else {
-                        $(this).jPlayer("pause");
-                      }
-                    },
-                    useStateClassSkin: true,
-                    autoBlur: false,
-                    smoothPlayBar: !($.jPlayer.browser.msie && $.jPlayer.browser.version < 9), // IE8 did not like the hidden animated progress bar.
-                    remainingDuration: true,
-                    keyEnabled: true,
-                    keyBindings: {
-                      // Disable some of the default key controls
-                      loop: null,
-                      muted: null,
-                      volumeUp: null,
-                      volumeDown: null
-                    }
-                  });
-                });
-              </script>
-              {% endif %}
-
-              {% if video.asset_type == 'YOUTUBE' %}
-                <a href="{{ video.link }}" title="View {{ video.title }}" class="embedded-video"><h5><i class="fa fa-youtube-play dark"></i> {{ video.title }}</h5></a>
-              {% endif %}
-              {% if video.asset_type == 'VIMEO' %}
-                <a href="{{ video.link }}" title="View {{ video.title }}" class="embedded-video"><h5><i class="fa fa-vimeo dark"></i> {{ video.title }}</h5></a>
-              {% endif %}
-            </div>
-
+                      </script>
+                  {% endif %}
+                  {% if video.asset_type == 'YOUTUBE' %}
+                    <a href="{{ video.link }}" title="View {{ video.title }}" class="embedded-video"><p class="f-r-10 f-w-300"><i class="fa fa-youtube-play subtle"></i> {{ video.title }}</p></a>
+                  {% endif %}
+                  {% if video.asset_type == 'VIMEO' %}
+                    <a href="{{ video.link }}" title="View {{ video.title }}" class="embedded-video"><p class="f-r-10 f-w-300"><i class="fa fa-vimeo subtle"></i> {{ video.title }}</p></a>
+                  {% endif %}
+                {% if forloop.counter|divisibleby:"2" and not forloop.last %}
+              </div><div class="row m-b-5">
+                {% endif %}
+                </div>
             {% endfor %}
-
-
-
           </div>
           {% endwith %}
 
@@ -510,6 +515,22 @@
                         <!-- CUSTOM FORM FIELDS -->
         <!-- ================================================= -->
         <div class="row m-t-50"><!-- Beginning of Row Three -->
+
+          {% for f in form.get_fields_to_show %}
+            <div class="col-xs-12 col-sm-2">
+
+              <fieldset class="form-group m-b-10">
+                <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ f.label_tag }}</label>
+                {{ f }}
+                {% if f.errors %}
+                  <small class="text-muted">{{ f.errors }}</small>
+                {% endif %}
+              </fieldset>
+
+
+
+            </div>
+          {% endfor %}
 
         </div><!-- End of Row Three -->
 
@@ -582,21 +603,20 @@
 <!-- ================================================= -->
             <!-- DOCUMENT MODAL -->
 <!-- ================================================= -->
-  {% comment %}
+
   {% include "editorial/facet_documentassetmodal.html" %}
-  {% endcomment %}
+
 <!-- ================================================= -->
             <!-- AUDIO MODAL -->
 <!-- ================================================= -->
-  {% comment %}
+
   {% include "editorial/facet_audioassetmodal.html" %}
-  {% endcomment %}
+
 <!-- ================================================= -->
             <!-- VIDEO MODAL -->
 <!-- ================================================= -->
-  {% comment %}
+
   {% include "editorial/facet_videoassetmodal.html" %}
-  {% endcomment %}
 
 
 {% endblock modals %}

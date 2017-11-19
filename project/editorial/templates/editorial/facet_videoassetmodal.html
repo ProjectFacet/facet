@@ -13,6 +13,7 @@
             <li class="nav-item"> <a ng-href="" class="nav-link" data-toggle="tab" data-target="#videolibrary">Select From Video Library</a></li>
           </ul>
         </div>
+        {% with view.facet_video_assets as video_assets %}
         <div class="modal-body" id="videomodalbody">
           <div class="tab-content">
             <!-- UPLOAD PANEL -->
@@ -26,51 +27,51 @@
 
                   {% comment %}
                   <fieldset class="form-group m-b-10">
-                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ videoassetform.video.label_tag }}</label>
-                    {{ videoassetform.video }}
-                    {% if videoassetform.video.errors %}
-                      <small class="text-muted">{{ videoassetform.video.errors }}</small>
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ video_assets.uploadform.video.label_tag }}</label>
+                    {{ video_assets.uploadform.video }}
+                    {% if video_assets.uploadform.video.errors %}
+                      <small class="text-muted">{{ video_assets.uploadform.video.errors }}</small>
                     {% endif %}
                   </fieldset>
                   {% endcomment %}
 
                   <fieldset class="form-group m-b-10">
-                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ videoassetform.link.label_tag }}</label>
-                    {{ videoassetform.link }}
-                    {% if videoassetform.link.errors %}
-                      <small class="text-muted">{{ videoassetform.link.errors }}</small>
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ video_assets.uploadform.link.label_tag }}</label>
+                    {{ video_assets.uploadform.link }}
+                    {% if video_assets.uploadform.link.errors %}
+                      <small class="text-muted">{{ video_assets.uploadform.link.errors }}</small>
                     {% endif %}
                   </fieldset>
 
                   <fieldset class="form-group m-b-10">
-                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ videoassetform.embed.label_tag }}</label>
-                    {{ videoassetform.embed }}
-                    {% if videoassetform.embed.errors %}
-                      <small class="text-muted">{{ videoassetform.embed.errors }}</small>
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ video_assets.uploadform.embed.label_tag }}</label>
+                    {{ video_assets.uploadform.embed }}
+                    {% if video_assets.uploadform.embed.errors %}
+                      <small class="text-muted">{{ video_assets.uploadform.embed.errors }}</small>
                     {% endif %}
                   </fieldset>
 
                   <fieldset class="form-group m-b-10">
-                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ videoassetform.title.label_tag }}</label>
-                    {{ videoassetform.title }}
-                    {% if videoassetform.title.errors %}
-                      <small class="text-muted">{{ videoassetform.title.errors }}</small>
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ video_assets.uploadform.title.label_tag }}</label>
+                    {{ video_assets.uploadform.title }}
+                    {% if video_assets.uploadform.title.errors %}
+                      <small class="text-muted">{{ video_assets.uploadform.title.errors }}</small>
                     {% endif %}
                   </fieldset>
 
                   <fieldset class="form-group m-b-10">
-                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ videoassetform.asset_type.label_tag }}</label>
-                    {{ videoassetform.asset_type }}
-                    {% if videoassetform.asset_type.errors %}
-                      <small class="text-muted">{{ videoassetform.asset_type.errors }}</small>
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ video_assets.uploadform.asset_type.label_tag }}</label>
+                    {{ video_assets.uploadform.asset_type }}
+                    {% if video_assets.uploadform.asset_type.errors %}
+                      <small class="text-muted">{{ video_assets.uploadform.asset_type.errors }}</small>
                     {% endif %}
                   </fieldset>
 
                   <fieldset class="form-group m-b-10">
-                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ videoassetform.keywords.label_tag }}</label>
-                    {{ videoassetform.keywords }}
-                    {% if videoassetform.keywords.errors %}
-                      <small class="text-muted">{{ videoassetform.keywords.errors }}</small>
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ video_assets.uploadform.keywords.label_tag }}</label>
+                    {{ video_assets.uploadform.keywords }}
+                    {% if video_assets.uploadform.keywords.errors %}
+                      <small class="text-muted">{{ video_assets.uploadform.keywords.errors }}</small>
                     {% endif %}
                   </fieldset>
 
@@ -80,18 +81,18 @@
                 <div class="col-md-6">
 
                   <fieldset class="form-group m-b-10">
-                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ videoassetform.description.label_tag }}</label>
-                    {{ videoassetform.description }}
-                    {% if videoassetform.description.errors %}
-                      <small class="text-muted">{{ videoassetform.description.errors }}</small>
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ video_assets.uploadform.description.label_tag }}</label>
+                    {{ video_assets.uploadform.description }}
+                    {% if video_assets.uploadform.description.errors %}
+                      <small class="text-muted">{{ video_assets.uploadform.description.errors }}</small>
                     {% endif %}
                   </fieldset>
 
                   <fieldset class="form-group m-b-10">
-                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ videoassetform.attribution.label_tag }}</label>
-                    {{ videoassetform.attribution }}
-                    {% if videoassetform.attribution.errors %}
-                      <small class="text-muted">{{ videoassetform.attribution.errors }}</small>
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ video_assets.uploadform.attribution.label_tag }}</label>
+                    {{ video_assets.uploadform.attribution }}
+                    {% if video_assets.uploadform.attribution.errors %}
+                      <small class="text-muted">{{ video_assets.uploadform.attribution.errors }}</small>
                     {% endif %}
                   </fieldset>
 
@@ -99,9 +100,9 @@
                 <!-- End Right Col -->
                 <!-- ===================================== -->
                 <!-- ===================================== -->
-                <div class="hidden-video-inputs">>
-                        <!-- Insert custom content via jQuery -->
-                  </div>
+                <div class="hidden-image-inputs">
+                    <input type="hidden" name="facet" value="{{ facet.pk }}" />
+                </div>
                 <!-- ===================================== -->
                 <!-- ===================================== -->
                 <div>
@@ -119,7 +120,7 @@
                 <form action="{% url 'add_video' %}" method="POST" class="post-form" name="addvideo">
                   {% csrf_token %}
                   <div class="row video-library">
-                  {% for video in videos %}
+                  {% for video in video_assets.org_videos %}
                     <div class="col-md-3">
                       {% if video.asset_type == 'MP4' %}
                         <div id="jp_container_video_{{video.pk}}" class="jp-flat-video" role="application" aria-label="media player">
@@ -266,8 +267,8 @@
 
                 <!-- ===================================== -->
                 <!-- ===================================== -->
-                <div class="hidden-video-inputs">
-                    <!-- Insert custom content via jQuery -->
+                <div class="hidden-image-inputs">
+                    <input type="hidden" name="facet" value="{{ facet.pk }}" />
                 </div>
                 <!-- ===================================== -->
                 <!-- ===================================== -->
@@ -283,56 +284,9 @@
             <!-- END LIBRARY PANEL -->
           </div>
         </div>
+        {% endwith %}
         </div>
         <div class="modal-footer"></div>
       </div>
     </div>
   </div>
-
-<script>
-$('#VideoAssetModal').on('show.bs.modal', function (event) {
-    var button = $(event.relatedTarget) // Button that triggered the modal
-    var facet = button.data('facet') // Extract info from data-* attributes
-
-    var webfacetHidden = '{% for webfacet in story.webfacetstory.all %}' +
-                '<input type="hidden" name="webfacet" value="{{ webfacet.pk }}" />' +
-                '<input  type="hidden" name="type" value="webfacet" />' +
-                '{% endfor %}'
-
-
-    var printfacetHidden = '{% for printfacet in story.printfacetstory.all %}' +
-                '<input type="hidden" name="printfacet" value="{{ printfacet.pk }}" />' +
-                '<input  type="hidden" name="type" value="printfacet" />' +
-                '{% endfor %}'
-
-    var audiofacetHidden = '{% for audiofacet in story.audiofacetstory.all %}' +
-                '<input type="hidden" name="audiofacet" value="{{ audiofacet.pk }}" />' +
-                '<input  type="hidden" name="type" value="audiofacet" />' +
-                '{% endfor %}'
-
-    var videofacetHidden = '{% for videofacet in story.videofacetstory.all %}' +
-                '<input type="hidden" name="videofacet" value="{{ videofacet.pk }}" />' +
-                '<input  type="hidden" name="type" value="videofacet" />' +
-                '{% endfor %}'
-
-
-    var modal = $(this)
-
-    if (facet == 'webfacet_video') {
-        modal.find('.hidden-video-inputs').html(webfacetHidden)
-    }
-    else if (facet == 'printfacet_video') {
-        modal.find('.hidden-video-inputs').html(printfacetHidden)
-    }
-    else if (facet == 'audiofacet_video') {
-        modal.find('.hidden-video-inputs').html(audiofacetHidden)
-    }
-    else if (facet == 'videofacet_video') {
-        modal.find('.hidden-video-inputs').html(videofacetHidden)
-    }
-    else {
-        modal.find('.hidden-video-inputs').html('<div></div>')
-    }
-})
-
-</script>

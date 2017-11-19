@@ -11,6 +11,7 @@
             <li class="nav-item"> <a ng-href="" class="nav-link" data-toggle="tab" data-target="#audiolibrary">Select From Audio Library</a></li>
           </ul>
         </div>
+        {% with view.facet_audio_assets as audio_assets %}
         <div class="modal-body" id="audiomodalbody">
           <div class="tab-content">
             <!-- UPLOAD PANEL -->
@@ -23,42 +24,42 @@
                 <div class="col-md-6">
 
                   <fieldset class="form-group m-b-10">
-                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audioassetform.audio.label_tag }}</label>
-                    {{ audioassetform.audio }}
-                    {% if audioassetform.audio.errors %}
-                      <small class="text-muted">{{ audioassetform.audio.errors }}</small>
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audio_assets.uploadform.audio.label_tag }}</label>
+                    {{ audio_assets.uploadform.audio }}
+                    {% if audio_assets.uploadform.audio.errors %}
+                      <small class="text-muted">{{ audio_assets.uploadform.audio.errors }}</small>
                     {% endif %}
                   </fieldset>
 
                   <fieldset class="form-group m-b-10">
-                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audioassetform.link.label_tag }}</label>
-                    {{ audioassetform.link }}
-                    {% if audioassetform.link.errors %}
-                      <small class="text-muted">{{ audioassetform.link.errors }}</small>
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audio_assets.uploadform.link.label_tag }}</label>
+                    {{ audio_assets.uploadform.link }}
+                    {% if audio_assets.uploadform.link.errors %}
+                      <small class="text-muted">{{ audio_assets.uploadform.link.errors }}</small>
                     {% endif %}
                   </fieldset>
 
                   <fieldset class="form-group m-b-10">
-                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audioassetform.title.label_tag }}</label>
-                    {{ audioassetform.title }}
-                    {% if audioassetform.title.errors %}
-                      <small class="text-muted">{{ audioassetform.title.errors }}</small>
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audio_assets.uploadform.title.label_tag }}</label>
+                    {{ audio_assets.uploadform.title }}
+                    {% if audio_assets.uploadform.title.errors %}
+                      <small class="text-muted">{{ audio_assets.uploadform.title.errors }}</small>
                     {% endif %}
                   </fieldset>
 
                   <fieldset class="form-group m-b-10">
-                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audioassetform.asset_type.label_tag }}</label>
-                    {{ audioassetform.asset_type }}
-                    {% if audioassetform.asset_type.errors %}
-                      <small class="text-muted">{{ audioassetform.asset_type.errors }}</small>
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audio_assets.uploadform.asset_type.label_tag }}</label>
+                    {{ audio_assets.uploadform.asset_type }}
+                    {% if audio_assets.uploadform.asset_type.errors %}
+                      <small class="text-muted">{{ audio_assets.uploadform.asset_type.errors }}</small>
                     {% endif %}
                   </fieldset>
 
                   <fieldset class="form-group m-b-10">
-                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audioassetform.keywords.label_tag }}</label>
-                    {{ audioassetform.keywords }}
-                    {% if audioassetform.keywords.errors %}
-                      <small class="text-muted">{{ audioassetform.keywords.errors }}</small>
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audio_assets.uploadform.keywords.label_tag }}</label>
+                    {{ audio_assets.uploadform.keywords }}
+                    {% if audio_assets.uploadform.keywords.errors %}
+                      <small class="text-muted">{{ audio_assets.uploadform.keywords.errors }}</small>
                     {% endif %}
                   </fieldset>
 
@@ -68,18 +69,18 @@
                 <div class="col-md-6">
 
                   <fieldset class="form-group m-b-10">
-                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audioassetform.description.label_tag }}</label>
-                    {{ audioassetform.description }}
-                    {% if audioassetform.description.errors %}
-                      <small class="text-muted">{{ audioassetform.description.errors }}</small>
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audio_assets.uploadform.description.label_tag }}</label>
+                    {{ audio_assets.uploadform.description }}
+                    {% if audio_assets.uploadform.description.errors %}
+                      <small class="text-muted">{{ audio_assets.uploadform.description.errors }}</small>
                     {% endif %}
                   </fieldset>
 
                   <fieldset class="form-group m-b-10">
-                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audioassetform.attribution.label_tag }}</label>
-                    {{ audioassetform.attribution }}
-                    {% if audioassetform.attribution.errors %}
-                      <small class="text-muted">{{ audioassetform.attribution.errors }}</small>
+                    <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ audio_assets.uploadform.attribution.label_tag }}</label>
+                    {{ audio_assets.uploadform.attribution }}
+                    {% if audio_assets.uploadform.attribution.errors %}
+                      <small class="text-muted">{{ audio_assets.uploadform.attribution.errors }}</small>
                     {% endif %}
                   </fieldset>
 
@@ -87,9 +88,9 @@
                 <!-- End Right Col -->
                 <!-- ===================================== -->
                 <!-- ===================================== -->
-                <div class="hidden-audio-inputs">>
-                        <!-- Insert custom content via jQuery -->
-                  </div>
+                <div class="hidden-image-inputs">>
+                    <input type="hidden" name="facet" value="{{ facet.pk }}" />
+                </div>
                 <!-- ===================================== -->
                 <!-- ===================================== -->
                 <div>
@@ -107,7 +108,7 @@
                 <form action="{% url 'add_audio' %}" method="POST" class="post-form" name="addaudio">
                   {% csrf_token %}
                   <div class="row audio-library">
-                  {% for audio in audiofiles %}
+                  {% for audio in audio_assets.org_audio %}
                     <div class="col-md-3">
                       {% if audio.asset_type == 'MP3' or audio.asset_type == 'WAV' %}
                       <div id="jplayer_audio_{{audio.pk}}" class="jp-jplayer"></div>
@@ -178,8 +179,8 @@
 
                 <!-- ===================================== -->
                 <!-- ===================================== -->
-                <div class="hidden-audio-inputs">
-                    <!-- Insert custom content via jQuery -->
+                <div class="hidden-image-inputs">
+                    <input type="hidden" name="facet" value="{{ facet.pk }}" />
                 </div>
                 <!-- ===================================== -->
                 <!-- ===================================== -->
@@ -195,57 +196,10 @@
             <!-- END LIBRARY PANEL -->
           </div>
         </div>
+        {% endwith %}
         </div>
         <div class="modal-footer"></div>
       </div>
     </div>
   </div>
 </div>
-
-<script>
-$('#AudioAssetModal').on('show.bs.modal', function (event) {
-    var button = $(event.relatedTarget) // Button that triggered the modal
-    var facet = button.data('facet') // Extract info from data-* attributes
-
-    var webfacetHidden = '{% for webfacet in story.webfacetstory.all %}' +
-                '<input type="hidden" name="webfacet" value="{{ webfacet.pk }}" />' +
-                '<input  type="hidden" name="type" value="webfacet" />' +
-                '{% endfor %}'
-
-
-    var printfacetHidden = '{% for printfacet in story.printfacetstory.all %}' +
-                '<input type="hidden" name="printfacet" value="{{ printfacet.pk }}" />' +
-                '<input  type="hidden" name="type" value="printfacet" />' +
-                '{% endfor %}'
-
-    var audiofacetHidden = '{% for audiofacet in story.audiofacetstory.all %}' +
-                '<input type="hidden" name="audiofacet" value="{{ audiofacet.pk }}" />' +
-                '<input  type="hidden" name="type" value="audiofacet" />' +
-                '{% endfor %}'
-
-    var videofacetHidden = '{% for videofacet in story.videofacetstory.all %}' +
-                '<input type="hidden" name="videofacet" value="{{ videofacet.pk }}" />' +
-                '<input  type="hidden" name="type" value="videofacet" />' +
-                '{% endfor %}'
-
-
-    var modal = $(this)
-
-    if (facet == 'webfacet_audio') {
-        modal.find('.hidden-audio-inputs').html(webfacetHidden)
-    }
-    else if (facet == 'printfacet_audio') {
-        modal.find('.hidden-audio-inputs').html(printfacetHidden)
-    }
-    else if (facet == 'audiofacet_audio') {
-        modal.find('.hidden-audio-inputs').html(audiofacetHidden)
-    }
-    else if (facet == 'videofacet_audio') {
-        modal.find('.hidden-audio-inputs').html(videofacetHidden)
-    }
-    else {
-        modal.find('.hidden-audio-inputs').html('<div></div>')
-    }
-})
-
-</script>

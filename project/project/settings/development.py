@@ -35,32 +35,32 @@ DNS_NAME._fqdn = "localhost"
 
 # Blather on about every little thing that happens. We programmers get lonely.
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'handlers': {
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-        },
-    },
-    'loggers': {
-        '': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-        },
-        'factory': {  # FactoryBoy is too chatty!
-            'handlers': ['console'],
-            'level': 'INFO',
-        },
-        'django.db.backends': {
-            'handlers': ['console'],
-            'level': 'DEBUG',
-            'propagate': False,
-        }
-
-    },
-}
+# LOGGING = {
+#     'version': 1,
+#     'disable_existing_loggers': False,
+#     'handlers': {
+#         'console': {
+#             'level': 'DEBUG',
+#             'class': 'logging.StreamHandler',
+#         },
+#     },
+#     'loggers': {
+#         '': {
+#             'handlers': ['console'],
+#             'level': 'DEBUG',
+#         },
+#         'factory': {  # FactoryBoy is too chatty!
+#             'handlers': ['console'],
+#             'level': 'INFO',
+#         },
+#         'django.db.backends': {
+#             'handlers': ['console'],
+#             'level': 'DEBUG',
+#             'propagate': False,
+#         }
+#
+#     },
+# }
 
 
 ##############################################################################################

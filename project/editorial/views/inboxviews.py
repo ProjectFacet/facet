@@ -24,7 +24,6 @@ from editorial.forms import (
     StoryForm,
     ImageAssetForm,
     DocumentAssetForm,
-    AddImageForm,
     AddToNetworkForm,
     InviteToNetworkForm,
     PrivateMessageForm,

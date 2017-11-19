@@ -18,13 +18,9 @@ from actstream import action
 
 from editorial.forms import (
     ImageAssetForm,
-    AddImageForm,
     DocumentAssetForm,
-    AddDocumentForm,
     AudioAssetForm,
-    AddAudioForm,
     VideoAssetForm,
-    AddVideoForm,
     )
 
 from editorial.models import (
@@ -156,7 +152,7 @@ def video_asset_detail(request, pk):
 #----------------------------------------------------------------------#
 
 def upload_image(request):
-    """ Add image to a facet."""
+    """ Upload image to a facet."""
 
     if request.method == 'POST':
         imageform=ImageAssetForm(request.POST, request.FILES)
@@ -179,36 +175,33 @@ def upload_image(request):
             # record action for activity stream
             action.send(request.user, verb="uploaded image", action_object=image, target=facet)
 
-    return redirect('story_detail', pk=facet.story.id)
-
+    return redirect('facet_edit', pk=facet.id)
 
 def add_image(request):
     """ Add existing image(s) in the library to another facet."""
 
     if request.method == "POST":
-        add_image_form = AddImageForm(request.POST, request=request)
-        if add_image_form.is_valid():
-            images = request.POST.getlist('images')
+        images = request.POST.getlist('images')
 
-            # retrieve the facet the image should be associated with
-            facet_id = request.POST.get('facet')
-            facet = get_object_or_404(Facet, id=facet_id)
+        # retrieve the facet the image should be associated with
+        facet_id = request.POST.get('facet')
+        facet = get_object_or_404(Facet, id=facet_id)
 
-            #create list of img instances
-            img_instances = []
-            # connect image to facet
-            for image in images:
-                img_ins = get_object_or_404(ImageAsset, id=image)
-                img_instances.append(img_ins)
-                facet.image_assets.add(img_ins)
-            facet.save()
+        #create list of img instances
+        img_instances = []
+        # connect image to facet
+        for image in images:
+            img_ins = get_object_or_404(ImageAsset, id=image)
+            img_instances.append(img_ins)
+            facet.image_assets.add(img_ins)
+        facet.save()
 
-            action_image=get_object_or_404(ImageAsset, id=images[0])
+        action_image=get_object_or_404(ImageAsset, id=images[0])
 
-            # record action for activity stream
-            action.send(request.user, verb="added image", action_object=action_image, target=facet)
+        # record action for activity stream
+        action.send(request.user, verb="added image", action_object=action_image, target=facet)
 
-    return redirect('story_detail', pk=facet.story.id)
+    return redirect('facet_edit', pk=facet.id)
 
 
 #----------------------------------------------------------------------#
@@ -223,20 +216,9 @@ def upload_document(request):
         if documentform.is_valid():
             document = documentform.save(commit=False)
 
-            # retrieve the facet the document should be associated with
-            facet_type = request.POST.get('type')
-            if facet_type == "webfacet":
-                facet_id = request.POST.get('webfacet')
-                facet = get_object_or_404(WebFacet, id=facet_id)
-            elif facet_type == "printfacet":
-                facet_id = request.POST.get('printfacet')
-                facet = get_object_or_404(PrintFacet, id=facet_id)
-            elif facet_type == "audiofacet":
-                facet_id = request.POST.get('audiofacet')
-                facet = get_object_or_404(AudioFacet, id=facet_id)
-            elif facet_type == "videofacet":
-                facet_id = request.POST.get('videofacet')
-                facet = get_object_or_404(VideoFacet, id=facet_id)
+            # retrieve the facet the image should be associated with
+            facet_id = request.POST.get('facet')
+            facet = get_object_or_404(Facet, id=facet_id)
 
             # set request based attributes
             document.owner = request.user
@@ -250,44 +232,31 @@ def upload_document(request):
             # record action for activity stream
             action.send(request.user, verb="uploaded document", action_object=document, target=facet)
 
-    return redirect('story_detail', pk=facet.story.id)
+    return redirect('facet_edit', pk=facet.id)
 
 
 def add_document(request):
     """ Add existing document(s) in the library to another facet."""
 
     if request.method == "POST":
-        add_document_form = AddDocumentForm(request.POST, request=request)
-        if add_document_form.is_valid():
-            documents = request.POST.getlist('documents')
+        documents = request.POST.getlist('documents')
 
-            # retrieve the facet the document should be associated with
-            facet_type = request.POST.get('type')
-            if facet_type == "webfacet":
-                facet_id = request.POST.get('webfacet')
-                facet = get_object_or_404(WebFacet, id=facet_id)
-            elif facet_type == "printfacet":
-                facet_id = request.POST.get('printfacet')
-                facet = get_object_or_404(PrintFacet, id=facet_id)
-            elif facet_type == "audiofacet":
-                facet_id = request.POST.get('audiofacet')
-                facet = get_object_or_404(AudioFacet, id=facet_id)
-            elif facet_type == "videofacet":
-                facet_id = request.POST.get('videofacet')
-                facet = get_object_or_404(VideoFacet, id=facet_id)
+        # retrieve the facet the image should be associated with
+        facet_id = request.POST.get('facet')
+        facet = get_object_or_404(Facet, id=facet_id)
 
-            # connect document to facet
-            for document in documents:
-                doc_ins = get_object_or_404(DocumentAsset, id=document)
-                facet.document_assets.add(doc_ins)
-            facet.save()
+        # connect document to facet
+        for document in documents:
+            doc_ins = get_object_or_404(DocumentAsset, id=document)
+            facet.document_assets.add(doc_ins)
+        facet.save()
 
-            action_doc = get_object_or_404(DocumentAsset, id=documents[0])
+        action_doc = get_object_or_404(DocumentAsset, id=documents[0])
 
-            # record action for activity stream
-            action.send(request.user, verb="added document", action_object=action_doc, target=facet)
+        # record action for activity stream
+        action.send(request.user, verb="added document", action_object=action_doc, target=facet)
 
-    return redirect('story_detail', pk=facet.story.id)
+    return redirect('facet_edit', pk=facet.id)
 
 
 #----------------------------------------------------------------------#
@@ -302,20 +271,9 @@ def upload_audio(request):
         if audioform.is_valid():
             audio = audioform.save(commit=False)
 
-            # retrieve the facet the audio should be associated with
-            facet_type = request.POST.get('type')
-            if facet_type == "webfacet":
-                facet_id = request.POST.get('webfacet')
-                facet = get_object_or_404(WebFacet, id=facet_id)
-            elif facet_type == "printfacet":
-                facet_id = request.POST.get('printfacet')
-                facet = get_object_or_404(PrintFacet, id=facet_id)
-            elif facet_type == "audiofacet":
-                facet_id = request.POST.get('audiofacet')
-                facet = get_object_or_404(AudioFacet, id=facet_id)
-            elif facet_type == "videofacet":
-                facet_id = request.POST.get('videofacet')
-                facet = get_object_or_404(VideoFacet, id=facet_id)
+            # retrieve the facet the image should be associated with
+            facet_id = request.POST.get('facet')
+            facet = get_object_or_404(Facet, id=facet_id)
 
             # set request based attributes
             audio.owner = request.user
@@ -329,44 +287,31 @@ def upload_audio(request):
             # record action for activity stream
             action.send(request.user, verb="uploaded audio", action_object=audio, target=facet)
 
-    return redirect('story_detail', pk=facet.story.id)
+    return redirect('facet_edit', pk=facet.id)
 
 
 def add_audio(request):
     """ Add existing audio(s) in the library to another facet."""
 
     if request.method == "POST":
-        add_audio_form = AddAudioForm(request.POST, request=request)
-        if add_audio_form.is_valid():
-            audio_list = request.POST.getlist('audio')
+        audio_list = request.POST.getlist('audio')
 
-            # retrieve the facet the audio should be associated with
-            facet_type = request.POST.get('type')
-            if facet_type == "webfacet":
-                facet_id = request.POST.get('webfacet')
-                facet = get_object_or_404(WebFacet, id=facet_id)
-            elif facet_type == "printfacet":
-                facet_id = request.POST.get('printfacet')
-                facet = get_object_or_404(PrintFacet, id=facet_id)
-            elif facet_type == "audiofacet":
-                facet_id = request.POST.get('audiofacet')
-                facet = get_object_or_404(AudioFacet, id=facet_id)
-            elif facet_type == "videofacet":
-                facet_id = request.POST.get('videofacet')
-                facet = get_object_or_404(VideoFacet, id=facet_id)
+        # retrieve the facet the image should be associated with
+        facet_id = request.POST.get('facet')
+        facet = get_object_or_404(Facet, id=facet_id)
 
-            # connect audio to facet
-            for audio in audio_list:
-                audio_ins = get_object_or_404(AudioAsset, id=audio)
-                facet.audio_assets.add(audio_ins)
-            facet.save()
+        # connect audio to facet
+        for audio in audio_list:
+            audio_ins = get_object_or_404(AudioAsset, id=audio)
+            facet.audio_assets.add(audio_ins)
+        facet.save()
 
-            action_audio=get_object_or_404(AudioAsset, id=audio_list[0])
+        action_audio=get_object_or_404(AudioAsset, id=audio_list[0])
 
-            # record action for activity stream
-            action.send(request.user, verb="added audio", action_object=action_audio, target=facet)
+        # record action for activity stream
+        action.send(request.user, verb="added audio", action_object=action_audio, target=facet)
 
-    return redirect('story_detail', pk=facet.story.id)
+    return redirect('facet_edit', pk=facet.id)
 
 
 #----------------------------------------------------------------------#
@@ -381,20 +326,9 @@ def upload_video(request):
         if videoform.is_valid():
             video = videoform.save(commit=False)
 
-            # retrieve the facet the video should be associated with
-            facet_type = request.POST.get('type')
-            if facet_type == "webfacet":
-                facet_id = request.POST.get('webfacet')
-                facet = get_object_or_404(WebFacet, id=facet_id)
-            elif facet_type == "printfacet":
-                facet_id = request.POST.get('printfacet')
-                facet = get_object_or_404(PrintFacet, id=facet_id)
-            elif facet_type == "audiofacet":
-                facet_id = request.POST.get('audiofacet')
-                facet = get_object_or_404(AudioFacet, id=facet_id)
-            elif facet_type == "videofacet":
-                facet_id = request.POST.get('videofacet')
-                facet = get_object_or_404(VideoFacet, id=facet_id)
+            # retrieve the facet the image should be associated with
+            facet_id = request.POST.get('facet')
+            facet = get_object_or_404(Facet, id=facet_id)
 
             # set request based attributes
             video.owner = request.user
@@ -408,41 +342,27 @@ def upload_video(request):
             # record action for activity stream
             action.send(request.user, verb="uploaded video", action_object=video, target=facet)
 
-    return redirect('story_detail', pk=facet.story.id)
+    return redirect('facet_edit', pk=facet.id)
 
 
 def add_video(request):
     """ Add existing video(s) in the library to another facet."""
 
     if request.method == "POST":
-        add_video_form = AddVideoForm(request.POST, request=request)
-        if add_video_form.is_valid():
-            videos = request.POST.getlist('videos')
+        videos = request.POST.getlist('video')
 
-            # retrieve the facet the video should be associated with
-            facet_type = request.POST.get('type')
-            if facet_type == "webfacet":
-                facet_id = request.POST.get('webfacet')
-                facet = get_object_or_404(WebFacet, id=facet_id)
-            elif facet_type == "printfacet":
-                facet_id = request.POST.get('printfacet')
-                facet = get_object_or_404(PrintFacet, id=facet_id)
-            elif facet_type == "audiofacet":
-                facet_id = request.POST.get('audiofacet')
-                facet = get_object_or_404(AudioFacet, id=facet_id)
-            elif facet_type == "videofacet":
-                facet_id = request.POST.get('videofacet')
-                facet = get_object_or_404(VideoFacet, id=facet_id)
+        # retrieve the facet the image should be associated with
+        facet_id = request.POST.get('facet')
+        facet = get_object_or_404(Facet, id=facet_id)
 
-            # connect video to facet
-            for video in videos:
-                video_ins = get_object_or_404(VideoAsset, id=video)
-                facet.video_assets.add(video_ins)
-            facet.save()
+        # connect video to facet
+        for video in videos:
+            video_ins = get_object_or_404(VideoAsset, id=video)
+            facet.video_assets.add(video_ins)
+        facet.save()
 
-            action_video=get_object_or_404(VideoAsset, id=videos[0])
+        # record action for activity stream
+        action_video=get_object_or_404(VideoAsset, id=videos[0])
+        action.send(request.user, verb="added video", action_object=action_video, target=facet)
 
-            # record action for activity stream
-            action.send(request.user, verb="added video", action_object=action_video, target=facet)
-
-    return redirect('story_detail', pk=facet.story.id)
+    return redirect('facet_edit', pk=facet.id)

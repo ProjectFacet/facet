@@ -93,21 +93,24 @@ class FacetUpdateView(UpdateView):
 
         self.object = self.get_object()
         documents = self.object.get_facet_documents()
+        org_documents = self.object.organization.get_org_document_library()
         uploadform = DocumentAssetForm()
-        return {'documents': documents, 'uploadform': uploadform}
+        return {'documents': documents, 'org_documents': org_documents, 'uploadform': uploadform}
 
     def facet_audio_assets(self):
         """Return all audio assets associated with a facet and the forms to associate more."""
 
         self.object = self.get_object()
         audio = self.object.get_facet_audio()
+        org_audio = self.object.organization.get_org_audio_library()
         uploadform = AudioAssetForm()
-        return {'audio': audio, 'uploadform': uploadform}
+        return {'audio': audio, 'org_audio': org_audio, 'uploadform': uploadform}
 
     def facet_video_assets(self):
         """Return all video assets associated with a facet and the forms to associate more."""
 
         self.object = self.get_object()
         videos = self.object.get_facet_video()
+        org_videos = self.object.organization.get_org_video_library()
         uploadform = VideoAssetForm()
-        return {'videos': videos, 'uploadform': uploadform}
+        return {'videos': videos, 'org_videos': org_videos, 'uploadform': uploadform}

@@ -318,3 +318,17 @@ img.image-center {
   filter: alpha(opacity=75);
   opacity: .75;
 }
+
+
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: #474d5d;
+}
+::-moz-placeholder { /* Firefox 19+ */
+  color: #474d5d;
+}
+:-ms-input-placeholder { /* IE 10+ */
+  color: #474d5d;
+}
+:-moz-placeholder { /* Firefox 18- */
+  color: #474d5d;
+}
