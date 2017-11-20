@@ -1,0 +1,30 @@
+<!-- Image Asset Modal -->
+
+<div class="modal fade" id="FacetPreCreateModal" tabindex="-1" role="dialog" aria-labelledby="FacetPreCreateModalModal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="bs-nav-tabs nav-tabs-default">
+        <div class="modal-header">
+          <h4>Add a facet.</h4>
+        </div>
+
+        <div class="modal-body" id="imagemodalbody">
+          {% comment %}
+          {% with view.precreate_form as form %}
+          <form method="POST">
+          {% csrf_token %}
+
+          {% bootstrap_form form %}
+
+          <input type="submit" />
+          </form>
+          {% endwith %}
+          {% endcomment %}
+        </div>
+
+        </div>
+        <div class="modal-footer"></div>
+      </div>
+    </div>
+  </div>
+</div>

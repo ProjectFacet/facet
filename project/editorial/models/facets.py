@@ -338,7 +338,7 @@ class Facet(models.Model):
         blank=True,
     )
 
-    pronunciations = models.TextField(
+    pronounciations = models.TextField(
         help_text='Information about pronouncing names or potentially difficult words.',
         blank=True,
     )

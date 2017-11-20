@@ -90,6 +90,11 @@ class StoryCreateView(CreateView):
         #FIXME limit to series owned by request user org
         return Series.objects.all()
 
+    def projects(self):
+        # FIXME limit to projects owned by request.user.org or projects that
+        # are collaborative and involve request.user.org
+        return Project.objects.all()
+
     def form_valid(self, form):
         """Save -- but first adding owner and organization."""
 

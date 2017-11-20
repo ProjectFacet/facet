@@ -1,9 +1,11 @@
 from django.views.generic import CreateView, FormView, UpdateView, DetailView, ListView
 from django.shortcuts import redirect
 from django.core.urlresolvers import reverse
+from actstream import action
 
-from ..models import Facet
+from ..models import Facet, FacetTemplate
 from ..forms import (
+    FacetTemplateForm,
     get_facet_form_for_template,
     FacetPreCreateForm,
     FacetCommentForm,
@@ -11,6 +13,51 @@ from ..forms import (
     DocumentAssetForm,
     AudioAssetForm,
     VideoAssetForm,)
+
+
+
+class FacetTemplateCreateView(CreateView):
+    """Create a facet template."""
+
+    model = FacetTemplate
+    form_class = FacetTemplateForm
+
+    def form_valid(self, form):
+        """Save -- but first adding owner and organization."""
+
+        self.object = template = form.save(commit=False)
+
+        #FIXME What's the appropriate way to retrieve these fields?
+        # This or defining all the choices in forms?
+        # form_fields = request.POST.getlist('fields')
+
+        template.owner = self.request.user
+        template.organization = self.request.user.organization
+        template.fields_used = ['excerpt']
+
+        template.save()
+        form.save_m2m()
+
+        action.send(self.request.user, verb="created", action_object=self.object)
+
+        return redirect(self.get_success_url())
+
+
+
+class FacetTemplateUpdateView(UpdateView):
+    """Edit a facet template."""
+
+    model = FacetTemplate
+    form_class = FacetTemplateForm
+
+    def get_success_url(self):
+        """Record action for activity stream."""
+
+        action.send(self.request.user, verb="edited", action_object=self.object)
+        return super(FacetTemplateUpdateView, self).get_success_url()
+
+
+
 
 
 class FacetCreateView(CreateView):

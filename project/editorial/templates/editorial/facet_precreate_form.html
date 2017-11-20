@@ -1,16 +1,121 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
 {% load bootstrap3 %}
+{% load embed_video_tags %}
 
-<html>
-<body>
+{% block head %}
+{{ form.media }}
+{% endblock %}
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+<!--             BREADCRUMB NAVIGATION                 -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
+{% block breadcrumb %}
+<div>
+    <ol class="breadcrumb icon-angle-right icon-th">
+        <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
+        <li class="fadeIn"> Content </li>
+        <li class="fadeIn"><a href="{% url 'story_list' %}" title="View Story List"> Stories </a></li>
+        <li class="fadeIn"><a href="#" title="You are Here"> Create a new facet </li>
+    </ol>
+</div>
+{% endblock breadcrumb %}
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+<!--                   Main Section                    -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
+{% block content %}
+
+<!-- ================================================= -->
+                    <!-- TABS -->
+<!-- ================================================= -->
+
+<div class="row">
+  <div class="col-xs-12">
+    <div class="bs-nav-tabs nav-tabs-default m-b-40" id="facettabs">
+      <ul class="nav nav-tabs nav-animated-border-from-left nav-tabs-sticky text-center">
+        {% comment %}
+        <li class="nav-item"><a href="#"><p class="f-r-14 f-w-300 m-b-0">Story Detail </p></a></li>
+        <li class="nav-item"><p class="f-r-14 f-w-400 m-b-0 m-l-20 m-r-10"> | </p></li>
+        {% for facet in facet.story.facet_set.all %}
+        <li class="nav-item"><a href="{% url 'facet_edit' facet.id %}" class="nav-link"><p class="f-r-10 f-w-300 m-b-0"> {{ facet.name }} </p></a></li>
+        {% endfor %}
+        <li class="nav-item"><a href="{% url 'facet_precreate' %}"><p class="f-r-12 f-w-300 m-b-0"><i class="fa fa-plus-square" aria-hidden="true"></i></p></a></li>
+        {% endcomment %}
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================= -->
+                    <!-- CONTENT -->
+<!-- ================================================= -->
+<div class="row">
+  <div class="col-xs-12 col-lg-4"></div>
+  <div class="col-xs-12 col-lg-4">
+    <form method="POST">
+    {% csrf_token %}
+
+    {% bootstrap_form form %}
 
 
-<form method="POST">
-{% csrf_token %}
 
-{% bootstrap_form form %}
+    {% comment %}
+    <!-- Facet Name -->
+    <fieldset class="form-group m-b-10">
+      <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.name.label_tag }}</label>
+      {{ form.name }}
+      {% if form.name.errors %}
+        <small class="text-muted">{{ form.name.errors }}</small>
+      {% endif %}
+    </fieldset>
 
-<input type="submit" />
-</form>
+    <!-- Facet Headline -->
+    <fieldset class="form-group m-b-10">
+      <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.template.label_tag }}</label>
+      {{ form.template }}
+      {% if form.template.errors %}
+        <small class="text-muted">{{ form.template.errors }}</small>
+      {% endif %}
+    </fieldset>
 
-</body>
-</html>
+    {% endcomment %}
+
+
+    <button type="submit" class="btn btn-info content-bottom-10 btn btn-block no-border" name="form">Save</button>
+    </form>
+
+  </div>
+  <div class="col-xs-12 col-lg-4"></div>
+</div>
+
+<!-- ================================================= -->
+                  <!-- JS SCRIPTS -->
+<!-- ================================================= -->
+
+<script>
+  $(".chosen-select").chosen()
+</script>
+
+
+{% endblock %}
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+                <!-- MODALS -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
+{% block modals %}
+
+
+
+
+{% endblock modals %}

@@ -7,6 +7,7 @@ from django import forms
 from django.utils.safestring import mark_safe
 from django.contrib.auth import get_user_model
 from django.forms import Textarea, TextInput, RadioSelect, Select, NumberInput, CheckboxInput, CheckboxSelectMultiple, FileField
+from django.contrib.postgres.fields import ArrayField
 from datetimewidget.widgets import DateTimeWidget
 from tinymce.widgets import TinyMCE
 # from django.contrib.staticfiles.templatetags.staticfiles import static
@@ -44,6 +45,63 @@ from editorial.models import (
     )
 
 from .models.facets import COMMON_FIELDS
+
+
+# FACETTEMPLATE_FIELD_CHOICES = (
+#     ('excerpt', 'Excerpt'),
+#     ('update_note', 'Update Note'),
+#     ('share_note', 'Share Note'),
+#     ('edit_note', 'Edit Note'),
+#     ('dateline', 'Dateline'),
+#     ('topic_code', 'Topic Code'),
+#     ('internal_code', 'Internal Code'),
+#     ('content_license', 'Content License'),
+#     ('length', 'Length'),
+#     ('wordcount', 'Wordcount'),
+#     ('related_links', 'Related Links'),
+#     ('github_link', 'Github Link'),
+#     ('embeds', 'Embeds'),
+#     ('sources', 'Sources'),
+#     ('pronounciations', 'Pronounciations'),
+#     ('sponsors', 'Sponsors'),
+#     ('pull_quotes', 'Pull Quotes'),
+#     ('sidebar_content', 'Sidebar Content'),
+#     ('producer', 'Producer'),
+#     ('series_title', 'Series Title'),
+#     ('episode_number', 'Episode Number'),
+#     ('usage_rights', 'Usage Rights'),
+#     ('tape_datetime', 'Tape Datetime'),
+#     ('locations', 'Locations'),
+#     ('custom_one', 'Custom One'),
+#     ('custom_two', 'Custom Two'),
+#     ('custom_three', 'Custom Three'),
+#     ('custom_four', 'Custom Four'),
+#     ('custom_five', 'Custom Five'),
+# )
+
+class FacetTemplateForm(forms.ModelForm):
+    """Form for editing facet templates."""
+
+    def clean_fields_used(self):
+        """There may be spaces around entries; strip these off."""
+
+        return [f.strip() for f in self.cleaned_data['fields_used']]
+
+    # fields = forms.ArrayField(
+    #     required=True,
+    #     widget=forms.CheckboxSelectMultiple,
+    #     choices=FACETTEMPLATE_FIELD_CHOICES,
+    # )
+
+    class Meta:
+        model = FacetTemplate
+        fields = "__all__"
+        widgets = {
+            'name': TextInput(attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Label'}),
+            'description': Textarea(attrs={'class': 'form-control', 'rows':3, 'placeholder': 'Description'}),
+            'is_active': CheckboxInput(attrs={'class': 'c-input c-checkbox c-indicator c-indicator-default'}),
+            # 'fields': CheckboxSelectMultiple(attrs={'class': 'c-input c-checkbox c-indicator c-indicator-default'}),
+        }
 
 
 def get_facet_form_for_template(template_id):
@@ -156,6 +214,12 @@ class FacetPreCreateForm(forms.Form):
     template = forms.ModelChoiceField(
         FacetTemplate.objects.all(),
     )
+
+    # class Meta:
+    #     widgets = {
+    #         'name': TextInput(attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Label'}),
+    #         'template': Select(attrs={'class': 'form-control'}),
+    #     }
 
 
 
@@ -930,16 +994,3 @@ class StoryDownloadForm(forms.Form):
         widget=CheckboxSelectMultiple,
         queryset = ImageAsset.objects.all()
     )
-
-
-class FacetTemplateForm(forms.ModelForm):
-    """Form for editing facet templates."""
-
-    def clean_fields_used(self):
-        """There may be spaces around entries; strip these off."""
-
-        return [f.strip() for f in self.cleaned_data['fields_used']]
-
-    class Meta:
-        model = FacetTemplate
-        fields = "__all__"

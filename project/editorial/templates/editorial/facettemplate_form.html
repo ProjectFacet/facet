@@ -1,0 +1,272 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load bootstrap3 %}
+{% load embed_video_tags %}
+
+{% block head %}
+{{ form.media }}
+{% endblock %}
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+<!--             BREADCRUMB NAVIGATION                 -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
+{% block breadcrumb %}
+<div>
+    <ol class="breadcrumb icon-angle-right icon-th">
+        <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
+        <li class="fadeIn"> Create a facet template </li>
+    </ol>
+</div>
+{% endblock breadcrumb %}
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+<!--                   Main Section                    -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
+{% block content %}
+
+<!-- ================================================= -->
+                    <!-- TABS -->
+<!-- ================================================= -->
+
+<div class="row">
+  <div class="col-xs-12">
+    <div class="bs-nav-tabs nav-tabs-default m-b-40" id="facettabs">
+      <ul class="nav nav-tabs nav-animated-border-from-left nav-tabs-sticky text-center">
+        {% comment %}
+        <li class="nav-item"><a href="#"><p class="f-r-14 f-w-300 m-b-0">Story Detail </p></a></li>
+        <li class="nav-item"><p class="f-r-14 f-w-400 m-b-0 m-l-20 m-r-10"> | </p></li>
+        {% for facet in facet.story.facet_set.all %}
+        <li class="nav-item"><a href="{% url 'facet_edit' facet.id %}" class="nav-link"><p class="f-r-10 f-w-300 m-b-0"> {{ facet.name }} </p></a></li>
+        {% endfor %}
+        <li class="nav-item"><a href="{% url 'facet_precreate' %}"><p class="f-r-12 f-w-300 m-b-0"><i class="fa fa-plus-square" aria-hidden="true"></i></p></a></li>
+        {% endcomment %}
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================= -->
+                    <!-- CONTENT -->
+<!-- ================================================= -->
+<div class="row">
+  <form method="POST">
+  {% csrf_token %}
+
+
+  <!-- Left Column -->
+  <div class="col-xs-12 col-lg-3">
+    <!-- Name -->
+    <fieldset class="form-group m-b-10">
+      <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.name.label_tag }}</label>
+      {{ form.name }}
+      {% if form.name.errors %}
+        <small class="text-muted">{{ form.name.errors }}</small>
+      {% endif %}
+    </fieldset>
+
+    <!-- Description -->
+    <fieldset class="form-group m-b-10 m-t-10">
+      <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.description.label_tag }}</label>
+      {{ form.description }}
+      {% if form.description.errors %}
+        <small class="text-muted">{{ form.description.errors }}</small>
+      {% endif %}
+    </fieldset>
+
+    <!-- Is Active -->
+    <div class="row">
+        <fieldset class="form-group m-b-10">
+          <div class="col-xs-3">
+            <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.is_active.label_tag }}</label>
+          </div>
+          <div class="col-xs-9">
+            {{ form.is_active }}
+            {% if form.is_active.errors %}
+              <small class="text-muted">{{ form.is_active.errors }}</small>
+            {% endif %}
+          </div>
+        </fieldset>
+    </div>
+
+    <!-- Default Fields -->
+    <div class="row">
+      <div class="col-xs-12">
+        <p class="f-s-14 f-w-400 slim-margin m-l-5 m-b-20">Default Fields</p>
+        <p class="f-s-12 f-w-300 m-l-5 m-b-10 color-default">Included for all facets and available via the Base Template</p>
+        <p>
+          <span class="sameline subtle"><i class="fa fa-check-square subtle" aria-hidden="true"></i> </span><span class="f-s-12 f-w-300 slim-margin m-l-5 m-b-10"> Name</span>
+          <br><span class="sameline subtle"><i class="fa fa-check-square subtle" aria-hidden="true"></i> </span><span class="f-s-12 f-w-300 slim-margin m-l-5 m-b-10"> Headline</span>
+          <br><span class="sameline subtle"><i class="fa fa-check-square subtle" aria-hidden="true"></i> </span><span class="f-s-12 f-w-300 slim-margin m-l-5 m-b-10"> Credit</span>
+          <br><span class="sameline subtle"><i class="fa fa-check-square subtle" aria-hidden="true"></i> </span><span class="f-s-12 f-w-300 slim-margin m-l-5 m-b-10"> Editor</span>
+          <br><span class="sameline subtle"><i class="fa fa-check-square subtle" aria-hidden="true"></i> </span><span class="f-s-12 f-w-300 slim-margin m-l-5 m-b-10"> Description</span>
+          <br><span class="sameline subtle"><i class="fa fa-check-square subtle" aria-hidden="true"></i> </span><span class="f-s-12 f-w-300 slim-margin m-l-5 m-b-10"> Content</span>
+          <br><span class="sameline subtle"><i class="fa fa-check-square subtle" aria-hidden="true"></i> </span><span class="f-s-12 f-w-300 slim-margin m-l-5 m-b-10"> Keywords</span>
+          <br><span class="sameline subtle"><i class="fa fa-check-square subtle" aria-hidden="true"></i> </span><span class="f-s-12 f-w-300 slim-margin m-l-5 m-b-10"> Status</span>
+          <br><span class="sameline subtle"><i class="fa fa-check-square subtle" aria-hidden="true"></i> </span><span class="f-s-12 f-w-300 slim-margin m-l-5 m-b-10"> Due for Edit</span>
+          <br><span class="sameline subtle"><i class="fa fa-check-square subtle" aria-hidden="true"></i> </span><span class="f-s-12 f-w-300 slim-margin m-l-5 m-b-10"> Run Date</span>
+          <br><span class="sameline subtle"><i class="fa fa-check-square subtle" aria-hidden="true"></i> </span><span class="f-s-12 f-w-300 slim-margin m-l-5 m-b-10"> Images</span>
+          <br><span class="sameline subtle"><i class="fa fa-check-square subtle" aria-hidden="true"></i> </span><span class="f-s-12 f-w-300 slim-margin m-l-5 m-b-10"> Documents</span>
+          <br><span class="sameline subtle"><i class="fa fa-check-square subtle" aria-hidden="true"></i> </span><span class="f-s-12 f-w-300 slim-margin m-l-5 m-b-10"> Audio</span>
+          <br><span class="sameline subtle"><i class="fa fa-check-square subtle" aria-hidden="true"></i> </span><span class="f-s-12 f-w-300 slim-margin m-l-5 m-b-10"> Video</span>
+        </p>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-info content-bottom-10 btn btn-block no-border m-t-20" name="form">Save</button>
+
+  </div>
+
+  <!-- Right Column Column -->
+  <div class="col-xs-12 col-lg-9">
+    <div class="row">
+      <p class="f-s-14 f-s-400 spread-01 subtle slim-margin m-t-10 m-l-5 m-b-10">Fields</p>
+      <p class="f-s-12 f-w-300 m-l-5 m-b-10">Select fields to include in template</p>
+      <!-- Outer Left Column-->
+      <div class="col-xs-12 col-sm-6 col-md-3">
+        <div class="c-inputs-stacked m-t-20">
+          <label class="c-input c-checkbox m-t-20">
+            <input type="checkbox" name="fields" value="excerpt"><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Excerpt </span>
+          </label>
+          <label class="c-input c-checkbox m-t-20">
+            <input type="checkbox" name="fields" value="update_note"><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Update Note </span>
+          </label>
+          <label class="c-input c-checkbox m-t-20">
+            <input type="checkbox" name="fields" value="share_note"><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Share Note </span>
+          </label>
+          <label class="c-input c-checkbox m-t-20">
+            <input type="checkbox" name="fields" value="edit_note"><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Edit Note </span>
+          </label>
+          <label class="c-input c-checkbox m-t-20">
+            <input type="checkbox" name="fields" value="dateline"><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Dateline </span>
+          </label>
+          <label class="c-input c-checkbox m-t-20">
+            <input type="checkbox" name="fields" value="topic_code"><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Topic Code </span>
+          </label>
+          <label class="c-input c-checkbox m-t-20">
+            <input type="checkbox" name="fields" value="internal_code"><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Internal Code </span>
+          </label>
+          <label class="c-input c-checkbox m-t-20">
+            <input type="checkbox" name="fields" value="content_license"><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Content License </span>
+          </label>
+        </div>
+      </div>
+      <!-- Inner Left Column -->
+      <div class="col-xs-12 col-sm-6 col-md-3">
+        <div class="c-inputs-stacked m-t-20">
+          <label class="c-input c-checkbox m-t-20">
+            <input type="checkbox" name="fields" value="length"><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Length </span>
+          </label>
+          <label class="c-input c-checkbox m-t-20">
+            <input type="checkbox" name="fields" value="wordcount"><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Wordcount </span>
+          </label>
+          <label class="c-input c-checkbox m-t-20">
+            <input type="checkbox" name="fields" value="related_links"><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Related Links </span>
+          </label>
+          <label class="c-input c-checkbox m-t-20">
+            <input type="checkbox" name="fields" value="github_link"><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Github Link </span>
+          </label>
+          <label class="c-input c-checkbox m-t-20">
+            <input type="checkbox" name="fields" value="embeds"><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Embeds </span>
+          </label>
+          <label class="c-input c-checkbox m-t-20">
+            <input type="checkbox" name="fields" value="sources"><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Sources </span>
+          </label>
+          <label class="c-input c-checkbox m-t-20">
+            <input type="checkbox" name="fields" value="pronounciations"><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Pronounciations </span>
+          </label>
+          <label class="c-input c-checkbox m-t-20">
+            <input type="checkbox" name="fields" value="sponsors"><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Sponsors </span>
+          </label>
+        </div>
+      </div>
+      <!-- Inner Right Column -->
+      <div class="col-xs-12 col-sm-6 col-md-3">
+        <div class="c-inputs-stacked m-t-20">
+          <label class="c-input c-checkbox m-t-20">
+            <input type="checkbox" name="fields" value="pull_quotes"><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Pull Quotes </span>
+          </label>
+          <label class="c-input c-checkbox m-t-20">
+            <input type="checkbox" name="fields" value="sidebar_content"><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Sidebar Content </span>
+          </label>
+          <label class="c-input c-checkbox m-t-20">
+            <input type="checkbox" name="fields" value="producer"><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Producer </span>
+          </label>
+          <label class="c-input c-checkbox m-t-20">
+            <input type="checkbox" name="fields" value="series_title"><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Series Title </span>
+          </label>
+          <label class="c-input c-checkbox m-t-20">
+            <input type="checkbox" name="fields" value="episode_number"><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Episode Number </span>
+          </label>
+          <label class="c-input c-checkbox m-t-20">
+            <input type="checkbox" name="fields" value="usage_rights"><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Usage Rights </span>
+          </label>
+          <label class="c-input c-checkbox m-t-20">
+            <input type="checkbox" name="fields" value="tape_datetime"><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Tape Datetime </span>
+          </label>
+          <label class="c-input c-checkbox m-t-20">
+            <input type="checkbox" name="fields" value="locations"><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Locations </span>
+          </label>
+        </div>
+
+      </div>
+      <!-- Outer Right Column -->
+      <div class="col-xs-12 col-sm-6 col-md-3">
+        <div class="c-inputs-stacked m-t-20">
+          <label class="c-input c-checkbox m-t-20">
+            <input type="checkbox" name="fields" value="custom_one"><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Custom One </span>
+          </label>
+          <label class="c-input c-checkbox m-t-20">
+            <input type="checkbox" name="fields" value="custom_two"><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Custom Two </span>
+          </label>
+          <label class="c-input c-checkbox m-t-20">
+            <input type="checkbox" name="fields" value="custom_three"><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Custom Three </span>
+          </label>
+          <label class="c-input c-checkbox m-t-20">
+            <input type="checkbox" name="fields" value="custom_four"><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Custom Four </span>
+          </label>
+          <label class="c-input c-checkbox m-t-20">
+            <input type="checkbox" name="fields" value="custom_five"><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Custom Five </span>
+          </label>
+        </div>
+
+      </div>
+
+
+
+
+    </div>
+  </div>
+
+  </form>
+</div>
+
+<!-- ================================================= -->
+                  <!-- JS SCRIPTS -->
+<!-- ================================================= -->
+
+<script>
+  $(".chosen-select").chosen()
+</script>
+
+
+{% endblock %}
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+                <!-- MODALS -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
+{% block modals %}
+
+
+
+
+{% endblock modals %}

@@ -21,10 +21,7 @@ class EditorialAppConfig(AppConfig):
             "Facet",
             "Task",
             "Event",
-            "WebFacet",
-            "PrintFacet",
-            "AudioFacet",
-            "VideoFacet",
+            "FacetTemplate",
             "ImageAsset",
             "DocumentAsset",
             "AudioAsset",
@@ -45,12 +42,9 @@ class EditorialAppConfig(AppConfig):
         registry.register(self.get_model('Series'))
         registry.register(self.get_model('Story'))
         registry.register(self.get_model('Facet'))
+        registry.register(self.get_model('FacetTemplate'))
         registry.register(self.get_model('Task'))
         registry.register(self.get_model('Event'))
-        registry.register(self.get_model('WebFacet'))
-        registry.register(self.get_model('PrintFacet'))
-        registry.register(self.get_model('AudioFacet'))
-        registry.register(self.get_model('VideoFacet'))
         registry.register(self.get_model('ImageAsset'))
         registry.register(self.get_model('DocumentAsset'))
         registry.register(self.get_model('AudioAsset'))
