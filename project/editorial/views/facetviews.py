@@ -29,7 +29,7 @@ class FacetTemplateCreateView(CreateView):
 
         #FIXME What's the appropriate way to retrieve these fields?
         # This or defining all the choices in forms?
-        # form_fields = request.POST.getlist('fields')
+        form_fields = self.request.POST.getlist('fields')
 
         template.owner = self.request.user
         template.organization = self.request.user.organization
