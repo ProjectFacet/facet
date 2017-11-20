@@ -18,7 +18,11 @@
 <div>
     <ol class="breadcrumb icon-angle-right icon-th">
         <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
+        {% if template.id %}
+        <li class="fadeIn"> Edit facet template: {{ template.name }} </li>
+        {% else %}
         <li class="fadeIn"> Create a facet template </li>
+        {% endif %}
     </ol>
 </div>
 {% endblock breadcrumb %}
