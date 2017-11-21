@@ -24,6 +24,8 @@ class BaseAsset(models.Model):
 
     organization = models.ForeignKey(
         Organization,
+        blank=True,
+        null=True,
     )
 
     title = models.CharField(
@@ -326,7 +328,7 @@ class AudioAsset(BaseAudio, BaseAssetMetadata):
         return self.facet_set.all()
 
     def get_absolute_url(self):
-        return reverse('asset_detail', kwargs={'pk': self.id})
+        return reverse('audio_asset_detail', kwargs={'pk': self.id})
 
 
 class SimpleAudio(BaseAudio):
@@ -400,6 +402,9 @@ class VideoAsset(BaseVideo, BaseAssetMetadata):
     def get_video_usage(self):
         """Return facets an video file is associated with."""
         return self.facet_set.all()
+
+    def get_absolute_url(self):
+        return reverse('video_asset_detail', kwargs={'pk': self.id})
 
 
 class SimpleVideo(BaseVideo):

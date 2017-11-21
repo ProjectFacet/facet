@@ -1,0 +1,199 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load bootstrap3 %}
+
+<!-------------------------------------------->
+<!--      BREADCRUMB NAVIGATION             -->
+<!-------------------------------------------->
+
+{% block breadcrumb %}
+<div>
+    <ol class="breadcrumb icon-angle-right icon-th">
+      <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
+      <li class="fadeIn"><a href="{% url 'asset_library' %}" title="Return to Media Library"> Media Library </a></li>
+      <li class="fadeIn"><a href="{% url 'document_asset_detail' documentasset.id %}" title="You are here">Document: {{documentasset.title}}  </a></li>
+    </ol>
+</div>
+{% endblock breadcrumb %}
+
+<!-------------------------------------------->
+<!--            Main Section                -->
+<!-------------------------------------------->
+
+{% block content %}
+<!-- Row One -->
+<div class="row m-b-40">
+
+  <!-- Display Document -->
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+      <h4 class="m-b-20">Document</h4>
+        {% if documentasset.asset_type == "PDF" %}
+          <object width="100%" height="650px" data="{{ documentasset.document.url }}"></object>
+          {% if not documentasset.document.url %}
+          <div class="card bs-card">
+            <div class="card-block bg-danger-500">
+              <p class="f-r-14 f-w-300 text-center m-t-50"> <i class="fa fa-file-pdf-o fa-1x text-center m-b-10"></i> .pdf </p>
+              <p class="f-r-12 f-w-300 text-center m-t-5 m-b-50">Preview not available in browser.</p>
+            </div>
+            <div class="card-block">
+              <p class="f-r-10 f-w-500"> {{ documentasset.title }} </p>
+              <p class="f-r-8 f-w-300 hidden-sm-down"> {{ documentasset.description|truncatechars:40 }} </p>
+              <a class="btn btn-danger btn-sm" href="{{ documentasset.document.url }}" role="button"><i class="fa fa-cloud-download" aria-hidden="true"></i> Download</a>
+            </div>
+          </div>
+          {% endif %}
+        {% elif documentasset.asset_type == "WORD DOC" %}
+          <div class="card bs-card">
+            <div class="card-block bg-info-500">
+              <p class="f-r-14 f-w-300 text-center m-t-50"> <i class="fa fa-file-word-o fa-1x text-center m-b-10"> </i> .docx </p>
+              <p class="f-r-12 f-w-300 text-center m-t-5 m-b-50">Preview not available in browser.</p>
+            </div>
+            <div class="card-block">
+              <p class="f-r-10 f-w-500"> {{ documentasset.title }} </p>
+              <p class="f-r-8 f-w-300 hidden-sm-down"> {{ documentasset.description|truncatechars:40 }} </p>
+              <a class="btn btn-info btn-sm" href="{{ documentasset.document.url }}" role="button"><i class="fa fa-cloud-download" aria-hidden="true"></i> Download</a>
+            </div>
+          </div>
+        {% elif documentasset.asset_type == "TEXT" %}
+          <div class="card bs-card">
+            <div class="card-block bg-primary-500">
+              <p class="f-r-14 f-w-300 text-center m-t-50"> <i class="fa fa-file-text-o fa-1x text-center m-b-10"> </i> .txt </p>
+              <p class="f-r-12 f-w-300 text-center m-t-5 m-b-50">Preview not available in browser.</p>
+            </div>
+            <div class="card-block">
+              <p class="f-r-10 f-w-500"> {{ documentasset.title }} </p>
+              <p class="f-r-8 f-w-300 hidden-sm-down"> {{ documentasset.description|truncatechars:40 }} </p>
+              <a class="btn btn-primary btn-sm" href="{{ documentasset.document.url }}" role="button"><i class="fa fa-cloud-download" aria-hidden="true"></i> Download</a>
+            </div>
+          </div>
+        {% elif documentasset.asset_type == "COMMA SEPARATED" %}
+          <div class="card bs-card">
+            <div class="card-block bg-success-500">
+              <p class="f-r-14 f-w-300 text-center m-t-50"> <i class="fa fa-file-excel-o fa-1x text-center m-b-10"> </i> .csv </p>
+              <p class="f-r-12 f-w-300 text-center m-t-5 m-b-50">Preview not available in browser.</p>
+            </div>
+            <div class="card-block">
+              <p class="f-r-10 f-w-500"> {{ documentasset.title }} </p>
+              <p class="f-r-8 f-w-300 hidden-sm-down"> {{ documentasset.description|truncatechars:40 }} </p>
+              <a class="btn btn-success btn-sm" href="{{ documentasset.document.url }}" role="button"><i class="fa fa-cloud-download" aria-hidden="true"></i> Download</a>
+            </div>
+          </div>
+        {% elif documentasset.asset_type == "EXCEL" %}
+          <div class="card bs-card">
+            <div class="card-block bg-success-500">
+              <p class="f-r-14 f-w-300 text-center m-t-50"> <i class="fa fa-file-excel-o fa-1x text-center m-b-10"> </i> .xls </p>
+              <p class="f-r-12 f-w-300 text-center m-t-5 m-b-50">Preview not available in browser.</p>
+            </div>
+            <div class="card-block">
+              <p class="f-r-10 f-w-500"> {{ documentasset.title }} </p>
+              <p class="f-r-8 f-w-300 hidden-sm-down"> {{ documentasset.description|truncatechars:40 }} </p>
+              <a class="btn btn-success btn-sm" href="{{ documentasset.document.url }}" role="button"><i class="fa fa-cloud-download" aria-hidden="true"></i> Download</a>
+            </div>
+          </div>
+        {% elif documentasset.asset_type == "OTHER" %}
+          <div class="card bs-card">
+            <div class="card-block bg-warning-500">
+              <p class="f-r-14 f-w-300 text-center m-t-50"> <i class="fa fa-file-o fa-1x text-center m-b-10"> </i> other </p>
+              <p class="f-r-12 f-w-300 text-center m-t-5 m-b-50">Preview not available in browser.</p>
+            </div>
+            <div class="card-block">
+              <p class="f-r-10 f-w-500"> {{ documentasset.title }} </p>
+              <p class="f-r-8 f-w-300 hidden-sm-down"> {{ documentasset.description|truncatechars:40 }} </p>
+              <a class="btn btn-warning btn-sm" href="{{ documentasset.document.url }}" role="button"><i class="fa fa-cloud-download" aria-hidden="true"></i> Download</a>
+            </div>
+          </div>
+        {% endif %}
+  </div>
+
+  <!-- Document Meta -->
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+    <div class="row">
+      <div class="col-xs-12">
+        <h4 class="m-b-20">Details</h4>
+      </div>
+    </div>
+
+    <!-- Detail Form -->
+    <form action="{% url 'document_asset_detail' documentasset.id %}" method="POST" class="post-form" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="row">
+                  <!-- Left Col -->
+                  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+
+                    <fieldset class="form-group m-b-10">
+                      <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ form.title.label_tag }}</label>
+                      {{ form.title }}
+                      {% if form.title.errors %}
+                        <small class="text-muted">{{ form.title.errors }}</small>
+                      {% endif %}
+                    </fieldset>
+
+                    <fieldset class="form-group m-b-10">
+                      <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ form.asset_type.label_tag }}</label>
+                      {{ form.asset_type }}
+                      {% if form.asset_type.errors %}
+                        <small class="text-muted">{{ form.asset_type.errors }}</small>
+                      {% endif %}
+                    </fieldset>
+
+                    <fieldset class="form-group m-b-10">
+                      <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ form.keywords.label_tag }}</label>
+                      {{ form.keywords }}
+                      {% if form.keywords.errors %}
+                        <small class="text-muted">{{ form.keywords.errors }}</small>
+                      {% endif %}
+                    </fieldset>
+
+                  </div>
+                  <!-- End Left Col -->
+
+                  <!-- Right Col -->
+                  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                    <fieldset class="form-group m-b-10">
+                      <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ form.description.label_tag }}</label>
+                      {{ form.description }}
+                      {% if form.description.errors %}
+                        <small class="text-muted">{{ form.description.errors }}</small>
+                      {% endif %}
+                    </fieldset>
+
+                    <fieldset class="form-group m-b-10">
+                      <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ form.attribution.label_tag }}</label>
+                      {{ form.attribution }}
+                      {% if form.attribution.errors %}
+                        <small class="text-muted">{{ form.attribution.errors }}</small>
+                      {% endif %}
+                    </fieldset>
+                  </div>
+
+      </div>
+      <div class="row">
+        <div class="col-xs-6 offset-xs-3 col-lg-2 offset-lg-5">
+          <button type="submit" class="btn btn-primary">Save Changes</button>
+        </div>
+      </div>
+    </form>
+      <!-- Usage -->
+      <div class="row">
+        <div class="col-xs-12">
+        <hr class="content-lower-25">
+        <h4 class="m-b-20">Usage</h4>
+        {% with view.document_usage as facets %}
+        {% for facet in facets %}
+          <a href="{% url 'facet_edit' facet.id %}" title="Go to Facet"><p class="f-s-14 m-t-10"><i class="fa fa-long-arrow-right subtle m-r-5" aria-hidden="true"></i> {{ facet.name }} | Story: {{ facet.story.name }}</p></a>
+        {% endfor %}
+        {% endwith %}
+      </div>
+      </div>
+    </div>
+</div>
+
+
+
+
+{% endblock %}
+
+
+{% block modals %}
+{% endblock %}

@@ -1,0 +1,180 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load bootstrap3 %}
+
+<!-------------------------------------------->
+<!--      BREADCRUMB NAVIGATION             -->
+<!-------------------------------------------->
+
+{% block breadcrumb %}
+<div>
+    <ol class="breadcrumb icon-angle-right icon-th">
+      <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
+      <li class="fadeIn"><a href="{% url 'asset_library' %}" title="Return to Media Library"> Media Library </a></li>
+      <li class="fadeIn"><a href="{% url 'audio_asset_detail' audioasset.id %}" title="You are here">Audio: {{audioasset.title}}  </a></li>
+    </ol>
+</div>
+{% endblock breadcrumb %}
+
+<!-------------------------------------------->
+<!--            Main Section                -->
+<!-------------------------------------------->
+
+{% block content %}
+<!-- Row One -->
+<div class="row m-b-40">
+
+  <!-- Display Audio -->
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+      <h4 class="m-b-20">Audio</h4>
+      {% if audioasset.asset_type == 'MP3' or audioasset.asset_type == 'WAV' %}
+      <div id="jplayer_audio_{{audioasset.pk}}" class="jp-jplayer"></div>
+      <div id="jp_container_audio_{{audioasset.pk}}" class="jp-flat-audio m-b-10" role="application" aria-label="media player">
+        <div class="jp-play-control jp-control">
+          <button class="jp-play jp-button" role="button" aria-label="play" tabindex="0"></button>
+        </div>
+        <div class="jp-bar">
+          <div class="jp-seek-bar jp-seek-bar-display"></div>
+          <div class="jp-seek-bar">
+            <div class="jp-play-bar"></div>
+            <div class="jp-details"><span class="jp-title" aria-label="title"></span></div>
+            <div class="jp-timing"><span class="jp-duration" role="timer" aria-label="duration"></span></div>
+          </div>
+        </div>
+        <div class="jp-no-solution">
+          Media Player Error<br />
+          Update your browser or Flash plugin
+        </div>
+      </div>
+      <script>
+        jQuery(document).ready(function($) {
+          $("#jplayer_audio_{{audioasset.pk}}").jPlayer({
+            ready: function(event) {
+              $(this).jPlayer("setMedia", {
+                title: "{{audioasset.title}}",
+                wav: "{{audioasset.audio.url}}",
+                mp3: "{{audioasset.audio.url}}",
+              });
+            },
+            play: function() { // Avoid multiple jPlayers playing together.
+              $(this).jPlayer("pauseOthers");
+            },
+            timeFormat: {
+              padMin: false
+            },
+            swfPath: "js",
+            supplied: "wav, mp3",
+            cssSelectorAncestor: "#jp_container_audio_{{audioasset.pk}}",
+            useStateClassSkin: true,
+            autoBlur: false,
+            smoothPlayBar: true,
+            remainingDuration: true,
+            keyEnabled: true,
+            keyBindings: {
+              // Disable some of the default key controls
+              loop: null,
+              muted: null,
+              volumeUp: null,
+              volumeDown: null
+            },
+            wmode: "window"
+          });
+        });
+      </script>
+      <!-- FIXME ADD DOWNLOAD BUTTON FOR AUDIO -->
+      {% endif %}
+
+  </div>
+
+  <!-- Audio Meta -->
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+    <div class="row">
+      <div class="col-xs-12">
+        <h4 class="m-b-20">Details</h4>
+      </div>
+    </div>
+
+    <form action="{% url 'audio_asset_detail' pk=audioasset.id %}" method="POST" class="post-form" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="row">
+                  <!-- Left Col -->
+                  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+
+                    <fieldset class="form-group m-b-10">
+                      <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ form.title.label_tag }}</label>
+                      {{ form.title }}
+                      {% if form.title.errors %}
+                        <small class="text-muted">{{ form.title.errors }}</small>
+                      {% endif %}
+                    </fieldset>
+
+                    <fieldset class="form-group m-b-10">
+                      <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ form.asset_type.label_tag }}</label>
+                      {{ form.asset_type }}
+                      {% if form.asset_type.errors %}
+                        <small class="text-muted">{{ form.asset_type.errors }}</small>
+                      {% endif %}
+                    </fieldset>
+
+                    <fieldset class="form-group m-b-10">
+                      <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ form.keywords.label_tag }}</label>
+                      {{ form.keywords }}
+                      {% if form.keywords.errors %}
+                        <small class="text-muted">{{ form.keywords.errors }}</small>
+                      {% endif %}
+                    </fieldset>
+
+                  </div>
+                  <!-- End Left Col -->
+
+                  <!-- Right Col -->
+                  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                    <fieldset class="form-group m-b-10">
+                      <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ form.description.label_tag }}</label>
+                      {{ form.description }}
+                      {% if form.description.errors %}
+                        <small class="text-muted">{{ form.description.errors }}</small>
+                      {% endif %}
+                    </fieldset>
+
+                    <fieldset class="form-group m-b-10">
+                      <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ form.attribution.label_tag }}</label>
+                      {{ form.attribution }}
+                      {% if form.attribution.errors %}
+                        <small class="text-muted">{{ form.attribution.errors }}</small>
+                      {% endif %}
+                    </fieldset>
+
+                  </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-6 offset-xs-3 col-lg-2 offset-lg-5">
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+          </div>
+        </div>
+      </form>
+
+      <!-- Usage -->
+      <div class="row">
+        <div class="col-xs-12">
+        <hr class="content-lower-25">
+        <h4 class="m-b-20">Usage</h4>
+        {% with view.audio_usage as facets %}
+        {% for facet in facets %}
+          <a href="{% url 'facet_edit' facet.id %}" title="Go to Facet"><p class="f-s-14 m-t-10"><i class="fa fa-long-arrow-right subtle m-r-5" aria-hidden="true"></i> {{ facet.name }} | Story: {{ facet.story.name }}</p></a>
+        {% endfor %}
+        {% endwith %}
+      </div>
+      </div>
+    </div>
+</div>
+
+
+
+
+{% endblock %}
+
+
+{% block modals %}
+{% endblock %}

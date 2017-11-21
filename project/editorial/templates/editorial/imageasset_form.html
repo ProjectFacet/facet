@@ -1,0 +1,176 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load bootstrap3 %}
+
+<!-------------------------------------------->
+<!--      BREADCRUMB NAVIGATION             -->
+<!-------------------------------------------->
+
+{% block breadcrumb %}
+<div>
+    <ol class="breadcrumb icon-angle-right icon-th">
+      <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
+      <li class="fadeIn"><a href="{% url 'asset_library' %}" title="Return to Media Library"> Media Library </a></li>
+      <li class="fadeIn"><a href="{% url 'image_asset_detail' imageasset.id %}" title="You are here">Image: {{imageasset.title}}  </a></li>
+    </ol>
+</div>
+{% endblock breadcrumb %}
+
+<!-------------------------------------------->
+<!--            Main Section                -->
+<!-------------------------------------------->
+
+{% block content %}
+<!-- Row One -->
+<div class="row m-b-40">
+
+  <!-- Display Image -->
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+      <h4 class="m-b-20">Image</h4>
+    {% if imageasset.display_photo %}
+        <a class="image-popup-vertical-fit" href="{{ imageasset.display_photo.url }}" title="{{ imageasset.description}}"><img class="img-fluid" src="{{ imageasset.display_photo.url }}" alt="{{ imageasset.description }}"></a>
+    {% endif %}
+  </div>
+
+  <!-- Image Meta -->
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+    <div class="row">
+      <div class="col-xs-12">
+        <h4 class="m-b-20">Details</h4>
+      </div>
+    </div>
+
+    <!-- Detail Form -->
+    <form action="{% url 'image_asset_detail' imageasset.id %}" method="POST" class="post-form" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="row">
+
+                <!-- Left Col -->
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ form.title.help_text }}"><span class="field-label">{{ form.title.label_tag }}</span></a>
+                    {{ form.title }}
+                    {% if form.title.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ form.title.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ form.asset_type.help_text }}"><span class="field-label">{{ form.asset_type.label_tag }}</span></a>
+                    {{ form.asset_type }}
+                    {% if form.asset_type.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ form.asset_type.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ form.keywords.help_text }}"><span class="field-label">{{ form.keywords.label_tag }}</span></a>
+                    {{ form.keywords }}
+                    {% if form.keywords.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ form.keywords.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                </div>
+                <!-- End Left Col -->
+
+                <!-- Right Col -->
+                <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ form.description.help_text }}"><span class="field-label">{{ form.description.label_tag }}</span></a>
+                    {{ form.description }}
+                    {% if form.description.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ form.description.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                  <div class="form-group custom-form">
+                    <a href="#" data-toggle="tooltip" title="{{ form.attribution.help_text }}"><span class="field-label">{{ form.attribution.label_tag }}</span></a>
+                    {{ form.attribution }}
+                    {% if form.attribution.errors %}
+                      <div class="alert alert-warning" role="alert">
+                      {{ form.attribution.errors }}
+                      </div>
+                    {% endif %}
+                  </div>
+
+                </div>
+        </div>
+        <div class="row">
+          <div class="col-xs-6 offset-xs-3 col-lg-2 offset-lg-5">
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+          </div>
+        </div>
+      </form>
+
+      <!-- Usage -->
+      <div class="row">
+        <div class="col-xs-12">
+        <hr class="content-lower-25">
+        <h4 class="m-b-20">Usage</h4>
+        {% with view.image_usage as facets %}
+        {% for facet in facets %}
+          <a href="{% url 'facet_edit' facet.id %}" title="Go to Facet"><p class="f-s-14 m-t-10"><i class="fa fa-long-arrow-right subtle m-r-5" aria-hidden="true"></i> {{ facet.name }} | Story: {{ facet.story.name }}</p></a>
+        {% endfor %}
+        {% endwith %}
+      </div>
+      </div>
+    </div>
+</div>
+
+<script>
+$(document).ready(function() {
+
+	$('.image-popup-vertical-fit').magnificPopup({
+		type: 'image',
+		closeOnContentClick: true,
+		mainClass: 'mfp-img-mobile',
+		image: {
+			verticalFit: true
+		}
+
+	});
+
+	$('.image-popup-fit-width').magnificPopup({
+		type: 'image',
+		closeOnContentClick: true,
+		image: {
+			verticalFit: false
+		}
+	});
+
+	$('.image-popup-no-margins').magnificPopup({
+		type: 'image',
+		closeOnContentClick: true,
+		closeBtnInside: false,
+		fixedContentPos: true,
+		mainClass: 'mfp-no-margins mfp-with-zoom', // class to remove default margin from left and right side
+		image: {
+			verticalFit: true
+		},
+		zoom: {
+			enabled: true,
+			duration: 300 // don't foget to change the duration also in CSS
+		}
+	});
+
+});
+
+</script>
+
+
+{% endblock %}
+
+
+{% block modals %}
+{% endblock %}

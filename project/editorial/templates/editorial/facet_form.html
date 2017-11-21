@@ -272,29 +272,29 @@
           {% with view.facet_document_assets as facet_documents %}
           <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
             <p class="f-r-12 f-w-300 m-b-20">Documents <a href="#" data-toggle="modal" data-target="#DocumentAssetModal" data-facet="facet_document" title="Add Document"><i class="fa fa-plus sameline subtle"></i></a></p>
-            <div class="row m-b-10">
+            <div class="row">
             {% for document in facet_documents.documents %}
             <div class="col-xs-12 col-sm-6">
                 {% if document.asset_type == 'OTHER' %}
-                    <a href="{{ document.document.url }}" title="{{ document.description }}" target="_blank"><p class="f-w-300 m-l-10"><i class="fa fa-file-file-o dark"></i> {{ document.title }}</p></a>
+                    <a href="{{ document.document.url }}" title="{{ document.description }}" target="_blank"><p class="f-w-300 m-l-10"><i class="fa fa-file-file-o subtle m-r-5"></i> {{ document.title }}</p></a>
                 {% endif %}
                 {% if document.asset_type == 'TEXT' %}
-                    <a href="{{ document.document.url }}" title="{{ document.description }}" target="_blank"><p class="f-w-300 m-l-10"><i class="fa fa-file-text-o dark"></i> {{ document.title }}</p></a>
+                    <a href="{{ document.document.url }}" title="{{ document.description }}" target="_blank"><p class="f-w-300 m-l-10"><i class="fa fa-file-text-o subtle m-r-5"></i> {{ document.title }}</p></a>
                 {% endif %}
                 {% if document.asset_type == 'WORD DOC' %}
-                    <a href="{{ document.document.url }}" title="{{ document.description }}" target="_blank"><p class="f-w-300 m-l-10"><i class="fa fa-file-word-o dark"></i> {{ document.title }}</p></a>
+                    <a href="{{ document.document.url }}" title="{{ document.description }}" target="_blank"><p class="f-w-300 m-l-10"><i class="fa fa-file-word-o subtle m-r-5"></i> {{ document.title }}</p></a>
                 {% endif %}
                 {% if document.asset_type == 'EXCEL' %}
-                    <a href="{{ document.document.url }}" title="{{ document.description }}" target="_blank"><p class="f-w-300 m-l-10"><i class="fa fa-file-excel-o dark"></i> {{ document.title }}</p></a>
+                    <a href="{{ document.document.url }}" title="{{ document.description }}" target="_blank"><p class="f-w-300 m-l-10"><i class="fa fa-file-excel-o subtle m-r-5"></i> {{ document.title }}</p></a>
                 {% endif %}
                 {% if document.asset_type == 'PDF' %}
-                    <a href="{{ document.document.url }}" title="{{ document.description }}" target="_blank"><p class="f-w-300 m-l-10"><i class="fa fa-file-pdf-o dark"></i> {{ document.title }}</p></a>
+                    <a href="{{ document.document.url }}" title="{{ document.description }}" target="_blank"><p class="f-w-300 m-l-10"><i class="fa fa-file-pdf-o subtle m-r-5"></i> {{ document.title }}</p></a>
                 {% endif %}
                 {% if document.asset_type == 'COMMA SEPARATED' %}
-                    <a href="{{ document.document.url }}" title="{{ document.description }}" target="_blank"><p class="f-w-300 m-l-10"><i class="fa fa-file-o dark"></i> {{ document.title }}</p></a>
+                    <a href="{{ document.document.url }}" title="{{ document.description }}" target="_blank"><p class="f-w-300 m-l-10"><i class="fa fa-file-o subtle m-r-5"></i> {{ document.title }}</p></a>
                 {% endif %}
               {% if forloop.counter|divisibleby:"2" and not forloop.last %}
-                </div><div class="row m-b-10">
+            </div><div class="row">
               {% endif %}
             </div>
             {% endfor %}

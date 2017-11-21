@@ -79,6 +79,17 @@ class FacetTemplate(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def search_title(self):
+        return self.name
+
+    @property
+    def type(self):
+        return "Facet Template"
+
+    def get_absolute_url(self):
+        return reverse('facet_template_edit', kwargs={'pk': self.id})
+
 
 # field which will appear on all facet-editing forms -- and therefore do not
 # need to be in the "fields_used" for a template.

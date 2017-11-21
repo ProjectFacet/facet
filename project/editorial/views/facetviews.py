@@ -33,7 +33,7 @@ class FacetTemplateCreateView(CreateView):
 
         template.owner = self.request.user
         template.organization = self.request.user.organization
-        template.fields_used = ['excerpt']
+        template.fields_used = form_fields
 
         template.save()
         form.save_m2m()
@@ -41,7 +41,6 @@ class FacetTemplateCreateView(CreateView):
         action.send(self.request.user, verb="created", action_object=self.object)
 
         return redirect(self.get_success_url())
-
 
 
 class FacetTemplateUpdateView(UpdateView):
@@ -55,9 +54,6 @@ class FacetTemplateUpdateView(UpdateView):
 
         action.send(self.request.user, verb="edited", action_object=self.object)
         return super(FacetTemplateUpdateView, self).get_success_url()
-
-
-
 
 
 class FacetCreateView(CreateView):

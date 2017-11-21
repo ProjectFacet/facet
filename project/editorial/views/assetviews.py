@@ -10,7 +10,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.utils import timezone
-from django.views.generic import TemplateView , UpdateView, DetailView
+from django.views.generic import TemplateView , UpdateView, DetailView, ListView
 from django.views.decorators.csrf import csrf_exempt
 import datetime
 import json
@@ -35,116 +35,92 @@ from editorial.models import (
 #   Asset Library Views
 #----------------------------------------------------------------------#
 
-def asset_library(request):
+class AssetLibraryTemplateView(TemplateView):
     """ Display media library of all organization assets."""
 
-    images = ImageAsset.objects.filter(organization=request.user.organization)
-    documents = DocumentAsset.objects.filter(organization=request.user.organization)
-    audiofiles = AudioAsset.objects.filter(organization=request.user.organization)
-    videos = VideoAsset.objects.filter(organization=request.user.organization)
+    template_name = 'editorial/asset_list.html'
 
-    return render(request, 'editorial/assets.html', {
-        'images': images,
-        'documents': documents,
-        'audiofiles': audiofiles,
-        'videos': videos,
-    })
+    def get_context_data(self):
+        """Return all the (complex) assets associated with an organization."""
+
+        organization = self.request.user.organization
+        images = organization.get_org_image_library()
+        documents = organization.get_org_document_library()
+        audio = organization.get_org_audio_library()
+        video = organization.get_org_video_library()
+        return {'images': images, 'documents': documents, 'audio': audio, 'video': video,}
+
 
 #----------------------------------------------------------------------#
 #   Asset Detail Views
 #----------------------------------------------------------------------#
 
-def image_asset_detail(request, pk):
-    """ Display detail information for a specific image asset."""
+class ImageAssetUpdateView(UpdateView):
+    """ Display editable detail information for a specific image asset."""
 
-    image = get_object_or_404(ImageAsset, id=pk)
-    image_usage = image.get_image_usage()
+    model = ImageAsset
+    form_class = ImageAssetForm
 
-    if request.method =="POST":
-        editimageform = ImageAssetForm(data=request.POST, instance=image)
-        if editimageform.is_valid():
-            editimageform.save()
-            #record action for activity stream
-            action.send(request.user, verb="updated", action_object=image)
-            return redirect('image_asset_detail', pk=image.id)
-    else:
-        editimageform = ImageAssetForm(instance=image)
+    def image_usage(self):
+        """Get all facets an image is associated with."""
+        return self.object.get_image_usage()
 
-    return render(request, 'editorial/assetdetail_image.html', {
-        'image': image,
-        'image_usage': image_usage,
-        'editimageform': editimageform,
-    })
+    def get_success_url(self):
+        """Record edit activity for activity stream."""
+
+        action.send(self.request.user, verb="edited", action_object=self.object)
+        return super(ImageAssetUpdateView, self).get_success_url()
 
 
-def document_asset_detail(request, pk):
-    """ Display detail information for a specific document asset."""
+class DocumentAssetUpdateView(UpdateView):
+    """ Display editable detail information for a specific document asset."""
 
-    document = get_object_or_404(DocumentAsset, id=pk)
-    document_usage = document.get_document_usage()
+    model = DocumentAsset
+    form_class = DocumentAssetForm
 
+    def document_usage(self):
+        """Get all facets a document is associated with."""
+        return self.object.get_document_usage()
 
-    if request.method =="POST":
-        editdocumentform = ImageDocumentForm(data=request.POST, instance=document)
-        if editdocumentform.is_valid():
-            editdocumentform.save()
-            #record action for activity stream
-            action.send(request.user, verb="updated", action_object=document)
-            return redirect('asset_detail', pk=document.id)
-    else:
-        editdocumentform = DocumentAssetForm(instance=document)
+    def get_success_url(self):
+        """Record edit activity for activity stream."""
 
-    return render(request, 'editorial/assetdetail_document.html', {
-        'document': document,
-        'document_usage': document_usage,
-        'editdocumentform': editdocumentform,
-    })
+        action.send(self.request.user, verb="edited", action_object=self.object)
+        return super(DocumentAssetUpdateView, self).get_success_url()
 
 
-def audio_asset_detail(request, pk):
-    """ Display detail information for a specific audio asset."""
+class AudioAssetUpdateView(UpdateView):
+    """ Display editable detail information for a specific audio asset."""
 
-    audio = get_object_or_404(AudioAsset, id=pk)
-    audio_usage = audio.get_audio_usage()
+    model = AudioAsset
+    form_class = AudioAssetForm
 
-    if request.method =="POST":
-        editaudioform = AudioAssetForm(data=request.POST, instance=audio)
-        if editaudioform.is_valid():
-            editaudioform.save()
-            #record action for activity stream
-            action.send(request.user, verb="updated", action_object=audio)
-            return redirect('asset_detail', pk=audio.id)
-    else:
-        editaudioform = AudioAssetForm(instance=audio)
+    def audio_usage(self):
+        """Get all facets a audio is associated with."""
+        return self.object.get_audio_usage()
 
-    return render(request, 'editorial/assetdetail_audio.html', {
-        'audio': audio,
-        'audio_usage': audio_usage,
-        'editaudioform': editaudioform,
-    })
+    def get_success_url(self):
+        """Record edit activity for activity stream."""
+
+        action.send(self.request.user, verb="edited", action_object=self.object)
+        return super(AudioAssetUpdateView, self).get_success_url()
 
 
-def video_asset_detail(request, pk):
-    """ Display detail information for a specific video asset."""
+class VideoAssetUpdateView(UpdateView):
+    """ Display editable detail information for a specific video asset."""
 
-    video = get_object_or_404(VideoAsset, id=pk)
-    video_usage = video.get_video_usage()
+    model = VideoAsset
+    form_class = VideoAssetForm
 
-    if request.method =="POST":
-        editvideoform = VideoAssetForm(data=request.POST, instance=video)
-        if editvideoform.is_valid():
-            editvideoform.save()
-            #record action for activity stream
-            action.send(request.user, verb="updated", action_object=video)
-            return redirect('asset_detail', pk=video.id)
-    else:
-        editvideoform = VideoAssetForm(instance=video)
+    def video_usage(self):
+        """Get all facets an video is associated with."""
+        return self.object.get_video_usage()
 
-    return render(request, 'editorial/assetdetail_video.html', {
-        'video': video,
-        'video_usage': video_usage,
-        'editvideoform': editvideoform,
-    })
+    def get_success_url(self):
+        """Record edit activity for activity stream."""
+
+        action.send(self.request.user, verb="edited", action_object=self.object)
+        return super(VideoAssetUpdateView, self).get_success_url()
 
 
 #----------------------------------------------------------------------#
@@ -176,6 +152,7 @@ def upload_image(request):
             action.send(request.user, verb="uploaded image", action_object=image, target=facet)
 
     return redirect('facet_edit', pk=facet.id)
+
 
 def add_image(request):
     """ Add existing image(s) in the library to another facet."""
