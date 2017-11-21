@@ -204,16 +204,16 @@ urlpatterns = [
     #   Asset URLS
     #----------------------------------------------------------------------#
     # Images
-    url(r'^image/new/$', assetviews.upload_image, name='upload_image'),
+    url(r'^image/new/$', assetviews.ImageAssetCreateView.as_view(), name='upload_image'),
     url(r'^image/add/$', assetviews.add_image, name='add_image'),
     # Documents
-    url(r'^document/new/$', assetviews.upload_document, name='upload_document'),
+    url(r'^document/new/$', assetviews.DocumentAssetCreateView.as_view(), name='upload_document'),
     url(r'^document/add/$', assetviews.add_document, name='add_document'),
     # Audio
-    url(r'^audio/new/$', assetviews.upload_audio, name='upload_audio'),
+    url(r'^audio/new/$', assetviews.AudioAssetCreateView.as_view(), name='upload_audio'),
     url(r'^audio/add/$', assetviews.add_audio, name='add_audio'),
     # Video
-    url(r'^video/new/$', assetviews.upload_video, name='upload_video'),
+    url(r'^video/new/$', assetviews.VideoAssetCreateView.as_view(), name='upload_video'),
     url(r'^video/add/$', assetviews.add_video, name='add_video'),
     #----------------------------------------------------------------------#
     #   Network URLS

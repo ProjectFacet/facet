@@ -10,7 +10,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.utils import timezone
-from django.views.generic import TemplateView , UpdateView, DetailView, ListView
+from django.views.generic import TemplateView , UpdateView, DetailView, ListView, CreateView
 from django.views.decorators.csrf import csrf_exempt
 import datetime
 import json
@@ -52,108 +52,43 @@ class AssetLibraryTemplateView(TemplateView):
 
 
 #----------------------------------------------------------------------#
-#   Asset Detail Views
+#   Image Asset Views
 #----------------------------------------------------------------------#
 
-class ImageAssetUpdateView(UpdateView):
-    """ Display editable detail information for a specific image asset."""
+class ImageAssetCreateView(CreateView):
+    """ Upload image to a facet."""
 
     model = ImageAsset
     form_class = ImageAssetForm
 
-    def image_usage(self):
-        """Get all facets an image is associated with."""
-        return self.object.get_image_usage()
+    def form_valid(self, form):
+        """Save -- but first add owner and organization to the image and
+        add the image to the facet.
+        """
 
-    def get_success_url(self):
-        """Record edit activity for activity stream."""
+        self.object = image = form.save(commit=False)
+        facet_id = self.request.POST.get('facet')
+        facet = get_object_or_404(Facet, id=facet_id)
 
-        action.send(self.request.user, verb="edited", action_object=self.object)
-        return super(ImageAssetUpdateView, self).get_success_url()
+        # set request based attributes
+        image.owner = self.request.user
+        image.organization = self.request.user.organization
+        image.save()
 
+        # add image asset to facet image_assets
+        facet.image_assets.add(image)
+        facet.save()
 
-class DocumentAssetUpdateView(UpdateView):
-    """ Display editable detail information for a specific document asset."""
+        # record action for activity stream
+        action.send(self.request.user, verb="uploaded image", action_object=image, target=facet)
 
-    model = DocumentAsset
-    form_class = DocumentAssetForm
-
-    def document_usage(self):
-        """Get all facets a document is associated with."""
-        return self.object.get_document_usage()
-
-    def get_success_url(self):
-        """Record edit activity for activity stream."""
-
-        action.send(self.request.user, verb="edited", action_object=self.object)
-        return super(DocumentAssetUpdateView, self).get_success_url()
+        # FIXME redirect to facet the image was uploaded to.
+        return redirect(self.get_success_url())
 
 
-class AudioAssetUpdateView(UpdateView):
-    """ Display editable detail information for a specific audio asset."""
-
-    model = AudioAsset
-    form_class = AudioAssetForm
-
-    def audio_usage(self):
-        """Get all facets a audio is associated with."""
-        return self.object.get_audio_usage()
-
-    def get_success_url(self):
-        """Record edit activity for activity stream."""
-
-        action.send(self.request.user, verb="edited", action_object=self.object)
-        return super(AudioAssetUpdateView, self).get_success_url()
-
-
-class VideoAssetUpdateView(UpdateView):
-    """ Display editable detail information for a specific video asset."""
-
-    model = VideoAsset
-    form_class = VideoAssetForm
-
-    def video_usage(self):
-        """Get all facets an video is associated with."""
-        return self.object.get_video_usage()
-
-    def get_success_url(self):
-        """Record edit activity for activity stream."""
-
-        action.send(self.request.user, verb="edited", action_object=self.object)
-        return super(VideoAssetUpdateView, self).get_success_url()
-
-
-#----------------------------------------------------------------------#
-#   Image Asset Views
-#----------------------------------------------------------------------#
-
-def upload_image(request):
-    """ Upload image to a facet."""
-
-    if request.method == 'POST':
-        imageform=ImageAssetForm(request.POST, request.FILES)
-        if imageform.is_valid():
-            image = imageform.save(commit=False)
-
-            # retrieve the facet the image should be associated with
-            facet_id = request.POST.get('facet')
-            facet = get_object_or_404(Facet, id=facet_id)
-
-            # set request based attributes
-            image.owner = request.user
-            image.organization = request.user.organization
-            image.save()
-
-            # add image asset to facet image_assets
-            facet.image_assets.add(image)
-            facet.save()
-
-            # record action for activity stream
-            action.send(request.user, verb="uploaded image", action_object=image, target=facet)
-
-    return redirect('facet_edit', pk=facet.id)
-
-
+# FIXME Q for J on best practices for how this is handled.
+# It's not a model form, just one from the html that returns an
+# array of asset ids to be connected to a facet.
 def add_image(request):
     """ Add existing image(s) in the library to another facet."""
 
@@ -181,37 +116,61 @@ def add_image(request):
     return redirect('facet_edit', pk=facet.id)
 
 
+class ImageAssetUpdateView(UpdateView):
+    """ Display editable detail information for a specific image asset."""
+
+    model = ImageAsset
+    form_class = ImageAssetForm
+
+    def image_usage(self):
+        """Get all facets an image is associated with."""
+        return self.object.get_image_usage()
+
+    def get_success_url(self):
+        """Record edit activity for activity stream."""
+
+        action.send(self.request.user, verb="edited", action_object=self.object)
+        return super(ImageAssetUpdateView, self).get_success_url()
+
+
 #----------------------------------------------------------------------#
 #   Document Asset Views
 #----------------------------------------------------------------------#
 
-def upload_document(request):
-    """ Add document to a facet."""
+class DocumentAssetCreateView(CreateView):
+    """Upload a document to a facet."""
 
-    if request.method == 'POST':
-        documentform=DocumentAssetForm(request.POST, request.FILES)
-        if documentform.is_valid():
-            document = documentform.save(commit=False)
+    model = DocumentAsset
+    form_class = DocumentAssetForm
 
-            # retrieve the facet the image should be associated with
-            facet_id = request.POST.get('facet')
-            facet = get_object_or_404(Facet, id=facet_id)
+    def form_valid(self, form):
+        """Save -- but first add owner and organization to the document and
+        add the document to the facet.
+        """
 
-            # set request based attributes
-            document.owner = request.user
-            document.organization = request.user.organization
-            document.save()
+        self.object = document = form.save(commit=False)
+        facet_id = self.request.POST.get('facet')
+        facet = get_object_or_404(Facet, id=facet_id)
 
-            # add document asset to webfacet document_assets
-            facet.document_assets.add(document)
-            facet.save()
+        # set request based attributes
+        document.owner = self.request.user
+        document.organization = self.request.user.organization
+        document.save()
 
-            # record action for activity stream
-            action.send(request.user, verb="uploaded document", action_object=document, target=facet)
+        # add image asset to facet image_assets
+        facet.document_assets.add(document)
+        facet.save()
 
-    return redirect('facet_edit', pk=facet.id)
+        # record action for activity stream
+        action.send(self.request.user, verb="uploaded document", action_object=document, target=facet)
+
+        # FIXME redirect to facet the image was uploaded to.
+        return redirect(self.get_success_url())
 
 
+# FIXME Q for J on best practices for how this is handled.
+# It's not a model form, just one from the html that returns an
+# array of asset ids to be connected to a facet.
 def add_document(request):
     """ Add existing document(s) in the library to another facet."""
 
@@ -236,37 +195,61 @@ def add_document(request):
     return redirect('facet_edit', pk=facet.id)
 
 
+class DocumentAssetUpdateView(UpdateView):
+    """ Display editable detail information for a specific document asset."""
+
+    model = DocumentAsset
+    form_class = DocumentAssetForm
+
+    def document_usage(self):
+        """Get all facets a document is associated with."""
+        return self.object.get_document_usage()
+
+    def get_success_url(self):
+        """Record edit activity for activity stream."""
+
+        action.send(self.request.user, verb="edited", action_object=self.object)
+        return super(DocumentAssetUpdateView, self).get_success_url()
+
+
 #----------------------------------------------------------------------#
 #   Audio Asset Views
 #----------------------------------------------------------------------#
 
-def upload_audio(request):
-    """ Add audio to a facet."""
+class AudioAssetCreateView(CreateView):
+    """ Upload audio to a facet."""
 
-    if request.method == 'POST':
-        audioform=AudioAssetForm(request.POST, request.FILES)
-        if audioform.is_valid():
-            audio = audioform.save(commit=False)
+    model = AudioAsset
+    form_class = AudioAssetForm
 
-            # retrieve the facet the image should be associated with
-            facet_id = request.POST.get('facet')
-            facet = get_object_or_404(Facet, id=facet_id)
+    def form_valid(self, form):
+        """Save -- but first add owner and organization to the audio and
+        add the audio to the facet.
+        """
 
-            # set request based attributes
-            audio.owner = request.user
-            audio.organization = request.user.organization
-            audio.save()
+        self.object = audio = form.save(commit=False)
+        facet_id = self.request.POST.get('facet')
+        facet = get_object_or_404(Facet, id=facet_id)
 
-            # add audio asset to webfacet audio_assets
-            facet.audio_assets.add(audio)
-            facet.save()
+        # set request based attributes
+        audio.owner = self.request.user
+        audio.organization = self.request.user.organization
+        audio.save()
 
-            # record action for activity stream
-            action.send(request.user, verb="uploaded audio", action_object=audio, target=facet)
+        # add audio asset to facet audio_assets
+        facet.audio_assets.add(audio)
+        facet.save()
 
-    return redirect('facet_edit', pk=facet.id)
+        # record action for activity stream
+        action.send(self.request.user, verb="uploaded audio", action_object=audio, target=facet)
+
+        # FIXME redirect to facet the audio was uploaded to.
+        return redirect(self.get_success_url())
 
 
+# FIXME Q for J on best practices for how this is handled.
+# It's not a model form, just one from the html that returns an
+# array of asset ids to be connected to a facet.
 def add_audio(request):
     """ Add existing audio(s) in the library to another facet."""
 
@@ -291,37 +274,61 @@ def add_audio(request):
     return redirect('facet_edit', pk=facet.id)
 
 
+class AudioAssetUpdateView(UpdateView):
+    """ Display editable detail information for a specific audio asset."""
+
+    model = AudioAsset
+    form_class = AudioAssetForm
+
+    def audio_usage(self):
+        """Get all facets a audio is associated with."""
+        return self.object.get_audio_usage()
+
+    def get_success_url(self):
+        """Record edit activity for activity stream."""
+
+        action.send(self.request.user, verb="edited", action_object=self.object)
+        return super(AudioAssetUpdateView, self).get_success_url()
+
+
 #----------------------------------------------------------------------#
 #   Video Asset Views
 #----------------------------------------------------------------------#
 
-def upload_video(request):
-    """ Add video to a facet."""
+class VideoAssetCreateView(CreateView):
+    """ Upload video to a facet."""
 
-    if request.method == 'POST':
-        videoform=VideoAssetForm(request.POST, request.FILES)
-        if videoform.is_valid():
-            video = videoform.save(commit=False)
+    model = VideoAsset
+    form_class = VideoAssetForm
 
-            # retrieve the facet the image should be associated with
-            facet_id = request.POST.get('facet')
-            facet = get_object_or_404(Facet, id=facet_id)
+    def form_valid(self, form):
+        """Save -- but first add owner and organization to the video and
+        add the video to the facet.
+        """
 
-            # set request based attributes
-            video.owner = request.user
-            video.organization = request.user.organization
-            video.save()
+        self.object = video = form.save(commit=False)
+        facet_id = self.request.POST.get('facet')
+        facet = get_object_or_404(Facet, id=facet_id)
 
-            # add video asset to facet video_assets
-            facet.video_assets.add(video)
-            facet.save()
+        # set request based attributes
+        video.owner = self.request.user
+        video.organization = self.request.user.organization
+        video.save()
 
-            # record action for activity stream
-            action.send(request.user, verb="uploaded video", action_object=video, target=facet)
+        # add video asset to facet video_assets
+        facet.video_assets.add(video)
+        facet.save()
 
-    return redirect('facet_edit', pk=facet.id)
+        # record action for activity stream
+        action.send(self.request.user, verb="uploaded video", action_object=video, target=facet)
+
+        # FIXME redirect to facet the video was uploaded to.
+        return redirect(self.get_success_url())
 
 
+# FIXME Q for J on best practices for how this is handled.
+# It's not a model form, just one from the html that returns an
+# array of asset ids to be connected to a facet.
 def add_video(request):
     """ Add existing video(s) in the library to another facet."""
 
@@ -343,3 +350,20 @@ def add_video(request):
         action.send(request.user, verb="added video", action_object=action_video, target=facet)
 
     return redirect('facet_edit', pk=facet.id)
+
+
+class VideoAssetUpdateView(UpdateView):
+    """ Display editable detail information for a specific video asset."""
+
+    model = VideoAsset
+    form_class = VideoAssetForm
+
+    def video_usage(self):
+        """Get all facets an video is associated with."""
+        return self.object.get_video_usage()
+
+    def get_success_url(self):
+        """Record edit activity for activity stream."""
+
+        action.send(self.request.user, verb="edited", action_object=self.object)
+        return super(VideoAssetUpdateView, self).get_success_url()
