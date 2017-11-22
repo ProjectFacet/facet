@@ -26,26 +26,106 @@
 
 {% block content %}
 
+{% comment %}
+<!-- FIXME cranky js -->
+<div class="row m-b-40">
+  <div class="col-xs-12">
+    <div class="table-responsive">
+      <table class="tree table table-hover table-striped">
+        <thead>
+          <tr>
+            <th>Story</th>
+            <th>Facets</th>
+            <th>Team</th>
+            <th>Editor</th>
+          </tr>
+        </thead>
+        <tr class="treegrid-1">
+            <td>Root node</td>
+            <td>Additional info</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr class="treegrid-2 treegrid-parent-1">
+            <td>Node 1-1</td>
+            <td>Additional info</td>
+            <td></td>
+            <td></td>
+        </tr>
+      </table>
+  </div>
+</div>
+{% endcomment %}
 
+
+<div class="row m-b-40">
+  <div class="col-xs-12">
+    <!-- Full table for xs, sm, md and lg displays -->
+    <table id="project-list" class="table table-striped">
+      <thead>
+        <tr>
+          <th>Story</th>
+          <th>Description</th>
+          <th>Facets</th>
+          <th>Team</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for story in stories %}
+          <tr>
+            <td><a href="{% url 'story_detail' story.id %}">{{ story.name }}</a></td>
+            <td>{{ story.description }}</td>
+            <td>{{ story.facet_set.count }}</td>
+            <td>
+              {% for user in story.team.all %}
+                {% if user.display_photo %}
+                  <img class="m-b-10 middle-user-img img-circle h-30 w-30 sameline" src="{{ user.display_photo.url }}">
+                {% else %}
+                  {{user.first_name}}
+                {% endif %}
+              {% endfor %}
+            </td>
+            <td>{{ story.editor.credit_name }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+
+{% comment %}
 <div class="row">
-{% for story in project.story_set.all %}
-<div class="col-lg-3">
+{% for story in stories %}
+<div class="col-xs-6 col-lg-2">
 <div class="card bs-card">
   {% if project.collaborate == 'True' %}
   <span class="label label-default">{{story.organization.name}}</span>
   {% else %}
   {% endif %}
-  <img class="card-img-top" src="https://unsplash.it/900/600?image=111" alt="Card image cap"> 
-  <div class="card-block"> 
-    <img class="m-b-10 middle-user-img img-circle h-50 w-50" src="assets/faces/m5.png"> 
-    <h4 class="card-title p-t-10 m-b-20"> {{ story.name }} </h4> 
-    <p class="card-text">{{ story.description|truncatechars:200 }}</p> 
-    <p class="card-text"> <br>{{ story.creation_date|date:'D, N j, g:i a' }}</p> 
-  </div> 
+  {% if story.featured_image %}
+    <div class="h-200" style="background-image: url({{ story.featured_image.display_photo.url }}); background-position: center; background-repeat: no-repeat;">
+    </div>
+  {% endif %}
+
+
+
+  <div class="card-block">
+    <span class="sameline">
+    {% for user in story.team.all %}
+    <img class="m-b-10 middle-user-img img-circle h-40 w-40 sameline" src="{{ user.display_photo.url }}">
+    {% endfor %}
+    </span>
+    <h4 class="card-title p-t-10 m-b-20"> {{ story.name }} </h4>
+    <p class="card-text">{{ story.description|truncatechars:200 }}</p>
+    <p class="card-text"> <br>{{ story.creation_date|date:'D, N j, g:i a' }}</p>
+  </div>
 </div>
 </div>
 {% endfor %}
 </div>
+{% endcomment %}
 
 
 {% endblock %}

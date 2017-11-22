@@ -71,12 +71,13 @@ class FacetCreateView(CreateView):
 
         - template-id (from URL)
         - name (optionally, from request data)
+        - story
         """
 
         return {'template': self.kwargs['template_id'],
                 'name': self.request.GET.get('name', '')}
 
-
+#FIXME Form error moving from precreate to create as facet form doesn't receive story
 class FacetPreCreateView(FormView):
     """First step in creating a facet."""
 

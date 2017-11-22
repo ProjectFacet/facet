@@ -175,11 +175,23 @@ input[type="checkbox"] {
 #story_team_chosen, #share_with_chosen, #collaborate_with_chosen,
 #webfacet_credit_chosen, #printfacet_credit_chosen,
 #audiofacet_credit_chosen, #videofacet_credit_chosen {
-  width: 100% !important;
+  width: 100% !important;``
 }
 
-#id_series, #task-projects, #task-series, #task-stories, #task-events, #task-status {
+#id_series, #task-projects, #task-series, #task-stories, #task-events, #task-status, #story-project, #story-series, #id_project {
   height: 40px !important;
+  background-color: #3c414f !important;
+  background-image: none;
+  border-color: #424756 !important;
+  color: #fff !important;
+  width: 100% !important;
+  radius: 2px;
+  box-shadow: none;
+}
+
+#id_content_license {
+  font-size: 12px;
+  height: 32px !important;
   background-color: #3c414f !important;
   background-image: none;
   border-color: #424756 !important;

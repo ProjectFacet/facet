@@ -323,17 +323,17 @@ class InviteToNetworkForm(forms.Form):
 
 
 # ------------------------------ #
-#          Project Forms          #
+#          Project Forms         #
 # ------------------------------ #
 
 class ProjectForm(forms.ModelForm):
     """ Form to create a new project. """
 
     def __init__(self, *args, **kwargs):
-        self.request = kwargs.pop("request")
+        org = kwargs.pop("organization")
         super(ProjectForm, self).__init__(*args, **kwargs)
-        self.fields['collaborate_with'].queryset = Organization.get_org_collaborators_vocab(self.request.user.organization)
-        self.fields['team'].queryset = Organization.get_org_users(self.request.user.organization)
+        self.fields['collaborate_with'].queryset = org.get_org_collaborators_vocab()
+        self.fields['team'].queryset = org.get_org_users()
 
     class Meta:
         model = Project
@@ -396,9 +396,17 @@ class StoryForm(forms.ModelForm):
         self.fields['share_with'].queryset = org.get_org_networks()
         self.fields['collaborate_with'].queryset = org.get_org_collaborators_vocab()
         self.fields['team'].queryset = org.get_org_users()
+        self.fields['series'].empty_label = 'Select a series'
+        self.fields['project'].empty_label = 'Select a project'
 
     series = forms.ModelChoiceField(
         queryset=Series.objects.all(),
+        widget=forms.Select,
+        required=False,
+    )
+
+    project = forms.ModelChoiceField(
+        queryset=Project.objects.all(),
         widget=forms.Select,
         required=False,
     )
@@ -421,6 +429,7 @@ class StoryForm(forms.ModelForm):
         model = Story
         fields = ['name',
                   'story_description',
+                  'project',
                   'series',
                   'collaborate',
                   'collaborate_with',
@@ -441,6 +450,7 @@ class StoryForm(forms.ModelForm):
             'collaborate_with': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select', 'id':'collaborate-with', 'data-placeholder': 'Select Partners'}),
             'share_with': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select', 'id':'share-with', 'data-placeholder': 'Select Networks'}),
             'series': Select(attrs={'class': 'c-select', 'id':'story-series'}),
+            'project': Select(attrs={'class': 'c-select', 'id':'story-project'}),
         }
 
     # class Media:

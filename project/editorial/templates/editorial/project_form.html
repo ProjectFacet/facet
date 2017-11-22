@@ -33,13 +33,13 @@
               <fieldset class="form-group m-b-20">
                 {% comment %}
                 <div class="col-xs-2">
-                  <label>{{ projectform.name.label_tag }}</label>
+                  <label>{{ form.name.label_tag }}</label>
                 </div>
                 {% endcomment %}
                 <div class="col-xs-12">
-                  {{ projectform.name }}
-                  {% if projectform.name.errors %}
-                  <small class="text-muted">{{ projectform.name.errors }}</small>
+                  {{ form.name }}
+                  {% if form.name.errors %}
+                  <small class="text-muted">{{ form.name.errors }}</small>
                   {% endif %}
                 </div>
               </fieldset>
@@ -47,13 +47,13 @@
               <fieldset class="form-group m-b-20">
                 {% comment %}
                 <div class="col-xs-2">
-                  <label class="capitalize">{{ projectform.project_description.label_tag }}</label>
+                  <label class="capitalize">{{ form.project_description.label_tag }}</label>
                 </div>
                 {% endcomment %}
                 <div class="col-xs-12">
-                  {{ projectform.project_description }}
-                  {% if projectform.project_description.errors %}
-                  <small class="text-muted">{{ projectform.project_description.errors }}</small>
+                  {{ form.project_description }}
+                  {% if form.project_description.errors %}
+                  <small class="text-muted">{{ form.project_description.errors }}</small>
                   {% endif %}
                 </div>
               </fieldset>
@@ -65,26 +65,26 @@
           <fieldset class="form-group m-b-20">
             {% comment %}
             <div class="col-xs-2">
-              <label class="capitalize">{{ projectform.team.label_tag }}</label>
+              <label class="capitalize">{{ form.team.label_tag }}</label>
             </div>
             {% endcomment %}
             <div class="col-xs-12">
-              {{ projectform.team }}
-              {% if projectform.team.errors %}
-              <small class="text-muted">{{ projectform.team.errors }}</small>
+              {{ form.team }}
+              {% if form.team.errors %}
+              <small class="text-muted">{{ form.team.errors }}</small>
               {% endif %}
             </div>
           </fieldset>
 
           <fieldset class="form-group m-b-20">
             <span class="col-xs-2">
-              <label class="f-s-14 subtle">{{ projectform.collaborate.label_tag }}</label>
+              <label class="f-s-14 subtle">{{ form.collaborate.label_tag }}</label>
             </span>
             <span class="col-xs-10">
-              {{ projectform.collaborate }}
+              {{ form.collaborate }}
               <span class="c-indicator c-indicator-default"></span>
-              {% if projectform.collaborate.errors %}
-              <small class="text-muted">{{ projectform.collaborate.errors }}</small>
+              {% if form.collaborate.errors %}
+              <small class="text-muted">{{ form.collaborate.errors }}</small>
               {% endif %}
             </span>
           </fieldset>
@@ -92,13 +92,13 @@
           <fieldset class="form-group m-b-20">
             {% comment %}
             <div class="col-xs-2">
-              <label class="capitalize">{{ projectform.collaborate_with.label_tag }}</label>
+              <label class="capitalize">{{ form.collaborate_with.label_tag }}</label>
             </div>
             {% endcomment %}
             <div class="col-xs-12">
-              {{ projectform.collaborate_with }}
-              {% if projectform.collaborate_with.errors %}
-              <small class="text-muted">{{ projectform.collaborate_with.errors }}</small>
+              {{ form.collaborate_with }}
+              {% if form.collaborate_with.errors %}
+              <small class="text-muted">{{ form.collaborate_with.errors }}</small>
               {% endif %}
             </div>
           </fieldset>
