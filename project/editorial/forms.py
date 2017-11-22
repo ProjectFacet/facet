@@ -258,6 +258,7 @@ class AddUserForm(forms.ModelForm):
             'user_type': Select(attrs={'class': 'c-select', 'id':'user-type'}),
             }
 
+
 class UserProfileForm(forms.ModelForm):
     """ Handle a user completing their profile."""
 
@@ -473,9 +474,7 @@ class TaskForm(forms.ModelForm):
     """ Form to create/edit a task. """
 
     def __init__(self, *args, **kwargs):
-        print "IN TASKFORM INIT"
         org = kwargs.pop("organization")
-        print "TASKFORM ORG: ", org
         super(TaskForm, self).__init__(*args, **kwargs)
         self.fields['assigned_to'].queryset = org.get_org_users()
         self.fields['status'].empty_label='Task Status'
@@ -525,7 +524,6 @@ class TaskForm(forms.ModelForm):
             'status',
             'important',
             'due_date',
-            # 'upload',
             'project',
             'series',
             'story',

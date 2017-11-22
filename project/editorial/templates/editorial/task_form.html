@@ -107,16 +107,6 @@
                 <small class="text-muted">{{ form.due_date.errors }}</small>
               {% endif %}
         </div>
-        <!-- Upload -->
-        <p>Upload</p>
-        <div class="form-group custom-form m-t-20">
-          {{ form.upload }}
-          {% if form.upload.errors %}
-            <div class="alert alert-warning" role="alert">
-            {{ form.upload.errors }}
-            </div>
-          {% endif %}
-        </div>
       </div>
 
       <!-- Center Column -->
@@ -214,7 +204,17 @@
 </div>
 <!-- End of form -->
 
-
+<div class="row m-t-20">
+  <div class="col-xs-12 col-md-6 col-lg-4">
+    <h5>Discussion</h5>
+  </div>
+  <div class="col-xs-12 col-md-6 col-lg-4">
+    <h5>Notes</h5>
+  </div>
+  <div class="col-xs-12 col-md-6 col-lg-4">
+    <h5>Assets</h5>
+  </div>
+</div>
 
 <script>
 $(".chosen-select").chosen()

@@ -126,17 +126,6 @@ def comments_html(request, comment_type):
 
     return HttpResponse(comments_html)
 
-# def inbox_important(request):
-#     """Return important messages."""
-#
-#     return render(request, 'editorial/inbox.html')
-#
-#
-# def inbox_trash(request):
-#     """Return trashed messages."""
-#
-#     return render(request, 'editorial/inbox.html')
-
 
 def message_html(request, pk):
     """Return html for displaying a specific message."""
@@ -153,3 +142,15 @@ def compose_message_html(request):
 
     compose_message_html = render_to_string('compose-message.html', {'privatemessageform' : privatemessageform})
     return HttpResponse(compose_message_html)
+
+
+# def inbox_important(request):
+#     """Return important messages."""
+#
+#     return render(request, 'editorial/inbox.html')
+#
+#
+# def inbox_trash(request):
+#     """Return trashed messages."""
+#
+#     return render(request, 'editorial/inbox.html')

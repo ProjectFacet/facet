@@ -147,6 +147,10 @@ class Task(models.Model):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('task_detail', kwargs={'pk': self.id})
+
+
     @property
     def search_title(self):
         return self.name

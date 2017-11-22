@@ -138,7 +138,7 @@ def event_detail(request, pk):
 def org_host_events():
     """ Retrieve all events associated with an organization that are being hosted.
     """
-    
+
     events = Event.objects.filter(organization=request.user.organization, status="Hosted")
     return render(request, 'editorial/host_event_list.html', {
             'events': events,
@@ -149,11 +149,14 @@ def org_report_events():
     """ Retrieve all events associated with an organization that are being reported
     on for a story.
     """
-    
+
     events = Event.objects.filter(organization=request.user.organization, status="Reporting")
     return render(request, 'editorial/host_event_list.html', {
             'events': events,
         })
+
+
+
 
 
 # reduce duplication if possible

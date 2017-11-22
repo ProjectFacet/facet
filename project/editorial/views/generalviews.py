@@ -7,7 +7,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.utils import timezone
-from django.views.generic import TemplateView , UpdateView, DetailView
+from django.views.generic import TemplateView , UpdateView, DetailView, ListView, CreateView
 from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime, timedelta, time
 import json
@@ -68,38 +68,40 @@ from editorial.models import (
 #   Initial View
 #----------------------------------------------------------------------#
 
-# class HomeView(DetailView)
-#     # return static homepage for now
-#     template_name = "editorial/home.html"
+class LandingTemplateView(TemplateView):
+    """Return static homepage for prelogin users."""
 
-# function based view
-def index(request):
-   """ Return static homepage."""
+    template_name = 'editorial/home.html'
 
-   return render(request, 'editorial/home.html')
+    # def get_context_data(self):
+    #
+
 
 #----------------------------------------------------------------------#
 #   Test View
 #----------------------------------------------------------------------#
 
-def test(request):
+class TestTemplateView(TemplateView):
     """ Use for rapid testing of new pages."""
 
-    # the user's organization
-    organization = request.user.organization
-    tasks = Task.objects.filter(organization=request.user.organization)
+    template_name = 'editorial/test.html'
 
-    return render(request, 'editorial/test.html', {
-        'organization': organization,
-        'tasks': tasks,
-    })
+    def get_context_data(self):
+        # the user's organization
+        organization = self.request.user.organization
+        tasks = Task.objects.filter(organization=organization)
+
+        return {
+            'organization': organization,
+            'tasks': tasks,
+        }
 
 
 #----------------------------------------------------------------------#
 #   Dashboard View
 #----------------------------------------------------------------------#
 
-def dashboard(request):
+class TeamUserDashboardTemplateView(TemplateView):
     """ Returns user's unique dashboard.
 
     Displays new comments since last_login from any discussions including user.
@@ -109,102 +111,95 @@ def dashboard(request):
     Displays log of other user activity since last_login
     Ex: Oliver Q. added "Dhark Indicted" to Story: "Star City Organized Crime Leader Arrested"
     """
-    # get user organization
-    organization = request.user.organization
-    # query for new comments since last_login from any discussions the user has participated in
-    recent_comments = User.recent_comments(request.user)
-    # if no new comments, display 10 most recent older comments
-    older_comments = User.inbox_comments(request.user)[:4]
 
-    if organization:
-        # retrieve all organization comments
+    template_name = 'editorial/teamuser_dashboard.html'
+
+    def get_context_data(self):
+        """Return all the assorted items associated with a team user dashboard."""
+
+        # placeholder of data for now to maintain status quo
+        # some rethinking about what goes here tbd
+        organization = self.request.user.organization
+        recent_comments = self.request.user.recent_comments()
+        older_comments = self.request.user.inbox_comments()[:4]
+
         all_comments = organization.get_org_comments()
-        # query for new stories shared to network
         networks = organization.get_org_networks()
-        # facets where run_date=today
         running_today = organization.get_org_stories_running_today()
-        # facets where due_edit=today
         edit_today = organization.get_org_stories_due_for_edit_today()
-    else:
-        all_comments = []
-        networks = []
-        running_today = []
-        edit_today = []
 
-    shared_networkstories = []
-    for network in networks:
-        stories = network.get_network_shared_stories()
-        shared_networkstories.extend(stories)
-    shared_networkstories = [story for story in shared_networkstories if story.organization != organization]
-    networkstories = set(shared_networkstories)
+        shared_networkstories = organization.get_org_network_content()
+        shared_networkstories = [story for story in shared_networkstories if story.organization != organization]
+        networkstories = set(shared_networkstories)
+        # query for any new content created since last_login
+        new_stories = Story.objects.filter(creation_date__gte = self.request.user.last_login)[:8]
+        # if no new stories, display 10 most recent stories
+        old_stories = Story.objects.filter(organization = self.request.user.organization)[:10]
 
-    shared_networkstory_facets = []
-    for story in networkstories:
-        ns_facet = story.get_story_facets()
-        shared_networkstory_facets.extend(ns_facet)
+        copied_shared_stories = StoryCopyDetail.objects.filter(original_org=self.request.user.organization)
 
-    # query for any new content created since last_login
-    new_stories = Story.objects.filter(creation_date__gte=request.user.last_login)[:8]
-    # if no new stories, display 10 most recent stories
-    old_stories = Story.objects.filter(organization = request.user.organization)[:10]
+        return {
+            'networks': networks,
+            'recent_comments': recent_comments,
+            'older_comments': older_comments,
+            'all_comments': all_comments,
+            'new_stories': new_stories,
+            'old_stories': old_stories,
+            'running_today': running_today,
+            'edit_today': edit_today,
+            'shared_networkstories': shared_networkstories,
+            'copied_shared_stories': copied_shared_stories,
+            'networkstories': networkstories,
+            # 'shared_networkstory_facets': shared_networkstory_facets,
+        }
 
-    copied_shared_stories = StoryCopyDetail.objects.filter(original_org=request.user.organization)
-
-    # TODO: query for other user activity since last_login
-
-    return render(request, 'editorial/dashboard.html', {
-        'networks': networks,
-        'recent_comments': recent_comments,
-        'older_comments': older_comments,
-        'all_comments': all_comments,
-        'new_stories': new_stories,
-        'old_stories': old_stories,
-        'running_today': running_today,
-        'edit_today': edit_today,
-        'shared_networkstories': shared_networkstories,
-        'copied_shared_stories': copied_shared_stories,
-        'shared_networkstory_facets': shared_networkstory_facets,
-    })
 
 #----------------------------------------------------------------------#
 #   Team Views
 #----------------------------------------------------------------------#
 
-def team_list(request):
+class TeamTemplateView(TemplateView):
     """ Return teams list.
 
     Displays team members from the user's own organization.
     Displays team members from any network that the user's organization is part of.
     """
 
-    # the user's organization
-    organization = request.user.organization
-    networks = Organization.get_org_networks(organization)
-    partners = Organization.get_org_collaborators_vocab(organization)
+    template_name = 'editorial/team.html'
 
-    # form for adding a new user to the team
-    adduserform = AddUserForm()
-    # only visible for admin users
+    def get_context_data(self):
+        """Retrieve team of org and partner orgs."""
 
-    return render(request, 'editorial/team.html', {
-        'organization': organization,
-        'networks': networks,
-        'partners': partners,
-        'adduserform': adduserform,
-        })
+        # the user's organization
+        organization = self.request.user.organization
+        networks = organization.get_org_networks()
+        partners = organization.get_org_collaborators_vocab()
+
+        # form for adding a new user to the team
+        adduserform = AddUserForm()
+        # only visible for admin users
+
+        return {
+            'organization': organization,
+            'networks': networks,
+            'partners': partners,
+            'adduserform': adduserform,
+        }
 
 #----------------------------------------------------------------------#
 #   Collaborations View
 #----------------------------------------------------------------------#
 
-def collaborations(request):
+class CollaborationTemplateView(TemplateView):
     """ Return dashboard of series and stories that are part of a collaboration.
     """
 
-    series_collaborations = Series.objects.filter(collaborate=True)
-    story_collaborations = Organization.get_org_collaborative_content(request.user.organization)
+    template_name = 'editorial/collaborations.html'
 
-    return render(request, 'editorial/collaborations.html', {
-        'series_collaborations': series_collaborations,
-        'story_collaborations': story_collaborations,
-    })
+    def get_context_data(self):
+        series_collaborations = Series.objects.filter(collaborate=True)
+        story_collaborations = self.request.user.organization.get_org_collaborative_content()
+        return {
+            'series_collaborations': series_collaborations,
+            'story_collaborations': story_collaborations,
+        }

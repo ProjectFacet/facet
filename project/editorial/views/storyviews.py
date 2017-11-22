@@ -139,30 +139,6 @@ class StoryUpdateView(UpdateView):
         return super(StoryUpdateView, self).get_success_url()
 
 
-def story_delete(request, pk):
-    """Delete a story and it's related objects then redirect user to story list."""
-
-    if request.method == "POST":
-        story = get_object_or_404(Story, pk=pk)
-        story.delete()
-
-    return redirect('story_list')
-
-
-def story_team_options_json(request, pk):
-    """Returns JSON of team members that can be assigned to a story."""
-
-    story = get_object_or_404(Story, pk=pk)
-    print story
-
-    team = Story.get_story_team(story)
-    story_team = {}
-    for item in team:
-        story_team[item.id]=item.credit_name
-    print story_team
-    return HttpResponse(json.dumps(story_team), content_type = "application/json")
-
-
 class StoryDetailView(DetailView):
     """Show all the details and related items for a story."""
 
@@ -229,6 +205,31 @@ class StoryDetailView(DetailView):
         audio = self.object.get_story_audio()
         video = self.object.get_story_video()
         return {'images': images, 'documents': documents, 'audio': audio, 'video': video,}
+
+
+
+def story_delete(request, pk):
+    """Delete a story and it's related objects then redirect user to story list."""
+
+    if request.method == "POST":
+        story = get_object_or_404(Story, pk=pk)
+        story.delete()
+
+    return redirect('story_list')
+
+
+def story_team_options_json(request, pk):
+    """Returns JSON of team members that can be assigned to a story."""
+
+    story = get_object_or_404(Story, pk=pk)
+    print story
+
+    team = Story.get_story_team(story)
+    story_team = {}
+    for item in team:
+        story_team[item.id]=item.credit_name
+    print story_team
+    return HttpResponse(json.dumps(story_team), content_type = "application/json")
 
 
 def story_schedule(request, pk):

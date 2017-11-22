@@ -40,7 +40,7 @@ urlpatterns = [
     #----------------------------------------------------------------------#
     #   Test URL - Used for non-destructive testing of templates/queries
     #----------------------------------------------------------------------#
-    url(r'^test$', generalviews.test, name='test'),
+    url(r'^test$', generalviews.TestTemplateView.as_view(), name='test'),
     #----------------------------------------------------------------------#
     #   API URL - Used API endpoints
     #----------------------------------------------------------------------#
@@ -53,12 +53,12 @@ urlpatterns = [
     #----------------------------------------------------------------------#
     #   Homepage URLS
     #----------------------------------------------------------------------#
-    url(r'^$', generalviews.index, name='index'),
+    url(r'^$', generalviews.LandingTemplateView.as_view(), name='index'),
     # url(r'^$', HomeView.as_view(), name='index'),
     #----------------------------------------------------------------------#
     #   Dashboard URLS
     #----------------------------------------------------------------------#
-    url(r'^dashboard$', generalviews.dashboard, name='dashboard'),
+    url(r'^dashboard$', generalviews.TeamUserDashboardTemplateView.as_view(), name='dashboard'),
     #----------------------------------------------------------------------#
     #   Schedule URLS
     #----------------------------------------------------------------------#
@@ -76,11 +76,11 @@ urlpatterns = [
     #----------------------------------------------------------------------#
     #   Collaborations URLS
     #----------------------------------------------------------------------#
-    url(r'^collaborations$', generalviews.collaborations, name='collaborations'),
+    url(r'^collaborations$', generalviews.CollaborationTemplateView.as_view(), name='collaborations'),
     #----------------------------------------------------------------------#
     #   Team URLS
     #----------------------------------------------------------------------#
-    url(r'^team$', generalviews.team_list, name='team_list'),
+    url(r'^team$', generalviews.TeamTemplateView.as_view(), name='team_list'),
     #----------------------------------------------------------------------#
     #   Inbox URLS - Labeled as Inbox in navigation
     #----------------------------------------------------------------------#
@@ -184,22 +184,21 @@ urlpatterns = [
     #----------------------------------------------------------------------#
     #   Task URLS
     #----------------------------------------------------------------------#
-    url(r'^task/new/$', taskviews.task_new, name='task_new'),
-    url(r'^task/(?P<pk>[0-9]+)/$', taskviews.task_detail, name='task_detail'),
-    url(r'^project/(?P<pk>[0-9]+)/tasks/$', taskviews.project_task_list, name='project_task_list'),
-    url(r'^series/(?P<pk>[0-9]+)/tasks/$', taskviews.series_task_list, name='series_task_list'),
-    url(r'^story/(?P<pk>[0-9]+)/tasks/$', taskviews.story_task_list, name='story_task_list'),
-    url(r'^event/(?P<pk>[0-9]+)/tasks/$', taskviews.event_task_list, name='event_task_list'),
+    url(r'^task/new/$', taskviews.TaskCreateView.as_view(), name='task_new'),
+    url(r'^task/(?P<pk>[0-9]+)/$', taskviews.TaskUpdateView.as_view(), name='task_detail'),
+    url(r'^project/(?P<pk>[0-9]+)/tasks/$', taskviews.ProjectTaskTemplateView.as_view(), name='project_task_list'),
+    url(r'^series/(?P<pk>[0-9]+)/tasks/$', taskviews.SeriesTaskTemplateView.as_view(), name='series_task_list'),
+    url(r'^story/(?P<pk>[0-9]+)/tasks/$', taskviews.StoryTaskTemplateView.as_view(), name='story_task_list'),
+    url(r'^event/(?P<pk>[0-9]+)/tasks/$', taskviews.EventTaskTemplateView.as_view(), name='event_task_list'),
     #----------------------------------------------------------------------#
     #   Event URLS
     #----------------------------------------------------------------------#
     url(r'^event/new/$', eventviews.event_new, name='event_new'),
     url(r'^event/(?P<pk>[0-9]+)/$', eventviews.event_detail, name='event_detail'),
-
-    #----------------------------------------------------------------------#
-    #   Update URLS
-    #----------------------------------------------------------------------#
-    # Story and Facet update urls will go here.
+    # url(r'^organization/(?P<pk>[0-9]+)/events/$', eventviews.OrganizationEventTemplateView.as_view(), name='organization_event_list'),
+    # url(r'^project/(?P<pk>[0-9]+)/events/$', eventviews.ProjectEventTemplateView.as_view(), name='project_event_list'),
+    # url(r'^series/(?P<pk>[0-9]+)/events/$', eventviews.SeriesEventTemplateView.as_view(), name='series_event_list'),
+    # url(r'^story/(?P<pk>[0-9]+)/events/$', eventviews.StoryEventTemplateView.as_view(), name='story_event_list'),
     #----------------------------------------------------------------------#
     #   Asset URLS
     #----------------------------------------------------------------------#

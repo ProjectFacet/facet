@@ -77,6 +77,7 @@ class FacetCreateView(CreateView):
         return {'template': self.kwargs['template_id'],
                 'name': self.request.GET.get('name', '')}
 
+
 #FIXME Form error moving from precreate to create as facet form doesn't receive story
 class FacetPreCreateView(FormView):
     """First step in creating a facet."""
@@ -158,3 +159,6 @@ class FacetUpdateView(UpdateView):
         org_videos = self.object.organization.get_org_video_library()
         uploadform = VideoAssetForm()
         return {'videos': videos, 'org_videos': org_videos, 'uploadform': uploadform}
+
+
+# TODO DeleteView

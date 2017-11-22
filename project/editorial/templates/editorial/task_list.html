@@ -11,16 +11,16 @@
 <div>
     <ol class="breadcrumb icon-angle-right icon-th">
         <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
-        {% if project_tasks %}
+        {% if project %}
         <li class="fadeIn"><a href="{% url 'project_list' %}" title="Go to Project List"> Projects </a></li>
         <li class="fadeIn"><a href="{% url 'project_detail' pk=project.id %}" title="Go to {{project.name}}"> {{project.name}} </a></li>
-        {% elif series_tasks %}
+        {% elif series %}
         <li class="fadeIn"><a href="{% url 'series_list' %}" title="Go to Series List"> Series </a></li>
         <li class="fadeIn"><a href="{% url 'series_detail' pk=series.id %}" title="Go to {{series.name}}"> {{series.name}} </a></li>
-        {% elif story_tasks %}
+        {% elif story %}
         <li class="fadeIn"><a href="{% url 'story_list' %}" title="Go to Story List"> Stories </a></li>
         <li class="fadeIn"><a href="{% url 'story_detail' pk=story.id %}" title="Go to {{story.name}}"> {{story.name}} </a></li>
-        {% elif event_tasks %}
+        {% elif event %}
         <li class="fadeIn"><a href="{% url 'event_list' %}" title="Go to Event List"> Events </a></li>
         <li class="fadeIn"><a href="{% url 'event_detail' pk=event.id %}" title="Go to {{event.name}}"> {{event.name}} </a></li>
         {% endif %}
@@ -41,7 +41,7 @@
 
 
 
-{% if project_tasks %}
+{% if project %}
 <div class="row">
   <div class="col-xs-12">
     <h5 class="m-b-20"> {{ project.name }} Tasks<span class="pull-right">Add new task to {{project.name}} <a data-toggle="modal" data-target="#addProjectTask" title="Add Project Task"><i class="m-l-20 fa fa-plus" aria-hidden="true"></i></a></span></h5>
@@ -54,7 +54,7 @@
         <div class="activity-widget-5">
             <div class="row">
                 <div class="col-xs-12 bs-media" id="board-1">
-                  {% for task in project_tasks %}
+                  {% for task in tasks %}
                     {% if task.status == "Identified"  %}
                     <div class="media">
                         <a href="{% url 'task_detail' task.id %}" title="View more detail">
@@ -88,7 +88,7 @@
         <div class="activity-widget-5">
             <div class="row">
                 <div class="col-xs-12 bs-media" id="board-2">
-                  {% for task in project_tasks %}
+                  {% for task in tasks %}
                     {% if task.status == "In Progress"  %}
                     <div class="media">
                         <a href="{% url 'task_detail' task.id %}" title="View more detail">
@@ -123,7 +123,7 @@
         <div class="activity-widget-5">
             <div class="row">
                 <div class="col-xs-12 bs-media" id="board-3">
-                  {% for task in project_tasks %}
+                  {% for task in tasks %}
                     {% if task.status == "Complete"  %}
                     <div class="media">
                         <a href="{% url 'task_detail' task.id %}" title="View more detail">

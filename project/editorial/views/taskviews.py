@@ -10,7 +10,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.utils import timezone
-from django.views.generic import TemplateView , UpdateView, DetailView
+from django.views.generic import TemplateView , UpdateView, DetailView, CreateView, ListView
 from django.views.decorators.csrf import csrf_exempt
 import datetime
 import json
@@ -34,216 +34,250 @@ from editorial.models import (
 #   Task Views
 #----------------------------------------------------------------------#
 
-# class TaskCreateView(generic.CreateView):
-#     """Create a new task."""
-#
-#     model = Task
-#     form_class = TaskForm
-#
-#     def form_valid(self, form):
-#         form.instance.owner = self.request.user
-#         return super(OrganizationCreateView, self).form_valid(form)
-#
-#     def get_success_url(self):
-#
-#         self.request.user.organization = self.object
-#         self.request.user.save()
-#         return reverse('task', kwargs={'pk': self.object.pk})
+class TaskCreateView(CreateView):
+    """Create a new task."""
 
-# function based view version
-def task_new(request):
-    """A logged in user can create a task.
+    model = Task
+    form_class = TaskForm
 
-    Tasks are actionable items containing information about something to be done.
-    Tasks have a title, text, an assigned team and a connection to either a Project,
-    Series, Story or Event.
-    """
+    def get_form_kwargs(self):
+        """Pass user organization to the form."""
 
-    form = TaskForm(request=request)
-    if request.method == "POST":
-        form = TaskForm(request.POST, request=request)
-    if form.is_valid():
-        project_id = request.POST.get('project')
-        series_id = request.POST.get('series')
-        story_id = request.POST.get('story')
-        event_id = request.POST.get('event')
-        task = form.save(commit=False)
-        if project_id:
-            project = get_object_or_404(Project, pk=project_id)
-            task.project = project
-        if series_id:
-            series = get_object_or_404(Series, pk=series_id)
-            task.series = series
-        if story_id:
-            story = get_object_or_404(Story, pk=story_id)
-            task.story = story
-        if event_id:
-            event = get_object_or_404(Event, pk=event_id)
-            task.event = event
-        task.owner = request.user
-        task.organization = request.user.organization
-        task.creation_date = timezone.now()
+        kw = super(TaskCreateView, self).get_form_kwargs()
+        kw.update({'organization': self.request.user.organization})
+        return kw
+
+    def form_valid(self, form):
+        """Save -- but first adding owner and organization."""
+
+        self.object = task = form.save(commit=False)
+
+        # create and set discussion
+        discussion = Discussion.objects.create_discussion("TSK")
+        task.discussion = discussion
+
+        # set user specific values
+        task.owner = self.request.user
+        task.organization = self.request.user.organization
+
         task.save()
         form.save_m2m()
 
         # record action for activity stream
-        action.send(request.user, verb="created", action_object=task)
+        action.send(self.request.user, verb="created", action_object=task)
 
-        return redirect('task_detail', pk=task.pk)
-    else:
-        form = TaskForm(request=request)
-    return render(request, 'editorial/task_detail.html', {'form': form})
+        return redirect(self.get_success_url())
 
 
-def task_detail(request, pk):
-    """ The detail page for a task.
+class TaskUpdateView(UpdateView):
+    """The detail page for a task.
+    Displays the task information."""
 
-    Displays the tasks information.
-    """
+    model = Task
+    form_class = TaskForm
 
-    # FIXME q for J: Having a hard time figuring out how to translate this try except view to cbv
+    def get_form_kwargs(self):
+        """Pass organization to form."""
 
-    try:
-        task = get_object_or_404(Task, pk=pk)
-        form = TaskForm(request=request, instance=task)
-        # discussion = ...
-        # comments = ...
+        kw = super(TaskUpdateView, self).get_form_kwargs()
+        kw.update({'organization': self.request.user.organization})
+        return kw
 
-        if request.method == "POST":
-            if 'form' in request.POST:
-                form = TaskForm(data=request.POST, instance=task, request=request)
-                if form.is_valid():
-                    form.save()
-                    # record action for activity stream
-                    action.send(request.user, verb="updated", action_object=task)
-                    return redirect('task_detail', pk=pk)
+    def task_discussion(self):
+        """Get discussion, comments and comment form for the task."""
 
-    except:
-        # except Task.DoesNotExist:
-        #display form a save a new task
-        if request.method == "POST":
-            if 'form' in request.POST:
-                form=TaskForm(data=request.POST, request=request)
-                if form.is_valid():
-                    task = form.save(commit=False)
-                    task.owner = request.user
-                    task.organization = request.user.organization
-                    task.creation_date = timezone.now()
-                    task.save()
-                    form.save_m2m()
-                    # record action for activity stream
-                    action.send(request.user, verb="created", action_object=task)
-                    return redirect('task_detail', pk=task.pk)
+        self.object = self.get_object()
+        discussion = self.object.discussion
+        comments = discussion.comment_set.all()
+        form = TaskCommentForm()
+        return {'discussion': discussion, 'comments': comments, 'form': form,}
 
-    return render(request, 'editorial/task_detail.html', {
-        'task': task,
-        'form': form,
-    })
+    def get_success_url(self):
 
-
-# reduce duplication if possible
-def project_task_list(request, pk):
-    """Display all the tasks associated with a project.
-
-    """
-
-    project = get_object_or_404(Project, pk=pk)
-    tasks = Task.objects.filter(project=pk)
-    count = tasks.count()
-    taskform = TaskForm(request=request)
-    # FIXME how to get count for each status without doing three filters
-    identified_ct = Task.objects.filter(project=pk, status="Identified").count()
-    inprogress_ct = Task.objects.filter(project=pk, status="In Progress").count()
-    complete_ct = Task.objects.filter(project=pk, status="Complete").count()
-    # ratio of complete to total number of tasks
-    progress = 100 * float(complete_ct)/float(count)
-    return render(request, 'editorial/task_list.html', {
-        'project': project,
-        'project_tasks': tasks,
-        'taskform': taskform,
-        'progress': progress,
-        'identified_ct': identified_ct,
-        'inprogress_ct': inprogress_ct,
-        'complete_ct': complete_ct,
-    })
-
-def series_task_list(request, pk):
-    """Display all the tasks associated with a story.
-
-    """
-
-    series = get_object_or_404(Series, pk=pk)
-    tasks = Task.objects.filter(series=pk)
-    count = tasks.count()
-    taskform = TaskForm(request=request)
-    # FIXME how to get count for each status without doing three of the following
-    identified_ct = Task.objects.filter(series=pk, status="Identified").count()
-    inprogress_ct = Task.objects.filter(series=pk, status="In Progress").count()
-    complete_ct = Task.objects.filter(series=pk, status="Complete").count()
-    # ratio of complete to total number of tasks
-    progress = 100 * float(complete_ct)/float(count)
-    return render(request, 'editorial/task_list.html', {
-        'series': series,
-        'series_tasks': tasks,
-        'taskform': taskform,
-        'progress': progress,
-        'identified_ct': identified_ct,
-        'inprogress_ct': inprogress_ct,
-        'complete_ct': complete_ct,
-    })
-
-def story_task_list(request, pk):
-    """Display all the tasks associated with a series.
-
-    """
-
-    story = get_object_or_404(Story, pk=pk)
-    tasks = Task.objects.filter(story=pk)
-    count = tasks.count()
-    taskform = TaskForm(request=request)
-    # FIXME how to get count for each status without doing three of the following
-    identified_ct = Task.objects.filter(story=pk, status="Identified").count()
-    inprogress_ct = Task.objects.filter(story=pk, status="In Progress").count()
-    complete_ct = Task.objects.filter(story=pk, status="Complete").count()
-    # ratio of complete to total number of tasks
-    progress = 100 * float(complete_ct)/float(count)
-    return render(request, 'editorial/task_list.html', {
-        'story': story,
-        'story_tasks': tasks,
-        'taskform': taskform,
-        'progress': progress,
-        'identified_ct': identified_ct,
-        'inprogress_ct': inprogress_ct,
-        'complete_ct': complete_ct,
-    })
-
-def event_task_list(request, pk):
-    """Display all the tasks associated with an event.
-
-    """
-
-    event = get_object_or_404(Event, pk=pk)
-    tasks = Task.objects.filter(event=pk)
-    count = tasks.count()
-    taskform = TaskForm(request=request)
-    # FIXME how to get count for each status without doing three of the following
-    identified_ct = Task.objects.filter(event=pk, status="Identified").count()
-    inprogress_ct = Task.objects.filter(event=pk, status="In Progress").count()
-    complete_ct = Task.objects.filter(event=pk, status="Complete").count()
-    # ratio of complete to total number of tasks
-    progress = 100 * float(complete_ct)/float(count)
-    return render(request, 'editorial/task_list.html', {
-        'event': event,
-        'event_tasks': tasks,
-        'taskform': taskform,
-        'progress': progress,
-        'identified_ct': identified_ct,
-        'inprogress_ct': inprogress_ct,
-        'complete_ct': complete_ct,
-    })
+        action.send(self.request.user, verb="edited", action_object=self.object)
+        return super(TaskUpdateView, self).get_success_url()
 
 
 def task_delete(request, pk):
-    """Delete a project and its related objects then redirect user to project list."""
-
+    """Delete a task and its related objects."""
     pass
+
+
+# FIXME form challenges
+class ProjectTaskTemplateView(TemplateView):
+
+    context_object_name = 'tasks'
+    template_name = 'editorial/task_list.html'
+    # form_class = TaskForm
+    #
+    # def get_form_kwargs(self):
+    #     """Pass organization to form."""
+    #
+    #     kw = super(ProjectTaskTemplateView, self).get_form_kwargs()
+    #     kw.update({'organization': self.request.user.organization})
+    #     return kw
+
+
+    def get_context_data(self, pk):
+        """Return tasks belonging to the project."""
+
+        project = get_object_or_404(Project, id=pk)
+        # form = TaskForm()
+        tasks = project.task_set.all()
+        count = tasks.count()
+        identified_ct=0
+        inprogress_ct=0
+        complete_ct=0
+        for task in tasks:
+            if task.status=='Identified':
+                identified_ct = identified_ct + 1
+            elif task.status=='In Progress':
+                inprogress_ct = inprogress_ct + 1
+            elif task.status=='Complete':
+                complete_ct = complete_ct + 1
+        # ratio of complete to total number of tasks
+        progress = 100 * float(complete_ct)/float(count)
+        return {
+            'project': project,
+            'tasks': tasks,
+            # 'form': form,
+            'progress': progress,
+            'identified_ct': identified_ct,
+            'inprogress_ct' : inprogress_ct,
+            'complete_ct': complete_ct,
+        }
+
+
+# FIXME form challenges
+class SeriesTaskTemplateView(TemplateView):
+
+    context_object_name = 'tasks'
+    template_name = 'editorial/task_list.html'
+    # form_class = TaskForm
+    #
+    # def get_form_kwargs(self):
+    #     """Pass organization to form."""
+    #
+    #     kw = super(SeriesTaskTemplateView, self).get_form_kwargs()
+    #     kw.update({'organization': self.request.user.organization})
+    #     return kw
+
+
+    def get_context_data(self, pk):
+        """Return tasks belonging to the series."""
+
+        series = get_object_or_404(Series, id=pk)
+        # form = TaskForm()
+        tasks = series.task_set.all()
+        count = tasks.count()
+        identified_ct=0
+        inprogress_ct=0
+        complete_ct=0
+        for task in tasks:
+            if task.status=='Identified':
+                identified_ct = identified_ct + 1
+            elif task.status=='In Progress':
+                inprogress_ct = inprogress_ct + 1
+            elif task.status=='Complete':
+                complete_ct = complete_ct + 1
+        # ratio of complete to total number of tasks
+        progress = 100 * float(complete_ct)/float(count)
+        return {
+            'series': series,
+            'tasks': tasks,
+            # 'form': form,
+            'progress': progress,
+            'identified_ct': identified_ct,
+            'inprogress_ct' : inprogress_ct,
+            'complete_ct': complete_ct,
+        }
+
+
+# FIXME form challenges
+class StoryTaskTemplateView(TemplateView):
+
+    context_object_name = 'tasks'
+    template_name = 'editorial/task_list.html'
+    # form_class = TaskForm
+    #
+    # def get_form_kwargs(self):
+    #     """Pass organization to form."""
+    #
+    #     kw = super(StoryTaskTemplateView, self).get_form_kwargs()
+    #     kw.update({'organization': self.request.user.organization})
+    #     return kw
+
+
+    def get_context_data(self, pk):
+        """Return tasks belonging to the story."""
+
+        story = get_object_or_404(Story, id=pk)
+        # form = TaskForm()
+        tasks = story.task_set.all()
+        count = tasks.count()
+        identified_ct=0
+        inprogress_ct=0
+        complete_ct=0
+        for task in tasks:
+            if task.status=='Identified':
+                identified_ct = identified_ct + 1
+            elif task.status=='In Progress':
+                inprogress_ct = inprogress_ct + 1
+            elif task.status=='Complete':
+                complete_ct = complete_ct + 1
+        # ratio of complete to total number of tasks
+        progress = 100 * float(complete_ct)/float(count)
+        return {
+            'story': story,
+            'tasks': tasks,
+            # 'form': form,
+            'progress': progress,
+            'identified_ct': identified_ct,
+            'inprogress_ct' : inprogress_ct,
+            'complete_ct': complete_ct,
+        }
+
+
+# FIXME form challenges
+class EventTaskTemplateView(TemplateView):
+
+    context_object_name = 'tasks'
+    template_name = 'editorial/task_list.html'
+    # form_class = TaskForm
+    #
+    # def get_form_kwargs(self):
+    #     """Pass organization to form."""
+    #
+    #     kw = super(EventTaskTemplateView, self).get_form_kwargs()
+    #     kw.update({'organization': self.request.user.organization})
+    #     return kw
+
+
+    def get_context_data(self, pk):
+        """Return tasks belonging to the event."""
+
+        event = get_object_or_404(Event, id=pk)
+        # form = TaskForm()
+        tasks = event.task_set.all()
+        count = tasks.count()
+        identified_ct=0
+        inprogress_ct=0
+        complete_ct=0
+        for task in tasks:
+            if task.status=='Identified':
+                identified_ct = identified_ct + 1
+            elif task.status=='In Progress':
+                inprogress_ct = inprogress_ct + 1
+            elif task.status=='Complete':
+                complete_ct = complete_ct + 1
+        # ratio of complete to total number of tasks
+        progress = 100 * float(complete_ct)/float(count)
+        return {
+            'event': event,
+            'tasks': tasks,
+            # 'form': form,
+            'progress': progress,
+            'identified_ct': identified_ct,
+            'inprogress_ct' : inprogress_ct,
+            'complete_ct': complete_ct,
+        }

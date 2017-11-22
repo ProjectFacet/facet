@@ -355,13 +355,15 @@ class Organization(models.Model):
         return organization_networks
 
 
-    # def get_org_network_content(self):
-    #     """Return queryset of content shared with any network an organization is a member of excluding their own content."""
-    #
-    #     networks = Organization.get_org_networks(self)
-    #     content = Network.get_network_shared_stories(network__in=networks)
-    #     print "content: ", content
-    #     return content
+    def get_org_network_content(self):
+        """Return queryset of content shared with any network an organization is a member of excluding their own content."""
+
+        from . import Story
+
+        networks = Organization.get_org_networks(self)
+        network_content = Story.objects.filter(share_with__in=networks)
+
+        return network_content
 
 
     # formerly get_org_collaborators
@@ -682,8 +684,9 @@ class Network(models.Model):
 
         from .story import Story
 
-        network_stories = Story.objects.filter(share_with=self.id)
+        network_stories = Story.objects.filter(Q(share_with=self))
         return network_stories
+
 
     @property
     def description(self):

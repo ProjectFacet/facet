@@ -238,6 +238,7 @@ class ProjectEventTemplateView(TemplateView):
         return {'project': project, 'events': events,}
 
 
+
 def project_schedule(request, pk):
     """Generate a JSON object containing entries to display on project calendar."""
 
