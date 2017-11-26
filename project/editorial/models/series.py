@@ -40,7 +40,7 @@ class Series(models.Model):
         help_text='The name identifying the series.'
     )
 
-    series_description = models.TextField(
+    description = models.TextField(
         blank=True,
         help_text='Short description of a series.',
     )
@@ -132,10 +132,6 @@ class Series(models.Model):
         collaborators = self.collaborate_with.all()
         series_team = User.objects.filter(Q(Q(organization=self.organization) | Q(organization__in=collaborators)))
         return series_team
-
-    @property
-    def description(self):
-        return "{description}".format(description=self.series_description)
 
     @property
     def search_title(self):

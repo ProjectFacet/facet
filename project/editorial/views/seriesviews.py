@@ -10,7 +10,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.utils import timezone
-from django.views.generic import TemplateView , UpdateView, DetailView
+from django.views.generic import TemplateView , UpdateView, DetailView, ListView, CreateView
 from django.views.decorators.csrf import csrf_exempt
 import datetime
 import json
@@ -19,7 +19,10 @@ from actstream import action
 from editorial.forms import (
     SeriesForm,
     SeriesCommentForm,
-    SeriesNoteForm,)
+    SeriesNoteForm,
+    TaskForm,
+    EventForm,
+    )
 
 from editorial.models import (
     Series,
@@ -27,21 +30,161 @@ from editorial.models import (
     ImageAsset,
     Comment,
     Discussion,
-    SeriesNote,)
+    SeriesNote,
+    Task,
+    Event,
+    )
 
 #----------------------------------------------------------------------#
 #   Series Views
 #----------------------------------------------------------------------#
 
-def series_list(request):
+class SeriesListView(ListView):
     """ Displays a filterable table of series.
 
     Initial display organizes content by series name.
     """
 
-    series = Series.objects.filter(organization=request.user.organization)
+    context_object_name = 'series'
 
-    return render(request, 'editorial/serieslist.html', {'series': series})
+    def get_queryset(self):
+        """Return series belonging to the organization."""
+
+        org = self.request.user.organization
+        return org.series_organization.all()
+
+
+class SeriesCreateView(CreateView):
+    """ A logged in user can create a series.
+
+    Series serve as a linking mechanism to connect related stories and to share
+    assets between them. Series allow users to create planning notes at a series level
+    have planning discussions and upload assets. Assets are always associated with a series
+    so they are easily accessible to stories and all facets. This means that even single
+    stories technically have a series, but in that case the user does not interact with any
+    series interface.
+    """
+
+    model = Series
+    form_class = SeriesForm
+
+    def get_form_kwargs(self):
+        """Pass current user organization to the series form."""
+
+        kw = super(SeriesCreateView, self).get_form_kwargs()
+        kw.update({'organization': self.request.user.organization})
+        return kw
+
+    def form_valid(self, form):
+        """Save -- but first adding owner and organization."""
+
+        self.object = series = form.save(commit=False)
+
+        discussion = Discussion.objects.create_discussion("SER")
+        series.discussion = discussion
+
+        series.owner = self.request.user
+        series.organization = self.request.user.organization
+
+        series.save()
+        form.save_m2m()
+
+        action.send(self.request.user, verb="created", action_object=self.object)
+
+        return redirect(self.get_success_url())
+
+
+class SeriesDetailView(DetailView):
+    """ The detail page for a series.
+
+    Displays the series' planning notes, discussion, assets, share and collaboration status
+    and sensivity status.
+    """
+
+    model = Series
+
+    def get_form_kwargs(self):
+        """Pass organization to forms."""
+
+        kw = super(SeriesDetailView, self).get_form_kwargs()
+        kw.update({'organization': self.request.user.organization})
+        return kw
+
+    def stories(self):
+        """Get all stories associated with a series."""
+
+        self.object = self.get_object()
+        return self.object.story_set.all()
+
+    def series_discussion(self):
+        """Get discussion, comments and comment form for a series."""
+
+        self.object = self.get_object()
+        discussion = self.object.discussion
+        comments = discussion.comment_set.all()
+        form = SeriesCommentForm()
+        return {'discussion': discussion, 'comments': comments, 'form': form}
+
+    def series_notes(self):
+        """Get notes and note form for a series."""
+
+        self.object = self.get_object()
+        notes = self.object.seriesnote.all()
+        form = SeriesNoteForm()
+        return {'notes': notes, 'form': form}
+
+    # FIXME Currently causing error because org is not getting passed to TaskForm
+    # Commented out task form and version of return statement that uses it.
+    def series_tasks(self):
+        """Get tasks and task form for a series."""
+
+        self.object = self.get_object()
+        tasks = self.object.task_set.all()
+        # form = TaskForm()
+        # return {'tasks': tasks, 'form': form}
+        return {'tasks': tasks}
+
+
+    # FIXME Currently causing error because org is not getting passed to EventForm
+    # Commented out task form and version of return statement that uses it.
+    def story_events(self):
+        """Get events and event form for a series."""
+
+        self.object = self.get_object()
+        events = self.object.event_set.all()
+        # form = EventForm()
+        # return {'events': events, 'form': form}
+        return {'events': events}
+
+
+class SeriesUpdateView(UpdateView):
+    """Update a series."""
+
+    model = Series
+    form_class = SeriesForm
+
+    def get_form_kwargs(self):
+        """Pass current user organization to the series form."""
+
+        kw = super(SeriesUpdateView, self).get_form_kwargs()
+        kw.update({'organization': self.request.user.organization})
+        return kw
+
+    def get_success_url(self):
+        """Record action for activity stream."""
+
+        action.send(self.request.user, verb="edited", action_object=self.object)
+        return super(SeriesUpdateView, self).get_success_url()
+
+
+def series_delete(request, pk):
+    """Delete a series and its related objects then redirect user to series list."""
+
+    if request.method == "POST":
+        series = get_object_or_404(Series, pk=pk)
+        series.delete()
+
+    return redirect('series_list')
 
 
 def series_json(request):
@@ -53,93 +196,3 @@ def series_json(request):
         series[item.id]=item.name
     print series
     return HttpResponse(json.dumps(series), content_type = "application/json")
-
-
-def series_new(request):
-    """ A logged in user can create a series.
-
-    Series serve as a linking mechanism to connect related stories and to share
-    assets between them. Series allow users to create planning notes at a series level
-    have planning discussions and upload assets. Assets are always associated with a series
-    so they are easily accessible to stories and all facets. This means that even single
-    stories technically have a series, but in that case the user does not interact with any
-    series interface.
-    """
-
-    seriesform = SeriesForm(request=request)
-    if request.method == "POST":
-        seriesform = SeriesForm(request.POST, request=request)
-    if seriesform.is_valid():
-        series = seriesform.save(commit=False)
-        series.owner = request.user
-        series.organization = request.user.organization
-        series.creation_date = timezone.now()
-        discussion = Discussion.objects.create_discussion("SER")
-        series.discussion = discussion
-        series.save()
-        seriesform.save_m2m()
-
-        # record action for activity stream
-        action.send(request.user, verb="created", action_object=series)
-
-        return redirect('series_detail', pk=series.pk)
-    else:
-        seriesform = SeriesForm(request=request)
-    return render(request, 'editorial/seriesnew.html', {'seriesform': seriesform})
-
-
-def series_detail(request, pk):
-    """ The detail page for a series.
-
-    Displays the series' planning notes, discussion, assets, share and collaboration status
-    and sensivity status.
-    """
-
-    series = get_object_or_404(Series, pk=pk)
-    seriesnoteform = SeriesNoteForm()
-    seriesnotes = SeriesNote.objects.filter(series=series)[:10]
-    seriescommentform = SeriesCommentForm()
-    print "SCF: ", seriescommentform
-    print "TYPE: ", type(seriescommentform)
-    seriescomments = Comment.objects.filter(discussion=series.discussion).order_by('-date')
-
-    return render(request, 'editorial/seriesdetail.html', {
-        'series': series,
-        'seriesnoteform': seriesnoteform,
-        'seriesnotes': seriesnotes,
-        'seriescomments': seriescomments,
-        'seriescommentform': seriescommentform,
-    })
-
-
-def series_edit(request, pk):
-    """ Edit series page."""
-
-    series = get_object_or_404(Series, pk=pk)
-
-    if request.method =="POST":
-        seriesform = SeriesForm(data=request.POST, instance=series, request=request)
-        if seriesform.is_valid():
-            seriesform.save()
-
-            # record action for activity stream
-            action.send(request.user, verb="edited", action_object=series)
-
-            return redirect('series_detail', pk=series.id)
-    else:
-        seriesform = SeriesForm(instance=series, request=request)
-
-    return render(request, 'editorial/seriesedit.html', {
-        'series': series,
-        'seriesform': seriesform,
-        })
-
-
-def series_delete(request, pk):
-    """Delete a series and its related objects then redirect user to series list."""
-
-    if request.method == "POST":
-        series = get_object_or_404(Series, pk=pk)
-        series.delete()
-
-    return redirect('series_list')

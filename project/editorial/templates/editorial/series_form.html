@@ -11,9 +11,14 @@
 <div>
     <ol class="breadcrumb icon-angle-right icon-th">
         <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
+        {% if series %}
         <li class="fadeIn"><a href="{% url 'series_list' %}" title="See Series"> Series </a></li>
         <li class="fadeIn"><a href="{% url 'series_detail' series.id %}" title="See {{series.name}}"> {{series.name }} </a></li>
         <li class="fadeIn"><a href="{% url 'series_edit' series.id %}" title="You are Here"> Edit  {{series.name }} </a></li>
+        {% else %}
+        <li class="fadeIn"><a href="{% url 'series_list' %}" title="See Series"> Series </a></li>
+        <li class="fadeIn"> Create New Series </li>
+        {% endif %}
     </ol>
 </div>
 {% endblock breadcrumb %}
@@ -34,13 +39,13 @@
               <fieldset class="form-group m-b-20">
                 {% comment %}
                 <div class="col-xs-2">
-                  <label>{{ seriesform.name.label_tag }}</label>
+                  <label>{{ form.name.label_tag }}</label>
                 </div>
                 {% endcomment %}
                 <div class="col-xs-12">
-                  {{ seriesform.name }}
-                  {% if seriesform.name.errors %}
-                  <small class="text-muted">{{ seriesform.name.errors }}</small>
+                  {{ form.name }}
+                  {% if form.name.errors %}
+                  <small class="text-muted">{{ form.name.errors }}</small>
                   {% endif %}
                 </div>
               </fieldset>
@@ -48,13 +53,13 @@
               <fieldset class="form-group m-b-20">
                 {% comment %}
                 <div class="col-xs-2">
-                  <label class="capitalize">{{ seriesform.series_description.label_tag }}</label>
+                  <label class="capitalize">{{ form.description.label_tag }}</label>
                 </div>
                 {% endcomment %}
                 <div class="col-xs-12">
-                  {{ seriesform.series_description }}
-                  {% if seriesform.series_description.errors %}
-                  <small class="text-muted">{{ seriesform.series_description.errors }}</small>
+                  {{ form.description }}
+                  {% if form.description.errors %}
+                  <small class="text-muted">{{ form.description.errors }}</small>
                   {% endif %}
                 </div>
               </fieldset>
@@ -66,26 +71,26 @@
           <fieldset class="form-group m-b-20">
             {% comment %}
             <div class="col-xs-2">
-              <label class="capitalize">{{ seriesform.team.label_tag }}</label>
+              <label class="capitalize">{{ form.team.label_tag }}</label>
             </div>
             {% endcomment %}
             <div class="col-xs-12">
-              {{ seriesform.team }}
-              {% if seriesform.team.errors %}
-              <small class="text-muted">{{ seriesform.team.errors }}</small>
+              {{ form.team }}
+              {% if form.team.errors %}
+              <small class="text-muted">{{ form.team.errors }}</small>
               {% endif %}
             </div>
           </fieldset>
 
           <fieldset class="form-group m-b-20">
             <span class="col-xs-2">
-              <label class="capitalize c-input c-checkbox">{{ seriesform.collaborate.label_tag }}</label>
+              <label class="capitalize c-input c-checkbox">{{ form.collaborate.label_tag }}</label>
             </span>
             <span class="col-xs-10">
-              {{ seriesform.collaborate }}
+              {{ form.collaborate }}
               <span class="c-indicator c-indicator-default"></span>
-              {% if seriesform.collaborate.errors %}
-              <small class="text-muted">{{ seriesform.collaborate.errors }}</small>
+              {% if form.collaborate.errors %}
+              <small class="text-muted">{{ form.collaborate.errors }}</small>
               {% endif %}
             </span>
           </fieldset>
@@ -93,13 +98,13 @@
           <fieldset class="form-group m-b-20">
             {% comment %}
             <div class="col-xs-2">
-              <label class="capitalize">{{ seriesform.collaborate_with.label_tag }}</label>
+              <label class="capitalize">{{ form.collaborate_with.label_tag }}</label>
             </div>
             {% endcomment %}
             <div class="col-xs-12">
-              {{ seriesform.collaborate_with }}
-              {% if seriesform.collaborate_with.errors %}
-              <small class="text-muted">{{ seriesform.collaborate_with.errors }}</small>
+              {{ form.collaborate_with }}
+              {% if form.collaborate_with.errors %}
+              <small class="text-muted">{{ form.collaborate_with.errors }}</small>
               {% endif %}
             </div>
           </fieldset>

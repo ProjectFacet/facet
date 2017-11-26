@@ -87,11 +87,11 @@ class StoryCreateView(CreateView):
         return self.request.user.organization.get_org_networks()
 
     def series(self):
-        #FIXME limit to series owned by request user org
+        # TODO limit to series owned by request user org
         return Series.objects.all()
 
     def projects(self):
-        # FIXME limit to projects owned by request.user.org or projects that
+        # TODO limit to projects owned by request.user.org or projects that
         # are collaborative and involve request.user.org
         return Project.objects.all()
 
@@ -151,11 +151,13 @@ class StoryDetailView(DetailView):
         kw.update({'organization': self.request.user.organization})
         return kw
 
+
     def facets(self):
         """Get all story facets"""
 
         self.object = self.get_object()
         return self.get_story_facets()
+
 
     def story_discussion(self):
         """Get discussion, comments and comment form for the story."""
@@ -166,6 +168,7 @@ class StoryDetailView(DetailView):
         form = StoryCommentForm()
         return {'discussion': discussion, 'comments': comments, 'form': form}
 
+
     def story_notes(self):
         """Get notes and note form for the story."""
 
@@ -173,6 +176,7 @@ class StoryDetailView(DetailView):
         notes = self.object.storynote_set.all()
         form = StoryNoteForm()
         return {'notes': notes, 'form': form}
+
 
     # FIXME Currently causing error because org is not getting passed to TaskForm
     # Commented out task form and version of return statement that uses it.
@@ -185,6 +189,7 @@ class StoryDetailView(DetailView):
         # return {'tasks': tasks, 'form': form}
         return {'tasks': tasks}
 
+
     # FIXME Currently causing error because org is not getting passed to EventForm
     # Commented out task form and version of return statement that uses it.
     def story_events(self):
@@ -195,6 +200,7 @@ class StoryDetailView(DetailView):
         # form = EventForm()
         # return {'events': events, 'form': form}
         return {'events': events}
+
 
     def story_assets(self):
         """Return all the assets associated with a story."""

@@ -159,11 +159,11 @@ urlpatterns = [
     #----------------------------------------------------------------------#
     #   Series URLS
     #----------------------------------------------------------------------#
-    url(r'^series/new/$', seriesviews.series_new, name='series_new'),
-    url(r'^series$', seriesviews.series_list, name='series_list'),
+    url(r'^series/new/$', seriesviews.SeriesCreateView.as_view(), name='series_new'),
+    url(r'^series$', seriesviews.SeriesListView.as_view(), name='series_list'),
     url(r'^series/json$', seriesviews.series_json, name='series_json'),
-    url(r'^series/(?P<pk>[0-9]+)/$', seriesviews.series_detail, name='series_detail'),
-    url(r'^series/(?P<pk>[0-9]+)/edit/$', seriesviews.series_edit, name='series_edit'),
+    url(r'^series/(?P<pk>[0-9]+)/$', seriesviews.SeriesDetailView.as_view(), name='series_detail'),
+    url(r'^series/(?P<pk>[0-9]+)/edit/$', seriesviews.SeriesUpdateView.as_view(), name='series_edit'),
     url(r'^series/(?P<pk>[0-9]+)/delete/$', seriesviews.series_delete, name='series_delete'),
     url(r'^series/(?P<pk>[0-9]+)/notes/$', noteviews.series_notes, name='series_notes'),
     url(r'^series/(?P<pk>[0-9]+)/note/(?P<note_type>[-\w]+)/content$', noteviews.note_content_html, name='note_content_html'),

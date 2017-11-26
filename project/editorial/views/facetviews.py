@@ -15,7 +15,6 @@ from ..forms import (
     VideoAssetForm,)
 
 
-
 class FacetTemplateCreateView(CreateView):
     """Create a facet template."""
 
@@ -27,7 +26,7 @@ class FacetTemplateCreateView(CreateView):
 
         self.object = template = form.save(commit=False)
 
-        #FIXME What's the appropriate way to retrieve these fields?
+        # NOTE What's the appropriate way to retrieve these fields?
         # This or defining all the choices in forms?
         form_fields = self.request.POST.getlist('fields')
 
@@ -56,7 +55,7 @@ class FacetTemplateUpdateView(UpdateView):
         return super(FacetTemplateUpdateView, self).get_success_url()
 
 
-#FIXME Facet create view does not have the story id 
+#FIXME Facet create view does not have the story id
 class FacetCreateView(CreateView):
     """Create a facet (dynamically using right template)."""
 
@@ -107,7 +106,7 @@ class FacetUpdateView(UpdateView):
         return get_facet_form_for_template(self.object.template_id)
 
     def get_form_kwargs(self):
-        """Pass current user organization to the form."""
+        """Pass current story to the form."""
 
         self.object = self.get_object()
         facet = self.object

@@ -16,8 +16,7 @@
           <li class="fadeIn"><a href="{% url 'story_detail' story.id %}" title="View Story"> {{ story.name }} </a></li>
           <li class="fadeIn"><a href="{% url 'story_edit' story.id %}" title="You are Here"> Edit {{ story.name }} </a></li>
         {% else %}
-        <li class="fadeIn"> Create New Content </li>
-        <li class="fadeIn"><a href="{% url 'story_new' %}" title="You are Here"> New Story </a></li>
+        <li class="fadeIn"> Create New Story </li>
         {% endif %}
     </ol>
 </div>

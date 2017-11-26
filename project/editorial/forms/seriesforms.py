@@ -16,6 +16,7 @@ from tinymce.widgets import TinyMCE
 
 
 from editorial.models import (
+    Organization,
     Series,
 )
 
@@ -28,17 +29,22 @@ class SeriesForm(forms.ModelForm):
     """ Form to create a new series. """
 
     def __init__(self, *args, **kwargs):
-        self.request = kwargs.pop("request")
+        org = kwargs.pop("organization")
         super(SeriesForm, self).__init__(*args, **kwargs)
-        self.fields['collaborate_with'].queryset = Organization.get_org_collaborators_vocab(self.request.user.organization)
-        self.fields['team'].queryset = Organization.get_org_users(self.request.user.organization)
+        self.fields['collaborate_with'].queryset = org.get_org_collaborators_vocab()
+        self.fields['team'].queryset = org.get_org_users()
 
     class Meta:
         model = Series
-        fields = ['name', 'series_description', 'collaborate', 'collaborate_with', 'team']
+        fields = [
+            'name',
+            'description',
+            'collaborate',
+            'collaborate_with',
+            'team']
         widgets = {
             'name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Series Name'}),
-            'series_description': Textarea(attrs={'class': 'form-control', 'placeholder': 'Description'}),
+            'description': Textarea(attrs={'class': 'form-control', 'placeholder': 'Description'}),
             'team': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select form-control facet-select', 'id':'series-team', 'data-placeholder': 'Select Series Team'}),
             'collaborate': CheckboxInput(attrs={'class': 'c-indicator c-indicator-default'}),
             'collaborate_with': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select form-control facet-select', 'id':'collaborate-with', 'data-placeholder': 'Select Collaborators'}),
