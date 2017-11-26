@@ -189,7 +189,7 @@ input[type="checkbox"] {
   box-shadow: none;
 }
 
-#id_content_license {
+#id_content_license, #id_producer {
   font-size: 12px;
   height: 32px !important;
   background-color: #3c414f !important;
@@ -331,6 +331,30 @@ img.image-center {
   opacity: .75;
 }
 
+#id_pronounciations {
+    border: 1px solid #424756;
+    width: 100% !important;
+    color: #fff !important;
+    background-color: #3c414f !important;
+}
+
+
+#facetcommentbutton {
+  height: 50px !important;
+}
+
+#menu-plus {
+  margin-top: 15px !important;
+  margin-left: 30px !important;
+}
+
+#doc-library-modal label {
+  width: 100% !important;
+}
+
+.facetdiscussion {
+  height: 350px !important;
+}
 
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
   color: #474d5d;

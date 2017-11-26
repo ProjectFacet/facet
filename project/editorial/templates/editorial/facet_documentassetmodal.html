@@ -99,10 +99,81 @@
                   {% csrf_token %}
                   <div class="row document-library">
                   {% for document in document_assets.org_documents %}
-                    <div class="col-md-2">
+                    <div class="col-md-2" id="doc-library-modal">
                       <label>
-                        <img class="img-responsive" src="{{ document.display_photo.url }}" alt="{{ document.title }}">
+                        {% if document.asset_type == "PDF" %}
+                        <a href="{% url 'document_asset_detail' pk=document.id %}">
+                          <div class="card bs-card">
+                            <div class="card-block bg-danger-500 p-10">
+                              <p class="f-r-10 f-w-300 text-center m-b-0"> <i class="fa fa-file-pdf-o text-center"></i> .pdf </p>
+                            </div>
+                            <div class="card-block  m-h-100 p-10">
+                              <p class="f-r-8 f-w-400"> {{ document.title }} </p>
+                            </div>
+                          </div>
+                        </a>
+                        {% elif document.asset_type == "WORD DOC" %}
+                        <a href="{% url 'document_asset_detail' pk=document.id %}">
+                          <div class="card bs-card">
+                            <div class="card-block bg-info-500 p-10">
+                              <p class="f-r-10 f-w-300 text-center m-b-0"> <i class="fa fa-file-word-o text-center"> </i> .docx </p>
+                            </div>
+                            <div class="card-block  m-h-100 p-10">
+                              <p class="f-r-8 f-w-400"> {{ document.title }} </p>
+                            </div>
+                          </div>
+                        </a>
+                        {% elif document.asset_type == "TEXT" %}
+                        <a href="{% url 'document_asset_detail' pk=document.id %}">
+                          <div class="card bs-card">
+                            <div class="card-block bg-primary-500 p-10">
+                              <p class="f-r-10 f-w-300 text-center m-b-0"> <i class="fa fa-file-text-o text-center"> </i> .txt </p>
+                            </div>
+                            <div class="card-block  m-h-100 p-10">
+                              <p class="f-r-8 f-w-400"> {{ document.title }} </p>
+                            </div>
+                          </div>
+                        </a>
+                        {% elif document.asset_type == "COMMA SEPARATED" %}
+                        <a href="{% url 'document_asset_detail' pk=document.id %}">
+                          <div class="card bs-card">
+                            <div class="card-block bg-success-500 p-10">
+                              <p class="f-r-10 f-w-300 text-center m-b-0"> <i class="fa fa-file-excel-o text-center"> </i> .csv </p>
+                            </div>
+                            <div class="card-block  m-h-100 p-10">
+                              <p class="f-r-8 f-w-400"> {{ document.title }} </p>
+                            </div>
+                          </div>
+                        </a>
+                        {% elif document.asset_type == "EXCEL" %}
+                        <a href="{% url 'document_asset_detail' pk=document.id %}">
+                          <div class="card bs-card">
+                            <div class="card-block bg-success-500 p-10">
+                              <p class="f-r-10 f-w-300 text-center m-b-0"> <i class="fa fa-file-excel-o text-center"> </i> .xls </p>
+                            </div>
+                            <div class="card-block  m-h-100 p-10">
+                              <p class="f-r-8 f-w-400"> {{ document.title }} </p>
+                            </div>
+                          </div>
+                        </a>
+                        {% elif document.asset_type == "OTHER" %}
+                        <a href="{% url 'document_asset_detail' pk=document.id %}">
+                          <div class="card bs-card">
+                            <div class="card-block bg-warning-500 p-10">
+                              <p class="f-r-10 f-w-300 text-center m-b-0"> <i class="fa fa-file-o text-center"> </i> other </p>
+                            </div>
+                            <div class="card-block m-h-100 p-10">
+                              <p class="f-r-8 f-w-400"> {{ document.title }} </p>
+                            </div>
+                          </div>
+                        </a>
+                        {% endif %}
+
+                        {% if document in document_assets.documents %}
+                        <i class="fa fa-check-square subtle" aria-hidden="true"></i>
+                        {% else %}
                         <input type="checkbox" name="documents" value="{{ document.id }}">
+                        {% endif %}
                       </label>
                     </div>
                     {% if forloop.counter|divisibleby:"6" and not forloop.last %}

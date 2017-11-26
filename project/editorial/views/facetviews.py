@@ -56,6 +56,7 @@ class FacetTemplateUpdateView(UpdateView):
         return super(FacetTemplateUpdateView, self).get_success_url()
 
 
+#FIXME Facet create view does not have the story id 
 class FacetCreateView(CreateView):
     """Create a facet (dynamically using right template)."""
 
