@@ -31,8 +31,8 @@
     <div class="discussion">
       <h4 class="m-b-20">Discussion</h4>
       <div class="comments" data-toggle="slimScroll" style="height:380px" data-color="#5D9CEC" data-allow-page-scroll="false">
-          {% if networkcomments %}
-          {% for comment in networkcomments %}
+          {% if comments %}
+          {% for comment in comments %}
           <div class="row m-b-10">
               <div class="col-xs-12">
                   <div class="media">
@@ -63,18 +63,18 @@
                 <div class="col-md-10">
                     {% csrf_token %}
                     <div class="form-group">
-                    {{ networkcommentform.text }}
+                    {{ commentform.text }}
                     </div>
-                    {% if networkcommentform.text.errors %}
+                    {% if commentform.text.errors %}
                       <div class="alert alert-warning" role="alert">
-                      {{ networkcommentform.text.errors }}
+                      {{ commentform.text.errors }}
                       </div>
                     {% endif %}
                     <input type="hidden" name="network" value="{{ network.pk }}" />
                 </div>
                 <div class="col-md-2">
                     <div class="form-group">
-                      <button type="submit" class="btn btn-default btn-sm" name="networkcommentform">
+                      <button type="submit" class="btn btn-default btn-sm" name="commentform">
                           <i class="fa fa-paper-plane"></i>
                       </button>
                     </div>
@@ -91,7 +91,7 @@
       <h4 class="m-b-20">Notes <a data-toggle="modal" data-target="#addNetworkNote" title="Add Network Note"><i class="fa fa-plus sameline dark"></i></a></h4>
       </div>
       <div class="displaynotes">
-      {% for note in networknotes|slice:":6" %}
+      {% for note in notes|slice:":6" %}
           <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
             <div class="card bs-card">
                 <div class="card-block">
@@ -126,13 +126,6 @@
 
 </div> <!-- End of Row -->
 
-{% comment %}
-<div class="overlay overlay-hugeinc">
-			<button type="button" class="overlay-close">Close</button>
-			<h1>SOMETHING AWESOME IS HAPPENING</h1>
-</div>
-{% endcomment %}
-
 {% endblock %}
 
 <!-------------------------------------------->
@@ -150,7 +143,7 @@
       <div class="modal-body">
         <form action="{% url 'create_network_note' %}" method="POST" class="post-form">
         {% csrf_token %}
-        {% bootstrap_form networknoteform %}
+        {% bootstrap_form noteform %}
         <input type="hidden" name="network" value="{{ network.pk }}" />
         <button type="submit" class="btn btn-primary">Post Note</button>
         </form>

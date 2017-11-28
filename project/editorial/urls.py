@@ -214,12 +214,12 @@ urlpatterns = [
     #----------------------------------------------------------------------#
     #   Network URLS
     #----------------------------------------------------------------------#
-    url(r'^network/new/$', networkviews.network_new, name='network_new'),
-    url(r'^network/(?P<pk>[0-9]+)/$', networkviews.network_detail, name='network_detail'),
+    url(r'^network/new/$', networkviews.NetworkCreateView.as_view(), name='network_new'),
+    url(r'^network/(?P<pk>[0-9]+)/$', networkviews.NetworkDetailView.as_view(), name='network_detail'),
     url(r'^network/invitation/$', networkviews.send_network_invite, name='send_network_invite'),
     url(r'^network/invitation/accept/$', networkviews.confirm_network_invite, name='confirm_network_invite'),
-    url(r'^network/(?P<pk>[0-9]+)/edit/$', networkviews.network_edit, name='network_edit'),
-    url(r'^network/list$', networkviews.network_list, name='network_list'),
+    url(r'^network/(?P<pk>[0-9]+)/edit/$', networkviews.NetworkUpdateView.as_view(), name='network_edit'),
+    url(r'^network/list$', networkviews.NetworkListView.as_view(), name='network_list'),
     url(r'^network/stories$', networkviews.network_stories, name='network_stories'),
     # url(r'^network/stories/json$', networkviews.network_stories_json, name='network_stories_json'),
     url(r'^network/(?P<pk>[0-9]+)/notes/$', noteviews.network_notes, name='network_notes'),

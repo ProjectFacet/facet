@@ -32,24 +32,24 @@
           <div class="row">
             <fieldset class="form-group m-b-20">
               <div class="col-xs-2">
-                <label>{{ networkform.name.label_tag }}</label>
+                <label>{{ form.name.label_tag }}</label>
               </div>
               <div class="col-xs-10">
-                {{ networkform.name }}
-                {% if networkform.name.errors %}
-                <small class="text-muted">{{ networkform.name.errors }}</small>
+                {{ form.name }}
+                {% if form.name.errors %}
+                <small class="text-muted">{{ form.name.errors }}</small>
                 {% endif %}
               </div>
             </fieldset>
 
             <fieldset class="form-group m-b-20">
               <div class="col-xs-2">
-                <label class="capitalize">{{ networkform.network_description.label_tag }}</label>
+                <label class="capitalize">{{ form.network_description.label_tag }}</label>
               </div>
               <div class="col-xs-10">
-                {{ networkform.network_description }}
-                {% if networkform.network_description.errors %}
-                <small class="text-muted">{{ networkform.network_description.errors }}</small>
+                {{ form.network_description }}
+                {% if form.network_description.errors %}
+                <small class="text-muted">{{ form.network_description.errors }}</small>
                 {% endif %}
               </div>
             </fieldset>

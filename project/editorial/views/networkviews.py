@@ -10,7 +10,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.utils import timezone
-from django.views.generic import TemplateView , UpdateView, DetailView
+from django.views.generic import TemplateView , UpdateView, DetailView, CreateView, ListView
 from django.views.decorators.csrf import csrf_exempt
 from django.core.serializers.json import DjangoJSONEncoder
 import datetime
@@ -56,28 +56,81 @@ from editorial.models import (
 #   Network Views
 #----------------------------------------------------------------------#
 
-def network_new(request):
-    """ Create a new network. """
+class NetworkCreateView(CreateView):
+    """Create a new network."""
 
-    networkform = NetworkForm()
-    owner_org = request.user.organization
-    if request.method == "POST":
-        networkform = NetworkForm(request.POST or None)
-        if networkform.is_valid():
-            network = networkform.save(commit=False)
-            network.owner_organization = owner_org
-            network.creation_date = timezone.now()
-            discussion = Discussion.objects.create_discussion("NET")
-            network.discussion = discussion
-            network.save()
-            network.organizations.add(owner_org)
-            network.save()
-            return redirect('network_detail', pk=network.pk)
-    else:
-        networkform = NetworkForm()
-    return render(request, 'editorial/networknew.html', {
-            'networkform': networkform
+    model = Network
+    form_class = NetworkForm
+
+    def form_valid(self, form):
+        """Save -- but first add owner organization."""
+
+        self.object = network = form.save(commit=False)
+
+        discussion = Discussion.objects.create_discussion("NET")
+        network.discussion = discussion
+
+        network.organization_owner = self.request.user.organization
+
+        network.save()
+        form.save_m2m()
+
+        action.send(self.request.user, verb="created", action_object=self.object)
+
+        return redirect(self.get_success_url())
+
+
+class NetworkUpdateView(UpdateView):
+    """ Update a network."""
+
+    model = Network
+    form_class = NetworkForm
+
+    def get_success_url(self):
+        """Record action for activity stream."""
+
+        action.send(self.request.user, verb="edited", action_object=self.object)
+        return super(NetworkUpdateView, self).get_success_url()
+
+
+class NetworkListView(ListView):
+    """Display a list of all the networks and organization is either
+    the owner of or a member of.
+    """
+
+    context_object_name = 'networks'
+
+    def get_queryset(self):
+        """return relevant networks for an organization."""
+        org = self.request.user.organization
+        return org.get_org_networks()
+
+
+class NetworkDetailView(DetailView):
+    """Return all the detail for a network."""
+
+    model = Network
+
+    def get_context_data(self, **kwargs):
+        """Get network related info."""
+
+        context = super(NetworkDetailView, self).get_context_data(**kwargs)
+
+        notes = self.object.networknote_network.all()
+        noteform = NetworkNoteForm()
+        comments = self.object.discussion.comment_set.all()
+        commentform = NetworkCommentForm()
+        networkinvitationform = InviteToNetworkForm()
+
+        context.update({
+                'notes': notes,
+                'noteform': noteform,
+                'comments': comments,
+                'commentform': commentform,
+                'networkinvitationform': networkinvitationform,
         })
+
+        return context
 
 
 def delete_network(request, pk):
@@ -132,74 +185,6 @@ def org_to_network(request, pk):
     else:
         form = AddToNetworkForm()
     return render(request, 'editorial/networkdetail.html', {'form': form})
-
-
-def network_detail(request, pk):
-    """ Public profile of a network. """
-
-    network = get_object_or_404(Network, pk=pk)
-    networknoteform = NetworkNoteForm()
-    networkinvitationform = InviteToNetworkForm()
-    networknotes = NetworkNote.objects.filter(network=network)
-    networkcomments = Comment.objects.filter(discussion=network.discussion).order_by('-date')
-    networkcommentform = NetworkCommentForm()
-
-    return render(request, 'editorial/networkdetail.html', {
-        'network': network,
-        'networkinvitationform': networkinvitationform,
-        'networknoteform': networknoteform,
-        'networknotes': networknotes,
-        'networkcomments': networkcomments,
-        'networkcommentform': networkcommentform,
-        })
-
-
-def network_edit(request, pk):
-    """ Edit network page. """
-
-    network = get_object_or_404(Network, pk=pk)
-
-    if request.method == "POST":
-        networkform = NetworkForm(data=request.POST, instance=network)
-        if networkform.is_valid():
-            networkform.save()
-            return redirect('network_detail', pk=network.id)
-    else:
-        networkform = NetworkForm(instance=network)
-
-    return render(request, 'editorial/networkedit.html', {
-            'network': network,
-            'networkform': networkform,
-        })
-
-
-def network_list(request):
-    """ Table of networks your org is member of."""
-
-    organization = request.user.organization
-    network_list = Organization.get_org_networks(organization)
-
-    return render(request, 'editorial/networklist.html', {'network_list': network_list})
-
-
-# def network_stories_json(request):
-#     """Return JSON of network story objects."""
-#
-#     organization = request.user.organization
-#     networks = Organization.get_org_networks(organization)
-#
-#     shared_networkstories = []
-#     for network in networks:
-#         stories = Network.get_network_shared_stories(network)
-#         shared_networkstories.extend(stories)
-#     shared_networkstories = [story for story in shared_networkstories if story.organization != organization]
-#     stories = set(shared_networkstories)
-#     # networkstories = json.dumps(list(stories), cls=DjangoJSONEncoder)
-#
-#     org_network_content = Organization.get_org_network_content(organization)
-#     print "ONC: ", org_network_content
-#
-#     return HttpResponse(json.dumps(networkstories), content_type='application/json')
 
 
 def network_stories(request):
@@ -604,3 +589,23 @@ def copy_network_story(request, pk):
 
 
     return redirect('network_stories')
+
+
+# def network_stories_json(request):
+#     """Return JSON of network story objects."""
+#
+#     organization = request.user.organization
+#     networks = Organization.get_org_networks(organization)
+#
+#     shared_networkstories = []
+#     for network in networks:
+#         stories = Network.get_network_shared_stories(network)
+#         shared_networkstories.extend(stories)
+#     shared_networkstories = [story for story in shared_networkstories if story.organization != organization]
+#     stories = set(shared_networkstories)
+#     # networkstories = json.dumps(list(stories), cls=DjangoJSONEncoder)
+#
+#     org_network_content = Organization.get_org_network_content(organization)
+#     print "ONC: ", org_network_content
+#
+#     return HttpResponse(json.dumps(networkstories), content_type='application/json')
