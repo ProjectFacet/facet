@@ -56,7 +56,7 @@ class OrganizationCreateView(generic.CreateView):
 
 
 class OrganizationUpdateView(generic.UpdateView):
-    """Create a new organization."""
+    """Edit an organization."""
 
     model = Organization
     form_class = OrganizationForm

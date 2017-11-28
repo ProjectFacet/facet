@@ -10,7 +10,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.utils import timezone
-from django.views.generic import TemplateView , UpdateView, DetailView
+from django.views.generic import TemplateView , UpdateView, DetailView, CreateView
 from django.views.decorators.csrf import csrf_exempt
 import datetime
 import json
@@ -31,81 +31,77 @@ from editorial.models import (
 #----------------------------------------------------------------------#
 #   User Views
 #----------------------------------------------------------------------#
+class UserCreateView(CreateView):
+    """Quick form for creating and adding a new user to an organization
+    and inviting them to login.
+    """
 
-def user_new(request):
-    """ Quick form for making a new user and inviting them to login. """
+    model = User
+    form_class = AddUserForm
 
-    if request.method == "POST":
-        form = AddUserForm(request.POST or None)
-        if form.is_valid():
-            user = form.save(commit=False)
-            user.organization = request.user.organization
-            user.save()
+    def form_valid(self, form):
+        """Save user -- but first set a few values."""
 
-            # notify new user of of account creation
-            mail_subject = "New Facet User Details"
-            message = "You've been added to Facet. Your login is your email and your password is please."
-            recipient = [user.email]
-            sender_email = request.user.email
-            send_mail(mail_subject, message, settings.EMAIL_HOST_USER, recipient, fail_silently=True)
+        user = form.save(commit=False)
+        user.organization = self.request.user.organization
+        user.save()
 
-            # record action for activity stream
-            new_user = get_object_or_404(User, pk=user.pk)
-            action.send(request.user, verb="added", action_object=new_user)
-        return redirect('team_list')
-    else:
-        form=AddUserForm()
-        return render(request, 'editorial/usernew.html', {'form': form})
+        # notify new user of of account creation
+        mail_subject = "New User Details"
+        message = "You've been added to Facet. Your login is your email and your password is please."
+        recipient = [user.email]
+        sender_email = self.request.user.email
+        send_mail(mail_subject, message, settings.EMAIL_HOST_USER, recipient, fail_silently=True)
+
+        # record action for activity stream
+        new_user = get_object_or_404(User, pk=user.pk)
+        action.send(self.request.user, verb="added", action_object=new_user)
+
+        return redirect(self.get_success_url())
 
 
-def user_detail(request, pk):
+class UserDetailView(DetailView):
     """ The public profile of a user.
 
     Displays the user's organization, title, credit name, email, phone,
     bio, expertise, profile photo, social media links and most recent content.
     """
 
-    user = get_object_or_404(User, pk=pk)
-    # user_stories = User.get_user_stories(user)
-    user_content = User.get_user_content(user)
-    usernotes = UserNote.objects.filter(owner_id=user.id)[:4]
-    usernoteform = UserNoteForm()
+    model = User
 
-    content = user.get_user_content()
+    def content(self):
+        """Get all content associated with a user."""
 
-    return render(request, 'editorial/userdetail.html', {
-        'user': user,
-        # 'user_stories': user_stories,
-        'user_content': user_content,
-        'usernotes': usernotes,
-        'usernoteform': usernoteform
-        })
+        self.object = self.get_object()
+        return self.object.get_user_content()
 
 
-def user_edit(request, pk):
-    """ Edit the user's profile."""
+    def assets(self):
+        """Get all assets associated with a user."""
 
-    user = get_object_or_404(User, pk=pk)
-    print "1"
-    if request.method == "POST":
-        # import pdb; pdb.set_trace()
-        print "2"
-        userform = UserProfileForm(request.POST, request.FILES, instance=user)
-        print "3"
-        # print "userform exists: ", userform
-        if userform.is_valid():
-            print "user update"
-            userform.save()
-            print "user updated"
-            return redirect('user_detail', pk = user.id)
-    else:
-        print "a"
-        userform = UserProfileForm(instance=user)
+        self.object = self.get_object()
+        return self.object.get_user_assets()
 
-    return render(request, 'editorial/useredit.html', {
-            'user': user,
-            'userform': userform
-    })
+    def notes(self):
+        """Get all user notes associated with user and note form."""
+
+        self.object = self.get_object()
+        notes = self.object.usernote_owner.all()
+        form = UserNoteForm()
+        return {'notes': notes, 'form': form,}
+
+
+class UserUpdateView(UpdateView):
+    """Update a user."""
+
+    model = User
+    form_class = UserProfileForm
+
+    def get_success_url(self):
+        """Record action for activity stream."""
+
+        action.send(self.request.user, verb="edited", action_object=self.object)
+        return super(UserUpdateView, self).get_success_url()
 
 
 @csrf_exempt

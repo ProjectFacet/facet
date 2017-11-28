@@ -157,10 +157,21 @@ class User(AbstractUser):
 
         return user_content
 
-    # TODO complete get_user_assets
-    # def get_user_assets(self):
-    #     """Return assets that a user is associated with."""
-    #     pass
+    def get_user_assets(self):
+        """Return assets that a user is associated with."""
+
+        user_assets = []
+        images_owner = self.imageasset_set.all()
+        documents_owner = self.documentasset_set.all()
+        audio_owner = self.audioasset_set.all()
+        video_owner = self.videoasset_set.all()
+        user_assets.extend(images_owner)
+        user_assets.extend(documents_owner)
+        user_assets.extend(audio_owner)
+        user_assets.extend(video_owner)
+
+        return user_assets
+
 
     def inbox_comments(self):
         """ Return list of comments from discussions the user is a participant in.

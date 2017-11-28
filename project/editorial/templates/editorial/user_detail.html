@@ -52,34 +52,39 @@
 
 <div class="row">
     <!-- Left Column -->
+    {% with view.content as content %}
     <div class="col-xs-12 col-sm-12 col-md-10 col-lg-10" id="dashboard-left">
-      {% if user_stories %}
-      <table id="user-stories-list" class="table table-condensed">
-        <thead>
-          <tr>
-            <th>Story</th>
-            <th>Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for story in user_stories %}
-          <tr>
-            <td><a href="{% url 'story_detail' story.id %}">{{ story.name }}</a></td>
-            <td class="description-td">{{ story.description }}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-      {% else %}
-      <p class="f-s-18 subtle text-center italic m-b-40 m-t-40">Welcome to the {{ user.credit_name }}'s page. This is where you will see all of the current active content for {{ user.credit_name }}.</p>
-      {% endif %}
+      {% if content %}
+        <table id="user-stories-list" class="table table-condensed">
+          <thead>
+            <tr>
+              <th>Story</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in content %}
+              {% if item.type == "Story" %}
+            <tr>
+              <td><a href="{% url 'story_detail' item.id %}">{{ item.name }}</a></td>
+              <td class="description-td">{{ item.description }}</td>
+            </tr>
+            {% endif %}
+            {% endfor %}
+          </tbody>
+        </table>
+        {% else %}
+          <p class="f-s-18 subtle text-center italic m-b-40 m-t-40">Welcome to the {{ user.credit_name }}'s page. This is where you will see all of the current active content for {{ user.credit_name }}.</p>
+        {% endif %}
     </div>
+    {% endwith %}
     <!-- Right Column -->
+    {% with view.notes as notes %}
     <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2 activity-widget-4" id="dashboard-right">
       {% if request.user.id == user.id %}
         <h4>Notes <a href="#" data-toggle="modal" data-target="#addUserNote" title="Add User Note"><i class="fa fa-plus sameline dark"></i></a></h4>
         <div id="displaynotes">
-        {% for note in usernotes %}
+        {% for note in notes.notes %}
             <div class="row">
                 <div class="col-xs-12">
                   <div class="media">
@@ -94,7 +99,8 @@
           {% endfor %}
         <small><a href="{% url 'user_notes' pk=request.user.id %}" class="link-text">See all notes...</a></small>
         </div>
-    {% endif %}
+        {% endif %}
+    {% endwith %}
     </div>
 
 </div>
@@ -110,6 +116,7 @@ $(document).ready(function() {
 {% endblock %}
 
 {% block modals %}
+    {% with view.notes as notes %}
     <!-- Add Note Modal -->
     <div class="modal fade" id="addUserNote" tabindex="-1" role="dialog" aria-labelledby="addUserNoteModalLabel">
       <div class="modal-dialog" role="document">
@@ -121,7 +128,7 @@ $(document).ready(function() {
           <div class="modal-body">
             <form action="{% url 'create_user_note' %}" method="POST" class="post-form">
             {% csrf_token %}
-            {% bootstrap_form usernoteform %}
+            {% bootstrap_form notes.form %}
             <input type="hidden" name="user" value="{{ user.pk }}" />
             <button type="submit" class="btn btn-primary">Post Note</button>
             </form>
@@ -133,7 +140,7 @@ $(document).ready(function() {
     </div>
     <!-- END Add Note Modal -->
     <!-- Display User Note Modal -->
-    {% for note in usernotes %}
+    {% for note in notes.notes %}
     <div class="modal fade" id="displayNote{{note.id}}" tabindex="-1" role="dialog" aria-labelledby="displayNote{{note.id}}">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -152,5 +159,6 @@ $(document).ready(function() {
       </div>
     </div>
     {% endfor %}
+    {% endwith %}
     <!-- END Display User Note Modal -->
 {% endblock %}

@@ -31,12 +31,6 @@ from . import api
 from views.searchviews import EditorialSearchView
 
 urlpatterns = [
-    url(r'^facet/add/$', facetviews.FacetPreCreateView.as_view(), name="facet_precreate"),
-    url(r'^facet/add/(?P<template_id>\d+)/$', facetviews.FacetCreateView.as_view(), name="facet_add"),
-    url(r'^facet/edit/(?P<pk>\d+)/$', facetviews.FacetUpdateView.as_view(), name="facet_edit"),
-    url(r'^facet/template/create/$', facetviews.FacetTemplateCreateView.as_view(), name="facet_template_create"),
-    url(r'^facet/template/(?P<pk>\d+)/edit$', facetviews.FacetTemplateUpdateView.as_view(), name="facet_template_edit"),
-
     #----------------------------------------------------------------------#
     #   Test URL - Used for non-destructive testing of templates/queries
     #----------------------------------------------------------------------#
@@ -46,9 +40,9 @@ urlpatterns = [
     #----------------------------------------------------------------------#
     url('^api/', include(api.router.urls)),
     #----------------------------------------------------------------------#
-    #   WebFacet to WordPress URL - On demand pushing
+    #   Facet to WordPress URL - On demand pushing
     #----------------------------------------------------------------------#
-    url(r'^webfacet/json/$', pushcontentviews.webfacet_json, name='webfacet_json'),
+    url(r'^facet/json/$', pushcontentviews.webfacet_json, name='webfacet_json'),
     # url(r'^webfacet/wordpress/$', pushcontentviews.push_webfacet_wp, name='push_webfacet_wp'),
     #----------------------------------------------------------------------#
     #   Homepage URLS
@@ -117,10 +111,6 @@ urlpatterns = [
     url(r'^seriescomment/new$', communicationviews.create_seriescomment, name='create_seriescomment'),
     url(r'^storycomment/new$', communicationviews.create_storycomment, name='create_storycomment'),
     url(r'^facetcomment/new$', communicationviews.create_facetcomment, name='create_facetcomment'),
-    # url(r'^webcomment/new$', communicationviews.create_webcomment, name='create_webcomment'),
-    # url(r'^printcomment/new$', communicationviews.create_printcomment, name='create_printcomment'),
-    # url(r'^audiocomment/new$', communicationviews.create_audiocomment, name='create_audiocomment'),
-    # url(r'^videocomment/new$', communicationviews.create_videocomment, name='create_videocomment'),
     #----------------------------------------------------------------------#
     #   Organization URLS
     #----------------------------------------------------------------------#
@@ -133,9 +123,9 @@ urlpatterns = [
     #----------------------------------------------------------------------#
     #   User URLS
     #----------------------------------------------------------------------#
-    url(r'^user/new/$', userviews.user_new, name='user_new'),
-    url(r'^user/(?P<pk>[0-9]+)/$', userviews.user_detail, name='user_detail'),
-    url(r'^user/(?P<pk>[0-9]+)/edit/$', userviews.user_edit, name='user_edit'),
+    url(r'^user/new/$', userviews.UserCreateView.as_view(), name='user_new'),
+    url(r'^user/(?P<pk>[0-9]+)/$', userviews.UserDetailView.as_view(), name='user_detail'),
+    url(r'^user/(?P<pk>[0-9]+)/edit/$', userviews.UserUpdateView.as_view(), name='user_edit'),
     url(r'^user/(?P<pk>[0-9]+)/notes/$', noteviews.user_notes, name='user_notes'),
     url(r'^user/(?P<pk>[0-9]+)/note/(?P<note_type>[-\w]+)/content$', noteviews.note_content_html, name='note_content_html'),
     url(r'^user/note/new/$', noteviews.create_user_note, name='create_user_note'),
@@ -181,6 +171,14 @@ urlpatterns = [
     url(r'^story/(?P<pk>[0-9]+)/note/(?P<note_type>[-\w]+)/content$', noteviews.note_content_html, name='note_content_html'),
     url(r'^story/note/new/$', noteviews.create_story_note, name='create_story_note'),
     url(r'^story/(?P<pk>[0-9]+)/team/json$', storyviews.story_team_options_json, name='story_team_options_json'),
+    #----------------------------------------------------------------------#
+    #   Facet URLS
+    #----------------------------------------------------------------------#
+    url(r'^facet/add/$', facetviews.FacetPreCreateView.as_view(), name="facet_precreate"),
+    url(r'^facet/add/(?P<template_id>\d+)/$', facetviews.FacetCreateView.as_view(), name="facet_add"),
+    url(r'^facet/edit/(?P<pk>\d+)/$', facetviews.FacetUpdateView.as_view(), name="facet_edit"),
+    url(r'^facet/template/create/$', facetviews.FacetTemplateCreateView.as_view(), name="facet_template_create"),
+    url(r'^facet/template/(?P<pk>\d+)/edit$', facetviews.FacetTemplateUpdateView.as_view(), name="facet_template_edit"),
     #----------------------------------------------------------------------#
     #   Task URLS
     #----------------------------------------------------------------------#

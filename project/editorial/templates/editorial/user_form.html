@@ -63,12 +63,12 @@
             <div class="row">
             <fieldset class="form-group m-b-20">
               <div class="col-xs-2 offset-xs-1">
-                <label>{{ userform.first_name.label_tag }}</label>
+                <label>{{ form.first_name.label_tag }}</label>
               </div>
               <div class="col-xs-9">
-                {{ userform.first_name }}
-                {% if userform.first_name.errors %}
-                <small class="text-muted">{{ userform.first_name.errors }}</small>
+                {{ form.first_name }}
+                {% if form.first_name.errors %}
+                <small class="text-muted">{{ form.first_name.errors }}</small>
                 {% endif %}
               </div>
             </fieldset>
@@ -77,12 +77,12 @@
             <div class="row">
             <fieldset class="form-group m-b-20">
               <div class="col-xs-2 offset-xs-1">
-                <label>{{ userform.last_name.label_tag }}</label>
+                <label>{{ form.last_name.label_tag }}</label>
               </div>
               <div class="col-xs-9">
-                {{ userform.last_name }}
-                {% if userform.last_name.errors %}
-                <small class="text-muted">{{ userform.last_name.errors }}</small>
+                {{ form.last_name }}
+                {% if form.last_name.errors %}
+                <small class="text-muted">{{ form.last_name.errors }}</small>
                 {% endif %}
               </div>
             </fieldset>
@@ -91,12 +91,12 @@
             <div class="row">
             <fieldset class="form-group m-b-20">
               <div class="col-xs-2 offset-xs-1">
-                <label>{{ userform.credit_name.label_tag }}</label>
+                <label>{{ form.credit_name.label_tag }}</label>
               </div>
               <div class="col-xs-9">
-                {{ userform.credit_name }}
-                {% if userform.credit_name.errors %}
-                <small class="text-muted">{{ userform.credit_name.errors }}</small>
+                {{ form.credit_name }}
+                {% if form.credit_name.errors %}
+                <small class="text-muted">{{ form.credit_name.errors }}</small>
                 {% endif %}
               </div>
             </fieldset>
@@ -105,12 +105,12 @@
             <div class="row">
             <fieldset class="form-group m-b-20">
               <div class="col-xs-2 offset-xs-1">
-                <label>{{ userform.username.label_tag }}</label>
+                <label>{{ form.username.label_tag }}</label>
               </div>
               <div class="col-xs-9">
-                {{ userform.username }}
-                {% if userform.username.errors %}
-                <small class="text-muted">{{ userform.username.errors }}</small>
+                {{ form.username }}
+                {% if form.username.errors %}
+                <small class="text-muted">{{ form.username.errors }}</small>
                 {% endif %}
               </div>
             </fieldset>
@@ -119,12 +119,12 @@
             <div class="row">
             <fieldset class="form-group m-b-20">
               <div class="col-xs-2 offset-xs-1">
-                <label>{{ userform.title.label_tag }}</label>
+                <label>{{ form.title.label_tag }}</label>
               </div>
               <div class="col-xs-9">
-                {{ userform.title }}
-                {% if userform.title.errors %}
-                <small class="text-muted">{{ userform.title.errors }}</small>
+                {{ form.title }}
+                {% if form.title.errors %}
+                <small class="text-muted">{{ form.title.errors }}</small>
                 {% endif %}
               </div>
             </fieldset>
@@ -133,12 +133,12 @@
             <div class="row">
             <fieldset class="form-group m-b-20">
               <div class="col-xs-2 offset-xs-1">
-                <label>{{ userform.location.label_tag }}</label>
+                <label>{{ form.location.label_tag }}</label>
               </div>
               <div class="col-xs-9">
-                {{ userform.location }}
-                {% if userform.location.errors %}
-                <small class="text-muted">{{ userform.location.errors }}</small>
+                {{ form.location }}
+                {% if form.location.errors %}
+                <small class="text-muted">{{ form.location.errors }}</small>
                 {% endif %}
               </div>
             </fieldset>
@@ -147,12 +147,12 @@
             <div class="row">
             <fieldset class="form-group m-b-20">
               <div class="col-xs-2 offset-xs-1">
-                <label>{{ userform.email.label_tag }}</label>
+                <label>{{ form.email.label_tag }}</label>
               </div>
               <div class="col-xs-9">
-                {{ userform.email }}
-                {% if userform.email.errors %}
-                <small class="text-muted">{{ userform.email.errors }}</small>
+                {{ form.email }}
+                {% if form.email.errors %}
+                <small class="text-muted">{{ form.email.errors }}</small>
                 {% endif %}
               </div>
             </fieldset>
@@ -161,12 +161,12 @@
             <div class="row">
             <fieldset class="form-group m-b-20">
               <div class="col-xs-2 offset-xs-1">
-                <label>{{ userform.phone.label_tag }}</label>
+                <label>{{ form.phone.label_tag }}</label>
               </div>
               <div class="col-xs-9">
-                {{ userform.phone }}
-                {% if userform.phone.errors %}
-                <small class="text-muted">{{ userform.phone.errors }}</small>
+                {{ form.phone }}
+                {% if form.phone.errors %}
+                <small class="text-muted">{{ form.phone.errors }}</small>
                 {% endif %}
               </div>
             </fieldset>
@@ -178,12 +178,12 @@
             <div class="row">
             <fieldset class="form-group m-b-20">
               <div class="col-xs-2 offset-xs-1">
-                <label>{{ userform.website.label_tag }}</label>
+                <label>{{ form.website.label_tag }}</label>
               </div>
               <div class="col-xs-9">
-                {{ userform.website }}
-                {% if userform.website.errors %}
-                <small class="text-muted">{{ userform.website.errors }}</small>
+                {{ form.website }}
+                {% if form.website.errors %}
+                <small class="text-muted">{{ form.website.errors }}</small>
                 {% endif %}
               </div>
             </fieldset>
@@ -196,34 +196,34 @@
             <!-- User Bio -->
             <fieldset class="form-group m-b-20">
               <div class="col-xs-2">
-                <label>{{ userform.bio.label_tag }}</label>
+                <label>{{ form.bio.label_tag }}</label>
               </div>
               <div class="col-xs-10">
-                {{ userform.bio }}
-                {% if userform.bio.errors %}
-                <small class="text-muted">{{ userform.bio.errors }}</small>
+                {{ form.bio }}
+                {% if form.bio.errors %}
+                <small class="text-muted">{{ form.bio.errors }}</small>
                 {% endif %}
               </div>
             </fieldset>
             <!-- User Expertise -->
             <fieldset class="form-group m-b-20">
               <div class="col-xs-2">
-                <label>{{ userform.expertise.label_tag }}</label>
+                <label>{{ form.expertise.label_tag }}</label>
               </div>
               <div class="col-xs-10">
-                {{ userform.expertise }}
-                {% if userform.bio.errors %}
-                <small class="text-muted">{{ userform.expertise.errors }}</small>
+                {{ form.expertise }}
+                {% if form.bio.errors %}
+                <small class="text-muted">{{ form.expertise.errors }}</small>
                 {% endif %}
               </div>
             </fieldset>
             <!-- User Profile Photo -->
             <div class="form-group custom-form">
-              <a href="#" data-toggle="tooltip" title="{{ userform.photo.help_text }}"><span class="field-label">{{ userform.photo.label_tag }}</span></a>
-              {{ userform.photo }}
-              {% if userform.photo.errors %}
+              <a href="#" data-toggle="tooltip" title="{{ form.photo.help_text }}"><span class="field-label">{{ form.photo.label_tag }}</span></a>
+              {{ form.photo }}
+              {% if form.photo.errors %}
                 <div class="alert alert-warning" role="alert">
-                {{ userform.photo.errors }}
+                {{ form.photo.errors }}
                 </div>
               {% endif %}
             </div>

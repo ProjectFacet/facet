@@ -130,7 +130,7 @@
                     <h4 class="modal-title" id="addUserModalLabel">Add a user to your team</h4>
                 </div>
                 <div class="modal-body">
-                  <form action="/user/new/" method="POST" class="post-form">
+                  <form action="{% url 'user_new' %}" method="POST" class="post-form">
                   {% csrf_token %}
                   {% bootstrap_form adduserform %}
                   <button type="submit" class="btn btn-primary">Save</button>

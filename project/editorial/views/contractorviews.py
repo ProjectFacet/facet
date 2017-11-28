@@ -5,7 +5,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.utils import timezone
-from django.views.generic import TemplateView , UpdateView, DetailView
+from django.views.generic import CreateView, FormView, UpdateView, DetailView, ListView
 from django.views.decorators.csrf import csrf_exempt
 import datetime
 import json
