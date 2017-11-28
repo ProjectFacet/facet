@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load bootstrap3 %}
+
+<!-------------------------------------------->
+<!--      BREADCRUMB NAVIGATION             -->
+<!-------------------------------------------->
+
+{% block breadcrumb %}
+<div>
+    <ol class="breadcrumb icon-angle-right icon-th">
+        <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
+        {% if project %}
+        <li class="fadeIn"><a href="{% url 'project_list' %}" title="Go to Project List"> Projects </a></li>
+        <li class="fadeIn"><a href="{% url 'project_detail' pk=project.id %}" title="Go to {{project.name}}"> {{project.name}} </a></li>
+        {% elif series %}
+        <li class="fadeIn"><a href="{% url 'series_list' %}" title="Go to Series List"> Series </a></li>
+        <li class="fadeIn"><a href="{% url 'series_detail' pk=series.id %}" title="Go to {{series.name}}"> {{series.name}} </a></li>
+        {% elif story %}
+        <li class="fadeIn"><a href="{% url 'story_list' %}" title="Go to Story List"> Stories </a></li>
+        <li class="fadeIn"><a href="{% url 'story_detail' pk=story.id %}" title="Go to {{story.name}}"> {{story.name}} </a></li>
+        {% elif evt_organization %}
+        <li class="fadeIn"><a href="{% url 'organization_detail' %}" title="Go to Organization"> {{ evt_organization.name }} </a></li>
+        {% endif %}
+        <li class="fadeIn"> Events</li>
+
+    </ol>
+</div>
+{% endblock breadcrumb %}
+
+<!-------------------------------------------->
+<!--            Main Section                -->
+<!-------------------------------------------->
+
+{% block content %}
+
+<div class="row">
+  <div class="col-xs-12">
+    {% if evt_organization %}
+      <h5 class="m-b-20"> {{ evt_organization.name }} Events<span class="pull-right">Add new event to {{evt_organization.name}} <a data-toggle="modal" data-target="#addEvtOrgEvent" title="Add Organization Event"><i class="m-l-20 fa fa-plus" aria-hidden="true"></i></a></span></h5>
+    {% elif project %}
+      <h5 class="m-b-20"> {{ project.name }} Events<span class="pull-right">Add new event to {{project.name}} <a data-toggle="modal" data-target="#addProjectEvent" title="Add Project Event"><i class="m-l-20 fa fa-plus" aria-hidden="true"></i></a></span></h5>
+    {% elif series %}
+    <h5 class="m-b-20"> {{ series.name }} Events<span class="pull-right">Add new event to {{series.name}} <a data-toggle="modal" data-target="#addSeriesEvent" title="Add Series Event"><i class="m-l-20 fa fa-plus" aria-hidden="true"></i></a></span></h5>
+    {% elif story %}
+    <h5 class="m-b-20"> {{ story.name }} Events<span class="pull-right">Add new event to {{story.name}} <a data-toggle="modal" data-target="#addStoryEvent" title="Add Story Event"><i class="m-l-20 fa fa-plus" aria-hidden="true"></i></a></span></h5>
+    {% endif %}
+  </div>
+</div>
+<div class="row m-t-20">
+  <!-- Left column -->
+  <div class="col-xs-12 col-md-6">
+    <h5>Reporting Events</h5>
+
+    {% for event in events %}
+      {% if event.event_type == "Reporting" %}
+      <p>{{event.name}}</p>
+      {% endif %}
+    {% endfor %}
+
+  </div>
+  <!-- Right column -->
+  <div class="col-xs-12 col-md-6">
+    <h5>Hosting Events</h5>
+
+    {% for event in events %}
+      {% if event.event_type == "Hosting" %}
+      <p>{{event.name}}</p>
+      {% endif %}
+    {% endfor %}
+
+
+  </div>
+</div>
+
+
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+                  <!-- JS SCRIPTS -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+<script>
+$(".chosen-select").chosen()
+</script>
+
+{% endblock %}
+
+{% block modals %}
+
+{% endblock modals %}

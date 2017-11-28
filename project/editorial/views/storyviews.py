@@ -213,7 +213,6 @@ class StoryDetailView(DetailView):
         return {'images': images, 'documents': documents, 'audio': audio, 'video': video,}
 
 
-
 def story_delete(request, pk):
     """Delete a story and it's related objects then redirect user to story list."""
 

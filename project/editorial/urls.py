@@ -145,7 +145,6 @@ urlpatterns = [
     url(r'^project/(?P<pk>[0-9]+)/schedule/$', projectviews.project_schedule, name='project_schedule'),
     url(r'^project/(?P<pk>[0-9]+)/assets/$', projectviews.ProjectAssetTemplateView.as_view(), name='project_assets'),
     url(r'^project/(?P<pk>[0-9]+)/stories/$', projectviews.ProjectStoryTemplateView.as_view(), name='project_stories'),
-    url(r'^project/(?P<pk>[0-9]+)/events/$', projectviews.ProjectEventTemplateView.as_view(), name='project_events'),
     #----------------------------------------------------------------------#
     #   Series URLS
     #----------------------------------------------------------------------#
@@ -191,12 +190,12 @@ urlpatterns = [
     #----------------------------------------------------------------------#
     #   Event URLS
     #----------------------------------------------------------------------#
-    url(r'^event/new/$', eventviews.event_new, name='event_new'),
-    url(r'^event/(?P<pk>[0-9]+)/$', eventviews.event_detail, name='event_detail'),
-    # url(r'^organization/(?P<pk>[0-9]+)/events/$', eventviews.OrganizationEventTemplateView.as_view(), name='organization_event_list'),
-    # url(r'^project/(?P<pk>[0-9]+)/events/$', eventviews.ProjectEventTemplateView.as_view(), name='project_event_list'),
-    # url(r'^series/(?P<pk>[0-9]+)/events/$', eventviews.SeriesEventTemplateView.as_view(), name='series_event_list'),
-    # url(r'^story/(?P<pk>[0-9]+)/events/$', eventviews.StoryEventTemplateView.as_view(), name='story_event_list'),
+    url(r'^event/new/$', eventviews.EventCreateView.as_view(), name='event_new'),
+    url(r'^event/(?P<pk>[0-9]+)/$', eventviews.EventUpdateView.as_view(), name='event_detail'),
+    url(r'^organization/(?P<pk>[0-9]+)/events/$', eventviews.OrganizationEventTemplateView.as_view(), name='organization_event_list'),
+    url(r'^project/(?P<pk>[0-9]+)/events/$', eventviews.ProjectEventTemplateView.as_view(), name='project_event_list'),
+    url(r'^series/(?P<pk>[0-9]+)/events/$', eventviews.SeriesEventTemplateView.as_view(), name='series_event_list'),
+    url(r'^story/(?P<pk>[0-9]+)/events/$', eventviews.StoryEventTemplateView.as_view(), name='story_event_list'),
     #----------------------------------------------------------------------#
     #   Asset URLS
     #----------------------------------------------------------------------#

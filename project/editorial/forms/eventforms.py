@@ -31,10 +31,10 @@ class EventForm(forms.ModelForm):
     """ Form to create/edit an event. """
 
     def __init__(self, *args, **kwargs):
-        self.request = kwargs.pop("request")
+        org = kwargs.pop("organization")
         super(EventForm, self).__init__(*args, **kwargs)
-        self.fields['team'].queryset = Organization.get_org_users(self.request.user.organization)
-        self.fields['evt_organization'].queryset = Organization.get_org_collaborators_vocab(self.request.user.organization)
+        self.fields['team'].queryset = org.get_org_users()
+        self.fields['evt_organization'].queryset = org.get_org_collaborators_vocab()
         self.fields['event_type'].empty_label='Event Type'
         self.fields['evt_organization'].empty_label='Select an Organization'
         self.fields['project'].empty_label='Select a Project'

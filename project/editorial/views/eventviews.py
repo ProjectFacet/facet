@@ -10,18 +10,18 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.utils import timezone
-from django.views.generic import TemplateView , UpdateView, DetailView
+from django.views.generic import TemplateView , UpdateView, DetailView, CreateView, ListView
 from django.views.decorators.csrf import csrf_exempt
 import datetime
 import json
 from actstream import action
 
 from editorial.forms import (
-    TaskForm,
     EventForm,
     )
 
 from editorial.models import (
+    Organization,
     Project,
     Series,
     Story,
@@ -36,25 +36,7 @@ from editorial.models import (
 #   Events Views
 #----------------------------------------------------------------------#
 
-# class EventCreateView(generic.CreateView):
-#     """Create a new event."""
-#
-#     model = Event
-#     form_class = EventForm
-#
-#     def form_valid(self, form):
-#         form.instance.owner = self.request.user
-#         return super(EventCreateView, self).form_valid(form)
-#
-#     def get_success_url(self):
-#
-#         self.request.user.organization = self.object
-#         self.request.user.save()
-#         return reverse('event', kwargs={'pk': self.object.pk})
-
-
-# function based view version
-def event_new(request):
+class EventCreateView(CreateView):
     """A logged in user can create a event.
 
     Events are used to manage information about events.
@@ -65,152 +47,192 @@ def event_new(request):
     Events have a connection to either a Project, Series, Story or Event.
     """
 
-    form = EventForm(request=request)
-    if request.method == "POST":
-        form = EventForm(request.POST, request=request)
-    if form.is_valid():
-        event = form.save(commit=False)
-        event.owner = request.user
-        event.organization = request.user.organization
-        event.creation_date = timezone.now()
+    model = Event
+    form_class = EventForm
+
+    def get_form_kwargs(self):
+        """Pass user organization to the form."""
+
+        kw = super(EventCreateView, self).get_form_kwargs()
+        kw.update({'organization': self.request.user.organization})
+        return kw
+
+    def form_valid(self, form):
+        """Save -- but first adding owner and organization."""
+
+        self.object = event = form.save(commit=False)
+
+        # create and set discussion
+        discussion = Discussion.objects.create_discussion("EV")
+        event.discussion = discussion
+
+        # set user specific values
+        event.owner = self.request.user
+        event.organization = self.request.user.organization
+
         event.save()
         form.save_m2m()
 
         # record action for activity stream
-        action.send(request.user, verb="created", action_object=event)
+        action.send(self.request.user, verb="created", action_object=event)
 
-        return redirect('event_detail', pk=event.pk)
-    else:
-        form = EventForm(request=request)
-    return render(request, 'editorial/event_detail.html', {'form': form})
+        return redirect(self.get_success_url())
 
 
-def event_detail(request, pk):
+class EventUpdateView(UpdateView):
     """ The detail page for a event.
 
     Displays the event information.
     """
 
-    try:
-        print "IN EVENT TRY"
-        event = get_object_or_404(Event, pk=pk)
-        form = EventForm(request=request, instance=event)
-        print "GOT EVENT F=ORM"
-        print form
-        # discussion = ...
-        # comments = ...
+    model = Event
+    form_class = EventForm
 
-        if request.method == "POST":
-            print "IN EVENT TRY POST"
-            if 'form' in request.POST:
-                form = EventForm(data=request.POST, instance=event, request=request)
-                if form.is_valid():
-                    form.save()
-                    # record action for activity stream
-                    action.send(request.user, verb="updated", action_object=event)
-                    return redirect('event_detail', pk=pk)
+    def get_form_kwargs(self):
+        """Pass organization to form."""
 
-    except:
-        print "IN EVENT EXCEPT"
-        # except Event.DoesNotExist:
-        #display form a save a new event
-        if request.method == "POST":
-            "IN EVENT EXCEPT POST"
-            if 'form' in request.POST:
-                form=EventForm(data=request.POST, request=request)
-                if form.is_valid():
-                    event = form.save(commit=False)
-                    event.owner = request.user
-                    event.organization = request.user.organization
-                    event.creation_date = timezone.now()
-                    event.save()
-                    form.save_m2m()
-                    # record action for activity stream
-                    action.send(request.user, verb="created", action_object=event)
-                    return redirect('event_detail', pk=event.pk)
+        kw = super(EventUpdateView, self).get_form_kwargs()
+        kw.update({'organization': self.request.user.organization})
+        return kw
 
-    return render(request, 'editorial/event_detail.html', {
-        'event': event,
-        'form': form,
-    })
+    def event_discussion(self):
+        """Get discussion, comments and comment form for the event."""
 
+        self.object = self.get_object()
+        discussion = self.object.discussion
+        comments = discussion.comment_set.all()
+        form = EventCommentForm()
+        return {'discussion': discussion, 'comments': comments, 'form': form,}
 
-def org_host_events():
-    """ Retrieve all events associated with an organization that are being hosted.
-    """
+    def get_success_url(self):
 
-    events = Event.objects.filter(organization=request.user.organization, status="Hosted")
-    return render(request, 'editorial/host_event_list.html', {
-            'events': events,
-        })
-
-
-def org_report_events():
-    """ Retrieve all events associated with an organization that are being reported
-    on for a story.
-    """
-
-    events = Event.objects.filter(organization=request.user.organization, status="Reporting")
-    return render(request, 'editorial/host_event_list.html', {
-            'events': events,
-        })
-
-
-
-
-
-# reduce duplication if possible
-def org_event_list(request, pk):
-    """Display all the events associated with an organization.
-
-    """
-
-    events = Event.objects.filter(organization=request.user.organization)
-    return render(request, 'editorial/event_list.html', {
-        'org_events': events,
-    })
-
-
-def project_event_list(request, pk):
-    """Display all the events associated with a project.
-
-    """
-
-    project = get_object_or_404(Project, pk=pk)
-    events = Event.objects.filter(project=pk)
-    return render(request, 'editorial/event_list.html', {
-        'project': project,
-        'project_events': events,
-    })
-
-
-def series_event_list(request, pk):
-    """Display all the evnets associated with a series.
-
-    """
-
-    series = get_object_or_404(Series, pk=pk)
-    events = Event.objects.filter(series=pk)
-    return render(request, 'editorial/event_list.html', {
-        'series': series,
-        'series_events': events,
-    })
-
-
-def story_event_list(request, pk):
-    """Display all the events associated with a story.
-
-    """
-
-    Story = get_object_or_404(Story, pk=pk)
-    events = Event.objects.filter(story=pk)
-    return render(request, 'editorial/event_list.html', {
-        'story': story,
-        'story_events': events,
-    })
+        action.send(self.request.user, verb="edited", action_object=self.object)
+        return super(EventUpdateView, self).get_success_url()
 
 
 def event_delete(request, pk):
     """Delete a project and its related objects then redirect user to project list."""
 
     pass
+
+
+# FIXME form challenges
+class OrganizationEventTemplateView(TemplateView):
+    """Display all the events associated with an organization.
+
+    """
+
+    context_object_name = 'events'
+    template_name = 'editorial/event_list.html'
+
+    # form_class = EventForm
+    #
+    # def get_form_kwargs(self):
+    #     """Pass organization to form."""
+    #
+    #     kw = super(ProjectEventTemplateView, self).get_form_kwargs()
+    #     kw.update({'organization': self.request.user.organization})
+    #     return kw
+
+    def get_context_data(self, pk):
+        """Return events belonging to the project."""
+
+        organization = get_object_or_404(Organization, id=pk)
+        # form = TaskForm()
+        events = organization.event_set.all()
+        return {
+            'organization': organization,
+            'events': events,
+            # 'form': form,
+        }
+
+
+# FIXME form challenges
+class ProjectEventTemplateView(TemplateView):
+    """Display all the events associated with a project.
+
+    """
+
+    context_object_name = 'events'
+    template_name = 'editorial/event_list.html'
+
+    # form_class = EventForm
+    #
+    # def get_form_kwargs(self):
+    #     """Pass organization to form."""
+    #
+    #     kw = super(ProjectEventTemplateView, self).get_form_kwargs()
+    #     kw.update({'organization': self.request.user.organization})
+    #     return kw
+
+    def get_context_data(self, pk):
+        """Return events belonging to the project."""
+
+        project = get_object_or_404(Project, id=pk)
+        # form = TaskForm()
+        events = project.event_set.all()
+        return {
+            'project': project,
+            'events': events,
+            # 'form': form,
+        }
+
+
+# FIXME form challenges
+class SeriesEventTemplateView(TemplateView):
+    """Display all the events associated with a series.
+
+    """
+
+    context_object_name = 'events'
+    template_name = 'editorial/event_list.html'
+
+    # form_class = EventForm
+    #
+    # def get_form_kwargs(self):
+    #     """Pass organization to form."""
+    #
+    #     kw = super(SeriesEventTemplateView, self).get_form_kwargs()
+    #     kw.update({'organization': self.request.user.organization})
+    #     return kw
+
+    def get_context_data(self, pk):
+        """Return events belonging to the series."""
+
+        series = get_object_or_404(Series, id=pk)
+        # form = TaskForm()
+        events = series.event_set.all()
+        return {
+            'series': series,
+            'events': events,
+            # 'form': form,
+        }
+
+
+# FIXME form challenges
+class StoryEventTemplateView(TemplateView):
+    """Display all the events associated with a story."""
+
+    context_object_name = 'events'
+    template_name = 'editorial/event_list.html'
+
+    # form_class = EventForm
+    #
+    # def get_form_kwargs(self):
+    #     """Pass organization to form."""
+    #
+    #     kw = super(StoryEventTemplateView, self).get_form_kwargs()
+    #     kw.update({'organization': self.request.user.organization})
+    #     return kw
+
+    def get_context_data(self, pk):
+        """Return events belonging to the story."""
+
+        story = get_object_or_404(Story, id=pk)
+        # form = TaskForm()
+        events = story.event_set.all()
+        return {
+            'story': story,
+            'events': events,
+            # 'form': form,
+        }

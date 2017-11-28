@@ -225,20 +225,6 @@ class ProjectStoryTemplateView(TemplateView):
         return {'project': project, 'stories': stories,}
 
 
-class ProjectEventTemplateView(TemplateView):
-    """Return and display all the events associated with a project."""
-
-    template_name = 'editorial/project_events.html'
-
-    def get_context_data(self, pk):
-        """Return all the events."""
-
-        project = get_object_or_404(Project, id=pk)
-        events = project.get_project_story_events()
-        return {'project': project, 'events': events,}
-
-
-
 def project_schedule(request, pk):
     """Generate a JSON object containing entries to display on project calendar."""
 
