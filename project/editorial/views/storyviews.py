@@ -9,8 +9,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
 from django.core.mail import send_mail
 from django.http import HttpResponse
+from django.core.urlresolvers import reverse_lazy
 from django.utils import timezone
-from django.views.generic import TemplateView , UpdateView, DetailView, CreateView, ListView
+from django.views.generic import TemplateView , UpdateView, DetailView, CreateView, ListView, DeleteView
 from django.views.decorators.csrf import csrf_exempt
 import datetime
 import json
@@ -211,6 +212,24 @@ class StoryDetailView(DetailView):
         audio = self.object.get_story_audio()
         video = self.object.get_story_video()
         return {'images': images, 'documents': documents, 'audio': audio, 'video': video,}
+
+
+class StoryDeleteView(DeleteView):
+    """Delete a story and it's associated items.
+
+    Should delete a story and:
+    - the story's facets
+    - the story's discussion
+    - the story's notes
+    - the story's tasks
+    - the story's events
+    - the story's simple assets
+    """
+
+    model = Story
+    success_url = reverse_lazy('story_list')
+
+
 
 
 def story_delete(request, pk):

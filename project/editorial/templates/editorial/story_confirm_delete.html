@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load bootstrap3 %}
+{% load embed_video_tags %}
+
+{% block head %}
+{{ webform.media }}
+{% endblock %}
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+<!--             BREADCRUMB NAVIGATION                 -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
+{% block breadcrumb %}
+<div>
+    <ol class="breadcrumb icon-angle-right icon-th">
+        <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
+        <li class="fadeIn"> Content </li>
+        <li class="fadeIn"><a href="{% url 'story_list' %}" title="View Story List"> Stories </a></li>
+        <li class="fadeIn"><a href="{% url 'story_detail' story.id %}" title="You are Here"> {{ story.name }} </li>
+        <li class="fadeIn">Delete</li>
+    </ol>
+</div>
+{% endblock breadcrumb %}
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+<!--                   Main Section                    -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
+{% block content %}
+
+<form action="" method="post">{% csrf_token %}
+    <p>Are you sure you want to delete "{{ story.name }}"?</p>
+    <button class="btn-sma" type="submit" value="Confirm">Confirm</button>
+</form>
+
+
+
+
+
+{% endblock %}
