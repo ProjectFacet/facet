@@ -33,12 +33,12 @@ from .projects import Project
 from .series import Series
 from .story import Story
 from .facets import Facet, FacetTemplate, WebFacet, AudioFacet, VideoFacet, PrintFacet, ContentLicense
-from .notes import OrganizationNote, ProjectNote, SeriesNote, StoryNote, UserNote, NetworkNote
+from .notes import OrganizationNote, ProjectNote, SeriesNote, StoryNote, UserNote, NetworkNote, TaskNote, EventNote
 from .platforms import Platform, PlatformAccount
 from .tasks import Task
 from .events import Event
 from .copy import *   # XXX
-from .contractors import ContractorInfo, OrganizationContractorInfo
+from .contractors import ContractorInfo, OrganizationContractorInfo, Pitch, Call, Assignment
 
 
 #-----------------------------------------------------------------------#

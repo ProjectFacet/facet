@@ -3,24 +3,27 @@ from django.contrib import admin
 # Register your models here.
 from models import (
     User,
+    ContractorInfo,
+    OrganizationContractorInfo,
     Organization,
     OrganizationNote,
     Network,
     Platform,
     PlatformAccount,
+    Pitch,
+    Call,
+    Assignment,
     Project,
     Series,
     Story,
     Facet,
-    WebFacet,
-    PrintFacet,
-    AudioFacet,
-    VideoFacet,
     Task,
     Event,
     ProjectNote,
     SeriesNote,
     StoryNote,
+    TaskNote,
+    EventNote,
     ImageAsset,
     DocumentAsset,
     AudioAsset,
@@ -44,6 +47,8 @@ class FacetTemplateAdmin(admin.ModelAdmin):
     form = FacetTemplateForm
 
 
+admin.site.register(ContractorInfo)
+admin.site.register(OrganizationContractorInfo)
 admin.site.register(Organization)
 admin.site.register(OrganizationNote)
 admin.site.register(Network)
@@ -53,15 +58,16 @@ admin.site.register(Project)
 admin.site.register(Series)
 admin.site.register(Story)
 admin.site.register(Facet)
-admin.site.register(WebFacet)
-admin.site.register(PrintFacet)
-admin.site.register(AudioFacet)
-admin.site.register(VideoFacet)
 admin.site.register(Task)
 admin.site.register(Event)
+admin.site.register(Pitch)
+admin.site.register(Call)
+admin.site.register(Assignment)
 admin.site.register(ProjectNote)
 admin.site.register(SeriesNote)
 admin.site.register(StoryNote)
+admin.site.register(TaskNote)
+admin.site.register(EventNote)
 admin.site.register(ImageAsset)
 admin.site.register(DocumentAsset)
 admin.site.register(AudioAsset)
