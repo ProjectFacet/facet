@@ -37,6 +37,7 @@ class ContractorInfo(models.Model):
     resume = models.FileField(
         upload_to='resumes/%Y/%m/%d',
         blank=True,
+        help_text='PDF of contractor resume.'
     )
 
     address = models.TextField(
@@ -121,7 +122,10 @@ class OrganizationContractorInfo(models.Model):
         help_text='Is this contractor a trusted regular?',
     )
 
-    # status: Is this contractor currently in use?
+    status = models.BooleanField(
+        default=True,
+        help_text='Is this contractor currently working for the organization?'
+    )
 
     # request for running total of assignments contractor has done for an org
     # request for running total of how much an org has paid a contractor
@@ -213,8 +217,8 @@ class Call(models.Model):
     def __str__(self):
         return self.name
 
-    # def get_absolute_url(self):
-    #     return reverse('call_detail', kwargs={'pk': self.id})
+    def get_absolute_url(self):
+        return reverse('call_detail', kwargs={'pk': self.id})
 
     @property
     def search_title(self):
@@ -254,8 +258,6 @@ class Pitch(models.Model):
     PITCH_STATUS_CHOICES = (
         (DRAFT, 'Draft'),
         (PITCHED, 'Pitched'),
-
-
         (ACCEPTED, 'Accepted'),
         (COMPLETE, 'Complete'),
     )
@@ -273,27 +275,25 @@ class Pitch(models.Model):
     )
 
     # assets
-    # FIXME waiting on this pending update to BaseAsset where
-    # organization is not required as Contractors have no org.
-    # image_assets = models.ManyToManyField(
-    #     SimpleImage,
-    #     blank=True,
-    # )
-    #
-    # document_assets = models.ManyToManyField(
-    #     SimpleDocument,
-    #     blank=True,
-    # )
-    #
-    # audio_assets = models.ManyToManyField(
-    #     SimpleAudio,
-    #     blank=True,
-    # )
-    #
-    # video_assets = models.ManyToManyField(
-    #     SimpleVideo,
-    #     blank=True,
-    # )
+    image_assets = models.ManyToManyField(
+        SimpleImage,
+        blank=True,
+    )
+
+    document_assets = models.ManyToManyField(
+        SimpleDocument,
+        blank=True,
+    )
+
+    audio_assets = models.ManyToManyField(
+        SimpleAudio,
+        blank=True,
+    )
+
+    video_assets = models.ManyToManyField(
+        SimpleVideo,
+        blank=True,
+    )
 
     def __str__(self):
         return self.name
@@ -302,8 +302,8 @@ class Pitch(models.Model):
     def search_title(self):
         return self.name
 
-    # def get_absolute_url(self):
-    #     return reverse('pitch_edit', kwargs={'pk': self.id})
+    def get_absolute_url(self):
+        return reverse('pitch_edit', kwargs={'pk': self.id})
 
     @property
     def type(self):
@@ -385,5 +385,5 @@ class Assignment(models.Model):
     def __str__(self):
         return self.name
 
-    # def get_absolute_url(self):
-    #     return reverse('assignment_detail', kwargs={'pk': self.id})
+    def get_absolute_url(self):
+        return reverse('assignment_detail', kwargs={'pk': self.id})
