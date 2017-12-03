@@ -40,12 +40,12 @@ class User(AbstractUser):
     ADMIN = 'Admin'
     EDITOR = 'Editor'
     STAFF = 'Staff'
-    CONTRIBUTOR = 'Contributor'
+    CONTRACTOR = 'Contractor'
     USER_TYPE_CHOICES = (
         (ADMIN, 'Admin'),
         (EDITOR, 'Editor'),
         (STAFF, 'Staff'),
-        (CONTRIBUTOR, 'Contributor'),
+        (CONTRACTOR, 'Contractor'),
     )
 
     # relevant for editors of organizations managing contributors
@@ -172,7 +172,6 @@ class User(AbstractUser):
 
         return user_assets
 
-
     def inbox_comments(self):
         """ Return list of comments from discussions the user is a participant in.
 
@@ -223,14 +222,12 @@ class User(AbstractUser):
         """
         return self.private_message_recipient.all()
 
-
     def private_messages_sent(self):
         """ Return all private messages a user has sent.
 
         Displayed in user inbox under 'sent'.
         """
         return self.private_message_sender.all()
-
 
     def get_user_searchable_content(self):
         """ Return queryset of user specific content that is searchable.
@@ -241,7 +238,7 @@ class User(AbstractUser):
 
     @property
     def description(self):
-        org = self.organization.name if self.organization else "Contributor"
+        org = self.organization.name if self.organization else "Contractor"
 
         return "{user}, {title}, {org}".format(
                                         user=self.credit_name,
@@ -558,6 +555,21 @@ class Organization(models.Model):
         edit_today = Facet.objects.filter(due_edit__range=(today_start, today_end), organization=self)
 
         return edit_today
+
+    def get_org_projects(self):
+        """Return queryset of projects associated with an organization for
+        use in PlatformAccount forms.
+        """
+
+        from . import Project
+        projects = []
+        networks = Organization.get_org_networks(self)
+        network_projects = Project.objects.filter(share_with__in=networks)
+        org_projects = Project.objects.filter(organization=self)
+        projects.extend(network_projects)
+        projects.extend(org_projects)
+        return projects
+
 
     def get_org_searchable_content(self):
         """ Return queryset of all objects that can be searched by a user."""

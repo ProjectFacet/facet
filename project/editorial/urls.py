@@ -6,11 +6,12 @@ from django.conf.urls import url, include
 # from views import HomeView
 from views import (
     generalviews,
-    # assetviews,
+    assetviews,
     inboxviews,
     scheduleviews,
     organizationviews,
     userviews,
+    contractorviews,
     networkviews,
     projectviews,
     seriesviews,
@@ -24,6 +25,7 @@ from views import (
     downloadviews,
     scheduleviews,
     facetviews,
+    platformviews,
     )
 
 from . import api
@@ -112,6 +114,12 @@ urlpatterns = [
     url(r'^storycomment/new$', communicationviews.create_storycomment, name='create_storycomment'),
     url(r'^facetcomment/new$', communicationviews.create_facetcomment, name='create_facetcomment'),
     #----------------------------------------------------------------------#
+    #   Platform URLS
+    #----------------------------------------------------------------------#
+    url(r'^user/(?P<pk>[0-9]+)/platformaccounts/edit/$', platformviews.UserPlatformAccountCreateView.as_view(), name='user_platformaccounts_create'),
+    # url(r'^organization/(?P<pk>[0-9]+)/platformaccounts/edit/$', platformviews.organization_platformaccounts_create, name='organization_platformaccounts_create'),
+    # url(r'^project/(?P<pk>[0-9]+)/platformaccounts/edit/$', platformviews.project_platformaccounts_create, name='project_platformaccounts_create'),
+    #----------------------------------------------------------------------#
     #   Organization URLS
     #----------------------------------------------------------------------#
     url(r'^organization/new$', organizationviews.OrganizationCreateView.as_view(), name="org_new"),
@@ -131,6 +139,21 @@ urlpatterns = [
     url(r'^user/note/new/$', noteviews.create_user_note, name='create_user_note'),
     url(r'^user/deactivate/$', userviews.user_deactivate, name='user_deactivate'),
     url(r'^user/activate/$', userviews.user_activate, name='user_activate'),
+    #----------------------------------------------------------------------#
+    #   Contractor URLS
+    #----------------------------------------------------------------------#
+    url(r'^contractor/new/$', contractorviews.ContractorCreateView.as_view(), name='contractor_new'),
+    url(r'^contractor/(?P<pk>[0-9]+)/$', contractorviews.ContractorDetailView.as_view(), name='contractor_detail'),
+    url(r'^contractor/(?P<pk>[0-9]+)/edit/$', contractorviews.ContractorUpdateView.as_view(), name='contractor_edit'),
+    url(r'^assignment/new/$', contractorviews.AssignmentCreateView.as_view(), name='assignment_new'),
+    url(r'^assignment/(?P<pk>[0-9]+)/$', contractorviews.AssignmentDetailView.as_view(), name='assignment_detail'),
+    url(r'^assignment/(?P<pk>[0-9]+)/edit/$', contractorviews.AssignmentUpdateView.as_view(), name='assignment_edit'),
+    url(r'^call/new/$', contractorviews.CallCreateView.as_view(), name='call_new'),
+    url(r'^call/(?P<pk>[0-9]+)/$', contractorviews.CallDetailView.as_view(), name='call_detail'),
+    url(r'^call/(?P<pk>[0-9]+)/edit/$', contractorviews.CallUpdateView.as_view(), name='call_edit'),
+    url(r'^pitch/new/$', contractorviews.PitchCreateView.as_view(), name='pitch_new'),
+    url(r'^pitch/(?P<pk>[0-9]+)/$', contractorviews.PitchDetailView.as_view(), name='pitch_detail'),
+    url(r'^pitch/(?P<pk>[0-9]+)/edit/$', contractorviews.PitchUpdateView.as_view(), name='pitch_edit'),
     #----------------------------------------------------------------------#
     #   Project URLS
     #----------------------------------------------------------------------#

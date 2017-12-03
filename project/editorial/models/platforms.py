@@ -122,9 +122,5 @@ class PlatformAccount(models.Model):
         return self.name
 
     @property
-    def description(self):
-        return self.description
-
-    @property
     def type(self):
         return "Platform Account"

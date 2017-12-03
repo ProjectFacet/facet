@@ -18,9 +18,10 @@ from tinymce.widgets import TinyMCE
 
 from editorial.models import (
     User,
-    # ContributorInfo,
     Organization,
     Network,
+    Platform,
+    PlatformAccount,
 )
 
 
@@ -64,6 +65,7 @@ class UserProfileForm(forms.ModelForm):
             'bio': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Professional Bio'}),
             'expertise': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Expertise'}),
         }
+
 
 # ------------------------------ #
 #      Organization Forms        #

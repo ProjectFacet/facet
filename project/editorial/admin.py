@@ -3,8 +3,8 @@ from django.contrib import admin
 # Register your models here.
 from models import (
     User,
-    ContractorInfo,
-    OrganizationContractorInfo,
+    ContractorProfile,
+    OrganizationContractorAffiliation,
     Organization,
     OrganizationNote,
     Network,
@@ -47,8 +47,8 @@ class FacetTemplateAdmin(admin.ModelAdmin):
     form = FacetTemplateForm
 
 
-admin.site.register(ContractorInfo)
-admin.site.register(OrganizationContractorInfo)
+admin.site.register(ContractorProfile)
+admin.site.register(OrganizationContractorAffiliation)
 admin.site.register(Organization)
 admin.site.register(OrganizationNote)
 admin.site.register(Network)

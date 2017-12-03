@@ -16,6 +16,7 @@ from tinymce.widgets import TinyMCE
 
 
 from .peopleforms import AddUserForm, UserProfileForm, OrganizationForm, NetworkForm, AddToNetworkForm, InviteToNetworkForm
+from .contractorforms import ContractorProfileForm, OrganizationContractorRelationshipForm, CallForm, PitchForm, AssignmentForm
 from .projectforms import ProjectForm
 from .seriesforms import SeriesForm
 from .storyforms import StoryForm, StoryDownloadForm
@@ -25,6 +26,7 @@ from .taskforms import TaskForm
 from .eventforms import EventForm
 from .discussionforms import PrivateMessageForm, OrganizationCommentForm, NetworkCommentForm, ProjectCommentForm, SeriesCommentForm, StoryCommentForm, FacetCommentForm
 from .noteforms import NetworkNoteForm, OrganizationNoteForm, ProjectNoteForm, SeriesNoteForm, StoryNoteForm, UserNoteForm
+from .platformaccountsforms import PlatformAccountForm, PlatformAccountFormSet, BasePlatformAccountFormSet
 
 from editorial.models.facets import COMMON_FIELDS
 

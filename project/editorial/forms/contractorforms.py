@@ -23,7 +23,8 @@ from tinymce.widgets import TinyMCE
 from editorial.models import (
     User,
     Organization,
-    ContributorInfo,
+    ContractorProfile,
+    OrganizationContractorAffiliation,
     Call,
     Pitch,
     Assignment,
@@ -38,19 +39,25 @@ class ContractorProfileForm(forms.ModelForm):
     """Handles creation and editing of a contractor's profile."""
 
     class Meta:
-        model = ContractorInfo
+        model = ContractorProfile
         fields = [
             'resume',
             'address',
             'availability',
             'current_location',
             'gear',
+            'portfolio_link1',
+            'portfolio_link2',
+            'portfolio_link3',
         ]
         widgets = {
-            'address': Textarea(attrs={'class': 'form-control', 'placeholder': 'Address'}),
+            'address': Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Address'}),
             'availability': TextInput(attrs={'class': 'form-control', 'placeholder': 'Availability'}),
             'current_location': TextInput(attrs={'class': 'form-control', 'placeholder': 'Current Location'}),
-            'gear': TextInput(attrs={'class': 'form-control', 'placeholder': 'Gear'}),
+            'gear': Textarea(attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Gear'}),
+            'portfolio_link1': TextInput(attrs={'class': 'form-control', 'placeholder': 'Portfolio Link 1'}),
+            'portfolio_link2': TextInput(attrs={'class': 'form-control', 'placeholder': 'Portfolio Link 2'}),
+            'portfolio_link3': TextInput(attrs={'class': 'form-control', 'placeholder': 'Portfolio Link 3'}),
         }
 
 
@@ -60,7 +67,7 @@ class OrganizationContractorRelationshipForm(forms.ModelForm):
     """
 
     class Meta:
-        model = OrganizationContractorInfo
+        model = OrganizationContractorAffiliation
         fields = [
             'w9_on_file',
             'rates',

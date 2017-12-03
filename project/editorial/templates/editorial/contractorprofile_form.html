@@ -1,0 +1,220 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load bootstrap3 %}
+
+<!-------------------------------------------->
+<!--      BREADCRUMB NAVIGATION             -->
+<!-------------------------------------------->
+
+{% block breadcrumb %}
+<div>
+    <ol class="breadcrumb icon-angle-right icon-th">
+        <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
+        {% if contractorprofile %}
+        <li class="fadeIn"><a href="{% url 'contractor_detail' contractorprofile.id %}" title="View {{ contractorprofile.user.credit_name}}'s Profile"> {{ contractorprofile.user.credit_name}} </a></li>
+        <li class="fadeIn"> Update Contractor Profile</li>
+        {% else %}
+        <li class="fadeIn"> Create Contractor Profile</li>
+        {% endif %}
+    </ol>
+</div>
+{% endblock breadcrumb %}
+
+<!-------------------------------------------->
+<!--            Main Section                -->
+<!-------------------------------------------->
+
+{% block content %}
+<!-- Row One -->
+<div class="row m-b-40">
+    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+        <a class="media-left media-middle"> {% if contractorprofile.user.display_photo %}<img class="centered h-200 w-200 m-r-40" src="{{ contractorprofile.user.display_photo.url }}" id="user-profile-photo" alt="profile image">{% else %}{% endif %} </a>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <h4 class="m-t-5 m-b-10"><a href="{% url 'user_detail' user.id %}">{{ contractorprofile.user.credit_name }}</a></h4>
+        <p class="f-s-300"> <i class="fa fa-phone color-white"></i> <span class="color-white m-r-20"> {{ contractorprofile.user.phone }}</span> | <i class="fa fa-envelope-o color-white m-l-20"></i> <span class="color-white m-r-20">{{ contractorprofile.user.email }}</span> </p>
+        <p class="f-s-300"> <i class="fa fa-globe" aria-hidden="true"></i> <span class="color-white m-r-20"> {{ contractorprofile.user.location }}</span></p>
+        <p class="f-s-300"> <i class="fa fa-map-marker" aria-hidden="true"></i> <span class="color-white m-r-20"> {{ contractorprofile.current_location }}</span></p>
+        <!-- <p>
+          {% if user.twitter %}<a href="{{ user.twitter }}" class="btn btn-sm btn-circle ml-1x" aria-label="twitter"><i class="fa fa-lg fa-twitter"></i></a>{% endif %}
+          {% if user.github %}<a href="{{ user.github }}" class="btn btn-sm btn-circle" aria-label="github"><i class="fa fa-lg fa-github"></i></a>{% endif %}
+          {% if user.instagram %}<a href="{{ user.instagram }}" class="btn btn-sm btn-circle ml-1x" aria-label="instagram"><i class="fa fa-lg fa-instagram"></i></a>{% endif %}
+          {% if user.facebook %}<a href="{{ user.facebook }}" class="btn btn-sm btn-circle ml-1x" aria-label="facebook"><i class="fa fa-lg fa-facebook"></i></a>{% endif %}
+          {% if user.linkedin %}<a href="{{ user.linkedin }}" class="btn btn-sm btn-circle ml-1x" aria-label="linkedin"><i class="fa fa-lg fa-linkedin-square"></i></a>{% endif %}
+          {% if user.vine %}<a href="{{ user.vine }}" class="btn btn-sm btn-circle ml-1x" aria-label="vine"><i class="fa fa-lg fa-vine"></i></a>{% endif %}
+        </p> -->
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
+      <h5 class="m-t-40"> Bio</h5>
+      <p>{{ contractorprofile.user.bio}}</p>
+      <h5 class="m-t-40"> Expertise</h5>
+
+      <p>{% for item in contractorprofile.user.expertise %} {{item}}, {% endfor %}</p>
+    </div>
+</div>
+
+{% comment %}
+{% if request.user.id == contractorprofile.user.id %}
+{% endcomment %}
+
+<div class="row">
+  <div class="col-xs-12">
+    <h5>Contractor Profile</h5>
+
+  </div>
+</div>
+
+<div class="row m-t-20">
+  <form class="form-basic post-form" method="POST" enctype="multipart/form-data">{% csrf_token %}
+          <!-- Left Column -->
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+            <!-- Address -->
+            <div class="row">
+            <fieldset class="form-group m-b-20">
+              <div class="col-xs-2 offset-xs-1">
+                <label>{{ form.address.label_tag }}</label>
+              </div>
+              <div class="col-xs-9">
+                {{ form.address }}
+                {% if form.address.errors %}
+                <small class="text-muted">{{ form.address.errors }}</small>
+                {% endif %}
+              </div>
+            </fieldset>
+            </div>
+            <!-- Availability -->
+            <div class="row">
+            <fieldset class="form-group m-b-20">
+              <div class="col-xs-2 offset-xs-1">
+                <label>{{ form.availability.label_tag }}</label>
+              </div>
+              <div class="col-xs-9">
+                {{ form.availability }}
+                {% if form.availability.errors %}
+                <small class="text-muted">{{ form.availability.errors }}</small>
+                {% endif %}
+              </div>
+            </fieldset>
+            </div>
+            <!-- Current Location -->
+            <div class="row">
+            <fieldset class="form-group m-b-20">
+              <div class="col-xs-2 offset-xs-1">
+                <label>{{ form.current_location.label_tag }}</label>
+              </div>
+              <div class="col-xs-9">
+                {{ form.current_location }}
+                {% if form.current_location.errors %}
+                <small class="text-muted">{{ form.current_location.errors }}</small>
+                {% endif %}
+              </div>
+            </fieldset>
+            </div>
+            <!-- Gear -->
+            <div class="row">
+            <fieldset class="form-group m-b-20">
+              <div class="col-xs-2 offset-xs-1">
+                <label>{{ form.gear.label_tag }}</label>
+              </div>
+              <div class="col-xs-9">
+                {{ form.gear }}
+                {% if form.gear.errors %}
+                <small class="text-muted">{{ form.gear.errors }}</small>
+                {% endif %}
+              </div>
+            </fieldset>
+            </div>
+
+
+          </div>
+          <!-- Right Column -->
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+
+            <!-- Portfolio Link 1 -->
+            <div class="row">
+            <fieldset class="form-group m-b-20">
+              {% comment %}
+              <div class="col-xs-2 offset-xs-1">
+                <label>{{ form.portfolio_link1.label_tag }}</label>
+              </div>
+              {% endcomment %}
+              <div class="col-xs-12">
+                {{ form.portfolio_link1 }}
+                {% if form.portfolio_link1.errors %}
+                <small class="text-muted">{{ form.portfolio_link1.errors }}</small>
+                {% endif %}
+              </div>
+            </fieldset>
+            </div>
+            <!-- Portfolio Link 2 -->
+            <div class="row">
+            <fieldset class="form-group m-b-20">
+              {% comment %}
+              <div class="col-xs-2 offset-xs-1">
+                <label>{{ form.portfolio_link2.label_tag }}</label>
+              </div>
+              {% endcomment %}
+              <div class="col-xs-12">
+                {{ form.portfolio_link2 }}
+                {% if form.portfolio_link2.errors %}
+                <small class="text-muted">{{ form.portfolio_link2.errors }}</small>
+                {% endif %}
+              </div>
+            </fieldset>
+            </div>
+            <!-- Portfolio Link 3 -->
+            <div class="row">
+            <fieldset class="form-group m-b-20">
+              {% comment %}
+              <div class="col-xs-2 offset-xs-1">
+                <label>{{ form.portfolio_link3.label_tag }}</label>
+              </div>
+              {% endcomment %}
+              <div class="col-xs-12">
+                {{ form.portfolio_link3 }}
+                {% if form.portfolio_link3.errors %}
+                <small class="text-muted">{{ form.portfolio_link3.errors }}</small>
+                {% endif %}
+              </div>
+            </fieldset>
+            </div>
+
+            <!-- Resume -->
+            <div class="form-group custom-form">
+              <span class="field-label">{{ form.resume.label_tag }}</span>
+              {{ form.resume }}
+              {% if form.resume.errors %}
+                <div class="alert alert-warning" role="alert">
+                {{ form.resume.errors }}
+                </div>
+              {% endif %}
+            </div>
+
+            <a href="{% url 'contractor_detail' contractorprofile.id %}"><button type="submit" class="btn btn-danger-100 pull-right m-r-10">Cancel</button></a>
+            <button id="edit-button" class="btn btn-default pull-right m-r-10" type="submit">{% trans "Save" %}</button>
+          </div> <!-- End of Right Column -->
+  </form>
+</div><!-- End of Row -->
+
+<div class="row m-t-40">
+  <div class="col-xs-12">
+  {% if contractorprofile %}
+  <a href="{% url 'user_edit' contractorprofile.user.id %}" title="Edit your user profile"><button class="btn btn-sm btn-default"> Edit your user profile</button></a>
+  {% endif %}
+  </div>
+</div>
+
+{% comment %}
+
+{% if contractorprofile %}
+<a href="{% url 'user_edit' contractorprofile.user.id %}" title="Edit your user profile">Edit your user profile.</a>
+{% endif %}
+
+
+{% else %}
+<p>You are not authorized to edit this page.</p>
+{% endif %}
+{% endcomment %}
+
+{% endblock %}

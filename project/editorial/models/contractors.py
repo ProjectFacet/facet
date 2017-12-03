@@ -21,8 +21,8 @@ from .facets import Facet
 #-----------------------------------------------------------------------#
 
 
-class ContractorInfo(models.Model):
-    """A User who is a freelancer or contractor has a ContractorInfo
+class ContractorProfile(models.Model):
+    """A User who is a freelancer or contractor has a ContractorProfile
     record on Facet.
 
     ContractorInfo tracks additional information about the user as a
@@ -64,15 +64,58 @@ class ContractorInfo(models.Model):
         blank=True,
     )
 
+    portfolio_link1 = models.URLField(
+        max_length=500,
+        help_text='Link to portfolio item.',
+        blank=True,
+        null=True,
+    )
+
+    portfolio_link2 = models.URLField(
+        max_length=500,
+        help_text='Link to portfolio item.',
+        blank=True,
+        null=True,
+    )
+
+    portfolio_link3 = models.URLField(
+        max_length=500,
+        help_text='Link to portfolio item.',
+        blank=True,
+        null=True,
+    )
+
     def __str__(self):
         return self.user.credit_name
+
+    def get_active_assignments(self):
+        """Return all active assignment."""
+        return self.assignment_set.filter(complete=False)
+
+    def get_active_pitches(self):
+        """Return all active assignment."""
+        return self.pitch_set.filter(Q(status="Pitched")|Q(status="Accepted"))
+
+    @property
+    def search_title(self):
+        return self.user.credit_name
+
+    @property
+    def description(self):
+        return "{user}, {title}".format(
+                                        user=self.user.credit_name,
+                                        title="Contractor",
+                                        )
+
+    @property
+    def type(self):
+        return "Contractor"
 
     def get_absolute_url(self):
         return reverse('contractor_detail', kwargs={'pk': self.id})
 
 
-
-class OrganizationContractorInfo(models.Model):
+class OrganizationContractorAffiliation(models.Model):
     """Information tracked by an organization about contractors.
 
     Basic info like email, bio, skillset, availability, current_location, gear
@@ -86,8 +129,8 @@ class OrganizationContractorInfo(models.Model):
         "Organization",
     )
 
-    contractor_info = models.ForeignKey(
-        "ContractorInfo",
+    contractor = models.ForeignKey(
+        "ContractorProfile",
     )
 
     w9_on_file = models.BooleanField(
@@ -134,8 +177,23 @@ class OrganizationContractorInfo(models.Model):
     def __str__(self):
         return "{organization} - {contractor}".format(
                                         organization=self.organization.name,
-                                        contractor=self.contractor_info.user.credit_name,
+                                        contractor=self.contractor.user.credit_name,
                                         )
+
+    @property
+    def search_title(self):
+        return "{organization} - {contractor}".format(
+                                        organization=self.organization.name,
+                                        contractor=self.contractor.user.credit_name,
+                                        )
+
+    @property
+    def description(self):
+        return "Organization, Contractor Relationship Detail"
+
+    @property
+    def type(self):
+        return "Organization, Contractor Relationship Detail"
 
 
 class Call(models.Model):
@@ -172,7 +230,6 @@ class Call(models.Model):
     # optional expiration date for call
     # at this point is_active will set to false automatically
     expiration_date = models.DateTimeField(
-        auto_now_add=True,
         help_text='Day/Time call ends.',
         blank=True,
         null=True,
@@ -228,12 +285,21 @@ class Call(models.Model):
     def type(self):
         return "Call"
 
+    @property
+    def description(self):
+        return self.text
+
 
 class Pitch(models.Model):
     """ Pitches for content from a contractor to an Organization."""
 
-    contributor = models.ForeignKey(
-        ContractorInfo,
+    contractor = models.ForeignKey(
+        ContractorProfile,
+    )
+
+    recipient = models.ForeignKey(
+        User,
+        help_text='To whom is this pitch directed?'
     )
 
     name = models.TextField(
@@ -302,6 +368,10 @@ class Pitch(models.Model):
     def search_title(self):
         return self.name
 
+    @property
+    def description(self):
+        return self.text
+
     def get_absolute_url(self):
         return reverse('pitch_edit', kwargs={'pk': self.id})
 
@@ -313,8 +383,8 @@ class Pitch(models.Model):
 class Assignment(models.Model):
     """The details of an assignment to a contractor from an organization."""
 
-    contributor = models.ForeignKey(
-        ContractorInfo,
+    contractor = models.ForeignKey(
+        ContractorProfile,
     )
 
     editor = models.ForeignKey(
@@ -378,9 +448,22 @@ class Assignment(models.Model):
         help_text='If this assignment is related to a pitch, which one?',
     )
 
+    complete = models.BooleanField(
+        default=False,
+        help_text='Is the assignment complete?',
+    )
+
     @property
     def search_title(self):
         return self.name
+
+    @property
+    def description(self):
+        return self.text
+
+    @property
+    def type(self):
+        return "Assignment"
 
     def __str__(self):
         return self.name

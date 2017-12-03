@@ -21,6 +21,11 @@ class EditorialAppConfig(AppConfig):
             "Facet",
             "Task",
             "Event",
+            "Call",
+            "Pitch",
+            "Assignment",
+            "ContractorProfile",
+            "OrganizationContractorAffiliation",
             "FacetTemplate",
             "ImageAsset",
             "DocumentAsset",
@@ -36,6 +41,11 @@ class EditorialAppConfig(AppConfig):
             register_watson(self, model_name)
 
         registry.register(self.get_model('User'))
+        registry.register(self.get_model('ContractorProfile'))
+        registry.register(self.get_model('OrganizationContractorAffiliation'))
+        registry.register(self.get_model('Call'))
+        registry.register(self.get_model('Pitch'))
+        registry.register(self.get_model('Assignment'))
         registry.register(self.get_model('Organization'))
         registry.register(self.get_model('Network'))
         registry.register(self.get_model('Project'))
