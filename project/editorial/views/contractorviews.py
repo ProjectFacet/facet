@@ -18,6 +18,10 @@ from editorial.forms import (
     CallForm,
     PitchForm,
     AssignmentForm,
+    SimpleImageForm,
+    SimpleDocumentForm,
+    SimpleAudioForm,
+    SimpleVideoForm,
     )
 
 from editorial.models import (
@@ -38,7 +42,6 @@ from editorial.models import (
 #----------------------------------------------------------------------#
 #   Contractor Profile Views
 #----------------------------------------------------------------------#
-
 
 class ContractorCreateView(CreateView):
     """After user signup, the user has the option to create an organization or
@@ -175,23 +178,89 @@ class PitchCreateView(CreateView):
         return redirect(self.get_success_url())
 
 
-class PitchDetailView(DetailView):
-    """Show pitch details."""
-
-    model = Pitch
-
-
 class PitchUpdateView(UpdateView):
-    """Edit a pitch."""
+    """View and edit a pitch. Add assets to a pitch."""
 
     model = Pitch
     form_class = PitchForm
+
+    def pitch_simple_image_assets(self):
+        """Return all simple images associated with a pitch,
+        and form to add.
+        """
+
+        self.object = self.get_object()
+        images = self.object.simple_image_assets
+        form = SimpleImageForm()
+        return {'images': images, 'form': form}
+
+    def pitch_simple_document_assets(self):
+        """Return all simple docs associated with a pitch,
+        and form to add.
+        """
+
+        self.object = self.get_object()
+        documents = self.object.simple_document_assets
+        form = SimpleDocumentForm()
+        return {'documents': documents, 'form': form}
+
+    def pitch_simple_audio_assets(self):
+        """Return all simple audio associated with a pitch,
+        and form to add.
+        """
+
+        self.object = self.get_object()
+        audio = self.object.simple_audio_assets
+        form = SimpleAudioForm()
+        return {'audio': audio, 'form': form}
+
+    def pitch_simple_video_assets(self):
+        """Return all simple video associated with a pitch,
+        and form to add.
+        """
+
+        self.object = self.get_object()
+        videos = self.object.simple_video_assets
+        form = SimpleVideoForm()
+        return {'videos': videos, 'form': form}
+
 
     def get_success_url(self):
         """Record action for activity stream."""
 
         action.send(self.request.user, verb="edited", action_object=self.object)
         return super(PitchUpdateView, self).get_success_url()
+
+
+class PitchDetailView(DetailView):
+    """Show pitch details."""
+
+    model = Pitch
+
+    def get_images(self):
+        """Return simple images for the pitch."""
+
+        self.object = self.get_object()
+        images = self.object.simple_image_assets.set()
+
+    def get_documents(self):
+        """Return simple documents for the pitch."""
+
+        self.object = self.get_object()
+        documents = self.object.simple_document_assets.set()
+
+    def get_audio(self):
+        """Return simple audio for the pitch."""
+
+        self.object = self.get_object()
+        audio = self.object.simple_audio_assets.set()
+
+
+    def get_video(self):
+        """ Return simple video for the pitch."""
+
+        self.object = self.get_object()
+        videos = self.object.simple_video_assets.set()
 
 
 #----------------------------------------------------------------------#
