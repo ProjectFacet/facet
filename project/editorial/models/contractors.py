@@ -292,6 +292,27 @@ class Call(models.Model):
         help_text='Pitch status choice.'
     )
 
+    # assets
+    simple_image_assets = models.ManyToManyField(
+        SimpleImage,
+        blank=True,
+    )
+
+    simple_document_assets = models.ManyToManyField(
+        SimpleDocument,
+        blank=True,
+    )
+
+    simple_audio_assets = models.ManyToManyField(
+        SimpleAudio,
+        blank=True,
+    )
+
+    simple_video_assets = models.ManyToManyField(
+        SimpleVideo,
+        blank=True,
+    )
+
     def __str__(self):
         return self.name
 
@@ -362,22 +383,22 @@ class Pitch(models.Model):
     )
 
     # assets
-    image_assets = models.ManyToManyField(
+    simple_image_assets = models.ManyToManyField(
         SimpleImage,
         blank=True,
     )
 
-    document_assets = models.ManyToManyField(
+    simple_document_assets = models.ManyToManyField(
         SimpleDocument,
         blank=True,
     )
 
-    audio_assets = models.ManyToManyField(
+    simple_audio_assets = models.ManyToManyField(
         SimpleAudio,
         blank=True,
     )
 
-    video_assets = models.ManyToManyField(
+    simple_video_assets = models.ManyToManyField(
         SimpleVideo,
         blank=True,
     )
@@ -472,6 +493,27 @@ class Assignment(models.Model):
     complete = models.BooleanField(
         default=False,
         help_text='Is the assignment complete?',
+    )
+
+    # assets
+    simple_image_assets = models.ManyToManyField(
+        SimpleImage,
+        blank=True,
+    )
+
+    simple_document_assets = models.ManyToManyField(
+        SimpleDocument,
+        blank=True,
+    )
+
+    simple_audio_assets = models.ManyToManyField(
+        SimpleAudio,
+        blank=True,
+    )
+
+    simple_video_assets = models.ManyToManyField(
+        SimpleVideo,
+        blank=True,
     )
 
     @property

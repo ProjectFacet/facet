@@ -20,6 +20,7 @@ from django.core.exceptions import ValidationError
 # from django.dispatch import receiver
 
 from . import User, Organization, Network, Discussion
+from . import SimpleImage, SimpleDocument, SimpleAudio, SimpleVideo
 
 #-----------------------------------------------------------------------#
 #  SERIES
@@ -114,6 +115,28 @@ class Series(models.Model):
         blank=True,
         null=True,
     )
+
+    # assets
+    simple_image_assets = models.ManyToManyField(
+        SimpleImage,
+        blank=True,
+    )
+
+    simple_document_assets = models.ManyToManyField(
+        SimpleDocument,
+        blank=True,
+    )
+
+    simple_audio_assets = models.ManyToManyField(
+        SimpleAudio,
+        blank=True,
+    )
+
+    simple_video_assets = models.ManyToManyField(
+        SimpleVideo,
+        blank=True,
+    )
+
 
     class Meta:
         verbose_name = 'Series'

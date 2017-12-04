@@ -11,6 +11,7 @@ from django.shortcuts import get_object_or_404
 from django.core.exceptions import ValidationError
 
 from . import User, Organization, Network, Project, Series, Story
+from . import SimpleImage, SimpleDocument, SimpleAudio, SimpleVideo
 
 #-----------------------------------------------------------------------#
 #  EVENT
@@ -124,6 +125,27 @@ class Event(models.Model):
         on_delete=models.CASCADE,
         blank=True,
         null=True,
+    )
+
+    # assets
+    simple_image_assets = models.ManyToManyField(
+        SimpleImage,
+        blank=True,
+    )
+
+    simple_document_assets = models.ManyToManyField(
+        SimpleDocument,
+        blank=True,
+    )
+
+    simple_audio_assets = models.ManyToManyField(
+        SimpleAudio,
+        blank=True,
+    )
+
+    simple_video_assets = models.ManyToManyField(
+        SimpleVideo,
+        blank=True,
     )
 
     class Meta:

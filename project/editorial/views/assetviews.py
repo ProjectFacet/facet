@@ -404,56 +404,56 @@ class SimpleImageCreateView(CreateView):
             project_id = self.request.POST.get('project')
             project = get_object_or_404(Project, id=project_id)
             # add simple image to the associated object
-            # project.simple_images.add(image)
+            # project.image_assets.add(image)
             # project.save()
             action_target = project
         elif associated_object == 'Series':
             series_id = self.request.POST.get('series')
             series = get_object_or_404(Series, id=series_id)
             # add simple image to the associated object
-            # series.simple_images.add(image)
+            # series.image_assets.add(image)
             # series.save()
             action_target = series
         elif associated_object == 'Story':
             story_id = self.request.POST.get('story')
             story = get_object_or_404(Story, id=story_id)
             # add simple image to the associated object
-            # story.simple_images.add(image)
+            # story.image_assets.add(image)
             # story.save()
             action_target = story
         elif associated_object == 'Task':
             task_id = self.request.POST.get('task')
             task = get_object_or_404(Task, id=task_id)
             # add simple image to the associated object
-            # task.simple_images.add(image)
+            # task.image_assets.add(image)
             # task.save()
             action_target = task
         elif associated_object == 'Event':
             event_id = self.request.POST.get('event')
             event = get_object_or_404(Event, id=event_id)
             # add simple image to the associated object
-            # event.simple_images.add(image)
+            # event.image_assets.add(image)
             # event.save()
             action_target = event
         elif associated_object == 'Pitch':
             pitch_id = self.request.POST.get('pitch')
             pitch = get_object_or_404(Pitch, id=pitch_id)
             # add simple image to the associated object
-            pitch.simple_images.add(image)
+            pitch.image_assets.add(image)
             pitch.save()
             action_target = pitch
         elif associated_object == 'Call':
             call_id = self.request.POST.get('call')
             call = get_object_or_404(Call, id=call_id)
             # add simple image to the associated object
-            # call.simple_images.add(image)
+            # call.image_assets.add(image)
             # call.save()
             action_target = call
         elif associated_object == 'Assignment':
             assignment_id = self.request.POST.get('assignment')
             assignment = get_object_or_404(Assignment, id=assignment_id)
             # add simple image to the associated object
-            # assignment.simple_images.add(image)
+            # assignment.image_assets.add(image)
             # assignment.save()
             action_target = assignment
 
@@ -491,56 +491,56 @@ class SimpleDocumentCreateView(CreateView):
             project_id = self.request.POST.get('project')
             project = get_object_or_404(Project, id=project_id)
             # add simple document to the associated object
-            # project.simple_documents.add(document)
+            # project.document_assets.add(document)
             # project.save()
             action_target = project
         elif associated_object == 'Series':
             series_id = self.request.POST.get('series')
             series = get_object_or_404(Series, id=series_id)
             # add simple document to the associated object
-            # series.simple_documents.add(document)
+            # series.document_assets.add(document)
             # series.save()
             action_target = series
         elif associated_object == 'Story':
             story_id = self.request.POST.get('story')
             story = get_object_or_404(Story, id=story_id)
             # add simple document to the associated object
-            # story.simple_documents.add(document)
+            # story.document_assets.add(document)
             # story.save()
             action_target = story
         elif associated_object == 'Task':
             task_id = self.request.POST.get('task')
             task = get_object_or_404(Task, id=task_id)
             # add simple document to the associated object
-            # task.simple_documents.add(document)
+            # task.document_assets.add(document)
             # task.save()
             action_target = task
         elif associated_object == 'Event':
             event_id = self.request.POST.get('event')
             event = get_object_or_404(Event, id=event_id)
             # add simple document to the associated object
-            # event.simple_documents.add(document)
+            # event.document_assets.add(document)
             # event.save()
             action_target = event
         elif associated_object == 'Pitch':
             pitch_id = self.request.POST.get('pitch')
             pitch = get_object_or_404(Pitch, id=pitch_id)
             # add simple document to the associated object
-            pitch.simple_documents.add(document)
+            pitch.document_assets.add(document)
             pitch.save()
             action_target = pitch
         elif associated_object == 'Call':
             call_id = self.request.POST.get('call')
             call = get_object_or_404(Call, id=call_id)
             # add simple document to the associated object
-            # call.simple_documents.add(document)
+            # call.document_assets.add(document)
             # call.save()
             action_target = call
         elif associated_object == 'Assignment':
             assignment_id = self.request.POST.get('assignment')
             assignment = get_object_or_404(Assignment, id=assignment_id)
             # add simple document to the associated object
-            # assignment.simple_documents.add(document)
+            # assignment.document_assets.add(document)
             # assignment.save()
             action_target = assignment
 
@@ -578,56 +578,56 @@ class SimpleAudioCreateView(CreateView):
             project_id = self.request.POST.get('project')
             project = get_object_or_404(Project, id=project_id)
             # add simple audio to the associated object
-            # project.simple_audio.add(audio)
+            # project.audio_assets.add(audio)
             # project.save()
             action_target = project
         elif associated_object == 'Series':
             series_id = self.request.POST.get('series')
             series = get_object_or_404(Series, id=series_id)
             # add simple audio to the associated object
-            # series.simple_audio.add(audio)
+            # series.audio_assets.add(audio)
             # series.save()
             action_target = series
         elif associated_object == 'Story':
             story_id = self.request.POST.get('story')
             story = get_object_or_404(Story, id=story_id)
             # add simple audio to the associated object
-            # story.simple_audio.add(audio)
+            # story.audio_assets.add(audio)
             # story.save()
             action_target = story
         elif associated_object == 'Task':
             task_id = self.request.POST.get('task')
             task = get_object_or_404(Task, id=task_id)
             # add simple audio to the associated object
-            # task.simple_audio.add(audio)
+            # task.audio_assets.add(audio)
             # task.save()
             action_target = task
         elif associated_object == 'Event':
             event_id = self.request.POST.get('event')
             event = get_object_or_404(Event, id=event_id)
             # add simple audio to the associated object
-            # event.simple_audio.add(audio)
+            # event.audio_assets.add(audio)
             # event.save()
             action_target = event
         elif associated_object == 'Pitch':
             pitch_id = self.request.POST.get('pitch')
             pitch = get_object_or_404(Pitch, id=pitch_id)
             # add simple audio to the associated object
-            pitch.simple_audio.add(audio)
+            pitch.audio_assets.add(audio)
             pitch.save()
             action_target = pitch
         elif associated_object == 'Call':
             call_id = self.request.POST.get('call')
             call = get_object_or_404(Call, id=call_id)
             # add simple audio to the associated object
-            # call.simple_audio.add(audio)
+            # call.audio_assets.add(audio)
             # call.save()
             action_target = call
         elif associated_object == 'Assignment':
             assignment_id = self.request.POST.get('assignment')
             assignment = get_object_or_404(Assignment, id=assignment_id)
             # add simple audio to the associated object
-            # assignment.simple_audio.add(audio)
+            # assignment.audio_assets.add(audio)
             # assignment.save()
             action_target = assignment
 
@@ -665,56 +665,56 @@ class SimpleVideoCreateView(CreateView):
             project_id = self.request.POST.get('project')
             project = get_object_or_404(Project, id=project_id)
             # add simple video to the associated object
-            # project.simple_videos.add(video)
+            # project.video_assetss.add(video)
             # project.save()
             action_target = project
         elif associated_object == 'Series':
             series_id = self.request.POST.get('series')
             series = get_object_or_404(Series, id=series_id)
             # add simple video to the associated object
-            # series.simple_videos.add(video)
+            # series.video_assetss.add(video)
             # series.save()
             action_target = series
         elif associated_object == 'Story':
             story_id = self.request.POST.get('story')
             story = get_object_or_404(Story, id=story_id)
             # add simple video to the associated object
-            # story.simple_videos.add(video)
+            # story.video_assetss.add(video)
             # story.save()
             action_target = story
         elif associated_object == 'Task':
             task_id = self.request.POST.get('task')
             task = get_object_or_404(Task, id=task_id)
             # add simple video to the associated object
-            # task.simple_videos.add(video)
+            # task.video_assetss.add(video)
             # task.save()
             action_target = task
         elif associated_object == 'Event':
             event_id = self.request.POST.get('event')
             event = get_object_or_404(Event, id=event_id)
             # add simple video to the associated object
-            # event.simple_videos.add(video)
+            # event.video_assetss.add(video)
             # event.save()
             action_target = event
         elif associated_object == 'Pitch':
             pitch_id = self.request.POST.get('pitch')
             pitch = get_object_or_404(Pitch, id=pitch_id)
             # add simple video to the associated object
-            pitch.simple_videos.add(video)
+            pitch.video_assetss.add(video)
             pitch.save()
             action_target = pitch
         elif associated_object == 'Call':
             call_id = self.request.POST.get('call')
             call = get_object_or_404(Call, id=call_id)
             # add simple video to the associated object
-            # call.simple_videos.add(video)
+            # call.video_assetss.add(video)
             # call.save()
             action_target = call
         elif associated_object == 'Assignment':
             assignment_id = self.request.POST.get('assignment')
             assignment = get_object_or_404(Assignment, id=assignment_id)
             # add simple video to the associated object
-            # assignment.simple_videos.add(video)
+            # assignment.video_assetss.add(video)
             # assignment.save()
             action_target = assignment
 
