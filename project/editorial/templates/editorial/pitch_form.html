@@ -18,7 +18,13 @@
 <div>
     <ol class="breadcrumb icon-angle-right icon-th">
         <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
+        {% if pitch.id %}
+        <li class="fadeIn"> Pitch </li>
+        <li class="fadeIn"> {{ pitch.name }} </li>
+        <li class="fadeIn"> Update </li>
+        {% else %}
         <li class="fadeIn"> Create a Pitch </li>
+        {% endif %}
     </ol>
 </div>
 {% endblock breadcrumb %}
