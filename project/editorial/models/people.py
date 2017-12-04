@@ -48,13 +48,12 @@ class User(AbstractUser):
         (CONTRACTOR, 'Contractor'),
     )
 
-    # relevant for editors of organizations managing contributors
-    # relevant for user accounts of contributors
+    # relevant for editors and admins of organizations managing contractors
     # user will appear in public search results for editors accepting contact
-    # from contributors and vice versa
+    # from contractors
     public = models.BooleanField(
         default=False,
-        help_text='If an editor or contributor, is the user publicly listed?',
+        help_text='If an editor or admin, is the user publicly listed?',
     )
 
     user_type = models.CharField(
@@ -171,6 +170,7 @@ class User(AbstractUser):
         user_assets.extend(video_owner)
 
         return user_assets
+
 
     def inbox_comments(self):
         """ Return list of comments from discussions the user is a participant in.

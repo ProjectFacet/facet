@@ -112,6 +112,13 @@
   <div class="col-md-3">
     <h4 class="m-b-20">Organizations <a href="#" data-toggle="modal" data-target="#inviteOrgToNetworkModal" title="Invite an Organization to this Network"><i class="fa fa-plus sameline dark"></i></a></h4>
     <div class="row">
+      <!-- Owner Organization -->
+      <div class="col-xs-3">
+        <div class="m-b-20">
+          <!-- Org Logo -->
+          <button class="media-left media-middle clear-button" id="trigger-overlay" type="button"> {% if network.owner_organization.logo %}<img class="centered img-rounded" width=64 src="{{ network.owner_organization.display_logo.url }}" alt="{{ org.name }} logo">{% else %} {{ network.owner_organization.name}} {% endif %} </button>
+        </div>
+      </div>
       {% for org in network.organizations.all %}
       <div class="col-xs-3">
         <div class="m-b-20">

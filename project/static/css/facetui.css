@@ -368,3 +368,16 @@ img.image-center {
 :-moz-placeholder { /* Firefox 18- */
   color: #474d5d;
 }
+
+.bg-standard {
+  background-color: #3c414f !important;
+}
+
+
+.user-widget-9 .img-circle {
+  border: none;
+}
+
+.btn.btn-white.btn-outline.btn-rounded {
+  border: 1px solid white;
+}

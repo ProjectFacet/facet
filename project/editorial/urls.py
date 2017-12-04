@@ -145,6 +145,8 @@ urlpatterns = [
     url(r'^contractor/new/$', contractorviews.ContractorCreateView.as_view(), name='contractor_new'),
     url(r'^contractor/(?P<pk>[0-9]+)/$', contractorviews.ContractorDetailView.as_view(), name='contractor_detail'),
     url(r'^contractor/(?P<pk>[0-9]+)/edit/$', contractorviews.ContractorUpdateView.as_view(), name='contractor_edit'),
+    url(r'^contractor/list/$', contractorviews.PublicContractorListView.as_view(), name='public_contractor_list'),
+    url(r'^editor/list/$', contractorviews.PublicEditorListView.as_view(), name='public_editor_list'),
     url(r'^assignment/new/$', contractorviews.AssignmentCreateView.as_view(), name='assignment_new'),
     url(r'^assignment/(?P<pk>[0-9]+)/$', contractorviews.AssignmentDetailView.as_view(), name='assignment_detail'),
     url(r'^assignment/(?P<pk>[0-9]+)/edit/$', contractorviews.AssignmentUpdateView.as_view(), name='assignment_edit'),
@@ -234,6 +236,14 @@ urlpatterns = [
     # Video
     url(r'^video/new/$', assetviews.VideoAssetCreateView.as_view(), name='upload_video'),
     url(r'^video/add/$', assetviews.add_video, name='add_video'),
+    # Simple Images
+    url(r'^simpleimage/new/$', assetviews.SimpleImageCreateView.as_view(), name='upload_simple_image'),
+    # Simple documents
+    url(r'^simpledocument/new/$', assetviews.SimpleDocumentCreateView.as_view(), name='upload_simple_document'),
+    # Simple Audio
+    url(r'^simpleaudio/new/$', assetviews.SimpleAudioCreateView.as_view(), name='upload_simple_audio'),
+    # Simple Video
+    url(r'^simplevideo/new/$', assetviews.SimpleVideoCreateView.as_view(), name='upload_simple_video'),
     #----------------------------------------------------------------------#
     #   Network URLS
     #----------------------------------------------------------------------#

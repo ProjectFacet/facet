@@ -269,7 +269,7 @@
                           </a>
                           <div class="dropdown-menu dropdown-menu-scale from-right dropdown-menu-right">
                               <a class="dropdown-item animated fadeIn" href="{% url 'inbox' %}" title="View Inbox"> <i class="zmdi zmdi-email"></i> <span class="dropdown-text">Inbox</span> </a>
-                              <a class="dropdown-item animated fadeIn" href="{% url 'user_edit' pk=request.user.id %}"> <i class="zmdi zmdi-settings-square"></i> <span class="dropdown-text">Profile</span> </a>
+                              <a class="dropdown-item animated fadeIn" href="{% url 'user_detail' pk=request.user.id %}"> <i class="zmdi zmdi-settings-square"></i> <span class="dropdown-text">Profile</span> </a>
                               {% comment %}<a class="dropdown-item animated fadeIn" href="#"> <i class="zmdi zmdi-alarm"></i> <span class="dropdown-text">Lock screen</span> </a>{% endcomment %}
                               <a class="dropdown-item animated fadeIn" href="/accounts/logout"> <i class="zmdi zmdi-power"></i> <span class="dropdown-text">Logout</span> </a>
                           </div>

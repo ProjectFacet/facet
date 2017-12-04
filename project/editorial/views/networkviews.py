@@ -70,7 +70,7 @@ class NetworkCreateView(CreateView):
         discussion = Discussion.objects.create_discussion("NET")
         network.discussion = discussion
 
-        network.organization_owner = self.request.user.organization
+        network.owner_organization = self.request.user.organization
 
         network.save()
         form.save_m2m()

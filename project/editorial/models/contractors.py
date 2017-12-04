@@ -64,6 +64,12 @@ class ContractorProfile(models.Model):
         blank=True,
     )
 
+    # contractors will appear in public search results for contractors accepting work
+    public = models.BooleanField(
+        default=False,
+        help_text='Is the contractor publicly listed?',
+    )
+
     portfolio_link1 = models.URLField(
         max_length=500,
         help_text='Link to portfolio item.',
@@ -88,13 +94,28 @@ class ContractorProfile(models.Model):
     def __str__(self):
         return self.user.credit_name
 
+    def get_public_contractors(self):
+        """Return queryset of contractor profiles that are pubic."""
+
+
+        #
+
+
+        contractors = ContractorProfile.objects.all()
+        public_contractors = User.objects.fi
+
+
+
+
     def get_active_assignments(self):
         """Return all active assignment."""
         return self.assignment_set.filter(complete=False)
 
+
     def get_active_pitches(self):
         """Return all active assignment."""
         return self.pitch_set.filter(Q(status="Pitched")|Q(status="Accepted"))
+
 
     @property
     def search_title(self):

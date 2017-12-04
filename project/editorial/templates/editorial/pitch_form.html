@@ -18,7 +18,7 @@
 <div>
     <ol class="breadcrumb icon-angle-right icon-th">
         <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
-        <li class="fadeIn"> TK </li>
+        <li class="fadeIn"> Create a Pitch </li>
     </ol>
 </div>
 {% endblock breadcrumb %}
@@ -34,6 +34,107 @@
                     <!-- CONTENT -->
 <!-- ================================================= -->
 
+<div class="row m-b-20">
+  <div class="col-xs-12">
+    <h4>Create a Pitch</h4>
+  </div>
+</div>
+
+<div class="row">
+  <form method="POST" class="post-form forms-basic">
+    {% csrf_token %}
+
+    <!-- Left Column -->
+    <div class="col-xs-12 col-sm-6">
+      <!-- Reciptient -->
+      <div class="row">
+        <fieldset class="form-group m-b-20">
+          <div class="col-xs-2 offset-xs-1">
+            <label>{{ form.recipient.label_tag }}</label>
+          </div>
+          <div class="col-xs-9">
+            {{ form.recipient }}
+            {% if form.recipient.errors %}
+            <small class="text-muted">{{ form.recipient.errors }}</small>
+            {% endif %}
+          </div>
+        </fieldset>
+      </div>
+      <!-- Name -->
+      <div class="row">
+        <fieldset class="form-group m-b-20">
+          <div class="col-xs-2 offset-xs-1">
+            <label>{{ form.name.label_tag }}</label>
+          </div>
+          <div class="col-xs-9">
+            {{ form.name }}
+            {% if form.name.errors %}
+            <small class="text-muted">{{ form.name.errors }}</small>
+            {% endif %}
+          </div>
+        </fieldset>
+      </div>
+      <!-- Status -->
+      <div class="row">
+        <fieldset class="form-group m-b-20">
+          <div class="col-xs-2 offset-xs-1">
+            <label>{{ form.status.label_tag }}</label>
+          </div>
+          <div class="col-xs-9">
+            {{ form.status }}
+            {% if form.status.errors %}
+            <small class="text-muted">{{ form.status.errors }}</small>
+            {% endif %}
+          </div>
+        </fieldset>
+      </div>
+      <!-- Exclusive -->
+      <div class="row">
+        <fieldset class="form-group m-b-20">
+          <div class="col-xs-2 offset-xs-1">
+            <label>{{ form.exclusive.label_tag }}</label>
+          </div>
+          <div class="col-xs-9">
+            {{ form.exclusive }}
+            {% if form.exclusive.errors %}
+            <small class="text-muted">{{ form.exclusive.errors }}</small>
+            {% endif %}
+          </div>
+        </fieldset>
+      </div>
+    </div>
+    <!-- Right Column -->
+    <div class="col-xs-12 col-sm-6">
+      <!-- Text -->
+      <div class="row">
+        <fieldset class="form-group m-b-20">
+          <div class="col-xs-2 offset-xs-1">
+            <label>{{ form.text.label_tag }}</label>
+          </div>
+          <div class="col-xs-9">
+            {{ form.text }}
+            {% if form.text.errors %}
+            <small class="text-muted">{{ form.text.errors }}</small>
+            {% endif %}
+          </div>
+        </fieldset>
+      </div>
+      <!-- Save/Cancel Buttons -->
+      <div class="row">
+        <div class="col-xs-12">
+          <a href="{% url 'pitch_new' %}" title="Cancel"><button class="save btn btn-danger-100 m-t-40 m-r-10 pull-right">Cancel</button></a>
+          <button type="submit" class="save btn btn-default m-t-40 m-r-10 pull-right">Save</button>
+        </div>
+      </div>
+
+    </div>
+
+  </form>
+
+
+
+
+</div>
 
 
 

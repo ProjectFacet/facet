@@ -21,6 +21,10 @@ from editorial.forms import (
     DocumentAssetForm,
     AudioAssetForm,
     VideoAssetForm,
+    SimpleImageForm,
+    SimpleDocumentForm,
+    SimpleAudioForm,
+    SimpleVideoForm,
     )
 
 from editorial.models import (
@@ -28,7 +32,12 @@ from editorial.models import (
     ImageAsset,
     DocumentAsset,
     AudioAsset,
-    VideoAsset)
+    VideoAsset,
+    SimpleImage,
+    SimpleDocument,
+    SimpleAudio,
+    SimpleVideo,
+    )
 
 
 #----------------------------------------------------------------------#
@@ -367,3 +376,355 @@ class VideoAssetUpdateView(UpdateView):
 
         action.send(self.request.user, verb="edited", action_object=self.object)
         return super(VideoAssetUpdateView, self).get_success_url()
+
+
+#----------------------------------------------------------------------#
+#   Simple Asset Views
+#----------------------------------------------------------------------#
+
+class SimpleImageCreateView(CreateView):
+    """Upload a simple image."""
+
+    model = SimpleImage
+    form_class = SimpleImageForm
+
+    def form_valid(self,form):
+        """Save -- but first add owner and org to the image.
+        And then connect the image to whatever object it is associated with.
+
+        Simple images can be connected to Projects, Series, Stories, Tasks, Events.
+        Pitches, Calls and Assignments.
+        """
+
+        self.object = image = form.save(commit=False)
+
+        # get thing that the image is being associated with
+        associated_object = self.request.POST.get('assocation')
+        if associated_object == 'Project':
+            project_id = self.request.POST.get('project')
+            project = get_object_or_404(Project, id=project_id)
+            # add simple image to the associated object
+            # project.simple_images.add(image)
+            # project.save()
+            action_target = project
+        elif associated_object == 'Series':
+            series_id = self.request.POST.get('series')
+            series = get_object_or_404(Series, id=series_id)
+            # add simple image to the associated object
+            # series.simple_images.add(image)
+            # series.save()
+            action_target = series
+        elif associated_object == 'Story':
+            story_id = self.request.POST.get('story')
+            story = get_object_or_404(Story, id=story_id)
+            # add simple image to the associated object
+            # story.simple_images.add(image)
+            # story.save()
+            action_target = story
+        elif associated_object == 'Task':
+            task_id = self.request.POST.get('task')
+            task = get_object_or_404(Task, id=task_id)
+            # add simple image to the associated object
+            # task.simple_images.add(image)
+            # task.save()
+            action_target = task
+        elif associated_object == 'Event':
+            event_id = self.request.POST.get('event')
+            event = get_object_or_404(Event, id=event_id)
+            # add simple image to the associated object
+            # event.simple_images.add(image)
+            # event.save()
+            action_target = event
+        elif associated_object == 'Pitch':
+            pitch_id = self.request.POST.get('pitch')
+            pitch = get_object_or_404(Pitch, id=pitch_id)
+            # add simple image to the associated object
+            pitch.simple_images.add(image)
+            pitch.save()
+            action_target = pitch
+        elif associated_object == 'Call':
+            call_id = self.request.POST.get('call')
+            call = get_object_or_404(Call, id=call_id)
+            # add simple image to the associated object
+            # call.simple_images.add(image)
+            # call.save()
+            action_target = call
+        elif associated_object == 'Assignment':
+            assignment_id = self.request.POST.get('assignment')
+            assignment = get_object_or_404(Assignment, id=assignment_id)
+            # add simple image to the associated object
+            # assignment.simple_images.add(image)
+            # assignment.save()
+            action_target = assignment
+
+        # set request based attributes
+        image.owner = self.request.user
+        if self.request.user.organization:
+            image.organization = self.request.user.organization
+        image.save()
+
+        # record action for activity stream
+        action.send(self.request.user, verb="uploaded image", action_object=image, target=action_target)
+
+        return redirect(self.get_success_url())
+
+
+class SimpleDocumentCreateView(CreateView):
+    """Upload a simple document."""
+
+    model = SimpleDocument
+    form_class = SimpleDocumentForm
+
+    def form_valid(self,form):
+        """Save -- but first add owner and org to the document.
+        And then connect the document to whatever object it is associated with.
+
+        Simple documents can be connected to Projects, Series, Stories, Tasks, Events.
+        Pitches, Calls and Assignments.
+        """
+
+        self.object = document = form.save(commit=False)
+
+        # get thing that the document is being associated with
+        associated_object = self.request.POST.get('assocation')
+        if associated_object == 'Project':
+            project_id = self.request.POST.get('project')
+            project = get_object_or_404(Project, id=project_id)
+            # add simple document to the associated object
+            # project.simple_documents.add(document)
+            # project.save()
+            action_target = project
+        elif associated_object == 'Series':
+            series_id = self.request.POST.get('series')
+            series = get_object_or_404(Series, id=series_id)
+            # add simple document to the associated object
+            # series.simple_documents.add(document)
+            # series.save()
+            action_target = series
+        elif associated_object == 'Story':
+            story_id = self.request.POST.get('story')
+            story = get_object_or_404(Story, id=story_id)
+            # add simple document to the associated object
+            # story.simple_documents.add(document)
+            # story.save()
+            action_target = story
+        elif associated_object == 'Task':
+            task_id = self.request.POST.get('task')
+            task = get_object_or_404(Task, id=task_id)
+            # add simple document to the associated object
+            # task.simple_documents.add(document)
+            # task.save()
+            action_target = task
+        elif associated_object == 'Event':
+            event_id = self.request.POST.get('event')
+            event = get_object_or_404(Event, id=event_id)
+            # add simple document to the associated object
+            # event.simple_documents.add(document)
+            # event.save()
+            action_target = event
+        elif associated_object == 'Pitch':
+            pitch_id = self.request.POST.get('pitch')
+            pitch = get_object_or_404(Pitch, id=pitch_id)
+            # add simple document to the associated object
+            pitch.simple_documents.add(document)
+            pitch.save()
+            action_target = pitch
+        elif associated_object == 'Call':
+            call_id = self.request.POST.get('call')
+            call = get_object_or_404(Call, id=call_id)
+            # add simple document to the associated object
+            # call.simple_documents.add(document)
+            # call.save()
+            action_target = call
+        elif associated_object == 'Assignment':
+            assignment_id = self.request.POST.get('assignment')
+            assignment = get_object_or_404(Assignment, id=assignment_id)
+            # add simple document to the associated object
+            # assignment.simple_documents.add(document)
+            # assignment.save()
+            action_target = assignment
+
+        # set request based attributes
+        document.owner = self.request.user
+        if self.request.user.organization:
+            document.organization = self.request.user.organization
+        document.save()
+
+        # record action for activity stream
+        action.send(self.request.user, verb="uploaded document", action_object=document, target=action_target)
+
+        return redirect(self.get_success_url())
+
+
+class SimpleAudioCreateView(CreateView):
+    """Upload a simple audio."""
+
+    model = SimpleAudio
+    form_class = SimpleAudioForm
+
+    def form_valid(self,form):
+        """Save -- but first add owner and org to the audio.
+        And then connect the audio to whatever object it is associated with.
+
+        Simple audio can be connected to Projects, Series, Stories, Tasks, Events.
+        Pitches, Calls and Assignments.
+        """
+
+        self.object = audio = form.save(commit=False)
+
+        # get thing that the audio is being associated with
+        associated_object = self.request.POST.get('assocation')
+        if associated_object == 'Project':
+            project_id = self.request.POST.get('project')
+            project = get_object_or_404(Project, id=project_id)
+            # add simple audio to the associated object
+            # project.simple_audio.add(audio)
+            # project.save()
+            action_target = project
+        elif associated_object == 'Series':
+            series_id = self.request.POST.get('series')
+            series = get_object_or_404(Series, id=series_id)
+            # add simple audio to the associated object
+            # series.simple_audio.add(audio)
+            # series.save()
+            action_target = series
+        elif associated_object == 'Story':
+            story_id = self.request.POST.get('story')
+            story = get_object_or_404(Story, id=story_id)
+            # add simple audio to the associated object
+            # story.simple_audio.add(audio)
+            # story.save()
+            action_target = story
+        elif associated_object == 'Task':
+            task_id = self.request.POST.get('task')
+            task = get_object_or_404(Task, id=task_id)
+            # add simple audio to the associated object
+            # task.simple_audio.add(audio)
+            # task.save()
+            action_target = task
+        elif associated_object == 'Event':
+            event_id = self.request.POST.get('event')
+            event = get_object_or_404(Event, id=event_id)
+            # add simple audio to the associated object
+            # event.simple_audio.add(audio)
+            # event.save()
+            action_target = event
+        elif associated_object == 'Pitch':
+            pitch_id = self.request.POST.get('pitch')
+            pitch = get_object_or_404(Pitch, id=pitch_id)
+            # add simple audio to the associated object
+            pitch.simple_audio.add(audio)
+            pitch.save()
+            action_target = pitch
+        elif associated_object == 'Call':
+            call_id = self.request.POST.get('call')
+            call = get_object_or_404(Call, id=call_id)
+            # add simple audio to the associated object
+            # call.simple_audio.add(audio)
+            # call.save()
+            action_target = call
+        elif associated_object == 'Assignment':
+            assignment_id = self.request.POST.get('assignment')
+            assignment = get_object_or_404(Assignment, id=assignment_id)
+            # add simple audio to the associated object
+            # assignment.simple_audio.add(audio)
+            # assignment.save()
+            action_target = assignment
+
+        # set request based attributes
+        audio.owner = self.request.user
+        if self.request.user.organization:
+            audio.organization = self.request.user.organization
+        audio.save()
+
+        # record action for activity stream
+        action.send(self.request.user, verb="uploaded audio", action_object=audio, target=action_target)
+
+        return redirect(self.get_success_url())
+
+
+class SimpleVideoCreateView(CreateView):
+    """Upload a simple video."""
+
+    model = SimpleVideo
+    form_class = SimpleVideoForm
+
+    def form_valid(self,form):
+        """Save -- but first add owner and org to the video.
+        And then connect the video to whatever object it is associated with.
+
+        Simple videos can be connected to Projects, Series, Stories, Tasks, Events.
+        Pitches, Calls and Assignments.
+        """
+
+        self.object = video = form.save(commit=False)
+
+        # get thing that the video is being associated with
+        associated_object = self.request.POST.get('assocation')
+        if associated_object == 'Project':
+            project_id = self.request.POST.get('project')
+            project = get_object_or_404(Project, id=project_id)
+            # add simple video to the associated object
+            # project.simple_videos.add(video)
+            # project.save()
+            action_target = project
+        elif associated_object == 'Series':
+            series_id = self.request.POST.get('series')
+            series = get_object_or_404(Series, id=series_id)
+            # add simple video to the associated object
+            # series.simple_videos.add(video)
+            # series.save()
+            action_target = series
+        elif associated_object == 'Story':
+            story_id = self.request.POST.get('story')
+            story = get_object_or_404(Story, id=story_id)
+            # add simple video to the associated object
+            # story.simple_videos.add(video)
+            # story.save()
+            action_target = story
+        elif associated_object == 'Task':
+            task_id = self.request.POST.get('task')
+            task = get_object_or_404(Task, id=task_id)
+            # add simple video to the associated object
+            # task.simple_videos.add(video)
+            # task.save()
+            action_target = task
+        elif associated_object == 'Event':
+            event_id = self.request.POST.get('event')
+            event = get_object_or_404(Event, id=event_id)
+            # add simple video to the associated object
+            # event.simple_videos.add(video)
+            # event.save()
+            action_target = event
+        elif associated_object == 'Pitch':
+            pitch_id = self.request.POST.get('pitch')
+            pitch = get_object_or_404(Pitch, id=pitch_id)
+            # add simple video to the associated object
+            pitch.simple_videos.add(video)
+            pitch.save()
+            action_target = pitch
+        elif associated_object == 'Call':
+            call_id = self.request.POST.get('call')
+            call = get_object_or_404(Call, id=call_id)
+            # add simple video to the associated object
+            # call.simple_videos.add(video)
+            # call.save()
+            action_target = call
+        elif associated_object == 'Assignment':
+            assignment_id = self.request.POST.get('assignment')
+            assignment = get_object_or_404(Assignment, id=assignment_id)
+            # add simple video to the associated object
+            # assignment.simple_videos.add(video)
+            # assignment.save()
+            action_target = assignment
+
+        # set request based attributes
+        video.owner = self.request.user
+        if self.request.user.organization:
+            video.organization = self.request.user.organization
+        video.save()
+
+        # record action for activity stream
+        action.send(self.request.user, verb="uploaded video", action_object=video, target=action_target)
+
+        return redirect(self.get_success_url())

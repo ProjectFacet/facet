@@ -21,7 +21,7 @@ from .projectforms import ProjectForm
 from .seriesforms import SeriesForm
 from .storyforms import StoryForm, StoryDownloadForm
 from .facetforms import FacetTemplateForm, get_facet_form_for_template, FacetPreCreateForm
-from .assetforms import ImageAssetForm, DocumentAssetForm, AudioAssetForm, VideoAssetForm
+from .assetforms import ImageAssetForm, DocumentAssetForm, AudioAssetForm, VideoAssetForm, SimpleImageForm, SimpleDocumentForm, SimpleAudioForm, SimpleVideoForm
 from .taskforms import TaskForm
 from .eventforms import EventForm
 from .discussionforms import PrivateMessageForm, OrganizationCommentForm, NetworkCommentForm, ProjectCommentForm, SeriesCommentForm, StoryCommentForm, FacetCommentForm

@@ -20,6 +20,10 @@ from editorial.models import (
     DocumentAsset,
     AudioAsset,
     VideoAsset,
+    SimpleImage,
+    SimpleDocument,
+    SimpleAudio,
+    SimpleVideo,
 )
 
 
@@ -116,4 +120,73 @@ class VideoAssetForm(forms.ModelForm):
             'link': TextInput(attrs={'class': 'form-control', 'placeholder': 'Link'}),
             'asset_type': Select(attrs={'class': 'form-control'}),
             'keywords': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Keywords'}),
+        }
+
+
+# ------------------------------ #
+#          Simple Forms          #
+# ------------------------------ #
+
+
+class SimpleImageForm(forms.ModelForm):
+    """Upload a simple image."""
+
+    class Meta:
+        model = SimpleImage
+        fields = [
+            'title',
+            'description',
+            'photo',
+        ]
+        widgets = {
+            'title': TextInput(attrs={'class': 'form-control', 'placeholder': 'Title'}),
+            'description': Textarea(attrs={'class': 'form-control', 'rows':3, 'placeholder': 'Description'}),
+        }
+
+
+class SimpleDocumentForm(forms.ModelForm):
+    """Upload a simple document."""
+
+    class Meta:
+        model = SimpleDocument
+        fields = [
+            'title',
+            'description',
+            'document',
+        ]
+        widgets = {
+            'title': TextInput(attrs={'class': 'form-control', 'placeholder': 'Title'}),
+            'description': Textarea(attrs={'class': 'form-control', 'rows':3, 'placeholder': 'Description'}),
+        }
+
+
+class SimpleAudioForm(forms.ModelForm):
+    """Upload a simple audio file."""
+
+    class Meta:
+        model = SimpleAudio
+        fields = [
+            'title',
+            'description',
+            'audio',
+            'link',
+        ]
+        widgets = {
+            'title': TextInput(attrs={'class': 'form-control', 'placeholder': 'Title'}),
+            'description': Textarea(attrs={'class': 'form-control', 'rows':3, 'placeholder': 'Description'}),
+        }
+
+class SimpleVideoForm(forms.ModelForm):
+    """Add a simple video."""
+
+    class Meta:
+        model = SimpleVideo
+        fields = [
+            'title',
+            'description',
+            'link',
+        ]
+        widgets = {
+            'title': TextInput(attrs={'class': 'form-control', 'placeholder': 'Title'}),
+            'description': Textarea(attrs={'class': 'form-control', 'rows':3, 'placeholder': 'Description'}),
         }

@@ -10,6 +10,7 @@ from django.views.decorators.csrf import csrf_exempt
 import datetime
 import json
 from actstream import action
+from django.db.models import Q
 
 from editorial.forms import (
     ContractorProfileForm,
@@ -97,6 +98,59 @@ class ContractorUpdateView(UpdateView):
         action.send(self.request.user, verb="edited", action_object=self.object)
         return super(ContractorUpdateView, self).get_success_url()
 
+
+class PublicContractorListView(ListView):
+    """Listing of all public contractors."""
+
+    context_object_name = "contractors"
+    template_name = "editorial/publiccontractor_list.html"
+
+    def get_queryset(self):
+        """Return all contractors that have opted into public listing."""
+
+        public_contractors = ContractorProfile.objects.filter(public=True)
+        print "PC: ", public_contractors
+        return public_contractors
+
+
+#----------------------------------------------------------------------#
+#   Editor Views
+#----------------------------------------------------------------------#
+class PublicEditorListView(ListView):
+    """Listing of all public contractors."""
+
+    context_object_name = "editors"
+    template_name = "editorial/publiceditor_list.html"
+
+    def get_queryset(self):
+        """Return all users that are editors or admins that have opted into public listing."""
+
+        public_editors = User.objects.filter(Q(Q(user_type='Editor') | Q(user_type='Admin')) & Q(public=True))
+        print "PE: ", public_editors
+        return public_editors
+
+
+# class PublicEditorDetailView(DetailView):
+#     """Display details about a contractor."""
+#
+#     model = User
+#
+#     def contractor_assignments(self):
+#         """Get assignments that are relevant to requesting user."""
+#
+#         self.object = self.get_object()
+#         contractor = self.request.user
+#         active_assignments = self.object.get_active_assignments()
+#         assignments_for_viewer = active_assignments.filter(editor=editor)
+#         return assignments_for_viewer
+#
+#     def contractor_pitches(self):
+#         """Get pitches that are relevant to requesting user."""
+#         self.object = self.get_object()
+#         recipient = self.request.user
+#         active_pitches = self.object.get_active_pitches()
+#         pitches_for_viewer = active_pitches.filter(recipient=recipient)
+#         return pitches_for_viewer
 
 #----------------------------------------------------------------------#
 #   Pitch Views

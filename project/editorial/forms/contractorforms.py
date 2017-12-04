@@ -17,6 +17,7 @@ from django.forms import Textarea, TextInput, RadioSelect, Select, NumberInput, 
 from django.contrib.postgres.fields import ArrayField
 from datetimewidget.widgets import DateTimeWidget
 from tinymce.widgets import TinyMCE
+from django.db.models import Q
 # from django.contrib.staticfiles.templatetags.staticfiles import static
 
 
@@ -111,6 +112,12 @@ class CallForm(forms.ModelForm):
 class PitchForm(forms.ModelForm):
     """Handles creation and editing of a pitch."""
 
+    recipient = forms.ModelChoiceField(
+        queryset=User.objects.filter(Q(Q(user_type="Editor") | Q(user_type="Admin")) & Q(public=True)),
+        widget=forms.Select(attrs={'class': 'c-select', 'id':'pitch-recipient'}),
+        required=True,
+    )
+
     class Meta:
         model = Pitch
         fields = [
@@ -118,6 +125,7 @@ class PitchForm(forms.ModelForm):
             'text',
             'status',
             'exclusive',
+            'recipient',
         ]
         widgets = {
             'name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Name'}),
