@@ -37,7 +37,8 @@ class ContractorProfile(models.Model):
     resume = models.FileField(
         upload_to='resumes/%Y/%m/%d',
         blank=True,
-        help_text='PDF of contractor resume.'
+        null=True,
+        help_text='PDF of contractor resume.',
     )
 
     address = models.TextField(

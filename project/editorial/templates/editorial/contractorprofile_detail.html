@@ -62,7 +62,9 @@
         <h4 class="m-t-20 m-b-20 m-t-20">Details</h4>
         <p>Availability: {{ contractorprofile.availability }}</p>
         <p>Gear: {{ contractorprofile.gear }}</p>
-        <p>Resume: <a href="localhost:8000{{ contractorprofile.resume.url }}" target="_blank">{{ contractorprofile.user.credit_name }} Resume</a></p>
+        {% if contractorprofile.resume %}
+        <p>Resume: <a href="{{ contractorprofile.resume.url }}" target="_blank">{{ contractorprofile.user.credit_name }} Resume</a></p>
+        {% endif %}
         <h4 class="m-t-20 m-b-20 m-t-20">Portfolio</h4>
         <p><a href="{{ contractorprofile.portfolio_link1 }}" target="_blank">Portfolio Link 1</a></p>
         <p><a href="{{ contractorprofile.portfolio_link2 }}" target="_blank">Portfolio Link 2</a></p>

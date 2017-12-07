@@ -30,6 +30,7 @@
       <!-- Left Side -->
       <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
         <div class="row">
+              <!-- Name -->
               <fieldset class="form-group m-b-20">
                 {% comment %}
                 <div class="col-xs-2">
@@ -43,7 +44,7 @@
                   {% endif %}
                 </div>
               </fieldset>
-
+              <!-- Description -->
               <fieldset class="form-group m-b-20">
                 {% comment %}
                 <div class="col-xs-2">
@@ -62,6 +63,7 @@
       <!-- Right Side -->
       <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
         <div class="row">
+          <!-- Team -->
           <fieldset class="form-group m-b-20">
             {% comment %}
             <div class="col-xs-2">
@@ -75,14 +77,13 @@
               {% endif %}
             </div>
           </fieldset>
-
+          <!-- Collaborate -->
           <fieldset class="form-group m-b-20">
             <span class="col-xs-2">
               <label class="f-s-14 subtle">{{ form.collaborate.label_tag }}</label>
             </span>
             <span class="col-xs-10">
               {{ form.collaborate }}
-              <span class="c-indicator c-indicator-default"></span>
               {% if form.collaborate.errors %}
               <small class="text-muted">{{ form.collaborate.errors }}</small>
               {% endif %}

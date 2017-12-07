@@ -20,9 +20,6 @@ from editorial.models import (
 )
 
 
-
-
-
 # ------------------------------ #
 #          Project Forms         #
 # ------------------------------ #
@@ -43,7 +40,6 @@ class ProjectForm(forms.ModelForm):
             'name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Project Name'}),
             'project_description': Textarea(attrs={'class': 'form-control', 'placeholder': 'Description'}),
             'team': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select form-control facet-select', 'id':'project-team', 'data-placeholder': 'Select Project Team'}),
-            'collaborate': CheckboxInput(attrs={'class': 'c-indicator c-indicator-default'}),
             'collaborate_with': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select form-control facet-select', 'id':'collaborate-with', 'data-placeholder': 'Select Collaborators'}),
             }
 

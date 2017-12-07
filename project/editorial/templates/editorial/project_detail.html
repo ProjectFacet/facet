@@ -53,7 +53,10 @@
               {% else %}
               <p class="tiny-text">{{ user.first_name }}</p>
               {% endif %}
-            {% endfor %}
+          {% endfor %}
+          <p class="m-t-20">
+          <a href="{% url 'project_edit' project.id %}" title="Edit project details"><button class="btn btn-sm btn-default sameline">Edit</button></a>
+          <a href="#" title="Delete Project"><button class="btn btn-sm btn-default sameline">Delete</button></a></p>
         </div>
       </div>
       <!-- Discussion -->
