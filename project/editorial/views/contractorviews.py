@@ -5,7 +5,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.utils import timezone
-from django.views.generic import CreateView, FormView, UpdateView, DetailView, ListView
+from django.views.generic import CreateView, FormView, UpdateView, DetailView, ListView, DeleteView
 from django.views.decorators.csrf import csrf_exempt
 import datetime
 import json
@@ -178,15 +178,53 @@ class PitchCreateView(CreateView):
         return redirect(self.get_success_url())
 
 
+class PitchDetailView(DetailView):
+    """Show pitch details."""
+
+    model = Pitch
+
+    def simple_images(self):
+        """Return simple images."""
+
+        self.object = self.get_object()
+        images = self.object.simple_image_assets
+        form = SimpleImageForm()
+        return {'images': images, 'form':form,}
+
+    def simple_documents(self):
+        """Return simple documents."""
+
+        self.object = self.get_object()
+        documents = self.object.simple_document_assets
+        form = SimpleDocumentForm()
+        return {'documents': documents, 'form':form,}
+
+    def simple_audio(self):
+        """Return simple audio."""
+
+        self.object = self.get_object()
+        audio = self.object.simple_audio_assets
+        form = SimpleAudioForm()
+        return {'audio': audio, 'form':form,}
+
+
+    def simple_video(self):
+        """ Return simple video."""
+
+        self.object = self.get_object()
+        video = self.object.simple_video_assets
+        form = SimpleVideoForm()
+        return {'video': video, 'form':form,}
+
+
 class PitchUpdateView(UpdateView):
     """View and edit a pitch. Add assets to a pitch."""
 
     model = Pitch
     form_class = PitchForm
 
-    def pitch_simple_image_assets(self):
-        """Return all simple images associated with a pitch,
-        and form to add.
+    def simple_images(self):
+        """Return all the associated simple images and the form to add.
         """
 
         self.object = self.get_object()
@@ -194,9 +232,8 @@ class PitchUpdateView(UpdateView):
         form = SimpleImageForm()
         return {'images': images, 'form': form}
 
-    def pitch_simple_document_assets(self):
-        """Return all simple docs associated with a pitch,
-        and form to add.
+    def simple_documents(self):
+        """Return all the associated simple docs and the form to add.
         """
 
         self.object = self.get_object()
@@ -204,9 +241,8 @@ class PitchUpdateView(UpdateView):
         form = SimpleDocumentForm()
         return {'documents': documents, 'form': form}
 
-    def pitch_simple_audio_assets(self):
-        """Return all simple audio associated with a pitch,
-        and form to add.
+    def simple_audio(self):
+        """Return all the associated simple audio and the form to add.
         """
 
         self.object = self.get_object()
@@ -214,9 +250,8 @@ class PitchUpdateView(UpdateView):
         form = SimpleAudioForm()
         return {'audio': audio, 'form': form}
 
-    def pitch_simple_video_assets(self):
-        """Return all simple video associated with a pitch,
-        and form to add.
+    def simple_video(self):
+        """Return all associated simple video and the form to add.
         """
 
         self.object = self.get_object()
@@ -232,36 +267,9 @@ class PitchUpdateView(UpdateView):
         return super(PitchUpdateView, self).get_success_url()
 
 
-class PitchDetailView(DetailView):
-    """Show pitch details."""
-
-    model = Pitch
-
-    def get_images(self):
-        """Return simple images for the pitch."""
-
-        self.object = self.get_object()
-        images = self.object.simple_image_assets.set()
-
-    def get_documents(self):
-        """Return simple documents for the pitch."""
-
-        self.object = self.get_object()
-        documents = self.object.simple_document_assets.set()
-
-    def get_audio(self):
-        """Return simple audio for the pitch."""
-
-        self.object = self.get_object()
-        audio = self.object.simple_audio_assets.set()
-
-
-    def get_video(self):
-        """ Return simple video for the pitch."""
-
-        self.object = self.get_object()
-        videos = self.object.simple_video_assets.set()
-
+class PitchDeleteView(DeleteView):
+    """Delete a pitch."""
+    pass
 
 #----------------------------------------------------------------------#
 #   Call Views
@@ -316,6 +324,13 @@ class AssignmentCreateView(CreateView):
     model = Assignment
     form_class = AssignmentForm
 
+    def get_form_kwargs(self):
+        """Pass current user organization to the form."""
+
+        kw = super(AssignmentCreateView, self).get_form_kwargs()
+        kw.update({'organization': self.request.user.organization})
+        return kw
+
     def form_valid(self, form):
         """Save -- but first same some details."""
 
@@ -335,12 +350,88 @@ class AssignmentDetailView(DetailView):
 
     model = Assignment
 
+    def simple_images(self):
+        """Return simple images."""
+
+        self.object = self.get_object()
+        images = self.object.simple_image_assets
+        form = SimpleImageForm()
+        return {'images': images, 'form':form,}
+
+    def simple_documents(self):
+        """Return simple documents."""
+
+        self.object = self.get_object()
+        documents = self.object.simple_document_assets
+        form = SimpleDocumentForm()
+        return {'documents': documents, 'form':form,}
+
+    def simple_audio(self):
+        """Return simple audio."""
+
+        self.object = self.get_object()
+        audio = self.object.simple_audio_assets
+        form = SimpleAudioForm()
+        return {'audio': audio, 'form':form,}
+
+
+    def simple_video(self):
+        """ Return simple video."""
+
+        self.object = self.get_object()
+        video = self.object.simple_video_assets
+        form = SimpleVideoForm()
+        return {'video': video, 'form':form,}
+
 
 class AssignmentUpdateView(UpdateView):
     """Edit an assignment."""
 
     model = Assignment
     form_class = AssignmentForm
+
+    def get_form_kwargs(self):
+        """Pass current user organization to the form."""
+
+        kw = super(AssignmentUpdateView, self).get_form_kwargs()
+        kw.update({'organization': self.request.user.organization})
+        return kw
+
+    def simple_images(self):
+        """Return all the associated simple images and the form to add.
+        """
+
+        self.object = self.get_object()
+        images = self.object.simple_image_assets
+        form = SimpleImageForm()
+        return {'images': images, 'form': form}
+
+    def simple_documents(self):
+        """Return all the associated simple docs and the form to add.
+        """
+
+        self.object = self.get_object()
+        documents = self.object.simple_document_assets
+        form = SimpleDocumentForm()
+        return {'documents': documents, 'form': form}
+
+    def simple_audio(self):
+        """Return all the associated simple audio and the form to add.
+        """
+
+        self.object = self.get_object()
+        audio = self.object.simple_audio_assets
+        form = SimpleAudioForm()
+        return {'audio': audio, 'form': form}
+
+    def simple_video(self):
+        """Return all associated simple video and the form to add.
+        """
+
+        self.object = self.get_object()
+        videos = self.object.simple_video_assets
+        form = SimpleVideoForm()
+        return {'videos': videos, 'form': form}
 
     def get_success_url(self):
         """Record action for activity stream."""

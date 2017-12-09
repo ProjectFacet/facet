@@ -26,6 +26,8 @@ from editorial.models import (
     Organization,
     ContractorProfile,
     OrganizationContractorAffiliation,
+    Story,
+    Facet,
     Call,
     Pitch,
     Assignment,
@@ -137,15 +139,36 @@ class PitchForm(forms.ModelForm):
 class AssignmentForm(forms.ModelForm):
     """Handles creation and editing of a assignment."""
 
+    def __init__(self, *args, **kwargs):
+        org = kwargs.pop("organization")
+        super(AssignmentForm, self).__init__(*args, **kwargs)
+        self.fields['story'].queryset=Story.objects.filter(organization=org)
+        self.fields['facet'].queryset=Facet.objects.filter(organization=org)
+        self.fields['contractor'].empty_label = "Select a contractor"
+        self.fields['story'].empty_label = 'Select a story'
+        self.fields['facet'].empty_label = 'Select a facet'
+
+    contractor = forms.ModelChoiceField(
+        queryset=ContractorProfile.objects.filter(public=True),
+        widget=forms.Select(attrs={'class': 'c-select', 'id':'assignment-contractor'}),
+        required=True,
+    )
+
     class Meta:
         model = Assignment
         fields = [
             'name',
             'text',
             'rate',
+            'contractor',
+            'complete',
+            'story',
+            'facet',
         ]
         widgets = {
             'name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Name'}),
             'text': Textarea(attrs={'class': 'form-control', 'placeholder': 'Text'}),
-            'rate': TextInput(attrs={'class': 'form-control', 'placeholder': 'Rates'}),
+            'rate': TextInput(attrs={'class': 'form-control', 'placeholder': 'Rate'}),
+            'story': Select(attrs={'class': 'c-select', 'id':'assignment-story'}),
+            'facet': Select(attrs={'class': 'c-select', 'id':'assignment-facet'}),
         }

@@ -174,6 +174,8 @@ class SimpleAudioForm(forms.ModelForm):
         widgets = {
             'title': TextInput(attrs={'class': 'form-control', 'placeholder': 'Title'}),
             'description': Textarea(attrs={'class': 'form-control', 'rows':3, 'placeholder': 'Description'}),
+            'link': TextInput(attrs={'class': 'form-control', 'placeholder': 'Link'}),
+
         }
 
 class SimpleVideoForm(forms.ModelForm):
@@ -189,4 +191,6 @@ class SimpleVideoForm(forms.ModelForm):
         widgets = {
             'title': TextInput(attrs={'class': 'form-control', 'placeholder': 'Title'}),
             'description': Textarea(attrs={'class': 'form-control', 'rows':3, 'placeholder': 'Description'}),
+            'link': TextInput(attrs={'class': 'form-control', 'placeholder': 'Link'}),
+
         }
