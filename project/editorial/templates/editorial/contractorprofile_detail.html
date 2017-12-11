@@ -33,7 +33,8 @@
         <p class="f-s-300"> <i class="fa fa-globe m-r-10" aria-hidden="true"></i> <span class="color-white m-r-20"> {{ contractorprofile.user.location }}</span> | <i class="fa fa-map-marker m-l-20 m-r-10" aria-hidden="true"></i> <span class="color-white m-r-20"> {{ contractorprofile.current_location }}</span></p>
         <p class="f-s-300"> <i class="fa fa-link m-r-10" aria-hidden="true"></i> <span class="color-white m-r-20"> {{ contractorprofile.user.website }}</span>
         {% if request.user.id == contractorprofile.user.id %}
-          Edit Contractor Profile
+        <a href="{% url 'user_edit' contractorprofile.user.id %}"><p class="f-s-300"><i class="fa fa-pencil m-r-10" aria-hidden="true"></i> <span class="color-white m-r-20">Edit User Profile</span></p></a>
+        <a href="{% url 'contractor_edit' contractorprofile.id %}"><p class="f-s-300"><i class="fa fa-pencil m-r-10" aria-hidden="true"></i> <span class="color-white m-r-20">Edit Contractor Profile</span></p></a>
         {% endif %}
     </div>
     <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
@@ -79,6 +80,7 @@
   <!-- Populated by objects dependent on who the viewer is -->
   <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
     {% with view.contractor_assignments as assignments %}
+
       <h4 class="m-b-20">Active Assignments</h4>
       {% if assignments %}
       <ul class="list-group activities">
@@ -92,6 +94,7 @@
       {% else %}
       <p>It appears you've not worked with this contractor before.</p>
       {% endif %}
+
     {% endwith %}
 
     {% with view.contractor_pitches as pitches %}

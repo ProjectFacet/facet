@@ -30,7 +30,7 @@
                           <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
                             {% csrf_token %}
                             {% bootstrap_form form %}
-                            <input type="hidden" name="{{ redirect_field_name }}" value="{% url 'org_new' %}" />
+                            <input type="hidden" name="{{ redirect_field_name }}" value="{% url 'account_selection' %}" />
                             <br>
                             <p class="text-center">By clicking on create account, you agree to our terms of service and that you have read our policies.</p>
                             <div class="row buttons">

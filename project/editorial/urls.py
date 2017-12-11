@@ -6,6 +6,7 @@ from django.conf.urls import url, include
 # from views import HomeView
 from views import (
     generalviews,
+    accountviews,
     assetviews,
     inboxviews,
     scheduleviews,
@@ -33,6 +34,10 @@ from . import api
 from views.searchviews import EditorialSearchView
 
 urlpatterns = [
+    #----------------------------------------------------------------------#
+    #   Account URLS
+    #----------------------------------------------------------------------#
+    url(r'^account/selection/$', accountviews.AccountSelectionView.as_view(), name='account_selection'),
     #----------------------------------------------------------------------#
     #   Test URL - Used for non-destructive testing of templates/queries
     #----------------------------------------------------------------------#

@@ -191,7 +191,11 @@
               {% endif %}
             </div>
 
+            {% if contractor.id %}
             <a href="{% url 'contractor_detail' contractorprofile.id %}"><button type="submit" class="btn btn-danger-100 pull-right m-r-10">Cancel</button></a>
+            {% else %}
+            <a href="{% url 'contractor_new' %}"><button type="submit" class="btn btn-danger-100 pull-right m-r-10">Cancel</button></a>
+            {% endif %}
             <button id="edit-button" class="btn btn-default pull-right m-r-10" type="submit">{% trans "Save" %}</button>
           </div> <!-- End of Right Column -->
   </form>

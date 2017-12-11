@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load bootstrap3 %}
+{% load embed_video_tags %}
+
+{% block head %}
+{{ webform.media }}
+{% endblock %}
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+<!--             BREADCRUMB NAVIGATION                 -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
+{% block breadcrumb %}
+<div>
+    <ol class="breadcrumb icon-angle-right icon-th">
+        <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
+        <li class="fadeIn"> Choose an account type </li>
+    </ol>
+</div>
+{% endblock breadcrumb %}
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+<!--                   Main Section                    -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
+{% block content %}
+<!-- ================================================= -->
+                    <!-- CONTENT -->
+<!-- ================================================= -->
+
+<div class="row">
+  <div class="col-xs-12">
+    <h4>Account Options</h4>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12 col-sm-6 col-offset-sm-3">
+    <p>There are two ways to use Facet. Select which account best suits your project
+    and goals.</p>
+  </div>
+</div>
+
+<div class="row m-t-40">
+  <!-- Left column -->
+  <div class="col-xs-12 col-sm-5 col-sm-offset-1">
+    <p class="text-center"><i class="fa fa-users fa-5x" aria-hidden="true"></i></p>
+    <h5 class="text-center">Organization</h5>
+    <h6>Features</h6>
+      <ul>
+        <li>Add and manage your organization's team</li>
+        <li>Create and manage projects, series, stories and versions of stories.</li>
+        <li>Create networks and invite other organizations to participate.</li>
+        <li>Communicate at group, individual and content levels.</li>
+        <li>Track and manage metadata around partnerships and content.</li>
+        <li>Track various projects and priorities through dashboards.</li>
+      </ul>
+    <a href="{% url 'org_new' %}" title="Create an organization"><button class="btn btn-info-100 btn-lg btn-block">Create an Organization Account</button></a>
+  </div>
+  <!-- Right column -->
+  <div class="col-xs-12 col-sm-5">
+    <p class="text-center"><i class="fa fa-user fa-5x" aria-hidden="true"></i></p>
+    <h5 class="text-center">Contractor</h5>
+    <h6>Features</h6>
+    <ul>
+      <li>Be publicly listed and discoverable as a freelancer.</li>
+      <li>Create and manage pitches to editors and track their progress.</li>
+      <li>Communicate directly with editors, respond to calls for pitches.</li>
+      <li>Create and manage the editorial process for assignments.</li>
+      <li>Be added to organization's projects and content.</li>
+      <li>Manage work and progress through dashboards.</li>
+    </ul>
+    <a href="{% url 'contractor_new' %}" title="Create a contractor profile"><button class="btn btn-success-100 btn-lg btn-block">Create a Contractor Account</button></a>
+  </div>
+</div>
+
+<!-- ================================================= -->
+                  <!-- JS SCRIPTS -->
+<!-- ================================================= -->
+
+<script>
+  $(".chosen-select").chosen()
+</script>
+
+{% endblock %}
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+                <!-- MODALS -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
+{% block modals %}
+
+
+
+
+
+{% endblock modals %}
