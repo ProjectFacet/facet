@@ -178,6 +178,7 @@ class SimpleAudioForm(forms.ModelForm):
 
         }
 
+
 class SimpleVideoForm(forms.ModelForm):
     """Add a simple video."""
 

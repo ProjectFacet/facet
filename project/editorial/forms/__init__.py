@@ -24,7 +24,7 @@ from .facetforms import FacetTemplateForm, get_facet_form_for_template, FacetPre
 from .assetforms import ImageAssetForm, DocumentAssetForm, AudioAssetForm, VideoAssetForm, SimpleImageForm, SimpleDocumentForm, SimpleAudioForm, SimpleVideoForm
 from .taskforms import TaskForm
 from .eventforms import EventForm
-from .discussionforms import PrivateMessageForm, OrganizationCommentForm, NetworkCommentForm, ProjectCommentForm, SeriesCommentForm, StoryCommentForm, FacetCommentForm
+from .discussionforms import PrivateMessageForm, OrganizationCommentForm, NetworkCommentForm, ProjectCommentForm, SeriesCommentForm, StoryCommentForm, FacetCommentForm, TaskCommentForm, EventCommentForm
 from .noteforms import NetworkNoteForm, OrganizationNoteForm, ProjectNoteForm, SeriesNoteForm, StoryNoteForm, UserNoteForm
 from .platformaccountsforms import PlatformAccountForm, PlatformAccountFormSet, BasePlatformAccountFormSet
 

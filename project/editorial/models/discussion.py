@@ -40,10 +40,6 @@ class Discussion(models.Model):
     FACET = 'F'
     TASK = 'TSK'
     EVENT = 'EV'
-    WEBFACET = 'WF'
-    PRINTFACET = 'PF'
-    AUDIOFACET = 'AF'
-    VIDEOFACET = 'VF'
 
     DISCUSSION_TYPE_CHOICES = (
         (ORGANIZATION, 'Organization Conversation'),
@@ -55,10 +51,6 @@ class Discussion(models.Model):
         (FACET, 'Facet Conversation'),
         (TASK, 'Task Conversation'),
         (EVENT, 'Event Conversation'),
-        (WEBFACET, 'WebFacet Conversation'),
-        (PRINTFACET, 'PrintFacet Conversation'),
-        (AUDIOFACET, 'AudioFacet Conversation'),
-        (VIDEOFACET, 'VideoFacet Conversation'),
     )
 
     discussion_type = models.CharField(

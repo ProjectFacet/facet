@@ -187,7 +187,7 @@ class PitchDetailView(DetailView):
         """Return simple images."""
 
         self.object = self.get_object()
-        images = self.object.simple_image_assets
+        images = self.object.simple_image_assets.all()
         form = SimpleImageForm()
         return {'images': images, 'form':form,}
 
@@ -195,7 +195,7 @@ class PitchDetailView(DetailView):
         """Return simple documents."""
 
         self.object = self.get_object()
-        documents = self.object.simple_document_assets
+        documents = self.object.simple_document_assets.all()
         form = SimpleDocumentForm()
         return {'documents': documents, 'form':form,}
 
@@ -203,7 +203,7 @@ class PitchDetailView(DetailView):
         """Return simple audio."""
 
         self.object = self.get_object()
-        audio = self.object.simple_audio_assets
+        audio = self.object.simple_audio_assets.all()
         form = SimpleAudioForm()
         return {'audio': audio, 'form':form,}
 
@@ -212,7 +212,7 @@ class PitchDetailView(DetailView):
         """ Return simple video."""
 
         self.object = self.get_object()
-        video = self.object.simple_video_assets
+        video = self.object.simple_video_assets.all()
         form = SimpleVideoForm()
         return {'video': video, 'form':form,}
 
@@ -228,7 +228,7 @@ class PitchUpdateView(UpdateView):
         """
 
         self.object = self.get_object()
-        images = self.object.simple_image_assets
+        images = self.object.simple_image_assets.all()
         form = SimpleImageForm()
         return {'images': images, 'form': form}
 
@@ -237,7 +237,7 @@ class PitchUpdateView(UpdateView):
         """
 
         self.object = self.get_object()
-        documents = self.object.simple_document_assets
+        documents = self.object.simple_document_assets.all()
         form = SimpleDocumentForm()
         return {'documents': documents, 'form': form}
 
@@ -246,7 +246,7 @@ class PitchUpdateView(UpdateView):
         """
 
         self.object = self.get_object()
-        audio = self.object.simple_audio_assets
+        audio = self.object.simple_audio_assets.all()
         form = SimpleAudioForm()
         return {'audio': audio, 'form': form}
 
@@ -255,7 +255,7 @@ class PitchUpdateView(UpdateView):
         """
 
         self.object = self.get_object()
-        videos = self.object.simple_video_assets
+        videos = self.object.simple_video_assets.all()
         form = SimpleVideoForm()
         return {'videos': videos, 'form': form}
 
@@ -300,12 +300,88 @@ class CallDetailView(DetailView):
 
     model = Call
 
+    def simple_images(self):
+        """Return simple images."""
+
+        self.object = self.get_object()
+        images = self.object.simple_image_assets.all()
+        form = SimpleImageForm()
+        return {'images': images, 'form':form,}
+
+    def simple_documents(self):
+        """Return simple documents."""
+
+        self.object = self.get_object()
+        documents = self.object.simple_document_assets.all()
+        form = SimpleDocumentForm()
+        return {'documents': documents, 'form':form,}
+
+    def simple_audio(self):
+        """Return simple audio."""
+
+        self.object = self.get_object()
+        audio = self.object.simple_audio_assets.all()
+        form = SimpleAudioForm()
+        return {'audio': audio, 'form':form,}
+
+
+    def simple_video(self):
+        """ Return simple video."""
+
+        self.object = self.get_object()
+        video = self.object.simple_video_assets.all()
+        form = SimpleVideoForm()
+        return {'video': video, 'form':form,}
+
 
 class CallUpdateView(UpdateView):
     """Edit a call."""
 
     model = Call
     form_class = CallForm
+
+    def get_form_kwargs(self):
+        """Pass current user organization to the form."""
+
+        kw = super(CallUpdateView, self).get_form_kwargs()
+        kw.update({'organization': self.request.user.organization})
+        return kw
+
+    def simple_images(self):
+        """Return all the associated simple images and the form to add.
+        """
+
+        self.object = self.get_object()
+        images = self.object.simple_image_assets.all()
+        form = SimpleImageForm()
+        return {'images': images, 'form': form}
+
+    def simple_documents(self):
+        """Return all the associated simple docs and the form to add.
+        """
+
+        self.object = self.get_object()
+        documents = self.object.simple_document_assets.all()
+        form = SimpleDocumentForm()
+        return {'documents': documents, 'form': form}
+
+    def simple_audio(self):
+        """Return all the associated simple audio and the form to add.
+        """
+
+        self.object = self.get_object()
+        audio = self.object.simple_audio_assets.all()
+        form = SimpleAudioForm()
+        return {'audio': audio, 'form': form}
+
+    def simple_video(self):
+        """Return all associated simple video and the form to add.
+        """
+
+        self.object = self.get_object()
+        videos = self.object.simple_video_assets.all()
+        form = SimpleVideoForm()
+        return {'videos': videos, 'form': form}
 
     def get_success_url(self):
         """Record action for activity stream."""
@@ -354,7 +430,7 @@ class AssignmentDetailView(DetailView):
         """Return simple images."""
 
         self.object = self.get_object()
-        images = self.object.simple_image_assets
+        images = self.object.simple_image_assets.all()
         form = SimpleImageForm()
         return {'images': images, 'form':form,}
 
@@ -362,7 +438,7 @@ class AssignmentDetailView(DetailView):
         """Return simple documents."""
 
         self.object = self.get_object()
-        documents = self.object.simple_document_assets
+        documents = self.object.simple_document_assets.all()
         form = SimpleDocumentForm()
         return {'documents': documents, 'form':form,}
 
@@ -370,7 +446,7 @@ class AssignmentDetailView(DetailView):
         """Return simple audio."""
 
         self.object = self.get_object()
-        audio = self.object.simple_audio_assets
+        audio = self.object.simple_audio_assets.all()
         form = SimpleAudioForm()
         return {'audio': audio, 'form':form,}
 
@@ -379,7 +455,7 @@ class AssignmentDetailView(DetailView):
         """ Return simple video."""
 
         self.object = self.get_object()
-        video = self.object.simple_video_assets
+        video = self.object.simple_video_assets.all()
         form = SimpleVideoForm()
         return {'video': video, 'form':form,}
 
@@ -402,7 +478,7 @@ class AssignmentUpdateView(UpdateView):
         """
 
         self.object = self.get_object()
-        images = self.object.simple_image_assets
+        images = self.object.simple_image_assets.all()
         form = SimpleImageForm()
         return {'images': images, 'form': form}
 
@@ -411,7 +487,7 @@ class AssignmentUpdateView(UpdateView):
         """
 
         self.object = self.get_object()
-        documents = self.object.simple_document_assets
+        documents = self.object.simple_document_assets.all()
         form = SimpleDocumentForm()
         return {'documents': documents, 'form': form}
 
@@ -420,7 +496,7 @@ class AssignmentUpdateView(UpdateView):
         """
 
         self.object = self.get_object()
-        audio = self.object.simple_audio_assets
+        audio = self.object.simple_audio_assets.all()
         form = SimpleAudioForm()
         return {'audio': audio, 'form': form}
 
@@ -429,7 +505,7 @@ class AssignmentUpdateView(UpdateView):
         """
 
         self.object = self.get_object()
-        videos = self.object.simple_video_assets
+        videos = self.object.simple_video_assets.all()
         form = SimpleVideoForm()
         return {'videos': videos, 'form': form}
 

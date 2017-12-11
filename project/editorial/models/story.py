@@ -268,7 +268,7 @@ class Story(models.Model):
         """
 
         from . import User
-
+        # TODO add contractors added to a story
         collaborators = self.collaborate_with.all()
         story_team = User.objects.filter(Q(Q(organization=self.organization) | Q(organization__in=collaborators)))
         return story_team

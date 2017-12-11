@@ -19,6 +19,7 @@ from models import (
     Facet,
     Task,
     Event,
+    ContentLicense,
     ProjectNote,
     SeriesNote,
     StoryNote,
@@ -28,6 +29,10 @@ from models import (
     DocumentAsset,
     AudioAsset,
     VideoAsset,
+    SimpleImage,
+    SimpleDocument,
+    SimpleAudio,
+    SimpleVideo,
     Comment,
     Discussion,
     FacetTemplate,
@@ -63,6 +68,7 @@ admin.site.register(Event)
 admin.site.register(Pitch)
 admin.site.register(Call)
 admin.site.register(Assignment)
+admin.site.register(ContentLicense)
 admin.site.register(ProjectNote)
 admin.site.register(SeriesNote)
 admin.site.register(StoryNote)
@@ -72,5 +78,9 @@ admin.site.register(ImageAsset)
 admin.site.register(DocumentAsset)
 admin.site.register(AudioAsset)
 admin.site.register(VideoAsset)
+admin.site.register(SimpleImage)
+admin.site.register(SimpleDocument)
+admin.site.register(SimpleAudio)
+admin.site.register(SimpleVideo)
 admin.site.register(Comment)
 admin.site.register(Discussion)

@@ -34,36 +34,19 @@ class TaskForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         org = kwargs.pop("organization")
         super(TaskForm, self).__init__(*args, **kwargs)
+        # TODO make assignment team include org users, partner users and collaborators assigned to content
         self.fields['assigned_to'].queryset = org.get_org_users()
+        # limit project, series and stories to those owned by org or part of content and org is collaborator for
+        self.fields['project'].queryset = Project.objects.filter(Q(collaborate_with=self) | (Q(owner=self)))
+        self.fields['series'].queryset = Series.objects.filter(Q(collaborate_with=self) | (Q(owner=self)))
+        self.fields['story'].queryset = Story.objects.filter(Q(collaborate_with=self) | (Q(owner=self)))
+        self.fields['event'].queryset = Event.objects.filter(Q(owner=self))
+        # set empty labels
         self.fields['status'].empty_label='Task Status'
         self.fields['project'].empty_label='Select a Project'
         self.fields['series'].empty_label='Select a Series'
         self.fields['story'].empty_label='Select a Story'
         self.fields['event'].empty_label='Select an Event'
-
-    projects = forms.ModelChoiceField(
-        queryset=Project.objects.filter(),
-        widget=forms.Select,
-        required=False,
-    )
-
-    series = forms.ModelChoiceField(
-        queryset=Series.objects.all(),
-        widget=forms.Select,
-        required=False,
-    )
-
-    stories = forms.ModelChoiceField(
-        queryset=Story.objects.all(),
-        widget=forms.Select,
-        required=False,
-    )
-
-    events = forms.ModelChoiceField(
-        queryset=Event.objects.all(),
-        widget=forms.Select,
-        required=False,
-    )
 
     due_date = forms.DateTimeField(
         required=False,

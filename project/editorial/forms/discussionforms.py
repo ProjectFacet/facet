@@ -34,6 +34,8 @@ class PrivateMessageForm(forms.ModelForm):
         self.request = kwargs.pop("request")
         super(PrivateMessageForm, self).__init__(*args, **kwargs)
         if self.request.user.organization:
+            # TODO Limit Private Message Recipient list to org team members or network partner team members
+            # If the organization manages contractors, allow private messages between contractors and editors
             self.fields['recipient'].queryset = User.get_user_contact_list_vocab(self.request.user)
 
 
@@ -61,6 +63,7 @@ class OrganizationCommentForm(forms.ModelForm):
                 attrs={'id':'organization-comment', 'required': True, 'placeholder': 'Comment', 'class': 'form-control', 'rows':2}
             ),
         }
+
 
 class NetworkCommentForm(forms.ModelForm):
     """ Comment form for a network. """
@@ -113,7 +116,34 @@ class StoryCommentForm(forms.ModelForm):
             ),
         }
 
+
 class FacetCommentForm(forms.ModelForm):
+    """ Comment form. """
+
+    class Meta:
+        model = Comment
+        fields = ['text']
+        widgets = {
+            'text': Textarea(
+                attrs={'id':'comment', 'required': True, 'placeholder': 'Comment', 'class': 'form-control', 'rows':2}
+            ),
+        }
+
+
+class TaskCommentForm(forms.ModelForm):
+    """ Comment form. """
+
+    class Meta:
+        model = Comment
+        fields = ['text']
+        widgets = {
+            'text': Textarea(
+                attrs={'id':'comment', 'required': True, 'placeholder': 'Comment', 'class': 'form-control', 'rows':2}
+            ),
+        }
+
+
+class EventCommentForm(forms.ModelForm):
     """ Comment form. """
 
     class Meta:

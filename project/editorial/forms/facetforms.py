@@ -61,9 +61,11 @@ def get_facet_form_for_template(template_id):
         def __init__(self, *args, **kwargs):
             self.story = kwargs.pop("story")
             super(FacetForm, self).__init__(*args, **kwargs)
+            # limit to org users or users or a collaborating organization (done via model method)
             self.fields['credit'].queryset = self.story.get_story_team_vocab()
             self.fields['editor'].queryset = self.story.get_story_team_vocab()
             # self.fields['producer'].queryset = self.story.get_story_team_vocab()
+            # set empty label
             self.fields['content_license'].empty_label='Select a license'
             # self.fields['producer'].empty_label='Select a producer'
 
@@ -91,9 +93,8 @@ def get_facet_form_for_template(template_id):
             )
         )
 
-        #FIXME To be limited to the licenses belonging to the org + CC
         content_license = forms.ModelChoiceField(
-            queryset=ContentLicense.objects.all(),
+            queryset=ContentLicense.objects.filter(Q(organization=self) | Q(organization=null)),
             widget=forms.Select,
             required=False,
         )

@@ -31,6 +31,10 @@ class EditorialAppConfig(AppConfig):
             "DocumentAsset",
             "AudioAsset",
             "VideoAsset",
+            "SimpleImage",
+            "SimpleDocument",
+            "SimpleAudio",
+            "SimpleVideo",
             "NetworkNote",
             "OrganizationNote",
             "UserNote",
@@ -59,6 +63,10 @@ class EditorialAppConfig(AppConfig):
         registry.register(self.get_model('DocumentAsset'))
         registry.register(self.get_model('AudioAsset'))
         registry.register(self.get_model('VideoAsset'))
+        registry.register(self.get_model('SimpleImage'))
+        registry.register(self.get_model('SimpleDocument'))
+        registry.register(self.get_model('SimpleAudio'))
+        registry.register(self.get_model('SimpleVideo'))
         registry.register(self.get_model('OrganizationNote'))
         registry.register(self.get_model('NetworkNote'))
         registry.register(self.get_model('ProjectNote'))

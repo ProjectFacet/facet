@@ -141,6 +141,11 @@ class BaseImage(BaseAsset):
         blank=True,
     )
 
+    display_photo = ImageSpecField(
+        source='photo',
+        format='JPEG',
+    )
+
 
     class Meta:
         abstract = True

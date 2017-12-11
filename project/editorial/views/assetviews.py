@@ -8,7 +8,8 @@ from __future__ import unicode_literals
 from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
 from django.core.mail import send_mail
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.core.urlresolvers import reverse
 from django.utils import timezone
 from django.views.generic import TemplateView , UpdateView, DetailView, ListView, CreateView
 from django.views.decorators.csrf import csrf_exempt
@@ -29,6 +30,9 @@ from editorial.forms import (
 
 from editorial.models import (
     Facet,
+    Call,
+    Pitch,
+    Assignment,
     ImageAsset,
     DocumentAsset,
     AudioAsset,
@@ -398,75 +402,102 @@ class SimpleImageCreateView(CreateView):
 
         self.object = image = form.save(commit=False)
 
-        # get thing that the image is being associated with
-        associated_object = self.request.POST.get('assocation')
-        if associated_object == 'Project':
-            project_id = self.request.POST.get('project')
-            project = get_object_or_404(Project, id=project_id)
-            # add simple image to the associated object
-            # project.image_assets.add(image)
-            # project.save()
-            action_target = project
-        elif associated_object == 'Series':
-            series_id = self.request.POST.get('series')
-            series = get_object_or_404(Series, id=series_id)
-            # add simple image to the associated object
-            # series.image_assets.add(image)
-            # series.save()
-            action_target = series
-        elif associated_object == 'Story':
-            story_id = self.request.POST.get('story')
-            story = get_object_or_404(Story, id=story_id)
-            # add simple image to the associated object
-            # story.image_assets.add(image)
-            # story.save()
-            action_target = story
-        elif associated_object == 'Task':
-            task_id = self.request.POST.get('task')
-            task = get_object_or_404(Task, id=task_id)
-            # add simple image to the associated object
-            # task.image_assets.add(image)
-            # task.save()
-            action_target = task
-        elif associated_object == 'Event':
-            event_id = self.request.POST.get('event')
-            event = get_object_or_404(Event, id=event_id)
-            # add simple image to the associated object
-            # event.image_assets.add(image)
-            # event.save()
-            action_target = event
-        elif associated_object == 'Pitch':
-            pitch_id = self.request.POST.get('pitch')
-            pitch = get_object_or_404(Pitch, id=pitch_id)
-            # add simple image to the associated object
-            pitch.image_assets.add(image)
-            pitch.save()
-            action_target = pitch
-        elif associated_object == 'Call':
-            call_id = self.request.POST.get('call')
-            call = get_object_or_404(Call, id=call_id)
-            # add simple image to the associated object
-            # call.image_assets.add(image)
-            # call.save()
-            action_target = call
-        elif associated_object == 'Assignment':
-            assignment_id = self.request.POST.get('assignment')
-            assignment = get_object_or_404(Assignment, id=assignment_id)
-            # add simple image to the associated object
-            # assignment.image_assets.add(image)
-            # assignment.save()
-            action_target = assignment
-
         # set request based attributes
         image.owner = self.request.user
         if self.request.user.organization:
             image.organization = self.request.user.organization
         image.save()
 
-        # record action for activity stream
-        action.send(self.request.user, verb="uploaded image", action_object=image, target=action_target)
-
-        return redirect(self.get_success_url())
+        # get thing that the image is being associated with
+        associated_object = self.request.POST.get('association')
+        if associated_object == 'project':
+            project_id = self.request.POST.get('project')
+            project = get_object_or_404(Project, id=project_id)
+            # add simple image to the associated object
+            project.simple_image_assets.add(image)
+            project.save()
+            action_target = project
+            # record action for activity stream
+            action.send(self.request.user, verb="uploaded image", action_object=image, target=action_target)
+            # redirect to the associated object
+            return HttpResponseRedirect(reverse('project_detail', args=(project.id,)))
+        elif associated_object == 'series':
+            series_id = self.request.POST.get('series')
+            series = get_object_or_404(Series, id=series_id)
+            # add simple image to the associated object
+            series.simple_image_assets.add(image)
+            series.save()
+            action_target = series
+            # record action for activity stream
+            action.send(self.request.user, verb="uploaded image", action_object=image, target=action_target)
+            # redirect to the associated object
+            return HttpResponseRedirect(reverse('series_detail', args=(series.id,)))
+        elif associated_object == 'story':
+            story_id = self.request.POST.get('story')
+            story = get_object_or_404(Story, id=story_id)
+            # add simple image to the associated object
+            story.simple_image_assets.add(image)
+            story.save()
+            action_target = story
+            # record action for activity stream
+            action.send(self.request.user, verb="uploaded image", action_object=image, target=action_target)
+            # redirect to the associated object
+            return HttpResponseRedirect(reverse('story_detail', args=(story.id,)))
+        elif associated_object == 'task':
+            task_id = self.request.POST.get('task')
+            task = get_object_or_404(Task, id=task_id)
+            # add simple image to the associated object
+            task.simple_image_assets.add(image)
+            task.save()
+            action_target = task
+            # record action for activity stream
+            action.send(self.request.user, verb="uploaded image", action_object=image, target=action_target)
+            # redirect to the associated object
+            return HttpResponseRedirect(reverse('task_detail', args=(task.id,)))
+        elif associated_object == 'event':
+            event_id = self.request.POST.get('event')
+            event = get_object_or_404(Event, id=event_id)
+            # add simple image to the associated object
+            event.simple_image_assets.add(image)
+            event.save()
+            action_target = event
+            # record action for activity stream
+            action.send(self.request.user, verb="uploaded image", action_object=image, target=action_target)
+            # redirect to the associated object
+            return HttpResponseRedirect(reverse('event_detail', args=(event.id,)))
+        elif associated_object == 'pitch':
+            pitch_id = self.request.POST.get('pitch')
+            pitch = get_object_or_404(Pitch, id=pitch_id)
+            # add simple image to the associated object
+            pitch.simple_image_assets.add(image)
+            pitch.save()
+            action_target = pitch
+            # record action for activity stream
+            action.send(self.request.user, verb="uploaded image", action_object=image, target=action_target)
+            # redirect to the associated object
+            return HttpResponseRedirect(reverse('pitch_detail', args=(pitch.id,)))
+        elif associated_object == 'call':
+            call_id = self.request.POST.get('call')
+            call = get_object_or_404(Call, id=call_id)
+            # add simple image to the associated object
+            call.simple_image_assets.add(image)
+            call.save()
+            action_target = call
+            # record action for activity stream
+            action.send(self.request.user, verb="uploaded image", action_object=image, target=action_target)
+            # redirect to the associated object
+            return HttpResponseRedirect(reverse('call_detail', args=(call.id,)))
+        elif associated_object == 'Assignment':
+            assignment_id = self.request.POST.get('assignment')
+            assignment = get_object_or_404(Assignment, id=assignment_id)
+            # add simple image to the associated object
+            assignment.simple_image_assets.add(image)
+            assignment.save()
+            action_target = assignment
+            # record action for activity stream
+            action.send(self.request.user, verb="uploaded image", action_object=image, target=action_target)
+            # redirect to the associated object
+            return HttpResponseRedirect(reverse('assignment_detail', args=(assignment.id,)))
 
 
 class SimpleDocumentCreateView(CreateView):
@@ -485,75 +516,102 @@ class SimpleDocumentCreateView(CreateView):
 
         self.object = document = form.save(commit=False)
 
-        # get thing that the document is being associated with
-        associated_object = self.request.POST.get('assocation')
-        if associated_object == 'Project':
-            project_id = self.request.POST.get('project')
-            project = get_object_or_404(Project, id=project_id)
-            # add simple document to the associated object
-            # project.document_assets.add(document)
-            # project.save()
-            action_target = project
-        elif associated_object == 'Series':
-            series_id = self.request.POST.get('series')
-            series = get_object_or_404(Series, id=series_id)
-            # add simple document to the associated object
-            # series.document_assets.add(document)
-            # series.save()
-            action_target = series
-        elif associated_object == 'Story':
-            story_id = self.request.POST.get('story')
-            story = get_object_or_404(Story, id=story_id)
-            # add simple document to the associated object
-            # story.document_assets.add(document)
-            # story.save()
-            action_target = story
-        elif associated_object == 'Task':
-            task_id = self.request.POST.get('task')
-            task = get_object_or_404(Task, id=task_id)
-            # add simple document to the associated object
-            # task.document_assets.add(document)
-            # task.save()
-            action_target = task
-        elif associated_object == 'Event':
-            event_id = self.request.POST.get('event')
-            event = get_object_or_404(Event, id=event_id)
-            # add simple document to the associated object
-            # event.document_assets.add(document)
-            # event.save()
-            action_target = event
-        elif associated_object == 'Pitch':
-            pitch_id = self.request.POST.get('pitch')
-            pitch = get_object_or_404(Pitch, id=pitch_id)
-            # add simple document to the associated object
-            pitch.document_assets.add(document)
-            pitch.save()
-            action_target = pitch
-        elif associated_object == 'Call':
-            call_id = self.request.POST.get('call')
-            call = get_object_or_404(Call, id=call_id)
-            # add simple document to the associated object
-            # call.document_assets.add(document)
-            # call.save()
-            action_target = call
-        elif associated_object == 'Assignment':
-            assignment_id = self.request.POST.get('assignment')
-            assignment = get_object_or_404(Assignment, id=assignment_id)
-            # add simple document to the associated object
-            # assignment.document_assets.add(document)
-            # assignment.save()
-            action_target = assignment
-
         # set request based attributes
         document.owner = self.request.user
         if self.request.user.organization:
             document.organization = self.request.user.organization
         document.save()
 
-        # record action for activity stream
-        action.send(self.request.user, verb="uploaded document", action_object=document, target=action_target)
-
-        return redirect(self.get_success_url())
+        # get thing that the document is being associated with
+        associated_object = self.request.POST.get('association')
+        if associated_object == 'project':
+            project_id = self.request.POST.get('project')
+            project = get_object_or_404(Project, id=project_id)
+            # add simple document to the associated object
+            project.simple_document_assets.add(document)
+            project.save()
+            action_target = project
+            # record action for activity stream
+            action.send(self.request.user, verb="uploaded document", action_object=document, target=action_target)
+            # redirect to the associated object
+            return HttpResponseRedirect(reverse('project_detail', args=(project.id,)))
+        elif associated_object == 'series':
+            series_id = self.request.POST.get('series')
+            series = get_object_or_404(Series, id=series_id)
+            # add simple document to the associated object
+            series.simple_document_assets.add(document)
+            series.save()
+            action_target = series
+            # record action for activity stream
+            action.send(self.request.user, verb="uploaded document", action_object=document, target=action_target)
+            # redirect to the associated object
+            return HttpResponseRedirect(reverse('series_detail', args=(series.id,)))
+        elif associated_object == 'story':
+            story_id = self.request.POST.get('story')
+            story = get_object_or_404(Story, id=story_id)
+            # add simple document to the associated object
+            story.simple_document_assets.add(document)
+            story.save()
+            action_target = story
+            # record action for activity stream
+            action.send(self.request.user, verb="uploaded document", action_object=document, target=action_target)
+            # redirect to the associated object
+            return HttpResponseRedirect(reverse('story_detail', args=(story.id,)))
+        elif associated_object == 'task':
+            task_id = self.request.POST.get('task')
+            task = get_object_or_404(Task, id=task_id)
+            # add simple document to the associated object
+            task.simple_document_assets.add(document)
+            task.save()
+            action_target = task
+            # record action for activity stream
+            action.send(self.request.user, verb="uploaded document", action_object=document, target=action_target)
+            # redirect to the associated object
+            return HttpResponseRedirect(reverse('task_detail', args=(task.id,)))
+        elif associated_object == 'event':
+            event_id = self.request.POST.get('event')
+            event = get_object_or_404(Event, id=event_id)
+            # add simple document to the associated object
+            event.simple_document_assets.add(document)
+            event.save()
+            action_target = event
+            # record action for activity stream
+            action.send(self.request.user, verb="uploaded document", action_object=document, target=action_target)
+            # redirect to the associated object
+            return HttpResponseRedirect(reverse('event_detail', args=(event.id,)))
+        elif associated_object == 'pitch':
+            pitch_id = self.request.POST.get('pitch')
+            pitch = get_object_or_404(Pitch, id=pitch_id)
+            # add simple document to the associated object
+            pitch.simple_document_assets.add(document)
+            pitch.save()
+            action_target = pitch
+            # record action for activity stream
+            action.send(self.request.user, verb="uploaded document", action_object=document, target=action_target)
+            # redirect to the associated object
+            return HttpResponseRedirect(reverse('pitch_detail', args=(pitch.id,)))
+        elif associated_object == 'call':
+            call_id = self.request.POST.get('call')
+            call = get_object_or_404(Call, id=call_id)
+            # add simple document to the associated object
+            call.simple_document_assets.add(document)
+            call.save()
+            action_target = call
+            # record action for activity stream
+            action.send(self.request.user, verb="uploaded document", action_object=document, target=action_target)
+            # redirect to the associated object
+            return HttpResponseRedirect(reverse('call_detail', args=(call.id,)))
+        elif associated_object == 'assignment':
+            assignment_id = self.request.POST.get('assignment')
+            assignment = get_object_or_404(Assignment, id=assignment_id)
+            # add simple document to the associated object
+            assignment.simple_document_assets.add(document)
+            assignment.save()
+            action_target = assignment
+            # record action for activity stream
+            action.send(self.request.user, verb="uploaded document", action_object=document, target=action_target)
+            # redirect to the associated object
+            return HttpResponseRedirect(reverse('assignment_detail', args=(assignment.id,)))
 
 
 class SimpleAudioCreateView(CreateView):
@@ -572,75 +630,102 @@ class SimpleAudioCreateView(CreateView):
 
         self.object = audio = form.save(commit=False)
 
-        # get thing that the audio is being associated with
-        associated_object = self.request.POST.get('assocation')
-        if associated_object == 'Project':
-            project_id = self.request.POST.get('project')
-            project = get_object_or_404(Project, id=project_id)
-            # add simple audio to the associated object
-            # project.audio_assets.add(audio)
-            # project.save()
-            action_target = project
-        elif associated_object == 'Series':
-            series_id = self.request.POST.get('series')
-            series = get_object_or_404(Series, id=series_id)
-            # add simple audio to the associated object
-            # series.audio_assets.add(audio)
-            # series.save()
-            action_target = series
-        elif associated_object == 'Story':
-            story_id = self.request.POST.get('story')
-            story = get_object_or_404(Story, id=story_id)
-            # add simple audio to the associated object
-            # story.audio_assets.add(audio)
-            # story.save()
-            action_target = story
-        elif associated_object == 'Task':
-            task_id = self.request.POST.get('task')
-            task = get_object_or_404(Task, id=task_id)
-            # add simple audio to the associated object
-            # task.audio_assets.add(audio)
-            # task.save()
-            action_target = task
-        elif associated_object == 'Event':
-            event_id = self.request.POST.get('event')
-            event = get_object_or_404(Event, id=event_id)
-            # add simple audio to the associated object
-            # event.audio_assets.add(audio)
-            # event.save()
-            action_target = event
-        elif associated_object == 'Pitch':
-            pitch_id = self.request.POST.get('pitch')
-            pitch = get_object_or_404(Pitch, id=pitch_id)
-            # add simple audio to the associated object
-            pitch.audio_assets.add(audio)
-            pitch.save()
-            action_target = pitch
-        elif associated_object == 'Call':
-            call_id = self.request.POST.get('call')
-            call = get_object_or_404(Call, id=call_id)
-            # add simple audio to the associated object
-            # call.audio_assets.add(audio)
-            # call.save()
-            action_target = call
-        elif associated_object == 'Assignment':
-            assignment_id = self.request.POST.get('assignment')
-            assignment = get_object_or_404(Assignment, id=assignment_id)
-            # add simple audio to the associated object
-            # assignment.audio_assets.add(audio)
-            # assignment.save()
-            action_target = assignment
-
         # set request based attributes
         audio.owner = self.request.user
         if self.request.user.organization:
             audio.organization = self.request.user.organization
         audio.save()
 
-        # record action for activity stream
-        action.send(self.request.user, verb="uploaded audio", action_object=audio, target=action_target)
-
-        return redirect(self.get_success_url())
+        # get thing that the audio is being associated with
+        associated_object = self.request.POST.get('association')
+        if associated_object == 'project':
+            project_id = self.request.POST.get('project')
+            project = get_object_or_404(Project, id=project_id)
+            # add simple audio to the associated object
+            project.simple_audio_assets.add(audio)
+            project.save()
+            action_target = project
+            # record action for activity stream
+            action.send(self.request.user, verb="uploaded audio", action_object=audio, target=action_target)
+            # redirect to the associated object
+            return HttpResponseRedirect(reverse('project_detail', args=(project.id,)))
+        elif associated_object == 'series':
+            series_id = self.request.POST.get('series')
+            series = get_object_or_404(Series, id=series_id)
+            # add simple audio to the associated object
+            series.simple_audio_assets.add(audio)
+            series.save()
+            action_target = series
+            # record action for activity stream
+            action.send(self.request.user, verb="uploaded audio", action_object=audio, target=action_target)
+            # redirect to the associated object
+            return HttpResponseRedirect(reverse('series_detail', args=(series.id,)))
+        elif associated_object == 'story':
+            story_id = self.request.POST.get('story')
+            story = get_object_or_404(Story, id=story_id)
+            # add simple audio to the associated object
+            story.simple_audio_assets.add(audio)
+            story.save()
+            action_target = story
+            # record action for activity stream
+            action.send(self.request.user, verb="uploaded audio", action_object=audio, target=action_target)
+            # redirect to the associated object
+            return HttpResponseRedirect(reverse('story_detail', args=(story.id,)))
+        elif associated_object == 'task':
+            task_id = self.request.POST.get('task')
+            task = get_object_or_404(Task, id=task_id)
+            # add simple audio to the associated object
+            task.simple_audio_assets.add(audio)
+            task.save()
+            action_target = task
+            # record action for activity stream
+            action.send(self.request.user, verb="uploaded audio", action_object=audio, target=action_target)
+            # redirect to the associated object
+            return HttpResponseRedirect(reverse('task_detail', args=(task.id,)))
+        elif associated_object == 'event':
+            event_id = self.request.POST.get('event')
+            event = get_object_or_404(Event, id=event_id)
+            # add simple audio to the associated object
+            event.simple_audio_assets.add(audio)
+            event.save()
+            action_target = event
+            # record action for activity stream
+            action.send(self.request.user, verb="uploaded audio", action_object=audio, target=action_target)
+            # redirect to the associated object
+            return HttpResponseRedirect(reverse('event_detail', args=(event.id,)))
+        elif associated_object == 'pitch':
+            pitch_id = self.request.POST.get('pitch')
+            pitch = get_object_or_404(Pitch, id=pitch_id)
+            # add simple audio to the associated object
+            pitch.simple_audio_assets.add(audio)
+            pitch.save()
+            action_target = pitch
+            # record action for activity stream
+            action.send(self.request.user, verb="uploaded audio", action_object=audio, target=action_target)
+            # redirect to the associated object
+            return HttpResponseRedirect(reverse('pitch_detail', args=(pitch.id,)))
+        elif associated_object == 'call':
+            call_id = self.request.POST.get('call')
+            call = get_object_or_404(Call, id=call_id)
+            # add simple audio to the associated object
+            call.simple_audio_assets.add(audio)
+            call.save()
+            action_target = call
+            # record action for activity stream
+            action.send(self.request.user, verb="uploaded audio", action_object=audio, target=action_target)
+            # redirect to the associated object
+            return HttpResponseRedirect(reverse('call_detail', args=(call.id,)))
+        elif associated_object == 'assignment':
+            assignment_id = self.request.POST.get('assignment')
+            assignment = get_object_or_404(Assignment, id=assignment_id)
+            # add simple audio to the associated object
+            assignment.simple_audio_assets.add(audio)
+            assignment.save()
+            action_target = assignment
+            # record action for activity stream
+            action.send(self.request.user, verb="uploaded audio", action_object=audio, target=action_target)
+            # redirect to the associated object
+            return HttpResponseRedirect(reverse('assignment_detail', args=(assignment.id,)))
 
 
 class SimpleVideoCreateView(CreateView):
@@ -659,72 +744,99 @@ class SimpleVideoCreateView(CreateView):
 
         self.object = video = form.save(commit=False)
 
-        # get thing that the video is being associated with
-        associated_object = self.request.POST.get('assocation')
-        if associated_object == 'Project':
-            project_id = self.request.POST.get('project')
-            project = get_object_or_404(Project, id=project_id)
-            # add simple video to the associated object
-            # project.video_assetss.add(video)
-            # project.save()
-            action_target = project
-        elif associated_object == 'Series':
-            series_id = self.request.POST.get('series')
-            series = get_object_or_404(Series, id=series_id)
-            # add simple video to the associated object
-            # series.video_assetss.add(video)
-            # series.save()
-            action_target = series
-        elif associated_object == 'Story':
-            story_id = self.request.POST.get('story')
-            story = get_object_or_404(Story, id=story_id)
-            # add simple video to the associated object
-            # story.video_assetss.add(video)
-            # story.save()
-            action_target = story
-        elif associated_object == 'Task':
-            task_id = self.request.POST.get('task')
-            task = get_object_or_404(Task, id=task_id)
-            # add simple video to the associated object
-            # task.video_assetss.add(video)
-            # task.save()
-            action_target = task
-        elif associated_object == 'Event':
-            event_id = self.request.POST.get('event')
-            event = get_object_or_404(Event, id=event_id)
-            # add simple video to the associated object
-            # event.video_assetss.add(video)
-            # event.save()
-            action_target = event
-        elif associated_object == 'Pitch':
-            pitch_id = self.request.POST.get('pitch')
-            pitch = get_object_or_404(Pitch, id=pitch_id)
-            # add simple video to the associated object
-            pitch.video_assetss.add(video)
-            pitch.save()
-            action_target = pitch
-        elif associated_object == 'Call':
-            call_id = self.request.POST.get('call')
-            call = get_object_or_404(Call, id=call_id)
-            # add simple video to the associated object
-            # call.video_assetss.add(video)
-            # call.save()
-            action_target = call
-        elif associated_object == 'Assignment':
-            assignment_id = self.request.POST.get('assignment')
-            assignment = get_object_or_404(Assignment, id=assignment_id)
-            # add simple video to the associated object
-            # assignment.video_assetss.add(video)
-            # assignment.save()
-            action_target = assignment
-
         # set request based attributes
         video.owner = self.request.user
         if self.request.user.organization:
             video.organization = self.request.user.organization
         video.save()
 
-        # record action for activity stream
-        action.send(self.request.user, verb="uploaded video", action_object=video, target=action_target)
-
-        return redirect(self.get_success_url())
+        # get thing that the video is being associated with
+        associated_object = self.request.POST.get('association')
+        if associated_object == 'project':
+            project_id = self.request.POST.get('project')
+            project = get_object_or_404(Project, id=project_id)
+            # add simple video to the associated object
+            project.simple_video_assets.add(video)
+            project.save()
+            action_target = project
+            # record action for activity stream
+            action.send(self.request.user, verb="uploaded video", action_object=video, target=action_target)
+            # redirect to the associated object
+            return HttpResponseRedirect(reverse('project_detail', args=(project.id,)))
+        elif associated_object == 'series':
+            series_id = self.request.POST.get('series')
+            series = get_object_or_404(Series, id=series_id)
+            # add simple video to the associated object
+            series.simple_video_assets.add(video)
+            series.save()
+            action_target = series
+            # record action for activity stream
+            action.send(self.request.user, verb="uploaded video", action_object=video, target=action_target)
+            # redirect to the associated object
+            return HttpResponseRedirect(reverse('series_detail', args=(series.id,)))
+        elif associated_object == 'story':
+            story_id = self.request.POST.get('story')
+            story = get_object_or_404(Story, id=story_id)
+            # add simple video to the associated object
+            story.simple_video_assets.add(video)
+            story.save()
+            action_target = story
+            # record action for activity stream
+            action.send(self.request.user, verb="uploaded video", action_object=video, target=action_target)
+            # redirect to the associated object
+            return HttpResponseRedirect(reverse('story_detail', args=(story.id,)))
+        elif associated_object == 'task':
+            task_id = self.request.POST.get('task')
+            task = get_object_or_404(Task, id=task_id)
+            # add simple video to the associated object
+            task.simple_video_assets.add(video)
+            task.save()
+            action_target = task
+            # record action for activity stream
+            action.send(self.request.user, verb="uploaded video", action_object=video, target=action_target)
+            # redirect to the associated object
+            return HttpResponseRedirect(reverse('task_detail', args=(task.id,)))
+        elif associated_object == 'event':
+            event_id = self.request.POST.get('event')
+            event = get_object_or_404(Event, id=event_id)
+            # add simple video to the associated object
+            event.simple_video_assets.add(video)
+            event.save()
+            action_target = event
+            # record action for activity stream
+            action.send(self.request.user, verb="uploaded video", action_object=video, target=action_target)
+            # redirect to the associated object
+            return HttpResponseRedirect(reverse('event_detail', args=(event.id,)))
+        elif associated_object == 'pitch':
+            pitch_id = self.request.POST.get('pitch')
+            pitch = get_object_or_404(Pitch, id=pitch_id)
+            # add simple video to the associated object
+            pitch.simple_video_assets.add(video)
+            pitch.save()
+            action_target = pitch
+            # record action for activity stream
+            action.send(self.request.user, verb="uploaded video", action_object=video, target=action_target)
+            # redirect to the associated object
+            return HttpResponseRedirect(reverse('pitch_detail', args=(pitch.id,)))
+        elif associated_object == 'call':
+            call_id = self.request.POST.get('call')
+            call = get_object_or_404(Call, id=call_id)
+            # add simple video to the associated object
+            call.simple_video_assets.add(video)
+            call.save()
+            action_target = call
+            # record action for activity stream
+            action.send(self.request.user, verb="uploaded video", action_object=video, target=action_target)
+            # redirect to the associated object
+            return HttpResponseRedirect(reverse('call_detail', args=(call.id,)))
+        elif associated_object == 'Assignment':
+            assignment_id = self.request.POST.get('assignment')
+            assignment = get_object_or_404(Assignment, id=assignment_id)
+            # add simple video to the associated object
+            assignment.simple_video_assets.add(video)
+            assignment.save()
+            action_target = assignment
+            # record action for activity stream
+            action.send(self.request.user, verb="uploaded video", action_object=video, target=action_target)
+            # redirect to the associated object
+            return HttpResponseRedirect(reverse('assignment_detail', args=(assignment.id,)))

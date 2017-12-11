@@ -40,8 +40,10 @@ class PlatformAccountForm(forms.ModelForm):
         user = kwargs.pop('user')
         super(PlatformAccountForm, self).__init__(*args, **kwargs)
         if org:
+            # limit team to org users
             self.fields['team'].queryset = org.get_org_users()
-            self.fields['project'].queryset = org.get_org_projects()
+            # limit project to org projects or projects on which an org is a collaborator
+            self.fields['project'].queryset = Project.objects.filter(Q(organization=self)| Q(collaborate_with=self))
 
     class Meta:
         model = PlatformAccount

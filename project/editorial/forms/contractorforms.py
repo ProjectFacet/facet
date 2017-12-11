@@ -92,6 +92,20 @@ class OrganizationContractorRelationshipForm(forms.ModelForm):
 class CallForm(forms.ModelForm):
     """Handles creation and editing of a call."""
 
+    def __init__(self, *args, **kwargs):
+        org = kwargs.pop("organization")
+        super(CallForm, self).__init__(*args, **kwargs)
+        # set empty label
+        self.fields['status'].empty_label = 'Call status'
+
+    expiration_date = forms.DateTimeField(
+        required=False,
+        widget=OurDateTimePicker(
+            options={'format': 'YYYY-MM-DD HH:mm'},
+            attrs={'id': 'story-embargo-picker'})
+    )
+
+
     class Meta:
         model = Call
         fields = [
@@ -115,7 +129,7 @@ class PitchForm(forms.ModelForm):
     """Handles creation and editing of a pitch."""
 
     recipient = forms.ModelChoiceField(
-        queryset=User.objects.filter(Q(Q(user_type="Editor") | Q(user_type="Admin")) & Q(public=True)),
+        queryset=User.objects.filter(Q(Q(user_type="Editor") & Q(public=True)) | (Q(user_type="Admin") & Q(public=True))),
         widget=forms.Select(attrs={'class': 'c-select', 'id':'pitch-recipient'}),
         required=True,
     )
@@ -142,8 +156,10 @@ class AssignmentForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         org = kwargs.pop("organization")
         super(AssignmentForm, self).__init__(*args, **kwargs)
-        self.fields['story'].queryset=Story.objects.filter(organization=org)
-        self.fields['facet'].queryset=Facet.objects.filter(organization=org)
+        # limit to stories or facets owned by an organization or that an org is a collaborator on
+        self.fields['story'].queryset=Story.objects.filter(Q(organization=org) | Q(collaborate_with=self))
+        self.fields['facet'].queryset=Facet.objects.filter(Q(organization=org) | Q(collaborate_with=self))
+        # set empty labels
         self.fields['contractor'].empty_label = "Select a contractor"
         self.fields['story'].empty_label = 'Select a story'
         self.fields['facet'].empty_label = 'Select a facet'

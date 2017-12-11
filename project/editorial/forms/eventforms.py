@@ -33,32 +33,21 @@ class EventForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         org = kwargs.pop("organization")
         super(EventForm, self).__init__(*args, **kwargs)
+        # limit team options to team members from user's org
         self.fields['team'].queryset = org.get_org_users()
+        # limit evt_org options to organizations that user org is partnered with or self
+        # TODO add self to evt_organization
         self.fields['evt_organization'].queryset = org.get_org_collaborators_vocab()
+        # limit project, series and stories to those owned by org or part of content and org is collaborator for
+        self.fields['project'].queryset = Project.objects.filter(Q(collaborate_with=self) | (Q(owner=self)))
+        self.fields['series'].queryset = Series.objects.filter(Q(collaborate_with=self) | (Q(owner=self)))
+        self.fields['story'].queryset = Story.objects.filter(Q(collaborate_with=self) | (Q(owner=self)))
+        # set empty labels
         self.fields['event_type'].empty_label='Event Type'
         self.fields['evt_organization'].empty_label='Select an Organization'
         self.fields['project'].empty_label='Select a Project'
         self.fields['series'].empty_label='Select a Series'
         self.fields['story'].empty_label='Select a Story'
-
-
-    projects = forms.ModelChoiceField(
-        queryset=Project.objects.all(),
-        widget=forms.Select,
-        required=False,
-    )
-
-    series = forms.ModelChoiceField(
-        queryset=Series.objects.all(),
-        widget=forms.Select,
-        required=False,
-    )
-
-    stories = forms.ModelChoiceField(
-        queryset=Story.objects.all(),
-        widget=forms.Select,
-        required=False,
-    )
 
     event_date = forms.DateTimeField(
         required=False,

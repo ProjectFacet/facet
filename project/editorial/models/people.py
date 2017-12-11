@@ -347,7 +347,6 @@ class Organization(models.Model):
         """
         return self.user_set.all()
 
-
     def get_org_networks(self):
         """ Return list of all the networks that an organization is connected to as
         owner or member of.
@@ -362,7 +361,6 @@ class Organization(models.Model):
         organization_networks = all_organization_networks.distinct()
         return organization_networks
 
-
     def get_org_network_content(self):
         """Return queryset of content shared with any network an organization is a member of excluding their own content."""
 
@@ -372,7 +370,6 @@ class Organization(models.Model):
         network_content = Story.objects.filter(share_with__in=networks)
 
         return network_content
-
 
     # formerly get_org_collaborators
     def get_org_collaborators_vocab(self):
@@ -420,7 +417,6 @@ class Organization(models.Model):
         """
         return self.videoasset_set.all()
 
-
     def get_org_user_comments(self):
         """Retrieve all the comments associated with users of an organization.
 
@@ -435,7 +431,6 @@ class Organization(models.Model):
 
         return org_user_comments
 
-
     def get_org_comments(self):
         """Retrieve all organization comments.
 
@@ -445,7 +440,6 @@ class Organization(models.Model):
         from . import Comment
         organization_comments = Comment.objects.filter(discussion__discussion_type='ORG', user__organization=self)
         return organization_comments
-
 
     def get_network_comments(self):
         """Retrieve all comments for networks an organization is a member of.
@@ -510,12 +504,46 @@ class Organization(models.Model):
         from .story import Story
         org_collaborative_content = []
         external_stories = Story.objects.filter(Q(collaborate_with=self))
-        internal_stories = self.story_set.filter(organization=self).filter(collaborate=True)
-        # internal_stories = Story.objects.filter(organization=self).filter(collaborate=True)
+        internal_stories = self.story_set.filter(Q(organization=self) & Q(collaborate=True))
         org_collaborative_content.extend(external_stories)
         org_collaborative_content.extend(internal_stories)
-
         return org_collaborative_content
+
+    def get_org_external_collaborations(self):
+        """ Return all content from partner orgs that an organization is a
+        collaborator on.
+        """
+
+        from .project import Project
+        from .series import Series
+        from .story import Story
+        external_collaborative_content = []
+        external_projects = Project.objects.filter(Q(collaborate_with=self))
+        external_series = Series.objects.filter(Q(collaborate_with=self))
+        external_stories = Story.objects.filter(Q(collaborate_with=self))
+        external_collaborative_content.extend()
+        external_collaborative_content.extend()
+        external_collaborative_content.extend()
+        return external_collaborative_content
+
+
+    def get_org_internal_collaborations(self):
+        """ Return all content that an organization owns that is a collaboration
+        with partner organizations.
+        """
+
+        from .project import Project
+        from .series import Series
+        from .story import Story
+        internal_collaborative_content = []
+        internal_projects = self.project_set.filter(Q(collaborate=True))
+        internal_series = self.series_set.filter(Q(collaborate=True))
+        internal_stories = self.story_set.filter(Q(collaborate=True))
+        internal_collaborative_content.extend()
+        internal_collaborative_content.extend()
+        internal_collaborative_content.extend()
+        return internal_collaborative_content
+
 
     def get_org_stories_running_today(self):
         """Return list of content scheduled to run today.
@@ -569,7 +597,6 @@ class Organization(models.Model):
         projects.extend(network_projects)
         projects.extend(org_projects)
         return projects
-
 
     def get_org_searchable_content(self):
         """ Return queryset of all objects that can be searched by a user."""
