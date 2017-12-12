@@ -1,0 +1,197 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load bootstrap3 %}
+{% load embed_video_tags %}
+
+{% block head %}
+{{ webform.media }}
+{% endblock %}
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+<!--             BREADCRUMB NAVIGATION                 -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
+{% block breadcrumb %}
+<div>
+    <ol class="breadcrumb icon-angle-right icon-th">
+        <li class="fadeIn"> Dashboard </li>
+    </ol>
+</div>
+{% endblock breadcrumb %}
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+<!--                   Main Section                    -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
+{% block content %}
+<!-- ================================================= -->
+                    <!-- CONTENT -->
+<!-- ================================================= -->
+
+<div class="row">
+  <div class="col-xs-12">
+    <h4>Assignments</h4>
+  </div>
+</div>
+
+{% with view.assignments as assignments %}
+<div class="row">
+  <div class="col-xs-12">
+    {% if assignments %}
+    <table id="stories-list" class="table table-condensed table-striped hidden-sm-down">
+      <thead>
+        <tr class="f-s-12">
+          <th class="dark">Assignment</th>
+          <th class="dark">Editor</th>
+          <th class="dark">Organization</th>
+          <th class="dark">Rate</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for assignment in assignments %}
+        <tr class="f-s-14">
+          <td><a href="{% url 'assignment_detail' assignment.id %}">{{ assignment.name }}</a></th>
+          <td>{{ assignment.editor.credit_name }}</td>
+          <td>{{ assignment.organization.name }}</td>
+          <td>{{ assignment.rate }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <p class="f-s-18 subtle text-center italic m-b-40 m-t-40">This is where you will see all active assignments. Click here to create a <a href="{% url 'pitch_new' %}" title="Create New Pitch" class="default">pitch</a>.</p>
+    {% endif %}
+  </div>
+</div>
+{% endwith %}
+
+
+<div class="row m-t-40">
+  {% with view.communication as messages %}
+    <div class="col-xs-12 col-sm-6 col-md-4">
+      <h4 class="m-b-20">Messages <a href="{% url 'inbox' %}" title="See all pitches"><span class="f-s-12 f-w-400 subtle"> (Go to Inbox <i class="fa fa-long-arrow-right subtle" aria-hidden="true">)</i></span></a></h4>
+      {% if messages %}
+          <div class="activity-widget-4">
+            {% for message in messages|slice:":5" %}
+            <div class="row">
+              <div class="col-xs-12">
+                <a href="{% url 'inbox' %}" title="Go to inbox for more">
+                <div class="media">
+                  <div class="media-left">
+                    {% if message.user.photo %}
+                      <img class="media-object img-circle h-40 w-40" src="{{ message.user.display_photo.url }}" alt="Sender Photo"/>
+                    {% endif %}
+                  </div>
+                  <div class="media-body">
+                    <h5 class="media-heading">{{ message.subject }}</h5>
+                    <p>{{ message.text|truncatewords:12}}</p>
+                    <p class="color-default f-s-10 f-w-300">{{ message.date|date:"M d, Y" }}</p>
+                  </div>
+                </div>
+              </a>
+              </div>
+            </div>
+          {% endfor %}
+          </div>
+      {% else %}
+      <p>It appears you've not pitched any stories.</p>
+      <p>Click here to <a href="{% url 'pitch_new' %}" title="Create New Pitch" class="default">create a pitch.</a></p>
+      {% endif %}
+    </div>
+  {% endwith %}
+  {% with view.pitches as pitches %}
+    <div class="col-xs-12 col-sm-6 col-md-4">
+      <h4 class="m-b-20">Recent Pitches <a href="#" title="See all pitches"><span class="f-s-12 f-w-400 subtle"> (All pitches <i class="fa fa-long-arrow-right subtle" aria-hidden="true">)</i></span></a></h4>
+      {% if pitches %}
+          <div class="activity-widget-4">
+            {% for pitch in pitches|slice:":5" %}
+            <div class="row">
+              <div class="col-xs-12">
+                <a href="{% url 'pitch_detail' pitch.id %}" title="Go to pitch detail">
+                <div class="media">
+                  <div class="media-left">
+                    {% if pitch.recipient.organization.logo %}
+                      <img class="media-object img-circle h-40 w-40" src="{{ pitch.recipient.organization.display_logo.url }}" alt="Organization Logo"/>
+                    {% endif %}
+                  </div>
+                  <div class="media-body">
+                    <h5 class="media-heading">{{ pitch.name }}</h5>
+                    <p>{{ pitch.text|truncatewords:12}}</p>
+                    <p class="color-default f-s-10 f-w-300">{{ pitch.creation_date|date:"M d, Y" }}</p>
+                  </div>
+                </div>
+              </a>
+              </div>
+            </div>
+          {% endfor %}
+          </div>
+      {% else %}
+      <p>It appears you've not pitched any stories.</p>
+      <p>Click here to <a href="{% url 'pitch_new' %}" title="Create New Pitch" class="default">create a pitch.</a></p>
+      {% endif %}
+    </div>
+  {% endwith %}
+  {% with view.calls as calls %}
+  <div class="col-xs-12 col-sm-6 col-md-4">
+    <h4 class="m-b-20">Recent Calls <a href="#" title="See all active calls"><span class="f-s-12 f-w-400 subtle"> (All calls <i class="fa fa-long-arrow-right subtle" aria-hidden="true">)</i></span></a></h4>
+    {% if calls %}
+        <div class="activity-widget-4">
+          {% for call in calls|slice:":5" %}
+          <div class="row">
+            <div class="col-xs-12">
+              <a href="{% url 'call_detail' call.id %}" title="Go to call detail">
+              <div class="media">
+                <div class="media-left">
+                  {% if call.organization.logo %}
+                    <img class="media-object img-circle h-40 w-40" src="{{ call.organization.display_logo.url }}" alt="Organization Logo"/>
+                  {% endif %}
+                </div>
+                <div class="media-body">
+                  <h5 class="media-heading">{{ call.name }}</h5>
+                  <p>{{ call.text|truncatewords:12}}</p>
+                  <p class="color-default f-s-10 f-w-300">{{ call.creation_date|date:"M d, Y" }}</p>
+                </div>
+              </div>
+            </a>
+            </div>
+          </div>
+        {% endfor %}
+        </div>
+    {% else %}
+    <p class="text-center subtle"><i>There appear to be no open calls at this time.</i></p>
+    {% endif %}
+  </div>
+  {% endwith %}
+
+
+</div>
+
+
+<!-- ================================================= -->
+                  <!-- JS SCRIPTS -->
+<!-- ================================================= -->
+
+<script>
+  $(".chosen-select").chosen()
+</script>
+
+{% endblock %}
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+                <!-- MODALS -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
+{% block modals %}
+
+
+
+
+
+{% endblock modals %}

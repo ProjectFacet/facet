@@ -19,7 +19,7 @@
 <div>
     <ol class="breadcrumb icon-angle-right icon-th">
         <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
-        <li class="fadeIn"> Contractors </li>
+        <li class="fadeIn"> Public Contractors </li>
     </ol>
 </div>
 {% endblock breadcrumb %}
@@ -41,53 +41,49 @@
   </div>
 </div>
 
-<div class="row m-t-10">
+<div class="row m-t-20">
+  {% for contractor in contractors %}
   <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
-    {% for contractor in contractors %}
-    <div class="user-widget-11">
+    <div class="user-widget-1">
       <div class="row">
-        <div class="col-xs-12">
-          <a class="media-left media-middle">
-            {% if contractor.user.display_photo %}
-            <img class="media-object img-circle h-100 w-100" alt="Contractor profile image" src="{{ contractor.user.display_photo.url }}">
-            {% else %}
-            <img class="media-object img-circle h-100 w-100" alt="Contractor profile image" src="{% static 'images/nophoto.jpg' %}">
-            {% endif %}
-          </a>
-          <div class="media-body">
-            <div class="p-10 m-t-5">
-              <h5 class="text-bold color-white">{{ contractor.user.credit_name }}</h5>
-              <p class="m-b-0"> <i class="fa fa-map-marker color-white"></i> <span class="color-white">{{ contractor.user.location }}</span> </p>
-            </div>
-            <div class="p-10 p-t-15">
-              <p> <i class="fa fa-envelope-o color-dark"></i> <span class="color-dark">{{ contractor.user.email }}</span> </p>
-            </div>
+          <div class="col-xs-12">
+              <a class="media-left media-middle">
+                {% if contractor.user.display_photo %}
+                <img class="media-object img-circle h-100 w-100" alt="User profile image" src="{{ contractor.user.display_photo.url }}">
+                {% else %}
+                <img class="media-object img-circle h-100 w-100" alt="User profile image" src="{% static 'images/nophoto.jpg' %}">
+                {% endif %}
+              </a>
+              <div class="media-body">
+                  <div class="p-10">
+                      <h5 class="text-bold color-white">{{ contractor.user.credit_name }}</h5>
+                      <p class="color-white f-s-12"><i class="fa fa-map-marker" aria-hidden="true"></i> {{ contractor.user.location }} </p>
+                      <p class="color-white f-s-12 text-bold">Expertise:</p>
+                      <p class="color-white f-s-12">{% for skill in contractor.user.expertise %}{{skill}}, {% endfor %}</p>
+                  </div>
+              </div>
           </div>
       </div>
     </div>
-  </div>
-  <div class="row">
-  </div>
   <!-- Contact Buttons -->
   <div class="row">
     <div class="col-xs-12">
-      <div class="bg-white p-b-20">
+      <div class="bg-standard p-b-20">
         <div class="row">
           <div class="col-xs-4 centered">
-            <a href="{% url 'contractor_detail' contractor.id %}" title="Go to {{ contractor.user.credit_name }}'s Profile'"><button type="button" class="m-r-5 m-l-5 btn btn-warning-500 btn-rounded btn-outline sameline">Profile</button></a>
+            <a href="{% url 'contractor_detail' contractor.id %}" title="Go to {{ contractor.user.credit_name }}'s Profile'"><button type="button" class="m-r-5 m-l-5 btn btn-sm btn-white btn-rounded btn-outline sameline">Profile</button></a>
           </div>
           <div class="col-xs-4 centered">
-            <button type="button" class="m-r-5 m-l-5 btn btn-warning-500 btn-rounded btn-outline sameline">Message</button>
+            <button type="button" class="m-r-5 m-l-5 btn btn-sm btn-white btn-rounded btn-outline sameline" data-toggle="modal" data-target="#sendContractorMessage" data-whatever="{{ contractor.user.id }}">Message</button>
           </div>
           <div class="col-xs-4 centered">
-            <button type="button" class="m-r-5 m-l-5 btn btn-warning-500 btn-rounded btn-outline sameline"><i class="fa fa-plus" aria-hidden="true"></i> Pool</button>
+            <a href="{% url 'affiliation_new' %}" title="Create an affiliation with this contractor"><button type="button" class="m-r-5 m-l-5 btn btn-sm btn-white btn-rounded btn-outline sameline"><i class="fa fa-plus" aria-hidden="true"></i> Affiliation</button></a>
           </div>
         </div>
       </div>
     </div>
   </div>
   {% endfor %}
-
   </div>
 </div>
 
@@ -109,6 +105,52 @@
 
 {% block modals %}
 
+
+<!-- Private Message Modal -->
+  <div class="modal fade" id="sendContractorMessage" tabindex="-1" role="dialog" aria-labelledby="sendContractorMessageLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="sendContractorMessageLabel">Send a message</h4>
+        </div>
+        <form action="{% url 'private_message_new' %}" method="POST" class="post-form">
+          {% csrf_token %}
+          <div class="modal-body">
+            <fieldset class="form-group m-b-20">
+              {% comment %}
+              <div class="col-xs-2 offset-xs-1">
+                <label>{{ form.subject.label_tag }}</label>
+              </div>
+              {% endcomment %}
+              <div class="col-xs-12">
+                {{ form.subject }}
+                {% if form.subject.errors %}
+                <small class="text-muted">{{ form.subject.errors }}</small>
+                {% endif %}
+              </div>
+            </fieldset>
+            <fieldset class="form-group m-b-20">
+              {% comment %}
+              <div class="col-xs-2 offset-xs-1">
+                <label>{{ form.text.label_tag }}</label>
+              </div>
+              {% endcomment %}
+              <div class="col-xs-12">
+                {{ form.text }}
+                {% if form.text.errors %}
+                <small class="text-muted">{{ form.text.errors }}</small>
+                {% endif %}
+              </div>
+            </fieldset>
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Send Message</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 
 
 {% endblock modals %}

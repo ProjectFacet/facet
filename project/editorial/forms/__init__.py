@@ -16,7 +16,7 @@ from tinymce.widgets import TinyMCE
 
 
 from .peopleforms import AddUserForm, UserProfileForm, OrganizationForm, NetworkForm, AddToNetworkForm, InviteToNetworkForm
-from .contractorforms import ContractorProfileForm, OrganizationContractorRelationshipForm, CallForm, PitchForm, AssignmentForm
+from .contractorforms import ContractorProfileForm, OrganizationContractorAffiliationForm, CallForm, PitchForm, AssignmentForm
 from .projectforms import ProjectForm
 from .seriesforms import SeriesForm
 from .storyforms import StoryForm, StoryDownloadForm

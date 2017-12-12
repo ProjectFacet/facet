@@ -64,14 +64,26 @@ class ContractorProfileForm(forms.ModelForm):
         }
 
 
-class OrganizationContractorRelationshipForm(forms.ModelForm):
+class OrganizationContractorAffiliationForm(forms.ModelForm):
     """Handles creation and editing of the details of a contractor's
     relationship with a specific organization.
     """
 
+    # def __init__(self, *args, **kwargs):
+    #     super(CallForm, self).__init__(*args, **kwargs)
+    #     # set empty label
+    #     self.fields['status'].empty_label = 'Contractor status'
+
+    contractor = forms.ModelChoiceField(
+        queryset=ContractorProfile.objects.filter(public=True),
+        widget=forms.Select(attrs={'class': 'c-select', 'id':'affiliation-contractor'}),
+        required=True,
+    )
+
     class Meta:
         model = OrganizationContractorAffiliation
         fields = [
+            'contractor',
             'w9_on_file',
             'rates',
             'strengths',
@@ -84,8 +96,7 @@ class OrganizationContractorRelationshipForm(forms.ModelForm):
             'rates': TextInput(attrs={'class': 'form-control', 'placeholder': 'Rates'}),
             'strengths': TextInput(attrs={'class': 'form-control', 'placeholder': 'Strengths'}),
             'conflicts': TextInput(attrs={'class': 'form-control', 'placeholder': 'Conflicts'}),
-            'editor_notes': TextInput(attrs={'class': 'form-control', 'placeholder': 'Editor Notes'}),
-            'status': Select(attrs={'class': 'c-select', 'id':'contractor-status'}),
+            'editor_notes': Textarea(attrs={'class': 'form-control', 'rows': 12, 'placeholder': 'Editor Notes'}),
         }
 
 

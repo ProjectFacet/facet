@@ -5,7 +5,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.utils import timezone
-from django.views.generic import CreateView, FormView, UpdateView, DetailView, ListView, DeleteView
+from django.views.generic import CreateView, FormView, UpdateView, DetailView, ListView, DeleteView, TemplateView
 from django.views.decorators.csrf import csrf_exempt
 import datetime
 import json
@@ -14,7 +14,7 @@ from django.db.models import Q
 
 from editorial.forms import (
     ContractorProfileForm,
-    OrganizationContractorRelationshipForm,
+    OrganizationContractorAffiliationForm,
     CallForm,
     PitchForm,
     AssignmentForm,
@@ -22,6 +22,7 @@ from editorial.forms import (
     SimpleDocumentForm,
     SimpleAudioForm,
     SimpleVideoForm,
+    PrivateMessageForm
     )
 
 from editorial.models import (
@@ -36,11 +37,12 @@ from editorial.models import (
     SimpleDocument,
     SimpleAudio,
     SimpleVideo,
+    PrivateMessage,
     )
 
 
 #----------------------------------------------------------------------#
-#   Contractor Profile Views
+#   Contractor Views
 #----------------------------------------------------------------------#
 
 class ContractorCreateView(CreateView):
@@ -102,6 +104,70 @@ class ContractorUpdateView(UpdateView):
         return super(ContractorUpdateView, self).get_success_url()
 
 
+class ContractorDashboardView(DetailView):
+    """A dashboard of relevant content for a contractor."""
+
+    model = ContractorProfile
+    template_name = 'editorial/contractor_dashboard.html'
+
+    def assignments(self):
+        """Return all active assignments for a contractor."""
+
+        self.object = self.get_object()
+        return self.object.get_active_assignments()
+
+    def calls(self):
+        """Return all active calls."""
+
+        return Call.objects.filter(Q(is_active=True)| Q(status="Publised")).order_by('-creation_date')
+
+    def pitches(self):
+        """Return all active pitches from a contractor."""
+
+        self.object = self.get_object()
+        return self.object.get_active_pitches()
+
+    def communication(self):
+        """ Return recent communication relevant for a contractor."""
+
+        return PrivateMessage.objects.filter(recipient=self.object.user).order_by('date')
+
+#----------------------------------------------------------------------#
+#   Editor Views
+#----------------------------------------------------------------------#
+
+# A profile page for contract editors
+
+class TalentEditorDetailView(DetailView):
+    """Display details about an editor that works with contractors."""
+
+    model = User
+
+    def assignments(self):
+        """Get assignments that are relevant to requesting user."""
+
+        self.object = self.get_object()
+        editor = self.object
+        active_assignments = self.object.get_active_assignments()
+        assignments_for_viewer = active_assignments.filter(editor=editor)
+        return assignments_for_viewer
+
+    def pitches(self):
+        """Get pitches that are relevant to requesting user."""
+        self.object = self.get_object()
+        recipient = self.request.user
+        active_pitches = self.object.get_active_pitches()
+        pitches_for_viewer = active_pitches.filter(recipient=recipient)
+        return pitches_for_viewer
+
+
+
+
+
+#----------------------------------------------------------------------#
+#   Public Listing Views
+#----------------------------------------------------------------------#
+
 class PublicContractorListView(ListView):
     """Listing of all public contractors."""
 
@@ -112,13 +178,9 @@ class PublicContractorListView(ListView):
         """Return all contractors that have opted into public listing."""
 
         public_contractors = ContractorProfile.objects.filter(public=True)
-        print "PC: ", public_contractors
         return public_contractors
 
 
-#----------------------------------------------------------------------#
-#   Editor Views
-#----------------------------------------------------------------------#
 class PublicEditorListView(ListView):
     """Listing of all public contractors."""
 
@@ -132,28 +194,67 @@ class PublicEditorListView(ListView):
         print "PE: ", public_editors
         return public_editors
 
+#----------------------------------------------------------------------#
+#   Organization / Contractor Affiliation Views
+#----------------------------------------------------------------------#
 
-# class PublicEditorDetailView(DetailView):
-#     """Display details about a contractor."""
-#
-#     model = User
-#
-#     def contractor_assignments(self):
-#         """Get assignments that are relevant to requesting user."""
-#
-#         self.object = self.get_object()
-#         contractor = self.request.user
-#         active_assignments = self.object.get_active_assignments()
-#         assignments_for_viewer = active_assignments.filter(editor=editor)
-#         return assignments_for_viewer
-#
-#     def contractor_pitches(self):
-#         """Get pitches that are relevant to requesting user."""
-#         self.object = self.get_object()
-#         recipient = self.request.user
-#         active_pitches = self.object.get_active_pitches()
-#         pitches_for_viewer = active_pitches.filter(recipient=recipient)
-#         return pitches_for_viewer
+class AffiliationListView(ListView):
+    """Return all the contractors that an organization has a relationship with."""
+
+    context_object_name = "affiliations"
+    template_name='editorial/affiliation_list.html'
+
+    def get_queryset(self):
+        """Return all the contractors associated with an organization."""
+
+        affiliations = OrganizationContractorAffiliation.objects.filter(organization=self.request.user.organization)
+        return affiliations
+
+
+class AffiliationCreateView(CreateView):
+    """Create a relationship between a contractor and an organization."""
+
+    model = OrganizationContractorAffiliation
+    form_class = OrganizationContractorAffiliationForm
+    template_name='editorial/affiliation_form.html'
+
+    def form_valid(self, form):
+        """Save -- but first connect to organization."""
+
+        self.object = relationship = form.save(commit=False)
+
+        relationship.organization = self.request.user.organization
+
+        relationship.save()
+        form.save_m2m()
+
+        return redirect(self.get_success_url())
+
+
+class AffiliationDetailView(DetailView):
+    """Display the details of an affiliation between an organization and a
+    contractor.
+    """
+
+    model = OrganizationContractorAffiliation
+    template_name='editorial/affiliation_detail.html'
+
+
+class AffiliationUpdateView(UpdateView):
+    """ Edit the record of affiliation between an organization and a
+    contractor.
+    """
+
+    model = OrganizationContractorAffiliation
+    form_class = OrganizationContractorAffiliationForm
+    template_name='editorial/affiliation_form.html'
+
+    def get_success_url(self):
+        """ Record action for activity stream."""
+
+        action.send(self.request.user, verb="edited", action_object=self.object)
+        return super(AffiliationUpdateView, self).get_success_url()
+
 
 #----------------------------------------------------------------------#
 #   Pitch Views
@@ -280,6 +381,13 @@ class CallCreateView(CreateView):
 
     model = Call
     form_class = CallForm
+
+    def get_form_kwargs(self):
+        """Pass current user organization to the form."""
+
+        kw = super(CallCreateView, self).get_form_kwargs()
+        kw.update({'organization': self.request.user.organization})
+        return kw
 
     def form_valid(self, form):
         """Save -- but first save some details."""

@@ -95,17 +95,12 @@ class ContractorProfile(models.Model):
     def __str__(self):
         return self.user.credit_name
 
-    def get_public_contractors(self):
-        """Return queryset of contractor profiles that are pubic."""
-
-
-        #
-
-
-        contractors = ContractorProfile.objects.all()
-        public_contractors = User.objects.fi
-
-
+    # def get_public_contractors(self):
+    #     """Return queryset of contractor profiles that are pubic."""
+    #
+    #
+    #     contractors = ContractorProfile.objects.all()
+    #     public_contractors = User.objects.fi
 
 
     def get_active_assignments(self):
@@ -216,6 +211,9 @@ class OrganizationContractorAffiliation(models.Model):
     @property
     def type(self):
         return "Organization, Contractor Relationship Detail"
+
+    def get_absolute_url(self):
+        return reverse('affiliation_detail', kwargs={'pk': self.id})
 
 
 class Call(models.Model):

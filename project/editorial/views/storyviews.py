@@ -157,7 +157,7 @@ class StoryDetailView(DetailView):
         """Get all story facets"""
 
         self.object = self.get_object()
-        return self.get_story_facets()
+        return self.object.get_story_facets()
 
 
     def story_discussion(self):

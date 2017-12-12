@@ -119,6 +119,7 @@ class TeamUserDashboardTemplateView(TemplateView):
 
         # placeholder of data for now to maintain status quo
         # some rethinking about what goes here tbd
+
         organization = self.request.user.organization
         recent_comments = self.request.user.recent_comments()
         older_comments = self.request.user.inbox_comments()[:4]

@@ -1,0 +1,226 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load bootstrap3 %}
+{% load embed_video_tags %}
+
+{% block head %}
+{{ webform.media }}
+{% endblock %}
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+<!--             BREADCRUMB NAVIGATION                 -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
+{% block breadcrumb %}
+{% with view.affiliation as affiliation %}
+<div>
+    <ol class="breadcrumb icon-angle-right icon-th">
+        <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
+        <li class="fadeIn"><a href="{% url 'public_contractor_list' %}" title="View publicly listed contractors"> Public Contractors </a></li>
+        <li class="fadeIn"><a href="{% url 'affiliation_list' %}" title="View organization's contractor affiliations"> {{ self.request.user.organization }} Contractor Affiliations </a></li>
+
+        {% if affiliation.id %}
+        <li class="fadeIn"> Manage relationship with {{ affiliation.contractor.user.credit_name }} </li>
+        {% else %}
+        <li class="fadeIn"> Create an affiliation</li>
+        {% endif %}
+    </ol>
+</div>
+{% endwith %}
+{% endblock breadcrumb %}
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+<!--                   Main Section                    -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
+{% block content %}
+<!-- ================================================= -->
+                    <!-- CONTENT -->
+<!-- ================================================= -->
+{% with view.affiliation as affiliation %}
+<div class="row">
+  <div class="col-xs-12">
+    {% if affiliation.id %}
+    <h4> Manage relationship with {{ affiliation.contractor.user.credit_name }} </h4>
+    {% else %}
+    <h4> Create an affiliation</h4>
+    {% endif %}
+  </div>
+</div>
+
+<div class="row m-t-20">
+  <form method="POST" class="post-form forms-basic">
+    {% csrf_token %}
+  <!-- Left Column -->
+  <div class="col-xs-12 col-sm-6">
+    <!-- Contractor -->
+    <div class="row">
+      <fieldset class="form-group m-b-20">
+        {% comment %}
+        <div class="col-xs-2 offset-xs-1">
+          <label>{{ form.contractor.label_tag }}</label>
+        </div>
+        {% endcomment %}
+        <div class="col-xs-12">
+          {{ form.contractor }}
+          {% if form.contractor.errors %}
+          <small class="text-muted">{{ form.contractor.errors }}</small>
+          {% endif %}
+        </div>
+      </fieldset>
+    </div>
+    <!-- Editor Notes -->
+    <div class="row">
+      <fieldset class="form-group m-b-20">
+        {% comment %}
+        <div class="col-xs-2 offset-xs-1">
+          <label>{{ form.editor_notes.label_tag }}</label>
+        </div>
+        {% endcomment %}
+        <div class="col-xs-12">
+          {{ form.editor_notes }}
+          {% if form.editor_notes.errors %}
+          <small class="text-muted">{{ form.editor_notes.errors }}</small>
+          {% endif %}
+        </div>
+      </fieldset>
+    </div>
+  <!-- End of Left Column -->
+  </div>
+
+  <!-- Right Column -->
+  <div class="col-xs-12 col-sm-6">
+    <!-- Strengths -->
+    <div class="row">
+      <fieldset class="form-group m-b-20">
+        {% comment %}
+        <div class="col-xs-2 offset-xs-1">
+          <label>{{ form.strengths.label_tag }}</label>
+        </div>
+        {% endcomment %}
+        <div class="col-xs-12">
+          {{ form.strengths }}
+          {% if form.strengths.errors %}
+          <small class="text-muted">{{ form.strengths.errors }}</small>
+          {% endif %}
+        </div>
+      </fieldset>
+    </div>
+    <!-- Conflicts -->
+    <div class="row">
+      <fieldset class="form-group m-b-20">
+        {% comment %}
+        <div class="col-xs-2 offset-xs-1">
+          <label>{{ form.conflicts.label_tag }}</label>
+        </div>
+        {% endcomment %}
+        <div class="col-xs-12">
+          {{ form.conflicts }}
+          {% if form.conflicts.errors %}
+          <small class="text-muted">{{ form.conflicts.errors }}</small>
+          {% endif %}
+        </div>
+      </fieldset>
+    </div>
+    <!-- Rates -->
+    <div class="row">
+      <fieldset class="form-group m-b-20">
+        {% comment %}
+        <div class="col-xs-2 offset-xs-1">
+          <label>{{ form.rates.label_tag }}</label>
+        </div>
+        {% endcomment %}
+        <div class="col-xs-12">
+          {{ form.rates }}
+          {% if form.rates.errors %}
+          <small class="text-muted">{{ form.rates.errors }}</small>
+          {% endif %}
+        </div>
+      </fieldset>
+    </div>
+    <!-- W9 on File -->
+    <div class="row">
+      <fieldset class="form-group m-b-20">
+        <div class="col-xs-2 offset-xs-1">
+          <label>{{ form.w9_on_file.label_tag }}</label>
+        </div>
+        <div class="col-xs-1">
+          {{ form.w9_on_file }}
+          {% if form.w9_on_file.errors %}
+          <small class="text-muted">{{ form.w9_on_file.errors }}</small>
+          {% endif %}
+        </div>
+      </fieldset>
+    </div>
+    <!-- Talent Pool -->
+    <div class="row">
+      <fieldset class="form-group m-b-20">
+        <div class="col-xs-2 offset-xs-1">
+          <label>{{ form.talent_pool.label_tag }}</label>
+        </div>
+        <div class="col-xs-10">
+          {{ form.talent_pool }}
+          {% if form.talent_pool.errors %}
+          <small class="text-muted">{{ form.talent_pool.errors }}</small>
+          {% endif %}
+        </div>
+      </fieldset>
+    </div>
+    <!-- Status -->
+    <div class="row">
+      <fieldset class="form-group m-b-20">
+        <div class="col-xs-2 offset-xs-1">
+          <label>Active: </label>
+        </div>
+        <div class="col-xs-10">
+          {{ form.status }}
+          {% if form.status.errors %}
+          <small class="text-muted">{{ form.status.errors }}</small>
+          {% endif %}
+        </div>
+      </fieldset>
+    </div>
+
+    <!-- Save/Cancel Buttons -->
+    <div class="row">
+      <div class="col-xs-12">
+        {% if affiliation.id %}
+        <a href="{% url 'affiliation_detail' affiliation.id %}" title="Cancel"><button class="save btn btn-danger-100 m-t-40 m-r-10 pull-right">Cancel</button></a>
+        {% else %}
+        <a href="{% url 'affiliation_new' %}" title="Cancel"><button class="save btn btn-danger-100 m-t-40 m-r-10 pull-right">Cancel</button></a>
+        {% endif %}
+        <button type="submit" class="save btn btn-default m-t-40 m-r-10 pull-right">Save</button>
+      </div>
+    </div>
+  </div>
+</form>
+</div>
+{% endwith %}
+<!-- ================================================= -->
+                  <!-- JS SCRIPTS -->
+<!-- ================================================= -->
+
+<script>
+  $(".chosen-select").chosen()
+</script>
+
+{% endblock %}
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+                <!-- MODALS -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
+{% block modals %}
+
+
+
+
+
+{% endblock modals %}

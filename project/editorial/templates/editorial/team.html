@@ -29,18 +29,24 @@
       <h4 class="text-center m-b-20">Your Team<a href="#"><i class="fa fa-plus sameline color-medium" data-toggle="modal" data-target="#addUserModal"></i></a></h4>
         {% for user in organization.user_set.all %}
           {% if user.is_active %}
-            <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3"> <!-- Start of Team Card -->
+            <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4"> <!-- Start of Team Card -->
               <div class="m-b-20">
                 <!-- User Card -->
                 <div class="user-widget-1">
                   <div class="row">
                       <div class="col-xs-12">
-                        <h5 class="text-bold color-white text-center"><a href="{% url 'user_detail' user.id %}">{{ user.credit_name }}</a></h5>
-                        <p class="color-white text-center"> {{ user.email }} </p>
-                          <a class="media-left media-middle"> {% if user.display_photo %}<img class="centered img-rounded neg-m-l-20" width=64 src="{{ user.display_photo.url }}" alt="profile image">{% else %}{% endif %} </a>
+                          <a class="media-left media-middle">
+                            {% if user.display_photo %}
+                            <img class="media-object img-circle h-100 w-100" alt="User profile image" src="{{ user.display_photo.url }}">
+                            {% else %}
+                            <img class="media-object img-circle h-100 w-100" alt="User profile image" src="{% static 'images/nophoto.jpg' %}">
+                            {% endif %}
+                          </a>
                           <div class="media-body">
                               <div class="p-10">
-                                  <h6 class="text-bold color-white m-l-20">{{ user.title }}</h6>
+                                  <h5 class="text-bold color-white"><a href="{% url 'user_detail' user.id %}">{{ user.credit_name }}</a></h5>
+                                  <p class="text-bold color-white">{{ user.title }}</p>
+                                  <p class="color-white f-s-12"> {{ user.email }} </p>
                                   <p class="color-white f-s-12">{{ user.location }} </p>
                                   <p class="color-white f-s-12">{{ user.phone }} </p>
                                   <p class="f-s-12">{% if request.user.id == user.id or request.user.id == user.organization.owner.id %}<a href="{% url 'user_edit' pk=user.id %}" class="default">Edit Profile</a>{% endif %}</p>

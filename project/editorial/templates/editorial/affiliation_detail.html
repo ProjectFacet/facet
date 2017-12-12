@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load bootstrap3 %}
+{% load embed_video_tags %}
+
+{% block head %}
+{{ webform.media }}
+{% endblock %}
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+<!--             BREADCRUMB NAVIGATION                 -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
+{% block breadcrumb %}
+{% with organizationcontractoraffiliation as affiliation %}
+<div>
+    <ol class="breadcrumb icon-angle-right icon-th">
+        <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
+        <li class="fadeIn"><a href="{% url 'public_contractor_list' %}" title="View publicly listed contractors"> Public Contractors </a></li>
+        <li class="fadeIn"><a href="{% url 'affiliation_list' %}" title="View organization's contractor affiliations"> {{ self.request.user.organization }} Contractor Affiliations </a></li>
+        <li class="fadeIn"> {{ affiliation.contractor.user.credit_name }}</li>
+    </ol>
+</div>
+{% endwith %}
+{% endblock breadcrumb %}
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+<!--                   Main Section                    -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
+{% block content %}
+<!-- ================================================= -->
+                    <!-- CONTENT -->
+<!-- ================================================= -->
+{% with organizationcontractoraffiliation as affiliation %}
+<div class="row">
+  <div class="col-xs-12">
+    <h4>Affiliation with {{ affiliation.contractor.user.credit_name }} <a href="{% url 'affiliation_edit' affiliation.id %}" title="Edit this affiliation"><span class="subtle"> <i class="fa fa-pencil subtle" aria-hidden="true"></i></span></a></h4>
+  </div>
+</div>
+
+<div class="row m-t-20">
+  <!-- Left Column -->
+  <div class="col-xs-12 col-sm-6">
+
+    <h5>Editor Notes</h5>
+    {{ affiliation.editor_notes }}
+
+  <!-- End of Left Column -->
+  </div>
+
+  <!-- Right Column -->
+  <div class="col-xs-12 col-sm-6">
+    <!-- Strengths -->
+    <h5>Strengths</h5>
+    {{ affiliation.strengths }}
+    <!-- Conflicts -->
+    <h5>Conflicts</h5>
+    {{ affiliation.conflicts }}
+    <!-- Rates -->
+    <h5>Rates</h5>
+    {{ affiliation.rates }}
+    <!-- W9 on File -->
+    <h5>W9 on File</h5>
+    {{ affiliation.w9_on_file }}
+    <!-- Talent Pool -->
+    <h5>In Talent Pool</h5>
+    {{ affiliation.talent_pool }}
+    <!-- Status -->
+    <h5>Active Status</h5>
+    {{ affiliation.status }}
+  </div>
+</div>
+
+{% endwith %}
+<!-- ================================================= -->
+                  <!-- JS SCRIPTS -->
+<!-- ================================================= -->
+
+<script>
+  $(".chosen-select").chosen()
+</script>
+
+{% endblock %}
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+                <!-- MODALS -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
+{% block modals %}
+
+
+
+
+
+{% endblock modals %}

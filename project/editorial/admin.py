@@ -35,6 +35,7 @@ from models import (
     SimpleVideo,
     Comment,
     Discussion,
+    PrivateMessage,
     FacetTemplate,
 )
 
@@ -84,3 +85,4 @@ admin.site.register(SimpleAudio)
 admin.site.register(SimpleVideo)
 admin.site.register(Comment)
 admin.site.register(Discussion)
+admin.site.register(PrivateMessage)

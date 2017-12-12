@@ -149,8 +149,13 @@ urlpatterns = [
     #----------------------------------------------------------------------#
     url(r'^contractor/new/$', contractorviews.ContractorCreateView.as_view(), name='contractor_new'),
     url(r'^contractor/(?P<pk>[0-9]+)/$', contractorviews.ContractorDetailView.as_view(), name='contractor_detail'),
+    url(r'^contractor/(?P<pk>[0-9]+)/dashboard/$', contractorviews.ContractorDashboardView.as_view(), name='contractor_dashboard'),
     url(r'^contractor/(?P<pk>[0-9]+)/edit/$', contractorviews.ContractorUpdateView.as_view(), name='contractor_edit'),
     url(r'^contractor/list/$', contractorviews.PublicContractorListView.as_view(), name='public_contractor_list'),
+    url(r'^contractor/pool/$', contractorviews.AffiliationListView.as_view(), name='affiliation_list'),
+    url(r'^contractor/pool/add/$', contractorviews.AffiliationCreateView.as_view(), name='affiliation_new'),
+    url(r'^contractor/pool/(?P<pk>[0-9]+)/$', contractorviews.AffiliationDetailView.as_view(), name='affiliation_detail'),
+    url(r'^contractor/pool/(?P<pk>[0-9]+)/edit/$', contractorviews.AffiliationUpdateView.as_view(), name='affiliation_edit'),
     url(r'^editor/list/$', contractorviews.PublicEditorListView.as_view(), name='public_editor_list'),
     url(r'^assignment/new/$', contractorviews.AssignmentCreateView.as_view(), name='assignment_new'),
     url(r'^assignment/(?P<pk>[0-9]+)/$', contractorviews.AssignmentDetailView.as_view(), name='assignment_detail'),
