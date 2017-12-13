@@ -137,32 +137,70 @@ class ContractorDashboardView(DetailView):
 #----------------------------------------------------------------------#
 
 # A profile page for contract editors
-
-class TalentEditorDetailView(DetailView):
+class PublicTalentEditorDetailView(DetailView):
     """Display details about an editor that works with contractors."""
 
     model = User
+    template_name = 'editorial/talenteditor_detail.html'
 
     def assignments(self):
-        """Get assignments that are relevant to requesting user."""
+        """Get assignments from this editor that are relevant to contractor viewing
+        this profile."""
 
         self.object = self.get_object()
         editor = self.object
-        active_assignments = self.object.get_active_assignments()
-        assignments_for_viewer = active_assignments.filter(editor=editor)
+        contractor = self.request.user.contractorprofile
+        active_assignments = editor.assignment_set.filter(complete=False)
+        assignments_for_viewer = active_assignments.filter(contractor=contractor)
         return assignments_for_viewer
 
     def pitches(self):
-        """Get pitches that are relevant to requesting user."""
+        """Get pitches to this editor that are relevant to contractor viewing
+        this profile."""
+
         self.object = self.get_object()
-        recipient = self.request.user
-        active_pitches = self.object.get_active_pitches()
-        pitches_for_viewer = active_pitches.filter(recipient=recipient)
+        editor = self.object
+        contractor = self.request.user.contractorprofile
+        active_pitches = editor.pitch_set.all()
+        pitches_for_viewer = active_pitches.filter(contractor=contractor)
         return pitches_for_viewer
 
+    def calls(self):
+        """Return calls from this editor."""
+
+        self.object = self.get_object()
+        calls = self.object.call_set.all()
+        return calls
 
 
+class PublicTalentEditorDashboardView(DetailView):
+    """A dashboard of relevant content for a contractor."""
 
+    model = User
+    template_name = 'editorial/talenteditor_dashboard.html'
+
+    def assignments(self):
+        """Return all active assignments."""
+
+        return self.object.assignment_set.filter(complete=False)
+
+    def calls(self):
+        """Return all active calls."""
+
+        self.object = self.get_object()
+        return self.object.call_set.all()
+
+    def pitches(self):
+        """Return all active pitches from a contractor."""
+
+        self.object = self.get_object()
+        return self.object.pitch_set.all()
+
+    def communication(self):
+        """ Return recent communication relevant for a talenteditor."""
+
+        contractors = ContractorProfile.objects.all()
+        return PrivateMessage.objects.filter(Q(recipient=self.object)).order_by('date')
 
 #----------------------------------------------------------------------#
 #   Public Listing Views
@@ -181,17 +219,16 @@ class PublicContractorListView(ListView):
         return public_contractors
 
 
-class PublicEditorListView(ListView):
+class PublicTalentEditorListView(ListView):
     """Listing of all public contractors."""
 
     context_object_name = "editors"
-    template_name = "editorial/publiceditor_list.html"
+    template_name = "editorial/publictalenteditor_list.html"
 
     def get_queryset(self):
         """Return all users that are editors or admins that have opted into public listing."""
 
         public_editors = User.objects.filter(Q(Q(user_type='Editor') | Q(user_type='Admin')) & Q(public=True))
-        print "PE: ", public_editors
         return public_editors
 
 #----------------------------------------------------------------------#

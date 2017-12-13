@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load bootstrap3 %}
+{% load embed_video_tags %}
+{% load staticfiles %}
+
+{% block head %}
+{{ webform.media }}
+{% endblock %}
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+<!--             BREADCRUMB NAVIGATION                 -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
+{% block breadcrumb %}
+<div>
+    <ol class="breadcrumb icon-angle-right icon-th">
+        <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
+        <li class="fadeIn"><a href="{% url 'public_editor_list' %}" title="">Talent Editors </a></li>
+        <li class="fadeIn"> {{ user.credit_name }}</li>
+
+    </ol>
+</div>
+{% endblock breadcrumb %}
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+<!--                   Main Section                    -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
+{% block content %}
+<!-- ================================================= -->
+                    <!-- CONTENT -->
+<!-- ================================================= -->
+
+<!-- Row One -->
+<div class="row m-b-40">
+    <div class="col-xs-12 col-sm-12 col-md-2 col-lg-2">
+        <a class="media-left media-middle"> {% if user.display_photo %}<img class="centered h-200 w-200 m-r-40 img-circle" src="{{ user.display_photo.url }}" id="user-profile-photo" alt="profile image">{% else %}{% endif %} </a>
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+        <h4>{{ user.credit_name }}</h4>
+        <p class="f-s-300"> <i class="fa fa-phone color-white m-r-10"></i> <span class="color-white m-r-20"> {{ user.phone }}</span></p>
+        <p class="f-s-300"> <i class="fa fa-globe m-r-10" aria-hidden="true"></i> <span class="color-white m-r-20"> {{ user.location }}</span></p>
+        <p class="f-s-300"> <i class="fa fa-envelope-o color-white m-r-10"></i> <span class="color-white m-r-20">{{ user.email }}</span></p>
+        {% if request.user.id == user.id %}
+        <a href="{% url 'user_edit' user.id %}"><p class="f-s-300"><i class="fa fa-pencil m-r-10" aria-hidden="true"></i> <span class="color-white m-r-20">Edit User Profile</span></p></a>
+        {% endif %}
+    </div>
+    <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
+      <h5> Bio</h5>
+      <p>{{ user.bio}}</p>
+      <h5 class="m-t-20"> {{ user.organization.name }}</h5>
+      <p>{{ user.organization.description}}</p>
+    </div>
+</div>
+
+<!-- Row Two -->
+<div class="row m-t-40">
+  <!-- Contractor Information -->
+  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+
+    {% with view.calls as calls %}
+
+      <h4 class="m-b-20">Open Calls</h4>
+      {% if calls %}
+      <ul class="list-group activities">
+        {% for call in calls %}
+        <li class="list-group-item">
+          <span class="text-xs pull-right">{{ call.creation_date|date:"M d, Y" }}</span>
+            <a href="{% url 'call_detail' call.id %}" title="Go to call">{{ call.text|truncatewords:20 }}</a>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p>It appears this editor does not have any active calls for pitches.</p>
+      {% endif %}
+
+    {% endwith %}
+
+    <!-- End of Contractor Info -->
+  </div>
+
+  <!-- Populated by objects dependent on who the viewer is -->
+  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+    {% with view.assignments as assignments %}
+
+      <h4 class="m-b-20">Active Assignments</h4>
+      {% if assignments %}
+      <ul class="list-group activities">
+        {% for assignment in assignments %}
+        <li class="list-group-item">
+          <span class="text-xs pull-right">{{ assignment.creation_date|date:"M d, Y" }}</span>
+            <a href="{% url 'assignment_detail' assignment.id %}" title="Go to assignment">{{ assignment.text|truncatewords:20 }}</a>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p>It appears you do not have any assignments with this editor yet.</p>
+      {% endif %}
+
+    {% endwith %}
+
+    {% with view.pitches as pitches %}
+      <h4 class="m-t-20 m-b-20">Pitches</h4>
+      {% if pitches %}
+      <ul class="list-group activities">
+        {% for pitch in pitches %}
+        <li class="list-group-item">
+          <span class="text-xs pull-right">{{ pitch.creation_date|date:"M d, Y" }}</span>
+            <a href="{% url 'pitch_detail' pitch.id %}" title="Go to pitch">{{ pitch.text|truncatewords:20 }}</a>
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p>It appears you've not pitched this editor yet.</p>
+      {% endif %}
+    {% endwith %}
+  </div>
+</div>
+
+<!-- ================================================= -->
+                  <!-- JS SCRIPTS -->
+<!-- ================================================= -->
+
+<script>
+  $(".chosen-select").chosen()
+</script>
+
+{% endblock %}
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+                <!-- MODALS -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
+{% block modals %}
+
+
+
+
+
+{% endblock modals %}

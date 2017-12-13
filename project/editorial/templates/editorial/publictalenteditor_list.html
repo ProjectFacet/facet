@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load bootstrap3 %}
+{% load embed_video_tags %}
+{% load staticfiles %}
+
+{% block head %}
+{{ webform.media }}
+{% endblock %}
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+<!--             BREADCRUMB NAVIGATION                 -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
+{% block breadcrumb %}
+<div>
+    <ol class="breadcrumb icon-angle-right icon-th">
+        <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
+        <li class="fadeIn">Talent Editors </li>
+
+    </ol>
+</div>
+{% endblock breadcrumb %}
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+<!--                   Main Section                    -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
+{% block content %}
+<!-- ================================================= -->
+                    <!-- CONTENT -->
+<!-- ================================================= -->
+
+<div class="row">
+  <div class="col-xs-12">
+    <h4>Editors</h4>
+  </div>
+</div>
+
+<div class="row m-t-10">
+  {% for editor in editors %}
+  <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+    <div class="user-widget-1 m-t-20">
+      <div class="row">
+          <div class="col-xs-12">
+              <a class="media-left media-middle">
+                {% if editor.display_photo %}
+                <img class="media-object img-circle h-100 w-100" alt="User profile image" src="{{ editor.display_photo.url }}">
+                {% else %}
+                <img class="media-object img-circle h-100 w-100" alt="User profile image" src="{% static 'images/nophoto.jpg' %}">
+                {% endif %}
+              </a>
+              <div class="media-body">
+                  <div class="p-10">
+                      <h5 class="text-bold color-white">{{ editor.credit_name }}</h5>
+                      <p class="color-white f-s-12"><i class="fa fa-circle" aria-hidden="true"></i> {{ editor.organization.name }} </p>
+                      <p class="color-white f-s-12"><i class="fa fa-map-marker" aria-hidden="true"></i> {{ editor.location }} </p>
+                  </div>
+              </div>
+          </div>
+      </div>
+    </div>
+    <!-- Contact Buttons -->
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="bg-standard p-b-20">
+          <div class="row">
+            <div class="col-xs-4 centered">
+              <a href="{% url 'talent_editor_detail' editor.id %}" title="Go to {{ editor.credit_name }}'s Profile'"><button type="button" class="m-r-5 m-l-5 btn btn-sm btn-white btn-rounded btn-outline sameline">Profile</button></a>
+            </div>
+            <div class="col-xs-4 centered">
+              <button type="button" class="m-r-5 m-l-5 btn btn-sm btn-white btn-rounded btn-outline sameline" data-toggle="modal" data-target="#sendContractorMessage" data-whatever="{{ contractor.user.id }}">Message</button>
+            </div>
+            <div class="col-xs-4 centered">
+              <a href="{% url 'pitch_new' %}" title="Pitch this editor"><button type="button" class="m-r-5 m-l-5 btn btn-sm btn-white btn-rounded btn-outline sameline"><i class="fa fa-plus" aria-hidden="true"></i> Pitch</button></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+
+
+
+<!-- ================================================= -->
+                  <!-- JS SCRIPTS -->
+<!-- ================================================= -->
+
+
+{% endblock %}
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+                <!-- MODALS -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
+{% block modals %}
+
+
+
+{% endblock modals %}
