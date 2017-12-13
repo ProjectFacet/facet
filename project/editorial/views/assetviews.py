@@ -95,8 +95,7 @@ class ImageAssetCreateView(CreateView):
         # record action for activity stream
         action.send(self.request.user, verb="uploaded image", action_object=image, target=facet)
 
-        # FIXME redirect to facet the image was uploaded to.
-        return redirect(self.get_success_url())
+        return HttpResponseRedirect(reverse('facet_edit', args=(facet.id,)))
 
 
 # FIXME Q for J on best practices for how this is handled.
@@ -177,8 +176,7 @@ class DocumentAssetCreateView(CreateView):
         # record action for activity stream
         action.send(self.request.user, verb="uploaded document", action_object=document, target=facet)
 
-        # FIXME redirect to facet the image was uploaded to.
-        return redirect(self.get_success_url())
+        return HttpResponseRedirect(reverse('facet_edit', args=(facet.id,)))
 
 
 # FIXME Q for J on best practices for how this is handled.
@@ -256,8 +254,7 @@ class AudioAssetCreateView(CreateView):
         # record action for activity stream
         action.send(self.request.user, verb="uploaded audio", action_object=audio, target=facet)
 
-        # FIXME redirect to facet the audio was uploaded to.
-        return redirect(self.get_success_url())
+        return HttpResponseRedirect(reverse('facet_edit', args=(facet.id,)))
 
 
 # FIXME Q for J on best practices for how this is handled.
@@ -335,8 +332,7 @@ class VideoAssetCreateView(CreateView):
         # record action for activity stream
         action.send(self.request.user, verb="uploaded video", action_object=video, target=facet)
 
-        # FIXME redirect to facet the video was uploaded to.
-        return redirect(self.get_success_url())
+        return HttpResponseRedirect(reverse('facet_edit', args=(facet.id,)))
 
 
 # FIXME Q for J on best practices for how this is handled.
