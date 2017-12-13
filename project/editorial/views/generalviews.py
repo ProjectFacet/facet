@@ -36,7 +36,7 @@ from editorial.forms import (
     UserNoteForm,
     SeriesNoteForm,
     StoryNoteForm,
-    StoryDownloadForm,)
+    )
 
 from editorial.models import (
     User,

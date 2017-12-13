@@ -88,13 +88,10 @@ class StoryCreateView(CreateView):
         return self.request.user.organization.get_org_networks()
 
     def series(self):
-        # TODO limit to series owned by request user org
-        return Series.objects.all()
+        return Series.objects.filter(organization=self.request.user.organization)
 
     def projects(self):
-        # TODO limit to projects owned by request.user.org or projects that
-        # are collaborative and involve request.user.org
-        return Project.objects.all()
+        return self.request.user.organization.get_org_projects()
 
     def form_valid(self, form):
         """Save -- but first adding owner and organization."""
@@ -185,6 +182,7 @@ class StoryDetailView(DetailView):
         """Get tasks and task form for the story."""
 
         self.object = self.get_object()
+        org = self.request.user.organization
         tasks = self.object.task_set.all()
         # form = TaskForm()
         # return {'tasks': tasks, 'form': form}

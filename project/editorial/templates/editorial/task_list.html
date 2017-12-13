@@ -36,11 +36,6 @@
 
 {% block content %}
 
-
-
-
-
-
 {% if project %}
 <div class="row">
   <div class="col-xs-12">
@@ -156,10 +151,10 @@
 </div>
 {% endif %}
 
-{% if series_tasks %}
+{% if series %}
 <div class="row">
   <div class="col-xs-12">
-    <h5 class="m-b-20"> {{ series.name }} Tasks<span class="pull-right">Add new task to {{series.name}} <i class="fa fa-plus" aria-hidden="true"></i></span></h5>
+    <h5 class="m-b-20"> {{ series.name }} Tasks<span class="pull-right">Add new task to {{series.name}} <a data-toggle="modal" data-target="#addSeriesTask" title="Add Series Task"><i class="fa fa-plus" aria-hidden="true"></i></a></span></h5>
     <progress class="progress-xs progress progress-default" value="{{ progress }}" max="100">{{ progress }}%</progress>
   </div>
 </div>
@@ -265,10 +260,10 @@
 </div>
 {% endif %}
 
-{% if story_tasks %}
+{% if story %}
 <div class="row">
   <div class="col-xs-12">
-    <h5 class="m-b-20"> {{ story.name }} Tasks<span class="pull-right">Add new task to {{story.name}} <i class="fa fa-plus" aria-hidden="true"></i></span></h5>
+    <h5 class="m-b-20"> {{ story.name }} Tasks<span class="pull-right">Add new task to {{story.name}} <a data-toggle="modal" data-target="#addStoryTask" title="Add Story Task"><i class="fa fa-plus" aria-hidden="true"></i></a></span></h5>
     <progress class="progress-xs progress progress-default" value="{{ progress }}" max="100">{{ progress }}%</progress>
   </div>
 </div>
@@ -374,10 +369,10 @@
 </div>
 {% endif %}
 
-{% if event_tasks %}
+{% if event %}
 <div class="row">
   <div class="col-xs-12">
-    <h5 class="m-b-20"> {{ event.name }} Tasks<span class="pull-right">Add new task to {{event.name}} <i class="fa fa-plus" aria-hidden="true"></i></span></h5>
+    <h5 class="m-b-20"> {{ event.name }} Tasks<span class="pull-right">Add new task to {{event.name}} <a data-toggle="modal" data-target="#addEventTask" title="Add Event Task"><i class="fa fa-plus" aria-hidden="true"></i></a></span></h5>
     <progress class="progress-xs progress progress-default" value="{{ progress }}" max="100">{{ progress }}%</progress>
   </div>
 </div>
@@ -500,7 +495,7 @@ $(".chosen-select").chosen()
 {% endblock %}
 
 {% block modals %}
-<!-- Add Task Modal -->
+<!-- Add Project Task -->
 <div class="modal fade" id="addProjectTask" tabindex="-1" role="dialog" aria-labelledby="addProjectTaskModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -589,5 +584,271 @@ $(".chosen-select").chosen()
     $(".chosen-select").chosen()
     </script>
 </div>
+<!-- Add Series Task -->
+<div class="modal fade" id="addSeriesTask" tabindex="-1" role="dialog" aria-labelledby="addSeriesTaskModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h5 class="modal-title" id="addSeriesModalLabel">Add a task for this series</h5>
+            </div>
+            <div class="modal-body">
+              <form action="{% url 'task_new' %}" method="POST" class="post-form">
+              {% csrf_token %}
 
+              <div class="row">
+                <div class="col-xs-12">
+                      <!-- Name -->
+                      <fieldset class="form-group m-b-10">
+                        {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.name.label_tag }}</label>{% endcomment %}
+                        {{ form.name }}
+                        {% if form.name.errors %}
+                          <small class="text-muted">{{ form.name.errors }}</small>
+                        {% endif %}
+                      </fieldset>
+                      <!-- Details -->
+                      <fieldset class="form-group m-b-10">
+                        {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.text.label_tag }}</label>{% endcomment %}
+                        {{ form.text }}
+                        {% if form.text.errors %}
+                          <small class="text-muted">{{ form.text.errors }}</small>
+                        {% endif %}
+                      </fieldset>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-md-6">
+                    <!-- Importance -->
+                    <fieldset class="form-check m-b-10">
+                      <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.important.label_tag }}</label>
+                      {{ form.important }}
+                      {% if form.important.errors %}
+                        <small class="text-muted">{{ form.important.errors }}</small>
+                      {% endif %}
+                    </fieldset>
+                    <!-- Due Date -->
+                    <fieldset class="form-group m-b-10">
+                      <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.due_date.label_tag }}</label>
+                      {{ form.due_date }}
+                      {% if form.due_date.errors %}
+                        <small class="text-muted">{{ form.due_date.errors }}</small>
+                      {% endif %}
+                    </fieldset>
+                </div>
+                <div class="col-xs-12 col-md-6">
+                    <!-- Assigned To -->
+                    <fieldset class="form-group m-b-10">
+                      {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.assigned_to.label_tag }}</label>{% endcomment %}
+                      {{ form.assigned_to }}
+                      {% if form.assigned_to.errors %}
+                        <small class="text-muted">{{ form.assigned_to.errors }}</small>
+                      {% endif %}
+                    </fieldset>
+                    <!-- Status -->
+                    <fieldset class="form-group m-b-10">
+                      <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.status.label_tag }}</label>
+                      {{ form.status }}
+                      {% if form.status.errors %}
+                        <small class="text-muted">{{ form.status.errors }}</small>
+                      {% endif %}
+                    </fieldset>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12">
+                  <input type="hidden" name="series" value="{{ series.pk }}" />
+                  <button type="submit" class="btn btn-default">Add Task</button>
+                </div>
+              </div>
+
+              </form>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+    <script>
+    $(".chosen-select").chosen()
+    </script>
+</div>
+<!-- Add Story Task -->
+<div class="modal fade" id="addStoryTask" tabindex="-1" role="dialog" aria-labelledby="addStoryTaskModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h5 class="modal-title" id="addStoryModalLabel">Add a task for this story</h5>
+            </div>
+            <div class="modal-body">
+              <form action="{% url 'task_new' %}" method="POST" class="post-form">
+              {% csrf_token %}
+
+              <div class="row">
+                <div class="col-xs-12">
+                      <!-- Name -->
+                      <fieldset class="form-group m-b-10">
+                        {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.name.label_tag }}</label>{% endcomment %}
+                        {{ form.name }}
+                        {% if form.name.errors %}
+                          <small class="text-muted">{{ form.name.errors }}</small>
+                        {% endif %}
+                      </fieldset>
+                      <!-- Details -->
+                      <fieldset class="form-group m-b-10">
+                        {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.text.label_tag }}</label>{% endcomment %}
+                        {{ form.text }}
+                        {% if form.text.errors %}
+                          <small class="text-muted">{{ form.text.errors }}</small>
+                        {% endif %}
+                      </fieldset>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-md-6">
+                    <!-- Importance -->
+                    <fieldset class="form-check m-b-10">
+                      <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.important.label_tag }}</label>
+                      {{ form.important }}
+                      {% if form.important.errors %}
+                        <small class="text-muted">{{ form.important.errors }}</small>
+                      {% endif %}
+                    </fieldset>
+                    <!-- Due Date -->
+                    <fieldset class="form-group m-b-10">
+                      <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.due_date.label_tag }}</label>
+                      {{ form.due_date }}
+                      {% if form.due_date.errors %}
+                        <small class="text-muted">{{ form.due_date.errors }}</small>
+                      {% endif %}
+                    </fieldset>
+                </div>
+                <div class="col-xs-12 col-md-6">
+                    <!-- Assigned To -->
+                    <fieldset class="form-group m-b-10">
+                      {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.assigned_to.label_tag }}</label>{% endcomment %}
+                      {{ form.assigned_to }}
+                      {% if form.assigned_to.errors %}
+                        <small class="text-muted">{{ form.assigned_to.errors }}</small>
+                      {% endif %}
+                    </fieldset>
+                    <!-- Status -->
+                    <fieldset class="form-group m-b-10">
+                      <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.status.label_tag }}</label>
+                      {{ form.status }}
+                      {% if form.status.errors %}
+                        <small class="text-muted">{{ form.status.errors }}</small>
+                      {% endif %}
+                    </fieldset>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12">
+                  <input type="hidden" name="story" value="{{ story.pk }}" />
+                  <button type="submit" class="btn btn-default">Add Task</button>
+                </div>
+              </div>
+
+              </form>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+    <script>
+    $(".chosen-select").chosen()
+    </script>
+</div>
+<!-- Add Event Task -->
+<div class="modal fade" id="addEventTask" tabindex="-1" role="dialog" aria-labelledby="addEventTaskModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h5 class="modal-title" id="addEventModalLabel">Add a task for this event</h5>
+            </div>
+            <div class="modal-body">
+              <form action="{% url 'task_new' %}" method="POST" class="post-form">
+              {% csrf_token %}
+
+              <div class="row">
+                <div class="col-xs-12">
+                      <!-- Name -->
+                      <fieldset class="form-group m-b-10">
+                        {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.name.label_tag }}</label>{% endcomment %}
+                        {{ form.name }}
+                        {% if form.name.errors %}
+                          <small class="text-muted">{{ form.name.errors }}</small>
+                        {% endif %}
+                      </fieldset>
+                      <!-- Details -->
+                      <fieldset class="form-group m-b-10">
+                        {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.text.label_tag }}</label>{% endcomment %}
+                        {{ form.text }}
+                        {% if form.text.errors %}
+                          <small class="text-muted">{{ form.text.errors }}</small>
+                        {% endif %}
+                      </fieldset>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-md-6">
+                    <!-- Importance -->
+                    <fieldset class="form-check m-b-10">
+                      <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.important.label_tag }}</label>
+                      {{ form.important }}
+                      {% if form.important.errors %}
+                        <small class="text-muted">{{ form.important.errors }}</small>
+                      {% endif %}
+                    </fieldset>
+                    <!-- Due Date -->
+                    <fieldset class="form-group m-b-10">
+                      <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.due_date.label_tag }}</label>
+                      {{ form.due_date }}
+                      {% if form.due_date.errors %}
+                        <small class="text-muted">{{ form.due_date.errors }}</small>
+                      {% endif %}
+                    </fieldset>
+                </div>
+                <div class="col-xs-12 col-md-6">
+                    <!-- Assigned To -->
+                    <fieldset class="form-group m-b-10">
+                      {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.assigned_to.label_tag }}</label>{% endcomment %}
+                      {{ form.assigned_to }}
+                      {% if form.assigned_to.errors %}
+                        <small class="text-muted">{{ form.assigned_to.errors }}</small>
+                      {% endif %}
+                    </fieldset>
+                    <!-- Status -->
+                    <fieldset class="form-group m-b-10">
+                      <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.status.label_tag }}</label>
+                      {{ form.status }}
+                      {% if form.status.errors %}
+                        <small class="text-muted">{{ form.status.errors }}</small>
+                      {% endif %}
+                    </fieldset>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12">
+                  <input type="hidden" name="event" value="{{ event.pk }}" />
+                  <button type="submit" class="btn btn-default">Add Task</button>
+                </div>
+              </div>
+
+              </form>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+    <script>
+    $(".chosen-select").chosen()
+    </script>
+</div>
 {% endblock modals %}

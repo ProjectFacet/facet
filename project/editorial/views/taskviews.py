@@ -135,8 +135,12 @@ class ProjectTaskTemplateView(TemplateView):
                 inprogress_ct = inprogress_ct + 1
             elif task.status=='Complete':
                 complete_ct = complete_ct + 1
+
         # ratio of complete to total number of tasks
-        progress = 100 * float(complete_ct)/float(count)
+        if complete_ct>0:
+            progress = 100 * float(complete_ct)/float(count)
+        else:
+            progress = 0
         return {
             'project': project,
             'tasks': tasks,
@@ -181,7 +185,10 @@ class SeriesTaskTemplateView(TemplateView):
             elif task.status=='Complete':
                 complete_ct = complete_ct + 1
         # ratio of complete to total number of tasks
-        progress = 100 * float(complete_ct)/float(count)
+        if complete_ct>0:
+            progress = 100 * float(complete_ct)/float(count)
+        else:
+            progress = 0
         return {
             'series': series,
             'tasks': tasks,
@@ -212,7 +219,6 @@ class StoryTaskTemplateView(TemplateView):
         """Return tasks belonging to the story."""
 
         story = get_object_or_404(Story, id=pk)
-        # form = TaskForm()
         tasks = story.task_set.all()
         count = tasks.count()
         identified_ct=0
@@ -226,11 +232,13 @@ class StoryTaskTemplateView(TemplateView):
             elif task.status=='Complete':
                 complete_ct = complete_ct + 1
         # ratio of complete to total number of tasks
-        progress = 100 * float(complete_ct)/float(count)
+        if complete_ct>0:
+            progress = 100 * float(complete_ct)/float(count)
+        else:
+            progress = 0
         return {
             'story': story,
             'tasks': tasks,
-            # 'form': form,
             'progress': progress,
             'identified_ct': identified_ct,
             'inprogress_ct' : inprogress_ct,
@@ -271,7 +279,10 @@ class EventTaskTemplateView(TemplateView):
             elif task.status=='Complete':
                 complete_ct = complete_ct + 1
         # ratio of complete to total number of tasks
-        progress = 100 * float(complete_ct)/float(count)
+        if complete_ct>0:
+            progress = 100 * float(complete_ct)/float(count)
+        else:
+            progress = 0
         return {
             'event': event,
             'tasks': tasks,
