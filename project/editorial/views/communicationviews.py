@@ -25,10 +25,7 @@ from editorial.models import (
     Project,
     Series,
     Story,
-    WebFacet,
-    PrintFacet,
-    AudioFacet,
-    VideoFacet,
+    Facet,
     Comment,
     PrivateMessage,
     Discussion,)
@@ -37,8 +34,6 @@ from editorial.models import (
 #----------------------------------------------------------------------#
 #   Private Message Views
 #----------------------------------------------------------------------#
-
-#TODO: Refactor to reduce repetitiveness/use AJAX for submission
 
 @csrf_exempt
 def private_message_new(request):
@@ -182,13 +177,13 @@ def create_facetcomment(request):
 
 # FIXME: Needs further debugging before replacing above sections
 # def create_webcomment(request):
-#     """ Receive AJAX Post for creating a comment on a webfacet. """
+#     """ Receive AJAX Post for creating a comment on a facet. """
 #
 #     if request.method == 'POST':
 #         comment_text = request.POST.get('text')
 #         story = request.POST.get('story')
-#         webfacet = get_object_or_404(WebFacet, story=story)
-#         discussion = get_object_or_404(Discussion, id=webfacet.discussion.id)
+#         facet = get_object_or_404(Facet, story=story)
+#         discussion = get_object_or_404(Discussion, id=facet.discussion.id)
 #
 #         response_data = {}
 #

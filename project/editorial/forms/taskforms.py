@@ -35,7 +35,7 @@ class TaskForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         org = kwargs.pop("organization")
         super(TaskForm, self).__init__(*args, **kwargs)
-        # TODO make assignment team include org users, partner users and collaborators assigned to content
+        # FIXME make assignment team include org users, partner users and collaborators assigned to content
         self.fields['assigned_to'].queryset = org.get_org_users()
         # limit project, series and stories to those owned by org or part of content and org is collaborator for
         self.fields['project'].queryset = Project.objects.filter(Q(collaborate_with=self) | (Q(owner=self)))

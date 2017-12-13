@@ -487,7 +487,6 @@ class Organization(models.Model):
         from .discussion import Comment
         # WJB XXX: this seems inefficient, we should reduce to discussion fields on orig
         # querysets
-        # FIXME to be revised after facet refactoring
 
         org_facets = Facet.objects.filter(organization=self)
         facet_discussions = [facet.discussion for facet in org_facets]

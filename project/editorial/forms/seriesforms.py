@@ -32,7 +32,7 @@ class SeriesForm(forms.ModelForm):
         org = kwargs.pop("organization")
         super(SeriesForm, self).__init__(*args, **kwargs)
         self.fields['collaborate_with'].queryset = org.get_org_collaborators_vocab()
-        # TODO should be org users, series partner org users and eligible contractors
+        # FIXME should be org users, series partner org users and eligible contractors
         self.fields['team'].queryset = org.get_org_users()
 
     class Meta:

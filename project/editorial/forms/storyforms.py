@@ -39,7 +39,7 @@ class StoryForm(forms.ModelForm):
         super(StoryForm, self).__init__(*args, **kwargs)
         self.fields['share_with'].queryset = org.get_org_networks()
         self.fields['collaborate_with'].queryset = org.get_org_collaborators_vocab()
-        # TODO should be org users, story partner org users and eligible contractors
+        # FIXME should be org users, story partner org users and eligible contractors
         self.fields['team'].queryset = org.get_org_users()
         # limit project and series to those owned by org or part of content and org is collaborator for
         self.fields['project'].queryset = Project.objects.filter(Q(organization=self) | Q(collaborate_with=self))

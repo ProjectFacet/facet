@@ -42,21 +42,9 @@
                     {% for story in comment.discussion.story_set.all %}
                       <a href="{% url 'story_detail' pk=story.id %}"> {{ story.type }} - {{ story.name }}<span class="color-default">  |  {{ comment.date|date:'N j' }} at {{ comment.date|date:'g:i a' }} </span></a>
                     {% endfor %}
-                  {% elif comment.discussion.webfacet_set.all %}
-                    {% for webfacet in comment.discussion.webfacet_set.all %}
-                      <a href="{% url 'story_detail' pk=webfacet.story.id %}#web"> {{ webfacet.type }} - {{ webfacet.title }}<span class="color-default">  |  {{ comment.date|date:'N j' }} at {{ comment.date|date:'g:i a' }} </span></a>
-                    {% endfor %}
-                  {% elif comment.discussion.printfacet_set.all %}
-                    {% for printfacet in comment.discussion.printfacet_set.all %}
-                      <a href="{% url 'story_detail' pk=printfacet.story.id %}#print"> {{ printfacet.type }} - {{ printfacet.title }}<span class="color-default">  |  {{ comment.date|date:'N j' }} at {{ comment.date|date:'g:i a' }} </span></a>
-                    {% endfor %}
-                  {% elif comment.discussion.audiofacet_set.all %}
-                    {% for audiofacet in comment.discussion.audiofacet_set.all %}
-                      <a href="{% url 'story_detail' pk=audiofacet.story.id %}#audio"> {{ audiofacet.type }} - {{ audiofacet.title }}<span class="color-default">  |  {{ comment.date|date:'N j' }} at {{ comment.date|date:'g:i a' }} </span></a>
-                    {% endfor %}
-                  {% elif comment.discussion.videofacet_set.all %}
-                    {% for videofacet in comment.discussion.videofacet_set.all %}
-                      <a href="{% url 'story_detail' pk=videofacet.story.id %}#video"> {{ videofacet.type }} - {{ videofacet.title }}<span class="color-default">  |  {{ comment.date|date:'N j' }} at {{ comment.date|date:'g:i a' }} </span></a>
+                  {% elif comment.discussion.facet_set.all %}
+                    {% for facet in comment.discussion.facet_set.all %}
+                      <a href="{% url 'facet_edit' pk=facet.id %}"> {{ facet.type }} - {{ facet.title }}<span class="color-default">  |  {{ comment.date|date:'N j' }} at {{ comment.date|date:'g:i a' }} </span></a>
                     {% endfor %}
                   {% endif %}
                 </td>

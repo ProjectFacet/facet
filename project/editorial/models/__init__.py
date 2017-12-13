@@ -32,7 +32,7 @@ from .discussion import Discussion, Comment, PrivateMessage
 from .projects import Project
 from .series import Series
 from .story import Story
-from .facets import Facet, FacetTemplate, WebFacet, AudioFacet, VideoFacet, PrintFacet, ContentLicense
+from .facets import Facet, FacetTemplate, ContentLicense
 from .notes import OrganizationNote, ProjectNote, SeriesNote, StoryNote, UserNote, NetworkNote, TaskNote, EventNote
 from .platforms import Platform, PlatformAccount
 from .tasks import Task
@@ -46,7 +46,7 @@ from platforms import Platform, PlatformAccount
 #  SOCIAL POST
 #-----------------------------------------------------------------------#
 
-# FIXME Leaving this commented out for now to think about how to best
+# XXX Leaving this commented out for now to think about how to best
 # relate or make use of Platform and PlatformAccount in the options.
 
 # class SocialPost(models.Model):
@@ -75,7 +75,7 @@ from platforms import Platform, PlatformAccount
 #     )
 #
 #     # a social post can be associated with a project, series, story or an event.
-#     #TODO Add connection to P, Se, St, or E
+#     # Add connection to P, Se, St, or E
 #
-#     #TODO Add Image assets for social posts to Assets section.
+#     # Add Image assets for social posts to Assets section.
 #

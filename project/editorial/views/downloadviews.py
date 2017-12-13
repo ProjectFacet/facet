@@ -24,8 +24,6 @@ from editorial.models import (
     AudioAsset,
 )
 
-#TODO Refactor queries for better use of Django query methods
-
 #----------------------------------------------------------------------#
 #   Download View
 #----------------------------------------------------------------------#
@@ -121,7 +119,7 @@ def create_download(request, pk):
     if facet_sa_id:
         for facet in facet_sa_id:
             facet = get_object_or_404(Facet, id=facet)
-            # Zip up story meta, webfacet content and webfacet images
+            # Zip up story meta, facet content and facet images
             if facet:
                 z.writestr("{name}.txt".format(name=facet.name), facet.get_facet_download())
             for image in facet.image_assets.all():

@@ -49,8 +49,8 @@ urlpatterns = [
     #----------------------------------------------------------------------#
     #   Facet to WordPress URL - On demand pushing
     #----------------------------------------------------------------------#
-    url(r'^facet/json/$', pushcontentviews.webfacet_json, name='webfacet_json'),
-    # url(r'^webfacet/wordpress/$', pushcontentviews.push_webfacet_wp, name='push_webfacet_wp'),
+    url(r'^facet/json/$', pushcontentviews.facet_json, name='facet_json'),
+    # url(r'^facet/wordpress/$', pushcontentviews.push_facet_wp, name='push_facet_wp'),
     #----------------------------------------------------------------------#
     #   Homepage URLS
     #----------------------------------------------------------------------#
@@ -158,7 +158,7 @@ urlpatterns = [
     url(r'^contractor/pool/(?P<pk>[0-9]+)/edit/$', contractorviews.AffiliationUpdateView.as_view(), name='affiliation_edit'),
     url(r'^talenteditor/list/$', contractorviews.PublicTalentEditorListView.as_view(), name='public_editor_list'),
     url(r'^talenteditor/(?P<pk>[0-9]+)/$', contractorviews.PublicTalentEditorDetailView.as_view(), name='talent_editor_detail'),
-    url(r'^talenteditor/(?P<pk>[0-9]+)/dashboard/$', contractorviews.PublicTalentEditorDashboardView.as_view(), name='talent_editor_dashboard'),    
+    url(r'^talenteditor/(?P<pk>[0-9]+)/dashboard/$', contractorviews.PublicTalentEditorDashboardView.as_view(), name='talent_editor_dashboard'),
     url(r'^assignment/new/$', contractorviews.AssignmentCreateView.as_view(), name='assignment_new'),
     url(r'^assignment/(?P<pk>[0-9]+)/$', contractorviews.AssignmentDetailView.as_view(), name='assignment_detail'),
     url(r'^assignment/(?P<pk>[0-9]+)/edit/$', contractorviews.AssignmentUpdateView.as_view(), name='assignment_edit'),

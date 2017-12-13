@@ -88,10 +88,6 @@ class EditorialAppConfig(AppConfig):
 #         registry.register(self.get_model('Network'))
 #         registry.register(self.get_model('Series'))
 #         registry.register(self.get_model('Story'))
-#         registry.register(self.get_model('WebFacet'))
-#         registry.register(self.get_model('PrintFacet'))
-#         registry.register(self.get_model('AudioFacet'))
-#         registry.register(self.get_model('VideoFacet'))
 #         registry.register(self.get_model('ImageAsset'))
 #         registry.register(self.get_model('DocumentAsset'))
 #         registry.register(self.get_model('AudioAsset'))
@@ -107,10 +103,6 @@ class EditorialAppConfig(AppConfig):
         #     "Network",
         #     "Series",
         #     "Story",
-        #     "WebFacet",
-        #     "PrintFacet",
-        #     "AudioFacet",
-        #     "VideoFacet",
         #     "ImageAsset",
         #     "DocumentAsset",
         #     "AudioAsset",

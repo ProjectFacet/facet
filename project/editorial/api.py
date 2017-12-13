@@ -1,6 +1,6 @@
 """Editorial REST API.
 
-REST API for webfacet content.
+REST API for facet content.
 
 This API is to create posts in various CMS."""
 
@@ -10,19 +10,19 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import permissions
 
-from .models import WebFacet, Organization, User
+from .models import Facet, Organization, User
 
 # -------------------------------------------------------------- #
-# WebFacet Endpoint
+# Facet Endpoint
 # -------------------------------------------------------------- #
 
-class WebFacetListSerializer(serializers.HyperlinkedModelSerializer):
-    """Serializer for the main list of organization webfacets."""
+class FacetListSerializer(serializers.HyperlinkedModelSerializer):
+    """Serializer for the main list of organization facets."""
 
     credit = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
     class Meta:
-        model = WebFacet
+        model = Facet
         fields = [
             'id',
             'title',
@@ -31,8 +31,8 @@ class WebFacetListSerializer(serializers.HyperlinkedModelSerializer):
         ]
 
 
-class WebFacetSerializer(serializers.HyperlinkedModelSerializer):
-    """Serializer for WebFacet content."""
+class FacetSerializer(serializers.HyperlinkedModelSerializer):
+    """Serializer for Facet content."""
 
     organization = serializers.PrimaryKeyRelatedField(read_only=True)
     credit = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
@@ -42,12 +42,12 @@ class WebFacetSerializer(serializers.HyperlinkedModelSerializer):
     video_assets = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
     class Meta:
-        model = WebFacet
+        model = Facet
         fields = [
             'id',
-            'title',
+            'headline',
             'excerpt',
-            'wf_content',
+            'content',
             'keywords',
             'organization',
             'credit',
@@ -58,16 +58,16 @@ class WebFacetSerializer(serializers.HyperlinkedModelSerializer):
         ]
 
 
-class WebFacetViewSet(viewsets.ReadOnlyModelViewSet):
-    """WebFacets belonging to a specific organization."""
+class FacetViewSet(viewsets.ReadOnlyModelViewSet):
+    """Facets belonging to a specific organization."""
 
-    queryset = (WebFacet.objects.all())
+    queryset = (Facet.objects.all())
 
-    serializer_class = WebFacetSerializer
+    serializer_class = FacetSerializer
     http_method_names = ['get']
 
     def list(self, request, *args, **kwargs):
-        """List of webfacets."""
+        """List of facets."""
 
         # organization = self.request.query_params.get('organization')
         organization = self.request.user.organization
@@ -77,7 +77,7 @@ class WebFacetViewSet(viewsets.ReadOnlyModelViewSet):
         else:
             filters = {}
 
-        serializer = WebFacetListSerializer(
+        serializer = FacetListSerializer(
             self.get_queryset().filter(**filters),
             many=True,
             context={'request': self.request})
@@ -92,4 +92,4 @@ class WebFacetViewSet(viewsets.ReadOnlyModelViewSet):
 
 router = routers.DefaultRouter()
 
-router.register(r'webfacets', WebFacetViewSet)
+router.register(r'facets', FacetViewSet)

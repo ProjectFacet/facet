@@ -166,8 +166,8 @@ class CommentManager(models.Manager):
 class Comment(models.Model):
     """An individual comment.
 
-    Comments can be made on a seriesplan, storyplan, webfacet,
-    audiofacet, videofacet, or between one or more people privately.
+    Comments can be made on a seriesplan, storyplan, facet,
+    or between one or more people privately.
     """
 
     user = models.ForeignKey(

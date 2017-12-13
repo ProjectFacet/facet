@@ -36,7 +36,7 @@ class EventForm(forms.ModelForm):
         # limit team options to team members from user's org
         self.fields['team'].queryset = org.get_org_users()
         # limit evt_org options to organizations that user org is partnered with or self
-        # TODO add self to evt_organization
+        # FIXME add self.org to evt_organization
         self.fields['evt_organization'].queryset = org.get_org_collaborators_vocab()
         # limit project, series and stories to those owned by org or part of content and org is collaborator for
         self.fields['project'].queryset = Project.objects.filter(Q(collaborate_with=self) | (Q(owner=self)))

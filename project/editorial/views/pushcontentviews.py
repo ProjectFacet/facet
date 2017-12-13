@@ -18,10 +18,6 @@ from editorial.models import (
     Network,
     Series,
     Story,
-    WebFacet,
-    PrintFacet,
-    AudioFacet,
-    VideoFacet,
     ImageAsset,
     DocumentAsset,
     AudioAsset,
@@ -29,36 +25,36 @@ from editorial.models import (
 
 
 #----------------------------------------------------------------------#
-#   WebFacet to WordPress Views
+#   Facet to WordPress Views
 #----------------------------------------------------------------------#
 
 @csrf_exempt
-def webfacet_json(request):
-    """ Take a specific webfacet and create a JSON object for use in a WordPress site."""
+def facet_json(request):
+    """ Take a specific facet and create a JSON object for use in a WordPress site."""
 
     if request.method == 'POST':
-        webfacet_id = request.POST.get('webfacet_id')
+        facet_id = request.POST.get('facet_id')
 
-    webfacet = get_object_or_404(WebFacet, id=webfacet_id)
+    facet = get_object_or_404(Facet, id=facet_id)
 
-    wf_json = {}
-    wf_json["status"] = "pending"
-    wf_json["title"] = webfacet.title
-    wf_json["content"] = webfacet.wf_content
-    wf_json["excerpt"] = webfacet.excerpt
-    wf_json = json.dumps(wf_json)
+    f_json = {}
+    f_json["status"] = "pending"
+    f_json["title"] = facet.title
+    f_json["content"] = facet.content
+    f_json["excerpt"] = facet.excerpt
+    f_json = json.dumps(f_json)
 
     # update push to wordpress status
-    print webfacet.pushed_to_wp
-    webfacet.pushed_to_wp = True
-    webfacet.save()
-    print webfacet.pushed_to_wp
+    print facet.pushed_to_wp
+    facet.pushed_to_wp = True
+    facet.save()
+    print facet.pushed_to_wp
 
-    # return HttpResponse(json.dumps(wf_json), content_type = "application/json")
-    return redirect('story_detail', pk=webfacet.story.pk)
+    # return HttpResponse(json.dumps(f_json), content_type = "application/json")
+    return redirect('story_detail', pk=facet.story.pk)
 
 
-# def push_webfacet_wp(request):
-#     """Push a webfacet JSON object to a WordPress site."""
+# def push_facet_wp(request):
+#     """Push a facet JSON object to a WordPress site."""
 #
-#     print "push webfacet to wp"
+#     print "push facet to wp"

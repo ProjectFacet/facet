@@ -34,7 +34,7 @@ class PrivateMessageForm(forms.ModelForm):
         self.request = kwargs.pop("request")
         super(PrivateMessageForm, self).__init__(*args, **kwargs)
         if self.request.user.organization:
-            # TODO Limit Private Message Recipient list to org team members or network partner team members
+            # FIXME Limit Private Message Recipient list to org team members or network partner team members
             # If the organization manages contractors, allow private messages between contractors and editors
             self.fields['recipient'].queryset = User.get_user_contact_list_vocab(self.request.user)
 

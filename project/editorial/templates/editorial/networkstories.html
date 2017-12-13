@@ -41,42 +41,12 @@
       <tbody>
       {% for story in networkstories %}
 
-        {% if story.webfacetstory.all or story.printfacetstory.all or story.audiofacetstory.all or story.videofacetstory.all %}
-          {% for facet in story.webfacetstory.all %}
+        {% if story.facet_set.all %}
+          {% for facet in story.facet_set.all %}
             <tr>
               <td>{{ facet.story.name }}{% if facet.story.ready_to_share %}<form action="/story/copy/{{ facet.story_id }}/" method="POST" class="sameline">{% csrf_token %}<button class="clear clear-button" type="submit"><i class="fa fa-clone"></i></button></form>{% endif %}</td>
               <td>{{ facet.type}}</td>
               <td><a href="#" data-toggle="tooltip" title="{{ facet.wf_description }}">{{ facet.title }}</a> {% if story.ready_to_share %}<button type="button" class="clear clear-button m-l-10 subtle" data-toggle="modal" data-target="#previewModal" data-modaltitle="{{ facet.title }}" data-modalcontent="{{ facet.wf_content }}"><i class="fa fa-eye"></i></button>{% endif %}</td>
-              <td>{{ facet.owner.credit_name }}</td>
-              <td>{{ facet.organization.name }}</td>
-              <td>{{ facet.story.share_with_date|date:'n/j, g:i a'}}</td>
-            </tr>
-          {% endfor %}
-          {% for facet in story.printfacetstory.all %}
-            <tr>
-              <td>{{ facet.story.name }}</td>
-              <td>{{ facet.type}}</td>
-              <td><a href="#" data-toggle="tooltip" title="{{ facet.pf_description }}">{{ facet.title }}</a> {% if story.ready_to_share %}<button type="button" class="clear clear-button m-l-10 subtle" data-toggle="modal" data-target="#previewModal" data-modaltitle="{{ facet.title }}" data-modalcontent="{{ facet.pf_content }}"><i class="fa fa-eye"></i></button>{% endif %}</td>
-              <td>{{ facet.owner.credit_name }}</td>
-              <td>{{ facet.organization.name }}</td>
-              <td>{{ facet.story.share_with_date|date:'n/j, g:i a'}}</td>
-            </tr>
-          {% endfor %}
-          {% for facet in story.audiofacetstory.all %}
-            <tr>
-              <td>{{ facet.story.name }}</td>
-              <td>{{ facet.type}}</td>
-              <td><a href="#" data-toggle="tooltip" title="{{ facet.af_description }}">{{ facet.title }}</a> {% if story.ready_to_share %}<button type="button" class="clear clear-button m-l-10 subtle" data-toggle="modal" data-target="#previewModal" data-modaltitle="{{ facet.title }}" data-modalcontent="{{ facet.af_content }}"><i class="fa fa-eye"></i></button>{% endif %}</td>
-              <td>{{ facet.owner.credit_name }}</td>
-              <td>{{ facet.organization.name }}</td>
-              <td>{{ facet.story.share_with_date|date:'n/j, g:i a'}}</td>
-            </tr>
-          {% endfor %}
-          {% for facet in story.videofacetstory.all %}
-            <tr>
-              <td>{{ facet.story.name }}</td>
-              <td>{{ facet.type}}</td>
-              <td><a href="#" data-toggle="tooltip" title="{{ facet.vf_description }}">{{ facet.title }}</a> {% if story.ready_to_share %}<button type="button" class="clear clear-button m-l-10 subtle" data-toggle="modal" data-target="#previewModal" data-modaltitle="{{ facet.title }}" data-modalcontent="{{ facet.vf_content }}"><i class="fa fa-eye"></i></button>{% endif %}</td>
               <td>{{ facet.owner.credit_name }}</td>
               <td>{{ facet.organization.name }}</td>
               <td>{{ facet.story.share_with_date|date:'n/j, g:i a'}}</td>
@@ -103,7 +73,7 @@
       <thead>
         <tr>
           <th>Story</th>
-          <th>Facet</th>
+          <th>Facets</th>
           <th>Organization</th>
           <th>Available</th>
         </tr>
@@ -111,14 +81,11 @@
       <tbody>
         {% for story in networkstories %}
 
-          {% if story.webfacetstory.all or story.printfacetstory.all or story.audiofacetstory.all or story.videofacetstory.all %}
+          {% if story.facet_set.all %}
           <tr>
             <td>{{ story.name }}<form action="/story/copy/{{ facet.story_id }}/" method="POST" class="sameline">{% csrf_token %}<button class="clear" type="submit"><i class="fa fa-clone"></i></button></form></td>
             <td>
-              {% if story.webfacetstory.all %}<a href="" title="webfacet"><i class="fa fa-laptop dark"></i></a>{% endif %}
-              {% if story.printfacetstory.all %}<a href="" title="printfacet"><i class="fa fa-newspaper-o dark"></i></a>{% endif %}
-              {% if story.audiofacetstory.all %}<a href="" title="audiofacet"><i class="fa fa-headphones dark"></i></a>{% endif %}
-              {% if story.videofacetstory.all %}<a href="" title="videofacet"><i class="fa fa-video-camera dark"></i></a>{% endif %}
+              {% if story.facet_set.all %}{{ story.facet_set.all.count }}{% endif %}
             </td>
             <td>{{ story.organization.name }}</td>
             <td>{{ story.share_with_date|date:'n/j, g:i a'}}</td>
