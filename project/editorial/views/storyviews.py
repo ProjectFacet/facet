@@ -29,7 +29,7 @@ from editorial.forms import (
     EventForm,
     StoryCommentForm,
     StoryNoteForm,
-    StoryDownloadForm,)
+    )
 
 from editorial.models import (
     Organization,
@@ -228,8 +228,6 @@ class StoryDeleteView(DeleteView):
 
     model = Story
     success_url = reverse_lazy('story_list')
-
-
 
 
 def story_delete(request, pk):

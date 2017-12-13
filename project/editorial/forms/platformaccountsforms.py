@@ -13,7 +13,7 @@ from django.forms import Textarea, TextInput, RadioSelect, Select, NumberInput, 
 from django.contrib.postgres.fields import ArrayField
 from datetimewidget.widgets import DateTimeWidget
 from tinymce.widgets import TinyMCE
-from django.forms.models import modelformset_factory
+from django.forms.models import modelformset_factory, inlineformset_factory
 from django.forms.formsets import BaseFormSet
 # from django.contrib.staticfiles.templatetags.staticfiles import static
 
@@ -36,9 +36,10 @@ class PlatformAccountForm(forms.ModelForm):
     """Form to create social accounts associated with a user."""
 
     def __init__(self, *args, **kwargs):
-        org = kwargs.pop('organization')
-        user = kwargs.pop('user')
-        super(PlatformAccountForm, self).__init__(*args, **kwargs)
+        if kwargs:
+            org = kwargs.pop('organization')
+            user = kwargs.pop('user')
+            super(PlatformAccountForm, self).__init__(*args, **kwargs)
         if org:
             # limit team to org users
             self.fields['team'].queryset = org.get_org_users()
@@ -67,6 +68,7 @@ class PlatformAccountForm(forms.ModelForm):
             'organization': Select(attrs={'class': 'c-select', 'id':'account-organization'}),
             'project': Select(attrs={'class': 'c-select', 'id':'account-project'}),
         }
+
 
 
 class BasePlatformAccountFormSet(BaseFormSet):
@@ -111,7 +113,6 @@ class BasePlatformAccountFormSet(BaseFormSet):
                         'All accounts must have a url.',
                         code='missing_url'
                     )
-
 
 class PlatformAccountFormSet(BasePlatformAccountFormSet):
     """Create a formset."""

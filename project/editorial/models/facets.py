@@ -526,32 +526,36 @@ class Facet(models.Model):
         credits = [ user.credit_name for user in credits]
         credits = ",".join(credits)
 
+        editors = self.editor.all()
+        editors = [ user.credit_name for user in editors]
+        editors = ",".join(editors)
+
         # loop over m2m and get the values as string
         images = self.image_assets.all()
-        images = [image.asset_title for image in images]
+        images = [image.title for image in images]
         images = ",".join(images)
 
         # loop over m2m and get the values as string
         documents = self.document_assets.all()
-        documents = [document.asset_title for document in documents]
+        documents = [document.title for document in documents]
         documents = ",".join(documents)
 
         # loop over m2m and get the values as string
         audiofiles = self.audio_assets.all()
-        audiofiles = [audiofile.asset_title for audiofile in audiofiles]
+        audiofiles = [audiofile.title for audiofile in audiofiles]
         audiofiles = ",".join(audiofiles)
 
         # verify the text area fields have correct encoding
-        title = self.title.encode('utf-8')
+        name = self.name.encode('utf-8')
         description = self.description.encode('utf-8')
         excerpt = self.excerpt.encode('utf-8')
-        share_note = self.share_notes.encode('utf-8')
+        share_note = self.share_note.encode('utf-8')
         content = self.content.encode('utf-8')
 
         facet_download = """
         Facet
         ========
-        {title}
+        {name}
         --------------
         Description: {desc}\n
         Story: {story}\n
@@ -568,19 +572,17 @@ class Facet(models.Model):
         Run Date: {rundate}\n
         Share Note: {sharenote}\n
         Images: {images}\n
-        Captions: {captions}\n
         Documents: {documents}\n
         AudioFiles: {audiofiles}\n
         \n
         Content\n
         -------
         {content}
-        """.format(title=title, desc=description, story=self.story, owner=self.owner,
-        organization=self.organization.name, original=self.original_facet, editor=self.editor,
-        credit=credits, code=self.code, excerpt=excerpt,
+        """.format(name=name, desc=description, story=self.story, owner=self.owner,
+        organization=self.organization.name, original=self.original, editor=editors,
+        credit=credits, code=self.internal_code, excerpt=excerpt,
         keywords=self.keywords, status=self.status, dueedit=self.due_edit, rundate=self.run_date,
-        sharenotes=share_note, images=images, captions=self.captions, documents=documents,
-        audiofiles=audiofiles, content=content)
+        sharenote=share_note, images=images, documents=documents, audiofiles=audiofiles, content=content)
 
         return facet_download
 

@@ -62,8 +62,8 @@ class UserProfileForm(forms.ModelForm):
             'email': TextInput(attrs={'class': 'form-control', 'placeholder': 'Email'}),
             'phone': TextInput(attrs={'class': 'form-control', 'placeholder': 'Phone'}),
             'website': TextInput(attrs={'class': 'form-control', 'placeholder': 'Website'}),
-            'bio': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Professional Bio'}),
-            'expertise': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Expertise'}),
+            'bio': Textarea(attrs={'class': 'form-control', 'rows':5, 'placeholder': 'Professional Bio'}),
+            'expertise': Textarea(attrs={'class': 'form-control', 'rows':5, 'placeholder': 'Expertise'}),
         }
 
 

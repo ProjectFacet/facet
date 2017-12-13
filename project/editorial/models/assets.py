@@ -104,9 +104,8 @@ class BaseAssetMetadata(models.Model):
         attribution = self.attribution.encode('utf-8')
 
         asset_info="""
-        {type}
+        {title}
         =======
-        {title}.jpg
         Description: {description}
         Attribution: {attribution}
         Creation Date: {date}
@@ -115,7 +114,7 @@ class BaseAssetMetadata(models.Model):
         Original: {original}
         Keywords: {keywords}
         """.format(title=title, description=description, attribution=attribution,
-        type=asset_type, date=self.creation_date, owner=self.owner,
+        date=self.creation_date, owner=self.owner,
         organization=self.organization.name, original=self.original,
         keywords=self.keywords)
 

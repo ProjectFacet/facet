@@ -13,6 +13,7 @@ from django.forms import Textarea, TextInput, RadioSelect, Select, NumberInput, 
 from django.contrib.postgres.fields import ArrayField
 from datetimewidget.widgets import DateTimeWidget
 from tinymce.widgets import TinyMCE
+from django.db.models import Q
 # from django.contrib.staticfiles.templatetags.staticfiles import static
 
 
@@ -64,9 +65,11 @@ def get_facet_form_for_template(template_id):
             # limit to org users or users or a collaborating organization (done via model method)
             self.fields['credit'].queryset = self.story.get_story_team_vocab()
             self.fields['editor'].queryset = self.story.get_story_team_vocab()
+            # FIXME if form template doesn't include content_license or produceer, the following causes key errors
+            # self.fields['content_license'].queryset = ContentLicense.objects.filter(Q(organization=self.story.organization) | Q(organization__isnull=True))
             # self.fields['producer'].queryset = self.story.get_story_team_vocab()
             # set empty label
-            self.fields['content_license'].empty_label='Select a license'
+            # self.fields['content_license'].empty_label='Select a license'
             # self.fields['producer'].empty_label='Select a producer'
 
         due_edit = forms.DateTimeField(
@@ -91,12 +94,6 @@ def get_facet_form_for_template(template_id):
                 options={'format': 'YYYY-MM-DD HH:mm'},
                 attrs={'id': 'tapedate_picker'}
             )
-        )
-
-        content_license = forms.ModelChoiceField(
-            queryset=ContentLicense.objects.filter(Q(organization=self) | Q(organization=null)),
-            widget=forms.Select,
-            required=False,
         )
 
         content = forms.CharField(widget=TinyMCE(attrs={'rows':20, 'id': 'content'}))
@@ -137,11 +134,11 @@ def get_facet_form_for_template(template_id):
                 'episode_number': TextInput(attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Episode Number'}),
                 'usage_rights': TextInput(attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Usage Rights'}),
                 'locations': TextInput(attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Filming Locations'}),
-                'custom_one': TextInput(attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Custom One'}),
-                'custom_two': TextInput(attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Custom Two'}),
-                'custom_three': TextInput(attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Custom Three'}),
-                'custom_four': TextInput(attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Custom Four'}),
-                'custom_five': TextInput(attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Custom Five'}),
+                'custom_one': TextInput(attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Custom Info One'}),
+                'custom_two': TextInput(attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Custom Info Two'}),
+                'custom_three': TextInput(attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Custom Info Three'}),
+                'custom_four': TextInput(attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Custom Info Four'}),
+                'custom_five': TextInput(attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Custom Info Five'}),
             }
 
         def get_fields_to_show(self):

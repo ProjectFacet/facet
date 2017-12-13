@@ -246,8 +246,8 @@ img.image-center {
 .task-col {
   background-color: #1c1f26 !important;
   padding-bottom: 10px !important;
-  height: 450px !important;
-  max-height: 450px !important;
+  height: 300px !important;
+  max-height: 300px !important;
   overflow: scroll !important;
 }
 

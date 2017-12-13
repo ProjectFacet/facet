@@ -101,79 +101,30 @@ class StoryForm(forms.ModelForm):
 #        Download Form           #
 # ------------------------------ #
 
-class StoryDownloadForm(forms.Form):
-    """ Select content and assets to download."""
-
-    def __init__(self, *args, **kwargs):
-        self.story = kwargs.pop('story')
-        super(StoryDownloadForm, self).__init__(*args, **kwargs)
-
-        if self.story.webfacetstory.all():
-            webfacet = self.story.webfacetstory.all()[0]
-            self.fields['webfacet_images'].queryset = WebFacet.get_webfacet_images(webfacet)
-        if self.story.printfacetstory.all():
-            printfacet = self.story.printfacetstory.all()[0]
-            self.fields['printfacet_images'].queryset = PrintFacet.get_printfacet_images(printfacet)
-        if self.story.audiofacetstory.all():
-            audiofacet = self.story.audiofacetstory.all()[0]
-            self.fields['audiofacet_images'].queryset = AudioFacet.get_audiofacet_images(audiofacet)
-        if self.story.videofacetstory.all():
-            videofacet = self.story.videofacetstory.all()[0]
-            self.fields['videofacet_images'].queryset = VideoFacet.get_videofacet_images(videofacet)
-
-    select_all = forms.BooleanField(
-        widget=CheckboxInput,
-    )
-
-    webfacet = forms.BooleanField(
-        widget=CheckboxInput,
-    )
-
-    printfacet = forms.BooleanField(
-        widget=CheckboxInput,
-    )
-
-    audiofacet = forms.BooleanField(
-        widget=CheckboxInput,
-    )
-
-    videofacet = forms.BooleanField(
-        widget=CheckboxInput,
-    )
-
-
-    webfacet_sa = forms.BooleanField(
-        widget=CheckboxInput,
-    )
-
-    printfacet_sa = forms.BooleanField(
-        widget=CheckboxInput,
-    )
-
-    audiofacet_sa = forms.BooleanField(
-        widget=CheckboxInput,
-    )
-
-    videofacet_sa = forms.BooleanField(
-        widget=CheckboxInput,
-    )
-
-    webfacet_images = forms.ModelMultipleChoiceField(
-        widget=CheckboxSelectMultiple,
-        queryset = ImageAsset.objects.all()
-    )
-
-    printfacet_images = forms.ModelMultipleChoiceField(
-        widget=CheckboxSelectMultiple,
-        queryset = ImageAsset.objects.all()
-    )
-
-    audiofacet_images = forms.ModelMultipleChoiceField(
-        widget=CheckboxSelectMultiple,
-        queryset = ImageAsset.objects.all()
-    )
-
-    videofacet_images = forms.ModelMultipleChoiceField(
-        widget=CheckboxSelectMultiple,
-        queryset = ImageAsset.objects.all()
-    )
+# class StoryDownloadForm(forms.Form):
+#     """ Select content and assets to download."""
+#
+#     def __init__(self, *args, **kwargs):
+#         story = kwargs.pop('story')
+#         super(StoryDownloadForm, self).__init__(*args, **kwargs)
+#
+#         if story.facet_set.all():
+#             for facet in story.facet_set.all():
+#                 self.fields['facet_images'].queryset = facet.get_facet_images()
+#
+#     select_all = forms.BooleanField(
+#         widget=CheckboxInput,
+#     )
+#
+#     facet = forms.BooleanField(
+#         widget=CheckboxInput,
+#     )
+#
+#     facet_sa = forms.BooleanField(
+#         widget=CheckboxInput,
+#     )
+#
+#     facet_images = forms.ModelMultipleChoiceField(
+#         widget=CheckboxSelectMultiple,
+#         queryset = ImageAsset.objects.all()
+#     )
