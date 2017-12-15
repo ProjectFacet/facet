@@ -177,8 +177,8 @@ class Story(models.Model):
     def copy_story(self):
         """ Create a copy of a story for a partner organization in a network.
 
-        Copied stories keep name, story_description, embargo, embargo, datetime,
-        creation_date, team. All other attributes are cleared or set to False.
+        Copied stories keep all attributes.
+
         Organization is set to the copier's organization and the original_content
         flag is set to false. Triggering a copy also triggers the creation of a
         story copy detail record.
