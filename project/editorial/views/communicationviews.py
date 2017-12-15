@@ -244,8 +244,8 @@ def org_comments(request):
 
 
 # FIXME: Needs further debugging before replacing above sections
-# def create_webcomment(request):
-#     """ Receive AJAX Post for creating a comment on a facet. """
+# def create_comment(request):
+#     """ Receive AJAX Post for creating a comment. """
 #
 #     if request.method == 'POST':
 #         comment_text = request.POST.get('text')

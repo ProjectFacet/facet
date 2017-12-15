@@ -181,7 +181,7 @@ def org_to_network(request, pk):
     return render(request, 'editorial/networkdetail.html', {'form': form})
 
 
-def network_stories(request):
+class NetworkStoryListView(ListView):
     """ Displays a filterable table of stories marked as shared/ready to share by any
     organizations that a user's organization is a part of.
 
@@ -194,19 +194,23 @@ def network_stories(request):
     it once it becomes available.)
     """
 
-    organization = request.user.organization
-    networks = Organization.get_org_networks(organization)
+    context_object_name = 'networkstories'
+    template_name = 'editorial/networkstory_list.html'
 
-    shared_networkstories = []
-    for network in networks:
-        stories = Network.get_network_shared_stories(network)
-        shared_networkstories.extend(stories)
-    shared_networkstories = [story for story in shared_networkstories if story.organization != organization]
-    networkstories = set(shared_networkstories)
+    def get_queryset(self):
+        """Return network stories."""
 
-    return render(request, 'editorial/networkstories.html', {
-        'networkstories': networkstories,
-        })
+        organization = self.request.user.organization
+        networks = Organization.get_org_networks(organization)
+
+        shared_networkstories = []
+        for network in networks:
+            stories = network.get_network_shared_stories()
+            shared_networkstories.extend(stories)
+        shared_networkstories = [story for story in shared_networkstories if story.organization != organization]
+        networkstories = set(shared_networkstories)
+
+        return networkstories
 
 
 def copy_network_story(request, pk):
