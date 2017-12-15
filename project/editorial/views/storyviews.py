@@ -27,7 +27,7 @@ from editorial.forms import (
     VideoAssetForm,
     TaskForm,
     EventForm,
-    StoryCommentForm,
+    CommentForm,
     StoryNoteForm,
     )
 
@@ -163,7 +163,7 @@ class StoryDetailView(DetailView):
         self.object = self.get_object()
         discussion = self.object.discussion
         comments = discussion.comment_set.all()
-        form = StoryCommentForm()
+        form = CommentForm()
         return {'discussion': discussion, 'comments': comments, 'form': form}
 
 

@@ -18,7 +18,7 @@ from actstream import action
 
 from editorial.forms import (
     ProjectForm,
-    ProjectCommentForm,
+    CommentForm,
     ProjectNoteForm,
     TaskForm,)
 
@@ -156,7 +156,7 @@ class ProjectDetailView(DetailView):
         self.object = self.get_object()
         discussion = self.object.discussion
         comments = discussion.comment_set.all()
-        form = ProjectCommentForm()
+        form = CommentForm()
         return {'discussion': discussion, 'comments': comments, 'form': form}
 
 

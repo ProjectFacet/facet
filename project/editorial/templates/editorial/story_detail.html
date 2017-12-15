@@ -138,6 +138,8 @@
                         {{ discussion.form.text.errors }}
                         </div>
                       {% endif %}
+                      <!-- Hidden Inputs -->
+                      <input type="hidden" name="association" value="story" />
                       <input type="hidden" name="story" value="{{ story.pk }}" />
                   </div>
                   <div class="col-md-2 neg-m-l-10">

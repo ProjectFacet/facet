@@ -18,7 +18,7 @@ from actstream import action
 
 from editorial.forms import (
     SeriesForm,
-    SeriesCommentForm,
+    CommentForm,
     SeriesNoteForm,
     TaskForm,
     EventForm,
@@ -122,7 +122,7 @@ class SeriesDetailView(DetailView):
         self.object = self.get_object()
         discussion = self.object.discussion
         comments = discussion.comment_set.all()
-        form = SeriesCommentForm()
+        form = CommentForm()
         return {'discussion': discussion, 'comments': comments, 'form': form}
 
     def series_notes(self):

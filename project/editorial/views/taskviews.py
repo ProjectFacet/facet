@@ -18,6 +18,7 @@ from actstream import action
 
 from editorial.forms import (
     TaskForm,
+    CommentForm,
     )
 
 from editorial.models import (

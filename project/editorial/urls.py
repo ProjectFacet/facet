@@ -111,13 +111,15 @@ urlpatterns = [
     #----------------------------------------------------------------------#
     #   Comment URLS
     #----------------------------------------------------------------------#
-    url(r'^organizationcomment/new$', communicationviews.create_orgcomment, name='create_orgcomment'),
-    url(r'^organization/comments$', communicationviews.org_comments, name='org_comments'),
-    url(r'^networkcomment/new$', communicationviews.create_networkcomment, name='create_networkcomment'),
-    url(r'^projectcomment/new$', communicationviews.create_projectcomment, name='create_projectcomment'),
-    url(r'^seriescomment/new$', communicationviews.create_seriescomment, name='create_seriescomment'),
-    url(r'^storycomment/new$', communicationviews.create_storycomment, name='create_storycomment'),
-    url(r'^facetcomment/new$', communicationviews.create_facetcomment, name='create_facetcomment'),
+    url(r'^organizationcomment/new$', communicationviews.CommentCreateView.as_view(), name='create_orgcomment'),
+    url(r'^networkcomment/new$', communicationviews.CommentCreateView.as_view(), name='create_networkcomment'),
+    url(r'^projectcomment/new$', communicationviews.CommentCreateView.as_view(), name='create_projectcomment'),
+    url(r'^seriescomment/new$', communicationviews.CommentCreateView.as_view(), name='create_seriescomment'),
+    url(r'^storycomment/new$', communicationviews.CommentCreateView.as_view(), name='create_storycomment'),
+    url(r'^facetcomment/new$', communicationviews.CommentCreateView.as_view(), name='create_facetcomment'),
+    url(r'^taskcomment/new$', communicationviews.CommentCreateView.as_view(), name='create_taskcomment'),
+    url(r'^eventcomment/new$', communicationviews.CommentCreateView.as_view(), name='create_eventcomment'),
+    url(r'^assignmentcomment/new$', communicationviews.CommentCreateView.as_view(), name='create_assignmentcomment'),
     #----------------------------------------------------------------------#
     #   Platform URLS
     #----------------------------------------------------------------------#
@@ -133,6 +135,7 @@ urlpatterns = [
     url(r'^organization/(?P<pk>[0-9]+)/notes/$', noteviews.org_notes, name='org_notes'),
     url(r'^organization/(?P<pk>[0-9]+)/note/(?P<note_type>[-\w]+)/content$', noteviews.note_content_html, name='note_content_html'),
     url(r'^organization/note/new/$', noteviews.create_org_note, name='create_org_note'),
+    url(r'^organization/(?P<pk>[0-9]+)/comments$', communicationviews.org_comments, name='org_comments'),
     #----------------------------------------------------------------------#
     #   User URLS
     #----------------------------------------------------------------------#

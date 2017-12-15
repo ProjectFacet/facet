@@ -95,7 +95,10 @@
                     {{ discussion.form.text.errors }}
                     </div>
                   {% endif %}
+                  <!-- Hidden Inputs -->
+                  <input type="hidden" name="association" value="series" />
                   <input type="hidden" name="series" value="{{ series.pk }}" />
+
               </div>
               <div class="col-md-2 neg-m-l-10">
                   <div class="form-group">

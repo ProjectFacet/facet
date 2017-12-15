@@ -74,6 +74,8 @@
                       {{ organizationcommentform.text.errors }}
                       </div>
                     {% endif %}
+                    <!-- Hidden Inputs -->
+                    <input type="hidden" name="association" value="organization" />
                     <input type="hidden" name="organization" value="{{ organization.pk }}" />
                 </div>
                 <div class="col-md-2">

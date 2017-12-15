@@ -52,105 +52,14 @@ class PrivateMessageForm(forms.ModelForm):
         }
 
 
-class OrganizationCommentForm(forms.ModelForm):
-    """ Comment form for organization. """
+class CommentForm(forms.ModelForm):
+    """Generic comment form."""
 
     class Meta:
         model = Comment
         fields = ['text']
         widgets = {
             'text': Textarea(
-                attrs={'id':'organization-comment', 'required': True, 'placeholder': 'Comment', 'class': 'form-control', 'rows':2}
-            ),
-        }
-
-
-class NetworkCommentForm(forms.ModelForm):
-    """ Comment form for a network. """
-
-    class Meta:
-        model = Comment
-        fields = ['text']
-        widgets = {
-            'text': Textarea(
-                attrs={'id':'network-comment', 'required': True, 'placeholder': 'Comment', 'class': 'form-control', 'rows':2}
-            ),
-        }
-
-
-class ProjectCommentForm(forms.ModelForm):
-    """ Project comment form."""
-
-    class Meta:
-        model = Comment
-        fields = ['text']
-        widgets = {
-            'text': Textarea(
-                attrs={'id':'project-comment', 'required': True, 'placeholder': 'Comment', 'class': 'form-control', 'rows':1}
-            ),
-        }
-
-
-class SeriesCommentForm(forms.ModelForm):
-    """ Comment form. """
-
-    class Meta:
-        model = Comment
-        fields = ['text']
-        widgets = {
-            'text': Textarea(
-                attrs={'id':'series-comment', 'required': True, 'placeholder': 'Comment', 'class': 'form-control', 'rows':2}
-            ),
-        }
-
-
-class StoryCommentForm(forms.ModelForm):
-    """ Comment form. """
-
-    class Meta:
-        model = Comment
-        fields = ['text']
-        widgets = {
-            'text': Textarea(
-                attrs={'id':'story-comment', 'required': True, 'placeholder': 'Comment', 'class': 'form-control', 'rows':2}
-            ),
-        }
-
-
-class FacetCommentForm(forms.ModelForm):
-    """ Comment form. """
-
-    class Meta:
-        model = Comment
-        fields = ['text']
-        widgets = {
-            'text': Textarea(
-                attrs={'id':'comment', 'required': True, 'placeholder': 'Comment', 'class': 'form-control', 'rows':2}
-            ),
-        }
-
-
-class TaskCommentForm(forms.ModelForm):
-    """ Comment form. """
-
-    class Meta:
-        model = Comment
-        fields = ['text']
-        widgets = {
-            'text': Textarea(
-                attrs={'id':'comment', 'required': True, 'placeholder': 'Comment', 'class': 'form-control', 'rows':2}
-            ),
-        }
-
-
-class EventCommentForm(forms.ModelForm):
-    """ Comment form. """
-
-    class Meta:
-        model = Comment
-        fields = ['text']
-        widgets = {
-            'text': Textarea(
-                attrs={'id':'comment', 'required': True, 'placeholder': 'Comment', 'class': 'form-control', 'rows':2}
+                attrs={'id':'comment-text', 'required': True, 'placeholder': 'Comment', 'class': 'form-control', 'rows':2}
             ),
         }

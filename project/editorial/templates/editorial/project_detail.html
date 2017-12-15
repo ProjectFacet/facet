@@ -102,7 +102,10 @@
                         {{ discussion.form.text.errors }}
                         </div>
                       {% endif %}
+                      <!-- Hidden Inputs -->
+                      <input type="hidden" name="association" value="project" />
                       <input type="hidden" name="project" value="{{ project.pk }}" />
+
                       <span class="input-group-btn">
                         <button class="btn btn-default btn-sm" type="submit" name="projectcommentform"><i class="fa fa-paper-plane"></i></button>
                       </span>

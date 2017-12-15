@@ -20,8 +20,8 @@ from django.core.urlresolvers import reverse
 
 
 from editorial.forms import (
+    CommentForm,
     OrganizationForm,
-    OrganizationCommentForm,
     OrganizationNoteForm,)
 
 from editorial.models import (
@@ -83,7 +83,7 @@ class OrganizationDetailView(generic.DetailView):
         organizationnotes = OrganizationNote.objects.filter(organization=self.object)[:5]
         users = Organization.get_org_users(self.object)
         organizationcomments = Comment.objects.filter(discussion=self.object.discussion).order_by('-date')
-        organizationcommentform = OrganizationCommentForm()
+        organizationcommentform = CommentForm()
 
         context.update({
                 'organizationnoteform': organizationnoteform,

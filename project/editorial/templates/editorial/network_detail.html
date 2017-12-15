@@ -70,6 +70,8 @@
                       {{ commentform.text.errors }}
                       </div>
                     {% endif %}
+                    <!-- Hidden Inputs -->
+                    <input type="hidden" name="association" value="network" />
                     <input type="hidden" name="network" value="{{ network.pk }}" />
                 </div>
                 <div class="col-md-2">

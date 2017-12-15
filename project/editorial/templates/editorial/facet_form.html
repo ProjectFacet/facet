@@ -514,7 +514,9 @@
                         {{ discussion.form.text.errors }}
                         </div>
                       {% endif %}
-                      <input type="hidden" name="project" value="{{ project.pk }}" />
+                      <!-- Hidden Inputs -->
+                      <input type="hidden" name="association" value="facet" />
+                      <input type="hidden" name="facet" value="{{ facet.pk }}" />
                       <span class="input-group-btn">
                         <button id="facetcommentbutton" class="btn btn-default btn-lg" type="submit" name="facetcommentform"><i class="fa fa-paper-plane"></i></button>
                       </span>

@@ -21,7 +21,7 @@ from editorial.forms import (
     NetworkForm,
     AddToNetworkForm,
     InviteToNetworkForm,
-    NetworkCommentForm,
+    CommentForm,
     NetworkNoteForm,)
 
 from editorial.models import (
@@ -113,7 +113,7 @@ class NetworkDetailView(DetailView):
         notes = self.object.networknote_network.all()
         noteform = NetworkNoteForm()
         comments = self.object.discussion.comment_set.all()
-        commentform = NetworkCommentForm()
+        commentform = CommentForm()
         networkinvitationform = InviteToNetworkForm()
 
         context.update({

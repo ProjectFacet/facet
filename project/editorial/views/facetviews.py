@@ -8,7 +8,7 @@ from ..forms import (
     FacetTemplateForm,
     get_facet_form_for_template,
     FacetPreCreateForm,
-    FacetCommentForm,
+    CommentForm,
     ImageAssetForm,
     DocumentAssetForm,
     AudioAssetForm,
@@ -121,7 +121,7 @@ class FacetUpdateView(UpdateView):
         self.object = self.get_object()
         discussion = self.object.discussion
         comments = discussion.comment_set.all()
-        form = FacetCommentForm()
+        form = CommentForm()
         return {'discussion': discussion, 'comments': comments, 'form': form}
 
     def facet_image_assets(self):
