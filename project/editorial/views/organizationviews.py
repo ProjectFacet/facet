@@ -50,7 +50,10 @@ class OrganizationCreateView(generic.CreateView):
 
     def get_success_url(self):
 
+        # set the user org to the newly created org
         self.request.user.organization = self.object
+        # set the user type to admin
+        self.request.user.user_type = 'Admin'
         self.request.user.save()
         return reverse('org_detail', kwargs={'pk': self.object.pk})
 

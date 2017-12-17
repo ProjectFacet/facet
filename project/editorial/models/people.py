@@ -748,3 +748,65 @@ class Network(models.Model):
     @property
     def type(self):
         return "Network"
+
+
+
+
+# class AccountSubscriptionManager(models.Manager):
+#     """Custom manager for Subcription."""
+#
+#     def create_subscription(self, user, subscription_type, collaborations, contractors, standard):
+#         """Method for quick creation of subscription."""
+#
+#         subscription = self.create(
+#                         user=user,
+#                         subscription_type=subscription_type,
+#                         collaborations=collaborations,
+#                         contractors=contractors,
+#                         standard=standard)
+#
+#
+# @python_2_unicode_compatible
+# class AccountSubscription(models.Model):
+#     """Details of a contractor or org admin organization subscription."""
+#
+#     user = models.ForeignKey(
+#         User,
+#         help_text='For Contractor account, that user profile, for Organization, the owner.',
+#     )
+#
+#     CONTRACTOR = 'Contractor'
+#     ORGANIZATION = 'Organization'
+#     SUBSCRIPTION_TYPE_CHOICES = (
+#         (CONTRACTOR, 'Contractor'),
+#         (ORGANIZATION, 'Organization'),
+#     )
+#
+#     subscription_type = models.CharField(
+#         max_length=25,
+#         choices=SUBSCRIPTION_TYPE_CHOICES,
+#         help_text='Type of subscription',
+#     )
+#
+#     # Organization functionality
+#     collaborations = models.BooleanField(
+#         default=False,
+#         help_text='If an organization is using the account for base features of editorial workflow, project management and collaboration.',
+#     )
+#
+#     contractors = models.BooleanField(
+#         default=False,
+#         help_text='If an organization is using the account to manage contractors.',
+#     )
+#
+#     # Contractor functionality
+#     standard = models.BooleanField(
+#         default=False,
+#         help_text='Basic use by a contractor',
+#     )
+#
+#     objects = AccountSubscriptionManager()
+#
+#
+#     def __str__(self):
+#         return "Subcription:{subscription_type}".format(subscription_type=self.subscription_type)

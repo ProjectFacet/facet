@@ -32,3 +32,10 @@ class AccountSelectionView(TemplateView):
     """
 
     template_name = 'editorial/account_selection.html'
+
+
+# class AccountManagementUpdateView(UpdateView):
+#     """ View for editing account subscription details."""
+#
+#     model = AccountSubscription
+#     form_class = AccountSubscriptionForm

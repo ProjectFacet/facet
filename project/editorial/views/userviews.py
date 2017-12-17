@@ -77,7 +77,6 @@ class UserDetailView(DetailView):
         self.object = self.get_object()
         return self.object.get_user_content()
 
-
     def assets(self):
         """Get all assets associated with a user."""
 
