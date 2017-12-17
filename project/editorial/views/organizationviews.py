@@ -22,11 +22,13 @@ from django.core.urlresolvers import reverse
 from editorial.forms import (
     CommentForm,
     OrganizationForm,
-    OrganizationNoteForm,)
+    OrganizationNoteForm,
+    OrganizationSubscriptionForm,)
 
 from editorial.models import (
     User,
     Organization,
+    OrganizationSubscription,
     ImageAsset,
     Comment,
     Discussion,
@@ -54,6 +56,14 @@ class OrganizationCreateView(generic.CreateView):
         self.request.user.organization = self.object
         # set the user type to admin
         self.request.user.user_type = 'Admin'
+        # create an organization subscription for the admin user and organization.
+        subscription = OrganizationSubscription.objects.create_subscription(
+                                                        organization=self.object,
+                                                        collaborations=True,
+                                                        contractors=False,
+                                                        )
+        subscription.save()
+
         self.request.user.save()
         return reverse('org_detail', kwargs={'pk': self.object.pk})
 

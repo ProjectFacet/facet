@@ -5,6 +5,8 @@ from models import (
     User,
     ContractorProfile,
     OrganizationContractorAffiliation,
+    OrganizationSubscription,
+    ContractorSubscription,
     Organization,
     OrganizationNote,
     Network,
@@ -56,6 +58,8 @@ class FacetTemplateAdmin(admin.ModelAdmin):
 admin.site.register(ContractorProfile)
 admin.site.register(OrganizationContractorAffiliation)
 admin.site.register(Organization)
+admin.site.register(OrganizationSubscription)
+admin.site.register(ContractorSubscription)
 admin.site.register(OrganizationNote)
 admin.site.register(Network)
 admin.site.register(Platform)

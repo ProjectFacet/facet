@@ -15,8 +15,8 @@ from tinymce.widgets import TinyMCE
 # from django.contrib.staticfiles.templatetags.staticfiles import static
 
 
-from .peopleforms import AddUserForm, UserProfileForm, OrganizationForm, NetworkForm, AddToNetworkForm, InviteToNetworkForm
-from .contractorforms import ContractorProfileForm, OrganizationContractorAffiliationForm, CallForm, PitchForm, AssignmentForm
+from .peopleforms import AddUserForm, UserProfileForm, OrganizationForm, OrganizationSubscriptionForm, NetworkForm, AddToNetworkForm, InviteToNetworkForm
+from .contractorforms import ContractorProfileForm, ContractorSubscriptionForm, OrganizationContractorAffiliationForm, CallForm, PitchForm, AssignmentForm
 from .projectforms import ProjectForm
 from .seriesforms import SeriesForm
 from .storyforms import StoryForm

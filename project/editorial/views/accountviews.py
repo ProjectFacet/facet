@@ -18,8 +18,14 @@ from editorial.models import (
     User,
     Organization,
     ContractorProfile,
+    OrganizationSubscription,
+    ContractorSubscription,
     )
 
+from editorial.forms import (
+    OrganizationSubscriptionForm,
+    ContractorSubscriptionForm,
+)
 
 #----------------------------------------------------------------------#
 #   Account Selection View
@@ -34,8 +40,15 @@ class AccountSelectionView(TemplateView):
     template_name = 'editorial/account_selection.html'
 
 
-# class AccountManagementUpdateView(UpdateView):
-#     """ View for editing account subscription details."""
-#
-#     model = AccountSubscription
-#     form_class = AccountSubscriptionForm
+class OrganizationSubscriptionUpdateView(UpdateView):
+    """ View for editing organization subscription details."""
+
+    model = OrganizationSubscription
+    form_class = OrganizationSubscriptionForm
+
+
+class ContractorSubscriptionUpdateView(UpdateView):
+    """ View for editing contractor subscription details."""
+
+    model = ContractorSubscription
+    form_class = ContractorSubscriptionForm

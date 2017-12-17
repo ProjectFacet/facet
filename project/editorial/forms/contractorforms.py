@@ -25,6 +25,7 @@ from editorial.models import (
     User,
     Organization,
     ContractorProfile,
+    ContractorSubscription,
     OrganizationContractorAffiliation,
     Story,
     Facet,
@@ -98,6 +99,14 @@ class OrganizationContractorAffiliationForm(forms.ModelForm):
             'conflicts': TextInput(attrs={'class': 'form-control', 'placeholder': 'Conflicts'}),
             'editor_notes': Textarea(attrs={'class': 'form-control', 'rows': 12, 'placeholder': 'Editor Notes'}),
         }
+
+
+class ContractorSubscriptionForm(forms.ModelForm):
+    """ Form to edit a contractor subscription."""
+
+    class Meta:
+        model = ContractorSubscription
+        fields = ['standard']
 
 
 class CallForm(forms.ModelForm):

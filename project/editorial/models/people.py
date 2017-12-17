@@ -750,63 +750,45 @@ class Network(models.Model):
         return "Network"
 
 
+class OrganizationSubscriptionManager(models.Manager):
+    """Custom manager for Subscription."""
+
+    def create_subscription(self, organization, subscription_type, collaborations, contractors):
+        """Method for quick creation of subscription."""
+
+        subscription = self.create(
+                        organization,
+                        collaborations=collaborations,
+                        contractors=contractors,
+                        )
+
+        return subscription
 
 
-# class AccountSubscriptionManager(models.Manager):
-#     """Custom manager for Subcription."""
-#
-#     def create_subscription(self, user, subscription_type, collaborations, contractors, standard):
-#         """Method for quick creation of subscription."""
-#
-#         subscription = self.create(
-#                         user=user,
-#                         subscription_type=subscription_type,
-#                         collaborations=collaborations,
-#                         contractors=contractors,
-#                         standard=standard)
-#
-#
-# @python_2_unicode_compatible
-# class AccountSubscription(models.Model):
-#     """Details of a contractor or org admin organization subscription."""
-#
-#     user = models.ForeignKey(
-#         User,
-#         help_text='For Contractor account, that user profile, for Organization, the owner.',
-#     )
-#
-#     CONTRACTOR = 'Contractor'
-#     ORGANIZATION = 'Organization'
-#     SUBSCRIPTION_TYPE_CHOICES = (
-#         (CONTRACTOR, 'Contractor'),
-#         (ORGANIZATION, 'Organization'),
-#     )
-#
-#     subscription_type = models.CharField(
-#         max_length=25,
-#         choices=SUBSCRIPTION_TYPE_CHOICES,
-#         help_text='Type of subscription',
-#     )
-#
-#     # Organization functionality
-#     collaborations = models.BooleanField(
-#         default=False,
-#         help_text='If an organization is using the account for base features of editorial workflow, project management and collaboration.',
-#     )
-#
-#     contractors = models.BooleanField(
-#         default=False,
-#         help_text='If an organization is using the account to manage contractors.',
-#     )
-#
-#     # Contractor functionality
-#     standard = models.BooleanField(
-#         default=False,
-#         help_text='Basic use by a contractor',
-#     )
-#
-#     objects = AccountSubscriptionManager()
-#
-#
-#     def __str__(self):
-#         return "Subcription:{subscription_type}".format(subscription_type=self.subscription_type)
+@python_2_unicode_compatible
+class OrganizationSubscription(models.Model):
+    """Details of an organization subscription."""
+
+    # if subscription is for an org account, associate with that org
+    organization = models.ForeignKey(
+        Organization,
+        help_text='Organization associated with this subscription if Org subscription type.',
+        on_delete=models.CASCADE,
+    )
+
+    # Organization functionality
+    collaborations = models.BooleanField(
+        default=True,
+        help_text='If an organization is using the account for base features of editorial workflow, project management and collaboration.',
+    )
+
+    contractors = models.BooleanField(
+        default=False,
+        help_text='If an organization is using the account to manage contractors.',
+    )
+
+    objects = OrganizationSubscriptionManager()
+
+
+    def __str__(self):
+        return "Organization Subscription - {organization}".format(organization=self.organization.name)

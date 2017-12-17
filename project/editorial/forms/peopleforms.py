@@ -22,6 +22,7 @@ from editorial.models import (
     Network,
     Platform,
     PlatformAccount,
+    OrganizationSubscription,
 )
 
 
@@ -82,6 +83,19 @@ class OrganizationForm(forms.ModelForm):
             'location': TextInput(attrs={'class': 'form-control', 'placeholder': 'Organization Location'}),
             'org_description': Textarea(attrs={'class': 'form-control', 'placeholder': 'Organization Description'}),
             }
+
+
+# ------------------------------ #
+#      Account Forms        #
+# ------------------------------ #
+
+class OrganizationSubscriptionForm(forms.ModelForm):
+    """ Form to edit an organization subscription."""
+
+    class Meta:
+        model = OrganizationSubscription
+        fields = ['collaborations', 'contractors',]
+
 
 # ------------------------------ #
 #         Network Forms          #

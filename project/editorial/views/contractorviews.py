@@ -22,10 +22,12 @@ from editorial.forms import (
     SimpleDocumentForm,
     SimpleAudioForm,
     SimpleVideoForm,
-    PrivateMessageForm
+    PrivateMessageForm,
+    ContractorSubscriptionForm,
     )
 
 from editorial.models import (
+    ContractorSubscription,
     User,
     ContractorProfile,
     Organization,
@@ -61,6 +63,15 @@ class ContractorCreateView(CreateView):
         self.object = contractor = form.save(commit=False)
 
         contractor.user = self.request.user
+
+        # create a contractor account subscription for this user.
+        subscription = ContractorSubscription.objects.create_subscription(
+                                                        user=self.request.user,
+                                                        standard=True,
+                                                        )
+        print "SUBSCRIPTION: ", subscription
+
+        subscription.save()
 
         contractor.save()
         form.save_m2m()
