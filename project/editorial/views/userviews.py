@@ -92,20 +92,16 @@ class UserDetailView(DetailView):
         return {'notes': notes, 'form': form,}
 
 
-# FIXME user updates not saving
 class UserUpdateView(UpdateView):
     """Update a user."""
 
-    print "here"
     model = User
     form_class = UserProfileForm
 
     def get_success_url(self):
         """Record action for activity stream."""
 
-        print "saved things"
         action.send(self.request.user, verb="edited", action_object=self.object)
-        print "recorded action"
         return super(UserUpdateView, self).get_success_url()
 
 

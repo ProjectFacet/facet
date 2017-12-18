@@ -51,13 +51,12 @@ class UserProfileForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'username', 'credit_name', 'title', 'phone', 'email', 'bio', 'location',
+        fields = ['first_name', 'last_name', 'credit_name', 'title', 'phone', 'email', 'bio', 'location',
                  'expertise', 'website', 'photo', 'public',]
         widgets = {
             'first_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'First Name'}),
             'last_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Last Name'}),
             'credit_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Credit Name'}),
-            'username': TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}),
             'title': TextInput(attrs={'class': 'form-control', 'placeholder': 'Title'}),
             'location': TextInput(attrs={'class': 'form-control', 'placeholder': 'Location'}),
             'email': TextInput(attrs={'class': 'form-control', 'placeholder': 'Email'}),

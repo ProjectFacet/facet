@@ -60,153 +60,157 @@
   </div>
 </div>
 
-<form class="form-basic post-form" method="POST" enctype="multipart/form-data">{% csrf_token %}
-  <!-- Row One -->
-  <div class="row">
-      <!-- Left Column -->
-      <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+<div class="row">
 
-        <div class="form-row">
-          <!-- User First Name -->
-          <div class="form-group col-xs-12 col-md-6">
-            <label>{{ form.first_name.label_tag }}</label>
-            {{ form.first_name }}
-            {% if form.first_name.errors %}
-            <small class="text-muted">{{ form.first_name.errors }}</small>
-            {% endif %}
+    <form class="form-basic post-form" method="POST" enctype="multipart/form-data">{% csrf_token %}
+
+      <!-- Row One -->
+      <div class="row">
+          <!-- Left Column -->
+          <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8">
+
+            <div class="form-row">
+              <!-- User First Name -->
+              <div class="form-group col-xs-12 col-md-6">
+                <label>{{ form.first_name.label_tag }}</label>
+                {{ form.first_name }}
+                {% if form.first_name.errors %}
+                <small class="text-muted">{{ form.first_name.errors }}</small>
+                {% endif %}
+              </div>
+              <!-- User Last Name -->
+              <div class="form-group col-xs-12 col-md-6">
+                <label>{{ form.last_name.label_tag }}</label>
+                {{ form.last_name }}
+                {% if form.last_name.errors %}
+                <small class="text-muted">{{ form.last_name.errors }}</small>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="form-row">
+              <!-- Credit Name -->
+              <div class="form-group col-xs-12 col-md-6">
+                <label>Byline: </label>
+                {{ form.credit_name }}
+                {% if form.credit_name.errors %}
+                <small class="text-muted">{{ form.credit_name.errors }}</small>
+                {% endif %}
+              </div>
+              <!-- User Title -->
+              <div class="form-group col-xs-12 col-md-6">
+                <label>Title: </label>
+                {{ form.title }}
+                {% if form.title.errors %}
+                <small class="text-muted">{{ form.title.errors }}</small>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="form-row">
+              <!-- User Email -->
+              <div class="form-group col-xs-12 col-md-6">
+                <label>Email: </label>
+                {{ form.email }}
+                {% if form.email.errors %}
+                <small class="text-muted">{{ form.email.errors }}</small>
+                {% endif %}
+              </div>
+              <!-- User Phone -->
+              <div class="form-group col-xs-12 col-md-6">
+                <label>Phone: </label>
+                {{ form.phone }}
+                {% if form.phone.errors %}
+                <small class="text-muted">{{ form.phone.errors }}</small>
+                {% endif %}
+              </div>
+            </div>
+
+            <div class="form-row">
+              <!-- User Location -->
+              <div class="form-group col-xs-12 col-md-6">
+                <label>{{ form.location.label_tag }}</label>
+                {{ form.location }}
+                {% if form.location.errors %}
+                <small class="text-muted">{{ form.location.errors }}</small>
+                {% endif %}
+              </div>
+              <!-- User Website -->
+              <div class="form-group col-xs-12 col-md-6">
+                <label>{{ form.website.label_tag }}</label>
+                {{ form.website }}
+                {% if form.website.errors %}
+                <small class="text-muted">{{ form.website.errors }}</small>
+                {% endif %}
+              </div>
+            </div>
+
           </div>
-          <!-- User Last Name -->
-          <div class="form-group col-xs-12 col-md-6">
-          <label>{{ form.last_name.label_tag }}</label>
-            {{ form.last_name }}
-            {% if form.last_name.errors %}
-            <small class="text-muted">{{ form.last_name.errors }}</small>
+          <!-- Right Column -->
+          <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+              <!-- User Bio -->
+              <div class="form-group">
+                <label>{{ form.bio.label_tag }}</label>
+                {{ form.bio }}
+                {% if form.bio.errors %}
+                <small class="text-muted">{{ form.bio.errors }}</small>
+                {% endif %}
+              </div>
+
+              <!-- User Expertise -->
+              <div class="form-group">
+                <label>{{ form.expertise.label_tag }}</label>
+                {{ form.expertise }}
+                {% if form.bio.errors %}
+                <small class="text-muted">{{ form.expertise.errors }}</small>
+                {% endif %}
+              </div>
+          </div> <!-- End of Right Column -->
+      </div><!-- End of Row -->
+
+      <!-- Row Two -->
+      <div class="row m-t-20">
+        <!-- Left Column -->
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+          <!-- User Profile Photo -->
+          <div class="form-group custom-form m-t-20">
+            <a href="#" data-toggle="tooltip" title="{{ form.photo.help_text }}"><span class="field-label">{{ form.photo.label_tag }}</span></a>
+            {{ form.photo }}
+            {% if form.photo.errors %}
+              <div class="alert alert-warning" role="alert">
+              {{ form.photo.errors }}
+              </div>
             {% endif %}
           </div>
         </div>
-
-        <div class="form-row">
-          <!-- Credit Name -->
-          <div class="form-group col-xs-12 col-md-6">
-          <label>Byline: </label>
-            {{ form.credit_name }}
-            {% if form.credit_name.errors %}
-            <small class="text-muted">{{ form.credit_name.errors }}</small>
-            {% endif %}
-          </div>
-          <!-- User Title -->
-          <div class="form-group col-xs-12 col-md-6">
-            <label>Title: </label>
-            {{ form.title }}
-            {% if form.title.errors %}
-            <small class="text-muted">{{ form.title.errors }}</small>
-            {% endif %}
-          </div>
-        </div>
-
-        <div class="form-row">
-          <!-- User Email -->
-          <div class="form-group col-xs-12 col-md-6">
-            <label>Email: </label>
-            {{ form.email }}
-            {% if form.email.errors %}
-            <small class="text-muted">{{ form.email.errors }}</small>
-            {% endif %}
-          </div>
-          <!-- User Phone -->
-          <div class="form-group col-xs-12 col-md-6">
-            <label>{{ form.phone.label_tag }}</label>
-            {{ form.phone }}
-            {% if form.phone.errors %}
-            <small class="text-muted">{{ form.phone.errors }}</small>
-            {% endif %}
-          </div>
-        </div>
-
-        <div class="form-row">
-          <!-- User Location -->
-          <div class="form-group col-xs-12 col-md-6">
-          <label>{{ form.location.label_tag }}</label>
-            {{ form.location }}
-            {% if form.location.errors %}
-            <small class="text-muted">{{ form.location.errors }}</small>
-            {% endif %}
-          </div>
-          <!-- User Website -->
-          <div class="form-group col-xs-12 col-md-6">
-            <label>{{ form.website.label_tag }}</label>
-            {{ form.website }}
-            {% if form.website.errors %}
-            <small class="text-muted">{{ form.website.errors }}</small>
-            {% endif %}
-          </div>
-        </div>
-
-
-      </div>
-      <!-- Right Column -->
-      <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-
-        <!-- User Bio -->
-        <fieldset class="form-group m-b-20">
-          <label>{{ form.bio.label_tag }}</label>
-          {{ form.bio }}
-          {% if form.bio.errors %}
-          <small class="text-muted">{{ form.bio.errors }}</small>
+        <!-- Middle Column -->
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+          <!-- Is User Public? -->
+          {% if request.user.user_type == "Admin" or request.user.user_type == "Editor" %}
+            <p>Would you like to be listed publicly and viewable to freelance contractors?</p>
+            <fieldset class="form-group m-b-20">
+              <div class="col-xs-2">
+                <label>{{ form.public.label_tag }}</label>
+              </div>
+              <div class="col-xs-10">
+                {{ form.public }}
+                {% if form.public.errors %}
+                <small class="text-muted">{{ form.public.errors }}</small>
+                {% endif %}
+              </div>
+            </fieldset>
           {% endif %}
-        </fieldset>
-        <!-- User Expertise -->
-        <fieldset class="form-group m-b-20">
-            <label>{{ form.expertise.label_tag }}</label>
-            {{ form.expertise }}
-            {% if form.bio.errors %}
-            <small class="text-muted">{{ form.expertise.errors }}</small>
-            {% endif %}
-        </fieldset>
-
-      </div> <!-- End of Right Column -->
-  </div><!-- End of Row -->
-  <!-- Row Two -->
-  <div class="row m-t-20">
-    <!-- Left Column -->
-    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-      <!-- User Profile Photo -->
-      <div class="form-group custom-form m-t-20">
-        <a href="#" data-toggle="tooltip" title="{{ form.photo.help_text }}"><span class="field-label">{{ form.photo.label_tag }}</span></a>
-        {{ form.photo }}
-        {% if form.photo.errors %}
-          <div class="alert alert-warning" role="alert">
-          {{ form.photo.errors }}
-          </div>
-        {% endif %}
+        </div>
+        <!-- Right Column -->
+        <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+          <a href="{% url 'user_detail' user.id %}"><button class="btn btn-danger-100 pull-right m-r-10">Cancel</button></a>
+          <button id="edit-button" class="btn btn-default pull-right m-r-10" type="submit">Save</button>
+        </div>
       </div>
-    </div>
-    <!-- Middle Column -->
-    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-      <!-- Is User Public? -->
-      {% if request.user.user_type == "Admin" or request.user.user_type == "Editor" %}
-        <p>Would you like to be listed publicly and viewable to freelance contractors?</p>
-        <fieldset class="form-group m-b-20">
-          <div class="col-xs-2">
-            <label>{{ form.public.label_tag }}</label>
-          </div>
-          <div class="col-xs-10">
-            {{ form.public }}
-            {% if form.public.errors %}
-            <small class="text-muted">{{ form.public.errors }}</small>
-            {% endif %}
-          </div>
-        </fieldset>
-      {% endif %}
-    </div>
-    <!-- Right Column -->
-    <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-      <a href="{% url 'user_detail' user.id %}"><button type="submit" class="btn btn-danger-100 pull-right m-r-10">Cancel</button></a>
-      <button id="edit-button" class="btn btn-default pull-right m-r-10" type="submit">{% trans "Save" %}</button>
-    </div>
-  </div>
-</form>
 
+    </form>
+
+</div>
 
 {% comment %}
 <div class="row">
