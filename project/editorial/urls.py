@@ -214,6 +214,7 @@ urlpatterns = [
     url(r'^story/(?P<story>[0-9]+)/facet/edit/(?P<pk>\d+)/$', facetviews.FacetUpdateView.as_view(), name="facet_edit"),
     url(r'^facet/template/create/$', facetviews.FacetTemplateCreateView.as_view(), name="facet_template_create"),
     url(r'^facet/template/(?P<pk>\d+)/edit$', facetviews.FacetTemplateUpdateView.as_view(), name="facet_template_edit"),
+    url(r'^story/(?P<story>[0-9]+)/facet/delete/(?P<pk>\d+)/$', facetviews.FacetDeleteView.as_view(), name="facet_delete"),
     #----------------------------------------------------------------------#
     #   Task URLS
     #----------------------------------------------------------------------#

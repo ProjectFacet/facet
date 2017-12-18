@@ -1,7 +1,9 @@
-from django.views.generic import CreateView, FormView, UpdateView, DetailView, ListView
+from django.views.generic import CreateView, FormView, UpdateView, DetailView, ListView, \
+    DeleteView
 from django.shortcuts import redirect
 from django.core.urlresolvers import reverse
 from actstream import action
+from editorial.models import Story
 
 from ..models import Facet, FacetTemplate
 from ..forms import (
@@ -161,4 +163,24 @@ class FacetUpdateView(UpdateView):
         return {'videos': videos, 'org_videos': org_videos, 'uploadform': uploadform}
 
 
-# TODO DeleteView
+# class FacetDeleteView(DeleteView, FormMessagesMixin):
+class FacetDeleteView(DeleteView):
+    """View for handling deletion of a facet.
+
+    In this project, we expect deletion to be done via a JS pop-up UI; we don't expect to
+    actually use the "do you want to delete this?" Django-generated page. However, this is
+    available if useful.
+    """
+
+    # FIXME: this would be a great place to use braces' messages; usage commented out for now
+
+    model = Facet
+    template_name = "editorial/facet_delete.html"
+
+    # form_valid_message = "Deleted."
+    # form_invalid_message = "Please check form."
+
+    def get_success_url(self):
+        """Post-deletion, return to the story URL."""
+
+        return Story.objects.get(pk=self.kwargs['story']).get_absolute_url()

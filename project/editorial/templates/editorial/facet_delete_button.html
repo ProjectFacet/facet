@@ -1,0 +1,5 @@
+<form method="POST"
+      action="{% url 'facet_delete' story=self.story %}"
+      onsubmit="return confirm('Do you want to delete this facet?')">
+  <input type="submit" class="btn btn-danger" value="Delete">
+</form>
