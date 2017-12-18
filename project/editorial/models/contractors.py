@@ -67,7 +67,7 @@ class ContractorProfile(models.Model):
 
     # contractors will appear in public search results for contractors accepting work
     public = models.BooleanField(
-        default=False,
+        default=True,
         help_text='Is the contractor publicly listed?',
     )
 

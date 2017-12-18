@@ -190,6 +190,16 @@
                 </div>
               {% endif %}
             </div>
+            <!-- Is Public -->
+            <div class="form-group custom-form">
+              <span class="field-label">{{ form.public.label_tag }}</span>
+              {{ form.public }}
+              {% if form.public.errors %}
+                <div class="alert alert-warning" role="alert">
+                {{ form.public.errors }}
+                </div>
+              {% endif %}
+            </div>
 
             {% if contractor.id %}
             <a href="{% url 'contractor_detail' contractorprofile.id %}"><button type="submit" class="btn btn-danger-100 pull-right m-r-10">Cancel</button></a>

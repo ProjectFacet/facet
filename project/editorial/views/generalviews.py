@@ -12,6 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime, timedelta, time
 import json
 from django.template.loader import render_to_string
+from django.db.models import Q
 
 # All imports are included for use in test view
 
@@ -43,6 +44,9 @@ from editorial.models import (
     Story,
     Task,
     Event,
+    Call,
+    Pitch,
+    Assignment,
     Facet,
     SeriesNote,
     StoryNote,
@@ -98,7 +102,7 @@ class TestTemplateView(TemplateView):
 #   Dashboard View
 #----------------------------------------------------------------------#
 
-class TeamUserDashboardTemplateView(TemplateView):
+class DashboardTemplateView(TemplateView):
     """ Returns user's unique dashboard.
 
     Displays new comments since last_login from any discussions including user.
@@ -109,7 +113,7 @@ class TeamUserDashboardTemplateView(TemplateView):
     Ex: Oliver Q. added "Dhark Indicted" to Story: "Star City Organized Crime Leader Arrested"
     """
 
-    template_name = 'editorial/teamuser_dashboard.html'
+    template_name = 'editorial/dashboard.html'
 
     def get_context_data(self):
         """Return all the assorted items associated with a team user dashboard."""
@@ -117,40 +121,52 @@ class TeamUserDashboardTemplateView(TemplateView):
         # placeholder of data for now to maintain status quo
         # some rethinking about what goes here tbd
 
-        organization = self.request.user.organization
-        recent_comments = self.request.user.recent_comments()
-        older_comments = self.request.user.inbox_comments()[:4]
+        if self.request.user.organization:
+            organization = self.request.user.organization
+            recent_comments = self.request.user.recent_comments()
+            older_comments = self.request.user.inbox_comments()[:4]
 
-        all_comments = organization.get_org_comments()
-        networks = organization.get_org_networks()
-        running_today = organization.get_org_stories_running_today()
-        edit_today = organization.get_org_stories_due_for_edit_today()
+            all_comments = organization.get_org_comments()
+            networks = organization.get_org_networks()
+            running_today = organization.get_org_stories_running_today()
+            edit_today = organization.get_org_stories_due_for_edit_today()
 
-        shared_networkstories = organization.get_org_network_content()
-        shared_networkstories = [story for story in shared_networkstories if story.organization != organization]
-        networkstories = set(shared_networkstories)
-        # query for any new content created since last_login
-        new_stories = Story.objects.filter(creation_date__gte = self.request.user.last_login)[:8]
-        # if no new stories, display 10 most recent stories
-        old_stories = Story.objects.filter(organization = self.request.user.organization)[:10]
+            shared_networkstories = organization.get_org_network_content()
+            shared_networkstories = [story for story in shared_networkstories if story.organization != organization]
+            networkstories = set(shared_networkstories)
+            # query for any new content created since last_login
+            new_stories = Story.objects.filter(creation_date__gte = self.request.user.last_login)[:8]
+            # if no new stories, display 10 most recent stories
+            old_stories = Story.objects.filter(organization = self.request.user.organization)[:10]
 
-        copied_shared_stories = StoryCopyDetail.objects.filter(original_org=self.request.user.organization)
+            copied_shared_stories = StoryCopyDetail.objects.filter(original_org=self.request.user.organization)
 
-        return {
-            'networks': networks,
-            'recent_comments': recent_comments,
-            'older_comments': older_comments,
-            'all_comments': all_comments,
-            'new_stories': new_stories,
-            'old_stories': old_stories,
-            'running_today': running_today,
-            'edit_today': edit_today,
-            'shared_networkstories': shared_networkstories,
-            'copied_shared_stories': copied_shared_stories,
-            'networkstories': networkstories,
-            # 'shared_networkstory_facets': shared_networkstory_facets,
-        }
-
+            return {
+                'networks': networks,
+                'recent_comments': recent_comments,
+                'older_comments': older_comments,
+                'all_comments': all_comments,
+                'new_stories': new_stories,
+                'old_stories': old_stories,
+                'running_today': running_today,
+                'edit_today': edit_today,
+                'shared_networkstories': shared_networkstories,
+                'copied_shared_stories': copied_shared_stories,
+                'networkstories': networkstories,
+                # 'shared_networkstory_facets': shared_networkstory_facets,
+            }
+        elif self.request.user.contractorprofile:
+            contractor = self.request.user.contractorprofile
+            assignments = contractor.get_active_assignments()
+            calls = Call.objects.filter(Q(is_active=True)| Q(status="Publised")).order_by('-creation_date')
+            pitches = contractor.get_active_pitches()
+            communication = PrivateMessage.objects.filter(recipient=self.request.user).order_by('date')
+            return {
+                'assignments': assignments,
+                'calls': calls,
+                'pitches': pitches,
+                'communication': communication,
+            }
 
 #----------------------------------------------------------------------#
 #   Team Views

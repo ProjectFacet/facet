@@ -20,6 +20,9 @@
 <!-- ====================================== -->
 
 {% block content %}
+
+  {% if user.organization %}
+
     <!-- Row One -->
     <div class="row m-b-40">
         <!-- ========================== -->
@@ -305,7 +308,6 @@
         </div> <!-- End of Right Column -->
 
     </div> <!-- End of Row One -->
-
     <!-- Row Two -->
     {% if networks %}
     <div class="row m-b-40 f-s-12">
@@ -343,7 +345,6 @@
           {% endif %}
         </div>
     </div><!-- End of Row Two Partnerships-->
-
     {% else %}
     <div class="row m-b-40">
         <h4 class="m-l-10 m-b-20"> Partnerships</h4>
@@ -380,10 +381,15 @@
           {% endif %}
         </div>
     </div><!-- End of Row Two No Partnerships -->
-
     {% endif %}
 
-    {% endblock content %}
+  {% elif user.contractorprofile %}
+
+  {% include "editorial/contractor_dashboard.html" %}
+
+  {% endif %}
+
+{% endblock content %}
 
     <!-- ================================================= -->
                       <!-- MODALS -->

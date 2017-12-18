@@ -53,6 +53,7 @@ class ContractorProfileForm(forms.ModelForm):
             'portfolio_link1',
             'portfolio_link2',
             'portfolio_link3',
+            'public',
         ]
         widgets = {
             'address': Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Address'}),
