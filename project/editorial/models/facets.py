@@ -106,8 +106,8 @@ COMMON_FIELDS = {
     "due_edit",
     "run_date",
     "keywords",
-    "template",
-    "story",
+    # "template",
+    # "story",
 }
 
 class Facet(models.Model):

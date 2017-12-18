@@ -61,19 +61,30 @@ def get_facet_form_for_template(template_id):
         """Form for a facet. Dynamically selects fields based on template."""
 
         def __init__(self, *args, **kwargs):
+            story = kwargs.pop('story', None)
+            user = kwargs.pop('user', None)
+            template = kwargs.pop('template', None)
+            organization = kwargs.pop('organization', None)
+
             super(FacetForm, self).__init__(*args, **kwargs)
 
-            # import pdb; pdb.set_trace()
-            if self.instance.story_id:
-                story = self.instance.story
-            else:
-                story = Story.objects.get(pk=kwargs['initial']['story'])
+            if story:
+                self.instance.story = story
+            if template:
+                self.instance.template = template
+            if user:
+                self.instance.owner = user
+            if organization:
+                self.instance.organization = organization
 
             # limit to org users or users or a collaborating organization (done via model method)
-            self.fields['credit'].queryset = story.get_story_team_vocab()
-            self.fields['editor'].queryset = story.get_story_team_vocab()
+
+            self.fields['credit'].queryset = self.instance.story.get_story_team_vocab()
+            self.fields['editor'].queryset = self.instance.story.get_story_team_vocab()
+
             # FIXME if form template doesn't include content_license or produceer, the following causes key errors
-            # self.fields['content_license'].queryset = ContentLicense.objects.filter(Q(organization=self.story.organization) | Q(organization__isnull=True))
+            if 'content_license' in self.fields:
+                self.fields['content_license'].queryset = ContentLicense.objects.filter(Q(organization=self.instance.story.organization) | Q(organization__isnull=True))
             # self.fields['producer'].queryset = self.story.get_story_team_vocab()
             # set empty label
             # self.fields['content_license'].empty_label='Select a license'
@@ -107,7 +118,7 @@ def get_facet_form_for_template(template_id):
 
         class Meta:
             model = Facet
-            fields = list(COMMON_FIELDS) + extra_fields + ['story', 'organization', 'owner', 'template']
+            fields = list(COMMON_FIELDS) + extra_fields
 
             widgets = {
                 'name': TextInput(attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Label'}),

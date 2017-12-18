@@ -14,19 +14,23 @@
 <!-- ================================================= -->
 <!-- ================================================= -->
 
+
 {% block breadcrumb %}
+
 <div>
     <ol class="breadcrumb icon-angle-right icon-th">
         <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
         <li class="fadeIn"> Content </li>
         <li class="fadeIn"><a href="{% url 'story_list' %}" title="View Story List"> Stories </a></li>
         {% if facet %}
-        <li class="fadeIn"><a href="{% url 'story_detail' facet.story.id %}" title="Go to Story"> {{ facet.story.name }} </li>
-        <li class="fadeIn"><a href="{% url 'facet_edit' facet.id %}" title="You are Here"> {{ facet.name }} </li>
+        <li class="fadeIn"><a href="{% url 'story_detail' facet.story_id %}" title="Go to Story"> {{ facet.story.name }} </li>
+        <li class="fadeIn"><a href="{% url 'facet_edit' pk=facet.id story=facet.story_id %}" title="You are Here"> {{ facet.name }} </li>
           {% else %}
+        <li class="fadeIn"><a href="{% url 'story_detail' form.instance.story_id %}" title="Go to Story"> {{ form.instance.story.name }} </li>
           {% endif %}
     </ol>
 </div>
+
 {% endblock breadcrumb %}
 
 <!-- ================================================= -->
@@ -72,11 +76,6 @@
 
         <form method="POST" class="post-form">
             {% csrf_token %}
-            <input type="text" name="story" value="{{ form.initial.story }}">
-            <input type="text" name="template" value="{{ form.initial.template }}">
-
-            <input type="text" name="owner" value="{{ form.initial.user }}">
-            <input type="text" name="organization" value="{{ form.initial.organization }}">
 
             <div class="row">
 

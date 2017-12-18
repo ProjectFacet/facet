@@ -63,24 +63,27 @@ class FacetCreateView(CreateView):
     model = Facet
 
     def get_form_class(self):
-        """Get dynamic form based on this template."""
+        """Get dynamic form, based on this template."""
 
         return get_facet_form_for_template(self.kwargs['template_id'])
+
+    def get_form_kwargs(self):
+        """Pass some initial things to scaffold form."""
+
+        kwargs = super(FacetCreateView, self).get_form_kwargs()
+        kwargs['template'] = FacetTemplate.objects.get(pk=self.kwargs['template_id'])
+        kwargs['story'] = Story.objects.get(pk=self.kwargs['story'])
+        kwargs['user'] = self.request.user
+        kwargs['organization'] = self.request.user.organization
+        return kwargs
 
     def get_initial(self):
         """Initial data for form:
 
-        - template-id (from URL)
         - name (optionally, from request data)
-        - story
         """
 
-        return {'template': self.kwargs['template_id'],
-                'name': self.request.GET.get('name', ''),
-                'story': self.kwargs['story'],
-                'user': self.request.user.id,
-                'organization': self.request.user.organization_id,
-                }
+        return {'name': self.request.GET.get('name', '')}
 
 
 class FacetPreCreateView(FormView):
