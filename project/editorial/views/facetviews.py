@@ -77,7 +77,10 @@ class FacetCreateView(CreateView):
 
         return {'template': self.kwargs['template_id'],
                 'name': self.request.GET.get('name', ''),
-                'story': self.kwargs['story']}
+                'story': self.kwargs['story'],
+                'user': self.request.user.id,
+                'organization': self.request.user.organization_id,
+                }
 
 
 class FacetPreCreateView(FormView):
@@ -107,15 +110,15 @@ class FacetUpdateView(UpdateView):
 
         return get_facet_form_for_template(self.object.template_id)
 
-    def get_form_kwargs(self):
-        """Pass current story to the form."""
-
-        self.object = self.get_object()
-        facet = self.object
-        kw = super(FacetUpdateView, self).get_form_kwargs()
-        kw.update({'story': facet.story})
-
-        return kw
+    # def get_form_kwargs(self):
+    #     """Pass current story to the form."""
+    #
+    #     # self.object = self.get_object()
+    #     # facet = self.object
+    #     kw = super(FacetUpdateView, self).get_form_kwargs()
+    #     # kw.update({'story': facet.story})
+    #
+    #     return kw
 
     def facet_discussion(self):
         """Get discussion, comments and comment form for the facet."""

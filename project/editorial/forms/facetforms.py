@@ -21,6 +21,7 @@ from editorial.models import (
     Facet,
     FacetTemplate,
     ContentLicense,
+    Story,
 )
 
 from editorial.models.facets import COMMON_FIELDS
@@ -60,11 +61,17 @@ def get_facet_form_for_template(template_id):
         """Form for a facet. Dynamically selects fields based on template."""
 
         def __init__(self, *args, **kwargs):
-            self.story = kwargs.pop("story")
             super(FacetForm, self).__init__(*args, **kwargs)
+
+            # import pdb; pdb.set_trace()
+            if self.instance.story_id:
+                story = self.instance.story
+            else:
+                story = Story.objects.get(pk=kwargs['initial']['story'])
+
             # limit to org users or users or a collaborating organization (done via model method)
-            self.fields['credit'].queryset = self.story.get_story_team_vocab()
-            self.fields['editor'].queryset = self.story.get_story_team_vocab()
+            self.fields['credit'].queryset = story.get_story_team_vocab()
+            self.fields['editor'].queryset = story.get_story_team_vocab()
             # FIXME if form template doesn't include content_license or produceer, the following causes key errors
             # self.fields['content_license'].queryset = ContentLicense.objects.filter(Q(organization=self.story.organization) | Q(organization__isnull=True))
             # self.fields['producer'].queryset = self.story.get_story_team_vocab()
@@ -100,7 +107,7 @@ def get_facet_form_for_template(template_id):
 
         class Meta:
             model = Facet
-            fields = list(COMMON_FIELDS) + extra_fields
+            fields = list(COMMON_FIELDS) + extra_fields + ['story', 'organization', 'owner', 'template']
 
             widgets = {
                 'name': TextInput(attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Label'}),

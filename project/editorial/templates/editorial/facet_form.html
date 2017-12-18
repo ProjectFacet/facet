@@ -20,8 +20,11 @@
         <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
         <li class="fadeIn"> Content </li>
         <li class="fadeIn"><a href="{% url 'story_list' %}" title="View Story List"> Stories </a></li>
+        {% if facet %}
         <li class="fadeIn"><a href="{% url 'story_detail' facet.story.id %}" title="Go to Story"> {{ facet.story.name }} </li>
         <li class="fadeIn"><a href="{% url 'facet_edit' facet.id %}" title="You are Here"> {{ facet.name }} </li>
+          {% else %}
+          {% endif %}
     </ol>
 </div>
 {% endblock breadcrumb %}
@@ -41,17 +44,19 @@
 <div class="row">
   <div class="col-xs-12">
     <div class="bs-nav-tabs nav-tabs-default m-b-40" id="facettabs">
+      {% comment %}
       <ul class="nav nav-tabs nav-animated-border-from-left nav-tabs-sticky text-center">
         <li class="nav-item"><a href="{% url 'story_detail' facet.story.id %}"><p class="f-r-14 f-w-300 m-b-0">Story Detail </p></a></li>
         <li class="nav-item"><p class="f-r-14 f-w-400 m-b-0 m-l-20 m-r-10"> | </p></li>
         {% for facet in facet.story.facet_set.all %}
         {% if facet.id|stringformat:"s" in request.path %}
-        <li class="nav-item"><a href="{% url 'facet_edit' facet.id %}" class="nav-link active"><p class="f-r-10 f-w-300 m-b-0"> {{ facet.name }} </p></a></li>
+        <li class="nav-item"><a href="{% url 'facet_edit' pk=facet.id story=facet.story %}" class="nav-link active"><p class="f-r-10 f-w-300 m-b-0"> {{ facet.name }} </p></a></li>
         {% else %}
-        <li class="nav-item"><a href="{% url 'facet_edit' facet.id %}" class="nav-link"><p class="f-r-10 f-w-300 m-b-0"> {{ facet.name }} </p></a></li>
+        <li class="nav-item"><a href="{% url 'facet_edit' pk=facet.id story=facet.story %}" class="nav-link"><p class="f-r-10 f-w-300 m-b-0"> {{ facet.name }} </p></a></li>
         {% endif %}
         {% endfor %}
         <li class="nav-item"><a href="{% url 'facet_precreate' story=self.id %}"><p class="f-r-12 f-w-300"><i class="fa fa-plus-square" id="menu-plus" aria-hidden="true"></i></p></a></li>
+        {% endcomment %}
       </ul>
     </div>
   </div>
@@ -67,6 +72,12 @@
 
         <form method="POST" class="post-form">
             {% csrf_token %}
+            <input type="text" name="story" value="{{ form.initial.story }}">
+            <input type="text" name="template" value="{{ form.initial.template }}">
+
+            <input type="text" name="owner" value="{{ form.initial.user }}">
+            <input type="text" name="organization" value="{{ form.initial.organization }}">
+
             <div class="row">
 
                 <!-- ================================================= -->
@@ -481,6 +492,7 @@
                         <!-- DISCUSSION -->
         <!-- ================================================= -->
 
+{% comment %}
         <!-- Facet Discussion -->
         <p class="f-r-12 f-w-300">Discussion</p>
         {% with view.facet_discussion as discussion %}
@@ -526,7 +538,7 @@
             </div>
         </div>
         {% endwith %}
-
+{% endcomment %}
         <!-- Facet Edit History -->
         <p class="f-r-12 f-w-300 m-t-20">Edit History</p>
 

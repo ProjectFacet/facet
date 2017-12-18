@@ -470,7 +470,7 @@ class Facet(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('facet_edit', kwargs={'pk': self.id, 'story': self.story})
+        return reverse('facet_edit', kwargs={'pk': self.id, 'story': self.story_id})
 
     def copy(self):
         """ Create a copy of a facet for a partner organization in a network."""
