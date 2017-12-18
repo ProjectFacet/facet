@@ -367,7 +367,7 @@ class Organization(models.Model):
         from . import Story
 
         networks = Organization.get_org_networks(self)
-        network_content = Story.objects.filter(share_with__in=networks)
+        network_content = Story.objects.filter(share_with__in=networks).select_related('organization')
 
         return network_content
 

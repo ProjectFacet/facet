@@ -379,3 +379,10 @@ img.image-center {
 .btn.btn-white.btn-outline.btn-rounded {
   border: 1px solid white;
 }
+
+
+
+/* show django-bootstrap: https://github.com/jazzband/django-debug-toolbar/issues/742 */
+/* should this be suspected of causing other problems, this can be removed -- the debug toolbar will then
+   not show up, but that may be tolerable */
+#djDebug { display: block !important; }

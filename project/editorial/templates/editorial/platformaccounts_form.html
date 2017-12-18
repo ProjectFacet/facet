@@ -39,9 +39,12 @@
       <!-- Stuff goes here -->
 
 
+<form method="POST">
+  {% csrf_token %}
+{% bootstrap_formset form layout='inline' %}
+<input type="submit">
+</form>
 
-
-      
   </div>
 </div>
 

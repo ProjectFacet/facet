@@ -6,7 +6,7 @@
 # -*- coding: utf-8 -*-
 
 from __future__ import unicode_literals
-from django.views.generic import TemplateView, UpdateView, DetailView, CreateView
+from django.views.generic import TemplateView, UpdateView, DetailView, CreateView, FormView
 
 from editorial.forms import (
     PlatformAccountForm,
@@ -18,18 +18,25 @@ from editorial.forms import (
 #   Platform Views
 # ----------------------------------------------------------------------#
 
-class UserPlatformAccountCreateView(CreateView):
+class UserPlatformAccountCreateView(FormView):
     """Display formset to add social accounts to a user, organization or project."""
 
-    form_class = PlatformAccountFormSet
     template_name = "editorial/platformaccounts_form.html"
+    form_class = PlatformAccountFormSet
 
-    def get_form_kwargs(self):
-        """Pass curent user and organization to the form."""
+    def get_formx(self):
+        user = self.request.user
+        organization = None
+        project = None
 
-        kw = super(UserPlatformAccountCreateView, self).get_form_kwargs()
-        kw.update({'organization': self.request.user.organization, 'user': self.request.user})
-        return kw
+        return PlatformAccountFormSet(form_kwargs={'user': user, 'organization': organization, 'project': project})
+
+    # def get_form_kwargs(self):
+    #     """Pass curent user and organization to the form."""
+    #
+    #     kw = super(UserPlatformAccountCreateView, self).get_form_kwargs()
+    #     kw.update({'organization': self.request.user.organization, 'user': self.request.user})
+    #     return kw
 
     #
     # def get_context_data(self, **kwargs):

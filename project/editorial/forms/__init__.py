@@ -26,6 +26,6 @@ from .taskforms import TaskForm
 from .eventforms import EventForm
 from .discussionforms import PrivateMessageForm, CommentForm
 from .noteforms import NetworkNoteForm, OrganizationNoteForm, ProjectNoteForm, SeriesNoteForm, StoryNoteForm, UserNoteForm
-from .platformaccountsforms import PlatformAccountForm, PlatformAccountFormSet, BasePlatformAccountFormSet
+from .platformaccountsforms import PlatformAccountForm, PlatformAccountFormSet
 
 from editorial.models.facets import COMMON_FIELDS

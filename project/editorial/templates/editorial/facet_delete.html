@@ -23,7 +23,7 @@
     </li>
     <li class="fadeIn"><a href="{% url 'story_detail' facet.story.id %}" title="Go to Story">
       {{ facet.story.name }}</li>
-    <li class="fadeIn"><a href="{% url 'facet_edit' facet.id %}" title="You are Here"> {{
+    <li class="fadeIn"><a href="{% url 'facet_edit' pk=facet.id story=facet.story.id %}" title="You are Here"> {{
       facet.name }}</li>
   </ol>
 </div>

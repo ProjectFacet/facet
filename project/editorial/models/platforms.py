@@ -118,6 +118,12 @@ class PlatformAccount(models.Model):
         verbose_name_plural = "Platform Accounts"
         ordering = ['name']
 
+        # The same user/org/project cannot use the same name/URL twice
+        unique_together = [
+            ('user', 'url'), ('organization', 'url'), ('project', 'url'),
+            ('user', 'name'), ('organization', 'name'), ('project', 'name'),
+        ]
+
     def __str__(self):
         return self.name
 
