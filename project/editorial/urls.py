@@ -2,14 +2,10 @@
 
 from django.conf.urls import url, include
 
-# from . import views
-# from views import HomeView
 from views import (
     generalviews,
     accountviews,
-    assetviews,
     inboxviews,
-    scheduleviews,
     organizationviews,
     userviews,
     contractorviews,
@@ -213,9 +209,9 @@ urlpatterns = [
     #----------------------------------------------------------------------#
     #   Facet URLS
     #----------------------------------------------------------------------#
-    url(r'^facet/add/$', facetviews.FacetPreCreateView.as_view(), name="facet_precreate"),
-    url(r'^facet/add/(?P<template_id>\d+)/$', facetviews.FacetCreateView.as_view(), name="facet_add"),
-    url(r'^facet/edit/(?P<pk>\d+)/$', facetviews.FacetUpdateView.as_view(), name="facet_edit"),
+    url(r'^story/(?P<story>[0-9]+)/facet/add/$', facetviews.FacetPreCreateView.as_view(), name="facet_precreate"),
+    url(r'^story/(?P<story>[0-9]+)/facet/add/(?P<template_id>\d+)/$', facetviews.FacetCreateView.as_view(), name="facet_add"),
+    url(r'^story/(?P<story>[0-9]+)/facet/edit/(?P<pk>\d+)/$', facetviews.FacetUpdateView.as_view(), name="facet_edit"),
     url(r'^facet/template/create/$', facetviews.FacetTemplateCreateView.as_view(), name="facet_template_create"),
     url(r'^facet/template/(?P<pk>\d+)/edit$', facetviews.FacetTemplateUpdateView.as_view(), name="facet_template_edit"),
     #----------------------------------------------------------------------#

@@ -47,7 +47,7 @@
         {% for facet in facet.story.facet_set.all %}
         <li class="nav-item"><a href="{% url 'facet_edit' facet.id %}" class="nav-link"><p class="f-r-10 f-w-300 m-b-0"> {{ facet.name }} </p></a></li>
         {% endfor %}
-        <li class="nav-item"><a href="{% url 'facet_precreate' %}"><p class="f-r-12 f-w-300 m-b-0"><i class="fa fa-plus-square" aria-hidden="true"></i></p></a></li>
+        <li class="nav-item"><a href="{% url 'facet_precreate' story=self.id %}"><p class="f-r-12 f-w-300 m-b-0"><i class="fa fa-plus-square" aria-hidden="true"></i></p></a></li>
         {% endcomment %}
       </ul>
     </div>

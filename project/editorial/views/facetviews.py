@@ -55,7 +55,6 @@ class FacetTemplateUpdateView(UpdateView):
         return super(FacetTemplateUpdateView, self).get_success_url()
 
 
-#FIXME Facet create view does not have the story id
 class FacetCreateView(CreateView):
     """Create a facet (dynamically using right template)."""
 
@@ -75,10 +74,10 @@ class FacetCreateView(CreateView):
         """
 
         return {'template': self.kwargs['template_id'],
-                'name': self.request.GET.get('name', '')}
+                'name': self.request.GET.get('name', ''),
+                'story': self.kwargs['story']}
 
 
-#FIXME Form error moving from precreate to create as facet form doesn't receive story
 class FacetPreCreateView(FormView):
     """First step in creating a facet."""
 
@@ -91,7 +90,8 @@ class FacetPreCreateView(FormView):
         template = form.data['template']
         name = form.cleaned_data['name']
 
-        url = reverse("facet_add", kwargs={'template_id': template})
+        url = reverse("facet_add",
+                      kwargs={'template_id': template, 'story': self.kwargs['story']})
         return redirect("{}?name={}".format(url, name))
 
 
