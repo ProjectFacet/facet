@@ -2,30 +2,16 @@
 
 """
 
-
-import datetime
-from bootstrap3_datetime.widgets import DateTimePicker
-from .customwidgets import OurDateTimePicker, ArrayFieldSelectMultiple
+from .customwidgets import ArrayFieldSelectMultiple
 from django import forms
-from django.utils.safestring import mark_safe
-from django.contrib.auth import get_user_model
-from django.forms import Textarea, TextInput, RadioSelect, Select, NumberInput, CheckboxInput, CheckboxSelectMultiple, FileField
-from django.contrib.postgres.fields import ArrayField
-from datetimewidget.widgets import DateTimeWidget
-from tinymce.widgets import TinyMCE
-from django.forms.models import modelformset_factory, inlineformset_factory
+from django.forms import TextInput, Select
 from django.forms.formsets import BaseFormSet
-# from django.contrib.staticfiles.templatetags.staticfiles import static
-
 
 from editorial.models import (
-    User,
-    Organization,
-    Network,
     Project,
-    Platform,
     PlatformAccount,
 )
+
 
 # ------------------------------ #
 #             Forms              #
@@ -36,15 +22,19 @@ class PlatformAccountForm(forms.ModelForm):
     """Form to create social accounts associated with a user."""
 
     def __init__(self, *args, **kwargs):
+        """Handle passing of org/user info into form."""
+
         if kwargs:
             org = kwargs.pop('organization')
             user = kwargs.pop('user')
             super(PlatformAccountForm, self).__init__(*args, **kwargs)
-        if org:
-            # limit team to org users
-            self.fields['team'].queryset = org.get_org_users()
-            # limit project to org projects or projects on which an org is a collaborator
-            self.fields['project'].queryset = Project.objects.filter(Q(organization=self)| Q(collaborate_with=self))
+
+            if org:
+                # limit team to org users
+                self.fields['team'].queryset = org.get_org_users()
+                # limit project to org projects or projects on which an org is a collaborator
+                self.fields['project'].queryset = Project.objects.filter(
+                    Q(organization=self) | Q(collaborate_with=self))
 
     class Meta:
         model = PlatformAccount
@@ -60,15 +50,17 @@ class PlatformAccountForm(forms.ModelForm):
         ]
         widgets = {
             'name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Name'}),
-            'platform': Select(attrs={'class': 'c-select', 'id':'account-platform'}),
+            'platform': Select(attrs={'class': 'c-select', 'id': 'account-platform'}),
             'url': TextInput(attrs={'class': 'form-control', 'placeholder': 'URL'}),
-            'description': TextInput(attrs={'class': 'form-control', 'placeholder': 'Description'}),
-            'team': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select', 'id':'share-with', 'data-placeholder': 'Select Team'}),
-            'user': Select(attrs={'class': 'c-select', 'id':'account-user'}),
-            'organization': Select(attrs={'class': 'c-select', 'id':'account-organization'}),
-            'project': Select(attrs={'class': 'c-select', 'id':'account-project'}),
+            'description': TextInput(
+                attrs={'class': 'form-control', 'placeholder': 'Description'}),
+            'team': ArrayFieldSelectMultiple(
+                attrs={'class': 'chosen-select', 'id': 'share-with',
+                       'data-placeholder': 'Select Team'}),
+            'user': Select(attrs={'class': 'c-select', 'id': 'account-user'}),
+            'organization': Select(attrs={'class': 'c-select', 'id': 'account-organization'}),
+            'project': Select(attrs={'class': 'c-select', 'id': 'account-project'}),
         }
-
 
 
 class BasePlatformAccountFormSet(BaseFormSet):
@@ -82,8 +74,7 @@ class BasePlatformAccountFormSet(BaseFormSet):
         if any(self.errors):
             return
 
-        urls = []
-        duplicates = False
+        urls = set()
 
         for form in self.forms:
             if form.cleaned_data:
@@ -93,16 +84,13 @@ class BasePlatformAccountFormSet(BaseFormSet):
                 # Check that no two links are the same
                 if name and url:
                     if url in urls:
-                        duplicates = True
-                    urls.append(url)
+                        raise forms.ValidationError(
+                            'Accounts must have unique URLs.',
+                            code='duplicate_links'
+                        )
+                    urls.add(url)
 
-                if duplicates:
-                    raise forms.ValidationError(
-                        'Accounts must have unique URLs.',
-                        code='duplicate_links'
-                )
-
-                #Check that each account has a name and a url
+                # Check that each account has a name and a url
                 if url and not name:
                     raise forms.ValidationError(
                         'All accounts must have a name.',
@@ -113,6 +101,7 @@ class BasePlatformAccountFormSet(BaseFormSet):
                         'All accounts must have a url.',
                         code='missing_url'
                     )
+
 
 class PlatformAccountFormSet(BasePlatformAccountFormSet):
     """Create a formset."""
