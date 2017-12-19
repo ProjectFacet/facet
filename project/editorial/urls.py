@@ -211,10 +211,10 @@ urlpatterns = [
     #----------------------------------------------------------------------#
     url(r'^story/(?P<story>[0-9]+)/facet/add/$', facetviews.FacetPreCreateView.as_view(), name="facet_precreate"),
     url(r'^story/(?P<story>[0-9]+)/facet/add/(?P<template_id>\d+)/$', facetviews.FacetCreateView.as_view(), name="facet_add"),
-    url(r'^story/(?P<story>[0-9]+)/facet/edit/(?P<pk>\d+)/$', facetviews.FacetUpdateView.as_view(), name="facet_edit"),
+    url(r'^story/(?P<story>[0-9]+)/facet/(?P<pk>\d+)/edit/$', facetviews.FacetUpdateView.as_view(), name="facet_edit"),
     url(r'^facet/template/create/$', facetviews.FacetTemplateCreateView.as_view(), name="facet_template_create"),
     url(r'^facet/template/(?P<pk>\d+)/edit$', facetviews.FacetTemplateUpdateView.as_view(), name="facet_template_edit"),
-    url(r'^story/(?P<story>[0-9]+)/facet/delete/(?P<pk>\d+)/$', facetviews.FacetDeleteView.as_view(), name="facet_delete"),
+    url(r'^story/(?P<story>[0-9]+)/facet/(?P<pk>\d+)/delete/$', facetviews.FacetDeleteView.as_view(), name="facet_delete"),
     #----------------------------------------------------------------------#
     #   Task URLS
     #----------------------------------------------------------------------#
@@ -238,7 +238,10 @@ urlpatterns = [
     #----------------------------------------------------------------------#
     # Images
     url(r'^image/new/$', assetviews.ImageAssetCreateView.as_view(), name='upload_image'),
-    url(r'^image/add/$', assetviews.add_image, name='add_image'),
+    # url(r'^image/add/$', assetviews.add_image, name='add_image'),
+    url(r'^story/(?P<story>\d+)/facet/(?P<facet>\d+)/images/add/$',
+        assetviews.LibraryImageAssociateView.as_view(), name='libraryimage_add'),
+
     # Documents
     url(r'^document/new/$', assetviews.DocumentAssetCreateView.as_view(), name='upload_document'),
     url(r'^document/add/$', assetviews.add_document, name='add_document'),

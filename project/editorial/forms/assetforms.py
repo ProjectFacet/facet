@@ -8,7 +8,7 @@ from .customwidgets import OurDateTimePicker, ArrayFieldSelectMultiple
 from django import forms
 from django.utils.safestring import mark_safe
 from django.contrib.auth import get_user_model
-from django.forms import Textarea, TextInput, RadioSelect, Select, NumberInput, CheckboxInput, CheckboxSelectMultiple, FileField
+from django.forms import Textarea, TextInput, RadioSelect, Select, NumberInput, CheckboxInput, CheckboxSelectMultiple, FileField, Form, ModelMultipleChoiceField
 from django.contrib.postgres.fields import ArrayField
 from datetimewidget.widgets import DateTimeWidget
 from tinymce.widgets import TinyMCE
@@ -121,6 +121,36 @@ class VideoAssetForm(forms.ModelForm):
             'asset_type': Select(attrs={'class': 'form-control'}),
             'keywords': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Keywords'}),
         }
+
+
+
+
+
+
+# -------------------------------#
+# LIBRARY Forms
+
+class LibraryImageAssociateForm(Form):
+    """ """
+
+    # def __init__(self, *args, **kwargs):
+    #     """ """
+    #
+    #     user = pop
+    #     org = pop
+    #     set_qs
+    #
+    # def __init__(self, *args, **kwargs):
+    #     super(LibraryImageAssociateForm, self).__init__(*args, **kwargs)
+    #     import pdb; pdb.set_trace()
+
+    images = ModelMultipleChoiceField(
+            queryset=ImageAsset.objects.all(),
+            required=True,
+    )
+
+
+
 
 
 # ------------------------------ #

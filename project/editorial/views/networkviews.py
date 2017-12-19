@@ -151,6 +151,9 @@ def send_network_invite(request):
     invitation_message = PrivateMessage.objects.create_private_message(user=request.user, recipient=user, discussion=discussion, subject=message_subject, text=message_text)
     return redirect('network_detail', pk=network.pk)
 
+    # on Priv?essage, add field for .org_invite_id
+    # on message render view:   {% if msg.org_invite_id %} <form...> {% csrf_Except %} ... </form>
+    
 
 @csrf_exempt
 def confirm_network_invite(request):

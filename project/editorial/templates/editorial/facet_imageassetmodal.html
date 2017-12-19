@@ -7,8 +7,8 @@
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <ul class="nav nav-tabs nav-animated-border-from-left">
-            <li class="nav-item"> <a ng-href="" class="nav-link active" data-toggle="tab" data-target="#uploadimage">Upload a Photo</a></li>
-            <li class="nav-item"> <a ng-href="" class="nav-link" data-toggle="tab" data-target="#imagelibrary">Select From Library</a></li>
+            <li class="nav-item"> <a  ng-href="" class="nav-link active" data-toggle="tab" data-target="#uploadimage">Upload a Photo</a></li>
+            <li class="nav-item"> <a id="joel" ng-href="" class="nav-link" data-toggle="tab" data-target="#imagelibrary">Select From Library</a></li>
           </ul>
         </div>
         {% with view.facet_image_assets as image_assets %}
@@ -94,42 +94,9 @@
 
             <!-- LIBRARY PANEL -->
             <div role="tabpanel" class="tab-pane" id="imagelibrary">
-              <div class="imagelibrary" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
-                <form action="{% url 'add_image' %}" method="POST" class="post-form" name="addimage">
-                  {% csrf_token %}
-                  <div class=" row image-library">
-                  {% for image in image_assets.org_images %}
-                    <div class="col-md-2">
-                      <label>
-                        {% if image.display_photo %}<img class="img-responsive img-thumbnail" src="{{ image.display_photo.url }}" alt="{{ image.description }}">{% endif %}
-                        {% if image in image_assets.images %}
-                        <i class="fa fa-check-square subtle" aria-hidden="true"></i>
-                        {% else %}
-                        <input type="checkbox" name="images" value="{{ image.id }}">
-                        {% endif %}
-                      </label>
-                    </div>
-                    {% if forloop.counter|divisibleby:"6" and not forloop.last %}
-                      </div><div class="row">
-                    {% endif %}
-                  {% endfor %}
-                  </div>
 
-                <!-- ===================================== -->
-                <!-- ===================================== -->
-                <div class="hidden-image-inputs">
-                  <input type="hidden" name="facet" value="{{ facet.pk }}" />
-                </div>
-                <!-- ===================================== -->
-                <!-- ===================================== -->
 
-                  <div class="row">
-                    <div class="col-xs-12">
-                      <button type="submit" class="btn btn-primary" name="addimage">Add Images</button>
-                    </div>
-                  </div>
-                </form>
-              </div>
+
             </div>
             <!-- END LIBRARY PANEL -->
           </div>
@@ -141,3 +108,10 @@
     </div>
   </div>
 </div>
+
+<script>
+  $("#joel").on("show.bs.tab", function (e) {
+    alert("yo");
+      $("#imagelibrary").load("/story/16/facet/13/images/add/")
+  })
+</script>

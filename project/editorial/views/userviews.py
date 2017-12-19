@@ -105,6 +105,38 @@ class UserUpdateView(UpdateView):
         return super(UserUpdateView, self).get_success_url()
 
 
+class UserDeactivateView(View):
+    def post(self):
+        user_id = self.request.POST.get('user_id')
+        user = get_object_or_404(User, pk=user_id)
+        print "USER ID: ", user_id
+        user.is_active = False
+        print "User Status: ", user.is_active
+        user.save()
+        print "This user has been deactivated."
+
+        return redirect('org_edit', pk=user.organization.id)
+
+# class UserDeactivateView(FormView):
+#     template_view = "userdeactivate_form.html"
+#
+#     def form_valid(self):
+#         user_id = self.request.POST.get('user_id')
+#         user = get_object_or_404(User, pk=user_id)
+#         print "USER ID: ", user_id
+#         user.is_active = False
+#         print "User Status: ", user.is_active
+#         user.save()
+#         print "This user has been deactivated."
+#
+#         return redirect('org_edit', pk=user.organization.id)
+#
+# <form method="POST">
+# {% csrf excem[pt %}
+# <input type=submit>
+# </form>
+
+
 @csrf_exempt
 def user_deactivate(request):
     """ Deactivate a user."""

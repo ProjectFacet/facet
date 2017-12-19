@@ -68,8 +68,6 @@ class AjaxResponseMixin(object):
 #   Private Message Views
 #----------------------------------------------------------------------#
 
-# TODO revise so it's not csrf exempt
-@csrf_exempt
 def private_message_new(request):
     """ Private messaging method. """
 

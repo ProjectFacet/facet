@@ -11,7 +11,7 @@ from django.core.mail import send_mail
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.utils import timezone
-from django.views.generic import TemplateView , UpdateView, DetailView, ListView, CreateView
+from django.views.generic import TemplateView , UpdateView, DetailView, ListView, CreateView, FormView
 from django.views.decorators.csrf import csrf_exempt
 import datetime
 import json
@@ -26,6 +26,7 @@ from editorial.forms import (
     SimpleDocumentForm,
     SimpleAudioForm,
     SimpleVideoForm,
+    LibraryImageAssociateForm,
     )
 
 from editorial.models import (
@@ -101,31 +102,62 @@ class ImageAssetCreateView(CreateView):
 # FIXME Q for J on best practices for how this is handled.
 # It's not a model form, just one from the html that returns an
 # array of asset ids to be connected to a facet.
-def add_image(request):
-    """ Add existing image(s) in the library to another facet."""
 
-    if request.method == "POST":
-        images = request.POST.getlist('images')
 
-        # retrieve the facet the image should be associated with
-        facet_id = request.POST.get('facet')
-        facet = get_object_or_404(Facet, id=facet_id)
 
-        #create list of img instances
-        img_instances = []
-        # connect image to facet
-        for image in images:
-            img_ins = get_object_or_404(ImageAsset, id=image)
-            img_instances.append(img_ins)
-            facet.image_assets.add(img_ins)
-        facet.save()
+# {% for img in form.fields.image_ids.choices %}
+   # <input ... >
+ # {% ... %}
 
-        action_image=get_object_or_404(ImageAsset, id=images[0])
 
-        # record action for activity stream
-        action.send(request.user, verb="added image", action_object=action_image, target=facet)
 
-    return redirect('facet_edit', pk=facet.id)
+
+class LibraryImageAssociateView(FormView):
+    """ """
+
+    form_class = LibraryImageAssociateForm
+    template_name = "editorial/_libraryimage.html"
+
+    def form_valid(self, form):
+        """Handle submission of form."""
+
+        facet = self.kwargs['facet']
+        facet.image_assets.add(*images)
+
+        # FIXME: re-add in loop?
+        # action.send(request.user, verb="added image", action_object=action_image, target=facet)
+
+        return redirect('facet_edit', pk=self.kwargs['facet'].id)
+
+
+# def add_image(request):
+#     """ Add existing image(s) in the library to another facet."""
+#
+#     if request.method == "POST":
+#         images = request.POST.getlist('images')
+#
+#         # retrieve the facet the image should be associated with
+#         facet_id = request.POST.get('facet')
+#         facet = get_object_or_404(Facet, id=facet_id)
+#
+#         #create list of img instances
+#         img_instances = []
+#         # connect image to facet
+#
+#         facet.image_assets.add(*images)
+#
+#         # for image in images:
+#         #     img_ins = get_object_or_404(ImageAsset, id=image)
+#         #     # img_instances.append(img_ins)
+#         #     facet.image_assets.add(img_ins)
+#         facet.save()
+#
+#         action_image=get_object_or_404(ImageAsset, id=images[0])
+#
+#         # record action for activity stream
+#         action.send(request.user, verb="added image", action_object=action_image, target=facet)
+#
+#     return redirect('facet_edit', pk=facet.id)
 
 
 class ImageAssetUpdateView(UpdateView):
