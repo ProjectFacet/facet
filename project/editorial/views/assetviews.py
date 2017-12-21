@@ -28,8 +28,8 @@ from editorial.forms import (
     SimpleVideoForm,
     LibraryImageAssociateForm,
     LibraryDocumentAssociateForm,
-    # LibraryAudioAssociateForm,
-    # LibraryVideoAssociateForm,
+    LibraryAudioAssociateForm,
+    LibraryVideoAssociateForm,
     )
 
 from editorial.models import (
@@ -114,6 +114,12 @@ class LibraryImageAssociateView(FormView):
         kwargs['organization'] = self.request.user.organization
         return kwargs
 
+    # def get_context_data(self, **kwargs):
+    #     """Send facet id to modals."""
+    #     context = super(LibraryDocumentAssociateView, self).get_context_data(**kwargs)
+    #     context['facet'] = self.kwargs['facet']
+    #     return context
+
     def form_valid(self, form):
         """Handle submission of form."""
 
@@ -183,12 +189,18 @@ class LibraryDocumentAssociateView(FormView):
     form_class = LibraryDocumentAssociateForm
     template_name = "editorial/_librarydocument.html"
 
-    # def get_form_kwargs(self):
-    #     """Pass some initial things to scaffold form."""
-    #
-    #     kwargs = super(LibraryDocumentAssociateView, self).get_form_kwargs()
-    #     kwargs['organization'] = self.request.user.organization
-    #     return kwargs
+    def get_form_kwargs(self):
+        """Pass some initial things to scaffold form."""
+
+        kwargs = super(LibraryDocumentAssociateView, self).get_form_kwargs()
+        kwargs['organization'] = self.request.user.organization
+        return kwargs
+
+    # def get_context_data(self, **kwargs):
+    #     """Send facet id to modals."""
+    #     context = super(LibraryDocumentAssociateView, self).get_context_data(**kwargs)
+    #     context['facet'] = self.kwargs['facet']
+    #     return context
 
     def form_valid(self, form):
         """Handle submission of form."""
@@ -255,31 +267,34 @@ class AudioAssetCreateView(CreateView):
         return HttpResponseRedirect(reverse('facet_edit', args=(facet.id,)))
 
 
-# FIXME Q for J on best practices for how this is handled.
-# It's not a model form, just one from the html that returns an
-# array of asset ids to be connected to a facet.
-def add_audio(request):
-    """ Add existing audio(s) in the library to another facet."""
+class LibraryAudioAssociateView(FormView):
+    """ Add existing audio in the library to another facet."""
 
-    if request.method == "POST":
-        audio_list = request.POST.getlist('audio')
+    form_class = LibraryAudioAssociateForm
+    template_name = "editorial/_libraryaudio.html"
 
-        # retrieve the facet the image should be associated with
-        facet_id = request.POST.get('facet')
-        facet = get_object_or_404(Facet, id=facet_id)
+    def get_form_kwargs(self):
+        """Pass some initial things to scaffold form."""
+        kwargs = super(LibraryAudioAssociateView, self).get_form_kwargs()
+        kwargs['organization'] = self.request.user.organization
+        return kwargs
 
-        # connect audio to facet
-        for audio in audio_list:
-            audio_ins = get_object_or_404(AudioAsset, id=audio)
-            facet.audio_assets.add(audio_ins)
-        facet.save()
+    # def get_context_data(self, **kwargs):
+    #     """Send facet id to modals."""
+    #     context = super(LibraryAudioAssociateView, self).get_context_data(**kwargs)
+    #     context['facet'] = self.kwargs['facet']
+    #     return context
 
-        action_audio=get_object_or_404(AudioAsset, id=audio_list[0])
+    def form_valid(self, form):
+        """Handle submission of form."""
 
-        # record action for activity stream
-        action.send(request.user, verb="added audio", action_object=action_audio, target=facet)
+        facet = self.kwargs['facet']
+        images = form.cleaned_data['audio']
+        facet = get_object_or_404(Facet, id=facet)
+        facet.image_assets.add(*audio)
+        action.send(self.request.user, verb="added audio", target=facet)
 
-    return redirect('facet_edit', pk=facet.id)
+        return redirect('facet_edit', pk=facet.id, story=facet.story.id)
 
 
 class AudioAssetUpdateView(UpdateView):
@@ -333,30 +348,34 @@ class VideoAssetCreateView(CreateView):
         return HttpResponseRedirect(reverse('facet_edit', args=(facet.id,)))
 
 
-# FIXME Q for J on best practices for how this is handled.
-# It's not a model form, just one from the html that returns an
-# array of asset ids to be connected to a facet.
-def add_video(request):
+class LibraryVideoAssociateView(FormView):
     """ Add existing video(s) in the library to another facet."""
 
-    if request.method == "POST":
-        videos = request.POST.getlist('video')
+    form_class = LibraryVideoAssociateForm
+    template_name = "editorial/_libraryvideo.html"
 
-        # retrieve the facet the image should be associated with
-        facet_id = request.POST.get('facet')
-        facet = get_object_or_404(Facet, id=facet_id)
+    def get_form_kwargs(self):
+        """Pass some initial things to scaffold form."""
+        kwargs = super(LibraryVideoAssociateView, self).get_form_kwargs()
+        kwargs['organization'] = self.request.user.organization
+        return kwargs
 
-        # connect video to facet
-        for video in videos:
-            video_ins = get_object_or_404(VideoAsset, id=video)
-            facet.video_assets.add(video_ins)
-        facet.save()
+    # def get_context_data(self, **kwargs):
+    #     """Send facet id to modals."""
+    #     context = super(LibraryVideoAssociateView, self).get_context_data(**kwargs)
+    #     context['facet'] = self.kwargs['facet']
+    #     return context
 
-        # record action for activity stream
-        action_video=get_object_or_404(VideoAsset, id=videos[0])
-        action.send(request.user, verb="added video", action_object=action_video, target=facet)
+    def form_valid(self, form):
+        """Handle submission of form."""
 
-    return redirect('facet_edit', pk=facet.id)
+        facet = self.kwargs['facet']
+        images = form.cleaned_data['video']
+        facet = get_object_or_404(Facet, id=facet)
+        facet.image_assets.add(*video)
+        action.send(self.request.user, verb="added video", target=facet)
+
+        return redirect('facet_edit', pk=facet.id, story=facet.story.id)
 
 
 class VideoAssetUpdateView(UpdateView):

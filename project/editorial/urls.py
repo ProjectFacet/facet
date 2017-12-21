@@ -245,10 +245,10 @@ urlpatterns = [
     url(r'^story/(?P<story>\d+)/facet/(?P<facet>\d+)/documents/add/$', assetviews.LibraryDocumentAssociateView.as_view(), name='librarydocument_add'),
     # Audio
     url(r'^audio/new/$', assetviews.AudioAssetCreateView.as_view(), name='upload_audio'),
-    url(r'^audio/add/$', assetviews.add_audio, name='add_audio'),
+    url(r'^story/(?P<story>\d+)/facet/(?P<facet>\d+)/audio/add/$', assetviews.LibraryAudioAssociateView.as_view(), name='libraryaudio_add'),
     # Video
     url(r'^video/new/$', assetviews.VideoAssetCreateView.as_view(), name='upload_video'),
-    url(r'^video/add/$', assetviews.add_video, name='add_video'),
+    url(r'^story/(?P<story>\d+)/facet/(?P<facet>\d+)/video/add/$', assetviews.LibraryVideoAssociateView.as_view(), name='libraryvideo_add'),
     # Simple Images
     url(r'^simpleimage/new/$', assetviews.SimpleImageCreateView.as_view(), name='upload_simple_image'),
     # Simple documents

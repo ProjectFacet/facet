@@ -140,16 +140,30 @@ class LibraryImageAssociateForm(Form):
 class LibraryDocumentAssociateForm(Form):
     """ Form for adding existing library documents to a facet. """
 
-    # def __init__(self, *args, **kwargs):
-    #     org = kwargs.pop("organization")
-    #     super(LibraryDocumentAssociateForm, self).__init__(*args, **kwargs)
-    #     self.fields['documents'] = forms.ModelMultipleChoiceField(queryset = org.documentasset_set.all(),
-    #                                     required=False)
+    def __init__(self, *args, **kwargs):
+        org = kwargs.pop("organization")
+        super(LibraryDocumentAssociateForm, self).__init__(*args, **kwargs)
+        self.fields['documents'] = forms.ModelMultipleChoiceField(queryset = org.documentasset_set.all(),
+                                        required=False)
 
-    documents = forms.ModelMultipleChoiceField(
-        queryset = DocumentAsset.objects.all(),
-        required=True,
-    )
+class LibraryAudioAssociateForm(Form):
+    """ Form for adding existing library audio to a facet. """
+
+    def __init__(self, *args, **kwargs):
+        org = kwargs.pop("organization")
+        super(LibraryAudioAssociateForm, self).__init__(*args, **kwargs)
+        self.fields['audio'] = forms.ModelMultipleChoiceField(queryset = org.audioasset_set.all(),
+                                        required=False)
+
+class LibraryVideoAssociateForm(Form):
+    """ Form for adding existing library video to a facet. """
+
+    def __init__(self, *args, **kwargs):
+        org = kwargs.pop("organization")
+        super(LibraryVideoAssociateForm, self).__init__(*args, **kwargs)
+        self.fields['video'] = forms.ModelMultipleChoiceField(queryset = org.videoasset_set.all(),
+                                        required=False)
+
 
 
 # ------------------------------ #

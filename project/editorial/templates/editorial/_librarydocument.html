@@ -1,7 +1,5 @@
-<h2>HEY</h2>
-
-<div class="documentlibrary" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
-  <form action="{% url 'add_document' %}" method="POST" class="post-form" name="adddocument">
+<div class="documentlibrary">
+  <form action="{% url 'librarydocument_add' facet=13 story=16 %}" method="POST" class="post-form" name="adddocument">
     {% csrf_token %}
     <div class="row document-library">
     {% for document in form.fields.documents.queryset %}

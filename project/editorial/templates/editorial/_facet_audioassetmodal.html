@@ -8,7 +8,7 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <ul class="nav nav-tabs nav-animated-border-from-left">
             <li class="nav-item"> <a ng-href="" class="nav-link active" data-toggle="tab" data-target="#uploadaudio">Upload a Audio</a></li>
-            <li class="nav-item"> <a ng-href="" class="nav-link" data-toggle="tab" data-target="#audiolibrary">Select From Audio Library</a></li>
+            <li class="nav-item"> <a id="selectaudiolibrary" ng-href="" class="nav-link" data-toggle="tab" data-target="#audiolibrary">Select From Audio Library</a></li>
           </ul>
         </div>
         {% with view.facet_audio_assets as audio_assets %}
@@ -104,98 +104,7 @@
 
             <!-- LIBRARY PANEL -->
             <div role="tabpanel" class="tab-pane" id="audiolibrary">
-              <div class="audiolibrary" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
-                <form action="{% url 'add_audio' %}" method="POST" class="post-form" name="addaudio">
-                  {% csrf_token %}
-                  <div class="row audio-library">
-                  {% for audio in audio_assets.org_audio %}
-                    <div class="col-md-3">
-                      {% if audio.asset_type == 'MP3' or audio.asset_type == 'WAV' %}
-                      <div id="jplayer_audio_{{audio.pk}}" class="jp-jplayer"></div>
-                      <div id="jp_container_audio_{{audio.pk}}" class="jp-flat-audio m-b-10" role="application" aria-label="media player">
-                        <div class="jp-play-control jp-control">
-                          <button class="jp-play jp-button" role="button" aria-label="play" tabindex="0"></button>
-                        </div>
-                        <div class="jp-bar">
-                          <div class="jp-seek-bar jp-seek-bar-display"></div>
-                          <div class="jp-seek-bar">
-                            <div class="jp-play-bar"></div>
-                            <div class="jp-details"><span class="jp-title" aria-label="title"></span></div>
-                            <div class="jp-timing"><span class="jp-duration" role="timer" aria-label="duration"></span></div>
-                          </div>
-                        </div>
-                        <div class="jp-no-solution">
-                          Media Player Error<br />
-                          Update your browser or Flash plugin
-                        </div>
-                      </div>
-                      <script>
-                        jQuery(document).ready(function($) {
-                          $("#jplayer_audio_{{audio.pk}}").jPlayer({
-                            ready: function(event) {
-                              $(this).jPlayer("setMedia", {
-                                title: "{{audio.title}}",
-                                wav: "{{audio.audio.url}}",
-                                mp3: "{{audio.audio.url}}",
-                              });
-                            },
-                            play: function() { // Avoid multiple jPlayers playing together.
-                              $(this).jPlayer("pauseOthers");
-                            },
-                            timeFormat: {
-                              padMin: false
-                            },
-                            swfPath: "js",
-                            supplied: "wav, mp3",
-                            cssSelectorAncestor: "#jp_container_audio_{{audio.pk}}",
-                            useStateClassSkin: true,
-                            autoBlur: false,
-                            smoothPlayBar: true,
-                            remainingDuration: true,
-                            keyEnabled: true,
-                            keyBindings: {
-                              // Disable some of the default key controls
-                              loop: null,
-                              muted: null,
-                              volumeUp: null,
-                              volumeDown: null
-                            },
-                            wmode: "window"
-                          });
-                        });
-                      </script>
-                      {% endif %}
-                    </div>
-                    <div class="col-md-1">
-                      <label>
-                        {% if audio in audio_assets.audio %}
-                        <i class="fa fa-check-square subtle" aria-hidden="true"></i>
-                        {% else %}
-                        <input class="inline" type="checkbox" name="audio" value="{{ audio.id }}">
-                        {% endif %}
-                      </label>
-                    </div>
-                    {% if forloop.counter|divisibleby:"6" and not forloop.last %}
-                      </div><div class="row">
-                    {% endif %}
-                  {% endfor %}
-                  </div>
-
-                <!-- ===================================== -->
-                <!-- ===================================== -->
-                <div class="hidden-image-inputs">
-                    <input type="hidden" name="facet" value="{{ facet.pk }}" />
-                </div>
-                <!-- ===================================== -->
-                <!-- ===================================== -->
-
-                  <div class="row">
-                    <div class="col-xs-12">
-                      <button type="submit" class="btn btn-primary" name="addaudio">Add Audio</button>
-                    </div>
-                  </div>
-                </form>
-              </div>
+              <!-- Loading _libraryaudio.html -->
             </div>
             <!-- END LIBRARY PANEL -->
           </div>
@@ -207,3 +116,10 @@
     </div>
   </div>
 </div>
+
+<script>
+  $("#selectaudiolibrary").on("show.bs.tab", function (e) {
+      $("#audiolibrary").load("{% url 'libraryaudio_add' facet=facet.id story=facet.story.id %}")
+  })
+
+</script>
