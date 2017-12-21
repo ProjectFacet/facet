@@ -131,27 +131,15 @@ class VideoAssetForm(forms.ModelForm):
 # LIBRARY Forms
 
 class LibraryImageAssociateForm(Form):
-    """ """
+    """ Form for adding existing library images to a facet. """
 
-    # def __init__(self, *args, **kwargs):
-    #     """ """
-    #
-    #     user = pop
-    #     org = pop
-    #     set_qs
-    #
-    # def __init__(self, *args, **kwargs):
-    #     super(LibraryImageAssociateForm, self).__init__(*args, **kwargs)
-    #     import pdb; pdb.set_trace()
-
-    images = ModelMultipleChoiceField(
-            queryset=ImageAsset.objects.all(),
-            required=True,
-    )
-
-
-
-
+    def __init__(self, *args, **kwargs):
+        org = kwargs.pop("organization")
+        super(LibraryImageAssociateForm, self).__init__(*args, **kwargs)
+        # self.fields['images'] = forms.ModelMultipleChoiceField(queryset = org.imageasset_set.all(),
+        #                                 required=False)
+        self.fields['images'] = forms.ModelMultipleChoiceField(queryset = ImageAsset.objects.all(),
+                                        required=False)
 
 # ------------------------------ #
 #          Simple Forms          #

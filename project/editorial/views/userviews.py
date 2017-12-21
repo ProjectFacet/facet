@@ -10,7 +10,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.utils import timezone
-from django.views.generic import TemplateView , UpdateView, DetailView, CreateView
+from django.views.generic import TemplateView , UpdateView, DetailView, CreateView, View
 from django.views.decorators.csrf import csrf_exempt
 from django.forms import formset_factory
 import datetime
@@ -104,8 +104,9 @@ class UserUpdateView(UpdateView):
         action.send(self.request.user, verb="edited", action_object=self.object)
         return super(UserUpdateView, self).get_success_url()
 
-
+# FIXME still having csrf_token problem
 class UserDeactivateView(View):
+    """Deactivate an org user."""
     def post(self):
         user_id = self.request.POST.get('user_id')
         user = get_object_or_404(User, pk=user_id)
@@ -117,47 +118,10 @@ class UserDeactivateView(View):
 
         return redirect('org_edit', pk=user.organization.id)
 
-# class UserDeactivateView(FormView):
-#     template_view = "userdeactivate_form.html"
-#
-#     def form_valid(self):
-#         user_id = self.request.POST.get('user_id')
-#         user = get_object_or_404(User, pk=user_id)
-#         print "USER ID: ", user_id
-#         user.is_active = False
-#         print "User Status: ", user.is_active
-#         user.save()
-#         print "This user has been deactivated."
-#
-#         return redirect('org_edit', pk=user.organization.id)
-#
-# <form method="POST">
-# {% csrf excem[pt %}
-# <input type=submit>
-# </form>
 
-
-@csrf_exempt
-def user_deactivate(request):
-    """ Deactivate a user."""
-
-    if request.method == "POST":
-        user_id = request.POST.get('user_id')
-        user = get_object_or_404(User, pk=user_id)
-        print "USER ID: ", user_id
-        user.is_active = False
-        print "User Status: ", user.is_active
-        user.save()
-        print "This user has been deactivated."
-
-    return redirect('org_edit', pk=user.organization.id)
-
-
-@csrf_exempt
-def user_activate(request):
-    """ Activate a user."""
-
-    if request.method == "POST":
+class UserActivateView(View):
+    """Activate an org user."""
+    def post(self):
         user_id = request.POST.get('user_id')
         user = get_object_or_404(User, pk=user_id)
         print "USER ID: ", user_id
@@ -166,4 +130,4 @@ def user_activate(request):
         user.save()
         print "This user has been activated."
 
-    return redirect('org_edit', pk=user.organization.id)
+        return redirect('org_edit', pk=user.organization.id)

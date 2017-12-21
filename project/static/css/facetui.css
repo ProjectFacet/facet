@@ -385,4 +385,14 @@ img.image-center {
 /* show django-bootstrap: https://github.com/jazzband/django-debug-toolbar/issues/742 */
 /* should this be suspected of causing other problems, this can be removed -- the debug toolbar will then
    not show up, but that may be tolerable */
-#djDebug { display: block !important; }
+/*#djDebug, #djDebugPanelList, #djDebugPanelButton, #djHideToolBarButton, #djDebugToolbar { display: block !important; }*/
+
+
+/* Override Bootstrap 4 styling on Django Debug Toolbar */
+#djDebug[hidden], #djDebug [hidden] {
+    display: block !important;
+}
+
+#djDebug [hidden][style='display: none;'] {
+    display: none !important;
+}

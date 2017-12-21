@@ -94,9 +94,7 @@
 
             <!-- LIBRARY PANEL -->
             <div role="tabpanel" class="tab-pane" id="imagelibrary">
-
-
-
+                <!-- Loading _libraryimage.html -->
             </div>
             <!-- END LIBRARY PANEL -->
           </div>
@@ -111,7 +109,9 @@
 
 <script>
   $("#joel").on("show.bs.tab", function (e) {
-    alert("yo");
+      console.log("please load");
       $("#imagelibrary").load("/story/16/facet/13/images/add/")
+      console.log("loaded");
+      // $("#imagelibrary").load("{% url 'libraryimage_add' facet=facet.id story=facet.story.id %}")
   })
 </script>

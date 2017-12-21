@@ -99,28 +99,23 @@ class ImageAssetCreateView(CreateView):
         return HttpResponseRedirect(reverse('facet_edit', args=(facet.id,)))
 
 
-# FIXME Q for J on best practices for how this is handled.
-# It's not a model form, just one from the html that returns an
-# array of asset ids to be connected to a facet.
-
-
-
-# {% for img in form.fields.image_ids.choices %}
-   # <input ... >
- # {% ... %}
-
-
-
-
 class LibraryImageAssociateView(FormView):
     """ """
 
     form_class = LibraryImageAssociateForm
     template_name = "editorial/_libraryimage.html"
 
+    def get_form_kwargs(self):
+        """Pass some initial things to scaffold form."""
+        print "WUT"
+        kwargs = super(LibraryImageAssociateView, self).get_form_kwargs()
+        kwargs['organization'] = self.request.user.organization
+        return kwargs
+
     def form_valid(self, form):
         """Handle submission of form."""
 
+        print "WHY"
         facet = self.kwargs['facet']
         facet.image_assets.add(*images)
 
