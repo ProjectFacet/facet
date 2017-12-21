@@ -123,12 +123,9 @@ class VideoAssetForm(forms.ModelForm):
         }
 
 
-
-
-
-
 # -------------------------------#
-# LIBRARY Forms
+#    Organization Library Forms
+# -------------------------------#
 
 class LibraryImageAssociateForm(Form):
     """ Form for adding existing library images to a facet. """
@@ -136,15 +133,28 @@ class LibraryImageAssociateForm(Form):
     def __init__(self, *args, **kwargs):
         org = kwargs.pop("organization")
         super(LibraryImageAssociateForm, self).__init__(*args, **kwargs)
-        # self.fields['images'] = forms.ModelMultipleChoiceField(queryset = org.imageasset_set.all(),
-        #                                 required=False)
-        self.fields['images'] = forms.ModelMultipleChoiceField(queryset = ImageAsset.objects.all(),
+        self.fields['images'] = forms.ModelMultipleChoiceField(queryset = org.imageasset_set.all(),
                                         required=False)
+
+
+class LibraryDocumentAssociateForm(Form):
+    """ Form for adding existing library documents to a facet. """
+
+    # def __init__(self, *args, **kwargs):
+    #     org = kwargs.pop("organization")
+    #     super(LibraryDocumentAssociateForm, self).__init__(*args, **kwargs)
+    #     self.fields['documents'] = forms.ModelMultipleChoiceField(queryset = org.documentasset_set.all(),
+    #                                     required=False)
+
+    documents = forms.ModelMultipleChoiceField(
+        queryset = DocumentAsset.objects.all(),
+        required=True,
+    )
+
 
 # ------------------------------ #
 #          Simple Forms          #
 # ------------------------------ #
-
 
 class SimpleImageForm(forms.ModelForm):
     """Upload a simple image."""

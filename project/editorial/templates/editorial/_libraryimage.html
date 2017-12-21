@@ -1,4 +1,4 @@
-<div class="imagelibrary" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
+<div class="imagelibrary" id="scrollthis" data-toggle="slimScroll" style="height:300px, overflow: scroll !important;" data-color="#5D9CEC" data-allow-page-scroll="false">
   <form action="{% url 'libraryimage_add' story=16 facet=13 %}" method="POST" class="post-form" name="addimage">
     {% csrf_token %}
     <div class=" row image-library">

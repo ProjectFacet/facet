@@ -1,0 +1,115 @@
+<!-- Document Asset Modal -->
+
+<div class="modal fade" id="DocumentAssetModal" tabindex="-1" role="dialog" aria-labelledby="DocumentAssetModal">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="bs-nav-tabs nav-tabs-default">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <ul class="nav nav-tabs nav-animated-border-from-left">
+            <li class="nav-item"> <a ng-href="" class="nav-link active" data-toggle="tab" data-target="#uploaddocument">Upload a Document</a></li>
+            <li class="nav-item"> <a id="selectdocumentlibrary" ng-href="" class="nav-link" data-toggle="tab" data-target="#documentlibrary">Select From Document Library</a></li>
+          </ul>
+        </div>
+        {% with view.facet_document_assets as document_assets %}
+        <div class="modal-body" id="documentmodalbody">
+          <div class="tab-content">
+            <!-- UPLOAD PANEL -->
+            <div role="tabpanel" class="tab-pane active" id="uploaddocument">
+              <div class="uploadpanel" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
+              <form action="{% url 'upload_document' %}" method="POST" class="post-form" enctype="multipart/form-data">
+              {% csrf_token %}
+              <!-- Left Col -->
+              <div class="col-md-6">
+
+                <fieldset class="form-group m-b-10">
+                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ document_assets.uploadform.document.label_tag }}</label>
+                  {{ document_assets.uploadform.document }}
+                  {% if document_assets.uploadform.document.errors %}
+                    <small class="text-muted">{{ document_assets.uploadform.document.errors }}</small>
+                  {% endif %}
+                </fieldset>
+
+                <fieldset class="form-group m-b-10">
+                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ document_assets.uploadform.title.label_tag }}</label>
+                  {{ document_assets.uploadform.title }}
+                  {% if document_assets.uploadform.title.errors %}
+                    <small class="text-muted">{{ document_assets.uploadform.title.errors }}</small>
+                  {% endif %}
+                </fieldset>
+
+                <fieldset class="form-group m-b-10">
+                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ document_assets.uploadform.asset_type.label_tag }}</label>
+                  {{ document_assets.uploadform.asset_type }}
+                  {% if document_assets.uploadform.asset_type.errors %}
+                    <small class="text-muted">{{ document_assets.uploadform.asset_type.errors }}</small>
+                  {% endif %}
+                </fieldset>
+
+                <fieldset class="form-group m-b-10">
+                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ document_assets.uploadform.keywords.label_tag }}</label>
+                  {{ document_assets.uploadform.keywords }}
+                  {% if document_assets.uploadform.keywords.errors %}
+                    <small class="text-muted">{{ document_assets.uploadform.keywords.errors }}</small>
+                  {% endif %}
+                </fieldset>
+
+              </div>
+              <!-- End Left Col -->
+              <!-- Right Col -->
+              <div class="col-md-6">
+
+                <fieldset class="form-group m-b-10">
+                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ document_assets.uploadform.description.label_tag }}</label>
+                  {{ document_assets.uploadform.description }}
+                  {% if document_assets.uploadform.description.errors %}
+                    <small class="text-muted">{{ document_assets.uploadform.description.errors }}</small>
+                  {% endif %}
+                </fieldset>
+
+                <fieldset class="form-group m-b-10">
+                  <label class="f-s-14 f-s-400 spread-01 subtle slim-margin">{{ document_assets.uploadform.attribution.label_tag }}</label>
+                  {{ document_assets.uploadform.attribution }}
+                  {% if document_assets.uploadform.attribution.errors %}
+                    <small class="text-muted">{{ document_assets.uploadform.attribution.errors }}</small>
+                  {% endif %}
+                </fieldset>
+
+              </div>
+              <!-- End Right Col -->
+              <!-- ===================================== -->
+              <!-- ===================================== -->
+              <div class="hidden-document-inputs">
+                  <input type="hidden" name="facet" value="{{ facet.pk }}" />
+              </div>
+              <!-- ===================================== -->
+              <!-- ===================================== -->
+              <div>
+                <button type="submit" class="btn btn-primary m-l-20">Save Document</button>
+              </div>
+              </form>
+              </div>
+            </div>
+            <!-- END UPLOAD PANEL -->
+
+            <!-- LIBRARY PANEL -->
+            <div role="tabpanel" class="tab-pane" id="documentlibrary">
+              <!-- Loading _librarydocument.html -->
+            </div>
+            <!-- END LIBRARY PANEL -->
+          </div>
+        </div>
+        {% endwith %}
+        </div>
+        <div class="modal-footer"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $("#selectdocumentlibrary").on("show.bs.tab", function (e) {
+      $("#documentlibrary").load("{% url 'librarydocument_add' facet=facet.id story=facet.story.id %}")
+  })
+
+</script>

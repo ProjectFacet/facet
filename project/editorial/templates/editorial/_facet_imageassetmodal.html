@@ -8,7 +8,7 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <ul class="nav nav-tabs nav-animated-border-from-left">
             <li class="nav-item"> <a  ng-href="" class="nav-link active" data-toggle="tab" data-target="#uploadimage">Upload a Photo</a></li>
-            <li class="nav-item"> <a id="joel" ng-href="" class="nav-link" data-toggle="tab" data-target="#imagelibrary">Select From Library</a></li>
+            <li class="nav-item"> <a id="selectimagelibrary" ng-href="" class="nav-link" data-toggle="tab" data-target="#imagelibrary">Select From Library</a></li>
           </ul>
         </div>
         {% with view.facet_image_assets as image_assets %}
@@ -108,10 +108,8 @@
 </div>
 
 <script>
-  $("#joel").on("show.bs.tab", function (e) {
-      console.log("please load");
-      $("#imagelibrary").load("/story/16/facet/13/images/add/")
-      console.log("loaded");
-      // $("#imagelibrary").load("{% url 'libraryimage_add' facet=facet.id story=facet.story.id %}")
+  $("#selectimagelibrary").on("show.bs.tab", function (e) {
+      $("#imagelibrary").load("{% url 'libraryimage_add' facet=facet.id story=facet.story.id %}")
   })
+
 </script>

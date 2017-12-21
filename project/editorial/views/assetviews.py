@@ -27,6 +27,9 @@ from editorial.forms import (
     SimpleAudioForm,
     SimpleVideoForm,
     LibraryImageAssociateForm,
+    LibraryDocumentAssociateForm,
+    # LibraryAudioAssociateForm,
+    # LibraryVideoAssociateForm,
     )
 
 from editorial.models import (
@@ -100,14 +103,13 @@ class ImageAssetCreateView(CreateView):
 
 
 class LibraryImageAssociateView(FormView):
-    """ """
+    """ Add existing image(s) in the library to another facet."""
 
     form_class = LibraryImageAssociateForm
     template_name = "editorial/_libraryimage.html"
 
     def get_form_kwargs(self):
         """Pass some initial things to scaffold form."""
-        print "WUT"
         kwargs = super(LibraryImageAssociateView, self).get_form_kwargs()
         kwargs['organization'] = self.request.user.organization
         return kwargs
@@ -115,44 +117,13 @@ class LibraryImageAssociateView(FormView):
     def form_valid(self, form):
         """Handle submission of form."""
 
-        print "WHY"
         facet = self.kwargs['facet']
+        images = form.cleaned_data['images']
+        facet = get_object_or_404(Facet, id=facet)
         facet.image_assets.add(*images)
+        action.send(self.request.user, verb="added image", target=facet)
 
-        # FIXME: re-add in loop?
-        # action.send(request.user, verb="added image", action_object=action_image, target=facet)
-
-        return redirect('facet_edit', pk=self.kwargs['facet'].id)
-
-
-# def add_image(request):
-#     """ Add existing image(s) in the library to another facet."""
-#
-#     if request.method == "POST":
-#         images = request.POST.getlist('images')
-#
-#         # retrieve the facet the image should be associated with
-#         facet_id = request.POST.get('facet')
-#         facet = get_object_or_404(Facet, id=facet_id)
-#
-#         #create list of img instances
-#         img_instances = []
-#         # connect image to facet
-#
-#         facet.image_assets.add(*images)
-#
-#         # for image in images:
-#         #     img_ins = get_object_or_404(ImageAsset, id=image)
-#         #     # img_instances.append(img_ins)
-#         #     facet.image_assets.add(img_ins)
-#         facet.save()
-#
-#         action_image=get_object_or_404(ImageAsset, id=images[0])
-#
-#         # record action for activity stream
-#         action.send(request.user, verb="added image", action_object=action_image, target=facet)
-#
-#     return redirect('facet_edit', pk=facet.id)
+        return redirect('facet_edit', pk=facet.id, story=facet.story.id)
 
 
 class ImageAssetUpdateView(UpdateView):
@@ -206,31 +177,31 @@ class DocumentAssetCreateView(CreateView):
         return HttpResponseRedirect(reverse('facet_edit', args=(facet.id,)))
 
 
-# FIXME Q for J on best practices for how this is handled.
-# It's not a model form, just one from the html that returns an
-# array of asset ids to be connected to a facet.
-def add_document(request):
+class LibraryDocumentAssociateView(FormView):
     """ Add existing document(s) in the library to another facet."""
 
-    if request.method == "POST":
-        documents = request.POST.getlist('documents')
+    form_class = LibraryDocumentAssociateForm
+    template_name = "editorial/_librarydocument.html"
 
-        # retrieve the facet the image should be associated with
-        facet_id = request.POST.get('facet')
-        facet = get_object_or_404(Facet, id=facet_id)
+    # def get_form_kwargs(self):
+    #     """Pass some initial things to scaffold form."""
+    #
+    #     kwargs = super(LibraryDocumentAssociateView, self).get_form_kwargs()
+    #     kwargs['organization'] = self.request.user.organization
+    #     return kwargs
 
-        # connect document to facet
-        for document in documents:
-            doc_ins = get_object_or_404(DocumentAsset, id=document)
-            facet.document_assets.add(doc_ins)
-        facet.save()
+    def form_valid(self, form):
+        """Handle submission of form."""
 
-        action_doc = get_object_or_404(DocumentAsset, id=documents[0])
+        facet = self.kwargs['facet']
+        documents = form.cleaned_data['documents']
+        print "FACET: ", facet
+        print "DOCS: ", documents
+        # facet = get_object_or_404(Facet, id=facet)
+        # facet.image_assets.add(*documents)
+        # action.send(self.request.user, verb="added document", target=facet)
 
-        # record action for activity stream
-        action.send(request.user, verb="added document", action_object=action_doc, target=facet)
-
-    return redirect('facet_edit', pk=facet.id)
+        return redirect('facet_edit', pk=facet.id, story=facet.story.id)
 
 
 class DocumentAssetUpdateView(UpdateView):

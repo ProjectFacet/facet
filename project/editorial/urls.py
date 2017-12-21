@@ -238,13 +238,11 @@ urlpatterns = [
     #----------------------------------------------------------------------#
     # Images
     url(r'^image/new/$', assetviews.ImageAssetCreateView.as_view(), name='upload_image'),
-    # url(r'^image/add/$', assetviews.add_image, name='add_image'),
-    url(r'^story/(?P<story>\d+)/facet/(?P<facet>\d+)/images/add/$',
-        assetviews.LibraryImageAssociateView.as_view(), name='libraryimage_add'),
+    url(r'^story/(?P<story>\d+)/facet/(?P<facet>\d+)/images/add/$', assetviews.LibraryImageAssociateView.as_view(), name='libraryimage_add'),
 
     # Documents
     url(r'^document/new/$', assetviews.DocumentAssetCreateView.as_view(), name='upload_document'),
-    url(r'^document/add/$', assetviews.add_document, name='add_document'),
+    url(r'^story/(?P<story>\d+)/facet/(?P<facet>\d+)/documents/add/$', assetviews.LibraryDocumentAssociateView.as_view(), name='librarydocument_add'),
     # Audio
     url(r'^audio/new/$', assetviews.AudioAssetCreateView.as_view(), name='upload_audio'),
     url(r'^audio/add/$', assetviews.add_audio, name='add_audio'),
