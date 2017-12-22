@@ -146,6 +146,7 @@ class LibraryDocumentAssociateForm(Form):
         self.fields['documents'] = forms.ModelMultipleChoiceField(queryset = org.documentasset_set.all(),
                                         required=False)
 
+
 class LibraryAudioAssociateForm(Form):
     """ Form for adding existing library audio to a facet. """
 
@@ -154,6 +155,7 @@ class LibraryAudioAssociateForm(Form):
         super(LibraryAudioAssociateForm, self).__init__(*args, **kwargs)
         self.fields['audio'] = forms.ModelMultipleChoiceField(queryset = org.audioasset_set.all(),
                                         required=False)
+
 
 class LibraryVideoAssociateForm(Form):
     """ Form for adding existing library video to a facet. """

@@ -1,5 +1,5 @@
 <div class="documentlibrary">
-  <form action="{% url 'librarydocument_add' facet=13 story=16 %}" method="POST" class="post-form" name="adddocument">
+  <form action="{% url 'librarydocument_add' story=view.kwargs.story facet=view.kwargs.facet %}" method="POST" class="post-form" name="adddocument">
     {% csrf_token %}
     <div class="row document-library">
     {% for document in form.fields.documents.queryset %}

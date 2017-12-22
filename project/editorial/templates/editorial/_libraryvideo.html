@@ -1,5 +1,6 @@
+{% load embed_video_tags %}
 <div class="videolibrary" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
-  <form action="{% url 'libraryvideo_add' story=16 facet=13 %}" method="POST" class="post-form" name="addvideo">
+  <form action="{% url 'libraryvideo_add' story=view.kwargs.story facet=view.kwargs.facet %}" method="POST" class="post-form" name="addvideo">
     {% csrf_token %}
     <div class="row video-library">
     {% for video in form.fields.video.queryset %}
@@ -133,8 +134,6 @@
           {% video video.link '100%x150' %}
           <p class="subtle f-s-14 m-t-10"><i class="fa fa-vimeo subtle"></i> {{ video.title }}</p>
         {% endif %}
-
-
       </div>
       <div class="col-md-1">
 

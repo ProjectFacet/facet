@@ -1,5 +1,5 @@
 <div class="imagelibrary" id="scrollthis" data-toggle="slimScroll" style="height:300px, overflow: scroll !important;" data-color="#5D9CEC" data-allow-page-scroll="false">
-  <form action="{% url 'libraryimage_add' story=16 facet=13 %}" method="POST" class="post-form" name="addimage">
+  <form action="{% url 'libraryimage_add' story=view.kwargs.story facet=view.kwargs.facet %}" method="POST" class="post-form" name="addimage">
     {% csrf_token %}
     <div class=" row image-library">
     {% for image in form.fields.images.queryset %}
@@ -22,7 +22,7 @@
   <!-- ===================================== -->
   <!-- ===================================== -->
   <div class="hidden-image-inputs">
-    <input type="hidden" name="facet" value="{{ facet.pk }}" />
+    <input type="hidden" name="facet" value="{{ view.kwargs.facet }}" />
   </div>
   <!-- ===================================== -->
   <!-- ===================================== -->

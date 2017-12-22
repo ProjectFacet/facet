@@ -1,5 +1,5 @@
 <div class="audiolibrary" data-toggle="slimScroll" style="height:500px" data-color="#5D9CEC" data-allow-page-scroll="false">
-  <form action="{% url 'libraryaudio_add' story=16 facet=13 %}" method="POST" class="post-form" name="addaudio">
+  <form action="{% url 'libraryaudio_add' story=view.kwargs.story facet=view.kwargs.facet %}" method="POST" class="post-form" name="addaudio">
     {% csrf_token %}
     <div class="row audio-library">
     {% for audio in form.fields.audio.queryset %}
@@ -59,6 +59,7 @@
           });
         </script>
         {% endif %}
+        
       </div>
       <div class="col-md-1">
         <label>
