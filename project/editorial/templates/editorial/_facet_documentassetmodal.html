@@ -107,9 +107,10 @@
   </div>
 </div>
 
+{% if facet %}
 <script>
   $("#selectdocumentlibrary").on("show.bs.tab", function (e) {
       $("#documentlibrary").load("{% url 'librarydocument_add' facet=facet.id story=facet.story.id %}")
   })
-
 </script>
+{% endif %}

@@ -107,8 +107,10 @@
   </div>
 </div>
 
+{% if facet %}
 <script>
   $("#selectimagelibrary").on("show.bs.tab", function (e) {
       $("#imagelibrary").load("{% url 'libraryimage_add' facet=facet.id story=facet.story.id %}")
   })
 </script>
+{% endif %}

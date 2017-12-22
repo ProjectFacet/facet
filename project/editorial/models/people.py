@@ -650,7 +650,7 @@ class Organization(models.Model):
 def add_discussion(sender, instance, **kwargs):
     if not instance.discussion:
         instance.discussion = Discussion.objects.create_discussion("ORG")
-
+        instance.save()
 
 #-----------------------------------------------------------------------#
 

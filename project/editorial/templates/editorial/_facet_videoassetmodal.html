@@ -128,8 +128,10 @@
     </div>
   </div>
 
+{% if facet %}
   <script>
     $("#selectvideolibrary").on("show.bs.tab", function (e) {
         $("#videolibrary").load("{% url 'libraryvideo_add' facet=facet.id story=facet.story.id %}")
     })
   </script>
+  {% endif %}

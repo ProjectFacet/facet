@@ -117,9 +117,10 @@
   </div>
 </div>
 
+{% if facet %}
 <script>
   $("#selectaudiolibrary").on("show.bs.tab", function (e) {
       $("#audiolibrary").load("{% url 'libraryaudio_add' facet=facet.id story=facet.story.id %}")
   })
-
 </script>
+{% endif %}

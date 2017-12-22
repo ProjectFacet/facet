@@ -11,6 +11,8 @@ from django.core.urlresolvers import reverse
 from django.utils import timezone
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ValidationError
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 from . import User, Organization, Network, Project, Series, Story
 from .assets import ImageAsset, DocumentAsset, AudioAsset, VideoAsset
@@ -593,6 +595,14 @@ class Facet(models.Model):
     @property
     def type(self):
         return "Facet"
+
+
+@receiver(post_save, sender=Facet)
+def add_discussion(sender, instance, **kwargs):
+    if not instance.discussion:
+        instance.discussion = Discussion.objects.create_discussion("F")
+        instance.save()
+
 
 
 #-----------------------------------------------------------------------#

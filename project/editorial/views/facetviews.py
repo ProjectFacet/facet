@@ -57,6 +57,23 @@ class FacetTemplateUpdateView(UpdateView):
         return super(FacetTemplateUpdateView, self).get_success_url()
 
 
+class FacetPreCreateView(FormView):
+    """First step in creating a facet."""
+
+    form_class = FacetPreCreateForm
+    template_name = "editorial/facet_precreate_form.html"
+
+    def form_valid(self, form):
+        """Redirect to real facet-creation form."""
+
+        template = form.data['template']
+        name = form.cleaned_data['name']
+
+        url = reverse("facet_add",
+                      kwargs={'template_id': template, 'story': self.kwargs['story']})
+        return redirect("{}?name={}".format(url, name))
+
+
 class FacetCreateView(CreateView):
     """Create a facet (dynamically using right template)."""
 
@@ -79,28 +96,9 @@ class FacetCreateView(CreateView):
 
     def get_initial(self):
         """Initial data for form:
-
         - name (optionally, from request data)
         """
-
         return {'name': self.request.GET.get('name', '')}
-
-
-class FacetPreCreateView(FormView):
-    """First step in creating a facet."""
-
-    form_class = FacetPreCreateForm
-    template_name = "editorial/facet_precreate_form.html"
-
-    def form_valid(self, form):
-        """Redirect to real facet-creation form."""
-
-        template = form.data['template']
-        name = form.cleaned_data['name']
-
-        url = reverse("facet_add",
-                      kwargs={'template_id': template, 'story': self.kwargs['story']})
-        return redirect("{}?name={}".format(url, name))
 
 
 class FacetUpdateView(UpdateView):
