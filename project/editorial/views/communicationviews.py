@@ -185,7 +185,7 @@ class CommentCreateView(CreateView):
             action_target = facet
             action.send(self.request.user, verb="posted", action_object=comment, target=action_target)
             # redirect to the associated object
-            return HttpResponseRedirect(reverse('facet_edit', args=(facet.id,)))
+            return HttpResponseRedirect(reverse('facet_edit', args=(facet.story.id, facet.id)))
         elif associated_object == 'task':
             task_id = self.request.POST.get('task')
             task = get_object_or_404(Task, id=task_id)

@@ -16,52 +16,19 @@
 
 
 {% block breadcrumb %}
-
 <div>
     <ol class="breadcrumb icon-angle-right icon-th">
         <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
         <li class="fadeIn"> Content </li>
         <li class="fadeIn"><a href="{% url 'story_list' %}" title="View Story List"> Stories </a></li>
         {% if facet %}
-        <li class="fadeIn"><a href="{% url 'story_detail' facet.story_id %}" title="Go to Story"> {{ facet.story.name }} </li>
-        <li class="fadeIn"><a href="{% url 'facet_edit' pk=facet.id story=facet.story_id %}" title="You are Here"> {{ facet.name }} </li>
-          {% else %}
-        <li class="fadeIn"><a href="{% url 'story_detail' form.instance.story_id %}" title="Go to Story"> {{ form.instance.story.name }} </li>
-          {% endif %}
+          <li class="fadeIn"><a href="{% url 'story_detail' facet.story_id %}" title="Go to Story"> {{ facet.story.name }} </a></li>
+          <li class="fadeIn"><a href="{% url 'facet_edit' pk=facet.id story=facet.story_id %}" title="You are Here"> {{ facet.name }} </a></li>
+        {% else %}
+          <li class="fadeIn"><a href="{% url 'story_detail' form.instance.story_id %}" title="Go to Story"> {{ form.instance.story.name }} </a></li>
+        {% endif %}
     </ol>
 </div>
-
-
-<form class="facet-delete" method="GET"
-      action="{% url 'facet_delete' pk=facet.id story=facet.story.id %}">
-      <!-- onsubmit="return confirm('Do you want to delete this facet?')"> -->
-      {% csrf_token %}
-  <input type="submit" class="btn btn-danger" value="Delete">
-</form>
-
-
-<script>
-  $('.facet-delete input').on('click', function(e) {
-       e.preventDefault();
-                swal({
-                    title: 'Are you sure?',
-                    text: 'You will not be able to recover this story',
-                    type: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!',
-                    closeOnConfirm: true
-                }, function(result) {
-                    if (result) {
-                      $(".facet-delete").attr("method", "POST").submit();
-                    } else {
-                      // do nothing on cancel
-                  }
-                });
-        });
-</script>
-
 {% endblock breadcrumb %}
 
 <!-- ================================================= -->
@@ -75,45 +42,50 @@
 <!-- ================================================= -->
                     <!-- Pseudo TABS -->
 <!-- ================================================= -->
-
+{% comment %}
 <div class="row">
   <div class="col-xs-12">
     <div class="bs-nav-tabs nav-tabs-default m-b-40" id="facettabs">
-      {% comment %}
       <ul class="nav nav-tabs nav-animated-border-from-left nav-tabs-sticky text-center">
-        <li class="nav-item"><a href="{% url 'story_detail' facet.story.id %}"><p class="f-r-14 f-w-300 m-b-0">Story Detail </p></a></li>
+        <li class="nav-item"><a href="{% url 'story_detail' view.kwargs.story %}"><p class="f-r-14 f-w-300 m-b-0">Story Detail </p></a></li>
         <li class="nav-item"><p class="f-r-14 f-w-400 m-b-0 m-l-20 m-r-10"> | </p></li>
         {% for facet in facet.story.facet_set.all %}
         {% if facet.id|stringformat:"s" in request.path %}
-        <li class="nav-item"><a href="{% url 'facet_edit' pk=facet.id story=facet.story %}" class="nav-link active"><p class="f-r-10 f-w-300 m-b-0"> {{ facet.name }} </p></a></li>
+          <li class="nav-item"><a href="{% url 'facet_edit' pk=facet.id story=facet.story.id %}" class="nav-link active"><p class="f-r-10 f-w-300 m-b-0"> {{ facet.name }} </p></a></li>
         {% else %}
-        <li class="nav-item"><a href="{% url 'facet_edit' pk=facet.id story=facet.story %}" class="nav-link"><p class="f-r-10 f-w-300 m-b-0"> {{ facet.name }} </p></a></li>
+          <li class="nav-item"><a href="{% url 'facet_edit' pk=facet.id story=facet.story.id %}" class="nav-link"><p class="f-r-10 f-w-300 m-b-0"> {{ facet.name }} </p></a></li>
         {% endif %}
         {% endfor %}
-        <li class="nav-item"><a href="{% url 'facet_precreate' story=self.id %}"><p class="f-r-12 f-w-300"><i class="fa fa-plus-square" id="menu-plus" aria-hidden="true"></i></p></a></li>
-        {% endcomment %}
+        <li class="nav-item"><a href="{% url 'facet_precreate' view.kwargs.story %}"><p class="f-r-12 f-w-300"><i class="fa fa-plus-square" id="menu-plus" aria-hidden="true"></i></p></a></li>
       </ul>
     </div>
   </div>
 </div>
+{% endcomment %}
 
 <!-- ================================================= -->
                     <!-- CONTENT -->
 <!-- ================================================= -->
 
 <div class="row">
+  <!-- TODO FIND A BETTER PLACE FOR THIS BUTTON -->
+  {% if facet %}
+  <form class="facet-delete" method="GET"
+        action="{% url 'facet_delete' pk=facet.id story=facet.story.id %}">
+        <!-- onsubmit="return confirm('Do you want to delete this facet?')"> -->
+        {% csrf_token %}
+    <input type="submit" class="btn btn-sm btn-danger-100" value="Delete">
+  </form>
+  {% endif %}
   ERRORS={{form.errors}}
     <div class="col-xs-12 col-sm-12 col-md-6 col-lg-10">
 
         <form method="POST" class="post-form">
             {% csrf_token %}
-
             <div class="row">
-
                 <!-- ================================================= -->
                         <!-- BASE FORM FIELDS-->
                 <!-- ================================================= -->
-
                 <!-- Left column -->
                 <div class="col-xs-12 col-sm-12 col-md-2 col-lg-3">
                     <p class="f-r-12 f-w-300">Details</p>
@@ -522,7 +494,6 @@
                         <!-- DISCUSSION -->
         <!-- ================================================= -->
 
-{% comment %}
         <!-- Facet Discussion -->
         <p class="f-r-12 f-w-300">Discussion</p>
         {% with view.facet_discussion as discussion %}
@@ -568,7 +539,7 @@
             </div>
         </div>
         {% endwith %}
-{% endcomment %}
+
         <!-- Facet Edit History -->
         <p class="f-r-12 f-w-300 m-t-20">Edit History</p>
 
@@ -617,6 +588,28 @@
         }
     }
   });
+</script>
+
+<script>
+  $('.facet-delete input').on('click', function(e) {
+       e.preventDefault();
+                swal({
+                    title: 'Are you sure?',
+                    text: 'You will not be able to recover this story',
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!',
+                    closeOnConfirm: true
+                }, function(result) {
+                    if (result) {
+                      $(".facet-delete").attr("method", "POST").submit();
+                    } else {
+                      // do nothing on cancel
+                  }
+                });
+        });
 </script>
 
 

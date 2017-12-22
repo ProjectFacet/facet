@@ -153,7 +153,7 @@ def send_network_invite(request):
 
     # on Priv?essage, add field for .org_invite_id
     # on message render view:   {% if msg.org_invite_id %} <form...> {% csrf_Except %} ... </form>
-    
+
 
 @csrf_exempt
 def confirm_network_invite(request):
@@ -214,6 +214,21 @@ class NetworkStoryListView(ListView):
         networkstories = set(shared_networkstories)
 
         return networkstories
+
+
+# class CopyNetworkStory(FormView):
+#     """Copy a story and related facets.
+#
+#     TODO Needs to let user select story and facets/assets for copying.
+#     """
+#
+#     original_org = original_story.organization
+#     original_story = get_object_or_404(Story, pk=pk)
+#     original_facets = original_story.facet_set.all()
+#
+
+
+
 
 
 def copy_network_story(request, pk):
