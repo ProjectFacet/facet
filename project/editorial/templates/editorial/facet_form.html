@@ -592,22 +592,22 @@
 <script>
   $('.facet-delete input').on('click', function(e) {
        e.preventDefault();
-                swal({
-                    title: 'Are you sure?',
-                    text: 'You will not be able to recover this story',
-                    type: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!',
-                    closeOnConfirm: true
-                }, function(result) {
-                    if (result) {
-                      $(".facet-delete").attr("method", "POST").submit();
-                    } else {
-                      // do nothing on cancel
-                  }
-                });
+          swal({
+              title: 'Are you sure?',
+              text: 'You will not be able to recover this facet.',
+              type: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Yes, delete it!',
+              closeOnConfirm: true
+          }, function(result) {
+              if (result) {
+                $(".facet-delete").attr("method", "POST").submit();
+              } else {
+                // do nothing on cancel
+            }
+          });
         });
 </script>
 

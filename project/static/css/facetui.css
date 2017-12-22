@@ -396,3 +396,8 @@ img.image-center {
 #djDebug [hidden][style='display: none;'] {
     display: none !important;
 }
+
+
+.chosen-container {
+    min-width: 100% !important;
+}

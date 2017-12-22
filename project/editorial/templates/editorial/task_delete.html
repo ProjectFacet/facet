@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load bootstrap3 %}
+
+{% block head %}
+{{ form.media }}
+{% endblock %}
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+<!--             BREADCRUMB NAVIGATION                 -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
+{% block breadcrumb %}
+<div>
+  <ol class="breadcrumb icon-angle-right icon-th">
+    <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
+    <li class="fadeIn"> Content</li>
+    {% if task.project %}
+    <li class="fadeIn"><a href="{% url 'project_list' %}" title="Go to Project List"> Projects </a></li>
+    <li class="fadeIn"><a href="{% url 'project_detail' pk=task.project.id %}" title="Go to {{task.project.name}}"> {{task.project.name}} </a></li>
+    <li class="fadeIn"><a href="{% url 'project_task_list' pk=task.project.id %}" title="Go to {{task.project.name}} Tasks"> Tasks </a></li>
+    <li class="fadeIn"> {{ task.name }}</li>
+    <li class="fadeIn"> Delete </li>
+    {% elif task.series %}
+    <li class="fadeIn"><a href="{% url 'series_list' %}" title="Go to Series List"> Series </a></li>
+    <li class="fadeIn"><a href="{% url 'series_detail' pk=task.series.id %}" title="Go to {{task.series.name}}"> {{task.series.name}} </a></li>
+    <li class="fadeIn"><a href="{% url 'series_task_list' pk=task.series.id %}" title="Go to {{task.series.name}} Tasks"> Tasks </a></li>
+    <li class="fadeIn"> {{ task.name }}</li>
+    <li class="fadeIn"> Delete </li>
+    {% elif task.story %}
+    <li class="fadeIn"><a href="{% url 'story_list' %}" title="Go to Story List"> Stories </a></li>
+    <li class="fadeIn"><a href="{% url 'story_detail' pk=task.story.id %}" title="Go to {{task.story.name}}"> {{task.story.name}} </a></li>
+    <li class="fadeIn"><a href="{% url 'story_task_list' pk=task.story.id %}" title="Go to {{task.story.name}} Tasks"> Tasks </a></li>
+    <li class="fadeIn"> {{ task.name }}</li>
+    <li class="fadeIn"> Delete </li>
+    {% elif task.event %}
+    <li class="fadeIn"><a href="{% url 'event_list' %}" title="Go to Event List"> Events </a></li>
+    <li class="fadeIn"><a href="{% url 'event_detail' pk=task.event.id %}" title="Go to {{task.event.name}}"> {{task.event.name}} </a></li>
+    <li class="fadeIn"><a href="{% url 'event_task_list' pk=task.event.id %}" title="Go to {{task.event.name}} Tasks"> Tasks </a></li>
+    <li class="fadeIn"> {{ task.name }}</li>
+    <li class="fadeIn"> Delete </li>
+    {% endif %}
+  </ol>
+</div>
+{% endblock breadcrumb %}
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+<!--                   Main Section                    -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
+{% block content %}
+
+
+<!-- ================================================= -->
+<!-- CONTENT -->
+<!-- ================================================= -->
+
+<h1>{{ task }} </h1>
+
+<form method="POST" class="post-form">
+  {% csrf_token %}
+  <input type="submit" value="Delete">
+</form>
+
+{% endblock content %}

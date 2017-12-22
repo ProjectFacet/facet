@@ -2,6 +2,7 @@
 
 {% load i18n %}
 {% load bootstrap3 %}
+{% load staticfiles %}
 
 <!-------------------------------------------->
 <!--      BREADCRUMB NAVIGATION             -->
@@ -167,6 +168,7 @@
                   {% for task in series_tasks %}
                     {% if task.status == "Identified"  %}
                     <div class="media">
+                        <a href="{% url 'task_detail' task.id %}" title="View more detail">
                         <div class="media-body">
                             <h5 class="media-heading">
                               {% if task.important == True %}
@@ -179,6 +181,7 @@
                             <p class="f-s-14">{{ task.text|truncatechars:150 }}</p>
                             <p class="color-warning-300 f-s-12 m-t-10">Due: {{ task.due_date|date:'D, N j, g:i a' }}</p>
                         </div>
+                        </a>
                         {% for user in task.assigned_to.all %}
                           {% if user.display_photo %}
                             <a href="{% url 'user_detail' user.id %}" title="See user profile"><img class="img-circle w-40 h-40 m-t-10" src="{{ user.display_photo.url }}" alt="user"></a>
@@ -199,6 +202,7 @@
                   {% for task in series_tasks %}
                     {% if task.status == "In Progress"  %}
                     <div class="media">
+                        <a href="{% url 'task_detail' task.id %}" title="View more detail">
                         <div class="media-body">
                             <h5 class="media-heading">
                               {% if task.important == True %}
@@ -211,6 +215,7 @@
                             <p class="f-s-14">{{ task.text|truncatechars:150 }}</p>
                             <p class="color-primary-500 f-s-12 m-t-10">Due: {{ task.due_date|date:'D, N j, g:i a' }}</p>
                         </div>
+                        </a>
                         {% for user in task.assigned_to.all %}
                           {% if user.display_photo %}
                             <a href="{% url 'user_detail' user.id %}" title="See user profile"><img class="img-circle w-40 h-40 m-t-10" src="{{ user.display_photo.url }}" alt="user"></a>
@@ -232,6 +237,7 @@
                   {% for task in series_tasks %}
                     {% if task.status == "Complete"  %}
                     <div class="media">
+                        <a href="{% url 'task_detail' task.id %}" title="View more detail">
                         <div class="media-body">
                             <h5 class="media-heading">
                               {% if task.important == True %}
@@ -244,6 +250,7 @@
                             <p class="f-s-14">{{ task.text|truncatechars:150 }}</p>
                             <p class="color-success-300 f-s-12 m-t-10">Due: {{ task.due_date|date:'D, N j, g:i a' }}</p>
                         </div>
+                        </a>
                         {% for user in task.assigned_to.all %}
                           {% if user.display_photo %}
                             <a href="{% url 'user_detail' user.id %}" title="See user profile"><img class="img-circle w-40 h-40 m-t-10" src="{{ user.display_photo.url }}" alt="user"></a>
@@ -273,9 +280,10 @@
         <div class="activity-widget-5">
             <div class="row">
                 <div class="col-xs-12 bs-media" id="board-1">
-                  {% for task in story_tasks %}
+                  {% for task in tasks %}
                     {% if task.status == "Identified"  %}
                     <div class="media">
+                        <a href="{% url 'task_detail' task.id %}" title="View more detail">
                         <div class="media-body">
                             <h5 class="media-heading">
                               {% if task.important == True %}
@@ -288,6 +296,7 @@
                             <p class="f-s-14">{{ task.text|truncatechars:150 }}</p>
                             <p class="color-warning-300 f-s-12 m-t-10">Due: {{ task.due_date|date:'D, N j, g:i a' }}</p>
                         </div>
+                        </a>
                         {% for user in task.assigned_to.all %}
                           {% if user.display_photo %}
                             <a href="{% url 'user_detail' user.id %}" title="See user profile"><img class="img-circle w-40 h-40 m-t-10" src="{{ user.display_photo.url }}" alt="user"></a>
@@ -305,9 +314,10 @@
         <div class="activity-widget-5">
             <div class="row">
                 <div class="col-xs-12 bs-media" id="board-2">
-                  {% for task in story_tasks %}
+                  {% for task in tasks %}
                     {% if task.status == "In Progress"  %}
                     <div class="media">
+                        <a href="{% url 'task_detail' task.id %}" title="View more detail">
                         <div class="media-body">
                             <h5 class="media-heading">
                               {% if task.important == True %}
@@ -320,6 +330,7 @@
                             <p class="f-s-14">{{ task.text|truncatechars:150 }}</p>
                             <p class="color-primary-500 f-s-12 m-t-10">Due: {{ task.due_date|date:'D, N j, g:i a' }}</p>
                         </div>
+                        </a>
                         {% for user in task.assigned_to.all %}
                           {% if user.display_photo %}
                             <a href="{% url 'user_detail' user.id %}" title="See user profile"><img class="img-circle w-40 h-40 m-t-10" src="{{ user.display_photo.url }}" alt="user"></a>
@@ -338,9 +349,10 @@
         <div class="activity-widget-5">
             <div class="row">
                 <div class="col-xs-12 bs-media" id="board-3">
-                  {% for task in story_tasks %}
+                  {% for task in tasks %}
                     {% if task.status == "Complete"  %}
                     <div class="media">
+                        <a href="{% url 'task_detail' task.id %}" title="View more detail">
                         <div class="media-body">
                             <h5 class="media-heading">
                               {% if task.important == True %}
@@ -353,6 +365,7 @@
                             <p class="f-s-14">{{ task.text|truncatechars:150 }}</p>
                             <p class="color-success-300 f-s-12 m-t-10">Due: {{ task.due_date|date:'D, N j, g:i a' }}</p>
                         </div>
+                        </a>
                         {% for user in task.assigned_to.all %}
                           {% if user.display_photo %}
                             <a href="{% url 'user_detail' user.id %}" title="See user profile"><img class="img-circle w-40 h-40 m-t-10" src="{{ user.display_photo.url }}" alt="user"></a>
@@ -385,6 +398,7 @@
                   {% for task in event_tasks %}
                     {% if task.status == "Identified"  %}
                     <div class="media">
+                        <a href="{% url 'task_detail' task.id %}" title="View more detail">
                         <div class="media-body">
                             <h5 class="media-heading">
                               {% if task.important == True %}
@@ -397,6 +411,7 @@
                             <p class="f-s-14">{{ task.text|truncatechars:150 }}</p>
                             <p class="color-warning-300 f-s-12 m-t-10">Due: {{ task.due_date|date:'D, N j, g:i a' }}</p>
                         </div>
+                        </a>
                         {% for user in task.assigned_to.all %}
                           {% if user.display_photo %}
                             <a href="{% url 'user_detail' user.id %}" title="See user profile"><img class="img-circle w-40 h-40 m-t-10" src="{{ user.display_photo.url }}" alt="user"></a>
@@ -417,6 +432,7 @@
                   {% for task in event_tasks %}
                     {% if task.status == "In Progress"  %}
                     <div class="media">
+                        <a href="{% url 'task_detail' task.id %}" title="View more detail">
                         <div class="media-body">
                             <h5 class="media-heading">
                               {% if task.important == True %}
@@ -429,6 +445,7 @@
                             <p class="f-s-14">{{ task.text|truncatechars:150 }}</p>
                             <p class="color-primary-500 f-s-12 m-t-10">Due: {{ task.due_date|date:'D, N j, g:i a' }}</p>
                         </div>
+                        </a>
                         {% for user in task.assigned_to.all %}
                           {% if user.display_photo %}
                             <a href="{% url 'user_detail' user.id %}" title="See user profile"><img class="img-circle w-40 h-40 m-t-10" src="{{ user.display_photo.url }}" alt="user"></a>
@@ -450,6 +467,7 @@
                   {% for task in event_tasks %}
                     {% if task.status == "Complete"  %}
                     <div class="media">
+                        <a href="{% url 'task_detail' task.id %}" title="View more detail">
                         <div class="media-body">
                             <h5 class="media-heading">
                               {% if task.important == True %}
@@ -462,6 +480,7 @@
                             <p class="f-s-14">{{ task.text|truncatechars:150 }}</p>
                             <p class="color-success-300 f-s-12 m-t-10">Due: {{ task.due_date|date:'D, N j, g:i a' }}</p>
                         </div>
+                        </a>
                         {% for user in task.assigned_to.all %}
                           {% if user.display_photo %}
                             <a href="{% url 'user_detail' user.id %}" title="See user profile"><img class="img-circle w-40 h-40 m-t-10" src="{{ user.display_photo.url }}" alt="user"></a>
@@ -478,8 +497,6 @@
 
   </div>
 {% endif %}
-
-
 
 <script>
 $(".chosen-select").chosen()
@@ -508,61 +525,66 @@ $(".chosen-select").chosen()
             <div class="modal-body">
               <form action="{% url 'task_new' %}" method="POST" class="post-form">
               {% csrf_token %}
-
+              <div class="row">
+                <div class="col-xs-9">
+                  <!-- Name -->
+                  <fieldset class="form-group m-b-10">
+                    {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.name.label_tag }}</label>{% endcomment %}
+                    {{ form.name }}
+                    {% if form.name.errors %}
+                      <small class="text-muted">{{ form.name.errors }}</small>
+                    {% endif %}
+                  </fieldset>
+                </div>
+                <div class="col-xs-3">
+                  <!-- Importance -->
+                  <fieldset class="form-check m-b-10">
+                    <label class="f-s-12 f-s-400 spread-01 slim-margin">{{ form.important.label_tag }}</label>
+                    {{ form.important }}
+                    {% if form.important.errors %}
+                      <small class="text-muted">{{ form.important.errors }}</small>
+                    {% endif %}
+                  </fieldset>
+                </div>
+              </div>
               <div class="row">
                 <div class="col-xs-12">
-                      <!-- Name -->
-                      <fieldset class="form-group m-b-10">
-                        {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ taskform.name.label_tag }}</label>{% endcomment %}
-                        {{ taskform.name }}
-                        {% if taskform.name.errors %}
-                          <small class="text-muted">{{ taskform.name.errors }}</small>
-                        {% endif %}
-                      </fieldset>
                       <!-- Details -->
                       <fieldset class="form-group m-b-10">
-                        {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ taskform.text.label_tag }}</label>{% endcomment %}
-                        {{ taskform.text }}
-                        {% if taskform.text.errors %}
-                          <small class="text-muted">{{ taskform.text.errors }}</small>
+                        {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.text.label_tag }}</label>{% endcomment %}
+                        {{ form.text }}
+                        {% if form.text.errors %}
+                          <small class="text-muted">{{ form.text.errors }}</small>
+                        {% endif %}
+                      </fieldset>
+                      <!-- Assigned To -->
+                      <fieldset class="form-group m-b-10">
+                        {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.assigned_to.label_tag }}</label>{% endcomment %}
+                        {{ form.assigned_to }}
+                        {% if form.assigned_to.errors %}
+                          <small class="text-muted">{{ form.assigned_to.errors }}</small>
                         {% endif %}
                       </fieldset>
                 </div>
               </div>
               <div class="row">
                 <div class="col-xs-12 col-md-6">
-                    <!-- Importance -->
-                    <fieldset class="form-check m-b-10">
-                      <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ taskform.important.label_tag }}</label>
-                      {{ taskform.important }}
-                      {% if taskform.important.errors %}
-                        <small class="text-muted">{{ taskform.important.errors }}</small>
-                      {% endif %}
-                    </fieldset>
                     <!-- Due Date -->
                     <fieldset class="form-group m-b-10">
-                      <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ taskform.due_date.label_tag }}</label>
-                      {{ taskform.due_date }}
-                      {% if taskform.due_date.errors %}
-                        <small class="text-muted">{{ taskform.due_date.errors }}</small>
+                      <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.due_date.label_tag }}</label>
+                      {{ form.due_date }}
+                      {% if form.due_date.errors %}
+                        <small class="text-muted">{{ form.due_date.errors }}</small>
                       {% endif %}
                     </fieldset>
                 </div>
                 <div class="col-xs-12 col-md-6">
-                    <!-- Assigned To -->
-                    <fieldset class="form-group m-b-10">
-                      {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ taskform.assigned_to.label_tag }}</label>{% endcomment %}
-                      {{ taskform.assigned_to }}
-                      {% if taskform.assigned_to.errors %}
-                        <small class="text-muted">{{ taskform.assigned_to.errors }}</small>
-                      {% endif %}
-                    </fieldset>
                     <!-- Status -->
                     <fieldset class="form-group m-b-10">
-                      <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ taskform.status.label_tag }}</label>
-                      {{ taskform.status }}
-                      {% if taskform.status.errors %}
-                        <small class="text-muted">{{ taskform.status.errors }}</small>
+                      <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.status.label_tag }}</label>
+                      {{ form.status }}
+                      {% if form.status.errors %}
+                        <small class="text-muted">{{ form.status.errors }}</small>
                       {% endif %}
                     </fieldset>
                 </div>
@@ -597,17 +619,30 @@ $(".chosen-select").chosen()
             <div class="modal-body">
               <form action="{% url 'task_new' %}" method="POST" class="post-form">
               {% csrf_token %}
-
+              <div class="row">
+                <div class="col-xs-9">
+                  <!-- Name -->
+                  <fieldset class="form-group m-b-10">
+                    {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.name.label_tag }}</label>{% endcomment %}
+                    {{ form.name }}
+                    {% if form.name.errors %}
+                      <small class="text-muted">{{ form.name.errors }}</small>
+                    {% endif %}
+                  </fieldset>
+                </div>
+                <div class="col-xs-3">
+                  <!-- Importance -->
+                  <fieldset class="form-check m-b-10">
+                    <label class="f-s-12 f-s-400 spread-01 slim-margin">{{ form.important.label_tag }}</label>
+                    {{ form.important }}
+                    {% if form.important.errors %}
+                      <small class="text-muted">{{ form.important.errors }}</small>
+                    {% endif %}
+                  </fieldset>
+                </div>
+              </div>
               <div class="row">
                 <div class="col-xs-12">
-                      <!-- Name -->
-                      <fieldset class="form-group m-b-10">
-                        {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.name.label_tag }}</label>{% endcomment %}
-                        {{ form.name }}
-                        {% if form.name.errors %}
-                          <small class="text-muted">{{ form.name.errors }}</small>
-                        {% endif %}
-                      </fieldset>
                       <!-- Details -->
                       <fieldset class="form-group m-b-10">
                         {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.text.label_tag }}</label>{% endcomment %}
@@ -616,18 +651,18 @@ $(".chosen-select").chosen()
                           <small class="text-muted">{{ form.text.errors }}</small>
                         {% endif %}
                       </fieldset>
+                      <!-- Assigned To -->
+                      <fieldset class="form-group m-b-10">
+                        {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.assigned_to.label_tag }}</label>{% endcomment %}
+                        {{ form.assigned_to }}
+                        {% if form.assigned_to.errors %}
+                          <small class="text-muted">{{ form.assigned_to.errors }}</small>
+                        {% endif %}
+                      </fieldset>
                 </div>
               </div>
               <div class="row">
                 <div class="col-xs-12 col-md-6">
-                    <!-- Importance -->
-                    <fieldset class="form-check m-b-10">
-                      <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.important.label_tag }}</label>
-                      {{ form.important }}
-                      {% if form.important.errors %}
-                        <small class="text-muted">{{ form.important.errors }}</small>
-                      {% endif %}
-                    </fieldset>
                     <!-- Due Date -->
                     <fieldset class="form-group m-b-10">
                       <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.due_date.label_tag }}</label>
@@ -638,14 +673,6 @@ $(".chosen-select").chosen()
                     </fieldset>
                 </div>
                 <div class="col-xs-12 col-md-6">
-                    <!-- Assigned To -->
-                    <fieldset class="form-group m-b-10">
-                      {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.assigned_to.label_tag }}</label>{% endcomment %}
-                      {{ form.assigned_to }}
-                      {% if form.assigned_to.errors %}
-                        <small class="text-muted">{{ form.assigned_to.errors }}</small>
-                      {% endif %}
-                    </fieldset>
                     <!-- Status -->
                     <fieldset class="form-group m-b-10">
                       <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.status.label_tag }}</label>
@@ -686,17 +713,30 @@ $(".chosen-select").chosen()
             <div class="modal-body">
               <form action="{% url 'task_new' %}" method="POST" class="post-form">
               {% csrf_token %}
-
+              <div class="row">
+                <div class="col-xs-9">
+                  <!-- Name -->
+                  <fieldset class="form-group m-b-10">
+                    {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.name.label_tag }}</label>{% endcomment %}
+                    {{ form.name }}
+                    {% if form.name.errors %}
+                      <small class="text-muted">{{ form.name.errors }}</small>
+                    {% endif %}
+                  </fieldset>
+                </div>
+                <div class="col-xs-3">
+                  <!-- Importance -->
+                  <fieldset class="form-check m-b-10">
+                    <label class="f-s-12 f-s-400 spread-01 slim-margin">{{ form.important.label_tag }}</label>
+                    {{ form.important }}
+                    {% if form.important.errors %}
+                      <small class="text-muted">{{ form.important.errors }}</small>
+                    {% endif %}
+                  </fieldset>
+                </div>
+              </div>
               <div class="row">
                 <div class="col-xs-12">
-                      <!-- Name -->
-                      <fieldset class="form-group m-b-10">
-                        {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.name.label_tag }}</label>{% endcomment %}
-                        {{ form.name }}
-                        {% if form.name.errors %}
-                          <small class="text-muted">{{ form.name.errors }}</small>
-                        {% endif %}
-                      </fieldset>
                       <!-- Details -->
                       <fieldset class="form-group m-b-10">
                         {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.text.label_tag }}</label>{% endcomment %}
@@ -705,18 +745,18 @@ $(".chosen-select").chosen()
                           <small class="text-muted">{{ form.text.errors }}</small>
                         {% endif %}
                       </fieldset>
+                      <!-- Assigned To -->
+                      <fieldset class="form-group m-b-10">
+                        {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.assigned_to.label_tag }}</label>{% endcomment %}
+                        {{ form.assigned_to }}
+                        {% if form.assigned_to.errors %}
+                          <small class="text-muted">{{ form.assigned_to.errors }}</small>
+                        {% endif %}
+                      </fieldset>
                 </div>
               </div>
               <div class="row">
                 <div class="col-xs-12 col-md-6">
-                    <!-- Importance -->
-                    <fieldset class="form-check m-b-10">
-                      <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.important.label_tag }}</label>
-                      {{ form.important }}
-                      {% if form.important.errors %}
-                        <small class="text-muted">{{ form.important.errors }}</small>
-                      {% endif %}
-                    </fieldset>
                     <!-- Due Date -->
                     <fieldset class="form-group m-b-10">
                       <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.due_date.label_tag }}</label>
@@ -727,14 +767,6 @@ $(".chosen-select").chosen()
                     </fieldset>
                 </div>
                 <div class="col-xs-12 col-md-6">
-                    <!-- Assigned To -->
-                    <fieldset class="form-group m-b-10">
-                      {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.assigned_to.label_tag }}</label>{% endcomment %}
-                      {{ form.assigned_to }}
-                      {% if form.assigned_to.errors %}
-                        <small class="text-muted">{{ form.assigned_to.errors }}</small>
-                      {% endif %}
-                    </fieldset>
                     <!-- Status -->
                     <fieldset class="form-group m-b-10">
                       <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.status.label_tag }}</label>
@@ -775,17 +807,30 @@ $(".chosen-select").chosen()
             <div class="modal-body">
               <form action="{% url 'task_new' %}" method="POST" class="post-form">
               {% csrf_token %}
-
+              <div class="row">
+                <div class="col-xs-9">
+                  <!-- Name -->
+                  <fieldset class="form-group m-b-10">
+                    {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.name.label_tag }}</label>{% endcomment %}
+                    {{ form.name }}
+                    {% if form.name.errors %}
+                      <small class="text-muted">{{ form.name.errors }}</small>
+                    {% endif %}
+                  </fieldset>
+                </div>
+                <div class="col-xs-3">
+                  <!-- Importance -->
+                  <fieldset class="form-check m-b-10">
+                    <label class="f-s-12 f-s-400 spread-01 slim-margin">{{ form.important.label_tag }}</label>
+                    {{ form.important }}
+                    {% if form.important.errors %}
+                      <small class="text-muted">{{ form.important.errors }}</small>
+                    {% endif %}
+                  </fieldset>
+                </div>
+              </div>
               <div class="row">
                 <div class="col-xs-12">
-                      <!-- Name -->
-                      <fieldset class="form-group m-b-10">
-                        {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.name.label_tag }}</label>{% endcomment %}
-                        {{ form.name }}
-                        {% if form.name.errors %}
-                          <small class="text-muted">{{ form.name.errors }}</small>
-                        {% endif %}
-                      </fieldset>
                       <!-- Details -->
                       <fieldset class="form-group m-b-10">
                         {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.text.label_tag }}</label>{% endcomment %}
@@ -794,18 +839,18 @@ $(".chosen-select").chosen()
                           <small class="text-muted">{{ form.text.errors }}</small>
                         {% endif %}
                       </fieldset>
+                      <!-- Assigned To -->
+                      <fieldset class="form-group m-b-10">
+                        {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.assigned_to.label_tag }}</label>{% endcomment %}
+                        {{ form.assigned_to }}
+                        {% if form.assigned_to.errors %}
+                          <small class="text-muted">{{ form.assigned_to.errors }}</small>
+                        {% endif %}
+                      </fieldset>
                 </div>
               </div>
               <div class="row">
                 <div class="col-xs-12 col-md-6">
-                    <!-- Importance -->
-                    <fieldset class="form-check m-b-10">
-                      <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.important.label_tag }}</label>
-                      {{ form.important }}
-                      {% if form.important.errors %}
-                        <small class="text-muted">{{ form.important.errors }}</small>
-                      {% endif %}
-                    </fieldset>
                     <!-- Due Date -->
                     <fieldset class="form-group m-b-10">
                       <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.due_date.label_tag }}</label>
@@ -816,14 +861,6 @@ $(".chosen-select").chosen()
                     </fieldset>
                 </div>
                 <div class="col-xs-12 col-md-6">
-                    <!-- Assigned To -->
-                    <fieldset class="form-group m-b-10">
-                      {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.assigned_to.label_tag }}</label>{% endcomment %}
-                      {{ form.assigned_to }}
-                      {% if form.assigned_to.errors %}
-                        <small class="text-muted">{{ form.assigned_to.errors }}</small>
-                      {% endif %}
-                    </fieldset>
                     <!-- Status -->
                     <fieldset class="form-group m-b-10">
                       <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.status.label_tag }}</label>

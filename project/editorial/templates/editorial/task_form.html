@@ -21,13 +21,23 @@
           {% elif task.series %}
           <li class="fadeIn"><a href="{% url 'series_list' %}" title="Go to Series List"> Series </a></li>
           <li class="fadeIn"><a href="{% url 'series_detail' pk=task.series.id %}" title="Go to {{task.series.name}}"> {{task.series.name}} </a></li>
+          <li class="fadeIn"><a href="{% url 'series_task_list' pk=task.series.id %}" title="Go to {{task.series.name}} Tasks"> Tasks </a></li>
+          <li class="fadeIn"> {{ task.name }}</li>
+          <li class="fadeIn"> Update</li>
           {% elif task.story %}
           <li class="fadeIn"><a href="{% url 'story_list' %}" title="Go to Story List"> Stories </a></li>
           <li class="fadeIn"><a href="{% url 'story_detail' pk=task.story.id %}" title="Go to {{task.story.name}}"> {{task.story.name}} </a></li>
+          <li class="fadeIn"><a href="{% url 'story_task_list' pk=task.story.id %}" title="Go to {{task.story.name}} Tasks"> Tasks </a></li>
+          <li class="fadeIn"> {{ task.name }}</li>
+          <li class="fadeIn"> Update</li>
           {% elif task.event %}
           <li class="fadeIn"><a href="{% url 'event_list' %}" title="Go to Event List"> Events </a></li>
           <li class="fadeIn"><a href="{% url 'event_detail' pk=task.event.id %}" title="Go to {{task.event.name}}"> {{task.event.name}} </a></li>
+          <li class="fadeIn"><a href="{% url 'event_task_list' pk=task.event.id %}" title="Go to {{task.event.name}} Tasks"> Tasks </a></li>
+          <li class="fadeIn"> {{ task.name }}</li>
+          <li class="fadeIn"> Update</li>
           {% endif %}
+
         {% else %}
         <li class="fadeIn"> New Task</li>
         {% endif %}
@@ -203,7 +213,16 @@
   </form>
 </div>
 <!-- End of form -->
-
+<div class="row">
+  <div class="col-xs-12">
+    <form class="task-delete" method="GET"
+          action="{% url 'task_delete' pk=task.id %}">
+          <!-- onsubmit="return confirm('Do you want to delete this task?')"> -->
+          {% csrf_token %}
+      <input type="submit" class="btn btn-sm btn-danger-100" value="Delete">
+    </form>
+  </div>
+</div>
 <div class="row m-t-20">
   <div class="col-xs-12 col-md-6 col-lg-4">
     <h5>Discussion</h5>
@@ -216,11 +235,6 @@
   </div>
 </div>
 
-<script>
-$(".chosen-select").chosen()
-</script>
-
-
 
 <!-- ================================================= -->
 <!-- ================================================= -->
@@ -228,7 +242,31 @@ $(".chosen-select").chosen()
 <!-- ================================================= -->
 <!-- ================================================= -->
 
+<script>
+$(".chosen-select").chosen()
+</script>
 
+<script>
+  $('.task-delete input').on('click', function(e) {
+       e.preventDefault();
+          swal({
+              title: 'Are you sure?',
+              text: 'You will not be able to recover this task.',
+              type: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Yes, delete it!',
+              closeOnConfirm: true
+          }, function(result) {
+              if (result) {
+                $(".task-delete").attr("method", "POST").submit();
+              } else {
+                // do nothing on cancel
+            }
+          });
+        });
+</script>
 
 
 {% endblock %}

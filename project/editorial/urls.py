@@ -220,10 +220,11 @@ urlpatterns = [
     #----------------------------------------------------------------------#
     url(r'^task/new/$', taskviews.TaskCreateView.as_view(), name='task_new'),
     url(r'^task/(?P<pk>[0-9]+)/$', taskviews.TaskUpdateView.as_view(), name='task_detail'),
-    url(r'^project/(?P<pk>[0-9]+)/tasks/$', taskviews.ProjectTaskTemplateView.as_view(), name='project_task_list'),
-    url(r'^series/(?P<pk>[0-9]+)/tasks/$', taskviews.SeriesTaskTemplateView.as_view(), name='series_task_list'),
-    url(r'^story/(?P<pk>[0-9]+)/tasks/$', taskviews.StoryTaskTemplateView.as_view(), name='story_task_list'),
-    url(r'^event/(?P<pk>[0-9]+)/tasks/$', taskviews.EventTaskTemplateView.as_view(), name='event_task_list'),
+    url(r'^task/(?P<pk>[0-9]+)/delete/$', taskviews.TaskDeleteView.as_view(), name='task_delete'),
+    url(r'^project/(?P<pk>[0-9]+)/tasks/$', taskviews.ProjectTaskView.as_view(), name='project_task_list'),
+    url(r'^series/(?P<pk>[0-9]+)/tasks/$', taskviews.SeriesTaskView.as_view(), name='series_task_list'),
+    url(r'^story/(?P<pk>[0-9]+)/tasks/$', taskviews.StoryTaskView.as_view(), name='story_task_list'),
+    url(r'^event/(?P<pk>[0-9]+)/tasks/$', taskviews.EventTaskView.as_view(), name='event_task_list'),
     #----------------------------------------------------------------------#
     #   Event URLS
     #----------------------------------------------------------------------#

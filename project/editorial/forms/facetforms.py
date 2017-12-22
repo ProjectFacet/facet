@@ -78,17 +78,15 @@ def get_facet_form_for_template(template_id):
                 self.instance.organization = organization
 
             # limit to org users or users or a collaborating organization (done via model method)
-
             self.fields['credit'].queryset = self.instance.story.get_story_team_vocab()
             self.fields['editor'].queryset = self.instance.story.get_story_team_vocab()
 
-            # FIXME if form template doesn't include content_license or produceer, the following causes key errors
             if 'content_license' in self.fields:
                 self.fields['content_license'].queryset = ContentLicense.objects.filter(Q(organization=self.instance.story.organization) | Q(organization__isnull=True))
-            # self.fields['producer'].queryset = self.story.get_story_team_vocab()
-            # set empty label
-            # self.fields['content_license'].empty_label='Select a license'
-            # self.fields['producer'].empty_label='Select a producer'
+                self.fields['content_license'].empty_label='Select a license'
+            if 'producer' in self.fields:
+                self.fields['producer'].queryset = self.instance.story.get_story_team_vocab()
+                self.fields['producer'].empty_label='Select a producer'
 
         due_edit = forms.DateTimeField(
             required=False,
