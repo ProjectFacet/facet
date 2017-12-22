@@ -16,6 +16,7 @@ django-chosen==0.1
 django-datetime-widget==0.9.3
 django-debug-toolbar==1.4
 django-embed-video==1.1.2
+django-extra-views==0.9.0
 django-filebrowser==3.6.1
 django-filter==0.11.0
 django-grappelli==2.7.1

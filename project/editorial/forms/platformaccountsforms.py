@@ -1,11 +1,12 @@
 """Forms for Platform Accounts and related entities.
 
 """
+from django.db.models import Q
 
 from .customwidgets import ArrayFieldSelectMultiple
 from django import forms
-from django.forms import TextInput, Select
-from django.forms import BaseFormSet, modelformset_factory
+from django.forms import TextInput, Select, HiddenInput
+from django.forms import modelformset_factory
 
 from editorial.models import (
     Project,
@@ -24,9 +25,14 @@ class PlatformAccountForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         """Handle passing of org/user info into form."""
 
-        org = kwargs.pop('organization', None)
-        user = kwargs.pop('user', None)
         super(PlatformAccountForm, self).__init__(*args, **kwargs)
+
+        # Handle case of existing record (get from instance) or new, blank record
+
+        if 'instance' in kwargs:
+            org = kwargs['instance'].organization
+        else:
+            org = kwargs['initial']['organization']
 
         if org:
             # limit team to org users
@@ -38,16 +44,18 @@ class PlatformAccountForm(forms.ModelForm):
     class Meta:
         model = PlatformAccount
         fields = [
+            'id',
+            'user',
             'name',
             'platform',
             'url',
             'description',
             'team',
-            'user',
             'organization',
             'project',
         ]
         widgets = {
+            'id': HiddenInput(),
             'name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Name'}),
             'platform': Select(attrs={'class': 'c-select', 'id': 'account-platform'}),
             'url': TextInput(attrs={'class': 'form-control', 'placeholder': 'URL'}),
@@ -56,11 +64,10 @@ class PlatformAccountForm(forms.ModelForm):
             'team': ArrayFieldSelectMultiple(
                 attrs={'class': 'chosen-select', 'id': 'share-with',
                        'data-placeholder': 'Select Team'}),
-            'user': Select(attrs={'class': 'c-select', 'id': 'account-user'}),
-            'organization': Select(attrs={'class': 'c-select', 'id': 'account-organization'}),
+            'user': HiddenInput(),
+            'organization': HiddenInput(),
             'project': Select(attrs={'class': 'c-select', 'id': 'account-project'}),
         }
 
-PlatformAccountFormSet = modelformset_factory(PlatformAccount, form=PlatformAccountForm)
 
-# PlatformAccountFormSet = modelformset_factory(PlatformAccount, fields=['name'])
+PlatformAccountFormSet = modelformset_factory(PlatformAccount, form=PlatformAccountForm)

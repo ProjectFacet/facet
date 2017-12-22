@@ -29,6 +29,8 @@ class Platform(models.Model):
     Instagram, Pinterest, Flickr, Behance, Tumblr
     """
 
+    type = "Platform Account"
+
     name = models.CharField(
        max_length=250,
        help_text='Name of the platform.'
@@ -126,7 +128,3 @@ class PlatformAccount(models.Model):
 
     def __str__(self):
         return self.name
-
-    @property
-    def type(self):
-        return "Platform Account"
