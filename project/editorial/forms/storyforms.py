@@ -12,6 +12,7 @@ from django.forms import Textarea, TextInput, RadioSelect, Select, NumberInput, 
 from django.contrib.postgres.fields import ArrayField
 from datetimewidget.widgets import DateTimeWidget
 from tinymce.widgets import TinyMCE
+from django.db.models import Q
 # from django.contrib.staticfiles.templatetags.staticfiles import static
 
 
@@ -42,8 +43,8 @@ class StoryForm(forms.ModelForm):
         # FIXME should be org users, story partner org users and eligible contractors
         self.fields['team'].queryset = org.get_org_users()
         # limit project and series to those owned by org or part of content and org is collaborator for
-        self.fields['project'].queryset = Project.objects.filter(Q(organization=self) | Q(collaborate_with=self))
-        self.fields['series'].queryset = Series.objects.filter(Q(organization=self) | Q(collaborate_with=self))
+        self.fields['project'].queryset = Project.objects.filter(Q(organization=org) | Q(collaborate_with=org))
+        self.fields['series'].queryset = Series.objects.filter(Q(organization=org) | Q(collaborate_with=org))
         # set empty labels
         self.fields['series'].empty_label = 'Select a series'
         self.fields['project'].empty_label = 'Select a project'

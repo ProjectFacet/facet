@@ -10,7 +10,7 @@ from django.utils import timezone
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ValidationError
 
-from . import User, Organization, Network, Project, Series
+from . import User, Organization, Network, Project, Series, Discussion
 from . import SimpleImage, SimpleDocument, SimpleAudio, SimpleVideo
 
 #-----------------------------------------------------------------------#
@@ -184,7 +184,7 @@ class Story(models.Model):
         story copy detail record.
         """
 
-        # FIXME Copied stories need to maintain attribution of team
+        # XXX Copied stories need to maintain attribution of team
 
         story_copy = get_object_or_404(Story, id=self.id)
         # Set the id = None to create the copy the story instance

@@ -104,6 +104,7 @@ class UserUpdateView(UpdateView):
         action.send(self.request.user, verb="edited", action_object=self.object)
         return super(UserUpdateView, self).get_success_url()
 
+
 # FIXME still having csrf_token problem
 class UserDeactivateView(View):
     """Deactivate an org user."""

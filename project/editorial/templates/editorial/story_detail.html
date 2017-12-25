@@ -89,8 +89,13 @@
               {% endif %}
           {% endfor %}
           <div class="m-t-20">
-            <a href="{% url 'story_edit' story.id %}"><button class="btn btn-sm btn-default-200 sameline" data-action="confirm">Edit</button></a>
-            <a href="{% url 'story_delete' story.id %}"><button class="btn btn-swal btn-sm btn-danger-100 sameline" data-action="confirm">Delete</button></a>
+            <a href="{% url 'story_edit' story.id %}"><button class="btn btn-sm btn-default-200" data-action="confirm">Edit</button></a>
+            <form class="story-delete" method="GET"
+                  action="{% url 'story_delete' story.id %}">
+                  <!-- onsubmit="return confirm('Do you want to delete this story?')"> -->
+                  {% csrf_token %}
+              <input type="submit" class="btn btn-sm btn-danger-100" value="Delete">
+            </form>
           </div>
           <div class="m-t-20">
             <button class="btn btn-sm btn-success-100" data-toggle="modal" data-target="#downloadStory">Download</button></a>
@@ -324,11 +329,11 @@
 
         <!-- Story Events -->
         <div id="story_events" class="m-t-50">
-          <h4 class="m-b-20">Engagement</h4>
+          <h4 class="m-b-20">Events</h4>
           {% with view.story_events as events %}
           <div class="row m-b-20">
             <div class="col-xs-12">
-              <p class="f-s-16 f-w-600 subtle slim-margin">Events:</p>
+              <!-- <p class="f-s-16 f-w-600 subtle slim-margin">Events:</p> -->
               {% for event in events.events %}
               <p><i class="fa fa-calendar" aria-hidden="true"></i>  <a href="{% url 'event_detail' pk=event.id %}" title="See event details">{{ event.name }}</a>
                 <br><span class="card-text color-default f-s-12"> {{ event.event_date|date:'N j, g:i a'}}</span></p>
@@ -364,7 +369,7 @@
       gallery: {enabled:true}
     });
 
-  </script>
+</script>
 
   <!-- Video Player -->
 <script>
@@ -394,7 +399,7 @@
       }
     });
 
-  </script>
+</script>
 
   <!-- Calendar -->
 <script>
@@ -425,27 +430,26 @@
 
   <!-- Confirmation alerts -->
 <script>
-  $('.btn-swal').on('click', function() {
-            e.preventDefault()
-            var action = $(this).data('action');
-            if (action === 'confirm') {
-                swal({
-                    title: 'Are you sure?',
-                    text: 'You will not be able to recover this story',
-                    type: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, delete it!',
-                    closeOnConfirm: false
-                }, function() {
-
-                    swal('Deleted!', 'Your story has been deleted.', 'success');
-                });
-            }
-        });
-
-</script>
+    $('.story-delete input').on('click', function(e) {
+         e.preventDefault();
+            swal({
+                title: 'Are you sure?',
+                text: 'You will not be able to recover this story.',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!',
+                closeOnConfirm: true
+            }, function(result) {
+                if (result) {
+                  $(".story-delete").attr("method", "POST").submit();
+                } else {
+                  // do nothing on cancel
+              }
+            });
+          });
+  </script>
 
 {% endblock %}
 

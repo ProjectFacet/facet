@@ -484,24 +484,10 @@ class Facet(models.Model):
         self.due_edit = None
         self.run_date = None
         self.discussion = Discussion.objects.create_discussion("F")
-        self.edit_history = facet_copy.edit_history.all()
+        self.edit_history = None
         self.save()
-
-        # facet_copy = get_object_or_404(Facet, id=self.id)
-        # # set the id=None to create the copy of the facet instance
-        # facet_copy.id=None
-        # facet_copy.save()
-        # # clear attributes for the copying Organization
-        # facet_copy.original_content=False
-        # facet_copy.code = ''
-        # facet_copy.status= 'NR'
-        # facet_copy.due_edit = None
-        # facet_copy.run_date = None
-        # facet_copy.discussion = Discussion.objects.create_discussion("WF")
-        # facet_copy.edit_history = facet_copy.edit_history.all()
-        # facet_copy.save()
-
         return self
+
 
     def get_facet_images(self):
         """Retrieve all images objects associated with a facet."""

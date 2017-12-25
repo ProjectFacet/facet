@@ -652,6 +652,50 @@ def add_discussion(sender, instance, **kwargs):
         instance.discussion = Discussion.objects.create_discussion("ORG")
         instance.save()
 
+class OrganizationSubscriptionManager(models.Manager):
+    """Custom manager for Subscription."""
+
+    def create_subscription(self, organization, subscription_type, collaborations, contractors):
+        """Method for quick creation of subscription."""
+
+        subscription = self.create(
+                        organization,
+                        collaborations=collaborations,
+                        contractors=contractors,
+                        )
+
+        return subscription
+
+
+@python_2_unicode_compatible
+class OrganizationSubscription(models.Model):
+    """Details of an organization subscription."""
+
+    # if subscription is for an org account, associate with that org
+    organization = models.ForeignKey(
+        Organization,
+        help_text='Organization associated with this subscription if Org subscription type.',
+        on_delete=models.CASCADE,
+    )
+
+    # Organization functionality
+    collaborations = models.BooleanField(
+        default=True,
+        help_text='If an organization is using the account for base features of editorial workflow, project management and collaboration.',
+    )
+
+    contractors = models.BooleanField(
+        default=False,
+        help_text='If an organization is using the account to manage contractors.',
+    )
+
+    objects = OrganizationSubscriptionManager()
+
+
+    def __str__(self):
+        return "Organization Subscription - {organization}".format(organization=self.organization.name)
+
+
 #-----------------------------------------------------------------------#
 
 @python_2_unicode_compatible
@@ -748,47 +792,3 @@ class Network(models.Model):
     @property
     def type(self):
         return "Network"
-
-
-class OrganizationSubscriptionManager(models.Manager):
-    """Custom manager for Subscription."""
-
-    def create_subscription(self, organization, subscription_type, collaborations, contractors):
-        """Method for quick creation of subscription."""
-
-        subscription = self.create(
-                        organization,
-                        collaborations=collaborations,
-                        contractors=contractors,
-                        )
-
-        return subscription
-
-
-@python_2_unicode_compatible
-class OrganizationSubscription(models.Model):
-    """Details of an organization subscription."""
-
-    # if subscription is for an org account, associate with that org
-    organization = models.ForeignKey(
-        Organization,
-        help_text='Organization associated with this subscription if Org subscription type.',
-        on_delete=models.CASCADE,
-    )
-
-    # Organization functionality
-    collaborations = models.BooleanField(
-        default=True,
-        help_text='If an organization is using the account for base features of editorial workflow, project management and collaboration.',
-    )
-
-    contractors = models.BooleanField(
-        default=False,
-        help_text='If an organization is using the account to manage contractors.',
-    )
-
-    objects = OrganizationSubscriptionManager()
-
-
-    def __str__(self):
-        return "Organization Subscription - {organization}".format(organization=self.organization.name)

@@ -95,7 +95,7 @@ urlpatterns = [
     #----------------------------------------------------------------------#
     #   Copy URLS
     #----------------------------------------------------------------------#
-    url(r'^story/copy/(?P<pk>[0-9]+)/$', networkviews.copy_network_story, name='copy_network_story'),
+    url(r'^story/(?P<story>[0-9]+)/copy/$', networkviews.CopyNetworkStoryView.as_view(), name='copy_network_story'),
     #----------------------------------------------------------------------#
     #   Download URLS
     #----------------------------------------------------------------------#

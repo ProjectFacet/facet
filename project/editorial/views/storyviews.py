@@ -9,7 +9,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
 from django.core.mail import send_mail
 from django.http import HttpResponse
-from django.core.urlresolvers import reverse_lazy
+from django.core.urlresolvers import reverse_lazy, reverse
 from django.utils import timezone
 from django.views.generic import TemplateView , UpdateView, DetailView, CreateView, ListView, DeleteView
 from django.views.decorators.csrf import csrf_exempt
@@ -212,20 +212,28 @@ class StoryDetailView(DetailView):
         return {'images': images, 'documents': documents, 'audio': audio, 'video': video,}
 
 
+# class StoryDeleteView(DeleteView, FormMessagesMixin):
 class StoryDeleteView(DeleteView):
     """Delete a story and it's associated items.
 
-    Should delete a story and:
-    - the story's facets
-    - the story's discussion
-    - the story's notes
-    - the story's tasks
-    - the story's events
-    - the story's simple assets
+    In this project, we expect deletion to be done via a JS pop-up UI; we don't expect to
+    actually use the "do you want to delete this?" Django-generated page. However, this is
+    available if useful.
     """
 
+    # FIXME: this would be a great place to use braces' messages; usage commented out for now
+
     model = Story
-    success_url = reverse_lazy('story_list')
+    template_name = "editorial/story_delete.html'"
+
+    # form_valid_message = "Deleted."
+    # form_invalid_message = "Please check form."
+
+    def get_success_url(self):
+        """Post-deletion, return to the story list."""
+
+        return reverse('story_list')
+
 
 
 def story_delete(request, pk):
