@@ -9,8 +9,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
 from django.core.mail import send_mail
 from django.http import HttpResponse
+from django.core.urlresolvers import reverse_lazy, reverse
 from django.utils import timezone
-from django.views.generic import TemplateView , UpdateView, DetailView, ListView, CreateView
+from django.views.generic import TemplateView , UpdateView, DetailView, ListView, CreateView, DeleteView
 from django.views.decorators.csrf import csrf_exempt
 import datetime
 import json
@@ -177,14 +178,27 @@ class SeriesUpdateView(UpdateView):
         return super(SeriesUpdateView, self).get_success_url()
 
 
-def series_delete(request, pk):
-    """Delete a series and its related objects then redirect user to series list."""
+# class SeriesDeleteView(DeleteView, FormMessagesMixin):
+class SeriesDeleteView(DeleteView):
+    """Delete a series and its associated items.
 
-    if request.method == "POST":
-        series = get_object_or_404(Series, pk=pk)
-        series.delete()
+    In this project, we expect deletion to be done via a JS pop-up UI; we don't expect to
+    actually use the "do you want to delete this?" Django-generated page. However, this is
+    available if useful.
+    """
 
-    return redirect('series_list')
+    # FIXME: this would be a great place to use braces' messages; usage commented out for now
+
+    model = Series
+    template_name = "editorial/series_delete.html'"
+
+    # form_valid_message = "Deleted."
+    # form_invalid_message = "Please check form."
+
+    def get_success_url(self):
+        """Post-deletion, return to the series list."""
+
+        return reverse('series_list')
 
 
 def series_json(request):

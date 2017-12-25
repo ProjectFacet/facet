@@ -10,7 +10,8 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.utils import timezone
-from django.views.generic import TemplateView , UpdateView, DetailView, ListView, CreateView
+from django.core.urlresolvers import reverse_lazy, reverse
+from django.views.generic import TemplateView , UpdateView, DetailView, ListView, CreateView, DeleteView
 from django.views.decorators.csrf import csrf_exempt
 import datetime
 import json
@@ -234,11 +235,26 @@ def project_schedule(request, pk):
     return HttpResponse(json.dumps(project_calendar), content_type='application/json')
 
 
-def project_delete(request, pk):
-    """Delete a project and its related objects then redirect user to project list."""
+# class ProjectDeleteView(DeleteView, FormMessagesMixin):
+class ProjectDeleteView(DeleteView):
+    """Delete a project and it's associated notes.
 
-    if request.method == "POST":
-        project = get_object_or_404(Project, pk=pk)
-        project.delete()
+    Stories and media should not be deleted.
 
-    return redirect('project_list')
+    In this project, we expect deletion to be done via a JS pop-up UI; we don't expect to
+    actually use the "do you want to delete this?" Django-generated page. However, this is
+    available if useful.
+    """
+
+    # FIXME: this would be a great place to use braces' messages; usage commented out for now
+
+    model = Project
+    template_name = "editorial/project_delete.html'"
+
+    # form_valid_message = "Deleted."
+    # form_invalid_message = "Please check form."
+
+    def get_success_url(self):
+        """Post-deletion, return to the project list."""
+
+        return reverse('project_list')

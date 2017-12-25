@@ -56,7 +56,12 @@
           {% endfor %}
           <p class="m-t-20">
           <a href="{% url 'project_edit' project.id %}" title="Edit project details"><button class="btn btn-sm btn-default sameline">Edit</button></a>
-          <a href="#" title="Delete Project"><button class="btn btn-sm btn-default sameline">Delete</button></a></p>
+          <form class="project-delete" method="GET"
+                action="{% url 'project_delete' project.id %}">
+                <!-- onsubmit="return confirm('Do you want to delete this project?')"> -->
+                {% csrf_token %}
+            <input type="submit" class="btn btn-sm btn-danger-100" value="Delete">
+          </form>
         </div>
       </div>
       <!-- Discussion -->
@@ -698,8 +703,38 @@
     })();
   </script>
 
+  <!-- Confirmation alerts -->
+  <script>
+      $('.project-delete input').on('click', function(e) {
+           e.preventDefault();
+              swal({
+                  title: 'Are you sure?',
+                  text: 'You will not be able to recover this project.',
+                  type: 'warning',
+                  showCancelButton: true,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'Yes, delete it!',
+                  closeOnConfirm: true
+              }, function(result) {
+                  if (result) {
+                    $(".project-delete").attr("method", "POST").submit();
+                  } else {
+                    // do nothing on cancel
+                }
+              });
+            });
+    </script>
+
 
 {% endblock %}
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+                <!-- MODALS -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
 
 {% block modals %}
 <!-- Add Task Modal -->

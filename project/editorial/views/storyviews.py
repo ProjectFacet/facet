@@ -235,17 +235,6 @@ class StoryDeleteView(DeleteView):
         return reverse('story_list')
 
 
-
-def story_delete(request, pk):
-    """Delete a story and it's related objects then redirect user to story list."""
-
-    if request.method == "POST":
-        story = get_object_or_404(Story, pk=pk)
-        story.delete()
-
-    return redirect('story_list')
-
-
 def story_team_options_json(request, pk):
     """Returns JSON of team members that can be assigned to a story."""
 
