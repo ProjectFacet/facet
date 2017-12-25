@@ -19,6 +19,7 @@ from tinymce.widgets import TinyMCE
 from editorial.models import (
     User,
     Organization,
+    TalentEditorProfile,
     Network,
     Platform,
     PlatformAccount,
@@ -52,7 +53,7 @@ class UserProfileForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'credit_name', 'title', 'phone', 'email', 'bio', 'location',
-                 'expertise', 'website', 'photo', 'public',]
+                 'expertise', 'website', 'photo',]
         widgets = {
             'first_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'First Name'}),
             'last_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Last Name'}),

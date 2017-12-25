@@ -95,13 +95,6 @@ class ContractorProfile(models.Model):
     def __str__(self):
         return self.user.credit_name
 
-    # def get_public_contractors(self):
-    #     """Return queryset of contractor profiles that are pubic."""
-    #
-    #
-    #     contractors = ContractorProfile.objects.all()
-    #     public_contractors = User.objects.fi
-
 
     def get_active_assignments(self):
         """Return all active assignment."""
@@ -258,6 +251,45 @@ class OrganizationContractorAffiliation(models.Model):
         return reverse('affiliation_detail', kwargs={'pk': self.id})
 
 
+class TalentEditorProfile(models.Model):
+    """A team user who manages contract talent."""
+
+    # team user account associated with talent editor profile
+    user = models.OneToOneField(
+        User,
+    )
+
+    # relevant for editors and admins of organizations managing contractors
+    # user will appear in public search results for editors accepting contact
+    # from contractors
+    # contractor related views sorted by this profile
+    public = models.BooleanField(
+        default=False,
+        help_text='Is this talent editor publicly listed?',
+    )
+
+    def __str__(self):
+        return self.user.credit_name
+
+    @property
+    def search_title(self):
+        return self.user.credit_name
+
+    @property
+    def description(self):
+        return "Talent Editor - {user}/{org}".format(
+                                                    user=self.user.credit_name,
+                                                    org=self.user.organization,
+                                                    )
+
+    @property
+    def type(self):
+        return "Talent Editor"
+
+    def get_absolute_url(self):
+        return reverse('talent_editor_detail', kwargs={'pk': self.id})
+
+
 class Call(models.Model):
     """Calls are requests from editors/organizations for pitches.
 
@@ -265,8 +297,8 @@ class Call(models.Model):
     """
 
     owner = models.ForeignKey(
-        User,
-        help_text='User that owns this call.'
+        TalentEditorProfile,
+        help_text='Editor that owns this call.'
     )
 
     organization = models.ForeignKey(
@@ -381,7 +413,7 @@ class Pitch(models.Model):
     )
 
     recipient = models.ForeignKey(
-        User,
+        TalentEditorProfile,
         help_text='To whom is this pitch directed?'
     )
 
@@ -471,7 +503,7 @@ class Assignment(models.Model):
     )
 
     editor = models.ForeignKey(
-        User,
+        TalentEditorProfile,
         help_text='Editor responsible for this assignment.',
     )
 

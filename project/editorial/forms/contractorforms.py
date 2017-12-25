@@ -25,6 +25,7 @@ from editorial.models import (
     User,
     Organization,
     ContractorProfile,
+    TalentEditorProfile,
     ContractorSubscription,
     OrganizationContractorAffiliation,
     Story,
@@ -150,7 +151,7 @@ class PitchForm(forms.ModelForm):
     """Handles creation and editing of a pitch."""
 
     recipient = forms.ModelChoiceField(
-        queryset=User.objects.filter(Q(Q(user_type="Editor") & Q(public=True)) | (Q(user_type="Admin") & Q(public=True))),
+        queryset=TalentEditorProfile.objects.filter(public=True),
         widget=forms.Select(attrs={'class': 'c-select', 'id':'pitch-recipient'}),
         required=True,
     )

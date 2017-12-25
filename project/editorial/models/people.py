@@ -40,20 +40,12 @@ class User(AbstractUser):
     ADMIN = 'Admin'
     EDITOR = 'Editor'
     STAFF = 'Staff'
-    CONTRACTOR = 'Contractor'
+    OTHER = 'Other'
     USER_TYPE_CHOICES = (
         (ADMIN, 'Admin'),
         (EDITOR, 'Editor'),
         (STAFF, 'Staff'),
-        (CONTRACTOR, 'Contractor'),
-    )
-
-    # relevant for editors and admins of organizations managing contractors
-    # user will appear in public search results for editors accepting contact
-    # from contractors
-    public = models.BooleanField(
-        default=False,
-        help_text='If an editor or admin, is the user publicly listed?',
+        (OTHER, 'Other'),
     )
 
     user_type = models.CharField(

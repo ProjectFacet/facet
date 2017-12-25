@@ -4,6 +4,7 @@ from django.contrib import admin
 from models import (
     User,
     ContractorProfile,
+    TalentEditorProfile,
     OrganizationContractorAffiliation,
     OrganizationSubscription,
     ContractorSubscription,
@@ -56,6 +57,7 @@ class FacetTemplateAdmin(admin.ModelAdmin):
 
 
 admin.site.register(ContractorProfile)
+admin.site.register(TalentEditorProfile)
 admin.site.register(OrganizationContractorAffiliation)
 admin.site.register(Organization)
 admin.site.register(OrganizationSubscription)

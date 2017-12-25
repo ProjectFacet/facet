@@ -114,12 +114,6 @@ class LibraryImageAssociateView(FormView):
         kwargs['organization'] = self.request.user.organization
         return kwargs
 
-    # def get_context_data(self, **kwargs):
-    #     """Send facet id to modals."""
-    #     context = super(LibraryDocumentAssociateView, self).get_context_data(**kwargs)
-    #     context['facet'] = self.kwargs['facet']
-    #     return context
-
     def form_valid(self, form):
         """Handle submission of form."""
 
@@ -195,12 +189,6 @@ class LibraryDocumentAssociateView(FormView):
         kwargs = super(LibraryDocumentAssociateView, self).get_form_kwargs()
         kwargs['organization'] = self.request.user.organization
         return kwargs
-
-    # def get_context_data(self, **kwargs):
-    #     """Send facet id to modals."""
-    #     context = super(LibraryDocumentAssociateView, self).get_context_data(**kwargs)
-    #     context['facet'] = self.kwargs['facet']
-    #     return context
 
     def form_valid(self, form):
         """Handle submission of form."""
@@ -279,12 +267,6 @@ class LibraryAudioAssociateView(FormView):
         kwargs['organization'] = self.request.user.organization
         return kwargs
 
-    # def get_context_data(self, **kwargs):
-    #     """Send facet id to modals."""
-    #     context = super(LibraryAudioAssociateView, self).get_context_data(**kwargs)
-    #     context['facet'] = self.kwargs['facet']
-    #     return context
-
     def form_valid(self, form):
         """Handle submission of form."""
 
@@ -359,12 +341,6 @@ class LibraryVideoAssociateView(FormView):
         kwargs = super(LibraryVideoAssociateView, self).get_form_kwargs()
         kwargs['organization'] = self.request.user.organization
         return kwargs
-
-    # def get_context_data(self, **kwargs):
-    #     """Send facet id to modals."""
-    #     context = super(LibraryVideoAssociateView, self).get_context_data(**kwargs)
-    #     context['facet'] = self.kwargs['facet']
-    #     return context
 
     def form_valid(self, form):
         """Handle submission of form."""

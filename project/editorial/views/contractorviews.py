@@ -30,6 +30,7 @@ from editorial.models import (
     ContractorSubscription,
     User,
     ContractorProfile,
+    TalentEditorProfile,
     Organization,
     OrganizationContractorAffiliation,
     Call,
@@ -88,17 +89,29 @@ class ContractorDetailView(DetailView):
         """Get assignments that are relevant to requesting user."""
 
         self.object = self.get_object()
-        editor = self.request.user
-        active_assignments = self.object.get_active_assignments()
-        assignments_for_viewer = active_assignments.filter(editor=editor)
+        contractor = self.object
+        if self.request.user.talenteditorprofile:
+            editor = self.request.user.talenteditorprofile
+            active_assignments = contractor.get_active_assignments()
+            assignments_for_viewer = active_assignments.filter(editor=editor)
+        elif self.request.user.contractorprofile:
+            assignments_for_viewer = contractor.get_active_assignments()
+        else:
+            assignments_for_viewer = []
         return assignments_for_viewer
 
     def contractor_pitches(self):
         """Get pitches that are relevant to requesting user."""
+
         self.object = self.get_object()
-        recipient = self.request.user
-        active_pitches = self.object.get_active_pitches()
-        pitches_for_viewer = active_pitches.filter(recipient=recipient)
+        if self.request.user.talenteditorprofile:
+            editor = self.request.user.talenteditorprofile
+            active_pitches = self.object.get_active_pitches()
+            pitches_for_viewer = active_pitches.filter(recipient=editor)
+        elif self.request.user.contractorprofile:
+            pitches_for_viewer = self.object.get_active_pitches()
+        else:
+            pitches_for_viewer = []
         return pitches_for_viewer
 
 
@@ -114,7 +127,7 @@ class ContractorUpdateView(UpdateView):
         action.send(self.request.user, verb="edited", action_object=self.object)
         return super(ContractorUpdateView, self).get_success_url()
 
-
+# Currently in use as regular Dashboard alternate
 # class ContractorDashboardView(DetailView):
 #     """A dashboard of relevant content for a contractor."""
 #
@@ -144,26 +157,27 @@ class ContractorUpdateView(UpdateView):
 #         return PrivateMessage.objects.filter(recipient=self.object.user).order_by('date')
 
 #----------------------------------------------------------------------#
-#   Editor Views
+#   Talent Editor Views
 #----------------------------------------------------------------------#
 
 # A profile page for contract editors
 class PublicTalentEditorDetailView(DetailView):
     """Display details about an editor that works with contractors."""
 
-    model = User
+    model = TalentEditorProfile
     template_name = 'editorial/talenteditor_detail.html'
 
     def assignments(self):
-        """Get assignments from this editor that are relevant to contractor viewing
-        this profile."""
+        """Get assignments from this editor that are relevant to requesting
+        user.
+        """
 
         self.object = self.get_object()
         editor = self.object
         contractor = self.request.user.contractorprofile
-        active_assignments = editor.assignment_set.filter(complete=False)
+        active_assignments = editor.assignment_set.all()
         assignments_for_viewer = active_assignments.filter(contractor=contractor)
-        return assignments_for_viewer
+        return active_assignments
 
     def pitches(self):
         """Get pitches to this editor that are relevant to contractor viewing
@@ -227,9 +241,6 @@ class PublicContractorListView(ListView):
         """Return all contractors that have opted into public listing."""
 
         public_contractors = ContractorProfile.objects.filter(public=True)
-        print "********************"
-        print public_contractors
-        print "********************"
         return public_contractors
 
 
@@ -242,7 +253,7 @@ class PublicTalentEditorListView(ListView):
     def get_queryset(self):
         """Return all users that are editors or admins that have opted into public listing."""
 
-        public_editors = User.objects.filter(Q(Q(user_type='Editor') | Q(user_type='Admin')) & Q(public=True))
+        public_editors = TalentEditorProfile.objects.filter(Q(public=True))
         return public_editors
 
 #----------------------------------------------------------------------#
@@ -419,6 +430,7 @@ class PitchUpdateView(UpdateView):
         return super(PitchUpdateView, self).get_success_url()
 
 
+# class PitchDeleteView(DeleteView, FormMessagesMixin):
 class PitchDeleteView(DeleteView):
     """Delete a pitch."""
     pass
@@ -549,6 +561,26 @@ class CallUpdateView(UpdateView):
         return super(CallUpdateView, self).get_success_url()
 
 
+# class CallListView(ListView):
+#     """List all calls from public talent editors."""
+#
+#     context_object_name = 'calls'
+#
+#     def get_queryset(self):
+#         """Return all calls from public talent editors."""
+#
+#         if self.request.user.contractorprofile:
+#             calls = Call.objects.filter(Q(is_active=True) & Q(status='Published'))
+#         elif self.request.user.talenteditor:
+#             calls =
+
+
+
+# class CallDeleteView(DeleteView, FormMessagesMixin):
+class CallDeleteView(DeleteView):
+    """Delete a call."""
+    pass
+
 #----------------------------------------------------------------------#
 #   Assignment Views
 #----------------------------------------------------------------------#
@@ -673,3 +705,9 @@ class AssignmentUpdateView(UpdateView):
 
         action.send(self.request.user, verb="edited", action_object=self.object)
         return super(AssignmentUpdateView, self).get_success_url()
+
+
+# class AssignmentDeleteView(DeleteView, FormMessagesMixin):
+class AssignmentDeleteView(DeleteView):
+    """Delete an assignment."""
+    pass
