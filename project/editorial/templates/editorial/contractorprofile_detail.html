@@ -32,7 +32,7 @@
         {% endif %}
     </div>
     <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
-        <h4 class="m-t-5 m-b-20"><a href="{% url 'user_detail' user.id %}">{{ contractorprofile.user.credit_name }}</a></h4>
+        <h4 class="m-t-5 m-b-20"><a href="{% url 'user_detail' contractorprofile.user.id %}">{{ contractorprofile.user.credit_name }}</a></h4>
         <p class="f-s-300"> <i class="fa fa-phone color-white m-r-10"></i> <span class="color-white m-r-20"> {{ contractorprofile.user.phone }}</span> | <i class="fa fa-envelope-o color-white m-l-20 m-r-10"></i> <span class="color-white m-r-20">{{ contractorprofile.user.email }}</span> </p>
         <p class="f-s-300"> <i class="fa fa-globe m-r-10" aria-hidden="true"></i> <span class="color-white m-r-20"> {{ contractorprofile.user.location }}</span> | <i class="fa fa-map-marker m-l-20 m-r-10" aria-hidden="true"></i> <span class="color-white m-r-20"> {{ contractorprofile.current_location }}</span></p>
         <p class="f-s-300"> <i class="fa fa-link m-r-10" aria-hidden="true"></i> <span class="color-white m-r-20"> {{ contractorprofile.user.website }}</span>

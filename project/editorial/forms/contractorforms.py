@@ -179,8 +179,8 @@ class AssignmentForm(forms.ModelForm):
         org = kwargs.pop("organization")
         super(AssignmentForm, self).__init__(*args, **kwargs)
         # limit to stories or facets owned by an organization or that an org is a collaborator on
-        self.fields['story'].queryset=Story.objects.filter(Q(organization=org) | Q(collaborate_with=self))
-        self.fields['facet'].queryset=Facet.objects.filter(Q(organization=org) | Q(collaborate_with=self))
+        self.fields['story'].queryset=Story.objects.filter(Q(organization=org) | Q(collaborate_with=org))
+        self.fields['facet'].queryset=Facet.objects.filter(Q(organization=org))
         # set empty labels
         self.fields['contractor'].empty_label = "Select a contractor"
         self.fields['story'].empty_label = 'Select a story'

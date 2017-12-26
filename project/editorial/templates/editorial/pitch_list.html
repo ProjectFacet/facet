@@ -19,7 +19,7 @@
 <div>
     <ol class="breadcrumb icon-angle-right icon-th">
         <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
-        <li class="fadeIn"> Calls </li>
+        <li class="fadeIn"> Pitches </li>
     </ol>
 </div>
 {% endblock breadcrumb %}
@@ -37,36 +37,38 @@
 
 <div class="row">
   <div class="col-xs-12">
-    <h4>Calls</h4>
+    <h4>Pitches</h4>
   </div>
 </div>
 
 <div class="row">
   <div class="col-xs-12">
-    {% if calls %}
-    <table id="call-list" class="table table-condensed table-striped hidden-sm-down">
+    {% if pitches %}
+    <table id="pitch-list" class="table table-condensed table-striped hidden-sm-down">
       <thead>
         <tr class="f-s-12">
-          <th class="dark">Call</th>
-          <th class="dark">Editor</th>
-          <th class="dark">Organization</th>
-          <th class="dark">Urgency</th>
+          <th class="dark">Pitch</th>
+          <th class="dark">Contractor</th>
+          <th class="dark">Recipient</th>
+          <th class="dark">Status</th>
         </tr>
       </thead>
       <tbody>
-        {% for call in calls %}
+        {% for pitch in pitches %}
         <tr class="f-s-14">
-          <td><a href="{% url 'call_detail' call.id %}">{{ call.name }}</a></th>
-          <td>{{ call.owner.user.credit_name }}</td>
-          <td>{{ call.organization }}</td>
-          <td>{% if call.urgent == True %}<span class="m-r-10 label label-xs label-warning-outline">Urgent</span>{% endif %}</td>
+          <td><a href="{% url 'pitch_detail' pitch.id %}">{{ pitch.name }}</a></th>
+          <td>{{ pitch.contractor.user.credit_name }}</td>
+          <td>{{ pitch.recipient.user.credit_name }}</td>
+          <td>{{ pitch.status }}</td>
         </tr>
         {% endfor %}
       </tbody>
     </table>
     {% else %}
-    <p class="f-s-18 subtle text-center italic m-b-40 m-t-40">Welcome to the calls page. This is where you will see all of the active calls.</p>
+    <p class="f-s-18 subtle text-center italic m-b-40 m-t-40">Welcome to the Pitches page. This is where you will see all of the current pitches.</p>
     {% endif %}
+
+
   </div>
 </div>
 
@@ -80,7 +82,7 @@
 
 <script>
 $(document).ready(function() {
-    $('#call-list').DataTable();
+    $('#pitch-list').DataTable();
 } );
 </script>
 

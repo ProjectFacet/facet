@@ -18,7 +18,11 @@
 <div>
     <ol class="breadcrumb icon-angle-right icon-th">
         <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
-        <li class="fadeIn"> TK </li>
+        {% if request.user.id == pitch.recipient.user.id %}
+        <li class="fadeIn"><a href="{% url 'talent_editor_dashboard' pitch.recipient.id %}" title="Go to Contract Content Dashboard"> Contract Content Dashboard </a></li>
+        {% endif %}
+        <li class="fadeIn"><a href="{% url 'pitch_list' %}" title="Go to Pitches"> Pitches </a></li>
+        <li class="fadeIn"> Pitch: {{ pitch.name }} </li>
     </ol>
 </div>
 {% endblock breadcrumb %}
@@ -36,29 +40,39 @@
 
 <div class="row m-b-20">
   <div class="col-xs-12">
-    <h4>Pitch</h4>
+    <h4>{{ pitch.name }}</h4>
   </div>
 </div>
 
 <div class="row">
   <!-- Left Column -->
   <div class="col-xs-12 col-sm-4">
-    <!-- Recipient -->
-    <h5> Pitch Recipient </h5>
-    <p>{{ pitch.recipient.credit_name }}</p>
-
-    <!-- Name -->
-    <h5> Pitch </h5>
-    <p>{{ pitch.name }}</p>
-
-    <!-- Status -->
-    <h5> Status </h5>
-    <p> {{ pitch.status }} </p>
-
+    <!-- Contractor -->
+    <p><span class="m-t-20 m-b-20 m-r-10 f-s-14 f-s-400 spread-01 subtle slim-margin"> Contractor </span> {{ pitch.contractor.user.credit_name }}</p>
+    <!-- Editor -->
+    <p><span class="m-t-20 m-b-20 m-r-10 f-s-14 f-s-400 spread-01 subtle slim-margin"> Editor </span> {{ pitch.recipient.user.credit_name }}</p>
+    <!-- Creation Date -->
+    <p><span class="m-t-20 m-b-20 m-r-10 f-s-14 f-s-400 spread-01 subtle slim-margin"> Created </span> {{ pitch.creation_date|date:'N d, Y' }}</p>
     <!-- Exclusivity -->
-    <h5>Exclusive</h5>
-    <p>{{ pitch.exclusive }}</p>
+    <p><span class="m-t-20 m-b-20 m-r-10 f-s-14 f-s-400 spread-01 subtle slim-margin"> Exclusive </span> {% if pitch.exclusive == True %}<i class="fa fa-check-square-o" aria-hidden="true"></i>{% else %} <i class="fa fa-square-o" aria-hidden="true"></i>{% endif %}</p>
 
+    {% if request.user.id == pitch.contractor.user.id %}
+    <div class="row m-t-40">
+      <div class="col-xs-2">
+        <a href="{% url 'pitch_edit' pitch.id %}"><button class="btn btn-sm btn-default-200" data-action="confirm">Edit</button></a>
+      </div>
+      <div class="col-xs-2">
+        <form class="pitch-delete" method="GET"
+              action="{% url 'pitch_delete' pitch.id %}">
+              <!-- onsubmit="return confirm('Do you want to delete this story?')"> -->
+              {% csrf_token %}
+          <input type="submit" class="btn btn-sm btn-danger-100" value="Delete">
+        </form>
+      </div>
+      <div class="col-xs-8">
+      </div>
+    </div>
+    {% endif %}
 
   </div>
   <!-- Right Column -->
@@ -70,11 +84,12 @@
 </div>
 
 
-<div class="row m-b-20">
+<div class="row m-t-20 m-b-20">
   <div class="col-xs-12">
     <h4>Assets</h4>
   </div>
 </div>
+
 <div class="row m-t-20">
   <!-- Images -->
   {% with view.simple_images as images %}
@@ -353,6 +368,29 @@
     type: 'image',
     gallery: {enabled:true}
   });
+</script>
+
+<!-- Confirmation alerts -->
+<script>
+    $('.pitch-delete input').on('click', function(e) {
+         e.preventDefault();
+            swal({
+                title: 'Are you sure?',
+                text: 'You will not be able to recover this pitch.',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!',
+                closeOnConfirm: true
+            }, function(result) {
+                if (result) {
+                  $(".pitch-delete").attr("method", "POST").submit();
+                } else {
+                  // do nothing on cancel
+              }
+            });
+          });
 </script>
 
 {% endblock %}

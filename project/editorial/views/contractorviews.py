@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
 from django.core.mail import send_mail
 from django.http import HttpResponse
+from django.core.urlresolvers import reverse_lazy, reverse
 from django.utils import timezone
 from django.views.generic import CreateView, FormView, UpdateView, DetailView, ListView, DeleteView, TemplateView
 from django.views.decorators.csrf import csrf_exempt
@@ -68,9 +69,7 @@ class ContractorCreateView(CreateView):
         # create a contractor account subscription for this user.
         subscription = ContractorSubscription.objects.create_subscription(
                                                         user=self.request.user,
-                                                        standard=True,
                                                         )
-        print "SUBSCRIPTION: ", subscription
 
         subscription.save()
 
@@ -104,6 +103,7 @@ class ContractorDetailView(DetailView):
         """Get pitches that are relevant to requesting user."""
 
         self.object = self.get_object()
+        contractor = self.object
         if self.request.user.talenteditorprofile:
             editor = self.request.user.talenteditorprofile
             active_pitches = self.object.get_active_pitches()
@@ -201,7 +201,7 @@ class PublicTalentEditorDetailView(DetailView):
 class PublicTalentEditorDashboardView(DetailView):
     """A dashboard of relevant content for a contractor."""
 
-    model = User
+    model = TalentEditorProfile
     template_name = 'editorial/talenteditor_dashboard.html'
 
     def assignments(self):
@@ -224,8 +224,10 @@ class PublicTalentEditorDashboardView(DetailView):
     def communication(self):
         """ Return recent communication relevant for a talenteditor."""
 
+        self.object = self.get_object()
+        user = get_object_or_404(User, id=self.object.user.id)
         contractors = ContractorProfile.objects.all()
-        return PrivateMessage.objects.filter(Q(recipient=self.object)).order_by('date')
+        return PrivateMessage.objects.filter(Q(recipient=user)).order_by('date')
 
 #----------------------------------------------------------------------#
 #   Public Listing Views
@@ -430,10 +432,48 @@ class PitchUpdateView(UpdateView):
         return super(PitchUpdateView, self).get_success_url()
 
 
+class PitchListView(ListView):
+    """Return all of a contractor's pitches."""
+
+    context_object_name = 'pitches'
+
+    def get_queryset(self):
+        """Return all pitches related to the requesting user."""
+
+        user = self.request.user
+        user = get_object_or_404(User, id=user.id)
+        contractorprofile = ContractorProfile.objects.filter(user=user)
+        talenteditorprofile = TalentEditorProfile.objects.filter(user=user)
+        if talenteditorprofile:
+            pitches = Pitch.objects.filter(recipient=talenteditorprofile)
+        elif contractorprofile:
+            pitches = user.contractorprofile.get_active_pitches()
+        else:
+            pitches = []
+        return pitches
+
+
 # class PitchDeleteView(DeleteView, FormMessagesMixin):
 class PitchDeleteView(DeleteView):
-    """Delete a pitch."""
-    pass
+    """Delete a pitch.
+
+    In this project, we expect deletion to be done via a JS pop-up UI; we don't expect to
+    actually use the "do you want to delete this?" Django-generated page. However, this is
+    available if useful.
+    """
+
+    # FIXME: this would be a great place to use braces' messages; usage commented out for now
+
+    model = Pitch
+    template_name = "editorial/pitch_delete.html'"
+
+    # form_valid_message = "Deleted."
+    # form_invalid_message = "Please check form."
+
+    def get_success_url(self):
+        """Post-deletion, return to the pitch list."""
+
+        return reverse('pitch_list')
 
 #----------------------------------------------------------------------#
 #   Call Views
@@ -561,25 +601,51 @@ class CallUpdateView(UpdateView):
         return super(CallUpdateView, self).get_success_url()
 
 
-# class CallListView(ListView):
-#     """List all calls from public talent editors."""
-#
-#     context_object_name = 'calls'
-#
-#     def get_queryset(self):
-#         """Return all calls from public talent editors."""
-#
-#         if self.request.user.contractorprofile:
-#             calls = Call.objects.filter(Q(is_active=True) & Q(status='Published'))
-#         elif self.request.user.talenteditor:
-#             calls =
+class CallListView(ListView):
+    """List all calls from public talent editors."""
 
+    context_object_name = 'calls'
+
+    def get_queryset(self):
+        """Return all callss related to the requesting user."""
+
+        user = self.request.user
+        user = get_object_or_404(User, id=user.id)
+        contractorprofile = ContractorProfile.objects.filter(user=user)
+        talenteditorprofile = TalentEditorProfile.objects.filter(user=user)
+        # talent editor, view all org calls. Editors from different orgs
+        # shouldn't be able to see other org calls.
+        if talenteditorprofile:
+            calls = Call.objects.filter(organization=user.organization)
+        # if contractor, view all calls from all editors
+        elif contractorprofile:
+            calls = Call.objects.filter(Q(is_active=True) & Q(status='Published'))
+        else:
+            calls = []
+        return calls
 
 
 # class CallDeleteView(DeleteView, FormMessagesMixin):
 class CallDeleteView(DeleteView):
-    """Delete a call."""
-    pass
+    """Delete a call.
+
+    In this project, we expect deletion to be done via a JS pop-up UI; we don't expect to
+    actually use the "do you want to delete this?" Django-generated page. However, this is
+    available if useful.
+    """
+
+    # FIXME: this would be a great place to use braces' messages; usage commented out for now
+
+    model = Call
+    template_name = "editorial/call_delete.html'"
+
+    # form_valid_message = "Deleted."
+    # form_invalid_message = "Please check form."
+
+    def get_success_url(self):
+        """Post-deletion, return to the call list."""
+
+        return reverse('call_list')
 
 #----------------------------------------------------------------------#
 #   Assignment Views
@@ -707,7 +773,45 @@ class AssignmentUpdateView(UpdateView):
         return super(AssignmentUpdateView, self).get_success_url()
 
 
+class AssignmentListView(ListView):
+    """Return all the assignments dependent on viewer."""
+
+    context_object_name = 'assignments'
+
+    def get_queryset(self):
+        """Return all assignments related to the requesting user."""
+
+        user = self.request.user
+        user = get_object_or_404(User, id=user.id)
+        contractorprofile = ContractorProfile.objects.filter(user=user)
+        talenteditorprofile = TalentEditorProfile.objects.filter(user=user)
+        if talenteditorprofile:
+            assignments = user.talenteditorprofile.assignment_set.all()
+        elif contractorprofile:
+            assignments = user.contractorprofile.get_active_assignments()
+        else:
+            assignments = []
+        return assignments
+
+
 # class AssignmentDeleteView(DeleteView, FormMessagesMixin):
 class AssignmentDeleteView(DeleteView):
-    """Delete an assignment."""
-    pass
+    """Delete an assignment.
+
+    In this project, we expect deletion to be done via a JS pop-up UI; we don't expect to
+    actually use the "do you want to delete this?" Django-generated page. However, this is
+    available if useful.
+    """
+
+    # FIXME: this would be a great place to use braces' messages; usage commented out for now
+
+    model = Assignment
+    template_name = "editorial/assignment_delete.html'"
+
+    # form_valid_message = "Deleted."
+    # form_invalid_message = "Please check form."
+
+    def get_success_url(self):
+        """Post-deletion, return to the assignment list."""
+
+        return reverse('assignment_list')

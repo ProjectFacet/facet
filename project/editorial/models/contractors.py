@@ -479,6 +479,10 @@ class Pitch(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = 'Pitch'
+        verbose_name_plural = 'Pitches'
+
     @property
     def search_title(self):
         return self.name
