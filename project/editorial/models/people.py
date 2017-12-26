@@ -15,6 +15,7 @@ from django.dispatch import receiver
 
 # from .discussion import Discussion, Comment, PrivateMessage
 
+
 #-----------------------------------------------------------------------#
 #   People:
 #   User, Organization, Network
@@ -89,8 +90,7 @@ class User(AbstractUser):
     )
 
     notes = models.ManyToManyField(
-        'UserNote',
-        related_name='user_note',
+        'Note',
         blank=True,
     )
 
@@ -318,8 +318,10 @@ class Organization(models.Model):
         null=True,
     )
 
-    # Events
-    # events = GenericRelation(Event)
+    notes = models.ManyToManyField(
+        'Note',
+        blank=True,
+    )
 
     class Meta:
         verbose_name = 'Organization'
@@ -592,11 +594,13 @@ class Organization(models.Model):
     def get_org_searchable_content(self):
         """ Return queryset of all objects that can be searched by a user."""
 
+        #TODO add notes
+
         from .projects import Project
         from .series import Series
         from .story import Story
         from .facets import Facet
-        from .notes import NetworkNote, SeriesNote, StoryNote
+        from .notes import Note
 
         #additional required info
         networks = self.get_org_networks()
@@ -608,20 +612,13 @@ class Organization(models.Model):
         stories = Story.objects.filter(Q(Q(organization=self) | Q(collaborate_with=self)))
         facets = Facet.objects.filter(Q(organization=self))
         imageassets = self.imageasset_set.all()
-        networknotes = NetworkNote.objects.filter(Q(network__in=networks))
-        orgnotes = self.orgnote_org.all()
-        seriesnotes = SeriesNote.objects.filter(Q(organization=self))
-        storynotes = StoryNote.objects.filter(Q(organization=self))
 
         searchable_objects.append(projects)
         searchable_objects.append(series)
         searchable_objects.append(stories)
         searchable_objects.append(facets)
         searchable_objects.append(imageassets)
-        searchable_objects.append(networknotes)
-        searchable_objects.append(orgnotes)
-        searchable_objects.append(seriesnotes)
-        searchable_objects.append(storynotes)
+        searchable_objects.append(notes)
 
         return searchable_objects
 
@@ -748,6 +745,11 @@ class Network(models.Model):
         help_text='Id of discussion for a network.',
         blank=True,
         null=True,
+    )
+
+    notes = models.ManyToManyField(
+        'Note',
+        blank=True,
     )
 
     class Meta:

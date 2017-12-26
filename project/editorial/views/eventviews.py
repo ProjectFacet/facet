@@ -19,6 +19,7 @@ from actstream import action
 from editorial.forms import (
     EventForm,
     CommentForm,
+    NoteForm,
     )
 
 from editorial.models import (
@@ -30,6 +31,7 @@ from editorial.models import (
     Event,
     Comment,
     Discussion,
+    Note,
     )
 
 
@@ -102,8 +104,16 @@ class EventUpdateView(UpdateView):
         self.object = self.get_object()
         discussion = self.object.discussion
         comments = discussion.comment_set.all()
-        form = EventCommentForm()
+        form = CommentForm()
         return {'discussion': discussion, 'comments': comments, 'form': form,}
+
+    def event_notes(self):
+        """Get notes and note form for event."""
+
+        self.object = self.get_object()
+        notes = self.object.note_set.all()
+        form = NoteForm()
+        return {'notes': notes, 'form': form}
 
     def get_success_url(self):
 

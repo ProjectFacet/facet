@@ -12,6 +12,7 @@ from django.core.exceptions import ValidationError
 
 from . import User, Organization, Network, Project, Series, Story
 from . import SimpleImage, SimpleDocument, SimpleAudio, SimpleVideo
+# from . import Note
 
 #-----------------------------------------------------------------------#
 #  EVENT
@@ -93,6 +94,12 @@ class Event(models.Model):
         blank=True,
         null=True,
     )
+
+    notes = models.ManyToManyField(
+        'Note',
+        blank=True,
+    )
+
 
     # an event can be associated with an organization, project, series or story.
     # this can be different than organization that makes the event in the db

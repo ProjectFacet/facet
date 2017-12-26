@@ -9,7 +9,6 @@ from models import (
     OrganizationSubscription,
     ContractorSubscription,
     Organization,
-    OrganizationNote,
     Network,
     Platform,
     PlatformAccount,
@@ -23,11 +22,7 @@ from models import (
     Task,
     Event,
     ContentLicense,
-    ProjectNote,
-    SeriesNote,
-    StoryNote,
-    TaskNote,
-    EventNote,
+    Note,
     ImageAsset,
     DocumentAsset,
     AudioAsset,
@@ -62,7 +57,6 @@ admin.site.register(OrganizationContractorAffiliation)
 admin.site.register(Organization)
 admin.site.register(OrganizationSubscription)
 admin.site.register(ContractorSubscription)
-admin.site.register(OrganizationNote)
 admin.site.register(Network)
 admin.site.register(Platform)
 admin.site.register(PlatformAccount)
@@ -76,11 +70,7 @@ admin.site.register(Pitch)
 admin.site.register(Call)
 admin.site.register(Assignment)
 admin.site.register(ContentLicense)
-admin.site.register(ProjectNote)
-admin.site.register(SeriesNote)
-admin.site.register(StoryNote)
-admin.site.register(TaskNote)
-admin.site.register(EventNote)
+admin.site.register(Note)
 admin.site.register(ImageAsset)
 admin.site.register(DocumentAsset)
 admin.site.register(AudioAsset)

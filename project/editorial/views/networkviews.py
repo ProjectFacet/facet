@@ -22,7 +22,8 @@ from editorial.forms import (
     AddToNetworkForm,
     InviteToNetworkForm,
     CommentForm,
-    NetworkNoteForm,)
+    NoteForm,
+    )
 
 from editorial.models import (
     User,
@@ -43,7 +44,8 @@ from editorial.models import (
     DocumentAssetCopyDetail,
     AudioAssetCopyDetail,
     VideoAssetCopyDetail,
-    NetworkNote,)
+    Note,
+    )
 
 
 #----------------------------------------------------------------------#
@@ -110,8 +112,8 @@ class NetworkDetailView(DetailView):
 
         context = super(NetworkDetailView, self).get_context_data(**kwargs)
 
-        notes = self.object.networknote_network.all()
-        noteform = NetworkNoteForm()
+        notes = self.object.note_set.all()
+        noteform = NoteForm()
         comments = self.object.discussion.comment_set.all()
         commentform = CommentForm()
         networkinvitationform = InviteToNetworkForm()
@@ -252,7 +254,7 @@ class CopyNetworkStoryView(View):
         if original_facets:
             print "if original facets"
             for facet in original_facets:
-                # FIXME next line creates error 
+                # FIXME next line creates error
                 # 'NoneType' object has no attribute 'create'
                 copied_facet = facet.copy()
                 print "Copied Facet exists"

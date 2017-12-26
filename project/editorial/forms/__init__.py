@@ -25,7 +25,8 @@ from .assetforms import ImageAssetForm, DocumentAssetForm, AudioAssetForm, Video
 from .taskforms import TaskForm
 from .eventforms import EventForm
 from .discussionforms import PrivateMessageForm, CommentForm
-from .noteforms import NetworkNoteForm, OrganizationNoteForm, ProjectNoteForm, SeriesNoteForm, StoryNoteForm, UserNoteForm
+from .noteforms import NoteForm
+# from .noteforms import NetworkNoteForm, OrganizationNoteForm, ProjectNoteForm, SeriesNoteForm, StoryNoteForm, UserNoteForm, TaskNoteForm, EventNoteForm
 from .platformaccountsforms import PlatformAccountForm, PlatformAccountFormSet
 
 from editorial.models.facets import COMMON_FIELDS

@@ -121,28 +121,31 @@ $(document).ready(function() {
 
 {% block modals %}
     {% with view.notes as notes %}
-    <!-- Add Note Modal -->
-    <div class="modal fade" id="addUserNote" tabindex="-1" role="dialog" aria-labelledby="addUserNoteModalLabel">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="addUserModalLabel">Add a note for this user</h4>
-          </div>
-          <div class="modal-body">
-            <form action="{% url 'create_user_note' %}" method="POST" class="post-form">
-            {% csrf_token %}
-            {% bootstrap_form notes.form %}
-            <input type="hidden" name="user" value="{{ user.pk }}" />
-            <button type="submit" class="btn btn-primary">Post Note</button>
-            </form>
-          </div>
-          <div class="modal-footer">
+    <!-- User Note Modal -->
+      <div class="modal fade" id="addUserNote" tabindex="-1" role="dialog" aria-labelledby="addUserNoteLabel">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="addUserNoteLabel">Create a note</h4>
+            </div>
+            <div class="modal-body">
+              {% if usernoteform %}
+              <form action="{% url 'create_usernote' %}" method="POST" class="post-form">
+              {% csrf_token %}
+              {% bootstrap_form usernoteform %}
+              <!-- Hidden Inputs -->
+              <input type="hidden" name="association" value="user" />
+              <input type="hidden" name="user" value="{{ request.user.id }}" />
+              <button type="submit" class="btn btn-primary">Create Note</button>
+              </form>
+              {% endif %}
+            </div>
+            <div class="modal-footer">
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <!-- END Add Note Modal -->
     <!-- Display User Note Modal -->
     {% for note in notes.notes %}
     <div class="modal fade" id="displayNote{{note.id}}" tabindex="-1" role="dialog" aria-labelledby="displayNote{{note.id}}">

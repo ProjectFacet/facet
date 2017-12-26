@@ -3,7 +3,7 @@
     Passes along information to be available in all templates."""
 
 
-from editorial.forms import PrivateMessageForm, UserNoteForm
+from editorial.forms import PrivateMessageForm, NoteForm
 from actstream.models import any_stream, model_stream
 from editorial.models import Organization, User
 from django.contrib.sessions.models import Session
@@ -12,7 +12,7 @@ from django.utils import timezone
 def include_private_message_form(request):
     if request.user.is_authenticated():
         privatemessageform = PrivateMessageForm(request=request)
-        usernoteform = UserNoteForm()
+        usernoteform = NoteForm()
         return {'privatemessageform': privatemessageform, 'usernoteform': usernoteform}
     else:
         return {}

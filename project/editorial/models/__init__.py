@@ -33,7 +33,7 @@ from .projects import Project
 from .series import Series
 from .story import Story
 from .facets import Facet, FacetTemplate, ContentLicense
-from .notes import OrganizationNote, ProjectNote, SeriesNote, StoryNote, UserNote, NetworkNote, TaskNote, EventNote
+from .notes import Note
 from .platforms import Platform, PlatformAccount
 from .tasks import Task
 from .events import Event

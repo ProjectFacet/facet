@@ -12,6 +12,7 @@ from django.core.exceptions import ValidationError
 
 from . import User, Organization, Network, Project, Series, Discussion
 from . import SimpleImage, SimpleDocument, SimpleAudio, SimpleVideo
+# from . import Note
 
 #-----------------------------------------------------------------------#
 #  STORY
@@ -140,6 +141,11 @@ class Story(models.Model):
         help_text='Id of planning discussion for a story.',
         blank=True,
         null=True,
+    )
+
+    notes = models.ManyToManyField(
+        'Note',
+        blank=True,
     )
 
     # assets

@@ -28,7 +28,7 @@ from editorial.forms import (
     TaskForm,
     EventForm,
     CommentForm,
-    StoryNoteForm,
+    NoteForm,
     )
 
 from editorial.models import (
@@ -38,14 +38,14 @@ from editorial.models import (
     Facet,
     Task,
     Event,
-    StoryNote,
     ImageAsset,
     DocumentAsset,
     AudioAsset,
     VideoAsset,
     Comment,
     Discussion,
-    StoryNote,)
+    Note,
+    )
 
 
 #----------------------------------------------------------------------#
@@ -171,8 +171,8 @@ class StoryDetailView(DetailView):
         """Get notes and note form for the story."""
 
         self.object = self.get_object()
-        notes = self.object.storynote_set.all()
-        form = StoryNoteForm()
+        notes = self.object.note_set.all()
+        form = NoteForm()
         return {'notes': notes, 'form': form}
 
 

@@ -20,6 +20,7 @@ from django.core.urlresolvers import reverse
 from editorial.forms import (
     TaskForm,
     CommentForm,
+    NoteForm,
     )
 
 from editorial.models import (
@@ -30,6 +31,7 @@ from editorial.models import (
     Event,
     Comment,
     Discussion,
+    Note,
     )
 
 #----------------------------------------------------------------------#
@@ -85,13 +87,21 @@ class TaskUpdateView(UpdateView):
         kw.update({'organization': self.request.user.organization})
         return kw
 
+    def task_notes(self):
+        """Get notes and note form for tasks."""
+
+        self.object = self.get_object()
+        notes = self.object.note_set.all()
+        form = NoteForm()
+        return {'notes': notes, 'form': form}
+
     def task_discussion(self):
         """Get discussion, comments and comment form for the task."""
 
         self.object = self.get_object()
         discussion = self.object.discussion
         comments = discussion.comment_set.all()
-        form = TaskCommentForm()
+        form = CommentForm()
         return {'discussion': discussion, 'comments': comments, 'form': form,}
 
     def get_success_url(self):

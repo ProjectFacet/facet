@@ -29,7 +29,7 @@
   <!-- Left Column -->
   <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 activity-widget-4">
     <h4 class="m-b-40">Notes <a data-toggle="modal" data-target="#addUserNote" title="Add User Note"><i class="fa fa-plus sameline dark"></i></a></h4>
-    {% for note in usernotes %}
+    {% for note in notes %}
     <div class="row">
         <div class="col-xs-12">
           <div class="media">
@@ -68,26 +68,30 @@ $(function() {
 {% endblock %}
 
 {% block modals %}
-<!-- Add Note Modal -->
-<div class="modal fade" id="addUserNote" tabindex="-1" role="dialog" aria-labelledby="addUserNoteModalLabel">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h5 class="modal-title" id="addUserNoteLabel">Add a note for this user</h5>
-      </div>
-      <div class="modal-body">
-        <form action="{% url 'create_user_note' %}" method="POST" class="post-form">
-        {% csrf_token %}
-        {% bootstrap_form usernoteform %}
-        <input type="hidden" name="user" value="{{ user.pk }}" />
-        <button type="submit" class="btn btn-primary">Post Note</button>
-        </form>
-      </div>
-      <div class="modal-footer">
+<!-- User Note Modal -->
+  <div class="modal fade" id="addUserNote" tabindex="-1" role="dialog" aria-labelledby="addUserNoteLabel">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="addUserNoteLabel">Create a note</h4>
+        </div>
+        <div class="modal-body">
+          {% if form %}
+          <form action="{% url 'create_usernote' %}" method="POST" class="post-form">
+          {% csrf_token %}
+          {% bootstrap_form form %}
+          <!-- Hidden Inputs -->
+          <input type="hidden" name="association" value="user" />
+          <input type="hidden" name="user" value="{{ request.user.id }}" />
+          <button type="submit" class="btn btn-primary">Create Note</button>
+          </form>
+          {% endif %}
+        </div>
+        <div class="modal-footer">
+        </div>
       </div>
     </div>
   </div>
-</div>
 
 {% endblock modals %}

@@ -22,7 +22,7 @@ from django.core.urlresolvers import reverse
 from editorial.forms import (
     CommentForm,
     OrganizationForm,
-    OrganizationNoteForm,
+    # OrganizationNoteForm,
     OrganizationSubscriptionForm,)
 
 from editorial.models import (
@@ -32,7 +32,8 @@ from editorial.models import (
     ImageAsset,
     Comment,
     Discussion,
-    OrganizationNote,)
+    # OrganizationNote,
+    )
 
 # Org notes are managed in notes.py
 

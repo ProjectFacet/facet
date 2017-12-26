@@ -20,7 +20,7 @@ from actstream import action
 from editorial.forms import (
     ProjectForm,
     CommentForm,
-    ProjectNoteForm,
+    # ProjectNoteForm,
     TaskForm,)
 
 from editorial.models import (
@@ -31,7 +31,8 @@ from editorial.models import (
     Event,
     Comment,
     Discussion,
-    ProjectNote,)
+    # ProjectNote,
+    )
 
 #----------------------------------------------------------------------#
 #   Project Views

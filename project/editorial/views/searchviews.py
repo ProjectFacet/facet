@@ -31,11 +31,8 @@ from editorial.models import (
     Comment,
     PrivateMessage,
     Discussion,
-    NetworkNote,
-    OrganizationNote,
-    UserNote,
-    SeriesNote,
-    StoryNote,)
+    Note,
+    )
 
 #----------------------------------------------------------------------#
 #   Custom Search View
@@ -57,8 +54,8 @@ class EditorialSearchView(BaseWatsonSearchView):
         searchable_user_objects = user.get_user_searchable_content()
 
         # unpack the querysets from the list of querysets returned
-        projects, series, stories, facets, imageassets, networknotes, orgnotes, seriesnotes, storynotes = searchable_org_objects
+        projects, series, stories, facets, imageassets, notes = searchable_org_objects
         usernotes = searchable_user_objects
 
         # pass all querysets to search method
-        return watson.search(self.query, models=[projects, series, stories, facets, imageassets, networknotes, orgnotes, seriesnotes, storynotes, usernotes])
+        return watson.search(self.query, models=[projects, series, stories, facets, imageassets, notes,])

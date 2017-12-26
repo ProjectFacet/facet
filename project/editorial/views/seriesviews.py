@@ -20,18 +20,17 @@ from actstream import action
 from editorial.forms import (
     SeriesForm,
     CommentForm,
-    SeriesNoteForm,
+    NoteForm,
     TaskForm,
     EventForm,
     )
 
 from editorial.models import (
     Series,
-    SeriesNote,
+    Note,
     ImageAsset,
     Comment,
     Discussion,
-    SeriesNote,
     Task,
     Event,
     )
@@ -130,8 +129,8 @@ class SeriesDetailView(DetailView):
         """Get notes and note form for a series."""
 
         self.object = self.get_object()
-        notes = self.object.seriesnote.all()
-        form = SeriesNoteForm()
+        notes = self.object.notes.all()
+        form = NoteForm()
         return {'notes': notes, 'form': form}
 
     # FIXME Currently causing error because org is not getting passed to TaskForm

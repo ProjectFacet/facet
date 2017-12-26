@@ -8,9 +8,10 @@ from __future__ import unicode_literals
 from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
 from django.core.mail import send_mail
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.core.urlresolvers import reverse
 from django.utils import timezone
-from django.views.generic import TemplateView , UpdateView, DetailView
+from django.views.generic import TemplateView , UpdateView, DetailView, CreateView
 from django.views.decorators.csrf import csrf_exempt
 from django.template.loader import render_to_string
 import datetime
@@ -18,12 +19,9 @@ import json
 from actstream import action
 
 from editorial.forms import (
-    NetworkNoteForm,
-    OrganizationNoteForm,
-    UserNoteForm,
-    ProjectNoteForm,
-    SeriesNoteForm,
-    StoryNoteForm,)
+    NoteForm,
+    )
+
 
 from editorial.models import (
     User,
@@ -33,14 +31,10 @@ from editorial.models import (
     Series,
     Story,
     Facet,
-    ProjectNote,
-    SeriesNote,
-    StoryNote,
-    NetworkNote,
-    OrganizationNote,
-    UserNote,
-    SeriesNote,
-    StoryNote,)
+    Event,
+    Task,
+    Note,
+    )
 
 
 #----------------------------------------------------------------------#
@@ -50,21 +44,7 @@ from editorial.models import (
 def note_content_html(request, note_type, pk):
     """Return note content as html."""
 
-    if note_type=='organization':
-        note = get_object_or_404(OrganizationNote, pk=pk)
-    elif note_type=='network':
-        print "in note_type = network"
-        note = get_object_or_404(NetworkNote, pk=pk)
-    elif note_type=='user':
-        note = get_object_or_404(UserNote, pk=pk)
-    elif note_type=='project':
-        note = get_object_or_404(ProjectNote, pk=pk)
-    elif note_type=='series':
-        note = get_object_or_404(SeriesNote, pk=pk)
-    elif note_type=='story':
-        note = get_object_or_404(StoryNote, pk=pk)
-    elif note_type=='facet':
-        note = get_object_or_404(FacetNote, pk=pk)
+    note = get_object_or_404(Note, pk=pk)
 
     note_html = render_to_string('note-content.html', {
                         'note': note,
@@ -72,6 +52,159 @@ def note_content_html(request, note_type, pk):
     })
 
     return HttpResponse(note_html)
+
+
+class NoteCreateView(CreateView):
+    """Create a note."""
+
+    model = Note
+    form_class = NoteForm
+
+    def form_valid(self, form):
+        """Save -- but first add some information and association
+        with the correct object."""
+
+        self.object = note = form.save(commit=False)
+        # identify what the note is being associated with
+        associated_object = self.request.POST.get('association')
+        print "AO: ", associated_object
+        if associated_object == 'network':
+            # retrieve the object to connect with the note
+            network_id = self.request.POST.get('network')
+            network = get_object_or_404(Network, id=network_id)
+            # retrieve or set values for note attributes
+            title = self.request.POST.get('title')
+            text = self.request.POST.get('text')
+            important = self.request.POST.get('important')
+            note_type = "NET"
+            # create and save note
+            note = Note.objects.create_note(owner=self.request.user, title=title, text=text, note_type=note_type, important=important)
+            note.save()
+            # record action
+            action_target = network
+            action.send(self.request.user, verb="created", action_object=note, target=action_target)
+            # redirect to the associated object
+            return HttpResponseRedirect(reverse('network_detail', args=(network.id,)))
+        elif associated_object == 'organization':
+            # retrieve the object to connect with the note
+            organization_id = self.request.POST.get('organization')
+            organization = get_object_or_404(Organization, id=organization_id)
+            # retrieve or set values for note attributes
+            title = self.request.POST.get('title')
+            text = self.request.POST.get('text')
+            important = self.request.POST.get('important')
+            note_type = "ORG"
+            # create and save note
+            note = Note.objects.create_note(owner=self.request.user, title=title, text=text, note_type=note_type, important=important)
+            note.save()
+            # record action
+            action_target = organization
+            action.send(self.request.user, verb="created", action_object=note, target=action_target)
+            # redirect to the associated object
+            return HttpResponseRedirect(reverse('organization_detail', args=(organization.id,)))
+        elif associated_object == 'user':
+            # retrieve the object to connect with the note
+            user_id = self.request.POST.get('user')
+            print "UI: ", user_id
+            user = get_object_or_404(User, id=user_id)
+            # retrieve or set values for note attributes
+            title = self.request.POST.get('title')
+            text = self.request.POST.get('text')
+            important = self.request.POST.get('important')
+            note_type = "USER"
+            # create and save note
+            note = Note.objects.create_note(owner=self.request.user, title=title, text=text, note_type=note_type, important=important)
+            note.save()
+            # record action
+            action_target = user
+            action.send(self.request.user, verb="created", action_object=note, target=action_target)
+            # redirect to the associated object
+            return HttpResponseRedirect(reverse('user_detail', args=(user.id,)))
+        elif associated_object == 'project':
+            # retrieve the object to connect with the note
+            project_id = self.request.POST.get('project')
+            project = get_object_or_404(Project, id=project_id)
+            # retrieve or set values for note attributes
+            title = self.request.POST.get('title')
+            text = self.request.POST.get('text')
+            important = self.request.POST.get('important')
+            note_type = "PRO"
+            # create and save note
+            note = Note.objects.create_note(owner=self.request.user, title=title, text=text, note_type=note_type, important=important)
+            note.save()
+            # record action
+            action_target = project
+            action.send(self.request.user, verb="created", action_object=note, target=action_target)
+            # redirect to the associated object
+            return HttpResponseRedirect(reverse('project_detail', args=(project.id,)))
+        elif associated_object == 'series':
+            # retrieve the object to connect with the note
+            series_id = self.request.POST.get('series')
+            series = get_object_or_404(Series, id=series_id)
+            # retrieve or set values for note attributes
+            title = self.request.POST.get('title')
+            text = self.request.POST.get('text')
+            important = self.request.POST.get('important')
+            note_type = "SER"
+            # create and save note
+            note = Note.objects.create_note(owner=self.request.user, title=title, text=text, note_type=note_type, important=important)
+            note.save()
+            # record action
+            action_target = series
+            action.send(self.request.user, verb="created", action_object=note, target=action_target)
+            # redirect to the associated object
+            return HttpResponseRedirect(reverse('series_detail', args=(series.id,)))
+        elif associated_object == 'story':
+            # retrieve the object to connect with the note
+            story_id = self.request.POST.get('story')
+            story = get_object_or_404(Story, id=story_id)
+            # retrieve or set values for note attributes
+            title = self.request.POST.get('title')
+            text = self.request.POST.get('text')
+            important = self.request.POST.get('important')
+            note_type = "STO"
+            # create and save note
+            note = Note.objects.create_note(owner=self.request.user, title=title, text=text, note_type=note_type, important=important)
+            note.save()
+            # record action
+            action_target = story
+            action.send(self.request.user, verb="created", action_object=note, target=action_target)
+            # redirect to the associated object
+            return HttpResponseRedirect(reverse('story_detail', args=(story.id,)))
+        elif associated_object == 'task':
+            # retrieve the object to connect with the note
+            task_id = self.request.POST.get('task')
+            task = get_object_or_404(Task, id=task_id)
+            # retrieve or set values for note attributes
+            title = self.request.POST.get('title')
+            text = self.request.POST.get('text')
+            important = self.request.POST.get('important')
+            note_type = "TSK"
+            # create and save note
+            note = Note.objects.create_note(owner=self.request.user, title=title, text=text, note_type=note_type, important=important)
+            note.save()
+            # record action
+            action_target = task
+            action.send(self.request.user, verb="created", action_object=note, target=action_target)
+            # redirect to the associated object
+            return HttpResponseRedirect(reverse('task_detail', args=(task.id,)))
+        elif associated_object == 'event':
+            # retrieve the object to connect with the note
+            event_id = self.request.POST.get('event')
+            event = get_object_or_404(Event, id=event_id)
+            # retrieve or set values for note attributes
+            title = self.request.POST.get('title')
+            text = self.request.POST.get('text')
+            important = self.request.POST.get('important')
+            note_type = "EV"
+            # create and save note
+            note = Note.objects.create_note(owner=self.request.user, title=title, text=text, note_type=note_type, important=important)
+            note.save()
+            # record action
+            action_target = event
+            action.send(self.request.user, verb="created", action_object=note, target=action_target)
+            # redirect to the associated object
+            return HttpResponseRedirect(reverse('event_detail', args=(event.id,)))
 
 #----------------------------------------------------------------------#
 #   Organization Note Views
@@ -90,53 +223,24 @@ def org_notes(request, pk):
         'organizationnotes': organizationnotes,
     })
 
-
-def create_org_note(request):
-    """ Post a note to an organization."""
-
-    organization = request.user.organization
-    if request.method == "POST":
-        form = OrganizationNoteForm(request.POST or None)
-        if form.is_valid():
-            organizationnote = form.save(commit=False)
-            organizationnote.owner = request.user
-            organizationnote.organization = organization
-            organizationnote.save()
-
-            # record action for activity story_team
-            action.send(request.user, verb="added note", action_object=organizationnote, target=organization)
-
-            return redirect('org_detail', pk=organization.id)
-
-
 #----------------------------------------------------------------------#
 #   User Note Views
 #----------------------------------------------------------------------#
 
-def user_notes(request,pk):
-    """ Display all of the notes for a user. """
+class UserNoteView(TemplateView):
+    """Display all of the notes for a user."""
 
-    user = request.user
-    usernoteform = UserNoteForm()
-    usernotes = UserNote.objects.filter(owner_id=request.user)
-    return render(request, 'editorial/usernotes.html', {
-        'user': user,
-        'usernotes': usernotes,
-        'usernotes': usernotes,
-    })
+    template_name = 'editorial/usernotes.html'
 
-
-def create_user_note(request):
-    """ Post a note to a user."""
-
-    if request.method == "POST":
-        form = UserNoteForm(request.POST or None)
-        if form.is_valid():
-            usernote = form.save(commit=False)
-            usernote.owner = request.user
-            usernote.save()
-            return redirect('user_notes', pk=request.user.pk)
-
+    def get_context_data(self, pk):
+        user = get_object_or_404(User, pk=pk)
+        form = NoteForm()
+        notes = user.note_set.filter(note_type="USER")
+        return {
+            'user': user,
+            'form': form,
+            'notes': notes,
+        }
 
 #----------------------------------------------------------------------#
 #   Project Note Views
@@ -155,28 +259,6 @@ def project_notes(request, pk):
         'projectnotes': projectnotes,
     })
 
-
-def create_project_note(request):
-    """ Post a note to an project."""
-
-    if request.method == "POST":
-        form = ProjectNoteForm(request.POST or None)
-        if form.is_valid():
-            project_id = request.POST.get('project')
-            project = get_object_or_404(Project, pk=project_id)
-            projectnote = form.save(commit=False)
-            projectnote.owner = request.user
-            projectnote.organization = request.user.organization
-            projectnote.project = project
-            projectnote.save()
-
-            # record action for activity story_team
-            action.send(request.user, verb="added note", action_object=projectnote, target=project)
-
-            return redirect('project_detail', pk=project.id)
-
-
-
 #----------------------------------------------------------------------#
 #   Series Note Views
 #----------------------------------------------------------------------#
@@ -193,26 +275,6 @@ def series_notes(request, pk):
         'seriesnoteform': seriesnoteform,
         'seriesnotes': seriesnotes,
     })
-
-
-def create_series_note(request):
-    """ Post a note to an series."""
-
-    if request.method == "POST":
-        form = SeriesNoteForm(request.POST or None)
-        if form.is_valid():
-            series_id = request.POST.get('series')
-            series = get_object_or_404(Series, pk=series_id)
-            seriesnote = form.save(commit=False)
-            seriesnote.owner = request.user
-            seriesnote.organization = request.user.organization
-            seriesnote.series = series
-            seriesnote.save()
-
-            # record action for activity story_team
-            action.send(request.user, verb="added note", action_object=seriesnote, target=series)
-
-            return redirect('series_detail', pk=series.id)
 
 #----------------------------------------------------------------------#
 #   Story Note Views
@@ -231,27 +293,6 @@ def story_notes(request, pk):
         'storynoteform': storynoteform,
     })
 
-
-def create_story_note(request):
-    """ Post a note to an story."""
-
-    if request.method == "POST":
-        form = StoryNoteForm(request.POST or None)
-        if form.is_valid():
-            story_id = request.POST.get('story')
-            story = get_object_or_404(Story, pk=story_id)
-            storynote = form.save(commit=False)
-            storynote.owner = request.user
-            storynote.organization = request.user.organization
-            storynote.story = story
-            storynote.save()
-
-            # record action for activity story_team
-            action.send(request.user, verb="added note", action_object=storynote, target=story)
-
-            return redirect('story_detail', pk=story.id)
-
-
 #----------------------------------------------------------------------#
 #   Network Note Views
 #----------------------------------------------------------------------#
@@ -268,21 +309,36 @@ def network_notes(request, pk):
         'networknoteform': networknoteform,
     })
 
+#----------------------------------------------------------------------#
+#   Task Note Views
+#----------------------------------------------------------------------#
 
-def create_network_note(request):
-    """ Post a note to a network."""
+def task_notes(request, pk):
+    """ Display all of the notes for an task. """
 
-    if request.method == "POST":
-        form = NetworkNoteForm(request.POST or None)
-        if form.is_valid():
-            nw_id = request.POST.get('network')
-            network = get_object_or_404(Network, pk=nw_id)
-            networknote = form.save(commit=False)
-            networknote.owner = request.user
-            networknote.network = network
-            networknote.save()
+    task = get_object_or_404(Task, pk=pk)
+    tasknotes = TaskNote.objects.filter(task_id=task.id)
+    tasknoteform = TaskNoteForm()
 
-            # record action for activity story_team
-            action.send(request.user, verb="added note", action_object=networknote, target=network)
+    return render(request, 'editorial/tasknotes.html', {
+        'task': task,
+        'tasknotes': tasknotes,
+        'tasknoteform': tasknoteform,
+    })
 
-            return redirect('network_detail', pk=network.pk)
+#----------------------------------------------------------------------#
+#   Event Note Views
+#----------------------------------------------------------------------#
+
+def event_notes(request, pk):
+    """ Display all of the notes for an event. """
+
+    event = get_object_or_404(Event, pk=pk)
+    eventnotes = EventNote.objects.filter(event_id=event.id)
+    eventnoteform = EventNoteForm()
+
+    return render(request, 'editorial/eventnotes.html', {
+        'event': event,
+        'eventnotes': eventnotes,
+        'eventnoteform': eventnoteform,
+    })

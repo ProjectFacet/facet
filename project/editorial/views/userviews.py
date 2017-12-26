@@ -20,14 +20,15 @@ from actstream import action
 from editorial.forms import (
     AddUserForm,
     UserProfileForm,
-    UserNoteForm,
+    NoteForm,
     # FullUserEditForm,
 
     )
 
 from editorial.models import (
     User,
-    UserNote,)
+    Note,
+    )
 
 
 #----------------------------------------------------------------------#
@@ -87,8 +88,9 @@ class UserDetailView(DetailView):
         """Get all user notes associated with user and note form."""
 
         self.object = self.get_object()
-        notes = self.object.usernote_owner.all()
-        form = UserNoteForm()
+        notes = self.object.note_set.filter(note_type="USER")
+        print "NOTES: ", notes
+        form = NoteForm()
         return {'notes': notes, 'form': form,}
 
 

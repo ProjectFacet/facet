@@ -29,11 +29,7 @@ from editorial.forms import (
     InviteToNetworkForm,
     PrivateMessageForm,
     CommentForm,
-    NetworkNoteForm,
-    OrganizationNoteForm,
-    UserNoteForm,
-    SeriesNoteForm,
-    StoryNoteForm,
+    NoteForm,
     )
 
 from editorial.models import (
@@ -48,8 +44,7 @@ from editorial.models import (
     Pitch,
     Assignment,
     Facet,
-    SeriesNote,
-    StoryNote,
+    Note,
     ImageAsset,
     DocumentAsset,
     AudioAsset,
@@ -58,11 +53,7 @@ from editorial.models import (
     PrivateMessage,
     Discussion,
     StoryCopyDetail,
-    NetworkNote,
-    OrganizationNote,
-    UserNote,
-    SeriesNote,
-    StoryNote,)
+    )
 
 
 #----------------------------------------------------------------------#

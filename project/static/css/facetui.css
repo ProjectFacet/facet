@@ -354,6 +354,12 @@ img.image-center {
   height: 350px !important;
 }
 
+.eventdiscussion, .taskdiscussion {
+  overflow: scroll !important;
+  min-height: 300px !important;
+  max-height: 300px !important;
+}
+
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
   color: #474d5d;
 }

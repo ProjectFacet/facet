@@ -14,6 +14,9 @@ from django.core.exceptions import ValidationError
 
 from . import User, Organization, Network, Project, Series, Story
 from . import SimpleImage, SimpleDocument, SimpleAudio, SimpleVideo
+# from . import Note
+
+
 #-----------------------------------------------------------------------#
 #  TASK
 #-----------------------------------------------------------------------#
@@ -130,6 +133,11 @@ class Task(models.Model):
         help_text='Id of discussion for the task.',
         blank=True,
         null=True,
+    )
+
+    notes = models.ManyToManyField(
+        'Note',
+        blank=True,
     )
 
     # assets

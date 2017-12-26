@@ -35,12 +35,7 @@ class EditorialAppConfig(AppConfig):
             "SimpleDocument",
             "SimpleAudio",
             "SimpleVideo",
-            "NetworkNote",
-            "OrganizationNote",
-            "UserNote",
-            "ProjectNote",
-            "SeriesNote",
-            "StoryNote",
+            "Note",
         ]:
             register_watson(self, model_name)
 
@@ -67,11 +62,7 @@ class EditorialAppConfig(AppConfig):
         registry.register(self.get_model('SimpleDocument'))
         registry.register(self.get_model('SimpleAudio'))
         registry.register(self.get_model('SimpleVideo'))
-        registry.register(self.get_model('OrganizationNote'))
-        registry.register(self.get_model('NetworkNote'))
-        registry.register(self.get_model('ProjectNote'))
-        registry.register(self.get_model('SeriesNote'))
-        registry.register(self.get_model('StoryNote'))
+        registry.register(self.get_model('Note'))
         registry.register(self.get_model('Comment'))
 
 

@@ -19,11 +19,11 @@ from editorial.models import (
     Organization,
     Series,
     Story,
-    StoryNote,
     ImageAsset,
     Comment,
     Discussion,
-    StoryNote,)
+    Note,
+    )
 
 #----------------------------------------------------------------------#
 #   Schedule Views
