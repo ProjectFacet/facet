@@ -148,7 +148,6 @@ class EventDeleteView(DeleteView):
 #   Content Event Views
 #----------------------------------------------------------------------#
 
-# FIXME form challenges
 class OrganizationEventView(CreateView):
     """Display all the events associated with an organization.
 
@@ -156,27 +155,28 @@ class OrganizationEventView(CreateView):
 
     context_object_name = 'events'
     template_name = 'editorial/event_list.html'
+    form_class = EventForm
 
-    # form_class = EventForm
-    #
-    # def get_form_kwargs(self):
-    #     """Pass organization to form."""
-    #
-    #     kw = super(ProjectEventTemplateView, self).get_form_kwargs()
-    #     kw.update({'organization': self.request.user.organization})
-    #     return kw
+    def get_form_kwargs(self):
+        """Pass organization to form."""
 
-    def get_context_data(self, pk):
-        """Return events belonging to the project."""
+        kw = super(OrganizationEventView, self).get_form_kwargs()
+        kw.update({'organization': self.request.user.organization})
+        return kw
 
-        organization = get_object_or_404(Organization, id=pk)
-        # form = TaskForm()
+    def get_context_data(self, **kwargs):
+        """Return events belonging to the organization."""
+
+        context = super(OrganizationEventView, self).get_context_data(**kwargs)
+        organization = get_object_or_404(Organization, id=self.kwargs['pk'])
         events = organization.event_set.all()
-        return {
-            'organization': organization,
-            'events': events,
-            # 'form': form,
-        }
+        reporting_ct = organization.event_set.filter(event_type="Reporting").count()
+        hosting_ct = organization.event_set.filter(event_type="Hosting").count()
+        context['organization'] = organization
+        context['events'] = events
+        context['reporting_ct'] = reporting_ct
+        context['hosting_ct'] = hosting_ct
+        return context
 
 
 class ProjectEventView(CreateView):
@@ -210,7 +210,6 @@ class ProjectEventView(CreateView):
         return context
 
 
-# FIXME form challenges
 class SeriesEventView(CreateView):
     """Display all the events associated with a series.
 
@@ -218,53 +217,54 @@ class SeriesEventView(CreateView):
 
     context_object_name = 'events'
     template_name = 'editorial/event_list.html'
+    form_class = EventForm
 
-    # form_class = EventForm
-    #
-    # def get_form_kwargs(self):
-    #     """Pass organization to form."""
-    #
-    #     kw = super(SeriesEventTemplateView, self).get_form_kwargs()
-    #     kw.update({'organization': self.request.user.organization})
-    #     return kw
+    def get_form_kwargs(self):
+        """Pass organization to form."""
 
-    def get_context_data(self, pk):
+        kw = super(SeriesEventView, self).get_form_kwargs()
+        kw.update({'organization': self.request.user.organization})
+        return kw
+
+    def get_context_data(self, **kwargs):
         """Return events belonging to the series."""
 
-        series = get_object_or_404(Series, id=pk)
-        # form = TaskForm()
+        context = super(SeriesEventView, self).get_context_data(**kwargs)
+        series = get_object_or_404(Series, id=self.kwargs['pk'])
         events = series.event_set.all()
-        return {
-            'series': series,
-            'events': events,
-            # 'form': form,
-        }
+        reporting_ct = series.event_set.filter(event_type="Reporting").count()
+        hosting_ct = series.event_set.filter(event_type="Hosting").count()
+        context['series'] = series
+        context['events'] = events
+        context['reporting_ct'] = reporting_ct
+        context['hosting_ct'] = hosting_ct
+        return context
 
 
-# FIXME form challenges
 class StoryEventView(CreateView):
     """Display all the events associated with a story."""
 
     context_object_name = 'events'
     template_name = 'editorial/event_list.html'
+    form_class = EventForm
 
-    # form_class = EventForm
-    #
-    # def get_form_kwargs(self):
-    #     """Pass organization to form."""
-    #
-    #     kw = super(StoryEventTemplateView, self).get_form_kwargs()
-    #     kw.update({'organization': self.request.user.organization})
-    #     return kw
+    def get_form_kwargs(self):
+        """Pass organization to form."""
 
-    def get_context_data(self, pk):
-        """Return events belonging to the story."""
+        kw = super(StoryEventView, self).get_form_kwargs()
+        kw.update({'organization': self.request.user.organization})
+        return kw
 
-        story = get_object_or_404(Story, id=pk)
-        # form = TaskForm()
+    def get_context_data(self, **kwargs):
+        """Return events belonging to the project."""
+
+        context = super(StoryEventView, self).get_context_data(**kwargs)
+        story = get_object_or_404(Story, id=self.kwargs['pk'])
         events = story.event_set.all()
-        return {
-            'story': story,
-            'events': events,
-            # 'form': form,
-        }
+        reporting_ct = story.event_set.filter(event_type="Reporting").count()
+        hosting_ct = story.event_set.filter(event_type="Hosting").count()
+        context['story'] = story
+        context['events'] = events
+        context['reporting_ct'] = reporting_ct
+        context['hosting_ct'] = hosting_ct
+        return context
