@@ -50,27 +50,71 @@
 </div>
 <div class="row m-t-20">
   <!-- Left column -->
-  <div class="col-xs-12 col-md-6">
-    <h5>Reporting Events</h5>
+  <div class="col-xs-12 col-md-4">
+    <h5>Calendar</h5>
 
-    {% for event in events %}
-      {% if event.event_type == "Reporting" %}
-      <p>{{event.name}}</p>
-      {% endif %}
-    {% endfor %}
+
 
   </div>
+  <!-- Middle column -->
+  <div class="col-xs-12 col-md-4">
+    <h5 class="m-b-20 underline-primary underline-120">Reporting Events <span class="subtle f-s-14 f-w-600">( {{ reporting_ct}} )</span></h5>
+    <div class="activity-widget-5">
+        <div class="row">
+            <div class="col-xs-12 bs-media" id="board-2">
+              {% for event in events %}
+                {% if event.event_type == "Reporting"  %}
+                <div class="media">
+                    <a href="{% url 'event_detail' event.id %}" title="View more detail">
+                    <div class="media-body">
+                        <h5 class="media-heading">
+                          <span class="f-s-18 f-w-600">{{ event.name }}</span>
+                        </h5>
+                        <p class="f-s-14">{{ event.text|truncatechars:150 }}</p>
+                        <p class="color-primary-500 f-s-12 m-t-10">Due: {{ event.event_date|date:'D, N j, g:i a' }}</p>
+                    </div>
+                    </a>
+                    {% for user in event.team.all %}
+                      {% if user.display_photo %}
+                        <a href="{% url 'user_detail' user.id %}" title="See user profile"><img class="img-circle w-40 h-40 m-t-10" src="{{ user.display_photo.url }}" alt="user"></a>
+                      {% endif %}
+                    {% endfor %}
+                </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+        </div>
+    </div>
+  </div>
   <!-- Right column -->
-  <div class="col-xs-12 col-md-6">
-    <h5>Hosting Events</h5>
-
-    {% for event in events %}
-      {% if event.event_type == "Hosting" %}
-      <p>{{event.name}}</p>
-      {% endif %}
-    {% endfor %}
-
-
+  <div class="col-xs-12 col-md-4">
+    <h5 class="m-b-20 underline-success underline-120">Hosting Events <span class="subtle f-s-14 f-w-600">( {{ hosting_ct}} )</span></h5>
+    <div class="activity-widget-5">
+        <div class="row">
+            <div class="col-xs-12 bs-media" id="board-2">
+              {% for event in events %}
+                {% if event.event_type == "Hosting"  %}
+                <div class="media">
+                    <a href="{% url 'event_detail' event.id %}" title="View more detail">
+                    <div class="media-body">
+                        <h5 class="media-heading">
+                          <span class="f-s-18 f-w-600">{{ event.name }}</span>
+                        </h5>
+                        <p class="f-s-14">{{ event.text|truncatechars:150 }}</p>
+                        <p class="color-success-500 f-s-12 m-t-10">Due: {{ event.event_date|date:'D, N j, g:i a' }}</p>
+                    </div>
+                    </a>
+                    {% for user in event.team.all %}
+                      {% if user.display_photo %}
+                        <a href="{% url 'user_detail' user.id %}" title="See user profile"><img class="img-circle w-40 h-40 m-t-10" src="{{ user.display_photo.url }}" alt="user"></a>
+                      {% endif %}
+                    {% endfor %}
+                </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+        </div>
+    </div>
   </div>
 </div>
 
@@ -87,6 +131,392 @@ $(".chosen-select").chosen()
 
 {% endblock %}
 
+<!-- ================================================= -->
+<!-- ================================================= -->
+                <!-- MODALS -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
 {% block modals %}
+
+<!-- Add Project Event -->
+<div class="modal fade" id="addProjectEvent" tabindex="-1" role="dialog" aria-labelledby="addProjectEventModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h5 class="modal-title" id="addEventModalLabel">Add an event for this project:</h5>
+            </div>
+            <div class="modal-body">
+              <form action="{% url 'event_new' %}" method="POST" class="post-form">
+              {% csrf_token %}
+              <div class="row">
+                <div class="col-xs-8">
+                  <!-- Name -->
+                  <fieldset class="form-group m-b-10">
+                    {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.name.label_tag }}</label>{% endcomment %}
+                    {{ form.name }}
+                    {% if form.name.errors %}
+                      <small class="text-muted">{{ form.name.errors }}</small>
+                    {% endif %}
+                  </fieldset>
+                </div>
+                <div class="col-xs-4">
+                  <!-- Event Date -->
+                  <fieldset class="form-group m-b-10">
+                    {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.event_date.label_tag }}</label>{% endcomment %}
+                    {{ form.event_date }}
+                    {% if form.event_date.errors %}
+                      <small class="text-muted">{{ form.event_date.errors }}</small>
+                    {% endif %}
+                  </fieldset>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12">
+                      <!-- Details -->
+                      <fieldset class="form-group m-b-10">
+                        {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.text.label_tag }}</label>{% endcomment %}
+                        {{ form.text }}
+                        {% if form.text.errors %}
+                          <small class="text-muted">{{ form.text.errors }}</small>
+                        {% endif %}
+                      </fieldset>
+                      <!-- Assigned To -->
+                      <fieldset class="form-group m-b-10">
+                        {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.team.label_tag }}</label>{% endcomment %}
+                        {{ form.team }}
+                        {% if form.team.errors %}
+                          <small class="text-muted">{{ form.team.errors }}</small>
+                        {% endif %}
+                      </fieldset>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-md-6">
+                    <!-- Venue -->
+                    <fieldset class="form-group m-b-10">
+                      <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.venue.label_tag }}</label>
+                      {{ form.venue }}
+                      {% if form.venue.errors %}
+                        <small class="text-muted">{{ form.venue.errors }}</small>
+                      {% endif %}
+                    </fieldset>
+                </div>
+                <div class="col-xs-12 col-md-6">
+                    <!-- Type -->
+                    <fieldset class="form-group m-b-10">
+                      <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.event_type.label_tag }}</label>
+                      {{ form.event_type }}
+                      {% if form.event_type.errors %}
+                        <small class="text-muted">{{ form.event_type.errors }}</small>
+                      {% endif %}
+                    </fieldset>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12">
+                  <input type="hidden" name="project" value="{{ project.pk }}" />
+                  <button type="submit" class="btn btn-default">Add Event</button>
+                </div>
+              </div>
+
+              </form>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+    <script>
+    $(".chosen-select").chosen()
+    </script>
+</div>
+
+<!-- Add Series Event -->
+<div class="modal fade" id="addSeriesEvent" tabindex="-1" role="dialog" aria-labelledby="addSeriesEventModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h5 class="modal-title" id="addEventModalLabel">Add an event for this series:</h5>
+            </div>
+            <div class="modal-body">
+              <form action="{% url 'event_new' %}" method="POST" class="post-form">
+              {% csrf_token %}
+              <div class="row">
+                <div class="col-xs-8">
+                  <!-- Name -->
+                  <fieldset class="form-group m-b-10">
+                    {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.name.label_tag }}</label>{% endcomment %}
+                    {{ form.name }}
+                    {% if form.name.errors %}
+                      <small class="text-muted">{{ form.name.errors }}</small>
+                    {% endif %}
+                  </fieldset>
+                </div>
+                <div class="col-xs-4">
+                  <!-- Event Date -->
+                  <fieldset class="form-group m-b-10">
+                    {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.event_date.label_tag }}</label>{% endcomment %}
+                    {{ form.event_date }}
+                    {% if form.event_date.errors %}
+                      <small class="text-muted">{{ form.event_date.errors }}</small>
+                    {% endif %}
+                  </fieldset>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12">
+                      <!-- Details -->
+                      <fieldset class="form-group m-b-10">
+                        {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.text.label_tag }}</label>{% endcomment %}
+                        {{ form.text }}
+                        {% if form.text.errors %}
+                          <small class="text-muted">{{ form.text.errors }}</small>
+                        {% endif %}
+                      </fieldset>
+                      <!-- Assigned To -->
+                      <fieldset class="form-group m-b-10">
+                        {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.team.label_tag }}</label>{% endcomment %}
+                        {{ form.team }}
+                        {% if form.team.errors %}
+                          <small class="text-muted">{{ form.team.errors }}</small>
+                        {% endif %}
+                      </fieldset>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-md-6">
+                    <!-- Venue -->
+                    <fieldset class="form-group m-b-10">
+                      <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.venue.label_tag }}</label>
+                      {{ form.venue }}
+                      {% if form.venue.errors %}
+                        <small class="text-muted">{{ form.venue.errors }}</small>
+                      {% endif %}
+                    </fieldset>
+                </div>
+                <div class="col-xs-12 col-md-6">
+                    <!-- Type -->
+                    <fieldset class="form-group m-b-10">
+                      <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.event_type.label_tag }}</label>
+                      {{ form.event_type }}
+                      {% if form.event_type.errors %}
+                        <small class="text-muted">{{ form.event_type.errors }}</small>
+                      {% endif %}
+                    </fieldset>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12">
+                  <input type="hidden" name="series" value="{{ series.pk }}" />
+                  <button type="submit" class="btn btn-default">Add Event</button>
+                </div>
+              </div>
+
+              </form>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+    <script>
+    $(".chosen-select").chosen()
+    </script>
+</div>
+
+<!-- Add Story Event -->
+<div class="modal fade" id="addStoryEvent" tabindex="-1" role="dialog" aria-labelledby="addStoryEventModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h5 class="modal-title" id="addEventModalLabel">Add an event for this story:</h5>
+            </div>
+            <div class="modal-body">
+              <form action="{% url 'event_new' %}" method="POST" class="post-form">
+              {% csrf_token %}
+              <div class="row">
+                <div class="col-xs-8">
+                  <!-- Name -->
+                  <fieldset class="form-group m-b-10">
+                    {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.name.label_tag }}</label>{% endcomment %}
+                    {{ form.name }}
+                    {% if form.name.errors %}
+                      <small class="text-muted">{{ form.name.errors }}</small>
+                    {% endif %}
+                  </fieldset>
+                </div>
+                <div class="col-xs-4">
+                  <!-- Event Date -->
+                  <fieldset class="form-group m-b-10">
+                    {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.event_date.label_tag }}</label>{% endcomment %}
+                    {{ form.event_date }}
+                    {% if form.event_date.errors %}
+                      <small class="text-muted">{{ form.event_date.errors }}</small>
+                    {% endif %}
+                  </fieldset>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12">
+                      <!-- Details -->
+                      <fieldset class="form-group m-b-10">
+                        {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.text.label_tag }}</label>{% endcomment %}
+                        {{ form.text }}
+                        {% if form.text.errors %}
+                          <small class="text-muted">{{ form.text.errors }}</small>
+                        {% endif %}
+                      </fieldset>
+                      <!-- Assigned To -->
+                      <fieldset class="form-group m-b-10">
+                        {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.team.label_tag }}</label>{% endcomment %}
+                        {{ form.team }}
+                        {% if form.team.errors %}
+                          <small class="text-muted">{{ form.team.errors }}</small>
+                        {% endif %}
+                      </fieldset>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-md-6">
+                    <!-- Venue -->
+                    <fieldset class="form-group m-b-10">
+                      <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.venue.label_tag }}</label>
+                      {{ form.venue }}
+                      {% if form.venue.errors %}
+                        <small class="text-muted">{{ form.venue.errors }}</small>
+                      {% endif %}
+                    </fieldset>
+                </div>
+                <div class="col-xs-12 col-md-6">
+                    <!-- Type -->
+                    <fieldset class="form-group m-b-10">
+                      <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.event_type.label_tag }}</label>
+                      {{ form.event_type }}
+                      {% if form.event_type.errors %}
+                        <small class="text-muted">{{ form.event_type.errors }}</small>
+                      {% endif %}
+                    </fieldset>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12">
+                  <input type="hidden" name="story" value="{{ story.pk }}" />
+                  <button type="submit" class="btn btn-default">Add Event</button>
+                </div>
+              </div>
+
+              </form>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+    <script>
+    $(".chosen-select").chosen()
+    </script>
+</div>
+
+<!-- Add Organization Event -->
+<div class="modal fade" id="addOrganizationEvent" tabindex="-1" role="dialog" aria-labelledby="addOrganizationEventModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h5 class="modal-title" id="addEventModalLabel">Add an event for this organization:</h5>
+            </div>
+            <div class="modal-body">
+              <form action="{% url 'event_new' %}" method="POST" class="post-form">
+              {% csrf_token %}
+              <div class="row">
+                <div class="col-xs-8">
+                  <!-- Name -->
+                  <fieldset class="form-group m-b-10">
+                    {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.name.label_tag }}</label>{% endcomment %}
+                    {{ form.name }}
+                    {% if form.name.errors %}
+                      <small class="text-muted">{{ form.name.errors }}</small>
+                    {% endif %}
+                  </fieldset>
+                </div>
+                <div class="col-xs-4">
+                  <!-- Event Date -->
+                  <fieldset class="form-group m-b-10">
+                    {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.event_date.label_tag }}</label>{% endcomment %}
+                    {{ form.event_date }}
+                    {% if form.event_date.errors %}
+                      <small class="text-muted">{{ form.event_date.errors }}</small>
+                    {% endif %}
+                  </fieldset>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12">
+                      <!-- Details -->
+                      <fieldset class="form-group m-b-10">
+                        {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.text.label_tag }}</label>{% endcomment %}
+                        {{ form.text }}
+                        {% if form.text.errors %}
+                          <small class="text-muted">{{ form.text.errors }}</small>
+                        {% endif %}
+                      </fieldset>
+                      <!-- Assigned To -->
+                      <fieldset class="form-group m-b-10">
+                        {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.team.label_tag }}</label>{% endcomment %}
+                        {{ form.team }}
+                        {% if form.team.errors %}
+                          <small class="text-muted">{{ form.team.errors }}</small>
+                        {% endif %}
+                      </fieldset>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12 col-md-6">
+                    <!-- Venue -->
+                    <fieldset class="form-group m-b-10">
+                      <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.venue.label_tag }}</label>
+                      {{ form.venue }}
+                      {% if form.venue.errors %}
+                        <small class="text-muted">{{ form.venue.errors }}</small>
+                      {% endif %}
+                    </fieldset>
+                </div>
+                <div class="col-xs-12 col-md-6">
+                    <!-- Type -->
+                    <fieldset class="form-group m-b-10">
+                      <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.event_type.label_tag }}</label>
+                      {{ form.event_type }}
+                      {% if form.event_type.errors %}
+                        <small class="text-muted">{{ form.event_type.errors }}</small>
+                      {% endif %}
+                    </fieldset>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xs-12">
+                  <input type="hidden" name="organization" value="{{ organization.pk }}" />
+                  <button type="submit" class="btn btn-default">Add Event</button>
+                </div>
+              </div>
+
+              </form>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+    <script>
+    $(".chosen-select").chosen()
+    </script>
+</div>
 
 {% endblock modals %}

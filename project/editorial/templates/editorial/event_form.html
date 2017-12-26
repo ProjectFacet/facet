@@ -21,17 +21,17 @@
             <li class="fadeIn"> Update</li>
           {% elif event.project %}
             <li class="fadeIn"><a href="{% url 'project_detail' pk=event.project.id %}" title="Go to {{ event.project.name}}"> {{ event.project.name}} </a></li>
-            <li class="fadeIn"><a href="#" title="Go to Project Events"> Events </a></li>
+            <li class="fadeIn"><a href="{% url 'project_event_list' pk=event.project.id %}" title="Go to Project Events"> Events </a></li>
             <li class="fadeIn"> {{  event.name }}</li>
             <li class="fadeIn"> Update</li>
-          {% elif  event.series %}
+          {% elif event.series %}
             <li class="fadeIn"><a href="{% url 'series_detail' pk=event.series.id %}" title="Go to {{ event.series.name}}"> {{ event.series.name}} </a></li>
-            <li class="fadeIn"><a href="#" title="Go to Series Events"> Events </a></li>
+            <li class="fadeIn"><a href="{% url 'series_event_list' pk=event.series.id %}" title="Go to Series Events"> Events </a></li>
             <li class="fadeIn"> {{ event.name}} </li>
             <li class="fadeIn"> Update</li>
-          {% elif  event.story %}
+          {% elif event.story %}
             <li class="fadeIn"><a href="{% url 'story_detail' pk=event.story.id %}" title="Go to {{ event.story.name}}"> {{ event.story.name}} </a></li>
-            <li class="fadeIn"><a href="#" title="Go to Story Events"> Events </a></li>
+            <li class="fadeIn"><a href="{% url 'story_event_list' pk=event.story.id %}" title="Go to Story Events"> Events </a></li>
             <li class="fadeIn"> {{ event.name}} </li>
             <li class="fadeIn"> Update</li>
           {% endif %}
@@ -49,17 +49,25 @@
 {% block content %}
 ERRORS={{form.errors}}
 
-<div class="row">
+<div class="row m-b-20">
   <div class="col-xs-12">
-    <h5 class="m-b-20">{{ event.name}}
-      {% if  event.type == "Hosting" %}
-      <i class="fa fa-circle-o color-warning-300 f-s-14" aria-hidden="true"></i>
-      {% elif  event.type == "Reporting" %}
-      <i class="fa fa-circle-o-notch fa-spin color-primary-500 f-s-14" aria-hidden="true"></i>
-      {% elif  event.type == "Other" %}
-      <i class="fa fa-check-circle-o color-success-300 f-s-14" aria-hidden="true"></i>
+    <h5 class="m-b-20 sameline">
+      {% if  event.event_type == "Hosting" %}
+      <i class="fa fa-calendar-o color-success-300 fa-1x m-r-10" aria-hidden="true"></i>
+      {% elif  event.event_type == "Reporting" %}
+      <i class="fa fa-calendar-o color-primary-500 fa-1x m-r-10" aria-hidden="true"></i>
+      {% elif  event.event_type == "Other" %}
+      <i class="fa fa-calendar-o color-warning-300 fa-1x m-r-10" aria-hidden="true"></i>
       {% endif %}
+      {{ event.name}}
     </h5>
+    <form class="event-delete sameline" method="GET"
+          action="{% url 'event_delete' pk=event.id %}">
+          <!-- onsubmit="return confirm('Do you want to delete this task?')"> -->
+          {% csrf_token %}
+      <a href="javascript:$('.event-delete').submit();"><i class="fa fa-trash subtle" aria-hidden="true"></i></a>
+      <!-- <input type="submit" class="btn btn-sm btn-danger-100" value="Delete"> -->
+    </form>
   </div>
 </div>
 
@@ -97,7 +105,7 @@ ERRORS={{form.errors}}
             {% endif %}
         </div>
         <!-- Event Date -->
-        <p>Event Date</p>
+        <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">Event Date</label>
         <div class="form-group">
               {{ form.event_date }}
               {% if form.event_date.errors %}
@@ -126,12 +134,12 @@ ERRORS={{form.errors}}
       <div class="form-group col-xs-12 col-sm-12 col-md-2 col-lg-2">
       <div class="row">
         <div class="col-xs-12 m-b-40">
-          {% if  event.event_type == "Hosted" %}
-          <button type="submit" class="btn btn-warning content-bottom-10 btn btn-block no-border" name="form">Save Changes</button>
+          {% if  event.event_type == "Hosting" %}
+          <button type="submit" class="btn btn-success content-bottom-10 btn btn-block no-border" name="form">Save Changes</button>
           {% elif  event.event_type == "Reporting" %}
           <button type="submit" class="btn btn-primary content-bottom-10 btn btn-block no-border" name="form">Save Changes</button>
           {% elif  event.event_type == "Other" %}
-          <button type="submit" class="btn btn-success content-bottom-10 btn btn-block no-border" name="form">Save Changes</button>
+          <button type="submit" class="btn btn-warning content-bottom-10 btn btn-block no-border" name="form">Save Changes</button>
           {% else %}
           <button type="submit" class="btn btn-default content-bottom-10 btn btn-block no-border" name="form">Create event</button>
           {% endif %}
@@ -150,8 +158,14 @@ ERRORS={{form.errors}}
       </div>
       <div class="row">
         <div class="col-xs-12 m-b-40">
-          {% comment %}
             <p class="f-s-14 subtle">Associate the event with an Organization Project, Series or Story.</p>
+            <!-- Organization Select -->
+            <div class="form-group" id="fieldset-event-projects">
+              {{ form.evt_organization }}
+              {% if form.evt_organization.errors %}
+                <small class="text-muted">{{ form.evt_organization.errors }}</small>
+              {% endif %}
+            </div>
             <!-- Project Select -->
             <div class="form-group" id="fieldset-event-projects">
               {{ form.project }}
@@ -173,7 +187,6 @@ ERRORS={{form.errors}}
                 <small class="text-muted">{{ form.story.errors }}</small>
               {% endif %}
             </div>
-          {% endcomment %}
         </div>
       </div>
 
@@ -201,7 +214,27 @@ ERRORS={{form.errors}}
 $(".chosen-select").chosen()
 </script>
 
-
+<script>
+  $('.event-delete a').on('click', function(e) {
+       e.preventDefault();
+          swal({
+              title: 'Are you sure?',
+              text: 'You will not be able to recover this event.',
+              type: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Yes, delete it!',
+              closeOnConfirm: true
+          }, function(result) {
+              if (result) {
+                $(".event-delete").attr("method", "POST").submit();
+              } else {
+                // do nothing on cancel
+            }
+          });
+        });
+</script>
 
 <!-- ================================================= -->
 <!-- ================================================= -->

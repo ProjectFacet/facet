@@ -10,7 +10,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.utils import timezone
-from django.views.generic import TemplateView , UpdateView, DetailView, CreateView, ListView
+from django.views.generic import TemplateView , UpdateView, DetailView, CreateView, ListView, DeleteView
 from django.views.decorators.csrf import csrf_exempt
 import datetime
 import json
@@ -111,14 +111,45 @@ class EventUpdateView(UpdateView):
         return super(EventUpdateView, self).get_success_url()
 
 
-def event_delete(request, pk):
-    """Delete a project and its related objects then redirect user to project list."""
+# class EventDeleteView(DeleteView, FormMessagesMixin):
+class EventDeleteView(DeleteView):
+    """View for handling deletion of an event.
 
-    pass
+    In this project, we expect deletion to be done via a JS pop-up UI; we don't expect to
+    actually use the "do you want to delete this?" Django-generated page. However, this is
+    available if useful.
+    """
 
+    # FIXME: this would be a great place to use braces' messages; usage commented out for now
+
+    model = Event
+    template_name = "editorial/event_delete.html"
+
+    # form_valid_message = "Deleted."
+    # form_invalid_message = "Please check form."
+
+    def get_success_url(self):
+        """Post-deletion, return to the task parent URL."""
+
+        if self.object.project:
+            project = self.object.project
+            return reverse('project_event_list', kwargs={'pk': project.id})
+        if self.object.series:
+            series = self.object.series
+            return reverse('series_event_list', kwargs={'pk': series.id})
+        if self.object.story:
+            story = self.object.story
+            return reverse('story_event_list', kwargs={'pk': story.id})
+        if self.object.evt_organization:
+            organization = self.object.evt_organization
+            return reverse('organization_event_list', kwargs={'pk': organization.id})
+
+#----------------------------------------------------------------------#
+#   Content Event Views
+#----------------------------------------------------------------------#
 
 # FIXME form challenges
-class OrganizationEventTemplateView(TemplateView):
+class OrganizationEventView(CreateView):
     """Display all the events associated with an organization.
 
     """
@@ -148,39 +179,39 @@ class OrganizationEventTemplateView(TemplateView):
         }
 
 
-# FIXME form challenges
-class ProjectEventTemplateView(TemplateView):
+class ProjectEventView(CreateView):
     """Display all the events associated with a project.
 
     """
 
     context_object_name = 'events'
     template_name = 'editorial/event_list.html'
+    form_class = EventForm
 
-    # form_class = EventForm
-    #
-    # def get_form_kwargs(self):
-    #     """Pass organization to form."""
-    #
-    #     kw = super(ProjectEventTemplateView, self).get_form_kwargs()
-    #     kw.update({'organization': self.request.user.organization})
-    #     return kw
+    def get_form_kwargs(self):
+        """Pass organization to form."""
 
-    def get_context_data(self, pk):
+        kw = super(ProjectEventView, self).get_form_kwargs()
+        kw.update({'organization': self.request.user.organization})
+        return kw
+
+    def get_context_data(self, **kwargs):
         """Return events belonging to the project."""
 
-        project = get_object_or_404(Project, id=pk)
-        # form = TaskForm()
+        context = super(ProjectEventView, self).get_context_data(**kwargs)
+        project = get_object_or_404(Project, id=self.kwargs['pk'])
         events = project.event_set.all()
-        return {
-            'project': project,
-            'events': events,
-            # 'form': form,
-        }
+        reporting_ct = project.event_set.filter(event_type="Reporting").count()
+        hosting_ct = project.event_set.filter(event_type="Hosting").count()
+        context['project'] = project
+        context['events'] = events
+        context['reporting_ct'] = reporting_ct
+        context['hosting_ct'] = hosting_ct
+        return context
 
 
 # FIXME form challenges
-class SeriesEventTemplateView(TemplateView):
+class SeriesEventView(CreateView):
     """Display all the events associated with a series.
 
     """
@@ -211,7 +242,7 @@ class SeriesEventTemplateView(TemplateView):
 
 
 # FIXME form challenges
-class StoryEventTemplateView(TemplateView):
+class StoryEventView(CreateView):
     """Display all the events associated with a story."""
 
     context_object_name = 'events'

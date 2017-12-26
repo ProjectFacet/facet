@@ -51,17 +51,25 @@
 
 {% block content %}
 
-<div class="row">
+<div class="row m-b-20">
   <div class="col-xs-12">
-    <h5 class="m-b-20">{{task.name}}
+    <h5 class="m-b-20 sameline">
       {% if task.status == "Identified" %}
-      <i class="fa fa-circle-o color-warning-300 f-s-14" aria-hidden="true"></i>
+      <i class="fa fa-circle-o color-warning-300 fa-1x m-r-10" aria-hidden="true"></i>
       {% elif task.status == "In Progress" %}
-      <i class="fa fa-circle-o-notch fa-spin color-primary-500 f-s-14" aria-hidden="true"></i>
+      <i class="fa fa-circle-o-notch fa-spin color-primary-500 fa-1x m-r-10" aria-hidden="true"></i>
       {% elif task.status == "Complete" %}
-      <i class="fa fa-check-circle-o color-success-300 f-s-14" aria-hidden="true"></i>
+      <i class="fa fa-check-circle-o color-success-300 fa-1x m-r-10" aria-hidden="true"></i>
       {% endif %}
+      {{task.name}}
     </h5>
+    <form class="task-delete sameline" method="GET"
+          action="{% url 'task_delete' pk=task.id %}">
+          <!-- onsubmit="return confirm('Do you want to delete this task?')"> -->
+          {% csrf_token %}
+      <a href="javascript:$('.task-delete').submit();"><i class="fa fa-trash subtle" aria-hidden="true"></i></a>
+      <!-- <input type="submit" class="btn btn-sm btn-danger-100" value="Delete"> -->
+    </form>
   </div>
 </div>
 
@@ -72,6 +80,7 @@
     <div class="form-row">
       <!-- Left Columm -->
       <div class="form-group col-xs-12 col-sm-12 col-md-2 col-lg-2">
+        ERRORS={{form.errors}}
         <!-- Task name -->
         <div class="form-group">
           {% comment %}
@@ -82,8 +91,16 @@
             <small class="text-muted">{{ form.name.errors }}</small>
             {% endif %}
         </div>
+        <!-- Due Date -->
+        <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">Due Date</label>
+        <div class="form-group">
+              {{ form.due_date }}
+              {% if form.due_date.errors %}
+                <small class="text-muted">{{ form.due_date.errors }}</small>
+              {% endif %}
+        </div>
         <!-- Team Selection -->
-        <p>Team</p>
+        <p><span class="m-t-20 m-b-20 m-r-10 f-s-14 f-s-400 spread-01 subtle slim-margin"> Team </span></p>
         {% for user in task.assigned_to.all %}
           {% if user.display_photo %}
             <a href="{% url 'user_detail' user.id %}" title="See user profile"><img class="img-circle w-40 h-40 m-b-10" src="{{ user.display_photo.url }}" alt="user"></a>
@@ -108,14 +125,6 @@
               <small class="text-muted">{{ form.important.errors }}</small>
             {% endif %}
           </div>
-        </div>
-        <!-- Due Date -->
-        <p>Due Date</p>
-        <div class="form-group">
-              {{ form.due_date }}
-              {% if form.due_date.errors %}
-                <small class="text-muted">{{ form.due_date.errors }}</small>
-              {% endif %}
         </div>
       </div>
 
@@ -213,16 +222,6 @@
   </form>
 </div>
 <!-- End of form -->
-<div class="row">
-  <div class="col-xs-12">
-    <form class="task-delete" method="GET"
-          action="{% url 'task_delete' pk=task.id %}">
-          <!-- onsubmit="return confirm('Do you want to delete this task?')"> -->
-          {% csrf_token %}
-      <input type="submit" class="btn btn-sm btn-danger-100" value="Delete">
-    </form>
-  </div>
-</div>
 <div class="row m-t-20">
   <div class="col-xs-12 col-md-6 col-lg-4">
     <h5>Discussion</h5>
@@ -247,7 +246,7 @@ $(".chosen-select").chosen()
 </script>
 
 <script>
-  $('.task-delete input').on('click', function(e) {
+  $('.task-delete a').on('click', function(e) {
        e.preventDefault();
           swal({
               title: 'Are you sure?',

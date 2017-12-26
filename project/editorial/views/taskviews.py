@@ -100,7 +100,7 @@ class TaskUpdateView(UpdateView):
         return super(TaskUpdateView, self).get_success_url()
 
 
-# class FacetDeleteView(DeleteView, FormMessagesMixin):
+# class TaskDeleteView(DeleteView, FormMessagesMixin):
 class TaskDeleteView(DeleteView):
     """View for handling deletion of a task.
 

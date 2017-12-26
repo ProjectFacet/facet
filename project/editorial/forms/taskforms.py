@@ -38,10 +38,10 @@ class TaskForm(forms.ModelForm):
         # TODO make assignment team include org users, partner users and collaborators assigned to content
         self.fields['assigned_to'].queryset = org.get_org_users()
         # limit project, series and stories to those owned by org or part of content and org is collaborator for
-        # self.fields['project'].queryset = Project.objects.filter(Q(collaborate_with=org) | (Q(owner=org)))
-        # self.fields['series'].queryset = Series.objects.filter(Q(collaborate_with=org) | (Q(owner=org)))
-        # self.fields['story'].queryset = Story.objects.filter(Q(collaborate_with=org) | (Q(owner=org)))
-        # self.fields['event'].queryset = Event.objects.filter(Q(owner=org))
+        self.fields['project'].queryset = Project.objects.filter(Q(collaborate_with=org) | (Q(organization=org)))
+        self.fields['series'].queryset = Series.objects.filter(Q(collaborate_with=org) | (Q(organization=org)))
+        self.fields['story'].queryset = Story.objects.filter(Q(collaborate_with=org) | (Q(organization=org)))
+        self.fields['event'].queryset = Event.objects.filter(Q(organization=org) | (Q(evt_organization=org)))
         # set empty labels
         self.fields['status'].empty_label='Task Status'
         self.fields['project'].empty_label='Select a Project'
@@ -73,7 +73,7 @@ class TaskForm(forms.ModelForm):
         ]
         widgets = {
             'name': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Name'}),
-            'text': Textarea(attrs={'class': 'form-control', 'id':'task-text', 'rows':10, 'placeholder': 'Details'}),
+            'text': Textarea(attrs={'class': 'form-control', 'id':'task-text', 'rows':17, 'placeholder': 'Details'}),
             'assigned_to': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select form-control task-assign-select', 'id':'task-team', 'data-placeholder': 'Assign to'}),
             'status': Select(attrs={'class': 'custom-select', 'id':'task-status'}),
             'important': CheckboxInput(attrs={'class': ''}),

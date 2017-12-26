@@ -238,10 +238,11 @@ urlpatterns = [
     #----------------------------------------------------------------------#
     url(r'^event/new/$', eventviews.EventCreateView.as_view(), name='event_new'),
     url(r'^event/(?P<pk>[0-9]+)/$', eventviews.EventUpdateView.as_view(), name='event_detail'),
-    url(r'^organization/(?P<pk>[0-9]+)/events/$', eventviews.OrganizationEventTemplateView.as_view(), name='organization_event_list'),
-    url(r'^project/(?P<pk>[0-9]+)/events/$', eventviews.ProjectEventTemplateView.as_view(), name='project_event_list'),
-    url(r'^series/(?P<pk>[0-9]+)/events/$', eventviews.SeriesEventTemplateView.as_view(), name='series_event_list'),
-    url(r'^story/(?P<pk>[0-9]+)/events/$', eventviews.StoryEventTemplateView.as_view(), name='story_event_list'),
+    url(r'^event/(?P<pk>[0-9]+)/delete/$', eventviews.EventDeleteView.as_view(), name='event_delete'),
+    url(r'^organization/(?P<pk>[0-9]+)/events/$', eventviews.OrganizationEventView.as_view(), name='organization_event_list'),
+    url(r'^project/(?P<pk>[0-9]+)/events/$', eventviews.ProjectEventView.as_view(), name='project_event_list'),
+    url(r'^series/(?P<pk>[0-9]+)/events/$', eventviews.SeriesEventView.as_view(), name='series_event_list'),
+    url(r'^story/(?P<pk>[0-9]+)/events/$', eventviews.StoryEventView.as_view(), name='story_event_list'),
     #----------------------------------------------------------------------#
     #   Asset URLS
     #----------------------------------------------------------------------#

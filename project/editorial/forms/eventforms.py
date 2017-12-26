@@ -12,6 +12,7 @@ from django.forms import Textarea, TextInput, RadioSelect, Select, NumberInput, 
 from django.contrib.postgres.fields import ArrayField
 from datetimewidget.widgets import DateTimeWidget
 from tinymce.widgets import TinyMCE
+from django.db.models import Q
 # from django.contrib.staticfiles.templatetags.staticfiles import static
 
 
@@ -39,9 +40,9 @@ class EventForm(forms.ModelForm):
         # FIXME add self.org to evt_organization
         self.fields['evt_organization'].queryset = org.get_org_collaborators_vocab()
         # limit project, series and stories to those owned by org or part of content and org is collaborator for
-        self.fields['project'].queryset = Project.objects.filter(Q(collaborate_with=self) | (Q(owner=self)))
-        self.fields['series'].queryset = Series.objects.filter(Q(collaborate_with=self) | (Q(owner=self)))
-        self.fields['story'].queryset = Story.objects.filter(Q(collaborate_with=self) | (Q(owner=self)))
+        self.fields['project'].queryset = Project.objects.filter(Q(collaborate_with=org) | (Q(organization=org)))
+        self.fields['series'].queryset = Series.objects.filter(Q(collaborate_with=org) | (Q(organization=org)))
+        self.fields['story'].queryset = Story.objects.filter(Q(collaborate_with=org) | (Q(organization=org)))
         # set empty labels
         self.fields['event_type'].empty_label='Event Type'
         self.fields['evt_organization'].empty_label='Select an Organization'
@@ -72,8 +73,9 @@ class EventForm(forms.ModelForm):
             'story',
         ]
         widgets = {
-            'name': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Name'}),
-            'text': Textarea(attrs={'class': 'form-control', 'id':'task-text', 'rows':20, 'placeholder': 'Details'}),
+            'name': Textarea(attrs={'class': 'form-control', 'rows':1, 'placeholder': 'Name'}),
+            'text': Textarea(attrs={'class': 'form-control', 'id':'task-text', 'rows':17, 'placeholder': 'Details'}),
+            'venue': Textarea(attrs={'class': 'form-control', 'rows':1, 'placeholder': 'Venue'}),
             'team': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select form-control facet-select', 'id':'event-team', 'data-placeholder': 'Team'}),
             'event_type': Select(attrs={'class': 'custom-select', 'id':'task-status'}),
             'evt_organization': Select(attrs={'class': 'custom-select', 'id':'event-organization'}),

@@ -120,6 +120,7 @@ class UserDeactivateView(View):
         return redirect('org_edit', pk=user.organization.id)
 
 
+# FIXME still having csrf_token problem
 class UserActivateView(View):
     """Activate an org user."""
     def post(self):

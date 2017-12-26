@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load bootstrap3 %}
+
+{% block head %}
+{{ form.media }}
+{% endblock %}
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+<!--             BREADCRUMB NAVIGATION                 -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
+{% block breadcrumb %}
+<div>
+  <ol class="breadcrumb icon-angle-right icon-th">
+      <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
+      {% if event %}
+        {% if event.evt_organization %}
+          {% comment %}
+          <!-- <li class="fadeIn"><a href="{% url 'organization_detail' pk=event.organization.id %}" title="Go to Organization"> {{ event.organization.name }} </a></li> -->
+          <!-- <li class="fadeIn"><a href="{% url 'organization_ event_list' pk=event.organization.id %}" title="Go to {{ event.organization.name}}  events">  events </a></li> -->
+          {% endcomment %}
+          <li class="fadeIn"> {{  event.name }}</li>
+          <li class="fadeIn"> Update</li>
+        {% elif event.project %}
+          <li class="fadeIn"><a href="{% url 'project_detail' pk=event.project.id %}" title="Go to {{ event.project.name}}"> {{ event.project.name}} </a></li>
+          <li class="fadeIn"><a href="#" title="Go to Project Events"> Events </a></li>
+          <li class="fadeIn"> {{  event.name }}</li>
+          <li class="fadeIn"> Update</li>
+        {% elif event.series %}
+          <li class="fadeIn"><a href="{% url 'series_detail' pk=event.series.id %}" title="Go to {{ event.series.name}}"> {{ event.series.name}} </a></li>
+          <li class="fadeIn"><a href="#" title="Go to Series Events"> Events </a></li>
+          <li class="fadeIn"> {{ event.name}} </li>
+          <li class="fadeIn"> Update</li>
+        {% elif event.story %}
+          <li class="fadeIn"><a href="{% url 'story_detail' pk=event.story.id %}" title="Go to {{ event.story.name}}"> {{ event.story.name}} </a></li>
+          <li class="fadeIn"><a href="#" title="Go to Story Events"> Events </a></li>
+          <li class="fadeIn"> {{ event.name}} </li>
+          <li class="fadeIn"> Update</li>
+        {% endif %}
+      {% else %}
+      <li class="fadeIn"> New event</li>
+      {% endif %}
+  </ol>
+</div>
+{% endblock breadcrumb %}
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+<!--                   Main Section                    -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
+{% block content %}
+
+
+<!-- ================================================= -->
+<!-- CONTENT -->
+<!-- ================================================= -->
+
+<h1>{{ event }} </h1>
+
+<form method="POST" class="post-form">
+  {% csrf_token %}
+  <input type="submit" value="Delete">
+</form>
+
+{% endblock content %}
