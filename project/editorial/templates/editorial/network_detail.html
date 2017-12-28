@@ -4,9 +4,11 @@
 {% load bootstrap3 %}
 {% load staticfiles %}
 
-<!-------------------------------------------->
-<!--      BREADCRUMB NAVIGATION             -->
-<!-------------------------------------------->
+<!-- ================================================= -->
+<!-- ================================================= -->
+<!--             BREADCRUMB NAVIGATION                 -->
+<!-- ================================================= -->
+<!-- ================================================= -->
 
 {% block breadcrumb %}
 <div>
@@ -18,9 +20,9 @@
 </div>
 {% endblock breadcrumb %}
 
-<!-------------------------------------------->
-<!--            Main Section                -->
-<!-------------------------------------------->
+<!-- ================================================= -->
+                    <!-- CONTENT -->
+<!-- ================================================= -->
 
 {% block content %}
 
@@ -135,12 +137,23 @@
 
 </div> <!-- End of Row -->
 
+<!-- ================================================= -->
+                  <!-- JS SCRIPTS -->
+<!-- ================================================= -->
+
+
+
+
 {% endblock %}
 
-<!-------------------------------------------->
-<!--               Modals                   -->
-<!-------------------------------------------->
+<!-- ================================================= -->
+<!-- ================================================= -->
+                <!-- MODALS -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
 {% block modals %}
+{% for note in notes %}
 <!-- Add Note Modal -->
 <div class="modal fade" id="addNetworkNote" tabindex="-1" role="dialog" aria-labelledby="addNetworkNoteModalLabel">
   <div class="modal-dialog" role="document">
@@ -150,9 +163,11 @@
         <h4 class="modal-title" id="addUserModalLabel">Add a note for this network</h4>
       </div>
       <div class="modal-body">
-        <form action="{% url 'create_network_note' %}" method="POST" class="post-form">
+        <form action="{% url 'create_networknote' %}" method="POST" class="post-form">
         {% csrf_token %}
-        {% bootstrap_form noteform %}
+        {% bootstrap_form form %}
+        <!-- Hidden Inputs -->
+        <input type="hidden" name="association" value="network" />
         <input type="hidden" name="network" value="{{ network.pk }}" />
         <button type="submit" class="btn btn-primary">Post Note</button>
         </form>
@@ -163,6 +178,28 @@
   </div>
 </div>
 <!-- END Add Note Modal -->
+<!-- View Note Modals -->
+<div class="modal fade" id="viewNote{{note.id}}" tabindex="-1" role="dialog" aria-labelledby="viewNote{{note.id}}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="viewNote{{note.id}}Label">{{ note.title }}</h4>
+      </div>
+      <div class="modal-body">
+        {{ note.text|linebreaksbr }}
+      </div>
+      <div class="modal-footer">
+        <p class="tiny-text">{{ note.owner }} | {{ note.creation_date|date:'D M j g:i a' }}<p>
+        <small>Keywords: {% for keyword in note.keywords %}{{ keyword }}, {% endfor %}</small>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- END View Note Modals -->
+{% endfor %}
+
+
 <!-- Invite Org to Network Modal -->
 <div class="modal fade" id="inviteOrgToNetworkModal" tabindex="-1" role="dialog" aria-labelledby="inviteOrgToNetworkModalLabel">
   <div class="modal-dialog" role="document">
@@ -185,29 +222,5 @@
   </div>
 </div>
 <!-- END Invite Org to Network Modal -->
-{% for note in networknotes %}
-<!-- View Note Modals -->
-<div class="modal fade" id="viewNote{{note.id}}" tabindex="-1" role="dialog" aria-labelledby="viewNote{{note.id}}">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="addNote{{note.id}}Label">{{ note.title }}</h4>
-      </div>
-      <div class="modal-body">
-        {{ note.text|linebreaksbr }}
-      </div>
-      <div class="modal-footer">
-        <p class="tiny-text">{{ note.owner }} | {{ note.creation_date|date:'D M j g:i a' }}<p>
-        <small>Keywords: {% for keyword in note.keywords %}{{ keyword }}, {% endfor %}</small>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- END View Note Modals -->
-{% endfor %}
-
-<!-- OVERLAY -->
-
 
 {% endblock modals %}

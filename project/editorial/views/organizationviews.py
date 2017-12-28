@@ -10,19 +10,20 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.utils import timezone
-from django.views.generic import TemplateView , UpdateView, DetailView
+from django.views.generic import TemplateView , UpdateView, DetailView, ListView, CreateView, DeleteView
 from django.views.decorators.csrf import csrf_exempt
 from django.views import generic
 import datetime
 import json
 from actstream import action
 from django.core.urlresolvers import reverse
+from django.db.models import Q
 
 
 from editorial.forms import (
     CommentForm,
     OrganizationForm,
-    # OrganizationNoteForm,
+    NoteForm,
     OrganizationSubscriptionForm,)
 
 from editorial.models import (
@@ -32,7 +33,7 @@ from editorial.models import (
     ImageAsset,
     Comment,
     Discussion,
-    # OrganizationNote,
+    Note,
     )
 
 # Org notes are managed in notes.py
@@ -41,7 +42,7 @@ from editorial.models import (
 #   Organization Views
 #----------------------------------------------------------------------#
 
-class OrganizationCreateView(generic.CreateView):
+class OrganizationCreateView(CreateView):
     """Create a new organization."""
 
     model = Organization
@@ -69,7 +70,7 @@ class OrganizationCreateView(generic.CreateView):
         return reverse('org_detail', kwargs={'pk': self.object.pk})
 
 
-class OrganizationUpdateView(generic.UpdateView):
+class OrganizationUpdateView(UpdateView):
     """Edit an organization."""
 
     model = Organization
@@ -83,7 +84,7 @@ class OrganizationUpdateView(generic.UpdateView):
         return context
 
 
-class OrganizationDetailView(generic.DetailView):
+class OrganizationDetailView(DetailView):
     """Detail view of an organization."""
 
     model = Organization
@@ -93,15 +94,15 @@ class OrganizationDetailView(generic.DetailView):
 
         context = super(OrganizationDetailView, self).get_context_data(**kwargs)
 
-        organizationnoteform = OrganizationNoteForm()
-        organizationnotes = OrganizationNote.objects.filter(organization=self.object)[:5]
+        form = NoteForm()
+        notes = self.object.notes.order_by('-creation_date')[:4]
         users = Organization.get_org_users(self.object)
         organizationcomments = Comment.objects.filter(discussion=self.object.discussion).order_by('-date')
         organizationcommentform = CommentForm()
 
         context.update({
-                'organizationnoteform': organizationnoteform,
-                'organizationnotes': organizationnotes,
+                'form': form,
+                'notes': notes,
                 'organizationcomments': organizationcomments,
                 'organizationcommentform': organizationcommentform,
         })

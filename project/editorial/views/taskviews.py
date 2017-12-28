@@ -91,7 +91,7 @@ class TaskUpdateView(UpdateView):
         """Get notes and note form for tasks."""
 
         self.object = self.get_object()
-        notes = self.object.note_set.all()
+        notes = self.object.notes.all().order_by('-creation_date')
         form = NoteForm()
         return {'notes': notes, 'form': form}
 

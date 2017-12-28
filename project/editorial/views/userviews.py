@@ -88,8 +88,7 @@ class UserDetailView(DetailView):
         """Get all user notes associated with user and note form."""
 
         self.object = self.get_object()
-        notes = self.object.note_set.filter(note_type="USER")
-        print "NOTES: ", notes
+        notes = self.object.note_set.filter(note_type="USER").order_by('-creation_date')
         form = NoteForm()
         return {'notes': notes, 'form': form,}
 

@@ -570,9 +570,11 @@
         <h5 class="modal-title" id="addStoryNoteLabel">Add a note for this story</h5>
       </div>
       <div class="modal-body">
-        <form action="{% url 'create_story_note' %}" method="POST" class="post-form">
+        <form action="{% url 'create_storynote' %}" method="POST" class="post-form">
         {% csrf_token %}
         {% bootstrap_form notes.form %}
+        <!-- Hidden Inputs -->
+        <input type="hidden" name="association" value="story" />
         <input type="hidden" name="story" value="{{ story.pk }}" />
         <button type="submit" class="btn btn-primary m-t-20">Post Note</button>
         </form>

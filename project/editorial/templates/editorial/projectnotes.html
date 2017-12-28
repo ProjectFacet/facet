@@ -29,7 +29,7 @@
   <!-- Left Column -->
   <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 activity-widget-4">
     <h4 class="m-b-40">Notes <a data-toggle="modal" data-target="#addProjectNote" title="Add Project Note"><i class="fa fa-plus sameline dark"></i></a></h4>
-    {% for note in projectnotes %}
+    {% for note in notes %}
     <div class="row">
         <div class="col-xs-12">
           <div class="media">
@@ -77,9 +77,11 @@ $(function() {
         <h5 class="modal-title" id="addUserModalLabel">Add a note for this project</h5>
       </div>
       <div class="modal-body">
-        <form action="{% url 'create_project_note' %}" method="POST" class="post-form">
+        <form action="{% url 'create_projectnote' %}" method="POST" class="post-form">
         {% csrf_token %}
-        {% bootstrap_form projectnoteform %}
+        {% bootstrap_form form %}
+        <!-- Hidden Inputs -->
+        <input type="hidden" name="association" value="project" />
         <input type="hidden" name="project" value="{{ project.pk }}" />
         <button type="submit" class="btn btn-primary">Post Note</button>
         </form>

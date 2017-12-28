@@ -324,9 +324,11 @@ $(".chosen-select").chosen()
           <h5 class="modal-title" id="addEventNoteLabel">Add a note for this event:</h5>
         </div>
         <div class="modal-body">
-          <form action="{% url 'create_event_note' %}" method="POST" class="post-form">
+          <form action="{% url 'create_eventnote' %}" method="POST" class="post-form">
           {% csrf_token %}
           {% bootstrap_form notes.form %}
+          <!-- Hidden Inputs -->
+          <input type="hidden" name="association" value="event" />
           <input type="hidden" name="event" value="{{ event.pk }}" />
           <button type="submit" class="btn btn-primary m-t-20">Post Note</button>
           </form>

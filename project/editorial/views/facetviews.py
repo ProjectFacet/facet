@@ -1,5 +1,4 @@
-from django.views.generic import CreateView, FormView, UpdateView, DetailView, ListView, \
-    DeleteView
+from django.views.generic import CreateView, FormView, UpdateView, DetailView, ListView, DeleteView
 from django.shortcuts import redirect
 from django.core.urlresolvers import reverse
 from actstream import action

@@ -129,7 +129,7 @@ class SeriesDetailView(DetailView):
         """Get notes and note form for a series."""
 
         self.object = self.get_object()
-        notes = self.object.notes.all()
+        notes = self.object.notes.all().order_by('-creation_date')
         form = NoteForm()
         return {'notes': notes, 'form': form}
 

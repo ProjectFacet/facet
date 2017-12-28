@@ -4,9 +4,11 @@
 {% load bootstrap3 %}
 {% load staticfiles %}
 
-<!-------------------------------------------->
-<!--      BREADCRUMB NAVIGATION             -->
-<!-------------------------------------------->
+<!-- ================================================= -->
+<!-- ================================================= -->
+<!--             BREADCRUMB NAVIGATION                 -->
+<!-- ================================================= -->
+<!-- ================================================= -->
 
 {% block breadcrumb %}
 <div>
@@ -20,9 +22,9 @@
 </div>
 {% endblock breadcrumb %}
 
-<!-------------------------------------------->
-<!--            Main Section                -->
-<!-------------------------------------------->
+<!-- ================================================= -->
+                    <!-- CONTENT -->
+<!-- ================================================= -->
 
 {% block content %}
 <!-- Row One -->
@@ -97,11 +99,11 @@
       <h4 class="m-b-20">Notes <a data-toggle="modal" data-target="#addOrganizationNote" title="Add Organization Note"><i class="fa fa-plus sameline dark"></i></a></h4>
       </div>
       <div class="displaynotes">
-      {% for note in organizationnotes|slice:":6" %}
+      {% for note in notes|slice:":6" %}
           <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
             <div class="card bs-card">
                 <div class="card-block">
-                    <a data-toggle="modal" data-target="#addNote{{note.id}}" title="View Organization Note"><h4 class="f-s-16 f-w-500 m-b-20">{{ note.title }}</h4></a>
+                    <a data-toggle="modal" data-target="#viewNote{{note.id}}" title="View Organization Note"><h4 class="f-s-16 f-w-500 m-b-20">{{ note.title }}</h4></a>
                     <p class="card-text color-default f-s-12">{{ note.owner.credit_name }}
                         <br>{{ note.creation_date|date:'N j' }}, {{ note.creation_date|date:'g:i a' }}</p>
                 </div>
@@ -142,6 +144,10 @@
 </div>
 <!-- END Full display for md and lg displays -->
 
+<!-- ================================================= -->
+                  <!-- JS SCRIPTS -->
+<!-- ================================================= -->
+
 <script>
 $(document).ready(function() {
   $(".abbr-text").dotdotdot();
@@ -150,7 +156,14 @@ $(document).ready(function() {
 
 {% endblock %}
 
+<!-- ================================================= -->
+<!-- ================================================= -->
+                <!-- MODALS -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
 {% block modals %}
+
 <!-- Add Note Modal -->
 <div class="modal fade" id="addOrganizationNote" tabindex="-1" role="dialog" aria-labelledby="addOrganizationNoteModalLabel">
   <div class="modal-dialog" role="document">
@@ -160,9 +173,11 @@ $(document).ready(function() {
         <h4 class="modal-title" id="addUserModalLabel">Add a note for this organization</h4>
       </div>
       <div class="modal-body">
-        <form action="{% url 'create_org_note' %}" method="POST" class="post-form">
+        <form action="{% url 'create_orgnote' %}" method="POST" class="post-form">
         {% csrf_token %}
-        {% bootstrap_form organizationnoteform %}
+        {% bootstrap_form form %}
+        <!-- Hidden Inputs -->
+        <input type="hidden" name="association" value="organization" />
         <input type="hidden" name="organization" value="{{ organization.pk }}" />
         <button type="submit" class="btn btn-primary">Post Note</button>
         </form>
@@ -173,21 +188,20 @@ $(document).ready(function() {
   </div>
 </div>
 <!-- END Add Note Modal -->
-{% for note in organizationnotes %}
+{% for note in notes %}
 <!-- View Note Modals -->
-<div class="modal fade" id="addNote{{note.id}}" tabindex="-1" role="dialog" aria-labelledby="addaddNote{{note.id}}">
+<div class="modal fade" id="viewNote{{note.id}}" tabindex="-1" role="dialog" aria-labelledby="addaddNote{{note.id}}">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="addNote{{note.id}}Label">{{ note.title }}</h4>
+        <h4 class="modal-title" id="viewNote{{note.id}}Label">{{ note.title }}</h4>
       </div>
       <div class="modal-body">
         {{ note.text|linebreaksbr }}
       </div>
       <div class="modal-footer">
         <p class="tiny-text">{{ note.owner }} | {{ note.creation_date|date:'D M j g:i a' }}<p>
-        <small>Keywords: {% for keyword in note.keywords %}{{ keyword }}, {% endfor %}</small>
       </div>
     </div>
   </div>

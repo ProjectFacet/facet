@@ -350,9 +350,11 @@ $(".chosen-select").chosen()
           <h5 class="modal-title" id="addTaskNoteLabel">Add a note for this task:</h5>
         </div>
         <div class="modal-body">
-          <form action="{% url 'create_task_note' %}" method="POST" class="post-form">
+          <form action="{% url 'create_tasknote' %}" method="POST" class="post-form">
           {% csrf_token %}
           {% bootstrap_form notes.form %}
+          <!-- Hidden Inputs -->
+          <input type="hidden" name="association" value="task" />
           <input type="hidden" name="task" value="{{ task.pk }}" />
           <button type="submit" class="btn btn-primary m-t-20">Post Note</button>
           </form>

@@ -22,7 +22,6 @@ from editorial.forms import (
     NoteForm,
     )
 
-
 from editorial.models import (
     User,
     Organization,
@@ -67,7 +66,6 @@ class NoteCreateView(CreateView):
         self.object = note = form.save(commit=False)
         # identify what the note is being associated with
         associated_object = self.request.POST.get('association')
-        print "AO: ", associated_object
         if associated_object == 'network':
             # retrieve the object to connect with the note
             network_id = self.request.POST.get('network')
@@ -80,6 +78,8 @@ class NoteCreateView(CreateView):
             # create and save note
             note = Note.objects.create_note(owner=self.request.user, title=title, text=text, note_type=note_type, important=important)
             note.save()
+            # associate note with object
+            network.notes.add(note)
             # record action
             action_target = network
             action.send(self.request.user, verb="created", action_object=note, target=action_target)
@@ -97,15 +97,16 @@ class NoteCreateView(CreateView):
             # create and save note
             note = Note.objects.create_note(owner=self.request.user, title=title, text=text, note_type=note_type, important=important)
             note.save()
+            # associate note with object
+            organization.notes.add(note)
             # record action
             action_target = organization
             action.send(self.request.user, verb="created", action_object=note, target=action_target)
             # redirect to the associated object
-            return HttpResponseRedirect(reverse('organization_detail', args=(organization.id,)))
+            return HttpResponseRedirect(reverse('org_detail', args=(organization.id,)))
         elif associated_object == 'user':
             # retrieve the object to connect with the note
             user_id = self.request.POST.get('user')
-            print "UI: ", user_id
             user = get_object_or_404(User, id=user_id)
             # retrieve or set values for note attributes
             title = self.request.POST.get('title')
@@ -115,6 +116,8 @@ class NoteCreateView(CreateView):
             # create and save note
             note = Note.objects.create_note(owner=self.request.user, title=title, text=text, note_type=note_type, important=important)
             note.save()
+            # associate note with object
+            user.notes.add(note)
             # record action
             action_target = user
             action.send(self.request.user, verb="created", action_object=note, target=action_target)
@@ -132,6 +135,8 @@ class NoteCreateView(CreateView):
             # create and save note
             note = Note.objects.create_note(owner=self.request.user, title=title, text=text, note_type=note_type, important=important)
             note.save()
+            # associate note with object
+            project.notes.add(note)
             # record action
             action_target = project
             action.send(self.request.user, verb="created", action_object=note, target=action_target)
@@ -149,6 +154,8 @@ class NoteCreateView(CreateView):
             # create and save note
             note = Note.objects.create_note(owner=self.request.user, title=title, text=text, note_type=note_type, important=important)
             note.save()
+            # associate note with object
+            series.notes.add(note)
             # record action
             action_target = series
             action.send(self.request.user, verb="created", action_object=note, target=action_target)
@@ -166,6 +173,8 @@ class NoteCreateView(CreateView):
             # create and save note
             note = Note.objects.create_note(owner=self.request.user, title=title, text=text, note_type=note_type, important=important)
             note.save()
+            # associate note with object
+            story.notes.add(note)
             # record action
             action_target = story
             action.send(self.request.user, verb="created", action_object=note, target=action_target)
@@ -183,6 +192,8 @@ class NoteCreateView(CreateView):
             # create and save note
             note = Note.objects.create_note(owner=self.request.user, title=title, text=text, note_type=note_type, important=important)
             note.save()
+            # associate note with object
+            task.notes.add(note)
             # record action
             action_target = task
             action.send(self.request.user, verb="created", action_object=note, target=action_target)
@@ -200,6 +211,8 @@ class NoteCreateView(CreateView):
             # create and save note
             note = Note.objects.create_note(owner=self.request.user, title=title, text=text, note_type=note_type, important=important)
             note.save()
+            # associate note with object
+            event.notes.add(note)
             # record action
             action_target = event
             action.send(self.request.user, verb="created", action_object=note, target=action_target)
@@ -207,25 +220,41 @@ class NoteCreateView(CreateView):
             return HttpResponseRedirect(reverse('event_detail', args=(event.id,)))
 
 #----------------------------------------------------------------------#
-#   Organization Note Views
+#   Template Note Views
 #----------------------------------------------------------------------#
 
-def org_notes(request, pk):
-    """ Display all of the notes for an organization. """
+class NetworkNoteView(TemplateView):
+    """Display all of the notes for a network."""
 
-    organization = get_object_or_404(Organization, pk=pk)
-    organizationnotes = OrganizationNote.objects.filter(organization_id=organization.id)
-    organizationnoteform = OrganizationNoteForm()
+    template_name = 'editorial/networknotes.html'
 
-    return render(request, 'editorial/organizationnotes.html', {
-        'organization': organization,
-        'organizationnoteform': organizationnoteform,
-        'organizationnotes': organizationnotes,
-    })
+    def get_context_data(self, pk):
+        network = get_object_or_404(Network, pk=pk)
+        form = NoteForm()
+        notes = network.notes.all().order_by('-creation_date')
+        return {
+            'network': network,
+            'form': form,
+            'notes': notes,
+        }
 
-#----------------------------------------------------------------------#
-#   User Note Views
-#----------------------------------------------------------------------#
+
+class OrganizationNoteView(TemplateView):
+    """Display all of the notes for an organization."""
+
+    template_name = 'editorial/organizationnotes.html'
+
+    def get_context_data(self, pk):
+        organization = get_object_or_404(Organization, pk=pk)
+        form = NoteForm()
+        notes = organization.notes.all().order_by('-creation_date')
+        all_notes = organization.notes.all()
+        return {
+            'organization': organization,
+            'form': form,
+            'notes': notes,
+        }
+
 
 class UserNoteView(TemplateView):
     """Display all of the notes for a user."""
@@ -235,110 +264,89 @@ class UserNoteView(TemplateView):
     def get_context_data(self, pk):
         user = get_object_or_404(User, pk=pk)
         form = NoteForm()
-        notes = user.note_set.filter(note_type="USER")
+        notes = user.notes.all().order_by('-creation_date')
         return {
             'user': user,
             'form': form,
             'notes': notes,
         }
 
-#----------------------------------------------------------------------#
-#   Project Note Views
-#----------------------------------------------------------------------#
 
-def project_notes(request, pk):
-    """ Display all of the notes for an project. """
+class ProjectNoteView(TemplateView):
+    """Display all of the notes for a project."""
 
-    project = get_object_or_404(Project, pk=pk)
-    projectnoteform = ProjectNoteForm()
-    projectnotes = ProjectNote.objects.filter(project_id=project.id)
+    template_name = 'editorial/projectnotes.html'
 
-    return render(request, 'editorial/projectnotes.html', {
-        'project': project,
-        'projectnoteform': projectnoteform,
-        'projectnotes': projectnotes,
-    })
+    def get_context_data(self, pk):
+        project = get_object_or_404(Project, pk=pk)
+        form = NoteForm()
+        notes = project.notes.all().order_by('-creation_date')
+        return {
+            'project': project,
+            'form': form,
+            'notes': notes,
+        }
 
-#----------------------------------------------------------------------#
-#   Series Note Views
-#----------------------------------------------------------------------#
 
-def series_notes(request, pk):
-    """ Display all of the notes for an series. """
+class SeriesNoteView(TemplateView):
+    """Display all of the notes for a project."""
 
-    series = get_object_or_404(Series, pk=pk)
-    seriesnoteform = SeriesNoteForm()
-    seriesnotes = SeriesNote.objects.filter(series_id=series.id)
+    template_name = 'editorial/seriesnotes.html'
 
-    return render(request, 'editorial/seriesnotes.html', {
-        'series': series,
-        'seriesnoteform': seriesnoteform,
-        'seriesnotes': seriesnotes,
-    })
+    def get_context_data(self, pk):
+        series = get_object_or_404(Series, pk=pk)
+        form = NoteForm()
+        notes = series.notes.all().order_by('-creation_date')
+        return {
+            'series': series,
+            'form': form,
+            'notes': notes,
+        }
 
-#----------------------------------------------------------------------#
-#   Story Note Views
-#----------------------------------------------------------------------#
 
-def story_notes(request, pk):
-    """ Display all of the notes for an story. """
+class StoryNoteView(TemplateView):
+    """Display all of the notes for a story."""
 
-    story = get_object_or_404(Story, pk=pk)
-    storynotes = StoryNote.objects.filter(story_id=story.id)
-    storynoteform = StoryNoteForm()
+    template_name = 'editorial/storynotes.html'
 
-    return render(request, 'editorial/storynotes.html', {
-        'story': story,
-        'storynotes': storynotes,
-        'storynoteform': storynoteform,
-    })
+    def get_context_data(self, pk):
+        story = get_object_or_404(Story, pk=pk)
+        form = NoteForm()
+        notes = story.notes.all().order_by('-creation_date')
+        return {
+            'story': story,
+            'form': form,
+            'notes': notes,
+        }
 
-#----------------------------------------------------------------------#
-#   Network Note Views
-#----------------------------------------------------------------------#
 
-def network_notes(request, pk):
-    """ Display all of the notes for a network. """
+class TaskNoteView(TemplateView):
+    """Display all of the notes for a task."""
 
-    network = get_object_or_404(Network, pk=pk)
-    networknotes = NetworkNote.objects.filter(network_id=network.id)
-    networknoteform = NetworkNoteForm()
-    return render(request, 'editorial/networknotes.html', {
-        'network': network,
-        'networknotes': networknotes,
-        'networknoteform': networknoteform,
-    })
+    template_name = 'editorial/tasknotes.html'
 
-#----------------------------------------------------------------------#
-#   Task Note Views
-#----------------------------------------------------------------------#
+    def get_context_data(self, pk):
+        task = get_object_or_404(Task, pk=pk)
+        form = NoteForm()
+        notes = task.notes.all().order_by('-creation_date')
+        return {
+            'task': task,
+            'form': form,
+            'notes': notes,
+        }
 
-def task_notes(request, pk):
-    """ Display all of the notes for an task. """
 
-    task = get_object_or_404(Task, pk=pk)
-    tasknotes = TaskNote.objects.filter(task_id=task.id)
-    tasknoteform = TaskNoteForm()
+class EventNoteView(TemplateView):
+    """Display all of the notes for an event."""
 
-    return render(request, 'editorial/tasknotes.html', {
-        'task': task,
-        'tasknotes': tasknotes,
-        'tasknoteform': tasknoteform,
-    })
+    template_name = 'editorial/eventnotes.html'
 
-#----------------------------------------------------------------------#
-#   Event Note Views
-#----------------------------------------------------------------------#
-
-def event_notes(request, pk):
-    """ Display all of the notes for an event. """
-
-    event = get_object_or_404(Event, pk=pk)
-    eventnotes = EventNote.objects.filter(event_id=event.id)
-    eventnoteform = EventNoteForm()
-
-    return render(request, 'editorial/eventnotes.html', {
-        'event': event,
-        'eventnotes': eventnotes,
-        'eventnoteform': eventnoteform,
-    })
+    def get_context_data(self, pk):
+        event = get_object_or_404(Event, pk=pk)
+        form = NoteForm()
+        notes = event.notes.all().order_by('-creation_date')
+        return {
+            'event': event,
+            'form': form,
+            'notes': notes,
+        }

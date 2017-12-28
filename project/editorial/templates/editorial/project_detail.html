@@ -615,13 +615,6 @@
 <!-- ================================================= -->
 
   <script>
-    $(window).load(function() {
-      $('.nav-tabs-sticky').stickyTabs();
-     });
-      // $('.nav-tabs-sticky').stickyTabs();
-  </script>
-
-  <script>
     $(".chosen-select").chosen()
 
     $('#project-thumbs').magnificPopup({
@@ -839,9 +832,11 @@
         <h5 class="modal-title" id="addUserModalLabel">Add a note for this project</h5>
       </div>
       <div class="modal-body">
-        <form action="{% url 'create_project_note' %}" method="POST" class="post-form">
+        <form action="{% url 'create_projectnote' %}" method="POST" class="post-form">
         {% csrf_token %}
         {% bootstrap_form notes.form %}
+        <!-- Hidden Inputs -->
+        <input type="hidden" name="association" value="project" />
         <input type="hidden" name="project" value="{{ project.pk }}" />
         <button type="submit" class="btn btn-default">Post Note</button>
         </form>
@@ -851,9 +846,7 @@
     </div>
   </div>
 </div>
-{% endwith %}
 
-{% with view.project_notes as notes %}
   {% for note in notes.notes %}
   <!-- View Note Modals -->
   <div class="modal fade" id="viewNote{{note.id}}" tabindex="-1" role="dialog" aria-labelledby="viewNote{{note.id}}">

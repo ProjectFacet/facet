@@ -16,6 +16,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 import datetime
 import json
 from actstream import action
+from django.db.models import Q
 
 from editorial.forms import (
     NetworkForm,
@@ -112,15 +113,15 @@ class NetworkDetailView(DetailView):
 
         context = super(NetworkDetailView, self).get_context_data(**kwargs)
 
-        notes = self.object.note_set.all()
-        noteform = NoteForm()
+        form = NoteForm()
+        notes = self.object.notes.order_by('-creation_date')[:4]
         comments = self.object.discussion.comment_set.all()
         commentform = CommentForm()
         networkinvitationform = InviteToNetworkForm()
 
         context.update({
                 'notes': notes,
-                'noteform': noteform,
+                'form': form,
                 'comments': comments,
                 'commentform': commentform,
                 'networkinvitationform': networkinvitationform,

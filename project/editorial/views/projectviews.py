@@ -20,7 +20,7 @@ from actstream import action
 from editorial.forms import (
     ProjectForm,
     CommentForm,
-    # ProjectNoteForm,
+    NoteForm,
     TaskForm,)
 
 from editorial.models import (
@@ -162,14 +162,12 @@ class ProjectDetailView(DetailView):
         return {'discussion': discussion, 'comments': comments, 'form': form}
 
 
-    # FIXME Currently causing error because org is not getting passed to EventForm
-    # Commented out task form and version of return statement that uses it.
     def project_notes(self):
         """Get notes and note form for the project."""
 
         self.object = self.get_object()
-        notes = self.object.projectnote.all()
-        form = ProjectNoteForm()
+        notes = self.object.notes.all().order_by('-creation_date')
+        form = NoteForm()
         return {'notes': notes, 'form': form,}
 
 
@@ -184,7 +182,8 @@ class ProjectDetailView(DetailView):
         # return {'tasks': tasks, 'form': form}
         return {'tasks': tasks}
 
-
+    # FIXME Currently causing error because org is not getting passed to EventForm
+    # Commented out task form and version of return statement that uses it.
     def project_events(self):
         """Get events and event form for the project."""
 

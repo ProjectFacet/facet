@@ -29,7 +29,7 @@
   <!-- Left Column -->
   <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 activity-widget-4">
     <h4 class="m-b-40">Notes <a data-toggle="modal" data-target="#addNetworkNote" title="Add Network Note"><i class="fa fa-plus sameline dark"></i></a></h4>
-    {% for note in networknotes %}
+    {% for note in notes %}
     <div class="row">
         <div class="col-xs-12">
           <div class="media">
@@ -77,10 +77,12 @@ $(function() {
         <h4 class="modal-title" id="addUserModalLabel">Add a note for this network</h4>
       </div>
       <div class="modal-body">
-        <form action="{% url 'create_network_note' %}" method="POST" class="post-form">
+        <form action="{% url 'create_networknote' %}" method="POST" class="post-form">
         {% csrf_token %}
-        {% bootstrap_form networknoteform %}
-        <input type="hidden" name="user" value="{{ user.pk }}" />
+        {% bootstrap_form form %}
+        <!-- Hidden Inputs -->
+        <input type="hidden" name="association" value="network" />
+        <input type="hidden" name="network" value="{{ network.pk }}" />
         <button type="submit" class="btn btn-primary">Post Note</button>
         </form>
       </div>
