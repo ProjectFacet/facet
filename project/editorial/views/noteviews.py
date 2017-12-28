@@ -11,7 +11,7 @@ from django.core.mail import send_mail
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.utils import timezone
-from django.views.generic import TemplateView , UpdateView, DetailView, CreateView
+from django.views.generic import TemplateView , UpdateView, DetailView, CreateView, DeleteView
 from django.views.decorators.csrf import csrf_exempt
 from django.template.loader import render_to_string
 import datetime
@@ -218,6 +218,61 @@ class NoteCreateView(CreateView):
             action.send(self.request.user, verb="created", action_object=note, target=action_target)
             # redirect to the associated object
             return HttpResponseRedirect(reverse('event_detail', args=(event.id,)))
+
+
+class NoteDelete(DeleteView):
+    """View for handling deletion of a note.
+
+    In this project, we expect deletion to be done via a JS pop-up UI; we don't expect to
+    actually use the "do you want to delete this?" Django-generated page. However, this is
+    available if useful.
+    """
+
+    # FIXME: this would be a great place to use braces' messages; usage commented out for now
+
+    model = Note
+    template_name = "editorial/note_delete.html"
+
+    # form_valid_message = "Deleted."
+    # form_invalid_message = "Please check form."
+
+    def get_success_url(self):
+        """Post-deletion, return to the parent object detail url."""
+
+        print "THING: ", self.object
+        if self.object.organization_set.first():
+            organization = self.object.organization_set.first()
+            print "organization: ", organization
+            return reverse('org_detail', kwargs={'pk': organization.id})
+        if self.object.user_set.first():
+            user = self.object.user_set.first()
+            print "user: ", user
+            return reverse('user_detail', kwargs={'pk': user.id})
+        if self.object.network_set.first():
+            network = self.object.network_set.first()
+            print "NETWORK: ", network
+            return reverse('network_detail', kwargs={'pk': network.id})
+        if self.object.project_set.first():
+            project = self.object.project_set.first()
+            print "PROJECT: ", project
+            return reverse('project_detail', kwargs={'pk': project.id})
+        if self.object.series_set.first():
+            series = self.object.series_set.first()
+            print "SERIES: ", series
+            return reverse('series_detail', kwargs={'pk': series.id})
+        if self.object.story_set.first():
+            story = self.object.story_set.first()
+            print "STORY: ", story
+            return reverse('story_detail', kwargs={'pk': story.id})
+        if self.object.event_set.first():
+            event = self.object.event_set.first()
+            print "EVENT: ", event
+            return reverse('event_detail', kwargs={'pk': event.id})
+        if self.object.task_set.first():
+            task = self.object.task_set.first()
+            print "TASK: ", task
+            return reverse('task_detail', kwargs={'pk': task.id})
+
 
 #----------------------------------------------------------------------#
 #   Template Note Views

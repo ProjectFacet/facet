@@ -8,8 +8,6 @@
     <p class=""></p>
     <p>{{ note.text|safe }}</p>
     {% if note.keywords %}
-    <hr>
-    <small>Keywords: {% for keyword in note.keywords %}{{ keyword }}, {% endfor %}</small>
     {% endif %}
 </div>
 <div class="text-left">

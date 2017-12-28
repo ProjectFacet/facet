@@ -407,3 +407,7 @@ img.image-center {
 .chosen-container {
     min-width: 100% !important;
 }
+
+.float-right {
+  float: right !important;
+}

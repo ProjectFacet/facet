@@ -223,6 +223,7 @@
 </div>
 <!-- End of form -->
 <div class="row m-t-20">
+  <!-- Left Column -->
   <div class="col-xs-12 col-md-6 col-lg-4">
     <h5>Discussion</h5>
     {% with view.task_discussion as discussion %}
@@ -270,22 +271,51 @@
 
     {% endwith %}
   </div>
+  <!-- Middle Column -->
   <div class="col-xs-12 col-md-6 col-lg-4">
     {% with view.task_notes as notes %}
-      <h5 class="m-b-20">Notes <a data-toggle="modal" data-target="#addTaskNote" title="Add Task Note"><i class="fa fa-plus sameline dark"></i></a></h5>
-      {% for note in notes.notes %}
+    <h5 class="m-b-20">
+      <a data-toggle="modal" data-target="#addTaskNote" title="Add Task Note">
+        <i class="fa fa-plus sameline subtle m-r-20"></i>
+      </a>
+      Notes
+      <a href="{% url 'task_notes' task.id %}" class="link-text m-b-40 subtle">
+        <span class="f-s-12 f-w-400 subtle"> (All notes <i class="fa fa-long-arrow-right subtle" aria-hidden="true">)</i></span>
+      </a>
+    </h5>
+    <div class="activity-widget-4">
+    {% for note in notes.notes %}
+      <div class="row">
         <div class="col-xs-12">
-          <div class="card bs-card">
-              <div class="card-block">
-                  <a data-toggle="modal" data-target="#viewNote{{note.id}}" title="View Task Note"><h4 class="f-s-16 f-w-500 m-b-20">{{ note.title }}</h4></a>
-                  <p class="card-text color-default f-s-12">{{ note.owner.credit_name }}
-                      <br>{{ note.creation_date|date:'N j' }}, {{ note.creation_date|date:'g:i a' }}</p>
-              </div>
+          <div class="media">
+            <div class="media-body">
+              <h5 class="media-heading">
+                {% if note.important == True %}
+                <i class="fa fa-star f-r-8 color-warning-100" aria-hidden="true"></i>
+                {% else %}
+                <i class="fa fa-star-o f-r-8 subtle" aria-hidden="true"></i>
+                {% endif %}
+                <a data-toggle="modal" data-target="#viewNote{{note.id}}" title="View Event Note"> {{ note.title }} </a>
+              </h5>
+              <small class="f-s-14">{{ note.owner.credit_name }}</small></br>
+              <small class="color-default">{{ note.creation_date|date:'N j, g:i a' }}</small>
+              <!-- Note Delete -->
+              <form class="note-delete sameline" method="GET"
+                    action="{% url 'note_delete' note.id %}">
+                    <!-- onsubmit="return confirm('Do you want to delete this task?')"> -->
+                    {% csrf_token %}
+                <a href="javascript:$('.note-delete').submit();"><i class="fa fa-trash subtle float-right" style="float:right;" aria-hidden="true"></i></a>
+                <!-- <input type="submit" class="btn btn-sm btn-danger-100" value="Delete"> -->
+              </form>
+            </div>
           </div>
         </div>
-      {% endfor %}
+      </div>
+    {% endfor %}
+    </div>
     {% endwith %}
   </div>
+  <!-- Right Column -->
   <div class="col-xs-12 col-md-6 col-lg-4">
     <h5>Assets</h5>
   </div>
@@ -324,6 +354,27 @@ $(".chosen-select").chosen()
         });
 </script>
 
+<script>
+  $('.note-delete a').on('click', function(e) {
+       e.preventDefault();
+          swal({
+              title: 'Are you sure?',
+              text: 'You will not be able to recover this note.',
+              type: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Yes, delete it!',
+              closeOnConfirm: true
+          }, function(result) {
+              if (result) {
+                $(".note-delete").attr("method", "POST").submit();
+              } else {
+                // do nothing on cancel
+            }
+          });
+        });
+</script>
 
 {% endblock %}
 
@@ -379,7 +430,6 @@ $(".chosen-select").chosen()
           </div>
           <div class="modal-footer">
             <p class="tiny-text">{{ note.owner }} | {{ note.creation_date|date:'D M j g:i a' }}<p>
-            <small>Keywords: {% for keyword in note.keywords %}{{ keyword }}, {% endfor %}</small>
           </div>
         </div>
       </div>

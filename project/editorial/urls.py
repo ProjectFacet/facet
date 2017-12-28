@@ -51,7 +51,6 @@ urlpatterns = [
     #   Homepage URLS
     #----------------------------------------------------------------------#
     url(r'^$', generalviews.LandingTemplateView.as_view(), name='index'),
-    # url(r'^$', HomeView.as_view(), name='index'),
     #----------------------------------------------------------------------#
     #   Dashboard URLS
     #----------------------------------------------------------------------#
@@ -69,7 +68,6 @@ urlpatterns = [
     url(r'^asset/document/(?P<pk>[0-9]+)/$', assetviews.DocumentAssetUpdateView.as_view(), name='document_asset_detail'),
     url(r'^asset/audio/(?P<pk>[0-9]+)/$', assetviews.AudioAssetUpdateView.as_view(), name='audio_asset_detail'),
     url(r'^asset/video/(?P<pk>[0-9]+)/$', assetviews.VideoAssetUpdateView.as_view(), name='video_asset_detail'),
-    # url(r'^asset/(?P<pk>[0-9]+)/edit/$', assetviews.asset_edit, name='asset_edit'),
     #----------------------------------------------------------------------#
     #   Collaborations URLS
     #----------------------------------------------------------------------#
@@ -119,15 +117,16 @@ urlpatterns = [
     #----------------------------------------------------------------------#
     #   Note URLS
     #----------------------------------------------------------------------#
-    url(r'^organization/note/new$', noteviews.NoteCreateView.as_view(), name='create_orgnote'),
-    url(r'^user/note/new$', noteviews.NoteCreateView.as_view(), name='create_usernote'),
-    url(r'^network/note/new$', noteviews.NoteCreateView.as_view(), name='create_networknote'),
-    url(r'^projectnote/new$', noteviews.NoteCreateView.as_view(), name='create_projectnote'),
-    url(r'^series/note/new$', noteviews.NoteCreateView.as_view(), name='create_seriesnote'),
-    url(r'^story/note/new$', noteviews.NoteCreateView.as_view(), name='create_storynote'),
-    url(r'^facet/note/new$', noteviews.NoteCreateView.as_view(), name='create_facetnote'),
-    url(r'^task/note/new$', noteviews.NoteCreateView.as_view(), name='create_tasknote'),
-    url(r'^event/note/new$', noteviews.NoteCreateView.as_view(), name='create_eventnote'),
+    url(r'^organization/note/new/$', noteviews.NoteCreateView.as_view(), name='create_orgnote'),
+    url(r'^user/note/new/$', noteviews.NoteCreateView.as_view(), name='create_usernote'),
+    url(r'^network/note/new/$', noteviews.NoteCreateView.as_view(), name='create_networknote'),
+    url(r'^projectnote/new/$', noteviews.NoteCreateView.as_view(), name='create_projectnote'),
+    url(r'^series/note/new/$', noteviews.NoteCreateView.as_view(), name='create_seriesnote'),
+    url(r'^story/note/new/$', noteviews.NoteCreateView.as_view(), name='create_storynote'),
+    url(r'^facet/note/new/$', noteviews.NoteCreateView.as_view(), name='create_facetnote'),
+    url(r'^task/note/new/$', noteviews.NoteCreateView.as_view(), name='create_tasknote'),
+    url(r'^event/note/new/$', noteviews.NoteCreateView.as_view(), name='create_eventnote'),
+    url(r'^note/(?P<pk>[0-9]+)/delete$', noteviews.NoteDelete.as_view(), name='note_delete'),
     # url(r'^assignment/note/new$', noteviews.NoteCreateView.as_view(), name='create_assignmentnote'),
     #----------------------------------------------------------------------#
     #   Platform URLS

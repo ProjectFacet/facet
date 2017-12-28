@@ -1,0 +1,89 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load bootstrap3 %}
+
+{% block head %}
+{{ form.media }}
+{% endblock %}
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+<!--             BREADCRUMB NAVIGATION                 -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
+{% block breadcrumb %}
+<div>
+  <ol class="breadcrumb icon-angle-right icon-th">
+    <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
+    <li class="fadeIn"> Content</li>
+    {% if note.organization %}
+      <li class="fadeIn"><a href="{% url 'org_detail' pk=note.organization.id %}" title="Go to {{ note.organization.name }}"> {{ note.organization.name }} </a></li>
+      <li class="fadeIn"> {{ note.name }}</li>
+      <li class="fadeIn"> Delete </li>
+    {% elif note.user %}
+      <li class="fadeIn"><a href="{% url 'user_detail' user.id %}" title="View {{user.credit_name}}"> {{ user.credit_name }} </a></li>
+      <li class="fadeIn"><a href="{% url 'user_notes' user.id %}" title="You are here"> {{ user.credit_name }} Notes </a></li>
+      <li class="fadeIn"> {{ note.name }}</li>
+      <li class="fadeIn"> Delete </li>
+    {% elif note.network %}
+      <li class="fadeIn"><a href="{% url 'network_list' %}" title="Go to Network List"> Networks </a></li>
+      <li class="fadeIn"><a href="{% url 'network_detail' note.network.id %}" title="Go to {{ note.network.name }}"> {{note.network.name}} </a></li>
+      <li class="fadeIn"><a href="{% url 'network_note_list' note.network.id %}" title="Go to {{note.network.name }} Notes"> Notes </a></li>
+      <li class="fadeIn"> {{ note.name }}</li>
+      <li class="fadeIn"> Delete </li>
+    {% elif note.project %}
+      <li class="fadeIn"><a href="{% url 'project_list' %}" title="Go to Project List"> Projects </a></li>
+      <li class="fadeIn"><a href="{% url 'project_detail' note.project.id %}" title="Go to {{note.project.name}}"> {{note.project.name}} </a></li>
+      <li class="fadeIn"><a href="{% url 'project_note_list' note.project.id %}" title="Go to {{note.project.name}} Notes"> Notes </a></li>
+      <li class="fadeIn"> {{ note.name }}</li>
+      <li class="fadeIn"> Delete </li>
+    {% elif note.series %}
+      <li class="fadeIn"><a href="{% url 'series_list' %}" title="Go to Series List"> Series </a></li>
+      <li class="fadeIn"><a href="{% url 'series_detail' note.series.id %}" title="Go to {{note.series.name}}"> {{note.series.name}} </a></li>
+      <li class="fadeIn"><a href="{% url 'series_note_list' note.series.id %}" title="Go to {{note.series.name}} Notes"> Notes </a></li>
+      <li class="fadeIn"> {{ note.name }}</li>
+      <li class="fadeIn"> Delete </li>
+    {% elif note.story %}
+      <li class="fadeIn"><a href="{% url 'story_list' %}" title="Go to Story List"> Stories </a></li>
+      <li class="fadeIn"><a href="{% url 'story_detail' note.story.id %}" title="Go to {{note.story.name}}"> {{note.story.name}} </a></li>
+      <li class="fadeIn"><a href="{% url 'story_note_list' note.story.id %}" title="Go to {{note.story.name}} Notes"> Notes </a></li>
+      <li class="fadeIn"> {{ note.name }}</li>
+      <li class="fadeIn"> Delete </li>
+    {% elif note.event %}
+      <li class="fadeIn"><a href="{% url 'event_detail' note.event.id %}" title="Go to {{note.event.name}}"> {{note.event.name}} </a></li>
+      <li class="fadeIn"><a href="{% url 'event_note_list' note.event.id %}" title="Go to {{note.event.name}} Notes"> Notes </a></li>
+      <li class="fadeIn"> {{ note.name }}</li>
+      <li class="fadeIn"> Delete </li>
+    {% elif note.task %}
+      <li class="fadeIn"><a href="{% url 'task_detail' note.task.id %}" title="Go to {{note.task.name}}"> {{note.task.name}} </a></li>
+      <li class="fadeIn"><a href="{% url 'task_note_list' note.task.id %}" title="Go to {{note.task.name}} Notes"> Notes </a></li>
+      <li class="fadeIn"> {{ note.name }}</li>
+      <li class="fadeIn"> Delete </li>
+    {% endif %}
+  </ol>
+</div>
+{% endblock breadcrumb %}
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+<!--                   Main Section                    -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
+{% block content %}
+
+
+<!-- ================================================= -->
+<!-- CONTENT -->
+<!-- ================================================= -->
+
+<h1>{{ note }} </h1>
+
+<form method="POST" class="post-form">
+  {% csrf_token %}
+  <input type="submit" value="Delete">
+</form>
+
+{% endblock content %}
