@@ -9,11 +9,28 @@
 
 {% block breadcrumb %}
 <div>
-    <ol class="breadcrumb icon-angle-right icon-th">
-      <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
-      <li class="fadeIn"><a href="{% url 'task_detail' task.id %}" title="View Tasks"> {{task.name}} </a></li>
-      <li class="fadeIn"> Notes</li>
-    </ol>
+  <ol class="breadcrumb icon-angle-right icon-th">
+    <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
+    {% if task.project %}
+    <li class="fadeIn"><a href="{% url 'project_list' %}" title="Go to project list"> Projects </a></li>
+    <li class="fadeIn"><a href="{% url 'project_detail' task.project.id %}" title="Go to Project"> {{ task.project }} </a></li>
+    <li class="fadeIn"><a href="{% url 'project_task_list' task.project.id %}" title="Go to Project Tasks"> Tasks </a></li>
+    {% elif task.series %}
+    <li class="fadeIn"><a href="{% url 'series_list' %}" title="Go to series list"> Series </a></li>
+    <li class="fadeIn"><a href="{% url 'series_detail' task.series.id %}" title="Go to Series"> {{ task.series }} </a></li>
+    <li class="fadeIn"><a href="{% url 'series_task_list' task.series.id %}" title="Go to Series Tasks"> Tasks </a></li>
+    {% elif task.story %}
+    <li class="fadeIn"><a href="{% url 'story_list' %}" title="Go to story list"> Stories </a></li>
+    <li class="fadeIn"><a href="{% url 'story_detail' task.story.id %}" title="Go to Story"> {{ task.story }} </a></li>
+    <li class="fadeIn"><a href="{% url 'story_task_list' task.story.id %}" title="Go to Story Tasks"> Tasks </a></li>
+    {% elif task.event %}
+    <li class="fadeIn"><a href="{% url 'story_list' %}" title="Go to story list"> Stories </a></li>
+    <li class="fadeIn"><a href="{% url 'story_detail' task.story.id %}" title="Go to Story"> {{ task.story }} </a></li>
+    <li class="fadeIn"><a href="{% url 'story_task_list' task.story.id %}" title="Go to Story Tasks"> Tasks </a></li>
+    {% endif %}
+    <li class="fadeIn"><a href="{% url 'task_detail' task.id %}" title="View Tasks"> {{ task.name }} </a></li>
+    <li class="fadeIn"> Notes</li>
+  </ol>
 </div>
 {% endblock breadcrumb %}
 

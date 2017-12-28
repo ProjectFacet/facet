@@ -12,8 +12,8 @@
     <ol class="breadcrumb icon-angle-right icon-th">
         <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
         <li class="fadeIn"><a href="{% url 'team_list' %}" title="View Organization Team"> Team </a></li>
-        <li class="fadeIn"><a href="{% url 'user_detail' user.id %}" title="View {{user.credit_name}}"> {{user.credit_name}} </a></li>
-        <li class="fadeIn"><a href="{% url 'user_notes' user.id %}" title="You are here"> {{user.credit_name}} Notes </a></li>
+        <li class="fadeIn"><a href="{% url 'user_detail' user.id %}" title="View {{user.credit_name}}"> {{ user.credit_name }} </a></li>
+        <li class="fadeIn"><a href="{% url 'user_notes' user.id %}" title="You are here"> {{ user.credit_name }} Notes </a></li>
     </ol>
 </div>
 {% endblock breadcrumb %}
