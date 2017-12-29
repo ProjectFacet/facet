@@ -3,7 +3,7 @@
         <div class="pull-right">
         </div>
     </div>
-    <h3 class="m-b-20"> <span>Subject: </span> <span>{{ note.title }}</span> </h3>
+    <h4 class="m-b-20"> <span>Subject: </span> <span>{{ note.title }}</span> </h4>
     <p class="text-bold m-b-20"> <span class="pull-right email-date">{{ note.creation_date|date:'D, M j' }} | {{ note.creation_date|date:'g:i a' }}</span> <span class="email-from"><strong>Author: </strong></span> {{ note.owner.credit_name }}</p>
     <p class=""></p>
     <p>{{ note.text|safe }}</p>

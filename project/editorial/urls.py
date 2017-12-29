@@ -88,7 +88,7 @@ urlpatterns = [
     #----------------------------------------------------------------------#
     #   Private Message URLS
     #----------------------------------------------------------------------#
-    url(r'^privatemessage/new/$', communicationviews.private_message_new, name='private_message_new'),
+    url(r'^privatemessage/new/$', communicationviews.PrivateMessageSend.as_view(), name='private_message_new'),
     url(r'^privatemessage/(?P<pk>[0-9]+)/content/$', inboxviews.message_html, name='message_html'),
     #----------------------------------------------------------------------#
     #   Copy URLS
@@ -141,8 +141,8 @@ urlpatterns = [
     url(r'^organization/(?P<pk>[0-9]+)/$', organizationviews.OrganizationDetailView.as_view(), name='org_detail'),
     url(r'^organization/(?P<pk>[0-9]+)/edit/$', organizationviews.OrganizationUpdateView.as_view(), name='org_edit'),
     url(r'^organization/(?P<pk>[0-9]+)/notes/$', noteviews.OrganizationNoteView.as_view(), name='org_notes'),
-    url(r'^organization/(?P<pk>[0-9]+)/note/(?P<note_type>[-\w]+)/content$', noteviews.note_content_html, name='note_content_html'),
-    url(r'^organization/(?P<pk>[0-9]+)/comments$', communicationviews.org_comments, name='org_comments'),
+    url(r'^organization/(?P<org>\d+)/note/(?P<note>\d+)/content$', noteviews.NoteContent.as_view(), name='org_note_content'),
+    # url(r'^organization/(?P<pk>[0-9]+)/comments$', communicationviews.org_comments, name='org_comments'),
     #----------------------------------------------------------------------#
     #   User URLS
     #----------------------------------------------------------------------#
@@ -150,7 +150,7 @@ urlpatterns = [
     url(r'^user/(?P<pk>[0-9]+)/$', userviews.UserDetailView.as_view(), name='user_detail'),
     url(r'^user/(?P<pk>[0-9]+)/edit/$', userviews.UserUpdateView.as_view(), name='user_edit'),
     url(r'^user/(?P<pk>[0-9]+)/notes/$', noteviews.UserNoteView.as_view(), name='user_notes'),
-    url(r'^user/(?P<pk>[0-9]+)/note/(?P<note_type>[-\w]+)/content$', noteviews.note_content_html, name='note_content_html'),
+    url(r'^user/(?P<user>\d+)/note/(?P<note>\d+)/content$', noteviews.NoteContent.as_view(), name='user_note_content'),
     url(r'^user/deactivate/$', userviews.UserDeactivateView.as_view(), name='user_deactivate'),
     url(r'^user/activate/$', userviews.UserActivateView.as_view(), name='user_activate'),
     #----------------------------------------------------------------------#
@@ -158,7 +158,6 @@ urlpatterns = [
     #----------------------------------------------------------------------#
     url(r'^contractor/new/$', contractorviews.ContractorCreateView.as_view(), name='contractor_new'),
     url(r'^contractor/(?P<pk>[0-9]+)/$', contractorviews.ContractorDetailView.as_view(), name='contractor_detail'),
-    # url(r'^contractor/(?P<pk>[0-9]+)/dashboard/$', contractorviews.ContractorDashboardView.as_view(), name='contractor_dashboard'),
     url(r'^contractor/(?P<pk>[0-9]+)/edit/$', contractorviews.ContractorUpdateView.as_view(), name='contractor_edit'),
     url(r'^contractor/(?P<pk>[0-9]+)/calls/$', contractorviews.CallListView.as_view(), name='contractor_calls'),
     url(r'^contractor/(?P<pk>[0-9]+)/pitches/$', contractorviews.PitchListView.as_view(), name='contractor_pitches'),
@@ -194,7 +193,7 @@ urlpatterns = [
     url(r'^project/(?P<pk>[0-9]+)/edit/$', projectviews.ProjectUpdateView.as_view(), name='project_edit'),
     url(r'^project/(?P<pk>[0-9]+)/delete/$', projectviews.ProjectDeleteView.as_view(), name='project_delete'),
     url(r'^project/(?P<pk>[0-9]+)/notes/$', noteviews.ProjectNoteView.as_view(), name='project_notes'),
-    url(r'^project/(?P<pk>[0-9]+)/note/(?P<note_type>[-\w]+)/content$', noteviews.note_content_html, name='note_content_html'),
+    url(r'^project/(?P<project>\d+)/note/(?P<note>\d+)/content$', noteviews.NoteContent.as_view(), name='project_note_content'),
     url(r'^project/(?P<pk>[0-9]+)/schedule/$', projectviews.project_schedule, name='project_schedule'),
     url(r'^project/(?P<pk>[0-9]+)/assets/$', projectviews.ProjectAssetTemplateView.as_view(), name='project_assets'),
     url(r'^project/(?P<pk>[0-9]+)/stories/$', projectviews.ProjectStoryTemplateView.as_view(), name='project_stories'),
@@ -208,7 +207,7 @@ urlpatterns = [
     url(r'^series/(?P<pk>[0-9]+)/edit/$', seriesviews.SeriesUpdateView.as_view(), name='series_edit'),
     url(r'^series/(?P<pk>[0-9]+)/delete/$', seriesviews.SeriesDeleteView.as_view(), name='series_delete'),
     url(r'^series/(?P<pk>[0-9]+)/notes/$', noteviews.SeriesNoteView.as_view(), name='series_notes'),
-    url(r'^series/(?P<pk>[0-9]+)/note/(?P<note_type>[-\w]+)/content$', noteviews.note_content_html, name='note_content_html'),
+    url(r'^series/(?P<series>\d+)/note/(?P<note>\d+)/content$', noteviews.NoteContent.as_view(), name='series_note_content'),
     #----------------------------------------------------------------------#
     #   Story URLS
     #----------------------------------------------------------------------#
@@ -219,7 +218,7 @@ urlpatterns = [
     url(r'^story/(?P<pk>[0-9]+)/delete/$', storyviews.StoryDeleteView.as_view(), name='story_delete'),
     url(r'^story/(?P<pk>[0-9]+)/schedule/$', storyviews.story_schedule, name='story_schedule'),
     url(r'^story/(?P<pk>[0-9]+)/notes/$', noteviews.StoryNoteView.as_view(), name='story_notes'),
-    url(r'^story/(?P<pk>[0-9]+)/note/(?P<note_type>[-\w]+)/content$', noteviews.note_content_html, name='note_content_html'),
+    url(r'^story/(?P<story>\d+)/note/(?P<note>\d+)/content$', noteviews.NoteContent.as_view(), name='story_note_content'),
     url(r'^story/(?P<pk>[0-9]+)/team/json$', storyviews.story_team_options_json, name='story_team_options_json'),
     #----------------------------------------------------------------------#
     #   Facet URLS
@@ -237,7 +236,7 @@ urlpatterns = [
     url(r'^task/(?P<pk>[0-9]+)/$', taskviews.TaskUpdateView.as_view(), name='task_detail'),
     url(r'^task/(?P<pk>[0-9]+)/notes/$', noteviews.TaskNoteView.as_view(), name='task_notes'),
     url(r'^task/(?P<pk>[0-9]+)/delete/$', taskviews.TaskDeleteView.as_view(), name='task_delete'),
-    url(r'^task/(?P<pk>[0-9]+)/note/(?P<note_type>[-\w]+)/content$', noteviews.note_content_html, name='note_content_html'),
+    url(r'^task/(?P<task>\d+)/note/(?P<note>\d+)/content$', noteviews.NoteContent.as_view(), name='task_note_content'),
     url(r'^project/(?P<pk>[0-9]+)/tasks/$', taskviews.ProjectTaskView.as_view(), name='project_task_list'),
     url(r'^series/(?P<pk>[0-9]+)/tasks/$', taskviews.SeriesTaskView.as_view(), name='series_task_list'),
     url(r'^story/(?P<pk>[0-9]+)/tasks/$', taskviews.StoryTaskView.as_view(), name='story_task_list'),
@@ -249,7 +248,7 @@ urlpatterns = [
     url(r'^event/(?P<pk>[0-9]+)/$', eventviews.EventUpdateView.as_view(), name='event_detail'),
     url(r'^event/(?P<pk>[0-9]+)/notes/$', noteviews.EventNoteView.as_view(), name='event_notes'),
     url(r'^event/(?P<pk>[0-9]+)/delete/$', eventviews.EventDeleteView.as_view(), name='event_delete'),
-    url(r'^event/(?P<pk>[0-9]+)/note/(?P<note_type>[-\w]+)/content$', noteviews.note_content_html, name='note_content_html'),
+    url(r'^event/(?P<event>\d+)/note/(?P<note>\d+)/content$', noteviews.NoteContent.as_view(), name='event_note_content'),
     url(r'^organization/(?P<pk>[0-9]+)/events/$', eventviews.OrganizationEventView.as_view(), name='organization_event_list'),
     url(r'^project/(?P<pk>[0-9]+)/events/$', eventviews.ProjectEventView.as_view(), name='project_event_list'),
     url(r'^series/(?P<pk>[0-9]+)/events/$', eventviews.SeriesEventView.as_view(), name='series_event_list'),
@@ -289,5 +288,5 @@ urlpatterns = [
     url(r'^network/stories$', networkviews.NetworkStoryListView.as_view(), name='network_stories'),
     # url(r'^network/stories/json$', networkviews.network_stories_json, name='network_stories_json'),
     url(r'^network/(?P<pk>[0-9]+)/notes/$', noteviews.NetworkNoteView.as_view(), name='network_notes'),
-    url(r'^network/(?P<pk>[0-9]+)/note/(?P<note_type>[-\w]+)/content$', noteviews.note_content_html, name='note_content_html'),
+    url(r'^network/(?P<network>\d+)/note/(?P<note>\d+)/content$', noteviews.NoteContent.as_view(), name='network_note_content'),
 ]

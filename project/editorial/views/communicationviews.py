@@ -11,12 +11,13 @@ from django.core.mail import send_mail
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.utils import timezone
-from django.views.generic import TemplateView , UpdateView, DetailView, CreateView
+from django.views.generic import TemplateView , UpdateView, DetailView, CreateView, View
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 import datetime
 import json
 from actstream import action
+from django.http import JsonResponse
 
 from editorial.forms import (
     PrivateMessageForm,
@@ -68,25 +69,23 @@ class AjaxResponseMixin(object):
 #   Private Message Views
 #----------------------------------------------------------------------#
 
-def private_message_new(request):
-    """ Private messaging method. """
+class PrivateMessageSend(View):
+    """Send a private message."""
 
-    if request.method == 'POST':
-        privatemessageform = PrivateMessageForm(request.POST, request=request)
-        if privatemessageform.is_valid():
-            message_subject = request.POST.get('subject')
-            message_text = request.POST.get('text')
-            send_to = request.POST.get('recipient')
-            recipient = get_object_or_404(User, id=send_to)
-            discussion = Discussion.objects.create_discussion('PRI')
-            message = PrivateMessage.objects.create_private_message(user=request.user, recipient=recipient, discussion=discussion, subject=message_subject, text=message_text)
-            message.save()
-    return redirect('/inbox')
+    def post(self, request, *args, **kwargs):
+        print "IN POST"
+        message_subject = self.request.POST.get('subject')
+        print message_subject
+        message_text = self.request.POST.get('text')
+        print message_text
+        send_to = self.request.POST.get('recipient')
+        print send_to
+        recipient = get_object_or_404(User, id=send_to)
+        discussion = Discussion.objects.create_discussion('PRI')
+        message = PrivateMessage.objects.create_private_message(user=request.user, recipient=recipient, discussion=discussion, subject=message_subject, text=message_text)
+        message.save()
 
-
-def create_privatecomment_reply(request):
-    """ Reply to a private message."""
-    pass
+        return redirect('dashboard')
 
 
 #----------------------------------------------------------------------#
@@ -231,43 +230,13 @@ class CommentCreateView(CreateView):
 #   Organization Comment Views
 #----------------------------------------------------------------------#
 
-def org_comments(request):
-    """ Return JSON of all organization discussion comments."""
 
-    organization = request.user.organization
-    org_comments = {}
-    org_comments[organization.name] = Comment.objects.filter(discussion=organization.discussion).order_by('-date')
-    print org_comments
-    return HttpResponse(json.dumps(org_comments), content_type = "application/json")
-
-
-# FIXME: Needs further debugging before replacing above sections
-# def create_comment(request):
-#     """ Receive AJAX Post for creating a comment. """
 #
-#     if request.method == 'POST':
-#         comment_text = request.POST.get('text')
-#         story = request.POST.get('story')
-#         facet = get_object_or_404(Facet, story=story)
-#         discussion = get_object_or_404(Discussion, id=facet.discussion.id)
+# def org_comments(request):
+#     """ Return JSON of all organization discussion comments."""
 #
-#         response_data = {}
-#
-#         # comment = Comment(text=comment_text, user=request.user, discussion = discussion)
-#         comment = Comment.objects.create_comment(user=request.user, discussion=discussion, text=comment_text)
-#         comment.save()
-#
-#         response_data['result'] = 'Create post successful!'
-#         response_data['commentpk'] = comment.pk
-#         response_data['text'] = comment.text
-#         response_data['user'] = comment.user.credit_name
-#
-#         return HttpResponse(
-#             json.dumps(response_data),
-#             content_type="application/json"
-#         )
-#     else:
-#         return HttpResponse(
-#             json.dumps({"nothing to see": "this isn't happening"}),
-#             content_type="application/json"
-#         )
+#     organization = request.user.organization
+#     org_comments = {}
+#     org_comments[organization.name] = Comment.objects.filter(discussion=organization.discussion).order_by('-date')
+#     print org_comments
+#     return HttpResponse(json.dumps(org_comments), content_type = "application/json")

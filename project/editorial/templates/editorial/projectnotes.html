@@ -40,7 +40,7 @@
                     {% else %}
                     <i class="fa fa-star-o f-r-8 subtle" aria-hidden="true"></i>
                     {% endif %}
-                    <a href="{% url 'note_content_html' note_type='project' pk=note.id %}" id="note-{{note.id}}" class="project_note_link"> {{ note.title }} </a>
+                    <a href="{% url 'project_note_content' project=project.id note=note.id %}" id="note-{{note.id}}" class="project_note_link"> {{ note.title }} </a>
                   </h5>
                   <small class="f-s-14">{{ note.owner.credit_name }}</small></br>
                   <small class="color-default">{{ note.creation_date|date:'D M j g:i a' }}</small>

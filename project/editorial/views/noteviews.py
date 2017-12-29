@@ -11,7 +11,7 @@ from django.core.mail import send_mail
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from django.utils import timezone
-from django.views.generic import TemplateView , UpdateView, DetailView, CreateView, DeleteView
+from django.views.generic import TemplateView , UpdateView, DetailView, CreateView, DeleteView, View
 from django.views.decorators.csrf import csrf_exempt
 from django.template.loader import render_to_string
 import datetime
@@ -40,17 +40,18 @@ from editorial.models import (
 #   General Note Views
 #----------------------------------------------------------------------#
 
-def note_content_html(request, note_type, pk):
-    """Return note content as html."""
+class NoteContent(View):
+    """Return note content as html for display on <object>notes.html pages."""
 
-    note = get_object_or_404(Note, pk=pk)
+    def get(self, request, *args, **kwargs):
 
-    note_html = render_to_string('note-content.html', {
+        note_id = self.kwargs['note']
+        note = get_object_or_404(Note, pk=note_id)
+        note_html = render_to_string('note-content.html', {
                         'note': note,
-                        'note_type': note_type,
-    })
+        })
 
-    return HttpResponse(note_html)
+        return HttpResponse(note_html)
 
 
 class NoteCreateView(CreateView):
