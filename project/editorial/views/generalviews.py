@@ -65,10 +65,6 @@ class LandingTemplateView(TemplateView):
 
     template_name = 'editorial/home.html'
 
-    # def get_context_data(self):
-    #
-
-
 #----------------------------------------------------------------------#
 #   Test View
 #----------------------------------------------------------------------#
@@ -87,7 +83,6 @@ class TestTemplateView(TemplateView):
             'organization': organization,
             'tasks': tasks,
         }
-
 
 #----------------------------------------------------------------------#
 #   Dashboard View

@@ -127,34 +127,6 @@ class ContractorUpdateView(UpdateView):
         action.send(self.request.user, verb="edited", action_object=self.object)
         return super(ContractorUpdateView, self).get_success_url()
 
-# Currently in use as regular Dashboard alternate
-# class ContractorDashboardView(DetailView):
-#     """A dashboard of relevant content for a contractor."""
-#
-#     model = ContractorProfile
-#     template_name = 'editorial/contractor_dashboard.html'
-#
-#     def assignments(self):
-#         """Return all active assignments for a contractor."""
-#
-#         self.object = self.get_object()
-#         return self.object.get_active_assignments()
-#
-#     def calls(self):
-#         """Return all active calls."""
-#
-#         return Call.objects.filter(Q(is_active=True)| Q(status="Publised")).order_by('-creation_date')
-#
-#     def pitches(self):
-#         """Return all active pitches from a contractor."""
-#
-#         self.object = self.get_object()
-#         return self.object.get_active_pitches()
-#
-#     def communication(self):
-#         """ Return recent communication relevant for a contractor."""
-#
-#         return PrivateMessage.objects.filter(recipient=self.object.user).order_by('date')
 
 #----------------------------------------------------------------------#
 #   Talent Editor Views

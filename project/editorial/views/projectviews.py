@@ -40,7 +40,6 @@ from editorial.models import (
 
 # Project Notes are created and edited in noteviews
 
-
 class ProjectListView(ListView):
     """ Displays a filterable table of projects.
 

@@ -73,13 +73,9 @@ class PrivateMessageSend(View):
     """Send a private message."""
 
     def post(self, request, *args, **kwargs):
-        print "IN POST"
         message_subject = self.request.POST.get('subject')
-        print message_subject
         message_text = self.request.POST.get('text')
-        print message_text
         send_to = self.request.POST.get('recipient')
-        print send_to
         recipient = get_object_or_404(User, id=send_to)
         discussion = Discussion.objects.create_discussion('PRI')
         message = PrivateMessage.objects.create_private_message(user=request.user, recipient=recipient, discussion=discussion, subject=message_subject, text=message_text)
