@@ -28,15 +28,30 @@
 
   <!-- Left Column -->
   <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3 activity-widget-4">
-    <h4 class="m-b-40">Notes <a data-toggle="modal" data-target="#addProjectNote" title="Add Project Note"><i class="fa fa-plus sameline dark"></i></a></h4>
+    <h4 class="m-b-40"><a data-toggle="modal" data-target="#addProjectNote" title="Add Project Note"><i class="fa fa-plus sameline subtle m-r-10"></i></a> Notes</h4>
     {% for note in notes %}
     <div class="row">
         <div class="col-xs-12">
           <div class="media">
               <div class="media-body">
-                  <a href="{% url 'note_content_html' note_type='project' pk=note.id %}" id="note-{{note.id}}" class="project_note_link"><h5 class="media-heading"> {{ note.title }} </h5></a>
+                  <h5 class="media-heading">
+                    {% if note.important == True %}
+                    <i class="fa fa-star f-r-8 color-warning-100" aria-hidden="true"></i>
+                    {% else %}
+                    <i class="fa fa-star-o f-r-8 subtle" aria-hidden="true"></i>
+                    {% endif %}
+                    <a href="{% url 'note_content_html' note_type='project' pk=note.id %}" id="note-{{note.id}}" class="project_note_link"> {{ note.title }} </a>
+                  </h5>
                   <small class="f-s-14">{{ note.owner.credit_name }}</small></br>
                   <small class="color-default">{{ note.creation_date|date:'D M j g:i a' }}</small>
+                  <!-- Note Delete -->
+                  <form class="note-delete sameline" method="GET"
+                        action="{% url 'note_delete' pk=note.id %}">
+                        <!-- onsubmit="return confirm('Do you want to delete this task?')"> -->
+                        {% csrf_token %}
+                    <a href="javascript:$('.note-delete').submit();"><i class="fa fa-trash subtle float-right" style="float:right;" aria-hidden="true"></i></a>
+                    <!-- <input type="submit" class="btn btn-sm btn-danger-100" value="Delete"> -->
+                  </form>
               </div>
           </div>
         </div>
@@ -51,6 +66,9 @@
 
 </div> <!-- End of Row -->
 
+<!-- ================================================= -->
+                  <!-- JS SCRIPTS -->
+<!-- ================================================= -->
 
 <script>
 $(function() {
@@ -64,8 +82,37 @@ $(function() {
 });
 </script>
 
+<script>
+  $('.note-delete a').on('click', function(e) {
+       e.preventDefault();
+          swal({
+              title: 'Are you sure?',
+              text: 'You will not be able to recover this note.',
+              type: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Yes, delete it!',
+              closeOnConfirm: true
+          }, function(result) {
+              if (result) {
+                $(".note-delete").attr("method", "POST").submit();
+              } else {
+                // do nothing on cancel
+            }
+          });
+        });
+</script>
+
 
 {% endblock %}
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+                <!-- MODALS -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
 
 {% block modals %}
 <!-- Add Note Modal -->

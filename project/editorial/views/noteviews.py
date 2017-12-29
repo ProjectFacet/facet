@@ -229,9 +229,11 @@ class NoteDelete(DeleteView):
     """
 
     # FIXME: this would be a great place to use braces' messages; usage commented out for now
+    # FIXME: It's not deleting the correct note, it's deleting the oldest note
 
     model = Note
     template_name = "editorial/note_delete.html"
+
 
     # form_valid_message = "Deleted."
     # form_invalid_message = "Please check form."
@@ -240,6 +242,7 @@ class NoteDelete(DeleteView):
         """Post-deletion, return to the parent object detail url."""
 
         print "THING: ", self.object
+        print self.object.pk
         if self.object.organization_set.first():
             organization = self.object.organization_set.first()
             print "organization: ", organization
