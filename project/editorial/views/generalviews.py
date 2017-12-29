@@ -149,6 +149,7 @@ class DashboardTemplateView(TemplateView):
         elif self.request.user.contractorprofile:
             contractor = self.request.user.contractorprofile
             assignments = contractor.get_active_assignments()
+            print assignments
             calls = Call.objects.filter(Q(is_active=True)| Q(status="Publised")).order_by('-creation_date')
             pitches = contractor.get_active_pitches()
             communication = PrivateMessage.objects.filter(recipient=self.request.user).order_by('date')
