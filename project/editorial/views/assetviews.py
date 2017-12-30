@@ -99,7 +99,7 @@ class ImageAssetCreateView(CreateView):
         # record action for activity stream
         action.send(self.request.user, verb="uploaded image", action_object=image, target=facet)
 
-        return HttpResponseRedirect(reverse('facet_edit', args=(facet.id,)))
+        return redirect('facet_edit', pk=facet.id, story=facet.story.id)
 
 
 class LibraryImageAssociateView(FormView):
@@ -174,7 +174,7 @@ class DocumentAssetCreateView(CreateView):
         # record action for activity stream
         action.send(self.request.user, verb="uploaded document", action_object=document, target=facet)
 
-        return HttpResponseRedirect(reverse('facet_edit', args=(facet.id,)))
+        return redirect('facet_edit', pk=facet.id, story=facet.story.id)
 
 
 class LibraryDocumentAssociateView(FormView):
@@ -252,7 +252,7 @@ class AudioAssetCreateView(CreateView):
         # record action for activity stream
         action.send(self.request.user, verb="uploaded audio", action_object=audio, target=facet)
 
-        return HttpResponseRedirect(reverse('facet_edit', args=(facet.id,)))
+        return redirect('facet_edit', pk=facet.id, story=facet.story.id)
 
 
 class LibraryAudioAssociateView(FormView):
@@ -327,7 +327,7 @@ class VideoAssetCreateView(CreateView):
         # record action for activity stream
         action.send(self.request.user, verb="uploaded video", action_object=video, target=facet)
 
-        return HttpResponseRedirect(reverse('facet_edit', args=(facet.id,)))
+        return redirect('facet_edit', pk=facet.id, story=facet.story.id)
 
 
 class LibraryVideoAssociateView(FormView):
