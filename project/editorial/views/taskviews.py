@@ -167,16 +167,9 @@ class ProjectTaskView(CreateView):
         project = get_object_or_404(Project, id=self.kwargs['pk'])
         tasks = project.task_set.all()
         count = tasks.count()
-        identified_ct=0
-        inprogress_ct=0
-        complete_ct=0
-        for task in tasks:
-            if task.status=='Identified':
-                identified_ct = identified_ct + 1
-            elif task.status=='In Progress':
-                inprogress_ct = inprogress_ct + 1
-            elif task.status=='Complete':
-                complete_ct = complete_ct + 1
+        identified_ct = project.task_set.filter(status="Identified").count()
+        inprogress_ct = project.task_set.filter(status="In Progress").count()
+        complete_ct = project.task_set.filter(status="Complete").count()
         # ratio of complete to total number of tasks
         if complete_ct>0:
             progress = 100 * float(complete_ct)/float(count)
@@ -211,16 +204,9 @@ class SeriesTaskView(CreateView):
         series = get_object_or_404(Series, id=self.kwargs['pk'])
         tasks = series.task_set.all()
         count = tasks.count()
-        identified_ct=0
-        inprogress_ct=0
-        complete_ct=0
-        for task in tasks:
-            if task.status=='Identified':
-                identified_ct = identified_ct + 1
-            elif task.status=='In Progress':
-                inprogress_ct = inprogress_ct + 1
-            elif task.status=='Complete':
-                complete_ct = complete_ct + 1
+        identified_ct = series.task_set.filter(status="Identified").count()
+        inprogress_ct = series.task_set.filter(status="In Progress").count()
+        complete_ct = series.task_set.filter(status="Complete").count()
         # ratio of complete to total number of tasks
         if complete_ct>0:
             progress = 100 * float(complete_ct)/float(count)
@@ -255,16 +241,9 @@ class StoryTaskView(CreateView):
         story = get_object_or_404(Story, id=self.kwargs['pk'])
         tasks = story.task_set.all()
         count = tasks.count()
-        identified_ct=0
-        inprogress_ct=0
-        complete_ct=0
-        for task in tasks:
-            if task.status=='Identified':
-                identified_ct = identified_ct + 1
-            elif task.status=='In Progress':
-                inprogress_ct = inprogress_ct + 1
-            elif task.status=='Complete':
-                complete_ct = complete_ct + 1
+        identified_ct = story.task_set.filter(status="Identified").count()
+        inprogress_ct = story.task_set.filter(status="In Progress").count()
+        complete_ct = story.task_set.filter(status="Complete").count()
         # ratio of complete to total number of tasks
         if complete_ct>0:
             progress = 100 * float(complete_ct)/float(count)
@@ -299,16 +278,9 @@ class EventTaskView(CreateView):
         event = get_object_or_404(Event, id=self.kwargs['pk'])
         tasks = event.task_set.all()
         count = tasks.count()
-        identified_ct=0
-        inprogress_ct=0
-        complete_ct=0
-        for task in tasks:
-            if task.status=='Identified':
-                identified_ct = identified_ct + 1
-            elif task.status=='In Progress':
-                inprogress_ct = inprogress_ct + 1
-            elif task.status=='Complete':
-                complete_ct = complete_ct + 1
+        identified_ct = event.task_set.filter(status="Identified").count()
+        inprogress_ct = event.task_set.filter(status="In Progress").count()
+        complete_ct = event.task_set.filter(status="Complete").count()
         # ratio of complete to total number of tasks
         if complete_ct>0:
             progress = 100 * float(complete_ct)/float(count)

@@ -156,7 +156,7 @@ class ProjectDetailView(DetailView):
 
         self.object = self.get_object()
         discussion = self.object.discussion
-        comments = discussion.comment_set.all()
+        comments = discussion.comment_set.all().order_by('date')
         form = CommentForm()
         return {'discussion': discussion, 'comments': comments, 'form': form}
 
@@ -177,9 +177,23 @@ class ProjectDetailView(DetailView):
 
         self.object = self.get_object()
         tasks = self.object.task_set.all()
+        identified = self.object.task_set.filter(status="Identified")
+        inprogress = self.object.task_set.filter(status="In Progress")
+        complete = self.object.task_set.filter(status="Complete")
+        identified_ct = identified.count()
+        inprogress_ct = inprogress.count()
+        complete_ct = complete.count()
         # form = TaskForm()
-        # return {'tasks': tasks, 'form': form}
-        return {'tasks': tasks}
+        return {
+                'tasks': tasks,
+                'identified': identified,
+                'inprogress': inprogress,
+                'complete': complete,
+                'identified_ct': identified_ct,
+                'inprogress_ct': inprogress_ct,
+                'complete_ct': complete_ct
+                # 'form': form,
+                }
 
     # FIXME Currently causing error because org is not getting passed to EventForm
     # Commented out task form and version of return statement that uses it.
