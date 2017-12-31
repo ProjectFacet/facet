@@ -510,6 +510,7 @@ class SimpleDocumentCreateView(CreateView):
 
         # set request based attributes
         document.owner = self.request.user
+
         if self.request.user.organization:
             document.organization = self.request.user.organization
         document.save()
@@ -533,6 +534,7 @@ class SimpleDocumentCreateView(CreateView):
             # add simple document to the associated object
             series.simple_document_assets.add(document)
             series.save()
+
             action_target = series
             # record action for activity stream
             action.send(self.request.user, verb="uploaded document", action_object=document, target=action_target)

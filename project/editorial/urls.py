@@ -206,6 +206,8 @@ urlpatterns = [
     url(r'^series/(?P<pk>[0-9]+)/$', seriesviews.SeriesDetailView.as_view(), name='series_detail'),
     url(r'^series/(?P<pk>[0-9]+)/edit/$', seriesviews.SeriesUpdateView.as_view(), name='series_edit'),
     url(r'^series/(?P<pk>[0-9]+)/delete/$', seriesviews.SeriesDeleteView.as_view(), name='series_delete'),
+    url(r'^series/(?P<pk>[0-9]+)/assets/$', seriesviews.SeriesAssetTemplateView.as_view(), name='series_assets'),
+    url(r'^series/(?P<pk>[0-9]+)/schedule/$', seriesviews.series_schedule, name='series_schedule'),
     url(r'^series/(?P<pk>[0-9]+)/notes/$', noteviews.SeriesNoteView.as_view(), name='series_notes'),
     url(r'^series/(?P<series>\d+)/note/(?P<note>\d+)/content$', noteviews.NoteContent.as_view(), name='series_note_content'),
     #----------------------------------------------------------------------#

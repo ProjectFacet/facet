@@ -227,7 +227,6 @@ class ProjectDetailView(DetailView):
         return {'documents': documents, 'form':form,}
 
 
-
 class ProjectAssetTemplateView(TemplateView):
     """Display media associated with a project."""
 

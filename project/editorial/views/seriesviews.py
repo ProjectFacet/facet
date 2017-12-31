@@ -23,6 +23,8 @@ from editorial.forms import (
     NoteForm,
     TaskForm,
     EventForm,
+    SimpleImageForm,
+    SimpleDocumentForm,
     )
 
 from editorial.models import (
@@ -33,6 +35,8 @@ from editorial.models import (
     Discussion,
     Task,
     Event,
+    SimpleImage,
+    SimpleDocument,
     )
 
 #----------------------------------------------------------------------#
@@ -156,6 +160,35 @@ class SeriesDetailView(DetailView):
         # return {'events': events, 'form': form}
         return {'events': events}
 
+    def series_assets(self):
+        """Get all the assets associated with facets of stories in a series."""
+
+        self.object = self.get_object()
+        images = self.object.get_series_images()
+        documents = self.object.get_series_documents()
+        audio = self.object.get_series_audio()
+        video = self.object.get_series_video()
+        return {'images': images, 'documents': documents, 'audio': audio, 'video': video}
+
+    def simple_images(self):
+        """Return simple images."""
+
+        self.object = self.get_object()
+        images = self.object.simple_image_assets.all()
+        print "IMG: ", images
+        form = SimpleImageForm()
+        return {'images': images, 'form':form,}
+
+    def simple_documents(self):
+        """Return simple documents."""
+
+        self.object = self.get_object()
+        documents = self.object.simple_document_assets.all()
+        print "DOC: ", documents
+        form = SimpleDocumentForm()
+        return {'documents': documents, 'form':form,}
+
+
 
 class SeriesUpdateView(UpdateView):
     """Update a series."""
@@ -177,11 +210,27 @@ class SeriesUpdateView(UpdateView):
         return super(SeriesUpdateView, self).get_success_url()
 
 
+class SeriesAssetTemplateView(TemplateView):
+    """Display media associated with a series."""
+
+    template_name = 'editorial/series_assets.html'
+
+    def get_context_data(self, pk):
+        """Return all the (complex) assets associated with a series."""
+
+        series = get_object_or_404(Series, id=pk)
+        images = series.get_series_images()
+        documents = series.get_series_documents()
+        audio = series.get_series_audio()
+        video = series.get_series_video()
+        return {'series':series, 'images': images, 'documents': documents, 'audio': audio, 'video': video,}
+
+
 # class SeriesDeleteView(DeleteView, FormMessagesMixin):
 class SeriesDeleteView(DeleteView):
     """Delete a series and its associated items.
 
-    In this project, we expect deletion to be done via a JS pop-up UI; we don't expect to
+    In this series, we expect deletion to be done via a JS pop-up UI; we don't expect to
     actually use the "do you want to delete this?" Django-generated page. However, this is
     available if useful.
     """
@@ -209,3 +258,12 @@ def series_json(request):
         series[item.id]=item.name
     print series
     return HttpResponse(json.dumps(series), content_type = "application/json")
+
+
+def series_schedule(request, pk):
+    """Generate a JSON object containing entries to display on series calendar."""
+
+    series = get_object_or_404(Series, pk=pk)
+    series_calendar = Series.get_series_story_events(series)
+
+    return HttpResponse(json.dumps(series_calendar), content_type='application/json')

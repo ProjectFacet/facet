@@ -155,6 +155,61 @@ class Series(models.Model):
         series_team = User.objects.filter(Q(Q(organization=self.organization) | Q(organization__in=collaborators)))
         return series_team
 
+    def get_series_images(self):
+        """Return all image assets associated with facets that are part of a series."""
+
+        from .story import Story
+
+        # get all stories associated with a project
+        series_stories = self.story_set.all()
+        # get all image assets associated with those stories.
+        series_images = []
+        for story in series_stories:
+            images=Story.get_story_images(story)
+            series_images.extend(images)
+        return set(series_images)
+
+    def get_series_documents(self):
+        """Return all document assets associated with facets that are part of a series."""
+
+        # get all stories associated with a series
+        series_stories = self.story_set.all()
+        # get all document assets associated with those stories.
+        series_documents = []
+        for story in series_stories:
+            documents=story.get_story_documents()
+            series_documents.extend(documents)
+        return set(series_documents)
+
+    def get_series_audio(self):
+        """Return all audio assets associated with facets that are part of a series."""
+
+        # get all stories associated with a series
+        series_stories = self.story_set.all()
+        # get all audio assets associated with those stories.
+        series_audio = []
+        for story in series_stories:
+            audio=story.get_story_audio()
+            series_audio.extend(audio)
+        return set(series_audio)
+
+    def get_series_video(self):
+        """Return all video assets associated with facets that are part of a series."""
+
+        # get all stories associated with a series
+        series_stories = self.story_set.all()
+        # get all video assets associated with those stories.
+        series_video = []
+        for story in series_stories:
+            videos=story.get_story_video()
+            series_video.extend(videos)
+        return set(series_video)
+
+    def get_series_events(self):
+        """Return all events and deadlines associated with series content."""
+        pass
+
+
     @property
     def search_title(self):
         return self.name

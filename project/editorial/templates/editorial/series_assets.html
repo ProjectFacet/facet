@@ -1,0 +1,379 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load bootstrap3 %}
+{% load embed_video_tags %}
+
+<!-------------------------------------------->
+<!--      BREADCRUMB NAVIGATION             -->
+<!-------------------------------------------->
+
+{% block breadcrumb %}
+<div>
+    <ol class="breadcrumb icon-angle-right icon-th">
+      <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
+      <li class="fadeIn"><a href="{% url 'series_list' %}" title="View Series"> Series </a></li>
+      <li class="fadeIn"><a href="{% url 'series_detail' series.id %}" title="View Series"> {{series.name}} </a></li>
+      <li class="fadeIn"> Assets</li>
+
+    </ol>
+</div>
+{% endblock breadcrumb %}
+
+<!-------------------------------------------->
+<!--            Main Section                -->
+<!-------------------------------------------->
+
+{% block content %}
+<!-- Row One -->
+<div class="row m-b-40">
+  <div class="bs-nav-tabs nav-tabs-default">
+      <ul class="nav nav-tabs nav-animated-border-from-left m-b-40">
+          <li class="nav-item"> <a ng-href="" class="nav-link active" data-toggle="tab" data-target="#graphics"><h5>Graphics</h5></a> </li>
+          <li class="nav-item"> <a ng-href="" class="nav-link" data-toggle="tab" data-target="#documents"><h5>Documents</h5></a> </li>
+          <li class="nav-item"> <a ng-href="" class="nav-link" data-toggle="tab" data-target="#audio"><h5>Audio</h5></a> </li>
+          <li class="nav-item"> <a ng-href="" class="nav-link" data-toggle="tab" data-target="#video"><h5>Video</h5></a> </li>
+      </ul>
+      <div class="tab-content">
+          <!-- Graphics Panel -->
+          <div role="tabpanel" class="tab-pane in active p-t-0" id="graphics">
+            <div id="image-asset-library">
+            {% for image in images %}
+              {% if image.display_photo %}
+                <div class="zoom-in-1 overlay-0 col-xs-12 col-sm-6 col-md-4 col-lg-3 m-b-20">
+                    <img src="{{ image.display_photo.url }}" alt="{{ image.description }}" class="img-fluid image-center height-200 hidden-sm-down">
+                    <div class="overlay bg-dark centered">
+                        <div class="title f-w-800 capitalize"><a href="{% url 'image_asset_detail' pk=image.id %}">{{ image.title }}</a></div>
+                        <div class="asset-description f-s-12 m-r-5 m-l-5 f-w-500 hidden-sm-down"> {{ image.description }} </div>
+                        <div class="link hidden-sm-down"><a href="{% url 'image_asset_detail' pk=image.id %}"><p class="color-lighter f-w-900"><i class="fa fa-angle-right"></i> Details</p></a></div>
+                    </div>
+                </div>
+              {% endif %}
+            {% endfor %}
+            </div>
+          </div>
+          <!-- Documents Panel -->
+          <div role="tabpanel" class="tab-pane p-t-0" id="documents">
+            <div id="document-asset-library">
+            {% for document in documents %}
+                <div class="col-xs-6 col-sm-4 col-md-2 col-lg-2">
+                  <div class="docs">
+                    {% if document.asset_type == "PDF" %}
+                    <a href="{% url 'document_asset_detail' pk=document.id %}">
+                      <div class="card bs-card">
+                        <div class="card-block bg-danger-500">
+                          <p class="f-r-14 f-w-300 text-center m-t-10"> <i class="fa fa-file-pdf-o fa-1x text-center m-b-10"></i> .pdf </p>
+                        </div>
+                        <div class="card-block">
+                          <p class="f-r-10 f-w-500"> {{ document.title }} </p>
+                          <p class="f-r-8 f-w-300 hidden-sm-down"> {{ document.description|truncatechars:40 }} </p>
+                        </div>
+                      </div>
+                    </a>
+                    {% elif document.asset_type == "WORD DOC" %}
+                    <a href="{% url 'document_asset_detail' pk=document.id %}">
+                      <div class="card bs-card">
+                        <div class="card-block bg-info-500">
+                          <p class="f-r-14 f-w-300 text-center m-t-10"> <i class="fa fa-file-word-o fa-1x text-center m-b-10"> </i> .docx </p>
+                        </div>
+                        <div class="card-block">
+                          <p class="f-r-10 f-w-500"> {{ document.title }} </p>
+                          <p class="f-r-8 f-w-300 hidden-sm-down"> {{ document.description|truncatechars:40 }} </p>
+                        </div>
+                      </div>
+                    </a>
+                    {% elif document.asset_type == "TEXT" %}
+                    <a href="{% url 'document_asset_detail' pk=document.id %}">
+                      <div class="card bs-card">
+                        <div class="card-block bg-primary-500">
+                          <p class="f-r-14 f-w-300 text-center m-t-10"> <i class="fa fa-file-text-o fa-1x text-center m-b-10"> </i> .txt </p>
+                        </div>
+                        <div class="card-block">
+                          <p class="f-r-10 f-w-500"> {{ document.title }} </p>
+                          <p class="f-r-8 f-w-300 hidden-sm-down"> {{ document.description|truncatechars:40 }} </p>
+                        </div>
+                      </div>
+                    </a>
+                    {% elif document.asset_type == "COMMA SEPARATED" %}
+                    <a href="{% url 'document_asset_detail' pk=document.id %}">
+                      <div class="card bs-card">
+                        <div class="card-block bg-success-500">
+                          <p class="f-r-14 f-w-300 text-center m-t-10"> <i class="fa fa-file-excel-o fa-1x text-center m-b-10"> </i> .csv </p>
+                        </div>
+                        <div class="card-block">
+                          <p class="f-r-10 f-w-500"> {{ document.title }} </p>
+                          <p class="f-r-8 f-w-300 hidden-sm-down"> {{ document.description|truncatechars:40 }} </p>
+                        </div>
+                      </div>
+                    </a>
+                    {% elif document.asset_type == "EXCEL" %}
+                    <a href="{% url 'document_asset_detail' pk=document.id %}">
+                      <div class="card bs-card">
+                        <div class="card-block bg-success-500">
+                          <p class="f-r-14 f-w-300 text-center m-t-10"> <i class="fa fa-file-excel-o fa-1x text-center m-b-10"> </i> .xls </p>
+                        </div>
+                        <div class="card-block">
+                          <p class="f-r-10 f-w-500"> {{ document.title }} </p>
+                          <p class="f-r-8 f-w-300 hidden-sm-down"> {{ document.description|truncatechars:40 }} </p>
+                        </div>
+                      </div>
+                    </a>
+                    {% elif document.asset_type == "OTHER" %}
+                    <a href="{% url 'document_asset_detail' pk=document.id %}">
+                      <div class="card bs-card">
+                        <div class="card-block bg-warning-500">
+                          <p class="f-r-14 f-w-300 text-center m-t-10"> <i class="fa fa-file-o fa-1x text-center m-b-10"> </i> other </p>
+                        </div>
+                        <div class="card-block">
+                          <p class="f-r-10 f-w-500"> {{ document.title }} </p>
+                          <p class="f-r-8 f-w-300 hidden-sm-down"> {{ document.description|truncatechars:40 }} </p>
+                        </div>
+                      </div>
+                    </a>
+                    {% endif %}
+                  </div>
+                </div>
+            {% endfor %}
+            </div>
+          </div>
+          <!-- Audio Panel -->
+          <div role="tabpanel" class="tab-pane p-t-0" id="audio">
+
+            {% for audio in audio %}
+            <div class="col-xs-2">
+
+              {% if audio.asset_type == 'MP3' or audio.asset_type == 'WAV' %}
+              <div id="jplayer_audio_{{audio.pk}}" class="jp-jplayer"></div>
+
+              <div id="jp_container_audio_{{audio.pk}}" class="jp-flat-audio" role="application" aria-label="media player">
+                <div class="jp-play-control jp-control">
+                  <button class="jp-play jp-button" role="button" aria-label="play" tabindex="0"></button>
+                </div>
+                <div class="jp-bar">
+                  <div class="jp-seek-bar jp-seek-bar-display"></div>
+                  <div class="jp-seek-bar">
+                    <div class="jp-play-bar"></div>
+                    <div class="jp-details"><span class="jp-title" aria-label="title"></span></div>
+                    <div class="jp-timing"><span class="jp-duration" role="timer" aria-label="duration"></span></div>
+                  </div>
+                </div>
+                <div class="jp-no-solution">
+                  Media Player Error<br />
+                  Update your browser or Flash plugin
+                </div>
+              </div>
+
+              <script>
+              jQuery(document).ready(function($) {
+                $("#jplayer_audio_{{audio.pk}}").jPlayer({
+                  ready: function(event) {
+                    $(this).jPlayer("setMedia", {
+                      title: "{{audio.title}}",
+                      wav: "{{audio.audio.url}}",
+                      mp3: "{{audio.audio.url}}",
+                    });
+                  },
+                  play: function() { // Avoid multiple jPlayers playing together.
+                    $(this).jPlayer("pauseOthers");
+                  },
+                  timeFormat: {
+                    padMin: false
+                  },
+                  swfPath: "js",
+                  supplied: "wav, mp3",
+                  cssSelectorAncestor: "#jp_container_audio_{{audio.pk}}",
+                  useStateClassSkin: true,
+                  autoBlur: false,
+                  smoothPlayBar: true,
+                  remainingDuration: true,
+                  keyEnabled: true,
+                  keyBindings: {
+                    // Disable some of the default key controls
+                    loop: null,
+                    muted: null,
+                    volumeUp: null,
+                    volumeDown: null
+                  },
+                  wmode: "window"
+                });
+              });
+              </script>
+              {% endif %}
+              {% if audio.asset_type == 'SC' %}
+              <a href="{{ audio.link }}" title="{{ audio.description }}" target="_blank"><i class="fa fa-soundcloud sameline"></i> <span class="small-text dark sameline">{{ audio.title }}</span></a>
+              {% endif %}
+              <a href="{% url 'audio_asset_detail' pk=audio.id %}" title="{{ audio.description }}"><p class="subtle f-s-14 m-t-10"><i class="fa fa-angle-right subtle" aria-hidden="true"></i> Details</p></a>
+
+            </div>
+            <div class="col-xs-1">
+              {% comment %}
+              <a href="{% url 'audio_asset_detail' pk=audio.id %}" title="{{ audio.description }}"><p class="subtle f-s-14 m-t-10"><i class="fa fa-angle-right subtle" aria-hidden="true"></i> Details</p></a>
+              {% endcomment %}
+            </div>
+
+            {% endfor %}
+          </div>
+          <!-- Video Panel -->
+          <div role="tabpanel" class="tab-pane p-t-0" id="video">
+
+            {% for video in video %}
+            <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+
+              {% if video.asset_type == 'MP4' %}
+                <!-- Hardcoded Videos -->
+                {% comment %}
+                <div id="jp_container_video_{{video.pk}}" class="jp-flat-video" role="application" aria-label="media player">
+                  <div id="jplayer_video_{{video.pk}}" class="jp-jplayer"></div>
+                  <div class="jp-gui">
+                    <div class="jp-play-control jp-control">
+                      <button class="jp-play jp-button" role="button" aria-label="play" tabindex="0"></button>
+                    </div>
+                    <div class="jp-bar">
+                      <div class="jp-seek-bar jp-seek-bar-display"></div>
+                      <div class="jp-seek-bar">
+                        <div class="jp-play-bar"></div>
+                        <div class="jp-details"><span class="jp-title" aria-label="title"></span></div>
+                        <div class="jp-timing"><span class="jp-duration" role="timer" aria-label="duration"></span></div>
+                      </div>
+                    </div>
+                    <div class="jp-screen-control jp-control">
+                      <button class="jp-full-screen jp-button" role="button" aria-label="full screen" tabindex="0"></button>
+                    </div>
+                  </div>
+                  <div class="jp-no-solution">
+                    Media Player Error<br />
+                    Update your browser or Flash plugin
+                  </div>
+                </div>
+                <script>
+                    $(document).ready(function($) {
+                    $("#jplayer_video_{{video.pk}}").jPlayer({
+                      ready: function(event) {
+                        var $this = $(this).jPlayer("setMedia", {
+                  				title: "Big Buck Bunny Trailer",
+                  				m4v: "http://jplayer.org/video/m4v/Big_Buck_Bunny_Trailer.m4v",
+                  				ogv: "http://jplayer.org/video/ogv/Big_Buck_Bunny_Trailer.ogv",
+                  				webmv: "http://jplayer.org/video/webm/Big_Buck_Bunny_Trailer.webm",
+                  				poster: "http://jplayer.org/video/poster/Big_Buck_Bunny_Trailer_480x270.png"
+                  			});
+
+                        // Fix GUI when Full Screen button is hidden.
+                        if(event.jPlayer.status.noFullWindow) {
+                          var $anc = $($this.jPlayer("option", "cssSelectorAncestor"));
+                          $anc.find('.jp-screen-control').hide();
+                          $anc.find('.jp-bar').css({"right":"0"});
+                        }
+
+                        // Fix the responsive size for iOS and Flash.
+                        var fix_iOS_flash = function() {
+                          var w = $this.data("jPlayer").ancestorJq.width(),
+                            h = w * 9 / 16; // Change to suit your aspect ratio. Used 16:9 HDTV ratio.
+                          $this.jPlayer("option", "size", {
+                            width: w + "px",
+                            height: h + "px"
+                          });
+                        };
+                        var plt = $.jPlayer.platform;
+                        if(plt.ipad || plt.iphone || plt.ipod || event.jPlayer.flash.used) {
+                          $(window).on("resize", function() {
+                            fix_iOS_flash();
+                          });
+                          fix_iOS_flash();
+                        }
+                      },
+                      timeFormat: {
+                        padMin: false
+                      },
+                      swfPath: "js",
+                      supplied: "webmv, ogv, m4v",
+                      cssSelectorAncestor: "#jp_container_video_{{video.pk}}",
+                      // See the CSS for more info on changing the size.
+                      size: {
+                        width: "100%",
+                        height: "auto",
+                        cssClass: "jp-flat-video-responsive"
+                      },
+                      sizeFull: {
+                        cssClass: "jp-flat-video-full"
+                      },
+                      autohide: {
+                        full: false,
+                        restored: false
+                      },
+                      // While playing, allow the GUI to hide
+                      play: function() {
+                        $(this).jPlayer("option", "autohide", {
+                          full: true,
+                          restored: true
+                        });
+                        // Avoid multiple jPlayers playing together.
+                        $(this).jPlayer("pauseOthers");
+                      },
+                      // When paused, show the GUI
+                      pause: function() {
+                        $(this).jPlayer("option", "autohide", {
+                          full: false,
+                          restored: false
+                        });
+                      },
+                      // Enable clicks on the video to toggle play/pause
+                      click: function(event) {
+                        if(event.jPlayer.status.paused) {
+                          $(this).jPlayer("play");
+                        } else {
+                          $(this).jPlayer("pause");
+                        }
+                      },
+                      useStateClassSkin: true,
+                      autoBlur: false,
+                      smoothPlayBar: !($.jPlayer.browser.msie && $.jPlayer.browser.version < 9), // IE8 did not like the hidden animated progress bar.
+                      remainingDuration: true,
+                      keyEnabled: true,
+                      keyBindings: {
+                        // Disable some of the default key controls
+                        loop: null,
+                        muted: null,
+                        volumeUp: null,
+                        volumeDown: null
+                      }
+                    });
+                  });
+                </script>
+                {% endcomment %}
+                <!-- End of Hardcoded Videos -->
+              {% endif %}
+
+              {% if video.asset_type == 'YOUTUBE' or 'VIMEO' %}
+                {% video video.link 'tiny' %}
+              {% endif %}
+
+              <a href="{% url 'video_asset_detail' pk=video.id %}" title="{{ video.description }}"><p class="subtle f-s-14 m-t-10"><i class="fa fa-angle-right subtle" aria-hidden="true"></i> Details</p></a>
+
+            </div>
+            {% endfor %}
+          </div>
+      </div>
+  </div>
+</div>
+
+
+<!-- <script>
+
+  $('#asset-library').magnificPopup({
+    delegate: '.popout',
+    type: 'image',
+    gallery: {enabled:true}
+  });
+
+</script> -->
+<script>
+$(document).ready(function() {
+  $(".asset-description").dotdotdot();
+});
+
+$('.img-center').centerImage();
+
+</script>
+
+
+{% endblock %}
