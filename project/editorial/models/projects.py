@@ -234,6 +234,14 @@ class Project(models.Model):
         """Return all story events associated with a project."""
         return self.event_set.all()
 
+    def get_project_event(self):
+        """Return all events and story dates associated with a project."""
+
+        # get all Event object events
+        events = self.event_set.all()
+        # get all stories
+        return events
+
     @property
     def description(self):
         return "{description}".format(description=self.project_description)

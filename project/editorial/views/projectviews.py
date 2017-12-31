@@ -8,10 +8,10 @@ from __future__ import unicode_literals
 from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
 from django.core.mail import send_mail
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.utils import timezone
 from django.core.urlresolvers import reverse_lazy, reverse
-from django.views.generic import TemplateView , UpdateView, DetailView, ListView, CreateView, DeleteView
+from django.views.generic import TemplateView , UpdateView, DetailView, ListView, CreateView, DeleteView, View
 from django.views.decorators.csrf import csrf_exempt
 import datetime
 import json
@@ -21,7 +21,10 @@ from editorial.forms import (
     ProjectForm,
     CommentForm,
     NoteForm,
-    TaskForm,)
+    TaskForm,
+    SimpleImageForm,
+    SimpleDocumentForm,
+    )
 
 from editorial.models import (
     Project,
@@ -207,6 +210,24 @@ class ProjectDetailView(DetailView):
         return {'events': events}
 
 
+    def simple_images(self):
+        """Return simple images."""
+
+        self.object = self.get_object()
+        images = self.object.simple_image_assets.all()
+        form = SimpleImageForm()
+        return {'images': images, 'form':form,}
+
+    def simple_documents(self):
+        """Return simple documents."""
+
+        self.object = self.get_object()
+        documents = self.object.simple_document_assets.all()
+        form = SimpleDocumentForm()
+        return {'documents': documents, 'form':form,}
+
+
+
 class ProjectAssetTemplateView(TemplateView):
     """Display media associated with a project."""
 
@@ -237,6 +258,18 @@ class ProjectStoryTemplateView(TemplateView):
             if story.get_story_images():
                 story.featured_image = story.get_story_images()[0]
         return {'project': project, 'stories': stories,}
+
+
+# class ProjectSchedule(View):
+#     """Generate a JSON object containing entries to display on project calendar."""
+#
+#     def get(self, request, *args, **kwargs):
+#
+#         project_id = self.kwargs['project']
+#         project = get_object_or_404(Project, pk=project_id)
+#         project_calendar = project.get_project_events()
+#
+#         return HttpResponse(json.dumps(project_calendar), content_type='application/json')
 
 
 def project_schedule(request, pk):

@@ -22,6 +22,7 @@ from editorial.forms import (
     NoteForm,
     )
 
+
 from editorial.models import (
     Organization,
     Project,

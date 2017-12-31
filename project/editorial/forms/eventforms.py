@@ -74,7 +74,7 @@ class EventForm(forms.ModelForm):
         ]
         widgets = {
             'name': Textarea(attrs={'class': 'form-control', 'rows':1, 'placeholder': 'Name'}),
-            'text': Textarea(attrs={'class': 'form-control', 'id':'task-text', 'rows':17, 'placeholder': 'Details'}),
+            'text': Textarea(attrs={'class': 'form-control', 'id':'task-text', 'rows':15, 'placeholder': 'Details'}),
             'venue': Textarea(attrs={'class': 'form-control', 'rows':1, 'placeholder': 'Venue'}),
             'team': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select form-control facet-select', 'id':'event-team', 'data-placeholder': 'Team'}),
             'event_type': Select(attrs={'class': 'custom-select', 'id':'task-status'}),
