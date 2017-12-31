@@ -144,9 +144,23 @@ class SeriesDetailView(DetailView):
 
         self.object = self.get_object()
         tasks = self.object.task_set.all()
+        identified = self.object.task_set.filter(status="Identified")
+        inprogress = self.object.task_set.filter(status="In Progress")
+        complete = self.object.task_set.filter(status="Complete")
+        identified_ct = identified.count()
+        inprogress_ct = inprogress.count()
+        complete_ct = complete.count()
         # form = TaskForm()
-        # return {'tasks': tasks, 'form': form}
-        return {'tasks': tasks}
+        return {
+                'tasks': tasks,
+                'identified': identified,
+                'inprogress': inprogress,
+                'complete': complete,
+                'identified_ct': identified_ct,
+                'inprogress_ct': inprogress_ct,
+                'complete_ct': complete_ct
+                # 'form': form,
+                }
 
 
     # FIXME Currently causing error because org is not getting passed to EventForm
