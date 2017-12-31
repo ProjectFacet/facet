@@ -184,7 +184,7 @@ class Project(models.Model):
         for story in project_stories:
             images=Story.get_story_images(story)
             project_images.extend(images)
-        return project_images
+        return set(project_images)
 
     def get_project_documents(self):
         """Return all document assets associated with facets that are part of a project."""
@@ -196,7 +196,7 @@ class Project(models.Model):
         for story in project_stories:
             documents=story.get_story_documents()
             project_documents.extend(documents)
-        return project_documents
+        return set(project_documents)
 
     def get_project_audio(self):
         """Return all audio assets associated with facets that are part of a project."""
@@ -208,7 +208,7 @@ class Project(models.Model):
         for story in project_stories:
             audio=story.get_story_audio()
             project_audio.extend(audio)
-        return project_audio
+        return set(project_audio)
 
     def get_project_video(self):
         """Return all video assets associated with facets that are part of a project."""
@@ -220,7 +220,7 @@ class Project(models.Model):
         for story in project_stories:
             videos=story.get_story_video()
             project_video.extend(videos)
-        return project_video
+        return set(project_video)
 
     def get_project_tasks(self):
         """Return all tasks associated with a project."""
