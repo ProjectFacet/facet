@@ -49,12 +49,15 @@ class Event(models.Model):
     # Ex - Live studio taping open to the public
     # Reporting: An external event that is being covered for a story.
     # Ex - Press conference at the police department
+    # Administrative: An internal event such as a team meeting or conference call
     HOSTING = 'Hosting'
     REPORTING = 'Reporting'
+    ADMINISTRATIVE = 'Administrative'
     OTHER = 'Other'
     EVENT_TYPE_CHOICES = (
         (HOSTING, 'Hosting'),
         (REPORTING, 'Reporting'),
+        (ADMINISTRATIVE, 'Administrative'),
         (OTHER, 'Other'),
     )
 

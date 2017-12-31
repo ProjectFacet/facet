@@ -204,7 +204,7 @@ class ProjectDetailView(DetailView):
         """Get events and event form for the project."""
 
         self.object = self.get_object()
-        events = self.object.event_set.all()
+        events = self.object.event_set.all().order_by('-event_date')
         # form = EventForm()
         # return {'events': events, 'form': form}
         return {'events': events}
