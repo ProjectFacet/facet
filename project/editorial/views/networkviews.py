@@ -17,7 +17,7 @@ import datetime
 import json
 from actstream import action
 from django.db.models import Q
-from braces.views import LoginRequiredMixin
+from braces.views import LoginRequiredMixin, FormMessagesMixin
 
 from editorial.forms import (
     NetworkForm,

@@ -12,7 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render_to_response
 from django.utils.safestring import mark_safe
 import datetime, time
-from braces.views import LoginRequiredMixin
+from braces.views import LoginRequiredMixin, FormMessagesMixin
 
 import json
 

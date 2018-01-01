@@ -13,7 +13,7 @@ from cStringIO import StringIO
 from zipfile import ZipFile
 import datetime
 import json
-from braces.views import LoginRequiredMixin
+from braces.views import LoginRequiredMixin, FormMessagesMixin
 
 # from editorial.forms import StoryDownloadForm
 

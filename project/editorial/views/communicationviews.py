@@ -17,7 +17,7 @@ from django.http import JsonResponse
 import datetime
 import json
 from actstream import action
-from braces.views import LoginRequiredMixin
+from braces.views import LoginRequiredMixin, FormMessagesMixin
 
 from editorial.forms import (
     PrivateMessageForm,

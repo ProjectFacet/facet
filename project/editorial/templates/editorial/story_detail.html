@@ -35,9 +35,30 @@
 {% block content %}
 
 <!-- ================================================= -->
+                    <!-- Messages -->
+<!-- ================================================= -->
+
+<div class="row">
+  {% if messages %}
+  <ul class="messages">
+      {% for message in messages %}
+      <div class="alert alert-success animated fadeIn" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">×</span>
+          <span class="sr-only">Close</span>
+        </button>
+        {{ message }}
+        <a href="#" class="del-msg"></a>
+      </div>
+      {% endfor %}
+  </ul>
+  {% endif %}
+</div>
+
+<!-- ================================================= -->
                     <!-- Pseudo TABS -->
 <!-- ================================================= -->
-    <div class="row">
+<div class="row">
       <div class="col-xs-12">
         <div class="bs-nav-tabs nav-tabs-default m-b-40" id="facettabs">
           <ul class="nav nav-tabs nav-animated-border-from-left nav-tabs-sticky text-center">
@@ -54,6 +75,7 @@
 <!-- ================================================= -->
                     <!-- CONTENT -->
 <!-- ================================================= -->
+
 <!-- Row One -->
 <div class="row">
   <!-- Left Column -->
@@ -385,7 +407,6 @@
   <!-- End of Right Column -->
 
 </div>
-
 <!-- End of Row Two -->
 
 
@@ -529,6 +550,22 @@
           });
         });
 </script>
+
+<!-- Timeout Messages -->
+<script>
+  $(document).ready(function() {
+      // messages timeout for 10 sec
+      setTimeout(function() {
+          $('.message').fadeOut('slow');
+      }, 5000); // <-- time in milliseconds, 1000 =  1 sec
+
+      // delete message
+      $('.del-msg').live('click',function(){
+          $('.del-msg').parent().attr('style', 'display:none;');
+      })
+  });
+</script>
+
 
 {% endblock %}
 

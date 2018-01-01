@@ -10,7 +10,7 @@ from __future__ import unicode_literals
 from django.core.urlresolvers import reverse
 from django.views.generic import FormView
 from django.conf import settings
-from braces.views import LoginRequiredMixin
+from braces.views import LoginRequiredMixin, FormMessagesMixin
 
 from editorial.forms import (
     PlatformAccountFormSet,

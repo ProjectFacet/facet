@@ -16,7 +16,7 @@ import datetime
 import json
 from actstream import action
 from django.core.urlresolvers import reverse
-from braces.views import LoginRequiredMixin
+from braces.views import LoginRequiredMixin, FormMessagesMixin
 
 from editorial.forms import (
     TaskForm,

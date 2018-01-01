@@ -16,7 +16,8 @@ from django.views.decorators.csrf import csrf_exempt
 import datetime
 import json
 from actstream import action
-from braces.views import LoginRequiredMixin
+from braces.views import LoginRequiredMixin, FormMessagesMixin
+
 
 from editorial.forms import (
     StoryForm,
@@ -123,7 +124,7 @@ class StoryCreateView(LoginRequiredMixin, CreateView):
         return redirect(self.get_success_url())
 
 
-class StoryUpdateView(LoginRequiredMixin, UpdateView):
+class StoryUpdateView(LoginRequiredMixin, FormMessagesMixin, UpdateView):
     """Update a story."""
 
     # handle users that are not logged in
@@ -131,6 +132,8 @@ class StoryUpdateView(LoginRequiredMixin, UpdateView):
 
     model = Story
     form_class = StoryForm
+    form_invalid_message = "Something went wrong, changes were not saved"
+    form_valid_message = "Changes saved"
 
     def get_form_kwargs(self):
         """Pass current user organization to the form."""

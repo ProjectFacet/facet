@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse
 from django.conf import settings
 from actstream import action
 from editorial.models import Story
-from braces.views import LoginRequiredMixin
+from braces.views import LoginRequiredMixin, FormMessagesMixin
 
 from ..models import Facet, FacetTemplate
 from ..forms import (

@@ -34,6 +34,15 @@ ERRORS={{form.errors}}
 <div class="row m-b-40">
   <div class="col-xs-12">
     <div class="row">
+      {% if messages %}
+      <ul class="messages">
+          {% for message in messages %}
+          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+          {% endfor %}
+      </ul>
+      {% endif %}
+    </div>
+    <div class="row">
       <form method="POST" class="post-form forms-basic">{% csrf_token %}
         <!-- Left Side -->
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">

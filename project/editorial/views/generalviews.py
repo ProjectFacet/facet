@@ -13,7 +13,7 @@ from datetime import datetime, timedelta, time
 import json
 from django.template.loader import render_to_string
 from django.db.models import Q
-from braces.views import LoginRequiredMixin
+from braces.views import LoginRequiredMixin, FormMessagesMixin
 
 # All imports are included for use in test view
 

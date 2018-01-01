@@ -14,7 +14,7 @@ from django.views.generic import TemplateView , UpdateView, DetailView
 from django.views.decorators.csrf import csrf_exempt
 import datetime
 import json
-from braces.views import LoginRequiredMixin
+from braces.views import LoginRequiredMixin, FormMessagesMixin
 
 from watson import search as watson
 from watson.views import SearchView as BaseWatsonSearchView
