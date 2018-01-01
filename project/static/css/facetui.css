@@ -128,6 +128,10 @@ a.subtle {
   margin-left: -20px !important;
 }
 
+.neg-m-t-30 {
+  margin-top: -30px !important;
+}
+
 
 .chosen-container-multi .chosen-choices {
   min-height: 40px !important;
@@ -418,4 +422,9 @@ img.image-center {
 
 .w-25 {
     width: 25px !important;
+}
+
+.alert {
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
 }

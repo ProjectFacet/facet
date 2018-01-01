@@ -38,21 +38,23 @@
                     <!-- Messages -->
 <!-- ================================================= -->
 
-<div class="row">
-  {% if messages %}
-  <ul class="messages">
-      {% for message in messages %}
-      <div class="alert alert-success animated fadeIn" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">×</span>
-          <span class="sr-only">Close</span>
-        </button>
-        {{ message }}
-        <a href="#" class="del-msg"></a>
-      </div>
-      {% endfor %}
-  </ul>
-  {% endif %}
+<div class="row neg-m-t-30">
+  <div class="col-xs-12 col-sm-4 col-sm-offset-4">
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <div class="alert bg-success-100 fadeIn" role="alert">
+          <button type="button" class="close btn-sm" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">×</span>
+            <span class="sr-only">Close</span>
+          </button>
+          <span class="f-r-8">{{ message }}</span>
+          <a href="#" class="del-msg"></a>
+        </div>
+        {% endfor %}
+    </ul>
+    {% endif %}
+  </div>
 </div>
 
 <!-- ================================================= -->
@@ -469,7 +471,7 @@
 </script>
 
 <!-- Story Schedule -->
-<script>
+<!-- <script>
     (function() {
         'use strict';
 
@@ -503,7 +505,7 @@
 
 
     })();
-</script>
+</script> -->
 
 <!-- Story Delete Confirmation alerts -->
 <script>
@@ -556,11 +558,12 @@
   $(document).ready(function() {
       // messages timeout for 10 sec
       setTimeout(function() {
-          $('.message').fadeOut('slow');
+          $('.messages').fadeOut('slow');
       }, 5000); // <-- time in milliseconds, 1000 =  1 sec
 
       // delete message
-      $('.del-msg').live('click',function(){
+      // $('.del-msg').live('click',function(){
+      $('.del-msg').on('click', 'a', function(){
           $('.del-msg').parent().attr('style', 'display:none;');
       })
   });
