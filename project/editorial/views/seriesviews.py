@@ -16,6 +16,7 @@ from django.views.decorators.csrf import csrf_exempt
 import datetime
 import json
 from actstream import action
+from braces.views import LoginRequiredMixin
 
 from editorial.forms import (
     SeriesForm,
@@ -43,11 +44,14 @@ from editorial.models import (
 #   Series Views
 #----------------------------------------------------------------------#
 
-class SeriesListView(ListView):
+class SeriesListView(LoginRequiredMixin, ListView):
     """ Displays a filterable table of series.
 
     Initial display organizes content by series name.
     """
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     context_object_name = 'series'
 
@@ -58,7 +62,7 @@ class SeriesListView(ListView):
         return org.series_organization.all()
 
 
-class SeriesCreateView(CreateView):
+class SeriesCreateView(LoginRequiredMixin, CreateView):
     """ A logged in user can create a series.
 
     Series serve as a linking mechanism to connect related stories and to share
@@ -68,6 +72,9 @@ class SeriesCreateView(CreateView):
     stories technically have a series, but in that case the user does not interact with any
     series interface.
     """
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     model = Series
     form_class = SeriesForm
@@ -98,12 +105,15 @@ class SeriesCreateView(CreateView):
         return redirect(self.get_success_url())
 
 
-class SeriesDetailView(DetailView):
+class SeriesDetailView(LoginRequiredMixin, DetailView):
     """ The detail page for a series.
 
     Displays the series' planning notes, discussion, assets, share and collaboration status
     and sensivity status.
     """
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     model = Series
 
@@ -204,8 +214,11 @@ class SeriesDetailView(DetailView):
 
 
 
-class SeriesUpdateView(UpdateView):
+class SeriesUpdateView(LoginRequiredMixin, UpdateView):
     """Update a series."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     model = Series
     form_class = SeriesForm
@@ -224,8 +237,11 @@ class SeriesUpdateView(UpdateView):
         return super(SeriesUpdateView, self).get_success_url()
 
 
-class SeriesAssetTemplateView(TemplateView):
+class SeriesAssetTemplateView(LoginRequiredMixin, TemplateView):
     """Display media associated with a series."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     template_name = 'editorial/series_assets.html'
 
@@ -241,13 +257,16 @@ class SeriesAssetTemplateView(TemplateView):
 
 
 # class SeriesDeleteView(DeleteView, FormMessagesMixin):
-class SeriesDeleteView(DeleteView):
+class SeriesDeleteView(LoginRequiredMixin, DeleteView):
     """Delete a series and its associated items.
 
     In this series, we expect deletion to be done via a JS pop-up UI; we don't expect to
     actually use the "do you want to delete this?" Django-generated page. However, this is
     available if useful.
     """
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     # FIXME: this would be a great place to use braces' messages; usage commented out for now
 

@@ -10,13 +10,14 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.utils import timezone
-from django.views.generic import TemplateView , UpdateView, DetailView, CreateView, ListView, View
+from django.views.generic import TemplateView , UpdateView, DetailView, CreateView, ListView, DeleteView, View
 from django.views.decorators.csrf import csrf_exempt
 from django.core.serializers.json import DjangoJSONEncoder
 import datetime
 import json
 from actstream import action
 from django.db.models import Q
+from braces.views import LoginRequiredMixin
 
 from editorial.forms import (
     NetworkForm,
@@ -53,7 +54,7 @@ from editorial.models import (
 #   Network Views
 #----------------------------------------------------------------------#
 
-class NetworkCreateView(CreateView):
+class NetworkCreateView(LoginRequiredMixin, CreateView):
     """Create a new network."""
 
     model = Network
@@ -77,7 +78,7 @@ class NetworkCreateView(CreateView):
         return redirect(self.get_success_url())
 
 
-class NetworkUpdateView(UpdateView):
+class NetworkUpdateView(LoginRequiredMixin, UpdateView):
     """ Update a network."""
 
     model = Network
@@ -90,7 +91,7 @@ class NetworkUpdateView(UpdateView):
         return super(NetworkUpdateView, self).get_success_url()
 
 
-class NetworkListView(ListView):
+class NetworkListView(LoginRequiredMixin, ListView):
     """Display a list of all the networks and organization is either
     the owner of or a member of.
     """
@@ -103,7 +104,7 @@ class NetworkListView(ListView):
         return org.get_org_networks()
 
 
-class NetworkDetailView(DetailView):
+class NetworkDetailView(LoginRequiredMixin, DetailView):
     """Return all the detail for a network."""
 
     model = Network
@@ -130,14 +131,30 @@ class NetworkDetailView(DetailView):
         return context
 
 
-def delete_network(request, pk):
-    """ Delete a network and dependent records."""
+# class NetworkDeleteView(DeleteView, FormMessagesMixin):
+class NetworkDeleteView(LoginRequiredMixin, DeleteView):
+    """View for handling deletion of a network.
 
-    if request == "POST":
-        # network = get_object_or_404(Network, pk=pk)
-        # if request.user == network.owner_organization
-        #     network.delete()
-        return redirect('network_list')
+    In this project, we expect deletion to be done via a JS pop-up UI; we don't expect to
+    actually use the "do you want to delete this?" Django-generated page. However, this is
+    available if useful.
+    """
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
+
+    # FIXME: this would be a great place to use braces' messages; usage commented out for now
+
+    model = Network
+    template_name = "editorial/network_delete.html"
+
+    # form_valid_message = "Deleted."
+    # form_invalid_message = "Please check form."
+
+    def get_success_url(self):
+        """Post-deletion, return to the story URL."""
+
+        return reverse('network_list')
 
 
 def send_network_invite(request):
@@ -187,7 +204,7 @@ def org_to_network(request, pk):
     return render(request, 'editorial/networkdetail.html', {'form': form})
 
 
-class NetworkStoryListView(ListView):
+class NetworkStoryListView(LoginRequiredMixin, ListView):
     """ Displays a filterable table of stories marked as shared/ready to share by any
     organizations that a user's organization is a part of.
 
@@ -199,6 +216,9 @@ class NetworkStoryListView(ListView):
     them as Ready to Share. (This is so partners know it will exist and can plan to incorporate
     it once it becomes available.)
     """
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     context_object_name = 'networkstories'
     template_name = 'editorial/networkstory_list.html'
@@ -219,11 +239,15 @@ class NetworkStoryListView(ListView):
         return networkstories
 
 
-class CopyNetworkStoryView(View):
+class CopyNetworkStoryView(LoginRequiredMixin, View):
     """Copy a story and related facets.
 
     TODO Needs to let user select story and facets/assets for copying.
     """
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
+
     # import pdb; pdb.set_trace()
 
     def post(self, request, story):

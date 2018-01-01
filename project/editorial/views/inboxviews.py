@@ -12,6 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime, timedelta, time
 import json
 from django.template.loader import render_to_string
+from braces.views import LoginRequiredMixin
 
 # All imports are included for use in test view
 
@@ -49,8 +50,11 @@ from editorial.models import (
     )
 
 
+# # handle users that are not logged in
+# login_url = settings.LOGIN_URL
+
 #----------------------------------------------------------------------#
-#   Inobx Views
+#   Inbox Views
 #----------------------------------------------------------------------#
 
 def inbox(request):

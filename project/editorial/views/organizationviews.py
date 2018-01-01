@@ -18,6 +18,7 @@ import json
 from actstream import action
 from django.core.urlresolvers import reverse
 from django.db.models import Q
+from braces.views import LoginRequiredMixin
 
 
 from editorial.forms import (
@@ -42,8 +43,11 @@ from editorial.models import (
 #   Organization Views
 #----------------------------------------------------------------------#
 
-class OrganizationCreateView(CreateView):
+class OrganizationCreateView(LoginRequiredMixin, CreateView):
     """Create a new organization."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     model = Organization
     form_class = OrganizationForm
@@ -70,8 +74,11 @@ class OrganizationCreateView(CreateView):
         return reverse('org_detail', kwargs={'pk': self.object.pk})
 
 
-class OrganizationUpdateView(UpdateView):
+class OrganizationUpdateView(LoginRequiredMixin, UpdateView):
     """Edit an organization."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     model = Organization
     form_class = OrganizationForm
@@ -84,8 +91,11 @@ class OrganizationUpdateView(UpdateView):
         return context
 
 
-class OrganizationDetailView(DetailView):
+class OrganizationDetailView(LoginRequiredMixin, DetailView):
     """Detail view of an organization."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     model = Organization
 

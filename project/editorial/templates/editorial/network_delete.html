@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load bootstrap3 %}
+
+{% block head %}
+{{ form.media }}
+{% endblock %}
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+<!--             BREADCRUMB NAVIGATION                 -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
+{% block breadcrumb %}
+<div>
+  <ol class="breadcrumb icon-angle-right icon-th">
+    <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a>
+    </li>
+    <li class="fadeIn"><a href="{% url 'network_list' %}" title="You are here"> Networks </a></li>
+    <li class="fadeIn"> {{ network.name }} | {{ network.network_description }}</li>
+  </ol>
+</div>
+{% endblock breadcrumb %}
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+<!--                   Main Section                    -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
+{% block content %}
+
+
+<!-- ================================================= -->
+<!-- CONTENT -->
+<!-- ================================================= -->
+
+<h1>{{ network }} </h1>
+
+<form method="POST" class="post-form">
+  {% csrf_token %}
+  <input type="submit" value="Delete">
+</form>
+
+{% endblock content %}

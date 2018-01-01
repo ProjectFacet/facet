@@ -16,6 +16,7 @@ from django.views.decorators.csrf import csrf_exempt
 import datetime
 import json
 from actstream import action
+from braces.views import LoginRequiredMixin
 
 from editorial.forms import (
     StoryForm,
@@ -56,13 +57,16 @@ from editorial.models import (
 #   Story Views
 #----------------------------------------------------------------------#
 
-class StoryListView(ListView):
+class StoryListView(LoginRequiredMixin, ListView):
     """ Displays a filterable table of stories.
 
     Initial display organizes content by story>facet>est. run date
     Filterable by story name, facet type, facet name, due for edit, est. run date, credit,
     editor, status.
     """
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     context_object_name = 'stories'
 
@@ -73,8 +77,11 @@ class StoryListView(ListView):
         return org.story_set.all()
 
 
-class StoryCreateView(CreateView):
+class StoryCreateView(LoginRequiredMixin, CreateView):
     """Create a story."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     model = Story
     form_class = StoryForm
@@ -116,8 +123,11 @@ class StoryCreateView(CreateView):
         return redirect(self.get_success_url())
 
 
-class StoryUpdateView(UpdateView):
+class StoryUpdateView(LoginRequiredMixin, UpdateView):
     """Update a story."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     model = Story
     form_class = StoryForm
@@ -141,8 +151,11 @@ class StoryUpdateView(UpdateView):
         return super(StoryUpdateView, self).get_success_url()
 
 
-class StoryDetailView(DetailView):
+class StoryDetailView(LoginRequiredMixin, DetailView):
     """Show all the details and related items for a story."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     model = Story
 
@@ -230,13 +243,16 @@ class StoryDetailView(DetailView):
 
 
 # class StoryDeleteView(DeleteView, FormMessagesMixin):
-class StoryDeleteView(DeleteView):
+class StoryDeleteView(LoginRequiredMixin, DeleteView):
     """Delete a story and it's associated items.
 
     In this project, we expect deletion to be done via a JS pop-up UI; we don't expect to
     actually use the "do you want to delete this?" Django-generated page. However, this is
     available if useful.
     """
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     # FIXME: this would be a great place to use braces' messages; usage commented out for now
 

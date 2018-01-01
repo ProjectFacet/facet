@@ -16,6 +16,7 @@ import datetime
 import json
 from actstream import action
 from django.core.urlresolvers import reverse
+from braces.views import LoginRequiredMixin
 
 from editorial.forms import (
     TaskForm,
@@ -38,8 +39,11 @@ from editorial.models import (
 #   General Task Views
 #----------------------------------------------------------------------#
 
-class TaskCreateView(CreateView):
+class TaskCreateView(LoginRequiredMixin, CreateView):
     """Create a new task."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     model = Task
     form_class = TaskForm
@@ -73,9 +77,12 @@ class TaskCreateView(CreateView):
         return redirect(self.get_success_url())
 
 
-class TaskUpdateView(UpdateView):
+class TaskUpdateView(LoginRequiredMixin, UpdateView):
     """The detail page for a task.
     Displays the task information."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     model = Task
     form_class = TaskForm
@@ -111,13 +118,16 @@ class TaskUpdateView(UpdateView):
 
 
 # class TaskDeleteView(DeleteView, FormMessagesMixin):
-class TaskDeleteView(DeleteView):
+class TaskDeleteView(LoginRequiredMixin, DeleteView):
     """View for handling deletion of a task.
 
     In this project, we expect deletion to be done via a JS pop-up UI; we don't expect to
     actually use the "do you want to delete this?" Django-generated page. However, this is
     available if useful.
     """
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     # FIXME: this would be a great place to use braces' messages; usage commented out for now
 
@@ -147,7 +157,11 @@ class TaskDeleteView(DeleteView):
 #   Content Task Views
 #----------------------------------------------------------------------#
 
-class ProjectTaskView(CreateView):
+class ProjectTaskView(LoginRequiredMixin, CreateView):
+    """Create a project task."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     context_object_name = 'tasks'
     template_name = 'editorial/task_list.html'
@@ -184,7 +198,11 @@ class ProjectTaskView(CreateView):
         return context
 
 
-class SeriesTaskView(CreateView):
+class SeriesTaskView(LoginRequiredMixin, CreateView):
+    """Create a series task."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     context_object_name = 'tasks'
     template_name = 'editorial/task_list.html'
@@ -221,7 +239,11 @@ class SeriesTaskView(CreateView):
         return context
 
 
-class StoryTaskView(CreateView):
+class StoryTaskView(LoginRequiredMixin, CreateView):
+    """Create a story task."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     context_object_name = 'tasks'
     template_name = 'editorial/task_list.html'
@@ -258,7 +280,11 @@ class StoryTaskView(CreateView):
         return context
 
 
-class EventTaskView(CreateView):
+class EventTaskView(LoginRequiredMixin, CreateView):
+    """Create event task."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     context_object_name = 'tasks'
     template_name = 'editorial/task_list.html'

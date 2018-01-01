@@ -16,6 +16,7 @@ from django.views.decorators.csrf import csrf_exempt
 import datetime
 import json
 from actstream import action
+from braces.views import LoginRequiredMixin
 
 from editorial.forms import (
     ImageAssetForm,
@@ -55,8 +56,11 @@ from editorial.models import (
 #   Asset Library Views
 #----------------------------------------------------------------------#
 
-class AssetLibraryTemplateView(TemplateView):
+class AssetLibraryTemplateView(LoginRequiredMixin, TemplateView):
     """ Display media library of all organization assets."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     template_name = 'editorial/asset_list.html'
 
@@ -75,8 +79,11 @@ class AssetLibraryTemplateView(TemplateView):
 #   Image Asset Views
 #----------------------------------------------------------------------#
 
-class ImageAssetCreateView(CreateView):
+class ImageAssetCreateView(LoginRequiredMixin, CreateView):
     """ Upload image to a facet."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     model = ImageAsset
     form_class = ImageAssetForm
@@ -105,8 +112,11 @@ class ImageAssetCreateView(CreateView):
         return redirect('facet_edit', pk=facet.id, story=facet.story.id)
 
 
-class LibraryImageAssociateView(FormView):
+class LibraryImageAssociateView(LoginRequiredMixin, FormView):
     """ Add existing image(s) in the library to another facet."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     form_class = LibraryImageAssociateForm
     template_name = "editorial/_libraryimage.html"
@@ -129,8 +139,11 @@ class LibraryImageAssociateView(FormView):
         return redirect('facet_edit', pk=facet.id, story=facet.story.id)
 
 
-class ImageAssetUpdateView(UpdateView):
+class ImageAssetUpdateView(LoginRequiredMixin, UpdateView):
     """ Display editable detail information for a specific image asset."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     model = ImageAsset
     form_class = ImageAssetForm
@@ -150,8 +163,11 @@ class ImageAssetUpdateView(UpdateView):
 #   Document Asset Views
 #----------------------------------------------------------------------#
 
-class DocumentAssetCreateView(CreateView):
+class DocumentAssetCreateView(LoginRequiredMixin, CreateView):
     """Upload a document to a facet."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     model = DocumentAsset
     form_class = DocumentAssetForm
@@ -180,8 +196,11 @@ class DocumentAssetCreateView(CreateView):
         return redirect('facet_edit', pk=facet.id, story=facet.story.id)
 
 
-class LibraryDocumentAssociateView(FormView):
+class LibraryDocumentAssociateView(LoginRequiredMixin, FormView):
     """ Add existing document(s) in the library to another facet."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     form_class = LibraryDocumentAssociateForm
     template_name = "editorial/_librarydocument.html"
@@ -207,8 +226,11 @@ class LibraryDocumentAssociateView(FormView):
         return redirect('facet_edit', pk=facet.id, story=facet.story.id)
 
 
-class DocumentAssetUpdateView(UpdateView):
+class DocumentAssetUpdateView(LoginRequiredMixin, UpdateView):
     """ Display editable detail information for a specific document asset."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     model = DocumentAsset
     form_class = DocumentAssetForm
@@ -228,8 +250,11 @@ class DocumentAssetUpdateView(UpdateView):
 #   Audio Asset Views
 #----------------------------------------------------------------------#
 
-class AudioAssetCreateView(CreateView):
+class AudioAssetCreateView(LoginRequiredMixin, CreateView):
     """ Upload audio to a facet."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     model = AudioAsset
     form_class = AudioAssetForm
@@ -258,8 +283,11 @@ class AudioAssetCreateView(CreateView):
         return redirect('facet_edit', pk=facet.id, story=facet.story.id)
 
 
-class LibraryAudioAssociateView(FormView):
+class LibraryAudioAssociateView(LoginRequiredMixin, FormView):
     """ Add existing audio in the library to another facet."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     form_class = LibraryAudioAssociateForm
     template_name = "editorial/_libraryaudio.html"
@@ -282,8 +310,11 @@ class LibraryAudioAssociateView(FormView):
         return redirect('facet_edit', pk=facet.id, story=facet.story.id)
 
 
-class AudioAssetUpdateView(UpdateView):
+class AudioAssetUpdateView(LoginRequiredMixin, UpdateView):
     """ Display editable detail information for a specific audio asset."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     model = AudioAsset
     form_class = AudioAssetForm
@@ -303,8 +334,11 @@ class AudioAssetUpdateView(UpdateView):
 #   Video Asset Views
 #----------------------------------------------------------------------#
 
-class VideoAssetCreateView(CreateView):
+class VideoAssetCreateView(LoginRequiredMixin, CreateView):
     """ Upload video to a facet."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     model = VideoAsset
     form_class = VideoAssetForm
@@ -333,8 +367,11 @@ class VideoAssetCreateView(CreateView):
         return redirect('facet_edit', pk=facet.id, story=facet.story.id)
 
 
-class LibraryVideoAssociateView(FormView):
+class LibraryVideoAssociateView(LoginRequiredMixin, FormView):
     """ Add existing video(s) in the library to another facet."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     form_class = LibraryVideoAssociateForm
     template_name = "editorial/_libraryvideo.html"
@@ -357,8 +394,11 @@ class LibraryVideoAssociateView(FormView):
         return redirect('facet_edit', pk=facet.id, story=facet.story.id)
 
 
-class VideoAssetUpdateView(UpdateView):
+class VideoAssetUpdateView(LoginRequiredMixin, UpdateView):
     """ Display editable detail information for a specific video asset."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     model = VideoAsset
     form_class = VideoAssetForm
@@ -378,8 +418,11 @@ class VideoAssetUpdateView(UpdateView):
 #   Simple Asset Views
 #----------------------------------------------------------------------#
 
-class SimpleImageCreateView(CreateView):
+class SimpleImageCreateView(LoginRequiredMixin, CreateView):
     """Upload a simple image."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     model = SimpleImage
     form_class = SimpleImageForm
@@ -492,8 +535,11 @@ class SimpleImageCreateView(CreateView):
             return HttpResponseRedirect(reverse('assignment_detail', args=(assignment.id,)))
 
 
-class SimpleDocumentCreateView(CreateView):
+class SimpleDocumentCreateView(LoginRequiredMixin, CreateView):
     """Upload a simple document."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     model = SimpleDocument
     form_class = SimpleDocumentForm
@@ -608,8 +654,11 @@ class SimpleDocumentCreateView(CreateView):
             return HttpResponseRedirect(reverse('assignment_detail', args=(assignment.id,)))
 
 
-class SimpleAudioCreateView(CreateView):
+class SimpleAudioCreateView(LoginRequiredMixin, CreateView):
     """Upload a simple audio."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     model = SimpleAudio
     form_class = SimpleAudioForm
@@ -722,8 +771,11 @@ class SimpleAudioCreateView(CreateView):
             return HttpResponseRedirect(reverse('assignment_detail', args=(assignment.id,)))
 
 
-class SimpleVideoCreateView(CreateView):
+class SimpleVideoCreateView(LoginRequiredMixin, CreateView):
     """Upload a simple video."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     model = SimpleVideo
     form_class = SimpleVideoForm

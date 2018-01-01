@@ -16,6 +16,7 @@ from django.forms import formset_factory
 import datetime
 import json
 from actstream import action
+from braces.views import LoginRequiredMixin
 
 from editorial.forms import (
     AddUserForm,
@@ -34,10 +35,13 @@ from editorial.models import (
 #----------------------------------------------------------------------#
 #   User Views
 #----------------------------------------------------------------------#
-class UserCreateView(CreateView):
+class UserCreateView(LoginRequiredMixin, CreateView):
     """Quick form for creating and adding a new user to an organization
     and inviting them to login.
     """
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     model = User
     form_class = AddUserForm
@@ -63,12 +67,15 @@ class UserCreateView(CreateView):
         return redirect(self.get_success_url())
 
 
-class UserDetailView(DetailView):
+class UserDetailView(LoginRequiredMixin, DetailView):
     """ The public profile of a user.
 
     Displays the user's organization, title, credit name, email, phone,
     bio, expertise, profile photo, social media links and most recent content.
     """
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     model = User
 
@@ -93,8 +100,11 @@ class UserDetailView(DetailView):
         return {'notes': notes, 'form': form,}
 
 
-class UserUpdateView(UpdateView):
+class UserUpdateView(LoginRequiredMixin, UpdateView):
     """Update a user."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     model = User
     form_class = UserProfileForm
@@ -107,8 +117,12 @@ class UserUpdateView(UpdateView):
 
 
 # FIXME still having csrf_token problem
-class UserDeactivateView(View):
+class UserDeactivateView(LoginRequiredMixin, View):
     """Deactivate an org user."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
+
     def post(self):
         user_id = self.request.POST.get('user_id')
         user = get_object_or_404(User, pk=user_id)
@@ -122,8 +136,12 @@ class UserDeactivateView(View):
 
 
 # FIXME still having csrf_token problem
-class UserActivateView(View):
+class UserActivateView(LoginRequiredMixin, View):
     """Activate an org user."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
+
     def post(self):
         user_id = request.POST.get('user_id')
         user = get_object_or_404(User, pk=user_id)

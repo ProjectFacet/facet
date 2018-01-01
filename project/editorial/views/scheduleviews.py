@@ -12,6 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.shortcuts import render_to_response
 from django.utils.safestring import mark_safe
 import datetime, time
+from braces.views import LoginRequiredMixin
 
 import json
 
@@ -29,6 +30,13 @@ from editorial.models import (
 #   Schedule Views
 #----------------------------------------------------------------------#
 
+# class Schedule(LoginRequiredMixin, TemplateView):
+#     """Display calendar of all deadlines and events for an organization."""
+#
+#     # handle users that are not logged in
+#     login_url = settings.LOGIN_URL
+
+
 def schedule(request):
     """ Display schedules of upcoming content.
     Calendar: Longterm view displaying only the name/title of an item with a
@@ -37,6 +45,13 @@ def schedule(request):
     """
 
     return render(request, 'editorial/schedule.html', {})
+
+
+# class ScheduleContent(LoginRequiredMixin, View):
+#     """Return JSON of all deadlines and events for an organization."""
+#
+#     # handle users that are not logged in
+#     login_url = settings.LOGIN_URL
 
 
 def schedule_content(request):

@@ -16,6 +16,7 @@ from django.views.decorators.csrf import csrf_exempt
 import datetime
 import json
 from actstream import action
+from braces.views import LoginRequiredMixin
 
 from editorial.forms import (
     ProjectForm,
@@ -43,11 +44,14 @@ from editorial.models import (
 
 # Project Notes are created and edited in noteviews
 
-class ProjectListView(ListView):
+class ProjectListView(LoginRequiredMixin, ListView):
     """ Displays a filterable table of projects.
 
     Initial display organizes content by project name.
     """
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     context_object_name = 'projects'
 
@@ -59,13 +63,16 @@ class ProjectListView(ListView):
         return org.project_organization.all()
 
 
-class ProjectCreateView(CreateView):
+class ProjectCreateView(LoginRequiredMixin, CreateView):
     """ A logged in user with an organization can create a project.
 
     Projects are a large-scale organizational component made up of multiple project and or stories. The primary use
     is as an organization mechanism for large scale complex collaborative projects. Projects can have project, stories,
     assets, notes, discussions, governing documents, calendars and meta information.
     """
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     model = Project
     form_class = ProjectForm
@@ -99,8 +106,11 @@ class ProjectCreateView(CreateView):
         return redirect(self.get_success_url())
 
 
-class ProjectUpdateView(UpdateView):
+class ProjectUpdateView(LoginRequiredMixin, UpdateView):
     """Update a project."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     model = Project
     form_class = ProjectForm
@@ -119,12 +129,15 @@ class ProjectUpdateView(UpdateView):
         return super(ProjectUpdateView, self).get_success_url()
 
 
-class ProjectDetailView(DetailView):
+class ProjectDetailView(LoginRequiredMixin, DetailView):
     """ The detail page for a project.
 
     Displays the projects planning notes, discussion, assets, share and collaboration status
     and sensivity status.
     """
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     model = Project
 
@@ -227,8 +240,11 @@ class ProjectDetailView(DetailView):
         return {'documents': documents, 'form':form,}
 
 
-class ProjectAssetTemplateView(TemplateView):
+class ProjectAssetTemplateView(LoginRequiredMixin, TemplateView):
     """Display media associated with a project."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     template_name = 'editorial/project_assets.html'
 
@@ -243,8 +259,11 @@ class ProjectAssetTemplateView(TemplateView):
         return {'project':project, 'images': images, 'documents': documents, 'audio': audio, 'video': video,}
 
 
-class ProjectStoryTemplateView(TemplateView):
+class ProjectStoryTemplateView(LoginRequiredMixin, TemplateView):
     """Return and display all the stories associated with a project."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     template_name = 'editorial/project_stories.html'
 
@@ -259,8 +278,11 @@ class ProjectStoryTemplateView(TemplateView):
         return {'project': project, 'stories': stories,}
 
 
-# class ProjectSchedule(View):
+# class ProjectSchedule(LoginRequiredMixin, View):
 #     """Generate a JSON object containing entries to display on project calendar."""
+#
+#     # handle users that are not logged in
+#     login_url = settings.LOGIN_URL
 #
 #     def get(self, request, *args, **kwargs):
 #
@@ -281,7 +303,7 @@ def project_schedule(request, pk):
 
 
 # class ProjectDeleteView(DeleteView, FormMessagesMixin):
-class ProjectDeleteView(DeleteView):
+class ProjectDeleteView(LoginRequiredMixin, DeleteView):
     """Delete a project and it's associated notes.
 
     Stories and media should not be deleted.
@@ -290,6 +312,9 @@ class ProjectDeleteView(DeleteView):
     actually use the "do you want to delete this?" Django-generated page. However, this is
     available if useful.
     """
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     # FIXME: this would be a great place to use braces' messages; usage commented out for now
 

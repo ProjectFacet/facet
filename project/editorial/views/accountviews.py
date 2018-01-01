@@ -12,6 +12,7 @@ from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime, timedelta, time
 import json
 from django.template.loader import render_to_string
+from braces.views import LoginRequiredMixin
 
 
 from editorial.models import (
@@ -31,7 +32,7 @@ from editorial.forms import (
 #   Account Selection View
 #----------------------------------------------------------------------#
 
-class AccountSelectionView(TemplateView):
+class AccountSelectionView(LoginRequiredMixin, TemplateView):
     """ After user signup, the user is directed to account selection to
     choose between creating an organization with a team account or a
     contractor profile for an independent account.
@@ -39,16 +40,24 @@ class AccountSelectionView(TemplateView):
 
     template_name = 'editorial/account_selection.html'
 
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
-class OrganizationSubscriptionUpdateView(UpdateView):
+class OrganizationSubscriptionUpdateView(LoginRequiredMixin, UpdateView):
     """ View for editing organization subscription details."""
 
     model = OrganizationSubscription
     form_class = OrganizationSubscriptionForm
 
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
-class ContractorSubscriptionUpdateView(UpdateView):
+
+class ContractorSubscriptionUpdateView(LoginRequiredMixin, UpdateView):
     """ View for editing contractor subscription details."""
 
     model = ContractorSubscription
     form_class = ContractorSubscriptionForm
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL

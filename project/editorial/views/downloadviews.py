@@ -13,6 +13,7 @@ from cStringIO import StringIO
 from zipfile import ZipFile
 import datetime
 import json
+from braces.views import LoginRequiredMixin
 
 # from editorial.forms import StoryDownloadForm
 
@@ -27,6 +28,15 @@ from editorial.models import (
 #----------------------------------------------------------------------#
 #   Download View
 #----------------------------------------------------------------------#
+
+# class StoryDownload(LoginRequiredMixin, View):
+#     """Create the download for a story and its facets."""
+#
+#     # handle users that are not logged in
+#     login_url = settings.LOGIN_URL
+#
+#     pass
+
 
 def create_download(request, pk):
     """ Process download form to collect objects and create download file."""

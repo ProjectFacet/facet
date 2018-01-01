@@ -17,6 +17,7 @@ from django.template.loader import render_to_string
 import datetime
 import json
 from actstream import action
+from braces.views import LoginRequiredMixin
 
 from editorial.forms import (
     NoteForm,
@@ -40,8 +41,11 @@ from editorial.models import (
 #   General Note Views
 #----------------------------------------------------------------------#
 
-class NoteContent(View):
+class NoteContent(LoginRequiredMixin, View):
     """Return note content as html for display on <object>notes.html pages."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     def get(self, request, *args, **kwargs):
 
@@ -54,8 +58,11 @@ class NoteContent(View):
         return HttpResponse(note_html)
 
 
-class NoteCreateView(CreateView):
+class NoteCreateView(LoginRequiredMixin, CreateView):
     """Create a note."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     model = Note
     form_class = NoteForm
@@ -221,7 +228,7 @@ class NoteCreateView(CreateView):
             return HttpResponseRedirect(reverse('event_detail', args=(event.id,)))
 
 
-class NoteDelete(DeleteView):
+class NoteDelete(LoginRequiredMixin, DeleteView):
     """View for handling deletion of a note.
 
     In this project, we expect deletion to be done via a JS pop-up UI; we don't expect to
@@ -229,8 +236,11 @@ class NoteDelete(DeleteView):
     available if useful.
     """
 
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
+
     # FIXME: this would be a great place to use braces' messages; usage commented out for now
-    # FIXME: It's not deleting the correct note, it's deleting the oldest note
+    # FIXME ATTN JOEL: It's not deleting the correct note, it's deleting the oldest note
 
     model = Note
     template_name = "editorial/note_delete.html"
@@ -282,8 +292,11 @@ class NoteDelete(DeleteView):
 #   Template Note Views
 #----------------------------------------------------------------------#
 
-class NetworkNoteView(TemplateView):
+class NetworkNoteView(LoginRequiredMixin, TemplateView):
     """Display all of the notes for a network."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     template_name = 'editorial/networknotes.html'
 
@@ -298,8 +311,11 @@ class NetworkNoteView(TemplateView):
         }
 
 
-class OrganizationNoteView(TemplateView):
+class OrganizationNoteView(LoginRequiredMixin, TemplateView):
     """Display all of the notes for an organization."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     template_name = 'editorial/organizationnotes.html'
 
@@ -315,8 +331,11 @@ class OrganizationNoteView(TemplateView):
         }
 
 
-class UserNoteView(TemplateView):
+class UserNoteView(LoginRequiredMixin, TemplateView):
     """Display all of the notes for a user."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     template_name = 'editorial/usernotes.html'
 
@@ -331,8 +350,11 @@ class UserNoteView(TemplateView):
         }
 
 
-class ProjectNoteView(TemplateView):
+class ProjectNoteView(LoginRequiredMixin, TemplateView):
     """Display all of the notes for a project."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     template_name = 'editorial/projectnotes.html'
 
@@ -347,8 +369,11 @@ class ProjectNoteView(TemplateView):
         }
 
 
-class SeriesNoteView(TemplateView):
+class SeriesNoteView(LoginRequiredMixin, TemplateView):
     """Display all of the notes for a project."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     template_name = 'editorial/seriesnotes.html'
 
@@ -363,8 +388,11 @@ class SeriesNoteView(TemplateView):
         }
 
 
-class StoryNoteView(TemplateView):
+class StoryNoteView(LoginRequiredMixin, TemplateView):
     """Display all of the notes for a story."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     template_name = 'editorial/storynotes.html'
 
@@ -379,8 +407,11 @@ class StoryNoteView(TemplateView):
         }
 
 
-class TaskNoteView(TemplateView):
+class TaskNoteView(LoginRequiredMixin, TemplateView):
     """Display all of the notes for a task."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     template_name = 'editorial/tasknotes.html'
 
@@ -395,8 +426,11 @@ class TaskNoteView(TemplateView):
         }
 
 
-class EventNoteView(TemplateView):
+class EventNoteView(LoginRequiredMixin, TemplateView):
     """Display all of the notes for an event."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     template_name = 'editorial/eventnotes.html'
 

@@ -13,6 +13,7 @@ from datetime import datetime, timedelta, time
 import json
 from django.template.loader import render_to_string
 from django.db.models import Q
+from braces.views import LoginRequiredMixin
 
 # All imports are included for use in test view
 
@@ -60,6 +61,7 @@ from editorial.models import (
 #   Initial View
 #----------------------------------------------------------------------#
 
+# This is the only general view that does not require login
 class LandingTemplateView(TemplateView):
     """Return static homepage for prelogin users."""
 
@@ -69,10 +71,13 @@ class LandingTemplateView(TemplateView):
 #   Test View
 #----------------------------------------------------------------------#
 
-class TestTemplateView(TemplateView):
+class TestTemplateView(LoginRequiredMixin, TemplateView):
     """ Use for rapid testing of new pages."""
 
     template_name = 'editorial/test.html'
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     def get_context_data(self):
         # the user's organization
@@ -88,7 +93,7 @@ class TestTemplateView(TemplateView):
 #   Dashboard View
 #----------------------------------------------------------------------#
 
-class DashboardTemplateView(TemplateView):
+class DashboardTemplateView(LoginRequiredMixin, TemplateView):
     """ Returns user's unique dashboard.
 
     Displays new comments since last_login from any discussions including user.
@@ -100,6 +105,9 @@ class DashboardTemplateView(TemplateView):
     """
 
     template_name = 'editorial/dashboard.html'
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     def get_context_data(self):
         """Return all the assorted items associated with a team user dashboard."""
@@ -159,12 +167,15 @@ class DashboardTemplateView(TemplateView):
 #   Team Views
 #----------------------------------------------------------------------#
 
-class TeamTemplateView(TemplateView):
+class TeamTemplateView(LoginRequiredMixin, TemplateView):
     """ Return teams list.
 
     Displays team members from the user's own organization.
     Displays team members from any network that the user's organization is part of.
     """
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     template_name = 'editorial/team.html'
 
@@ -191,9 +202,12 @@ class TeamTemplateView(TemplateView):
 #   Collaborations View
 #----------------------------------------------------------------------#
 
-class CollaborationTemplateView(TemplateView):
+class CollaborationTemplateView(LoginRequiredMixin, TemplateView):
     """ Return dashboard of series and stories that are part of a collaboration.
     """
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     template_name = 'editorial/collaborations.html'
 

@@ -15,6 +15,7 @@ from django.views.decorators.csrf import csrf_exempt
 import datetime
 import json
 from actstream import action
+from braces.views import LoginRequiredMixin
 
 from editorial.forms import (
     EventForm,
@@ -40,7 +41,7 @@ from editorial.models import (
 #   Events Views
 #----------------------------------------------------------------------#
 
-class EventCreateView(CreateView):
+class EventCreateView(LoginRequiredMixin, CreateView):
     """A logged in user can create a event.
 
     Events are used to manage information about events.
@@ -50,6 +51,9 @@ class EventCreateView(CreateView):
     Ex: Reporting = A press conference at city hall covered for a story.
     Events have a connection to either a Project, Series, Story or Event.
     """
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     model = Event
     form_class = EventForm
@@ -83,11 +87,14 @@ class EventCreateView(CreateView):
         return redirect(self.get_success_url())
 
 
-class EventUpdateView(UpdateView):
+class EventUpdateView(LoginRequiredMixin, UpdateView):
     """ The detail page for a event.
 
     Displays the event information.
     """
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     model = Event
     form_class = EventForm
@@ -123,13 +130,16 @@ class EventUpdateView(UpdateView):
 
 
 # class EventDeleteView(DeleteView, FormMessagesMixin):
-class EventDeleteView(DeleteView):
+class EventDeleteView(LoginRequiredMixin, DeleteView):
     """View for handling deletion of an event.
 
     In this project, we expect deletion to be done via a JS pop-up UI; we don't expect to
     actually use the "do you want to delete this?" Django-generated page. However, this is
     available if useful.
     """
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     # FIXME: this would be a great place to use braces' messages; usage commented out for now
 
@@ -159,10 +169,12 @@ class EventDeleteView(DeleteView):
 #   Content Event Views
 #----------------------------------------------------------------------#
 
-class OrganizationEventView(CreateView):
+class OrganizationEventView(LoginRequiredMixin, CreateView):
     """Display all the events associated with an organization.
-
     """
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     context_object_name = 'events'
     template_name = 'editorial/event_list.html'
@@ -190,10 +202,12 @@ class OrganizationEventView(CreateView):
         return context
 
 
-class ProjectEventView(CreateView):
+class ProjectEventView(LoginRequiredMixin, CreateView):
     """Display all the events associated with a project.
-
     """
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     context_object_name = 'events'
     template_name = 'editorial/event_list.html'
@@ -221,10 +235,12 @@ class ProjectEventView(CreateView):
         return context
 
 
-class SeriesEventView(CreateView):
+class SeriesEventView(LoginRequiredMixin, CreateView):
     """Display all the events associated with a series.
-
     """
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     context_object_name = 'events'
     template_name = 'editorial/event_list.html'
@@ -252,8 +268,11 @@ class SeriesEventView(CreateView):
         return context
 
 
-class StoryEventView(CreateView):
+class StoryEventView(LoginRequiredMixin, CreateView):
     """Display all the events associated with a story."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     context_object_name = 'events'
     template_name = 'editorial/event_list.html'

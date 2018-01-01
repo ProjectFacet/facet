@@ -11,6 +11,7 @@ from django.views.generic import TemplateView , UpdateView, DetailView
 from django.views.decorators.csrf import csrf_exempt
 import datetime, time
 import json
+from braces.views import LoginRequiredMixin
 
 from editorial.models import (
     User,

@@ -1,8 +1,10 @@
 from django.views.generic import CreateView, FormView, UpdateView, DetailView, ListView, DeleteView
 from django.shortcuts import redirect
 from django.core.urlresolvers import reverse
+from django.conf import settings
 from actstream import action
 from editorial.models import Story
+from braces.views import LoginRequiredMixin
 
 from ..models import Facet, FacetTemplate
 from ..forms import (
@@ -16,8 +18,11 @@ from ..forms import (
     VideoAssetForm,)
 
 
-class FacetTemplateCreateView(CreateView):
+class FacetTemplateCreateView(LoginRequiredMixin, CreateView):
     """Create a facet template."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     model = FacetTemplate
     form_class = FacetTemplateForm
@@ -43,8 +48,11 @@ class FacetTemplateCreateView(CreateView):
         return redirect(self.get_success_url())
 
 
-class FacetTemplateUpdateView(UpdateView):
+class FacetTemplateUpdateView(LoginRequiredMixin, UpdateView):
     """Edit a facet template."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     model = FacetTemplate
     form_class = FacetTemplateForm
@@ -56,8 +64,11 @@ class FacetTemplateUpdateView(UpdateView):
         return super(FacetTemplateUpdateView, self).get_success_url()
 
 
-class FacetPreCreateView(FormView):
+class FacetPreCreateView(LoginRequiredMixin, FormView):
     """First step in creating a facet."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     form_class = FacetPreCreateForm
     template_name = "editorial/facet_precreate_form.html"
@@ -73,8 +84,11 @@ class FacetPreCreateView(FormView):
         return redirect("{}?name={}".format(url, name))
 
 
-class FacetCreateView(CreateView):
+class FacetCreateView(LoginRequiredMixin, CreateView):
     """Create a facet (dynamically using right template)."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     model = Facet
 
@@ -100,8 +114,11 @@ class FacetCreateView(CreateView):
         return {'name': self.request.GET.get('name', '')}
 
 
-class FacetUpdateView(UpdateView):
+class FacetUpdateView(LoginRequiredMixin, UpdateView):
     """Update a facet (dynamically using right template)."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     model = Facet
 
@@ -167,13 +184,16 @@ class FacetUpdateView(UpdateView):
 
 
 # class FacetDeleteView(DeleteView, FormMessagesMixin):
-class FacetDeleteView(DeleteView):
+class FacetDeleteView(LoginRequiredMixin, DeleteView):
     """View for handling deletion of a facet.
 
     In this project, we expect deletion to be done via a JS pop-up UI; we don't expect to
     actually use the "do you want to delete this?" Django-generated page. However, this is
     available if useful.
     """
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     # FIXME: this would be a great place to use braces' messages; usage commented out for now
 

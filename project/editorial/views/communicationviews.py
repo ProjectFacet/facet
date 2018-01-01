@@ -17,7 +17,7 @@ from django.http import JsonResponse
 import datetime
 import json
 from actstream import action
-from django.http import JsonResponse
+from braces.views import LoginRequiredMixin
 
 from editorial.forms import (
     PrivateMessageForm,
@@ -69,8 +69,11 @@ class AjaxResponseMixin(object):
 #   Private Message Views
 #----------------------------------------------------------------------#
 
-class PrivateMessageSend(View):
+class PrivateMessageSend(LoginRequiredMixin, View):
     """Send a private message."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     def post(self, request, *args, **kwargs):
         message_subject = self.request.POST.get('subject')
@@ -88,8 +91,11 @@ class PrivateMessageSend(View):
 #   Create Comment View
 #----------------------------------------------------------------------#
 
-class CommentCreateView(CreateView):
+class CommentCreateView(LoginRequiredMixin, CreateView):
     """Post a comment."""
+
+    # handle users that are not logged in
+    login_url = settings.LOGIN_URL
 
     model = Comment
     form_class = CommentForm
