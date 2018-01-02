@@ -20,7 +20,7 @@ import json
 from actstream import action
 from django.core.urlresolvers import reverse
 from django.db.models import Q
-from braces.views import LoginRequiredMixin, FormMessagesMixin, UserPassesTestMixin
+from braces.views import SuperuserRequiredMixin
 
 from editorial.forms import (
     CommentForm,
@@ -38,6 +38,8 @@ from editorial.models import (
     Note,
     )
 
+from editorial.views import CustomUserTest
+
 # Org notes are managed in notes.py
 
 #----------------------------------------------------------------------#
@@ -45,31 +47,7 @@ from editorial.models import (
 #----------------------------------------------------------------------#
 
 
-class UserMatchesOrgMixin(UserPassesTestMixin):
-    """User must be a member of this organization to view this content.
-
-    This also requires that a user be logged in, so it's not needed to use this
-    with LoginRequiredMixin.
-    """
-
-    def test_func(self, user):
-        """Test user.
-
-        If there is no logged in user, go to login page.
-        If there is a user, but not in this org, raise Unauthorized.
-        """
-
-        if user.is_authenticated():
-            self.object = self.get_object()
-            if user.organization != self.object:
-                raise PermissionDenied("Not in organization %s" % self.object.id)
-            else:
-                return True
-
-        return False
-
-
-class OrganizationCreateView(UserMatchesOrgMixin, CreateView):
+class OrganizationCreateView(SuperuserRequiredMixin, CreateView):
     """Create a new organization."""
 
     model = Organization
@@ -97,11 +75,21 @@ class OrganizationCreateView(UserMatchesOrgMixin, CreateView):
         return reverse('org_detail', kwargs={'pk': self.object.pk})
 
 
-class OrganizationUpdateView(UserMatchesOrgMixin, UpdateView):
+class OrganizationUpdateView(CustomUserTest, UpdateView):
     """Edit an organization."""
 
     model = Organization
     form_class = OrganizationForm
+
+    def test_user(self, user):
+        """"User must be admin of this org to edit it."""
+
+        self.object = self.get_object()
+
+        if user.organization == self.object and user.user_type == User.ADMIN:
+            return True
+
+        raise PermissionDenied()
 
     def get_context_data(self, **kwargs):
         """Add related info."""
@@ -111,10 +99,20 @@ class OrganizationUpdateView(UserMatchesOrgMixin, UpdateView):
         return context
 
 
-class OrganizationDetailView(UserMatchesOrgMixin, DetailView):
+class OrganizationDetailView(CustomUserTest, DetailView):
     """Detail view of an organization."""
 
     model = Organization
+
+    def test_user(self, user):
+        """"User must be member of this org to edit it."""
+
+        self.object = self.get_object()
+
+        if user.organization == self.object:
+            return True
+
+        raise PermissionDenied()
 
     def get_context_data(self, **kwargs):
         """Add related info."""
