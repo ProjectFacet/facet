@@ -243,7 +243,7 @@
                         <div class="dropdown-menu dropdown-menu-scale from-right dropdown-menu-right">
                             {% if request.user.organization %}
                               <a class="dropdown-item" href="{% url 'org_detail' pk=request.user.organization.id %}"> <span class="title">Organization</span> </a>
-                              {% if request.user.organization.owner = request.user %}
+                              {% if request.user.organization.owner == request.user %}
                                 <a class="dropdown-item" href="{% url 'org_edit' pk=request.user.organization.id %}"> </span> <span class="title">Manage Organization</span> </a>
                               {% endif %}
                             {% endif %}

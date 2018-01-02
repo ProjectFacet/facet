@@ -52,9 +52,11 @@ INSTALLED_APPS = [
     # 'project',   # FIXME from WJB: normally, site proj not in installed_apps
 ]
 
+
+
 SITE_ID = 1
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE_CLASSES = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
@@ -64,7 +66,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'simple_history.middleware.HistoryRequestMiddleware',
-)
+]
 
 TINYMCE_JS_ROOT = os.path.join(STATIC_URL, 'scripts/tiny_mce/')
 TINYMCE_JS_URL = os.path.join(STATIC_URL, 'scripts/tiny_mce/tinymce.min.js')
@@ -86,7 +88,7 @@ TEMPLATES = [
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
-                'django.core.context_processors.request',
+                # 'django.core.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'project.context_processors.include_private_message_form',

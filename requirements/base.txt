@@ -1,41 +1,42 @@
 # Directly Installed
-Django==1.8.5
-django-activity-stream==0.6.0
-django-allauth==0.23.0
-django-bootstrap3==6.2.2
-django-bootstrap3-datetimepicker==2.2.3
-django-braces==1.12.0
-django-simple-history==1.6.3
-django-tinymce==2.2.0
-django-watson==1.2.0
-djangorestframework==3.2.4
-django-embed-video==1.1.2
-django-imagekit==3.2.7
-pilkit==1.1.13
-Pillow==3.0.0
-psycopg2==2.6.1
-django-model-utils==2.3.1
-django-datetime-widget==0.9.3
+Django<2.0
+django-activity-stream
+django-allauth
+django-bootstrap3
+django-bootstrap3-datetimepicker-2
+django-braces
+django-simple-history
+django-tinymce
+django-watson
+djangorestframework
+django-embed-video
+django-imagekit
+pilkit
+Pillow
+psycopg2
+django-model-utils
+django-datetime-widget
 django-extra-views
 
 # req'd by actstream
 django-jsonfield
+django-jsonfield-compat
 
 # temp needed until newer django
-django-appconf==1.0.1
+# django-appconf==1.0.1
 
 
 # deps that are included by others
-certifi==2017.11.5
-chardet==3.0.4
-idna==2.6
-oauthlib==2.0.6
-python-openid==2.2.5
-pytz==2017.3
-requests==2.18.4
-requests-oauthlib==0.8.0
-six==1.11.0
-urllib3==1.22
+# certifi==2017.11.5
+# chardet==3.0.4
+# idna==2.6
+# oauthlib==2.0.6
+# python-openid==2.2.5
+# pytz==2017.3
+# requests==2.18.4
+# requests-oauthlib==0.8.0
+# six==1.11.0
+# urllib3==1.22
 
 
 
