@@ -35,10 +35,6 @@ urlpatterns = [
     #----------------------------------------------------------------------#
     url(r'^account/selection/$', accountviews.AccountSelectionView.as_view(), name='account_selection'),
     #----------------------------------------------------------------------#
-    #   Test URL - Used for non-destructive testing of templates/queries
-    #----------------------------------------------------------------------#
-    url(r'^test$', generalviews.TestTemplateView.as_view(), name='test'),
-    #----------------------------------------------------------------------#
     #   API URL - Used API endpoints
     #----------------------------------------------------------------------#
     url('^api/', include(api.router.urls)),
