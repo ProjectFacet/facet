@@ -44,6 +44,7 @@ from editorial.models import (
 #   Series Views
 #----------------------------------------------------------------------#
 
+# ACCESS: Any org user should be able to see a list of series for their org
 class SeriesListView(LoginRequiredMixin, ListView):
     """ Displays a filterable table of series.
 
@@ -61,7 +62,7 @@ class SeriesListView(LoginRequiredMixin, ListView):
         org = self.request.user.organization
         return org.series_organization.all()
 
-
+# ACCESS: Any org user should be able to create a series for their org.
 class SeriesCreateView(LoginRequiredMixin, CreateView):
     """ A logged in user can create a series.
 
@@ -105,6 +106,10 @@ class SeriesCreateView(LoginRequiredMixin, CreateView):
         return redirect(self.get_success_url())
 
 
+# ACCESS: Any org user, or user from an organization that is in collaborate_with
+# for a series should be able to view the series detail.
+# Contractors should only be able to do so for series that they have access to
+# That should be handled by limiting which series they have access to.
 class SeriesDetailView(LoginRequiredMixin, DetailView):
     """ The detail page for a series.
 
@@ -210,6 +215,7 @@ class SeriesDetailView(LoginRequiredMixin, DetailView):
         return {'documents': documents, 'form':form,}
 
 
+# ACCESS: Any org user should be able to update details for a series belonging to their org
 class SeriesUpdateView(LoginRequiredMixin, UpdateView):
     """Update a series."""
 
@@ -233,6 +239,10 @@ class SeriesUpdateView(LoginRequiredMixin, UpdateView):
         return super(SeriesUpdateView, self).get_success_url()
 
 
+# ACCESS: Any org user, or user from an organization that is in collaborate_with
+# for a series should be able to view the series asset library.
+# Contractors should only be able to do so for series that they have access to
+# That should be handled by limiting which series they have access to.
 class SeriesAssetTemplateView(LoginRequiredMixin, TemplateView):
     """Display media associated with a series."""
 
@@ -252,6 +262,7 @@ class SeriesAssetTemplateView(LoginRequiredMixin, TemplateView):
         return {'series':series, 'images': images, 'documents': documents, 'audio': audio, 'video': video,}
 
 
+# ACCESS: Only an org admin should be able to delete a series belonging to their org
 # class SeriesDeleteView(DeleteView, FormMessagesMixin):
 class SeriesDeleteView(LoginRequiredMixin, DeleteView):
     """Delete a series and its associated items.

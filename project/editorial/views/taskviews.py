@@ -39,6 +39,10 @@ from editorial.models import (
 #   General Task Views
 #----------------------------------------------------------------------#
 
+# ACCESS: Any org user, or user from an organization that is in collaborate_with
+# should be able to create an event for P, Sr, St, F.
+# Contractors should only be able to create events for P, Sr or St they are
+# assigned to.
 class TaskCreateView(LoginRequiredMixin, CreateView):
     """Create a new task."""
 
@@ -77,6 +81,10 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
         return redirect(self.get_success_url())
 
 
+# ACCESS: Any org user, or user from an organization that is in collaborate_with
+# should be able to edit an event for P, Sr, St, F.
+# Contractors should only be able to edit events for P, Sr or St they are
+# assigned to.
 class TaskUpdateView(LoginRequiredMixin, UpdateView):
     """The detail page for a task.
     Displays the task information."""
@@ -117,6 +125,8 @@ class TaskUpdateView(LoginRequiredMixin, UpdateView):
         return super(TaskUpdateView, self).get_success_url()
 
 
+# ACCESS: Any org user that is an admin or editor should be able to delete an
+# event associated with their org, or an org PSS.
 # class TaskDeleteView(DeleteView, FormMessagesMixin):
 class TaskDeleteView(LoginRequiredMixin, DeleteView):
     """View for handling deletion of a task.
@@ -157,6 +167,10 @@ class TaskDeleteView(LoginRequiredMixin, DeleteView):
 #   Content Task Views
 #----------------------------------------------------------------------#
 
+# ACCESS: Any org user should be able to view/create a task associated a project owned
+# by their organization
+# A user from an organization that is in collaborate_with on a project
+# should be able to view/create a task for a project they have access to.
 class ProjectTaskView(LoginRequiredMixin, CreateView):
     """Create a project task."""
 
@@ -198,6 +212,10 @@ class ProjectTaskView(LoginRequiredMixin, CreateView):
         return context
 
 
+# ACCESS: Any org user should be able to view/create a task associated a series owned
+# by their organization
+# A user from an organization that is in collaborate_with on a series
+# should be able to view/create a task for a series they have access to.
 class SeriesTaskView(LoginRequiredMixin, CreateView):
     """Create a series task."""
 
@@ -239,6 +257,10 @@ class SeriesTaskView(LoginRequiredMixin, CreateView):
         return context
 
 
+# ACCESS: Any org user should be able to view/create a task associated a story owned
+# by their organization
+# A user from an organization that is in collaborate_with on a story
+# should be able to view/create a task for a story they have access to.
 class StoryTaskView(LoginRequiredMixin, CreateView):
     """Create a story task."""
 
@@ -278,6 +300,7 @@ class StoryTaskView(LoginRequiredMixin, CreateView):
         context['inprogress_ct'] = inprogress_ct
         context['complete_ct'] = complete_ct
         return context
+
 
 
 class EventTaskView(LoginRequiredMixin, CreateView):

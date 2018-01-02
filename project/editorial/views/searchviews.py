@@ -39,6 +39,9 @@ from editorial.models import (
 #   Custom Search View
 #----------------------------------------------------------------------#
 
+# ACCESS: An org user should be able to search everything associated with an org
+# except other users notes
+# Contractors should only be able to search their own pitches, assignments.
 class EditorialSearchView(BaseWatsonSearchView):
     def get_queryset(self):
         """Returns list of querysets containing content a user is allowed to search.

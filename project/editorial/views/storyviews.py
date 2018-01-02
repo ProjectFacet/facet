@@ -37,7 +37,7 @@ from editorial.views import CustomUserTest
 #   Story Views
 # ----------------------------------------------------------------------#
 
-
+# ACCESS: Any user should be able to see their org's stories
 class StoryListView(CustomUserTest, ListView):
     """ Displays a filterable table of stories.
 
@@ -68,6 +68,11 @@ class StoryListView(CustomUserTest, ListView):
         return org.story_set.all()
 
 
+# ACCESS: Any org user should be able to create a story for their org.
+# Any user of an org that's part of collaborate_with on a project or series should
+# be able to create a story for that project or series.
+# Future: A contractor with access to a project or series should be able to create
+# a story for that project or series.
 class StoryCreateView(CustomUserTest, CreateView):
     """Create a story."""
 
@@ -122,6 +127,9 @@ class StoryCreateView(CustomUserTest, CreateView):
         return redirect(self.get_success_url())
 
 
+# ACCESS: Any org user should be able to update a story belonging to their org
+# Any user of an org that's part of collaborate_with for a story should be able to
+# update the story details.
 class StoryUpdateView(CustomUserTest, FormMessagesMixin, UpdateView):
     """Update a story."""
 
@@ -162,6 +170,11 @@ class StoryUpdateView(CustomUserTest, FormMessagesMixin, UpdateView):
         return super(StoryUpdateView, self).get_success_url()
 
 
+# ACCESS: Any org user should be able to view a story for their org unless the story is marked sensitive.
+# Any user of an org that's part of collaborate_with on a project or series or story should
+# be able to view the stories of the project, series or a collaborative story.
+# Future: A contractor with access to a project or series or story should be able to view the
+# stories of that project or series or the specific story.
 class StoryDetailView(CustomUserTest, DetailView):
     """Show all the details and related items for a story."""
 
@@ -254,6 +267,7 @@ class StoryDetailView(CustomUserTest, DetailView):
         return {'images': images, 'documents': documents, 'audio': audio, 'video': video, }
 
 
+# ACCESS: Only an org admin or editor can delete a story belonging to their organization. 
 # class StoryDeleteView(DeleteView, FormMessagesMixin):
 class StoryDeleteView(CustomUserTest, DeleteView):
     """Delete a story and it's associated items.

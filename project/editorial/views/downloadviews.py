@@ -29,6 +29,9 @@ from editorial.models import (
 #   Download View
 #----------------------------------------------------------------------#
 
+# ACCESS: Any org user, or user from an organization that is in collaborate_with
+# should be able to download a story
+# Contractors should not be able to download 
 # class StoryDownload(LoginRequiredMixin, View):
 #     """Create the download for a story and its facets."""
 #

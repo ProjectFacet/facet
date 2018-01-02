@@ -44,6 +44,7 @@ from editorial.models import (
 #   AJAX Mixin
 #----------------------------------------------------------------------#
 
+# TODO implementation on comments in discussion
 class AjaxResponseMixin(object):
     """Mixin for using Ajax on comment forms."""
 
@@ -69,6 +70,10 @@ class AjaxResponseMixin(object):
 #   Private Message Views
 #----------------------------------------------------------------------#
 
+# ACCESS Any org user should be able to message any other same org user
+# Any org user should be able to message org users from organizations in shared networks
+# Contractors should be able to message any user with a talenteditor profile & public is true
+# Any user with a talenteditor profile should be able to message any user with a contractorprofile and public is true
 class PrivateMessageSend(LoginRequiredMixin, View):
     """Send a private message."""
 
@@ -91,6 +96,10 @@ class PrivateMessageSend(LoginRequiredMixin, View):
 #   Create Comment View
 #----------------------------------------------------------------------#
 
+# ACCESS Any org user should be able to comment on their own organization, on a network
+# their organization is a member/owner of, on any PSSF, Task, Event that their org is owner of
+# or is accessible through collaborate_with
+# Contractors should only be able to comment on PSSFTE that they have access to.
 class CommentCreateView(LoginRequiredMixin, CreateView):
     """Post a comment."""
 
@@ -228,12 +237,25 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
             return HttpResponseRedirect(reverse('assignment_detail', args=(assignment.id,)))
 
 
+
+# XXX Comments are not currently editable or deletable, but any user should
+# be able to edit or delete their own comments.
+# Admins should be able to remove any comments on anything their org "owns"
+
+# class CommentUpdateView(UpdateView):
+#     """FUTURE ability to edit a comment"""
+#     pass
+
+# class CommentDeleteView(DeleteView):
+#     """FUTURE ability to delete a comment."""
+#     pass
+
+
+
 #----------------------------------------------------------------------#
 #   Organization Comment Views
 #----------------------------------------------------------------------#
 
-
-#
 # def org_comments(request):
 #     """ Return JSON of all organization discussion comments."""
 #

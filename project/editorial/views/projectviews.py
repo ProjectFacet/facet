@@ -45,6 +45,7 @@ from editorial.models import (
 
 # Project Notes are created and edited in noteviews
 
+# ACCESS: Any org user should be able to see a list of projects for their org
 class ProjectListView(LoginRequiredMixin, ListView):
     """ Displays a filterable table of projects.
 
@@ -64,6 +65,7 @@ class ProjectListView(LoginRequiredMixin, ListView):
         return org.project_organization.all()
 
 
+# ACCESS: Any org user should be able to create a project for their org.
 class ProjectCreateView(LoginRequiredMixin, CreateView):
     """ A logged in user with an organization can create a project.
 
@@ -107,6 +109,7 @@ class ProjectCreateView(LoginRequiredMixin, CreateView):
         return redirect(self.get_success_url())
 
 
+# ACCESS: Any org user should be able to update details for a project belonging to their org
 class ProjectUpdateView(LoginRequiredMixin, UpdateView):
     """Update a project."""
 
@@ -130,6 +133,10 @@ class ProjectUpdateView(LoginRequiredMixin, UpdateView):
         return super(ProjectUpdateView, self).get_success_url()
 
 
+# ACCESS: Any org user, or user from an organization that is in collaborate_with
+# for a project should be able to view the project detail.
+# Contractors should only be able to do so for projects that they have access to
+# That should be handled by limiting which project they have access to.
 class ProjectDetailView(LoginRequiredMixin, DetailView):
     """ The detail page for a project.
 
@@ -236,6 +243,10 @@ class ProjectDetailView(LoginRequiredMixin, DetailView):
         return {'documents': documents, 'form':form,}
 
 
+# ACCESS: Any org user, or user from an organization that is in collaborate_with
+# for a project should be able to view the project asset library.
+# Contractors should only be able to do so for project that they have access to
+# That should be handled by limiting which project they have access to.
 class ProjectAssetTemplateView(LoginRequiredMixin, TemplateView):
     """Display media associated with a project."""
 
@@ -255,6 +266,10 @@ class ProjectAssetTemplateView(LoginRequiredMixin, TemplateView):
         return {'project':project, 'images': images, 'documents': documents, 'audio': audio, 'video': video,}
 
 
+# ACCESS: Any org user, or user from an organization that is in collaborate_with
+# for a project should be able to view the project stories.
+# Contractors should only be able to do so for project that they have access to
+# That should be handled by limiting which project they have access to.
 class ProjectStoryTemplateView(LoginRequiredMixin, TemplateView):
     """Return and display all the stories associated with a project."""
 
@@ -298,6 +313,7 @@ def project_schedule(request, pk):
     return HttpResponse(json.dumps(project_calendar), content_type='application/json')
 
 
+# ACCESS: Only an org admin should be able to delete a project owned by that org
 # class ProjectDeleteView(DeleteView, FormMessagesMixin):
 class ProjectDeleteView(LoginRequiredMixin, DeleteView):
     """Delete a project and it's associated notes.

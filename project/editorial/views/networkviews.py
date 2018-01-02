@@ -54,6 +54,7 @@ from editorial.models import (
 #   Network Views
 #----------------------------------------------------------------------#
 
+# ACCESS: Only org admins have access
 class NetworkCreateView(LoginRequiredMixin, CreateView):
     """Create a new network."""
 
@@ -78,6 +79,7 @@ class NetworkCreateView(LoginRequiredMixin, CreateView):
         return redirect(self.get_success_url())
 
 
+# ACCESS: Only org admins can edit networks their org owns.
 class NetworkUpdateView(LoginRequiredMixin, UpdateView):
     """ Update a network."""
 
@@ -91,6 +93,7 @@ class NetworkUpdateView(LoginRequiredMixin, UpdateView):
         return super(NetworkUpdateView, self).get_success_url()
 
 
+# ACCESS: All org users can see list of networks an org is owner/member
 class NetworkListView(LoginRequiredMixin, ListView):
     """Display a list of all the networks and organization is either
     the owner of or a member of.
@@ -104,6 +107,7 @@ class NetworkListView(LoginRequiredMixin, ListView):
         return org.get_org_networks()
 
 
+# ACCESS: All org users can see details of networks an org is owner/member
 class NetworkDetailView(LoginRequiredMixin, DetailView):
     """Return all the detail for a network."""
 
@@ -131,6 +135,7 @@ class NetworkDetailView(LoginRequiredMixin, DetailView):
         return context
 
 
+# ACCESS: Only an admin of an org that owns a network can delete a network
 # class NetworkDeleteView(DeleteView, FormMessagesMixin):
 class NetworkDeleteView(LoginRequiredMixin, DeleteView):
     """View for handling deletion of a network.
@@ -157,6 +162,8 @@ class NetworkDeleteView(LoginRequiredMixin, DeleteView):
         return reverse('network_list')
 
 
+# ACCESS: Only an admin of an org that owns a network can invite other admins
+# to a network
 def send_network_invite(request):
     """ Send private message with link to join a network."""
 
@@ -204,6 +211,7 @@ def org_to_network(request, pk):
     return render(request, 'editorial/networkdetail.html', {'form': form})
 
 
+# ACCESS: Org users should be able to see network content for their organization
 class NetworkStoryListView(LoginRequiredMixin, ListView):
     """ Displays a filterable table of stories marked as shared/ready to share by any
     organizations that a user's organization is a part of.
@@ -239,6 +247,7 @@ class NetworkStoryListView(LoginRequiredMixin, ListView):
         return networkstories
 
 
+# ACCESS: Org users that are editors or admins should be able to copy network stories.
 class CopyNetworkStoryView(LoginRequiredMixin, View):
     """Copy a story and related facets.
 
@@ -377,8 +386,6 @@ class CopyNetworkStoryView(LoginRequiredMixin, View):
         # action.send(self.request.user, verb="picked up", action_object=original_story)
 
         return redirect('network_stories')
-
-
 
 
 # def copy_network_story(request, pk):

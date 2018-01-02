@@ -30,6 +30,7 @@ from editorial.models import (
 #   Schedule Views
 #----------------------------------------------------------------------#
 
+# ACCESS: An org user should be able to see all events associated with an org
 # class Schedule(LoginRequiredMixin, TemplateView):
 #     """Display calendar of all deadlines and events for an organization."""
 #

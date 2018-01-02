@@ -50,6 +50,7 @@ from editorial.models import (
 #   Contractor Views
 #----------------------------------------------------------------------#
 
+# ACCESS: Any user not affiliated with an organization should be able to create
 class ContractorCreateView(LoginRequiredMixin, CreateView):
     """After user signup, the user has the option to create an organization or
     a contractor profile.
@@ -83,6 +84,9 @@ class ContractorCreateView(LoginRequiredMixin, CreateView):
         return redirect(self.get_success_url())
 
 
+# ACCESS: Any org user with talenteditorprofile
+# Contractors should see their own profiles
+# Future: Contractors can see each other/message each other (eventually collaborate as individuals)
 class ContractorDetailView(LoginRequiredMixin, DetailView):
     """Display details about a contractor."""
 
@@ -122,6 +126,7 @@ class ContractorDetailView(LoginRequiredMixin, DetailView):
         return pitches_for_viewer
 
 
+# ACCESS: Only a contractor can update their profile
 class ContractorUpdateView(LoginRequiredMixin, UpdateView):
     """Edit a contractor's profile."""
 
@@ -142,9 +147,14 @@ class ContractorUpdateView(LoginRequiredMixin, UpdateView):
 #   Talent Editor Views
 #----------------------------------------------------------------------#
 
-# A profile page for contract editors
+# ACCESS: All org users with a publictalenteditor profile should see the
+# other ones from their org.
+# All contractors should be able to see
 class PublicTalentEditorDetailView(LoginRequiredMixin, DetailView):
-    """Display details about an editor that works with contractors."""
+    """A public profile page for talent editors. Displays details about an editor
+    that works with contractors.
+    Contractors see assignments and calls from this editor and pitches they've submitted.
+    """
 
     # handle users that are not logged in
     login_url = settings.LOGIN_URL
@@ -182,7 +192,7 @@ class PublicTalentEditorDetailView(LoginRequiredMixin, DetailView):
         calls = self.object.call_set.all()
         return calls
 
-
+# ACCESS: Only the user associated with the profile
 class PublicTalentEditorDashboardView(LoginRequiredMixin, DetailView):
     """A dashboard of relevant content for a contractor."""
 
@@ -221,6 +231,8 @@ class PublicTalentEditorDashboardView(LoginRequiredMixin, DetailView):
 #   Public Listing Views
 #----------------------------------------------------------------------#
 
+# ACCESS: Only users with talenteditorprofile
+# FUTURE contractors will be able to see each other (future functionality for individual collaborations)
 class PublicContractorListView(LoginRequiredMixin, ListView):
     """Listing of all public contractors."""
 
@@ -237,6 +249,8 @@ class PublicContractorListView(LoginRequiredMixin, ListView):
         return public_contractors
 
 
+# ACCESS: Contractors can access
+# TalentEditors can only see other editors from their org
 class PublicTalentEditorListView(LoginRequiredMixin, ListView):
     """Listing of all public contractors."""
 
@@ -256,6 +270,8 @@ class PublicTalentEditorListView(LoginRequiredMixin, ListView):
 #   Organization / Contractor Affiliation Views
 #----------------------------------------------------------------------#
 
+# ACCESS: TalentEditors and admin can access an org's affiliation list
+# Future: May be another view to include organization/pk/ in url
 class AffiliationListView(LoginRequiredMixin, ListView):
     """Return all the contractors that an organization has a relationship with."""
 
@@ -272,6 +288,7 @@ class AffiliationListView(LoginRequiredMixin, ListView):
         return affiliations
 
 
+# ACCESS: Only TalentEditors can access
 class AffiliationCreateView(LoginRequiredMixin, CreateView):
     """Create a relationship between a contractor and an organization."""
 
@@ -295,6 +312,7 @@ class AffiliationCreateView(LoginRequiredMixin, CreateView):
         return redirect(self.get_success_url())
 
 
+# ACCESS: Only TalentEditors, admins can access an org's affiliations
 class AffiliationDetailView(LoginRequiredMixin, DetailView):
     """Display the details of an affiliation between an organization and a
     contractor.
@@ -307,6 +325,7 @@ class AffiliationDetailView(LoginRequiredMixin, DetailView):
     template_name='editorial/affiliation_detail.html'
 
 
+# ACCESS: Only TalentEditors, admins from an org can edit affiliations of that org
 class AffiliationUpdateView(LoginRequiredMixin, UpdateView):
     """ Edit the record of affiliation between an organization and a
     contractor.
@@ -330,6 +349,7 @@ class AffiliationUpdateView(LoginRequiredMixin, UpdateView):
 #   Pitch Views
 #----------------------------------------------------------------------#
 
+# ACCESS: Only contractorprofile users
 class PitchCreateView(LoginRequiredMixin, CreateView):
     """Create a pitch."""
 
@@ -351,7 +371,9 @@ class PitchCreateView(LoginRequiredMixin, CreateView):
 
         return redirect(self.get_success_url())
 
-
+# ACCESS: Contractorprofile users, talenteditor recipient
+# FUTURE should be possible for a talenteditor to share/show a pitch with another user
+# from their own org
 class PitchDetailView(LoginRequiredMixin, DetailView):
     """Show pitch details."""
 
@@ -394,6 +416,7 @@ class PitchDetailView(LoginRequiredMixin, DetailView):
         return {'video': video, 'form':form,}
 
 
+# ACCESS: Only contractorprofile users
 class PitchUpdateView(LoginRequiredMixin, UpdateView):
     """View and edit a pitch. Add assets to a pitch."""
 
@@ -447,6 +470,7 @@ class PitchUpdateView(LoginRequiredMixin, UpdateView):
         return super(PitchUpdateView, self).get_success_url()
 
 
+# ACCESS: Only contractorprofile users
 class PitchListView(LoginRequiredMixin, ListView):
     """Return all of a contractor's pitches."""
 
@@ -471,6 +495,7 @@ class PitchListView(LoginRequiredMixin, ListView):
         return pitches
 
 
+# ACCESS: Only contractorprofile users
 # class PitchDeleteView(DeleteView, FormMessagesMixin):
 class PitchDeleteView(LoginRequiredMixin, DeleteView):
     """Delete a pitch.
@@ -500,6 +525,7 @@ class PitchDeleteView(LoginRequiredMixin, DeleteView):
 #   Call Views
 #----------------------------------------------------------------------#
 
+# ACCESS: Only talenteditor users
 class CallCreateView(LoginRequiredMixin, CreateView):
     """Create a call."""
 
@@ -530,6 +556,8 @@ class CallCreateView(LoginRequiredMixin, CreateView):
         return redirect(self.get_success_url())
 
 
+# ACCESS: TalentEditor users + admins from the org
+# All contractorprofile users
 class CallDetailView(LoginRequiredMixin, DetailView):
     """Show call details."""
 
@@ -572,6 +600,7 @@ class CallDetailView(LoginRequiredMixin, DetailView):
         return {'video': video, 'form':form,}
 
 
+# ACCESS: TalentEditor User that owns it (Maybe other TE from same org?)
 class CallUpdateView(LoginRequiredMixin, UpdateView):
     """Edit a call."""
 
@@ -631,6 +660,8 @@ class CallUpdateView(LoginRequiredMixin, UpdateView):
         return super(CallUpdateView, self).get_success_url()
 
 
+# ACCESS: TalentEditors should only see calls from their own org
+# Contractors see all calls
 class CallListView(LoginRequiredMixin, ListView):
     """List all calls from public talent editors."""
 
@@ -658,6 +689,7 @@ class CallListView(LoginRequiredMixin, ListView):
         return calls
 
 
+# ACCESS: The TalentEditor that owns it or an admin of the organization
 # class CallDeleteView(DeleteView, FormMessagesMixin):
 class CallDeleteView(LoginRequiredMixin, DeleteView):
     """Delete a call.
@@ -687,6 +719,7 @@ class CallDeleteView(LoginRequiredMixin, DeleteView):
 #   Assignment Views
 #----------------------------------------------------------------------#
 
+# ACCESS: Only talenteditor users
 class AssignmentCreateView(LoginRequiredMixin, CreateView):
     """Create a new assignment."""
 
@@ -717,6 +750,8 @@ class AssignmentCreateView(LoginRequiredMixin, CreateView):
         return redirect(self.get_success_url())
 
 
+# ACCESS: TalentEditor users + admins from the org
+# The Contractor connected to the assignment
 class AssignmentDetailView(LoginRequiredMixin, DetailView):
     """Show assignment details."""
 
@@ -759,6 +794,7 @@ class AssignmentDetailView(LoginRequiredMixin, DetailView):
         return {'video': video, 'form':form,}
 
 
+# ACCESS: TalentEditor users + admins from the org
 class AssignmentUpdateView(LoginRequiredMixin, UpdateView):
     """Edit an assignment."""
 
@@ -818,6 +854,8 @@ class AssignmentUpdateView(LoginRequiredMixin, UpdateView):
         return super(AssignmentUpdateView, self).get_success_url()
 
 
+# ACCESS: TalentEditor sees all of their assignments
+# Contractor sees all of their assignments
 class AssignmentListView(LoginRequiredMixin, ListView):
     """Return all the assignments dependent on viewer."""
 
@@ -842,6 +880,7 @@ class AssignmentListView(LoginRequiredMixin, ListView):
         return assignments
 
 
+# ACCESS: The TalentEditor that owns it or an admin of the organization
 # class AssignmentDeleteView(DeleteView, FormMessagesMixin):
 class AssignmentDeleteView(LoginRequiredMixin, DeleteView):
     """Delete an assignment.

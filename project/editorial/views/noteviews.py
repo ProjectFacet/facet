@@ -41,6 +41,10 @@ from editorial.models import (
 #   General Note Views
 #----------------------------------------------------------------------#
 
+# ACCESS: Any org user, or user from an organization that is in collaborate_with
+# should be able to view the notes for the object they have access to
+# Contractors should only be able to do so for PSSF that they have access to
+# That should be handled by limiting which PSSF they have access to.
 class NoteContent(LoginRequiredMixin, View):
     """Return note content as html for display on <object>notes.html pages."""
 
@@ -58,6 +62,10 @@ class NoteContent(LoginRequiredMixin, View):
         return HttpResponse(note_html)
 
 
+# ACCESS: Any org user, or user from an organization that is in collaborate_with
+# should be able to create a note for P, Sr, St, F, T or E they have access to.
+# Contractors should only be able to do so for PSSFTE that they have access to
+# That should be handled by limiting which PSSF they have access to.
 class NoteCreateView(LoginRequiredMixin, CreateView):
     """Create a note."""
 
@@ -228,6 +236,8 @@ class NoteCreateView(LoginRequiredMixin, CreateView):
             return HttpResponseRedirect(reverse('event_detail', args=(event.id,)))
 
 
+# ACCESS: Any org user, or user from an organization that is in collaborate_with
+# should be able to delete a note for P, Sr, St, F, T or E that they have access to
 class NoteDelete(LoginRequiredMixin, DeleteView):
     """View for handling deletion of a note.
 
@@ -292,6 +302,8 @@ class NoteDelete(LoginRequiredMixin, DeleteView):
 #   Template Note Views
 #----------------------------------------------------------------------#
 
+# ACCESS: Any org user, user from an organization that is part of the network
+# should be able to view/create notes for the network
 class NetworkNoteView(LoginRequiredMixin, TemplateView):
     """Display all of the notes for a network."""
 
@@ -311,6 +323,7 @@ class NetworkNoteView(LoginRequiredMixin, TemplateView):
         }
 
 
+# ACCESS: Any org user should be able to view/create notes for the organization
 class OrganizationNoteView(LoginRequiredMixin, TemplateView):
     """Display all of the notes for an organization."""
 
@@ -331,6 +344,7 @@ class OrganizationNoteView(LoginRequiredMixin, TemplateView):
         }
 
 
+# ACCESS: Any should be able to view/create notes for theirself
 class UserNoteView(LoginRequiredMixin, TemplateView):
     """Display all of the notes for a user."""
 
@@ -350,6 +364,9 @@ class UserNoteView(LoginRequiredMixin, TemplateView):
         }
 
 
+# ACCESS: Any org user, user from an organization that is part collaborate_with
+# for a project should be able to view/create notes for the project
+# A contractor with access to the project should be able to view/create a note for it.
 class ProjectNoteView(LoginRequiredMixin, TemplateView):
     """Display all of the notes for a project."""
 
@@ -369,6 +386,9 @@ class ProjectNoteView(LoginRequiredMixin, TemplateView):
         }
 
 
+# ACCESS: Any org user, user from an organization that is part collaborate_with
+# for a series should be able to view/create notes for the series
+# A contractor with access to the series should be able to viewcreate a note for it.
 class SeriesNoteView(LoginRequiredMixin, TemplateView):
     """Display all of the notes for a project."""
 
@@ -388,6 +408,9 @@ class SeriesNoteView(LoginRequiredMixin, TemplateView):
         }
 
 
+# ACCESS: Any org user, user from an organization that is part collaborate_with
+# for a story should be able to view/create notes for the story
+# A contractor with access to the story should be able to view/create a note for it.
 class StoryNoteView(LoginRequiredMixin, TemplateView):
     """Display all of the notes for a story."""
 
@@ -407,6 +430,8 @@ class StoryNoteView(LoginRequiredMixin, TemplateView):
         }
 
 
+# ACCESS: Any org user, user from organization that is part of a collaborate_with
+# for an object related to the task can view and create notes for a task.
 class TaskNoteView(LoginRequiredMixin, TemplateView):
     """Display all of the notes for a task."""
 
@@ -425,7 +450,8 @@ class TaskNoteView(LoginRequiredMixin, TemplateView):
             'notes': notes,
         }
 
-
+# ACCESS: Any org user, user from organization that is part of a collaborate_with
+# for an object related to the event can view and create notes for an event.
 class EventNoteView(LoginRequiredMixin, TemplateView):
     """Display all of the notes for an event."""
 

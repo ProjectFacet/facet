@@ -23,6 +23,7 @@ from extra_views import InlineFormSetView, ModelFormSetView
 #   Platform Views
 # ----------------------------------------------------------------------#
 
+# ACCESS: Any user can edit their own platforms.
 class UserPlatformAccountCreateView(LoginRequiredMixin, FormView):
     """Display formset to add social accounts to a user, organization or project."""
 

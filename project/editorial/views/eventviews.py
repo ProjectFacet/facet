@@ -41,6 +41,10 @@ from editorial.models import (
 #   Events Views
 #----------------------------------------------------------------------#
 
+# ACCESS: Any org user, or user from an organization that is in collaborate_with
+# should be able to create an event for P, Sr, St, F.
+# Contractors should only be able to create events for P, Sr or St they are
+# assigned to.
 class EventCreateView(LoginRequiredMixin, CreateView):
     """A logged in user can create a event.
 
@@ -49,6 +53,7 @@ class EventCreateView(LoginRequiredMixin, CreateView):
     or events that an organization is reporting on.
     Ex: Hosting = A townhall discussion hosted by an organization
     Ex: Reporting = A press conference at city hall covered for a story.
+    Ex. Administrative = An internal event like an org or team meeting.
     Events have a connection to either a Project, Series, Story or Event.
     """
 
@@ -87,6 +92,10 @@ class EventCreateView(LoginRequiredMixin, CreateView):
         return redirect(self.get_success_url())
 
 
+# ACCESS: Any org user, or user from an organization that is in collaborate_with
+# should be able to edit an event for P, Sr, St, F.
+# Contractors should only be able to edit events for P, Sr or St they are
+# assigned to.
 class EventUpdateView(LoginRequiredMixin, UpdateView):
     """ The detail page for a event.
 
@@ -129,6 +138,8 @@ class EventUpdateView(LoginRequiredMixin, UpdateView):
         return super(EventUpdateView, self).get_success_url()
 
 
+# ACCESS: Any org user that is an admin or editor should be able to delete an
+# event associated with their org, or an org PSS.
 # class EventDeleteView(DeleteView, FormMessagesMixin):
 class EventDeleteView(LoginRequiredMixin, DeleteView):
     """View for handling deletion of an event.
@@ -169,6 +180,8 @@ class EventDeleteView(LoginRequiredMixin, DeleteView):
 #   Content Event Views
 #----------------------------------------------------------------------#
 
+# ACCESS: Any org user should be able to create an event associated
+# with their organization
 class OrganizationEventView(LoginRequiredMixin, CreateView):
     """Display all the events associated with an organization.
     """
@@ -202,6 +215,10 @@ class OrganizationEventView(LoginRequiredMixin, CreateView):
         return context
 
 
+# ACCESS: Any org user should be able to view/create an event associated a project owned
+# by their organization
+# A user from an organization that is in collaborate_with on a project
+# should be able to view/create an event for a project they have access to.
 class ProjectEventView(LoginRequiredMixin, CreateView):
     """Display all the events associated with a project.
     """
@@ -235,6 +252,8 @@ class ProjectEventView(LoginRequiredMixin, CreateView):
         return context
 
 
+# ACCESS: Any org user should be able to view/create an event associated a series owned
+# by their organization
 class SeriesEventView(LoginRequiredMixin, CreateView):
     """Display all the events associated with a series.
     """
@@ -268,6 +287,10 @@ class SeriesEventView(LoginRequiredMixin, CreateView):
         return context
 
 
+# ACCESS: Any org user should be able to view/create an event associated a story owned
+# by their organization
+# A user from an organization that is in collaborate_with on a story
+# should be able to view/create an event for a story they have access to.
 class StoryEventView(LoginRequiredMixin, CreateView):
     """Display all the events associated with a story."""
 

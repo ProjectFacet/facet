@@ -67,32 +67,12 @@ class LandingTemplateView(TemplateView):
 
     template_name = 'editorial/home.html'
 
-#----------------------------------------------------------------------#
-#   Test View
-#----------------------------------------------------------------------#
-
-class TestTemplateView(LoginRequiredMixin, TemplateView):
-    """ Use for rapid testing of new pages."""
-
-    template_name = 'editorial/test.html'
-
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
-
-    def get_context_data(self):
-        # the user's organization
-        organization = self.request.user.organization
-        tasks = Task.objects.filter(organization=organization)
-
-        return {
-            'organization': organization,
-            'tasks': tasks,
-        }
 
 #----------------------------------------------------------------------#
 #   Dashboard View
 #----------------------------------------------------------------------#
 
+# ACCESS: All users have access to dashboard
 class DashboardTemplateView(LoginRequiredMixin, TemplateView):
     """ Returns user's unique dashboard.
 
@@ -167,6 +147,7 @@ class DashboardTemplateView(LoginRequiredMixin, TemplateView):
 #   Team Views
 #----------------------------------------------------------------------#
 
+# ACCESS: All org users have access to team view for their organization
 class TeamTemplateView(LoginRequiredMixin, TemplateView):
     """ Return teams list.
 
@@ -202,6 +183,7 @@ class TeamTemplateView(LoginRequiredMixin, TemplateView):
 #   Collaborations View
 #----------------------------------------------------------------------#
 
+# ACCESS: All org users have access to their org's list of collaborations.
 class CollaborationTemplateView(LoginRequiredMixin, TemplateView):
     """ Return dashboard of series and stories that are part of a collaboration.
     """

@@ -18,6 +18,8 @@ from ..forms import (
     VideoAssetForm,)
 
 
+# ACCESS: Only org users should be able to create a template for their org.
+# Future, some thinking about how to handle this for shared facets...
 class FacetTemplateCreateView(LoginRequiredMixin, CreateView):
     """Create a facet template."""
 
@@ -48,6 +50,7 @@ class FacetTemplateCreateView(LoginRequiredMixin, CreateView):
         return redirect(self.get_success_url())
 
 
+# ACCESS: Only org users should be able to edit their org's templates.
 class FacetTemplateUpdateView(LoginRequiredMixin, UpdateView):
     """Edit a facet template."""
 
@@ -64,6 +67,10 @@ class FacetTemplateUpdateView(LoginRequiredMixin, UpdateView):
         return super(FacetTemplateUpdateView, self).get_success_url()
 
 
+# ACCESS: Any org user, or user from an organization that is in collaborate_with
+# should be able to create a facet for a story they have access to
+# Contractors should only be able to do so for stories that they have access to
+# That should be handled by limiting which story they have access to.
 class FacetPreCreateView(LoginRequiredMixin, FormView):
     """First step in creating a facet."""
 
@@ -84,6 +91,10 @@ class FacetPreCreateView(LoginRequiredMixin, FormView):
         return redirect("{}?name={}".format(url, name))
 
 
+# ACCESS: Any org user, or user from an organization that is in collaborate_with
+# should be able to create a facet for a story they have access to
+# Contractors should only be able to do so for stories that they have access to
+# That should be handled by limiting which story they have access to.
 class FacetCreateView(LoginRequiredMixin, CreateView):
     """Create a facet (dynamically using right template)."""
 
@@ -114,6 +125,10 @@ class FacetCreateView(LoginRequiredMixin, CreateView):
         return {'name': self.request.GET.get('name', '')}
 
 
+# ACCESS: Any org user, or user from an organization that is in collaborate_with
+# should be able to update a facet for a story they have access to
+# Contractors should only be able to do so for stories that they have access to
+# That should be handled by limiting which story they have access to.
 class FacetUpdateView(LoginRequiredMixin, UpdateView):
     """Update a facet (dynamically using right template)."""
 
@@ -183,6 +198,8 @@ class FacetUpdateView(LoginRequiredMixin, UpdateView):
         return {'videos': videos, 'org_videos': org_videos, 'uploadform': uploadform}
 
 
+# ACCESS: Only an org user that is an admin or editor should be able to delete a
+# facet for one of their org's stories. 
 # class FacetDeleteView(DeleteView, FormMessagesMixin):
 class FacetDeleteView(LoginRequiredMixin, DeleteView):
     """View for handling deletion of a facet.

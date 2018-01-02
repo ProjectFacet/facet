@@ -57,6 +57,7 @@ from editorial.models import (
 #   Inbox Views
 #----------------------------------------------------------------------#
 
+# ACCESS: All users have access to their inbox.
 def inbox(request):
     """ Return discussion inbox.
 
