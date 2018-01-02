@@ -172,7 +172,7 @@ class SeriesDetailView(LoginRequiredMixin, DetailView):
                 }
 
 
-    def story_events(self):
+    def series_events(self):
         """Get events and event form for a series."""
 
         self.object = self.get_object()
@@ -208,7 +208,6 @@ class SeriesDetailView(LoginRequiredMixin, DetailView):
         print "DOC: ", documents
         form = SimpleDocumentForm()
         return {'documents': documents, 'form':form,}
-
 
 
 class SeriesUpdateView(LoginRequiredMixin, UpdateView):
