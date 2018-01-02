@@ -5,6 +5,8 @@
 
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+
+from django.core.exceptions import PermissionDenied
 from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
 from django.core.mail import send_mail
@@ -18,8 +20,7 @@ import json
 from actstream import action
 from django.core.urlresolvers import reverse
 from django.db.models import Q
-from braces.views import LoginRequiredMixin, FormMessagesMixin
-
+from braces.views import LoginRequiredMixin, FormMessagesMixin, UserPassesTestMixin
 
 from editorial.forms import (
     CommentForm,
@@ -43,11 +44,33 @@ from editorial.models import (
 #   Organization Views
 #----------------------------------------------------------------------#
 
-class OrganizationCreateView(LoginRequiredMixin, CreateView):
-    """Create a new organization."""
 
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
+class UserMatchesOrgMixin(UserPassesTestMixin):
+    """User must be a member of this organization to view this content.
+
+    This also requires that a user be logged in, so it's not needed to use this
+    with LoginRequiredMixin.
+    """
+
+    def test_func(self, user):
+        """Test user.
+
+        If there is no logged in user, go to login page.
+        If there is a user, but not in this org, raise Unauthorized.
+        """
+
+        if user.is_authenticated():
+            self.object = self.get_object()
+            if user.organization != self.object:
+                raise PermissionDenied("Not in organization %s" % self.object.id)
+            else:
+                return True
+
+        return False
+
+
+class OrganizationCreateView(UserMatchesOrgMixin, CreateView):
+    """Create a new organization."""
 
     model = Organization
     form_class = OrganizationForm
@@ -74,11 +97,8 @@ class OrganizationCreateView(LoginRequiredMixin, CreateView):
         return reverse('org_detail', kwargs={'pk': self.object.pk})
 
 
-class OrganizationUpdateView(LoginRequiredMixin, UpdateView):
+class OrganizationUpdateView(UserMatchesOrgMixin, UpdateView):
     """Edit an organization."""
-
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
 
     model = Organization
     form_class = OrganizationForm
@@ -91,11 +111,8 @@ class OrganizationUpdateView(LoginRequiredMixin, UpdateView):
         return context
 
 
-class OrganizationDetailView(LoginRequiredMixin, DetailView):
+class OrganizationDetailView(UserMatchesOrgMixin, DetailView):
     """Detail view of an organization."""
-
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
 
     model = Organization
 
