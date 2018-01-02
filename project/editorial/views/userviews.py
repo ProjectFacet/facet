@@ -116,39 +116,37 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
         return super(UserUpdateView, self).get_success_url()
 
 
-# FIXME still having csrf_token problem
 class UserDeactivateView(LoginRequiredMixin, View):
     """Deactivate an org user."""
 
     # handle users that are not logged in
     login_url = settings.LOGIN_URL
 
-    def post(self):
-        user_id = self.request.POST.get('user_id')
+    def post(self, request):
+        user_id = request.POST.get('user_id')
         user = get_object_or_404(User, pk=user_id)
-        print "USER ID: ", user_id
+        # print "USER ID: ", user_id
         user.is_active = False
-        print "User Status: ", user.is_active
+        # print "User Status: ", user.is_active
         user.save()
-        print "This user has been deactivated."
+        # print "This user has been deactivated."
 
         return redirect('org_edit', pk=user.organization.id)
 
 
-# FIXME still having csrf_token problem
 class UserActivateView(LoginRequiredMixin, View):
     """Activate an org user."""
 
     # handle users that are not logged in
     login_url = settings.LOGIN_URL
 
-    def post(self):
+    def post(self, request):
         user_id = request.POST.get('user_id')
         user = get_object_or_404(User, pk=user_id)
-        print "USER ID: ", user_id
+        # print "USER ID: ", user_id
         user.is_active = True
-        print "User Status: ", user.is_active
+        # print "User Status: ", user.is_active
         user.save()
-        print "This user has been activated."
+        # print "This user has been activated."
 
         return redirect('org_edit', pk=user.organization.id)

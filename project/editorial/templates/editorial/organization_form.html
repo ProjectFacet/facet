@@ -190,6 +190,7 @@
           </a>
           {% if person.is_active == True %}
             <form action="{% url 'user_deactivate' %}" method="POST" class="post-form sameline" onsubmit="return confirm('Do you want to deactivate this user?');">
+              {% csrf_token %}
               <input type="hidden" name="user_id" value="{{ person.id }}" />
               <button class="btn btn-sm btn-warning f-s-12">
                 <i class="fa fa-minus-circle" aria-hidden="true"></i>
@@ -200,6 +201,7 @@
           {% elif person.is_active == False %}
 
             <form action="{% url 'user_activate' %}" method="POST" class="post-form sameline" onsubmit="return confirm('Do you want to activate this user?');">
+              {% csrf_token %}
               <input type="hidden" name="user_id" value="{{ person.id }}" />
               <button class="btn btn-xs btn-success f-s-12">
                 <i class="fa fa-plus-circle" aria-hidden="true"></i>
