@@ -21,6 +21,8 @@ from editorial.forms import (
     StoryForm,
     CommentForm,
     NoteForm,
+    TaskForm,
+    EventForm,
 )
 
 from editorial.models import (
