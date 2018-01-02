@@ -400,5 +400,5 @@ class Story(models.Model):
         """Can this story be edited by this org?"""
 
         return (org == self.organization or
-             (self.collaborate and org in self.collaborate_with.all())
+             (self.collaborate and org in self.collaborate_with.all()))
 
