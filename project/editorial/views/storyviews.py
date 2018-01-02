@@ -136,8 +136,7 @@ class StoryUpdateView(CustomUserTest, FormMessagesMixin, UpdateView):
         story = self.object = self.get_object()
         org = user.organization
 
-        if (org == story.organization or
-                (story.collaborate and org in story.collaborate_with.all())):
+        if story.is_editable_by_org(org) and user.user_type in [User.ADMIN, User.EDITOR]:
             return True
 
         raise PermissionDenied()
@@ -161,7 +160,7 @@ class StoryUpdateView(CustomUserTest, FormMessagesMixin, UpdateView):
         return super(StoryUpdateView, self).get_success_url()
 
 
-class StoryDetailView(LoginRequiredMixin, DetailView):
+class StoryDetailView(CustomUserTest, DetailView):
     """Show all the details and related items for a story."""
 
     model = Story
@@ -174,8 +173,7 @@ class StoryDetailView(LoginRequiredMixin, DetailView):
         story = self.object = self.get_object()
         org = user.organization
 
-        if (org == story.organization or
-                (story.collaborate and org in story.collaborate_with.all())):
+        if story.is_editable_by_org(org) and user.user_type in [User.ADMIN, User.EDITOR]:
             return True
 
         raise PermissionDenied()
@@ -258,7 +256,7 @@ class StoryDetailView(LoginRequiredMixin, DetailView):
 
 
 # class StoryDeleteView(DeleteView, FormMessagesMixin):
-class StoryDeleteView(LoginRequiredMixin, DeleteView):
+class StoryDeleteView(CustomUserTest, DeleteView):
     """Delete a story and it's associated items.
 
     In this project, we expect deletion to be done via a JS pop-up UI; we don't expect to
@@ -282,9 +280,7 @@ class StoryDeleteView(LoginRequiredMixin, DeleteView):
         story = self.object = self.get_object()
         org = user.organization
 
-        if ((org == story.organization or
-             (story.collaborate and org in story.collaborate_with.all()))
-                and user.user_type in [User.ADMIN, User.EDITOR]):
+        if story.is_editable_by_org(org) and user.user_type in [User.ADMIN, User.EDITOR]:
             return True
 
         raise PermissionDenied()

@@ -384,7 +384,6 @@ class Story(models.Model):
 
         return self.event_set.all()
 
-
     @property
     def description(self):
         return self.story_description
@@ -396,3 +395,10 @@ class Story(models.Model):
     @property
     def type(self):
         return "Story"
+
+    def is_editable_by_org(self, org):
+        """Can this story be edited by this org?"""
+
+        return (org == self.organization or
+             (self.collaborate and org in self.collaborate_with.all())
+
