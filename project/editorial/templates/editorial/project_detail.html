@@ -1176,6 +1176,7 @@
               <!-- Add Event Modal -->
 <!-- ================================================= -->
 
+{% with view.project_events as events %}
 <div class="modal fade" id="addEvent" tabindex="-1" role="dialog" aria-labelledby="addEventLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -1186,9 +1187,7 @@
       <div class="modal-body">
         <form action="{% url 'event_new' %}" method="POST" class="post-form">
         {% csrf_token %}
-        {% comment %}
-        {% bootstrap_form notes.form %}
-        {% endcomment %}
+        {% bootstrap_form events.form %}
         <!-- Hidden Inputs -->
         <input type="hidden" name="association" value="project" />
         <input type="hidden" name="project" value="{{ project.pk }}" />
@@ -1200,6 +1199,6 @@
     </div>
   </div>
 </div>
-
+{% endwith %}
 
 {% endblock modals %}

@@ -23,6 +23,7 @@ from editorial.forms import (
     CommentForm,
     NoteForm,
     TaskForm,
+    EventForm,
     SimpleImageForm,
     SimpleDocumentForm,
     )
@@ -186,8 +187,6 @@ class ProjectDetailView(LoginRequiredMixin, DetailView):
         return {'notes': notes, 'form': form,}
 
 
-    # FIXME Currently causing error because org is not getting passed to EventForm
-    # Commented out task form and version of return statement that uses it.
     def project_tasks(self):
         """Get tasks and task form for the project."""
 
@@ -199,7 +198,7 @@ class ProjectDetailView(LoginRequiredMixin, DetailView):
         identified_ct = identified.count()
         inprogress_ct = inprogress.count()
         complete_ct = complete.count()
-        # form = TaskForm()
+        form = TaskForm(organization = self.object.organization)
         return {
                 'tasks': tasks,
                 'identified': identified,
@@ -207,20 +206,17 @@ class ProjectDetailView(LoginRequiredMixin, DetailView):
                 'complete': complete,
                 'identified_ct': identified_ct,
                 'inprogress_ct': inprogress_ct,
-                'complete_ct': complete_ct
-                # 'form': form,
+                'complete_ct': complete_ct,
+                'form': form,
                 }
 
-    # FIXME Currently causing error because org is not getting passed to EventForm
-    # Commented out task form and version of return statement that uses it.
     def project_events(self):
         """Get events and event form for the project."""
 
         self.object = self.get_object()
         events = self.object.event_set.all().order_by('-event_date')
-        # form = EventForm()
-        # return {'events': events, 'form': form}
-        return {'events': events}
+        form = EventForm(organization = self.object.organization)
+        return {'events': events, 'form': form}
 
 
     def simple_images(self):

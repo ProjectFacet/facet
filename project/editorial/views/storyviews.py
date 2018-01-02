@@ -208,8 +208,7 @@ class StoryDetailView(CustomUserTest, DetailView):
         form = NoteForm()
         return {'notes': notes, 'form': form}
 
-    # FIXME Currently causing error because org is not getting passed to TaskForm
-    # Commented out task form and version of return statement that uses it.
+
     def story_tasks(self):
         """Get tasks and task form for the story."""
 
@@ -221,7 +220,7 @@ class StoryDetailView(CustomUserTest, DetailView):
         identified_ct = identified.count()
         inprogress_ct = inprogress.count()
         complete_ct = complete.count()
-        # form = TaskForm()
+        form = TaskForm(organization = self.object.organization)
         return {
             'tasks': tasks,
             'identified': identified,
@@ -229,20 +228,18 @@ class StoryDetailView(CustomUserTest, DetailView):
             'complete': complete,
             'identified_ct': identified_ct,
             'inprogress_ct': inprogress_ct,
-            'complete_ct': complete_ct
-            # 'form': form,
+            'complete_ct': complete_ct,
+            'form': form,
         }
 
-    # FIXME Currently causing error because org is not getting passed to EventForm
-    # Commented out task form and version of return statement that uses it.
+
     def story_events(self):
         """Get events and event form for the story."""
 
         self.object = self.get_object()
         events = self.object.event_set.all()
-        # form = EventForm()
-        # return {'events': events, 'form': form}
-        return {'events': events}
+        form = EventForm(organization = self.object.organization)
+        return {'events': events, 'form': form}
 
     def story_assets(self):
         """Return all the assets associated with a story."""
