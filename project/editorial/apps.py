@@ -3,7 +3,6 @@
 from django.apps import AppConfig
 from watson import search as watson
 from search import register_watson
-from actstream import registry
 
 
 class EditorialAppConfig(AppConfig):
@@ -38,6 +37,8 @@ class EditorialAppConfig(AppConfig):
             "Note",
         ]:
             register_watson(self, model_name)
+
+        from actstream import registry
 
         registry.register(self.get_model('User'))
         registry.register(self.get_model('ContractorProfile'))

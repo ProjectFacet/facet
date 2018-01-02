@@ -78,7 +78,7 @@ class User(AbstractUser):
     )
 
     location = models.CharField(
-        max_length='255',
+        max_length=255,
         blank=True,
     )
 
@@ -287,7 +287,7 @@ class Organization(models.Model):
     )
 
     location = models.CharField(
-        max_length='255',
+        max_length=255,
         blank=True,
     )
 
