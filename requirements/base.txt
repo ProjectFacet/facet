@@ -1,79 +1,56 @@
 # Directly Installed
 Django==1.8.5
 django-activity-stream==0.6.0
-django-admin-bootstrapped==2.5.6
 django-allauth==0.23.0
 django-bootstrap3==6.2.2
 django-bootstrap3-datetimepicker==2.2.3
 django-braces==1.12.0
-django-datetime-widget==0.9.3
-django-debug-toolbar==1.4
 django-simple-history==1.6.3
-django-storages==1.4
 django-tinymce==2.2.0
 django-watson==1.2.0
 djangorestframework==3.2.4
 django-embed-video==1.1.2
-django-extra-views==0.9.0
 django-imagekit==3.2.7
 pilkit==1.1.13
 Pillow==3.0.0
 psycopg2==2.6.1
-django-chosen==0.1
+django-model-utils==2.3.1
+django-datetime-widget==0.9.3
+django-extra-views
+
+# req'd by actstream
+django-jsonfield
+
+# temp needed until newer django
+django-appconf==1.0.1
+
+
+# deps that are included by others
+certifi==2017.11.5
+chardet==3.0.4
+idna==2.6
+oauthlib==2.0.6
+python-openid==2.2.5
+pytz==2017.3
+requests==2.18.4
+requests-oauthlib==0.8.0
+six==1.11.0
+urllib3==1.22
+
+
 
 
 # may not be in use
-anyjson==0.3.3
-blessed==1.9.5
-django-crispy-forms==1.5.2
-django-location-field==1.6.1
-texttable==0.8.4
-colorama==0.3.7
-click==6.2
-
+# anyjson==0.3.3
+# blessed==1.9.5
+# texttable==0.8.4
+# colorama==0.3.7
+# click==6.2
 
 # Not directly installed or unsure why/when installed
-amqp==1.4.7
-awsebcli==3.7.6
-billiard==3.3.0.21
-binaryornot==0.4.0
-boto==2.39.0
-botocore==1.4.15
-celery==3.1.19
-cement==2.8.2
-chardet==2.3.0
-dj-database-url==0.4.1
-django-appconf==1.0.1
-django-filebrowser==3.6.1
-django-filter==0.11.0
-django-grappelli==2.7.1
-django-haystack==2.4.0
-django-jsonfield==1.0.1
-django-model-utils==2.3.1
-django-smtp-ssl==1.0
-django-sql-explorer==0.8
-docker-py==1.7.2
-dockerpty==0.4.1
-docopt==0.6.2
-docutils==0.12
-future==0.15.2
-gunicorn==19.6.0
-Jinja2==2.8
-jmespath==0.9.0
-kombu==3.0.29
-MarkupSafe==0.23
-oauthlib==1.0.3
-pathspec==0.3.4
-python-dateutil==2.5.3
-python-openid==2.2.5
-pytz==2015.7
-PyYAML==3.11
-requests==2.9.1
-requests-oauthlib==0.5.0
-semantic-version==2.5.0
-six==1.10.0
-sqlparse==0.1.11
-unicodecsv==0.13.0
-wcwidth==0.1.6
-websocket-client==0.37.0
-whichcraft==0.1.1
+# boto==2.39.0
+# botocore==1.4.15
+
+# django-storages==1.4
+# django-chosen==0.1
+# django-filebrowser==3.6.1

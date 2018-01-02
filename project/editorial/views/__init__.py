@@ -11,7 +11,7 @@ class CustomUserTest(UserPassesTestMixin):
     def test_func(self, user):
         """"User must be a super"""
 
-        if user.is_superuser():
+        if user.is_superuser:
             # Superuser can use all views
             return True
 
