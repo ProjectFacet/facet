@@ -43,6 +43,9 @@ class AccountSelectionView(LoginRequiredMixin, TemplateView):
     # handle users that are not logged in
     login_url = settings.LOGIN_URL
 
+
+
+# ACCESS: Only org admins should be able to update and org's subscription
 class OrganizationSubscriptionUpdateView(LoginRequiredMixin, UpdateView):
     """ View for editing organization subscription details."""
 
@@ -53,6 +56,7 @@ class OrganizationSubscriptionUpdateView(LoginRequiredMixin, UpdateView):
     login_url = settings.LOGIN_URL
 
 
+# ACCESS: Only user with contractorprofile should be able to update their subscription
 class ContractorSubscriptionUpdateView(LoginRequiredMixin, UpdateView):
     """ View for editing contractor subscription details."""
 

@@ -56,6 +56,8 @@ from editorial.models import (
 #   Asset Library Views
 #----------------------------------------------------------------------#
 
+# ACCESS: Only an org's users should be able to see an organization's asset library
+# FUTURE TODO: This is likely another place to add organization/ to url
 class AssetLibraryTemplateView(LoginRequiredMixin, TemplateView):
     """ Display media library of all organization assets."""
 
@@ -79,6 +81,10 @@ class AssetLibraryTemplateView(LoginRequiredMixin, TemplateView):
 #   Image Asset Views
 #----------------------------------------------------------------------#
 
+# ACCESS: Any org user, or user from an organization that is in collaborate_with
+# should be able to create an asset for P, Sr, St, F
+# Contractors should only be able to do so for PSSF that they have access to
+# That should be handled by limiting which PSSF they have access to.
 class ImageAssetCreateView(LoginRequiredMixin, CreateView):
     """ Upload image to a facet."""
 
@@ -112,6 +118,10 @@ class ImageAssetCreateView(LoginRequiredMixin, CreateView):
         return redirect('facet_edit', pk=facet.id, story=facet.story.id)
 
 
+# ACCESS: Any org user should be able to add an asset for a P, Sr, St, F
+# A user from an organization that is in collaborate_with or
+# contractors should not be able to do this because doing so requires access to
+# an org's entire asset library.
 class LibraryImageAssociateView(LoginRequiredMixin, FormView):
     """ Add existing image(s) in the library to another facet."""
 
@@ -139,6 +149,10 @@ class LibraryImageAssociateView(LoginRequiredMixin, FormView):
         return redirect('facet_edit', pk=facet.id, story=facet.story.id)
 
 
+# ACCESS: Any org user should be able to update an asset
+# A user from an organization that is in collaborate_with should be able to update
+# assets they are the owner of.
+# contractors should only be able to do this with assets they are the owner of.
 class ImageAssetUpdateView(LoginRequiredMixin, UpdateView):
     """ Display editable detail information for a specific image asset."""
 
@@ -163,6 +177,10 @@ class ImageAssetUpdateView(LoginRequiredMixin, UpdateView):
 #   Document Asset Views
 #----------------------------------------------------------------------#
 
+# ACCESS: Any org user, or user from an organization that is in collaborate_with
+# should be able to create an asset for P, Sr, St, F
+# Contractors should only be able to do so for PSSF that they have access to
+# That should be handled by limiting which PSSF they have access to.
 class DocumentAssetCreateView(LoginRequiredMixin, CreateView):
     """Upload a document to a facet."""
 
@@ -196,6 +214,10 @@ class DocumentAssetCreateView(LoginRequiredMixin, CreateView):
         return redirect('facet_edit', pk=facet.id, story=facet.story.id)
 
 
+# ACCESS: Any org user should be able to add an asset for a P, Sr, St, F
+# A user from an organization that is in collaborate_with or
+# contractors should not be able to do this because doing so requires access to
+# an org's entire asset library.
 class LibraryDocumentAssociateView(LoginRequiredMixin, FormView):
     """ Add existing document(s) in the library to another facet."""
 
@@ -226,6 +248,10 @@ class LibraryDocumentAssociateView(LoginRequiredMixin, FormView):
         return redirect('facet_edit', pk=facet.id, story=facet.story.id)
 
 
+# ACCESS: Any org user should be able to update an asset
+# A user from an organization that is in collaborate_with should be able to update
+# assets they are the owner of.
+# contractors should only be able to do this with assets they are the owner of.
 class DocumentAssetUpdateView(LoginRequiredMixin, UpdateView):
     """ Display editable detail information for a specific document asset."""
 
@@ -250,6 +276,10 @@ class DocumentAssetUpdateView(LoginRequiredMixin, UpdateView):
 #   Audio Asset Views
 #----------------------------------------------------------------------#
 
+# ACCESS: Any org user, or user from an organization that is in collaborate_with
+# should be able to create an asset for P, Sr, St, F
+# Contractors should only be able to do so for PSSF that they have access to
+# That should be handled by limiting which PSSF they have access to.
 class AudioAssetCreateView(LoginRequiredMixin, CreateView):
     """ Upload audio to a facet."""
 
@@ -283,6 +313,10 @@ class AudioAssetCreateView(LoginRequiredMixin, CreateView):
         return redirect('facet_edit', pk=facet.id, story=facet.story.id)
 
 
+# ACCESS: Any org user should be able to add an asset for a P, Sr, St, F
+# A user from an organization that is in collaborate_with or
+# contractors should not be able to do this because doing so requires access to
+# an org's entire asset library.
 class LibraryAudioAssociateView(LoginRequiredMixin, FormView):
     """ Add existing audio in the library to another facet."""
 
@@ -310,6 +344,10 @@ class LibraryAudioAssociateView(LoginRequiredMixin, FormView):
         return redirect('facet_edit', pk=facet.id, story=facet.story.id)
 
 
+# ACCESS: Any org user should be able to update an asset
+# A user from an organization that is in collaborate_with should be able to update
+# assets they are the owner of.
+# contractors should only be able to do this with assets they are the owner of.
 class AudioAssetUpdateView(LoginRequiredMixin, UpdateView):
     """ Display editable detail information for a specific audio asset."""
 
@@ -334,6 +372,10 @@ class AudioAssetUpdateView(LoginRequiredMixin, UpdateView):
 #   Video Asset Views
 #----------------------------------------------------------------------#
 
+# ACCESS: Any org user, or user from an organization that is in collaborate_with
+# should be able to create an asset for P, Sr, St, F
+# Contractors should only be able to do so for PSSF that they have access to
+# That should be handled by limiting which PSSF they have access to.
 class VideoAssetCreateView(LoginRequiredMixin, CreateView):
     """ Upload video to a facet."""
 
@@ -367,6 +409,10 @@ class VideoAssetCreateView(LoginRequiredMixin, CreateView):
         return redirect('facet_edit', pk=facet.id, story=facet.story.id)
 
 
+# ACCESS: Any org user should be able to add an asset for a P, Sr, St, F
+# A user from an organization that is in collaborate_with or
+# contractors should not be able to do this because doing so requires access to
+# an org's entire asset library.
 class LibraryVideoAssociateView(LoginRequiredMixin, FormView):
     """ Add existing video(s) in the library to another facet."""
 
@@ -394,6 +440,10 @@ class LibraryVideoAssociateView(LoginRequiredMixin, FormView):
         return redirect('facet_edit', pk=facet.id, story=facet.story.id)
 
 
+# ACCESS: Any org user should be able to update an asset
+# A user from an organization that is in collaborate_with should be able to update
+# assets they are the owner of.
+# contractors should only be able to do this with assets they are the owner of.
 class VideoAssetUpdateView(LoginRequiredMixin, UpdateView):
     """ Display editable detail information for a specific video asset."""
 
@@ -418,6 +468,10 @@ class VideoAssetUpdateView(LoginRequiredMixin, UpdateView):
 #   Simple Asset Views
 #----------------------------------------------------------------------#
 
+# ACCESS: Any org user, or user from an organization that is in collaborate_with
+# should be able to create a simple asset for P, Sr, St, F
+# Contractors should only be able to do so for PSSF that they have access to
+# That should be handled by limiting which PSSF they have access to.
 class SimpleImageCreateView(LoginRequiredMixin, CreateView):
     """Upload a simple image."""
 
@@ -534,7 +588,7 @@ class SimpleImageCreateView(LoginRequiredMixin, CreateView):
             # redirect to the associated object
             return HttpResponseRedirect(reverse('assignment_detail', args=(assignment.id,)))
 
-
+# SAA
 class SimpleDocumentCreateView(LoginRequiredMixin, CreateView):
     """Upload a simple document."""
 
@@ -653,7 +707,7 @@ class SimpleDocumentCreateView(LoginRequiredMixin, CreateView):
             # redirect to the associated object
             return HttpResponseRedirect(reverse('assignment_detail', args=(assignment.id,)))
 
-
+# SAA
 class SimpleAudioCreateView(LoginRequiredMixin, CreateView):
     """Upload a simple audio."""
 
@@ -770,7 +824,7 @@ class SimpleAudioCreateView(LoginRequiredMixin, CreateView):
             # redirect to the associated object
             return HttpResponseRedirect(reverse('assignment_detail', args=(assignment.id,)))
 
-
+# SAA
 class SimpleVideoCreateView(LoginRequiredMixin, CreateView):
     """Upload a simple video."""
 

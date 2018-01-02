@@ -22,6 +22,9 @@ class BaseAsset(models.Model):
         User,
     )
 
+    # XXX this means that if a user from a partner org uploads an asset to another
+    # organization's content, that asset will show up in their own organization's library
+    # but not the partner organization's library.
     organization = models.ForeignKey(
         Organization,
         blank=True,
