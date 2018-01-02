@@ -553,7 +553,7 @@
         });
 </script>
 
-<!-- Timeout Messages -->
+<!-- Messages Timeout -->
 <script>
   $(document).ready(function() {
       // messages timeout for 10 sec
@@ -583,7 +583,6 @@
 <!-- ================================================= -->
           <!-- Add Story Task Modal -->
 <!-- ================================================= -->
-
 {% with view.story_tasks as task %}
 <div class="modal fade" id="addStoryTask" tabindex="-1" role="dialog" aria-labelledby="addStoryTaskModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
@@ -675,12 +674,12 @@
 </div>
 {% endwith %}
 
-<!-- ================================================= -->
-          <!-- Add Story Note Asset Modal -->
-<!-- ================================================= -->
 
+<!-- ================================================= -->
+      <!-- Add / View  Story Note Asset Modal -->
+<!-- ================================================= -->
 {% with view.story_notes as notes %}
-  <div class="modal fade" id="addStoryNote" tabindex="-1" role="dialog" aria-labelledby="addStoryNoteModalLabel">
+<div class="modal fade" id="addStoryNote" tabindex="-1" role="dialog" aria-labelledby="addStoryNoteModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -704,11 +703,6 @@
 </div>
 
   {% for note in notes.notes %}
-
-  <!-- ================================================= -->
-          <!-- View Story Note Modal -->
-  <!-- ================================================= -->
-
   <div class="modal fade" id="viewNote{{note.id}}" tabindex="-1" role="dialog" aria-labelledby="viewNote{{note.id}}">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
@@ -725,14 +719,13 @@
       </div>
     </div>
   </div>
-  <!-- END View Note Modals -->
   {% endfor %}
 {% endwith %}
+
 
 <!-- ================================================= -->
           <!-- Simple Image Asset Modal -->
 <!-- ================================================= -->
-
 {% with view.simple_images as images %}
 <div class="modal fade" id="SimpleImageAssetModal" tabindex="-1" role="dialog" aria-labelledby="SimpleImageAssetModal">
   <div class="modal-dialog modal-lg" role="document">
@@ -810,10 +803,10 @@
   </div>
 {% endwith %}
 
+
 <!-- ================================================= -->
           <!-- Simple Document Asset Modal -->
 <!-- ================================================= -->
-
 {% with view.simple_documents as documents %}
 <div class="modal fade" id="SimpleDocumentAssetModal" tabindex="-1" role="dialog" aria-labelledby="SimpleDocumentAssetModal">
   <div class="modal-dialog modal-lg" role="document">
@@ -915,10 +908,11 @@
 </div>
 {% endwith %}
 
+
 <!-- ================================================= -->
               <!-- Add Event Modal -->
 <!-- ================================================= -->
-
+{% with view.story_events as events %}
 <div class="modal fade" id="addEvent" tabindex="-1" role="dialog" aria-labelledby="addEventLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -929,9 +923,7 @@
       <div class="modal-body">
         <form action="{% url 'event_new' %}" method="POST" class="post-form">
         {% csrf_token %}
-        {% comment %}
-        {% bootstrap_form notes.form %}
-        {% endcomment %}
+        {% bootstrap_form events.form %}
         <!-- Hidden Inputs -->
         <input type="hidden" name="association" value="story" />
         <input type="hidden" name="story" value="{{ story.pk }}" />
@@ -943,11 +935,12 @@
     </div>
   </div>
 </div>
+{% endwith %}
+
 
 <!-- ================================================= -->
                 <!-- DOWNLOAD MODAL -->
 <!-- ================================================= -->
-
 {% include "editorial/storydownloadmodal.html" %}
 
 
