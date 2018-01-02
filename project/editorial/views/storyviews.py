@@ -5,60 +5,38 @@
 
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.shortcuts import render, redirect, get_object_or_404
-from django.conf import settings
-from django.core.mail import send_mail
-from django.http import HttpResponse
-from django.core.urlresolvers import reverse_lazy, reverse
-from django.utils import timezone
-from django.views.generic import TemplateView , UpdateView, DetailView, CreateView, ListView, DeleteView
-from django.views.decorators.csrf import csrf_exempt
-import datetime
+
 import json
+
 from actstream import action
 from braces.views import LoginRequiredMixin, FormMessagesMixin
-
+from django.core.exceptions import PermissionDenied
+from django.core.urlresolvers import reverse
+from django.http import HttpResponse
+from django.shortcuts import redirect, get_object_or_404
+from django.views.generic import UpdateView, DetailView, CreateView, ListView, \
+    DeleteView
 
 from editorial.forms import (
     StoryForm,
-    FacetPreCreateForm,
-    get_facet_form_for_template,
-    ImageAssetForm,
-    DocumentAssetForm,
-    AudioAssetForm,
-    VideoAssetForm,
-    TaskForm,
-    EventForm,
     CommentForm,
     NoteForm,
-    SimpleImageForm,
-    SimpleDocumentForm,
-    )
+)
 
 from editorial.models import (
-    Organization,
     Series,
     Story,
-    Facet,
-    Task,
-    Event,
-    ImageAsset,
-    DocumentAsset,
-    AudioAsset,
-    VideoAsset,
-    Comment,
     Discussion,
-    Note,
-    SimpleImage,
-    SimpleDocument,
-    )
+    User)
 
+from editorial.views import CustomUserTest
 
-#----------------------------------------------------------------------#
+# ----------------------------------------------------------------------#
 #   Story Views
-#----------------------------------------------------------------------#
+# ----------------------------------------------------------------------#
 
-class StoryListView(LoginRequiredMixin, ListView):
+
+class StoryListView(CustomUserTest, ListView):
     """ Displays a filterable table of stories.
 
     Initial display organizes content by story>facet>est. run date
@@ -66,10 +44,20 @@ class StoryListView(LoginRequiredMixin, ListView):
     editor, status.
     """
 
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
+    # TODO from Joel: it can be finicky to have views like this that show "your stuff";
+    # often better is to get that in the URL -- so, /orgs/1/stories, rather than
+    # /stores. Then, Django admins can visit the URL to see stories for that user, rather
+    # than only for themselves.
 
     context_object_name = 'stories'
+
+    def test_user(self, user):
+        """User must be member of an org."""
+
+        if user.organization:
+            return True
+
+        raise PermissionDenied()
 
     def get_queryset(self):
         """Return stories belonging to the organization."""
@@ -78,14 +66,22 @@ class StoryListView(LoginRequiredMixin, ListView):
         return org.story_set.all()
 
 
-class StoryCreateView(LoginRequiredMixin, CreateView):
+class StoryCreateView(CustomUserTest, CreateView):
     """Create a story."""
 
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
+    # TODO From Joel: see note above; make this /orgs/1/stories/new, so the URL is bound
+    # to the org, rather than being "your" organization.
 
     model = Story
     form_class = StoryForm
+
+    def test_user(self, user):
+        """User must be member of an org."""
+
+        if user.organization:
+            return True
+
+        raise PermissionDenied()
 
     def get_form_kwargs(self):
         """Pass current user organization to the form."""
@@ -124,16 +120,27 @@ class StoryCreateView(LoginRequiredMixin, CreateView):
         return redirect(self.get_success_url())
 
 
-class StoryUpdateView(LoginRequiredMixin, FormMessagesMixin, UpdateView):
+class StoryUpdateView(CustomUserTest, FormMessagesMixin, UpdateView):
     """Update a story."""
-
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
 
     model = Story
     form_class = StoryForm
     form_invalid_message = "Something went wrong, changes were not saved"
     form_valid_message = "Changes saved"
+
+    def test_user(self, user):
+        """User must be member of the story's org or a collaborating org."""
+
+        # FIXME : needs to handle contractors
+
+        story = self.object = self.get_object()
+        org = user.organization
+
+        if (org == story.organization or
+                (story.collaborate and org in story.collaborate_with.all())):
+            return True
+
+        raise PermissionDenied()
 
     def get_form_kwargs(self):
         """Pass current user organization to the form."""
@@ -157,10 +164,21 @@ class StoryUpdateView(LoginRequiredMixin, FormMessagesMixin, UpdateView):
 class StoryDetailView(LoginRequiredMixin, DetailView):
     """Show all the details and related items for a story."""
 
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
-
     model = Story
+
+    def test_user(self, user):
+        """User must be member of the story's org or a collaborating org."""
+
+        # FIXME : needs to handle contractors
+
+        story = self.object = self.get_object()
+        org = user.organization
+
+        if (org == story.organization or
+                (story.collaborate and org in story.collaborate_with.all())):
+            return True
+
+        raise PermissionDenied()
 
     def get_form_kwargs(self):
         """Pass organization to forms."""
@@ -169,13 +187,11 @@ class StoryDetailView(LoginRequiredMixin, DetailView):
         kw.update({'organization': self.request.user.organization})
         return kw
 
-
     def facets(self):
         """Get all story facets"""
 
         self.object = self.get_object()
         return self.object.get_story_facets()
-
 
     def story_discussion(self):
         """Get discussion, comments and comment form for the story."""
@@ -186,7 +202,6 @@ class StoryDetailView(LoginRequiredMixin, DetailView):
         form = CommentForm()
         return {'discussion': discussion, 'comments': comments, 'form': form}
 
-
     def story_notes(self):
         """Get notes and note form for the story."""
 
@@ -194,7 +209,6 @@ class StoryDetailView(LoginRequiredMixin, DetailView):
         notes = self.object.notes.all().order_by('-creation_date')
         form = NoteForm()
         return {'notes': notes, 'form': form}
-
 
     # FIXME Currently causing error because org is not getting passed to TaskForm
     # Commented out task form and version of return statement that uses it.
@@ -211,16 +225,15 @@ class StoryDetailView(LoginRequiredMixin, DetailView):
         complete_ct = complete.count()
         # form = TaskForm()
         return {
-                'tasks': tasks,
-                'identified': identified,
-                'inprogress': inprogress,
-                'complete': complete,
-                'identified_ct': identified_ct,
-                'inprogress_ct': inprogress_ct,
-                'complete_ct': complete_ct
-                # 'form': form,
-                }
-
+            'tasks': tasks,
+            'identified': identified,
+            'inprogress': inprogress,
+            'complete': complete,
+            'identified_ct': identified_ct,
+            'inprogress_ct': inprogress_ct,
+            'complete_ct': complete_ct
+            # 'form': form,
+        }
 
     # FIXME Currently causing error because org is not getting passed to EventForm
     # Commented out task form and version of return statement that uses it.
@@ -233,7 +246,6 @@ class StoryDetailView(LoginRequiredMixin, DetailView):
         # return {'events': events, 'form': form}
         return {'events': events}
 
-
     def story_assets(self):
         """Return all the assets associated with a story."""
 
@@ -242,7 +254,7 @@ class StoryDetailView(LoginRequiredMixin, DetailView):
         documents = self.object.get_story_documents()
         audio = self.object.get_story_audio()
         video = self.object.get_story_video()
-        return {'images': images, 'documents': documents, 'audio': audio, 'video': video,}
+        return {'images': images, 'documents': documents, 'audio': audio, 'video': video, }
 
 
 # class StoryDeleteView(DeleteView, FormMessagesMixin):
@@ -254,9 +266,6 @@ class StoryDeleteView(LoginRequiredMixin, DeleteView):
     available if useful.
     """
 
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
-
     # FIXME: this would be a great place to use braces' messages; usage commented out for now
 
     model = Story
@@ -264,6 +273,21 @@ class StoryDeleteView(LoginRequiredMixin, DeleteView):
 
     # form_valid_message = "Deleted."
     # form_invalid_message = "Please check form."
+
+    def test_user(self, user):
+        """User must be member of the story's org or a collaborating org."""
+
+        # FIXME : needs to handle contractors
+
+        story = self.object = self.get_object()
+        org = user.organization
+
+        if ((org == story.organization or
+             (story.collaborate and org in story.collaborate_with.all()))
+                and user.user_type in [User.ADMIN, User.EDITOR]):
+            return True
+
+        raise PermissionDenied()
 
     def get_success_url(self):
         """Post-deletion, return to the story list."""
@@ -280,9 +304,9 @@ def story_team_options_json(request, pk):
     team = Story.get_story_team(story)
     story_team = {}
     for item in team:
-        story_team[item.id]=item.credit_name
+        story_team[item.id] = item.credit_name
     print story_team
-    return HttpResponse(json.dumps(story_team), content_type = "application/json")
+    return HttpResponse(json.dumps(story_team), content_type="application/json")
 
 
 def story_schedule(request, pk):
