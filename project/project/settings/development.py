@@ -6,11 +6,12 @@ from django.core.mail.utils import DNS_NAME
 
 from .base import *
 
+##############################################################################
+# Core Django stuff
 
 SECRET_KEY = "abcdef"
 
 DEBUG = True
-ALLOWED_HOSTS = ['localhost']
 
 INSTALLED_APPS += [
     'debug_toolbar',
@@ -18,55 +19,21 @@ INSTALLED_APPS += [
 
 INTERNAL_IPS = ["127.0.0.1"]
 
-MIDDLEWARE_CLASSES += [
+MIDDLEWARE += [
     'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
-
-##############################################################################################
+#######################################
 # Email
 #
 # We don't want to send real email, so just print to the console
+
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 # Fix for broken DNS at some wifi hot-spots
 DNS_NAME._fqdn = "localhost"
 
-
-##############################################################################################
-# Logging & Error Reporting
-
-# Blather on about every little thing that happens. We programmers get lonely.
-
-# LOGGING = {
-#     'version': 1,
-#     'disable_existing_loggers': False,
-#     'handlers': {
-#         'console': {
-#             'level': 'DEBUG',
-#             'class': 'logging.StreamHandler',
-#         },
-#     },
-#     'loggers': {
-#         '': {
-#             'handlers': ['console'],
-#             'level': 'DEBUG',
-#         },
-#         'factory': {  # FactoryBoy is too chatty!
-#             'handlers': ['console'],
-#             'level': 'INFO',
-#         },
-#         'django.db.backends': {
-#             'handlers': ['console'],
-#             'level': 'DEBUG',
-#             'propagate': False,
-#         }
-#
-#     },
-# }
-
-
-##############################################################################################
+######################################
 # Caching --- don't actual cache
 
 CACHES = {
@@ -75,8 +42,40 @@ CACHES = {
     }
 }
 
+######################################
+# Logging & Error Reporting
 
-##############################################################################################
+# Blather on about every little thing that happens. We programmers get lonely.
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        '': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+        'factory': {  # FactoryBoy is too chatty!
+            'handlers': ['console'],
+            'level': 'INFO',
+        },
+        'django.db.backends': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        }
+
+    },
+}
+
+
+######################################
 # Testing
 #
 # We don't want to spray all sorts of factory-made fake media stuff in the media folder

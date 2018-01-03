@@ -1,57 +1,54 @@
-# Directly Installed
-Django<2.0
-django-activity-stream
-django-allauth
-django-bootstrap3
-django-bootstrap3-datetimepicker-2
-django-braces
-django-simple-history
-django-tinymce
-django-watson
-djangorestframework
-django-embed-video
-django-imagekit
-pilkit
-Pillow
-psycopg2
-django-model-utils
-django-datetime-widget
-django-extra-views
-
-# req'd by actstream
-django-jsonfield
-django-jsonfield-compat
-
-# temp needed until newer django
-# django-appconf==1.0.1
+# Requirements for Facet
+#
+# PLEASE don't just replace this with the outcome of `pip freeze` -- this should
+# list only the things needed by Facet in both development and production mode;
+# dev-specific stuff goes in `local.txt` and production-specific stuff in
+# `production.txt`. Also, it's very helpful to keep things separated into
+# categories, as below.
 
 
-# deps that are included by others
-# certifi==2017.11.5
-# chardet==3.0.4
-# idna==2.6
-# oauthlib==2.0.6
-# python-openid==2.2.5
-# pytz==2017.3
-# requests==2.18.4
-# requests-oauthlib==0.8.0
-# six==1.11.0
-# urllib3==1.22
+# core add-on products
 
+Django==1.11.9
+django-activity-stream==0.6.4
+django-allauth==0.34.0
+django-bootstrap3-datetimepicker-2==2.5.0
+django-bootstrap3==9.1.0
+django-braces==1.12.0
+django-datetime-widget==0.9.3
+django-embed-video==1.1.2
+django-extra-views==0.9.0
+django-imagekit==4.0.2
+django-model-utils==3.0.0
+django-simple-history==1.9.0
+django-tinymce==2.7.0
+django-watson==1.5.0
+djangorestframework==3.7.7
 
+# req'd by django-imagekit but not installed automatically
+#
+# note that Pillow has some system dependencies for graphic libraries
 
+pilkit==2.0
+Pillow==5.0.0
+psycopg2==2.7.3.2
 
-# may not be in use
-# anyjson==0.3.3
-# blessed==1.9.5
-# texttable==0.8.4
-# colorama==0.3.7
-# click==6.2
+# req'd by django-activity-stream but not installed automatically
 
-# Not directly installed or unsure why/when installed
-# boto==2.39.0
-# botocore==1.4.15
+django-jsonfield==1.0.1
+django-jsonfield-compat==0.4.4
 
-# django-storages==1.4
-# django-chosen==0.1
-# django-filebrowser==3.6.1
+# sub-requirements of other things; these would be installed automatically,
+# but are listed here to ensure versions don't accidentally change
+
+certifi==2017.11.5
+chardet==3.0.4
+idna==2.6
+oauthlib==2.0.6
+python-openid==2.2.5
+pytz==2017.3
+requests-oauthlib==0.8.0
+requests==2.18.4
+six==1.11.0
+sqlparse==0.2.4
+urllib3==1.22

@@ -130,6 +130,7 @@
 
 
 <body data-layout="horizontal-navigation-3" data-palette="palette-2" data-direction="ltr">
+  {{ request.org }} {{ request.is_contractor }}
   {% load bootstrap3 %}
   {% load humanize %}
   <!-- ====================================== -->
@@ -822,8 +823,8 @@
     <script src="{% static 'bower_components/sweetalert2/src/sweetalert2.js' %}"></script>
 
 
-
-
+    {# Don't change/remove this next line; used to show render times on staging. #}
+    <!-- RENDER_TIME -->
 
 </body>
 

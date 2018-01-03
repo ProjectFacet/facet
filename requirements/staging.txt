@@ -1,0 +1,4 @@
+-r production.txt
+-r test.txt
+
+# Requirements for staging (like production, but can run tests)
