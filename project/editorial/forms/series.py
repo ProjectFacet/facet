@@ -8,7 +8,7 @@ from editorial.models import (
     Series,
 )
 
-from .customwidgets import ArrayFieldSelectMultiple
+from editorial.widgets import ArrayFieldSelectMultiple
 
 
 class SeriesForm(forms.ModelForm):

@@ -9,7 +9,7 @@ from editorial.models import (
     Story,
 )
 
-from .customwidgets import ArrayFieldSelectMultiple
+from editorial.widgets import ArrayFieldSelectMultiple
 
 
 class StoryForm(forms.ModelForm):

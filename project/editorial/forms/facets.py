@@ -12,7 +12,7 @@ from editorial.models import (
 from editorial.models.facets import COMMON_FIELDS
 from tinymce.widgets import TinyMCE
 
-from .customwidgets import ArrayFieldSelectMultiple
+from editorial.widgets import ArrayFieldSelectMultiple
 
 
 # from django.contrib.staticfiles.templatetags.staticfiles import static

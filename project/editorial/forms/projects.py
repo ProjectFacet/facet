@@ -6,7 +6,7 @@ from editorial.models import (
     Project,
 )
 
-from .customwidgets import ArrayFieldSelectMultiple
+from editorial.widgets import ArrayFieldSelectMultiple
 
 
 class ProjectForm(forms.ModelForm):

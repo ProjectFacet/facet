@@ -2,7 +2,7 @@
 
 from django.db.models import Q
 
-from .customwidgets import ArrayFieldSelectMultiple
+from editorial.widgets import ArrayFieldSelectMultiple
 from django import forms
 from django.forms import TextInput, Select, HiddenInput
 from django.forms import modelformset_factory

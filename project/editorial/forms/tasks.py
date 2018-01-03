@@ -12,7 +12,7 @@ from editorial.models import (
     Event,
 )
 
-from .customwidgets import ArrayFieldSelectMultiple
+from editorial.widgets import ArrayFieldSelectMultiple
 
 
 class TaskForm(forms.ModelForm):
