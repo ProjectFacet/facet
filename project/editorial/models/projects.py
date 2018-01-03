@@ -1,19 +1,12 @@
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import Q
-from model_utils.models import TimeStampedModel
-import time as timemk
-from datetime import datetime, timedelta, time
-from imagekit.models import ProcessedImageField, ImageSpecField
-from pilkit.processors import ResizeToFit, SmartResize
 from django.utils.encoding import python_2_unicode_compatible
-from django.core.urlresolvers import reverse
-from django.utils import timezone
-from django.shortcuts import get_object_or_404
-from django.core.exceptions import ValidationError
+from imagekit.models import ImageSpecField
+from pilkit.processors import SmartResize
 
-from . import User, Organization, Network, Discussion
 from . import SimpleImage, SimpleDocument, SimpleAudio, SimpleVideo
-# from . import Note
+from . import User, Organization, Network
 
 
 #-----------------------------------------------------------------------#

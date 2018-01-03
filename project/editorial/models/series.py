@@ -1,20 +1,11 @@
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import Q
-from model_utils.models import TimeStampedModel
-import time as timemk
-from datetime import datetime, timedelta, time
-from imagekit.models import ProcessedImageField, ImageSpecField
 from django.utils.encoding import python_2_unicode_compatible
-from django.core.urlresolvers import reverse
-from django.utils import timezone
-from django.shortcuts import get_object_or_404
-from django.core.exceptions import ValidationError
-# from django.db.models.signals import post_save
-# from django.dispatch import receiver
 
-from . import User, Organization, Network, Discussion
 from . import SimpleImage, SimpleDocument, SimpleAudio, SimpleVideo
-# from . import Note
+from . import User, Organization, Network
+
 
 #-----------------------------------------------------------------------#
 #  SERIES
@@ -136,7 +127,6 @@ class Series(models.Model):
         blank=True,
     )
 
-
     class Meta:
         verbose_name = 'Series'
         verbose_name_plural = "Series"
@@ -198,11 +188,14 @@ class Series(models.Model):
 
         # get all stories associated with a series
         series_stories = self.story_set.all()
+
         # get all video assets associated with those stories.
         series_video = []
+
         for story in series_stories:
             videos=story.get_story_video()
             series_video.extend(videos)
+
         return set(series_video)
 
     def get_series_events(self):

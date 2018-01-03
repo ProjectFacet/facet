@@ -1,12 +1,11 @@
-from django.db import models
-from django.db.models import Q
 from django.contrib.postgres.fields import ArrayField
-from imagekit.models import ProcessedImageField, ImageSpecField
-from django.utils.encoding import python_2_unicode_compatible
 from django.core.urlresolvers import reverse
-from django.shortcuts import get_object_or_404
+from django.db import models
+from django.utils.encoding import python_2_unicode_compatible
+from imagekit.models import ImageSpecField
 
 from .people import User, Organization
+
 
 #-----------------------------------------------------------------------#
 #   Assets:

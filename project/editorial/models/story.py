@@ -1,18 +1,14 @@
+import time as timemk
+
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import Q
-from model_utils.models import TimeStampedModel
-import time as timemk
-from datetime import datetime, timedelta, time
-from imagekit.models import ProcessedImageField, ImageSpecField
-from django.utils.encoding import python_2_unicode_compatible
-from django.core.urlresolvers import reverse
-from django.utils import timezone
 from django.shortcuts import get_object_or_404
-from django.core.exceptions import ValidationError
+from django.utils.encoding import python_2_unicode_compatible
 
-from . import User, Organization, Network, Project, Series, Discussion
 from . import SimpleImage, SimpleDocument, SimpleAudio, SimpleVideo
-# from . import Note
+from . import User, Organization, Network, Project, Series, Discussion
+
 
 #-----------------------------------------------------------------------#
 #  STORY
@@ -190,12 +186,14 @@ class Story(models.Model):
         story copy detail record.
         """
 
-        # XXX Copied stories need to maintain attribution of team
+        # FIXME Copied stories need to maintain attribution of team
 
         story_copy = get_object_or_404(Story, id=self.id)
+
         # Set the id = None to create the copy the story instance
         story_copy.id = None
         story_copy.save()
+
         # clear relationships if they exist
         if story_copy.series:
             story_copy.Series.clear()
@@ -203,6 +201,7 @@ class Story(models.Model):
             story_copy.share_with.clear()
         if story_copy.collaborate_with:
             story_copy.collaborate_with.clear()
+
         # clear attributes for the copying organization
         story_copy.original_story = False
         story_copy.sensitive = False
@@ -212,11 +211,11 @@ class Story(models.Model):
         story_copy.archived = False
         story_copy.discussion = Discussion.objects.create_discussion("STO")
         story_copy.save()
+
         return story_copy
 
     def get_story_download(self):
-        """ Return rst formatted string for downloading story meta.
-        """
+        """Return rst formatted string for downloading story meta."""
 
         # loop over m2m and get the values as string
         team = self.team.all()
