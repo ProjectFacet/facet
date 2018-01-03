@@ -488,7 +488,6 @@ class Facet(models.Model):
         self.save()
         return self
 
-
     def get_facet_images(self):
         """Retrieve all images objects associated with a facet."""
 
@@ -581,6 +580,16 @@ class Facet(models.Model):
     @property
     def type(self):
         return "Facet"
+
+    def is_editable_by_org(self, org):
+        """Can this facet be edited by this org?"""
+
+        # FIXME: add contractor access?
+
+        story = self.organization
+
+        return (org == story.organization or
+                (story.collaborate and org in story.collaborate_with.all()))
 
 
 @receiver(post_save, sender=Facet)

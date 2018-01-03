@@ -399,6 +399,8 @@ class Story(models.Model):
     def is_editable_by_org(self, org):
         """Can this story be edited by this org?"""
 
+        # FIXME: add contractor access?
+
         return (org == self.organization or
              (self.collaborate and org in self.collaborate_with.all()))
 
