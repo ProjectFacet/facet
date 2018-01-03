@@ -19,6 +19,17 @@ from editorial.models import (
 #----------------------------------------------------------------------#
 #   Inbox Views
 #----------------------------------------------------------------------#
+### TODO
+# class Inbox(TemplateView):
+#     """ Return discussion inbox.
+#
+#     Displays comments from SeriesPlan Discussions involving user.
+#     Displays comments from StoryPlan Discussions involving user.
+#     Displays comments from any Facet Editing Discussion involving user.
+#     Displays comments from any PrivateDiscussion involving user.
+#     """
+
+
 
 # ACCESS: All users have access to their inbox.
 def inbox(request):
