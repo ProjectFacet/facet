@@ -1,36 +1,16 @@
-"""Forms for Stories and related entities.
-
-"""
-
-import datetime
+"""Forms for Stories and related entities."""
 from bootstrap3_datetime.widgets import DateTimePicker
-from .customwidgets import OurDateTimePicker, ArrayFieldSelectMultiple
 from django import forms
-from django.utils.safestring import mark_safe
-from django.contrib.auth import get_user_model
-from django.forms import Textarea, TextInput, RadioSelect, Select, NumberInput, CheckboxInput, CheckboxSelectMultiple, FileField
-from django.contrib.postgres.fields import ArrayField
-from datetimewidget.widgets import DateTimeWidget
-from tinymce.widgets import TinyMCE
 from django.db.models import Q
-# from django.contrib.staticfiles.templatetags.staticfiles import static
-
-
+from django.forms import Textarea, TextInput, Select
 from editorial.models import (
     Project,
     Series,
     Story,
-    Facet,
-    ImageAsset,
-    DocumentAsset,
-    AudioAsset,
-    VideoAsset,
 )
 
+from .customwidgets import ArrayFieldSelectMultiple
 
-# ------------------------------ #
-#          Story Forms           #
-# ------------------------------ #
 
 class StoryForm(forms.ModelForm):
     """ Form to create/edit a new story. """
@@ -43,22 +23,24 @@ class StoryForm(forms.ModelForm):
         # FIXME should be org users, story partner org users and eligible contractors
         self.fields['team'].queryset = org.get_org_users()
         # limit project and series to those owned by org or part of content and org is collaborator for
-        self.fields['project'].queryset = Project.objects.filter(Q(organization=org) | Q(collaborate_with=org))
-        self.fields['series'].queryset = Series.objects.filter(Q(organization=org) | Q(collaborate_with=org))
+        self.fields['project'].queryset = Project.objects.filter(
+            Q(organization=org) | Q(collaborate_with=org))
+        self.fields['series'].queryset = Series.objects.filter(
+            Q(organization=org) | Q(collaborate_with=org))
         # set empty labels
         self.fields['series'].empty_label = 'Select a series'
         self.fields['project'].empty_label = 'Select a project'
 
     embargo_datetime = forms.DateTimeField(
         required=False,
-        widget=OurDateTimePicker(
+        widget=DateTimePicker(
             options={'format': 'YYYY-MM-DD HH:mm'},
             attrs={'id': 'story-embargo-picker'})
     )
 
     share_with_date = forms.DateTimeField(
         required=False,
-        widget=OurDateTimePicker(
+        widget=DateTimePicker(
             options={'format': 'YYYY-MM-DD HH:mm'},
             attrs={'id': 'story-share-picker'})
     )
@@ -80,15 +62,22 @@ class StoryForm(forms.ModelForm):
                   'share_with',
                   'share_with_date',
                   'archived',
-        ]
+                  ]
         widgets = {
             'name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Story Name'}),
-            'story_description': Textarea(attrs={'class': 'form-control', 'placeholder': 'Description'}),
-            'team': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select', 'id':'story-team', 'data-placeholder': 'Select Team'}),
-            'collaborate_with': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select', 'id':'collaborate-with', 'data-placeholder': 'Select Partners'}),
-            'share_with': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select', 'id':'share-with', 'data-placeholder': 'Select Networks'}),
-            'series': Select(attrs={'class': 'c-select', 'id':'story-series'}),
-            'project': Select(attrs={'class': 'c-select', 'id':'story-project'}),
+            'story_description': Textarea(
+                attrs={'class': 'form-control', 'placeholder': 'Description'}),
+            'team': ArrayFieldSelectMultiple(
+                attrs={'class': 'chosen-select', 'id': 'story-team',
+                       'data-placeholder': 'Select Team'}),
+            'collaborate_with': ArrayFieldSelectMultiple(
+                attrs={'class': 'chosen-select', 'id': 'collaborate-with',
+                       'data-placeholder': 'Select Partners'}),
+            'share_with': ArrayFieldSelectMultiple(
+                attrs={'class': 'chosen-select', 'id': 'share-with',
+                       'data-placeholder': 'Select Networks'}),
+            'series': Select(attrs={'class': 'c-select', 'id': 'story-series'}),
+            'project': Select(attrs={'class': 'c-select', 'id': 'story-project'}),
         }
 
     # class Media:
@@ -96,7 +85,6 @@ class StoryForm(forms.ModelForm):
     #         'all': ('css/bootstrap-datetimepicker.css', 'css/chosen.min.css')
     #     }
     #     js = ('scripts/chosen.jquery.min.js',)
-
 
 # ------------------------------ #
 #        Download Form           #

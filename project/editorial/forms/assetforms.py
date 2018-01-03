@@ -1,20 +1,7 @@
-"""Forms for Assets and related entities.
+"""Forms for Assets and related entities."""
 
-"""
-
-import datetime
-from bootstrap3_datetime.widgets import DateTimePicker
-from .customwidgets import OurDateTimePicker, ArrayFieldSelectMultiple
 from django import forms
-from django.utils.safestring import mark_safe
-from django.contrib.auth import get_user_model
-from django.forms import Textarea, TextInput, RadioSelect, Select, NumberInput, CheckboxInput, CheckboxSelectMultiple, FileField, Form, ModelMultipleChoiceField
-from django.contrib.postgres.fields import ArrayField
-from datetimewidget.widgets import DateTimeWidget
-from tinymce.widgets import TinyMCE
-from django.db.models import Q
-# from django.contrib.staticfiles.templatetags.staticfiles import static
-
+from django.forms import Textarea, TextInput, Select, Form
 
 from editorial.models import (
     ImageAsset,
@@ -47,10 +34,13 @@ class ImageAssetForm(forms.ModelForm):
         ]
         widgets = {
             'title': TextInput(attrs={'class': 'form-control', 'placeholder': 'Asset Title'}),
-            'description': Textarea(attrs={'class': 'form-control', 'rows':3, 'placeholder': 'Description'}),
-            'attribution': Textarea(attrs={'class': 'form-control', 'rows':3, 'placeholder': 'Attribution'}),
+            'description': Textarea(
+                attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Description'}),
+            'attribution': Textarea(
+                attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Attribution'}),
             'asset_type': Select(attrs={'class': 'form-control'}),
-            'keywords': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Keywords'}),
+            'keywords': Textarea(
+                attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Keywords'}),
         }
 
 
@@ -69,10 +59,13 @@ class DocumentAssetForm(forms.ModelForm):
         ]
         widgets = {
             'title': TextInput(attrs={'class': 'form-control', 'placeholder': 'Asset Title'}),
-            'description': Textarea(attrs={'class': 'form-control', 'rows':3, 'placeholder': 'Description'}),
-            'attribution': Textarea(attrs={'class': 'form-control', 'rows':3, 'placeholder': 'Attribution'}),
+            'description': Textarea(
+                attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Description'}),
+            'attribution': Textarea(
+                attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Attribution'}),
             'asset_type': Select(attrs={'class': 'form-control'}),
-            'keywords': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Keywords'}),
+            'keywords': Textarea(
+                attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Keywords'}),
         }
 
 
@@ -92,11 +85,14 @@ class AudioAssetForm(forms.ModelForm):
         ]
         widgets = {
             'title': TextInput(attrs={'class': 'form-control', 'placeholder': 'Asset Title'}),
-            'description': Textarea(attrs={'class': 'form-control', 'rows':3, 'placeholder': 'Description'}),
-            'attribution': Textarea(attrs={'class': 'form-control', 'rows':3, 'placeholder': 'Attribution'}),
+            'description': Textarea(
+                attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Description'}),
+            'attribution': Textarea(
+                attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Attribution'}),
             'link': TextInput(attrs={'class': 'form-control', 'placeholder': 'Link'}),
             'asset_type': Select(attrs={'class': 'form-control'}),
-            'keywords': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Keywords'}),
+            'keywords': Textarea(
+                attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Keywords'}),
         }
 
 
@@ -116,11 +112,14 @@ class VideoAssetForm(forms.ModelForm):
         ]
         widgets = {
             'title': TextInput(attrs={'class': 'form-control', 'placeholder': 'Asset Title'}),
-            'description': Textarea(attrs={'class': 'form-control', 'rows':3, 'placeholder': 'Description'}),
-            'attribution': Textarea(attrs={'class': 'form-control', 'rows':3, 'placeholder': 'Attribution'}),
+            'description': Textarea(
+                attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Description'}),
+            'attribution': Textarea(
+                attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Attribution'}),
             'link': TextInput(attrs={'class': 'form-control', 'placeholder': 'Link'}),
             'asset_type': Select(attrs={'class': 'form-control'}),
-            'keywords': Textarea(attrs={'class': 'form-control', 'rows':2, 'placeholder': 'Keywords'}),
+            'keywords': Textarea(
+                attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Keywords'}),
         }
 
 
@@ -134,8 +133,9 @@ class LibraryImageAssociateForm(Form):
     def __init__(self, *args, **kwargs):
         org = kwargs.pop("organization")
         super(LibraryImageAssociateForm, self).__init__(*args, **kwargs)
-        self.fields['images'] = forms.ModelMultipleChoiceField(queryset = org.imageasset_set.all(),
-                                        required=False)
+        self.fields['images'] = forms.ModelMultipleChoiceField(
+            queryset=org.imageasset_set.all(),
+            required=False)
 
 
 class LibraryDocumentAssociateForm(Form):
@@ -144,8 +144,9 @@ class LibraryDocumentAssociateForm(Form):
     def __init__(self, *args, **kwargs):
         org = kwargs.pop("organization")
         super(LibraryDocumentAssociateForm, self).__init__(*args, **kwargs)
-        self.fields['documents'] = forms.ModelMultipleChoiceField(queryset = org.documentasset_set.all(),
-                                        required=False)
+        self.fields['documents'] = forms.ModelMultipleChoiceField(
+            queryset=org.documentasset_set.all(),
+            required=False)
 
 
 class LibraryAudioAssociateForm(Form):
@@ -154,8 +155,9 @@ class LibraryAudioAssociateForm(Form):
     def __init__(self, *args, **kwargs):
         org = kwargs.pop("organization")
         super(LibraryAudioAssociateForm, self).__init__(*args, **kwargs)
-        self.fields['audio'] = forms.ModelMultipleChoiceField(queryset = org.audioasset_set.all(),
-                                        required=False)
+        self.fields['audio'] = forms.ModelMultipleChoiceField(
+            queryset=org.audioasset_set.all(),
+            required=False)
 
 
 class LibraryVideoAssociateForm(Form):
@@ -164,9 +166,9 @@ class LibraryVideoAssociateForm(Form):
     def __init__(self, *args, **kwargs):
         org = kwargs.pop("organization")
         super(LibraryVideoAssociateForm, self).__init__(*args, **kwargs)
-        self.fields['video'] = forms.ModelMultipleChoiceField(queryset = org.videoasset_set.all(),
-                                        required=False)
-
+        self.fields['video'] = forms.ModelMultipleChoiceField(
+            queryset=org.videoasset_set.all(),
+            required=False)
 
 
 # ------------------------------ #
@@ -185,7 +187,8 @@ class SimpleImageForm(forms.ModelForm):
         ]
         widgets = {
             'title': TextInput(attrs={'class': 'form-control', 'placeholder': 'Title'}),
-            'description': Textarea(attrs={'class': 'form-control', 'rows':3, 'placeholder': 'Description'}),
+            'description': Textarea(
+                attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Description'}),
         }
 
 
@@ -201,7 +204,8 @@ class SimpleDocumentForm(forms.ModelForm):
         ]
         widgets = {
             'title': TextInput(attrs={'class': 'form-control', 'placeholder': 'Title'}),
-            'description': Textarea(attrs={'class': 'form-control', 'rows':3, 'placeholder': 'Description'}),
+            'description': Textarea(
+                attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Description'}),
         }
 
 
@@ -218,7 +222,8 @@ class SimpleAudioForm(forms.ModelForm):
         ]
         widgets = {
             'title': TextInput(attrs={'class': 'form-control', 'placeholder': 'Title'}),
-            'description': Textarea(attrs={'class': 'form-control', 'rows':3, 'placeholder': 'Description'}),
+            'description': Textarea(
+                attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Description'}),
             'link': TextInput(attrs={'class': 'form-control', 'placeholder': 'Link'}),
 
         }
@@ -236,7 +241,8 @@ class SimpleVideoForm(forms.ModelForm):
         ]
         widgets = {
             'title': TextInput(attrs={'class': 'form-control', 'placeholder': 'Title'}),
-            'description': Textarea(attrs={'class': 'form-control', 'rows':3, 'placeholder': 'Description'}),
+            'description': Textarea(
+                attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Description'}),
             'link': TextInput(attrs={'class': 'form-control', 'placeholder': 'Link'}),
 
         }

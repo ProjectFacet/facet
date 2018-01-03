@@ -6,24 +6,11 @@
     Assignment
 
 """
-
-import datetime
 from bootstrap3_datetime.widgets import DateTimePicker
-from .customwidgets import OurDateTimePicker, ArrayFieldSelectMultiple
 from django import forms
-from django.utils.safestring import mark_safe
-from django.contrib.auth import get_user_model
-from django.forms import Textarea, TextInput, RadioSelect, Select, NumberInput, CheckboxInput, CheckboxSelectMultiple, FileField
-from django.contrib.postgres.fields import ArrayField
-from datetimewidget.widgets import DateTimeWidget
-from tinymce.widgets import TinyMCE
 from django.db.models import Q
-# from django.contrib.staticfiles.templatetags.staticfiles import static
-
-
+from django.forms import Textarea, TextInput, Select
 from editorial.models import (
-    User,
-    Organization,
     ContractorProfile,
     TalentEditorProfile,
     ContractorSubscription,
@@ -33,10 +20,6 @@ from editorial.models import (
     Call,
     Pitch,
     Assignment,
-    SimpleImage,
-    SimpleDocument,
-    SimpleAudio,
-    SimpleVideo,
 )
 
 
@@ -57,13 +40,20 @@ class ContractorProfileForm(forms.ModelForm):
             'public',
         ]
         widgets = {
-            'address': Textarea(attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Address'}),
-            'availability': TextInput(attrs={'class': 'form-control', 'placeholder': 'Availability'}),
-            'current_location': TextInput(attrs={'class': 'form-control', 'placeholder': 'Current Location'}),
-            'gear': Textarea(attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Gear'}),
-            'portfolio_link1': TextInput(attrs={'class': 'form-control', 'placeholder': 'Portfolio Link 1'}),
-            'portfolio_link2': TextInput(attrs={'class': 'form-control', 'placeholder': 'Portfolio Link 2'}),
-            'portfolio_link3': TextInput(attrs={'class': 'form-control', 'placeholder': 'Portfolio Link 3'}),
+            'address': Textarea(
+                attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Address'}),
+            'availability': TextInput(
+                attrs={'class': 'form-control', 'placeholder': 'Availability'}),
+            'current_location': TextInput(
+                attrs={'class': 'form-control', 'placeholder': 'Current Location'}),
+            'gear': Textarea(
+                attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Gear'}),
+            'portfolio_link1': TextInput(
+                attrs={'class': 'form-control', 'placeholder': 'Portfolio Link 1'}),
+            'portfolio_link2': TextInput(
+                attrs={'class': 'form-control', 'placeholder': 'Portfolio Link 2'}),
+            'portfolio_link3': TextInput(
+                attrs={'class': 'form-control', 'placeholder': 'Portfolio Link 3'}),
         }
 
 
@@ -79,7 +69,7 @@ class OrganizationContractorAffiliationForm(forms.ModelForm):
 
     contractor = forms.ModelChoiceField(
         queryset=ContractorProfile.objects.filter(public=True),
-        widget=forms.Select(attrs={'class': 'c-select', 'id':'affiliation-contractor'}),
+        widget=forms.Select(attrs={'class': 'c-select', 'id': 'affiliation-contractor'}),
         required=True,
     )
 
@@ -97,9 +87,12 @@ class OrganizationContractorAffiliationForm(forms.ModelForm):
         ]
         widgets = {
             'rates': TextInput(attrs={'class': 'form-control', 'placeholder': 'Rates'}),
-            'strengths': TextInput(attrs={'class': 'form-control', 'placeholder': 'Strengths'}),
-            'conflicts': TextInput(attrs={'class': 'form-control', 'placeholder': 'Conflicts'}),
-            'editor_notes': Textarea(attrs={'class': 'form-control', 'rows': 12, 'placeholder': 'Editor Notes'}),
+            'strengths': TextInput(
+                attrs={'class': 'form-control', 'placeholder': 'Strengths'}),
+            'conflicts': TextInput(
+                attrs={'class': 'form-control', 'placeholder': 'Conflicts'}),
+            'editor_notes': Textarea(
+                attrs={'class': 'form-control', 'rows': 12, 'placeholder': 'Editor Notes'}),
         }
 
 
@@ -122,11 +115,10 @@ class CallForm(forms.ModelForm):
 
     expiration_date = forms.DateTimeField(
         required=False,
-        widget=OurDateTimePicker(
+        widget=DateTimePicker(
             options={'format': 'YYYY-MM-DD HH:mm'},
             attrs={'id': 'story-embargo-picker'})
     )
-
 
     class Meta:
         model = Call
@@ -142,8 +134,9 @@ class CallForm(forms.ModelForm):
         widgets = {
             'name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Name'}),
             'text': Textarea(attrs={'class': 'form-control', 'placeholder': 'Text'}),
-            'timeframe': TextInput(attrs={'class': 'form-control', 'placeholder': 'Timeframe'}),
-            'status': Select(attrs={'class': 'c-select', 'id':'call-status'}),
+            'timeframe': TextInput(
+                attrs={'class': 'form-control', 'placeholder': 'Timeframe'}),
+            'status': Select(attrs={'class': 'c-select', 'id': 'call-status'}),
         }
 
 
@@ -152,7 +145,7 @@ class PitchForm(forms.ModelForm):
 
     recipient = forms.ModelChoiceField(
         queryset=TalentEditorProfile.objects.filter(public=True),
-        widget=forms.Select(attrs={'class': 'c-select', 'id':'pitch-recipient'}),
+        widget=forms.Select(attrs={'class': 'c-select', 'id': 'pitch-recipient'}),
         required=True,
     )
 
@@ -168,7 +161,7 @@ class PitchForm(forms.ModelForm):
         widgets = {
             'name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Name'}),
             'text': Textarea(attrs={'class': 'form-control', 'placeholder': 'Text'}),
-            'status': Select(attrs={'class': 'c-select', 'id':'pitch-status'}),
+            'status': Select(attrs={'class': 'c-select', 'id': 'pitch-status'}),
         }
 
 
@@ -179,8 +172,9 @@ class AssignmentForm(forms.ModelForm):
         org = kwargs.pop("organization")
         super(AssignmentForm, self).__init__(*args, **kwargs)
         # limit to stories or facets owned by an organization or that an org is a collaborator on
-        self.fields['story'].queryset=Story.objects.filter(Q(organization=org) | Q(collaborate_with=org))
-        self.fields['facet'].queryset=Facet.objects.filter(Q(organization=org))
+        self.fields['story'].queryset = Story.objects.filter(
+            Q(organization=org) | Q(collaborate_with=org))
+        self.fields['facet'].queryset = Facet.objects.filter(Q(organization=org))
         # set empty labels
         self.fields['contractor'].empty_label = "Select a contractor"
         self.fields['story'].empty_label = 'Select a story'
@@ -188,7 +182,7 @@ class AssignmentForm(forms.ModelForm):
 
     contractor = forms.ModelChoiceField(
         queryset=ContractorProfile.objects.filter(public=True),
-        widget=forms.Select(attrs={'class': 'c-select', 'id':'assignment-contractor'}),
+        widget=forms.Select(attrs={'class': 'c-select', 'id': 'assignment-contractor'}),
         required=True,
     )
 
@@ -207,6 +201,6 @@ class AssignmentForm(forms.ModelForm):
             'name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Name'}),
             'text': Textarea(attrs={'class': 'form-control', 'placeholder': 'Text'}),
             'rate': TextInput(attrs={'class': 'form-control', 'placeholder': 'Rate'}),
-            'story': Select(attrs={'class': 'c-select', 'id':'assignment-story'}),
-            'facet': Select(attrs={'class': 'c-select', 'id':'assignment-facet'}),
+            'story': Select(attrs={'class': 'c-select', 'id': 'assignment-story'}),
+            'facet': Select(attrs={'class': 'c-select', 'id': 'assignment-facet'}),
         }

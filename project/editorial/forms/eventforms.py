@@ -1,33 +1,20 @@
 """Forms for Events and related entities.
 
 """
-
-import datetime
 from bootstrap3_datetime.widgets import DateTimePicker
-from .customwidgets import OurDateTimePicker, ArrayFieldSelectMultiple
 from django import forms
-from django.utils.safestring import mark_safe
-from django.contrib.auth import get_user_model
-from django.forms import Textarea, TextInput, RadioSelect, Select, NumberInput, CheckboxInput, CheckboxSelectMultiple, FileField
-from django.contrib.postgres.fields import ArrayField
-from datetimewidget.widgets import DateTimeWidget
-from tinymce.widgets import TinyMCE
 from django.db.models import Q
-# from django.contrib.staticfiles.templatetags.staticfiles import static
-
-
+from django.forms import Textarea, Select
 from editorial.models import (
-    Organization,
     Project,
     Series,
     Story,
     Event,
 )
 
+from .customwidgets import ArrayFieldSelectMultiple
 
-# ------------------------------ #
-#          Event Forms           #
-# ------------------------------ #
+
 class EventForm(forms.ModelForm):
     """ Form to create/edit an event. """
 
@@ -40,19 +27,22 @@ class EventForm(forms.ModelForm):
         # FIXME add self.org to evt_organization
         self.fields['evt_organization'].queryset = org.get_org_collaborators_vocab()
         # limit project, series and stories to those owned by org or part of content and org is collaborator for
-        self.fields['project'].queryset = Project.objects.filter(Q(collaborate_with=org) | (Q(organization=org)))
-        self.fields['series'].queryset = Series.objects.filter(Q(collaborate_with=org) | (Q(organization=org)))
-        self.fields['story'].queryset = Story.objects.filter(Q(collaborate_with=org) | (Q(organization=org)))
+        self.fields['project'].queryset = Project.objects.filter(
+            Q(collaborate_with=org) | (Q(organization=org)))
+        self.fields['series'].queryset = Series.objects.filter(
+            Q(collaborate_with=org) | (Q(organization=org)))
+        self.fields['story'].queryset = Story.objects.filter(
+            Q(collaborate_with=org) | (Q(organization=org)))
         # set empty labels
-        self.fields['event_type'].empty_label='Event Type'
-        self.fields['evt_organization'].empty_label='Select an Organization'
-        self.fields['project'].empty_label='Select a Project'
-        self.fields['series'].empty_label='Select a Series'
-        self.fields['story'].empty_label='Select a Story'
+        self.fields['event_type'].empty_label = 'Event Type'
+        self.fields['evt_organization'].empty_label = 'Select an Organization'
+        self.fields['project'].empty_label = 'Select a Project'
+        self.fields['series'].empty_label = 'Select a Series'
+        self.fields['story'].empty_label = 'Select a Story'
 
     event_date = forms.DateTimeField(
         required=False,
-        widget=OurDateTimePicker(
+        widget=DateTimePicker(
             options={'format': 'YYYY-MM-DD HH:mm'},
             attrs={'id': 'event_eventdate_picker'}
         )
@@ -73,16 +63,22 @@ class EventForm(forms.ModelForm):
             'story',
         ]
         widgets = {
-            'name': Textarea(attrs={'class': 'form-control', 'rows':1, 'placeholder': 'Name'}),
-            'text': Textarea(attrs={'class': 'form-control', 'id':'task-text', 'rows':15, 'placeholder': 'Details'}),
-            'venue': Textarea(attrs={'class': 'form-control', 'rows':1, 'placeholder': 'Venue'}),
-            'team': ArrayFieldSelectMultiple(attrs={'class': 'chosen-select form-control facet-select', 'id':'event-team', 'data-placeholder': 'Team'}),
-            'event_type': Select(attrs={'class': 'custom-select', 'id':'task-status'}),
-            'evt_organization': Select(attrs={'class': 'custom-select', 'id':'event-organization'}),
-            'project': Select(attrs={'class': 'custom-select', 'id':'event-project'}),
-            'series': Select(attrs={'class': 'custom-select', 'id':'event-series'}),
-            'story': Select(attrs={'class': 'custom-select', 'id':'event-story'}),
-            }
+            'name': Textarea(
+                attrs={'class': 'form-control', 'rows': 1, 'placeholder': 'Name'}),
+            'text': Textarea(attrs={'class': 'form-control', 'id': 'task-text', 'rows': 15,
+                                    'placeholder': 'Details'}),
+            'venue': Textarea(
+                attrs={'class': 'form-control', 'rows': 1, 'placeholder': 'Venue'}),
+            'team': ArrayFieldSelectMultiple(
+                attrs={'class': 'chosen-select form-control facet-select', 'id': 'event-team',
+                       'data-placeholder': 'Team'}),
+            'event_type': Select(attrs={'class': 'custom-select', 'id': 'task-status'}),
+            'evt_organization': Select(
+                attrs={'class': 'custom-select', 'id': 'event-organization'}),
+            'project': Select(attrs={'class': 'custom-select', 'id': 'event-project'}),
+            'series': Select(attrs={'class': 'custom-select', 'id': 'event-series'}),
+            'story': Select(attrs={'class': 'custom-select', 'id': 'event-story'}),
+        }
 
     class Media:
         css = {

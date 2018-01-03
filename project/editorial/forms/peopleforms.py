@@ -1,28 +1,12 @@
-"""Forms for Users and related entities.
+"""Forms for Users and related entities."""
 
-"""
-
-
-import datetime
-from bootstrap3_datetime.widgets import DateTimePicker
-from .customwidgets import OurDateTimePicker, ArrayFieldSelectMultiple
 from django import forms
-from django.utils.safestring import mark_safe
-from django.contrib.auth import get_user_model
-from django.forms import Textarea, TextInput, RadioSelect, Select, NumberInput, CheckboxInput, CheckboxSelectMultiple, FileField
-from django.contrib.postgres.fields import ArrayField
-from datetimewidget.widgets import DateTimeWidget
-from tinymce.widgets import TinyMCE
-# from django.contrib.staticfiles.templatetags.staticfiles import static
-
+from django.forms import Textarea, TextInput, Select, CheckboxInput
 
 from editorial.models import (
     User,
     Organization,
-    TalentEditorProfile,
     Network,
-    Platform,
-    PlatformAccount,
     OrganizationSubscription,
 )
 
@@ -32,7 +16,7 @@ from editorial.models import (
 # ------------------------------ #
 
 class AddUserForm(forms.ModelForm):
-    """ Handles creating users for an organization."""
+    """Handles creating users for an organization."""
 
     class Meta:
         model = User
@@ -43,28 +27,44 @@ class AddUserForm(forms.ModelForm):
             'username': TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}),
             'is_superuser': CheckboxInput(attrs={'class': 'c-indicator c-indicator-default'}),
             'is_staff': CheckboxInput(attrs={'class': 'c-indicator c-indicator-default'}),
-            'user_type': Select(attrs={'class': 'c-select', 'id':'user-type'}),
-            }
+            'user_type': Select(attrs={'class': 'c-select', 'id': 'user-type'}),
+        }
 
 
 class UserProfileForm(forms.ModelForm):
-    """ Handle a user completing their profile."""
+    """Handle a user completing their profile."""
 
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'credit_name', 'title', 'phone', 'email', 'bio', 'location',
-                 'expertise', 'website', 'photo',]
+        fields = [
+            'first_name',
+            'last_name',
+            'credit_name',
+            'title',
+            'phone',
+            'email',
+            'bio',
+            'location',
+            'expertise',
+            'website',
+            'photo',
+        ]
         widgets = {
-            'first_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'First Name'}),
-            'last_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Last Name'}),
-            'credit_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Credit Name'}),
+            'first_name': TextInput(
+                attrs={'class': 'form-control', 'placeholder': 'First Name'}),
+            'last_name': TextInput(
+                attrs={'class': 'form-control', 'placeholder': 'Last Name'}),
+            'credit_name': TextInput(
+                attrs={'class': 'form-control', 'placeholder': 'Credit Name'}),
             'title': TextInput(attrs={'class': 'form-control', 'placeholder': 'Title'}),
             'location': TextInput(attrs={'class': 'form-control', 'placeholder': 'Location'}),
             'email': TextInput(attrs={'class': 'form-control', 'placeholder': 'Email'}),
             'phone': TextInput(attrs={'class': 'form-control', 'placeholder': 'Phone'}),
             'website': TextInput(attrs={'class': 'form-control', 'placeholder': 'Website'}),
-            'bio': Textarea(attrs={'class': 'form-control', 'rows':5, 'placeholder': 'Professional Bio'}),
-            'expertise': Textarea(attrs={'class': 'form-control', 'rows':5, 'placeholder': 'Expertise'}),
+            'bio': Textarea(
+                attrs={'class': 'form-control', 'rows': 5, 'placeholder': 'Professional Bio'}),
+            'expertise': Textarea(
+                attrs={'class': 'form-control', 'rows': 5, 'placeholder': 'Expertise'}),
         }
 
 
@@ -73,16 +73,19 @@ class UserProfileForm(forms.ModelForm):
 # ------------------------------ #
 
 class OrganizationForm(forms.ModelForm):
-    """ Create an Organization. """
+    """Create an Organization."""
 
     class Meta:
         model = Organization
         fields = ['name', 'org_description', 'location', 'logo']
         widgets = {
-            'name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Organization Name'}),
-            'location': TextInput(attrs={'class': 'form-control', 'placeholder': 'Organization Location'}),
-            'org_description': Textarea(attrs={'class': 'form-control', 'placeholder': 'Organization Description'}),
-            }
+            'name': TextInput(
+                attrs={'class': 'form-control', 'placeholder': 'Organization Name'}),
+            'location': TextInput(
+                attrs={'class': 'form-control', 'placeholder': 'Organization Location'}),
+            'org_description': Textarea(
+                attrs={'class': 'form-control', 'placeholder': 'Organization Description'}),
+        }
 
 
 # ------------------------------ #
@@ -94,7 +97,7 @@ class OrganizationSubscriptionForm(forms.ModelForm):
 
     class Meta:
         model = OrganizationSubscription
-        fields = ['collaborations', 'contractors',]
+        fields = ['collaborations', 'contractors', ]
 
 
 # ------------------------------ #
@@ -102,23 +105,23 @@ class OrganizationSubscriptionForm(forms.ModelForm):
 # ------------------------------ #
 
 class NetworkForm(forms.ModelForm):
-    """ Create a new network. """
+    """Create a new network."""
 
     class Meta:
         model = Network
         fields = ['name', 'network_description', 'logo']
         widgets = {
             'name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Network Name'}),
-            'network_description': Textarea(attrs={'class': 'form-control', 'placeholder': 'Description'}),
-            }
+            'network_description': Textarea(
+                attrs={'class': 'form-control', 'placeholder': 'Description'}),
+        }
 
 
 class AddToNetworkForm(forms.Form):
-    """ Add an organization to a network."""
-    pass
+    """Add an organization to a network."""
 
 
 class InviteToNetworkForm(forms.Form):
-    """ Send private message inviting an organization to a network."""
+    """Send private message inviting an organization to a network."""
 
     invited_user = forms.CharField(max_length=100)

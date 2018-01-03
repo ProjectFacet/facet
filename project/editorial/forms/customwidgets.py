@@ -1,10 +1,10 @@
-from bootstrap3_datetime.widgets import DateTimePicker
+"""Custom widgets for Facet."""
+
 from django import forms
 
 
-
-
 class ArrayFieldSelectMultiple(forms.SelectMultiple):
+    """Allow selecting multiple items."""
 
     def __init__(self, *args, **kwargs):
         self.delimiter = kwargs.pop('delimiter', ',')
@@ -14,12 +14,3 @@ class ArrayFieldSelectMultiple(forms.SelectMultiple):
         if isinstance(value, basestring):
             value = value.split(self.delimiter)
         return super(ArrayFieldSelectMultiple, self).render_options(choices, value)
-
-
-class OurDateTimePicker(DateTimePicker):
-	'''Replaces broken bootstrap 3 widget'''
-	def XXX__init__(self, *args, **kwargs):
-		'''calls parent's init, replacing "language" option with "locale'''
-		super(OurDateTimePicker, self).__init__(*args, **kwargs)
-		self.options['locale'] = self.options['language']
-		del self.options['language']

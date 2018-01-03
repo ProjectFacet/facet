@@ -1,6 +1,5 @@
-"""Forms for Platform Accounts and related entities.
+"""Forms for Platform Accounts and related entities."""
 
-"""
 from django.db.models import Q
 
 from .customwidgets import ArrayFieldSelectMultiple
