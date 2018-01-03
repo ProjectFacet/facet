@@ -13,7 +13,9 @@ class NoteForm(forms.ModelForm):
 
     class Meta:
         model = Note
+
         fields = ['title', 'text', 'important']
+
         widgets = {
             'title': Textarea(
                 attrs={'id': 'nn-title', 'required': True, 'placeholder': 'Note Title',

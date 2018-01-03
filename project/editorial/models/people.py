@@ -13,9 +13,6 @@ from imagekit.models import ImageSpecField
 from pilkit.processors import SmartResize
 
 
-# from .discussion import Discussion, Comment, PrivateMessage
-
-
 #-----------------------------------------------------------------------#
 #   People:
 #   User, Organization, Network

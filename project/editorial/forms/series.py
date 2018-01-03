@@ -1,6 +1,4 @@
-"""Forms for Series and related entities.
-
-"""
+"""Forms for Series and related entities."""
 
 from django import forms
 from django.forms import Textarea, TextInput
@@ -12,11 +10,12 @@ from editorial.widgets import ArrayFieldSelectMultiple
 
 
 class SeriesForm(forms.ModelForm):
-    """ Form to create a new series. """
+    """Form to create a new series."""
 
     def __init__(self, *args, **kwargs):
         org = kwargs.pop("organization")
         super(SeriesForm, self).__init__(*args, **kwargs)
+
         self.fields['collaborate_with'].queryset = org.get_org_collaborators_vocab()
         # FIXME should be org users, series partner org users and eligible contractors
         self.fields['team'].queryset = org.get_org_users()

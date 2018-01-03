@@ -1,3 +1,5 @@
+"""Middleware for Editorial app."""
+
 from .models import ContractorProfile, TalentEditorProfile
 
 

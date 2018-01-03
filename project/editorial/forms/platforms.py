@@ -36,12 +36,14 @@ class PlatformAccountForm(forms.ModelForm):
         if org:
             # limit team to org users
             self.fields['team'].queryset = org.get_org_users()
+
             # limit project to org projects or projects on which an org is a collaborator
             self.fields['project'].queryset = Project.objects.filter(
                 Q(organization=org) | Q(collaborate_with=org))
 
     class Meta:
         model = PlatformAccount
+
         fields = [
             'id',
             'user',
@@ -53,6 +55,7 @@ class PlatformAccountForm(forms.ModelForm):
             'organization',
             'project',
         ]
+
         widgets = {
             'id': HiddenInput(),
             'name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Name'}),

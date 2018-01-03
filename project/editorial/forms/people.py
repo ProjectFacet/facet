@@ -109,7 +109,9 @@ class NetworkForm(forms.ModelForm):
 
     class Meta:
         model = Network
+
         fields = ['name', 'network_description', 'logo']
+
         widgets = {
             'name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Network Name'}),
             'network_description': Textarea(

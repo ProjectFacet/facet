@@ -1,27 +1,17 @@
-from django.db import models
-from django.db.models import Q
 from django.contrib.postgres.fields import ArrayField
-from simple_history.models import HistoricalRecords
-from model_utils.models import TimeStampedModel
-import time as timemk
-from datetime import datetime, timedelta, time
-from imagekit.models import ProcessedImageField, ImageSpecField
-from django.utils.encoding import python_2_unicode_compatible
 from django.core.urlresolvers import reverse
-from django.utils import timezone
-from django.shortcuts import get_object_or_404
-from django.core.exceptions import ValidationError
+from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.utils.encoding import python_2_unicode_compatible
+from simple_history.models import HistoricalRecords
 
-from . import User, Organization, Network, Project, Series, Story
-from .assets import ImageAsset, DocumentAsset, AudioAsset, VideoAsset
+from . import User, Organization, Story
 from .discussion import Discussion
 
-#-----------------------------------------------------------------------#
+
 #-----------------------------------------------------------------------#
 #   FACET
-#-----------------------------------------------------------------------#
 #-----------------------------------------------------------------------#
 
 
@@ -637,7 +627,7 @@ class ContentLicense(models.Model):
 
     Facets can have a related content license. The data for this model
     includes the 7 established variations of the Creative Commons license;
-    these have a blank Organziation field.
+    these have a blank Organization field.
 
     Organizations can also create their own content licenses/reuse terms and
     upload documents for the custom license.
@@ -666,8 +656,8 @@ class ContentLicense(models.Model):
     )
 
     class Meta:
-        verbose_name='Content License'
-        verbose_name_plural='Content Licenses'
+        verbose_name = 'Content License'
+        verbose_name_plural = 'Content Licenses'
         ordering = ['name']
 
     def __str__(self):

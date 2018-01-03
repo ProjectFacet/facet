@@ -1,19 +1,13 @@
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import Q
-from django.contrib.postgres.fields import ArrayField# from simple_history.models import
-from imagekit.models import ProcessedImageField, ImageSpecField
-from pilkit.processors import ResizeToFit, SmartResize
-from django.contrib.auth.models import AbstractUser
 from django.utils.encoding import python_2_unicode_compatible
-from django.core.urlresolvers import reverse
-from django.shortcuts import get_object_or_404
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 
-from .people import User, Organization
 from .assets import SimpleImage, SimpleAudio, SimpleVideo, SimpleDocument
-from .story import Story
 from .facets import Facet
+from .people import User, Organization
+from .story import Story
+
 
 #-----------------------------------------------------------------------#
 #   People:

@@ -1,16 +1,8 @@
 from django.db import models
-from django.db.models import Q
-from model_utils.models import TimeStampedModel
-import time as timemk
-from datetime import datetime, timedelta, time
-from imagekit.models import ProcessedImageField, ImageSpecField
 from django.utils.encoding import python_2_unicode_compatible
-from django.core.urlresolvers import reverse
-from django.utils import timezone
-from django.shortcuts import get_object_or_404
-from django.core.exceptions import ValidationError
 
 from .people import User
+
 
 #-----------------------------------------------------------------------#
 #   Discussion:

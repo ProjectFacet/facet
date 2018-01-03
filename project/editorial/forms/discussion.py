@@ -6,7 +6,6 @@ from django.forms import Textarea
 from editorial.models import (
     PrivateMessage,
     Comment,
-    User,
 )
 
 
@@ -16,15 +15,17 @@ class PrivateMessageForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.request = kwargs.pop("request")
         super(PrivateMessageForm, self).__init__(*args, **kwargs)
-        if self.request.user.organization:
+
+        if self.request.org:
             # FIXME Limit Private Message Recipient list to org team members or network partner team members
             # If the organization manages contractors, allow private messages between contractors and editors
-            self.fields['recipient'].queryset = User.get_user_contact_list_vocab(
-                self.request.user)
+            self.fields['recipient'].queryset = self.request.user.get_user_contact_list_vocab()
 
     class Meta:
         model = PrivateMessage
+
         fields = ['recipient', 'subject', 'text']
+
         widgets = {
             'subject': Textarea(
                 attrs={'id': 'private-comment-subject', 'required': True,
@@ -42,7 +43,9 @@ class CommentForm(forms.ModelForm):
 
     class Meta:
         model = Comment
+
         fields = ['text']
+
         widgets = {
             'text': Textarea(
                 attrs={'id': 'comment-text', 'required': True, 'placeholder': 'Comment',
