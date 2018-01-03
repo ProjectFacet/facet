@@ -428,3 +428,11 @@ img.image-center {
   padding-top: 5px !important;
   padding-bottom: 5px !important;
 }
+
+.horizontal-navigation-3 {
+  margin-bottom: 0px !important;
+}
+
+.no-message {
+  height: .8rem !important;
+}

@@ -63,14 +63,12 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
 
 
-
     <!-- Flat jPlayer Skin -->
     <link rel="stylesheet" href="{% static 'flat-jplayer/css/flat.audio.css' %}">
     <link rel="stylesheet" href="{% static 'flat-jplayer/css/flat.video.css' %}">
 
     <!-- Overlay Styles -->
     <!-- <link rel="stylesheet" href="{% static 'color-overlay/css/overlaymain.css' %}"> -->
-
 
 
     <!-- Project Facet Styles -->
@@ -321,6 +319,20 @@
           </div>
         </div>
     </div>
+    <!-- ====================================== -->
+    <!-- ====================================== -->
+    <!--                MESSAGES                -->
+    <!-- ====================================== -->
+    <!-- ====================================== -->
+    <!-- <div class="container-fluid">
+      <div class="row">
+          <div class="col-xs-12"> -->
+              {% block messages %}
+              <!-- Message Content -->
+              {% endblock messages %}
+          <!-- </div>
+      </div>
+    </div> -->
     <!-- ====================================== -->
     <!-- ====================================== -->
     <!--        Main Part of the Page           -->
