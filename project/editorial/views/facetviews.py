@@ -80,9 +80,6 @@ class FacetTemplateUpdateView(LoginRequiredMixin, UpdateView, FormMessagesMixin)
 class FacetPreCreateView(CustomUserTest, FormView, FormMessagesMixin):
     """First step in creating a facet."""
 
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
-
     form_class = FacetPreCreateForm
     template_name = "editorial/facet_precreate_form.html"
     form_invalid_message = "Something went wrong."

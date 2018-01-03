@@ -3,288 +3,287 @@
 from django.conf.urls import url, include
 
 from views import (
-    generalviews,
-    accountviews,
-    inboxviews,
-    organizationviews,
-    userviews,
-    contractorviews,
-    networkviews,
-    projectviews,
-    seriesviews,
-    storyviews,
-    taskviews,
-    eventviews,
-    assetviews,
-    pushcontentviews,
-    communicationviews,
-    noteviews,
-    downloadviews,
-    scheduleviews,
+    accounts,
+    assets,
+    contractors,
+    discussion,
+    downloads,
+    events,
     facetviews,
-    platformviews,
+    general,
+    inbox,
+    networks,
+    notes,
+    organizations,
+    platforms,
+    projects,
+    pushcontent,
+    schedules,
+    series,
+    story,
+    tasks,
+    users,
     )
 
 from . import api
 
-from views.searchviews import EditorialSearchView
+from views.search import EditorialSearchView
 
 urlpatterns = [
-    #----------------------------------------------------------------------#
     #   Account URLS
-    #----------------------------------------------------------------------#
-    url(r'^account/selection/$', accountviews.AccountSelectionView.as_view(), name='account_selection'),
-    #----------------------------------------------------------------------#
+
+    url(r'^account/selection/$', accounts.AccountSelectionView.as_view(), name='account_selection'),
+
     #   API URL - Used API endpoints
-    #----------------------------------------------------------------------#
+
     url('^api/', include(api.router.urls)),
-    #----------------------------------------------------------------------#
+
     #   Facet to WordPress URL - On demand pushing
-    #----------------------------------------------------------------------#
-    url(r'^facet/json/$', pushcontentviews.facet_json, name='facet_json'),
+
+    url(r'^facet/json/$', pushcontent.facet_json, name='facet_json'),
     # url(r'^facet/wordpress/$', pushcontentviews.push_facet_wp, name='push_facet_wp'),
-    #----------------------------------------------------------------------#
+
     #   Homepage URLS
-    #----------------------------------------------------------------------#
-    url(r'^$', generalviews.LandingTemplateView.as_view(), name='index'),
-    #----------------------------------------------------------------------#
+
+    url(r'^$', general.LandingTemplateView.as_view(), name='index'),
+
     #   Dashboard URLS
-    #----------------------------------------------------------------------#
-    url(r'^dashboard$', generalviews.DashboardTemplateView.as_view(), name='dashboard'),
-    #----------------------------------------------------------------------#
+
+    url(r'^dashboard$', general.DashboardTemplateView.as_view(), name='dashboard'),
+
     #   Schedule URLS
-    #----------------------------------------------------------------------#
-    url(r'^schedule$', scheduleviews.schedule, name='schedule'),
-    url(r'^schedulecontent$', scheduleviews.schedule_content, name='schedule-content'),
-    #----------------------------------------------------------------------#
+
+    url(r'^schedule$', schedules.schedule, name='schedule'),
+    url(r'^schedulecontent$', schedules.schedule_content, name='schedule-content'),
+
     #   Asset Library URLS
-    #----------------------------------------------------------------------#
-    url(r'^assets$', assetviews.AssetLibraryTemplateView.as_view(), name='asset_library'),
-    url(r'^asset/image/(?P<pk>[0-9]+)/$', assetviews.ImageAssetUpdateView.as_view(), name='image_asset_detail'),
-    url(r'^asset/document/(?P<pk>[0-9]+)/$', assetviews.DocumentAssetUpdateView.as_view(), name='document_asset_detail'),
-    url(r'^asset/audio/(?P<pk>[0-9]+)/$', assetviews.AudioAssetUpdateView.as_view(), name='audio_asset_detail'),
-    url(r'^asset/video/(?P<pk>[0-9]+)/$', assetviews.VideoAssetUpdateView.as_view(), name='video_asset_detail'),
-    #----------------------------------------------------------------------#
+
+    url(r'^assets$', assets.AssetLibraryTemplateView.as_view(), name='asset_library'),
+    url(r'^asset/image/(?P<pk>[0-9]+)/$', assets.ImageAssetUpdateView.as_view(), name='image_asset_detail'),
+    url(r'^asset/document/(?P<pk>[0-9]+)/$', assets.DocumentAssetUpdateView.as_view(), name='document_asset_detail'),
+    url(r'^asset/audio/(?P<pk>[0-9]+)/$', assets.AudioAssetUpdateView.as_view(), name='audio_asset_detail'),
+    url(r'^asset/video/(?P<pk>[0-9]+)/$', assets.VideoAssetUpdateView.as_view(), name='video_asset_detail'),
+
     #   Collaborations URLS
-    #----------------------------------------------------------------------#
-    url(r'^collaborations$', generalviews.CollaborationTemplateView.as_view(), name='collaborations'),
-    #----------------------------------------------------------------------#
+
+    url(r'^collaborations$', general.CollaborationTemplateView.as_view(), name='collaborations'),
+
     #   Team URLS
-    #----------------------------------------------------------------------#
-    url(r'^team$', generalviews.TeamTemplateView.as_view(), name='team_list'),
-    #----------------------------------------------------------------------#
+
+    url(r'^team$', general.TeamTemplateView.as_view(), name='team_list'),
+
     #   Inbox URLS - Labeled as Inbox in navigation
-    #----------------------------------------------------------------------#
-    url(r'^inbox$', inboxviews.inbox, name='inbox'),
-    url(r'^inbox/compose$', inboxviews.compose_message_html, name='compose_message_html'),
-    url(r'^inbox/sent$', inboxviews.sent_html, name='sent_html'),
-    url(r'^inbox/(?P<comment_type>[-\w]+)/comments$', inboxviews.comments_html, name='comments_html'),
+
+    url(r'^inbox$', inbox.inbox, name='inbox'),
+    url(r'^inbox/compose$', inbox.compose_message_html, name='compose_message_html'),
+    url(r'^inbox/sent$', inbox.sent_html, name='sent_html'),
+    url(r'^inbox/(?P<comment_type>[-\w]+)/comments$', inbox.comments_html, name='comments_html'),
     # url(r'^inbox/important$', inboxviews.inbox_important, name='inbox_important'),
     # url(r'^inbox/trash$', inboxviews.inbox_trash, name='inbox_trash'),
-    #----------------------------------------------------------------------#
+
     #   Private Message URLS
-    #----------------------------------------------------------------------#
-    url(r'^privatemessage/new/$', communicationviews.PrivateMessageSend.as_view(), name='private_message_new'),
-    url(r'^privatemessage/(?P<pk>[0-9]+)/content/$', inboxviews.message_html, name='message_html'),
-    #----------------------------------------------------------------------#
+
+    url(r'^privatemessage/new/$', discussion.PrivateMessageSend.as_view(), name='private_message_new'),
+    url(r'^privatemessage/(?P<pk>[0-9]+)/content/$', inbox.message_html, name='message_html'),
+
     #   Copy URLS
-    #----------------------------------------------------------------------#
-    url(r'^story/(?P<story>[0-9]+)/copy/$', networkviews.CopyNetworkStoryView.as_view(), name='copy_network_story'),
-    #----------------------------------------------------------------------#
+
+    url(r'^story/(?P<story>[0-9]+)/copy/$', networks.CopyNetworkStoryView.as_view(), name='copy_network_story'),
+
     #   Download URLS
-    #----------------------------------------------------------------------#
-    url(r'^story/(?P<pk>[0-9]+)/download/$', downloadviews.create_download, name='create_download'),
-    #----------------------------------------------------------------------#
+
+    url(r'^story/(?P<pk>[0-9]+)/download/$', downloads.create_download, name='create_download'),
+
     #   Search URLS
-    #----------------------------------------------------------------------#
+
     url(r"^search/$", EditorialSearchView.as_view(), name="search"),
-    #----------------------------------------------------------------------#
+
     #   Comment URLS
-    #----------------------------------------------------------------------#
-    url(r'^organization/comment/new$', communicationviews.CommentCreateView.as_view(), name='create_orgcomment'),
-    url(r'^network/comment/new$', communicationviews.CommentCreateView.as_view(), name='create_networkcomment'),
-    url(r'^project/comment/new$', communicationviews.CommentCreateView.as_view(), name='create_projectcomment'),
-    url(r'^series/comment/new$', communicationviews.CommentCreateView.as_view(), name='create_seriescomment'),
-    url(r'^story/comment/new$', communicationviews.CommentCreateView.as_view(), name='create_storycomment'),
-    url(r'^facet/comment/new$', communicationviews.CommentCreateView.as_view(), name='create_facetcomment'),
-    url(r'^task/comment/new$', communicationviews.CommentCreateView.as_view(), name='create_taskcomment'),
-    url(r'^event/comment/new$', communicationviews.CommentCreateView.as_view(), name='create_eventcomment'),
-    url(r'^assignment/comment/new$', communicationviews.CommentCreateView.as_view(), name='create_assignmentcomment'),
-    #----------------------------------------------------------------------#
+
+    url(r'^organization/comment/new$', discussion.CommentCreateView.as_view(), name='create_orgcomment'),
+    url(r'^network/comment/new$', discussion.CommentCreateView.as_view(), name='create_networkcomment'),
+    url(r'^project/comment/new$', discussion.CommentCreateView.as_view(), name='create_projectcomment'),
+    url(r'^series/comment/new$', discussion.CommentCreateView.as_view(), name='create_seriescomment'),
+    url(r'^story/comment/new$', discussion.CommentCreateView.as_view(), name='create_storycomment'),
+    url(r'^facet/comment/new$', discussion.CommentCreateView.as_view(), name='create_facetcomment'),
+    url(r'^task/comment/new$', discussion.CommentCreateView.as_view(), name='create_taskcomment'),
+    url(r'^event/comment/new$', discussion.CommentCreateView.as_view(), name='create_eventcomment'),
+    url(r'^assignment/comment/new$', discussion.CommentCreateView.as_view(), name='create_assignmentcomment'),
+
     #   Note URLS
-    #----------------------------------------------------------------------#
-    url(r'^organization/note/new/$', noteviews.NoteCreateView.as_view(), name='create_orgnote'),
-    url(r'^user/note/new/$', noteviews.NoteCreateView.as_view(), name='create_usernote'),
-    url(r'^network/note/new/$', noteviews.NoteCreateView.as_view(), name='create_networknote'),
-    url(r'^projectnote/new/$', noteviews.NoteCreateView.as_view(), name='create_projectnote'),
-    url(r'^series/note/new/$', noteviews.NoteCreateView.as_view(), name='create_seriesnote'),
-    url(r'^story/note/new/$', noteviews.NoteCreateView.as_view(), name='create_storynote'),
-    url(r'^facet/note/new/$', noteviews.NoteCreateView.as_view(), name='create_facetnote'),
-    url(r'^task/note/new/$', noteviews.NoteCreateView.as_view(), name='create_tasknote'),
-    url(r'^event/note/new/$', noteviews.NoteCreateView.as_view(), name='create_eventnote'),
-    url(r'^note/(?P<pk>[0-9]+)/delete$', noteviews.NoteDelete.as_view(), name='note_delete'),
+
+    url(r'^organization/note/new/$', notes.NoteCreateView.as_view(), name='create_orgnote'),
+    url(r'^user/note/new/$', notes.NoteCreateView.as_view(), name='create_usernote'),
+    url(r'^network/note/new/$', notes.NoteCreateView.as_view(), name='create_networknote'),
+    url(r'^projectnote/new/$', notes.NoteCreateView.as_view(), name='create_projectnote'),
+    url(r'^series/note/new/$', notes.NoteCreateView.as_view(), name='create_seriesnote'),
+    url(r'^story/note/new/$', notes.NoteCreateView.as_view(), name='create_storynote'),
+    url(r'^facet/note/new/$', notes.NoteCreateView.as_view(), name='create_facetnote'),
+    url(r'^task/note/new/$', notes.NoteCreateView.as_view(), name='create_tasknote'),
+    url(r'^event/note/new/$', notes.NoteCreateView.as_view(), name='create_eventnote'),
+    url(r'^note/(?P<pk>[0-9]+)/delete$', notes.NoteDelete.as_view(), name='note_delete'),
     # url(r'^assignment/note/new$', noteviews.NoteCreateView.as_view(), name='create_assignmentnote'),
-    #----------------------------------------------------------------------#
+
     #   Platform URLS
-    #----------------------------------------------------------------------#
-    url(r'^user/(?P<pk>[0-9]+)/platformaccounts/edit/$', platformviews.UserPlatformAccountCreateView.as_view(), name='user_platformaccounts_create'),
+
+    url(r'^user/(?P<pk>[0-9]+)/platformaccounts/edit/$', platforms.UserPlatformAccountCreateView.as_view(), name='user_platformaccounts_create'),
     # url(r'^organization/(?P<pk>[0-9]+)/platformaccounts/edit/$', platformviews.organization_platformaccounts_create, name='organization_platformaccounts_create'),
     # url(r'^project/(?P<pk>[0-9]+)/platformaccounts/edit/$', platformviews.project_platformaccounts_create, name='project_platformaccounts_create'),
-    #----------------------------------------------------------------------#
+
     #   Organization URLS
-    #----------------------------------------------------------------------#
-    url(r'^organization/new$', organizationviews.OrganizationCreateView.as_view(), name="org_new"),
-    url(r'^organization/(?P<pk>[0-9]+)/$', organizationviews.OrganizationDetailView.as_view(), name='org_detail'),
-    url(r'^organization/(?P<pk>[0-9]+)/edit/$', organizationviews.OrganizationUpdateView.as_view(), name='org_edit'),
-    url(r'^organization/(?P<pk>[0-9]+)/notes/$', noteviews.OrganizationNoteView.as_view(), name='org_notes'),
-    url(r'^organization/(?P<org>\d+)/note/(?P<note>\d+)/content$', noteviews.NoteContent.as_view(), name='org_note_content'),
+
+    url(r'^organization/new$', organizations.OrganizationCreateView.as_view(), name="org_new"),
+    url(r'^organization/(?P<pk>[0-9]+)/$', organizations.OrganizationDetailView.as_view(), name='org_detail'),
+    url(r'^organization/(?P<pk>[0-9]+)/edit/$', organizations.OrganizationUpdateView.as_view(), name='org_edit'),
+    url(r'^organization/(?P<pk>[0-9]+)/notes/$', notes.OrganizationNoteView.as_view(), name='org_notes'),
+    url(r'^organization/(?P<org>\d+)/note/(?P<note>\d+)/content$', notes.NoteContent.as_view(), name='org_note_content'),
     # url(r'^organization/(?P<pk>[0-9]+)/comments$', communicationviews.org_comments, name='org_comments'),
-    #----------------------------------------------------------------------#
+
     #   User URLS
-    #----------------------------------------------------------------------#
-    url(r'^user/new/$', userviews.UserCreateView.as_view(), name='user_new'),
-    url(r'^user/(?P<pk>[0-9]+)/$', userviews.UserDetailView.as_view(), name='user_detail'),
-    url(r'^user/(?P<pk>[0-9]+)/edit/$', userviews.UserUpdateView.as_view(), name='user_edit'),
-    url(r'^user/(?P<pk>[0-9]+)/notes/$', noteviews.UserNoteView.as_view(), name='user_notes'),
-    url(r'^user/(?P<user>\d+)/note/(?P<note>\d+)/content$', noteviews.NoteContent.as_view(), name='user_note_content'),
-    url(r'^user/deactivate/$', userviews.UserDeactivateView.as_view(), name='user_deactivate'),
-    url(r'^user/activate/$', userviews.UserActivateView.as_view(), name='user_activate'),
-    #----------------------------------------------------------------------#
+
+    url(r'^user/new/$', users.UserCreateView.as_view(), name='user_new'),
+    url(r'^user/(?P<pk>[0-9]+)/$', users.UserDetailView.as_view(), name='user_detail'),
+    url(r'^user/(?P<pk>[0-9]+)/edit/$', users.UserUpdateView.as_view(), name='user_edit'),
+    url(r'^user/(?P<pk>[0-9]+)/notes/$', notes.UserNoteView.as_view(), name='user_notes'),
+    url(r'^user/(?P<user>\d+)/note/(?P<note>\d+)/content$', notes.NoteContent.as_view(), name='user_note_content'),
+    url(r'^user/deactivate/$', users.UserDeactivateView.as_view(), name='user_deactivate'),
+    url(r'^user/activate/$', users.UserActivateView.as_view(), name='user_activate'),
+
     #   Contractor URLS
-    #----------------------------------------------------------------------#
-    url(r'^contractor/new/$', contractorviews.ContractorCreateView.as_view(), name='contractor_new'),
-    url(r'^contractor/(?P<pk>[0-9]+)/$', contractorviews.ContractorDetailView.as_view(), name='contractor_detail'),
-    url(r'^contractor/(?P<pk>[0-9]+)/edit/$', contractorviews.ContractorUpdateView.as_view(), name='contractor_edit'),
-    url(r'^contractor/(?P<pk>[0-9]+)/calls/$', contractorviews.CallListView.as_view(), name='contractor_calls'),
-    url(r'^contractor/(?P<pk>[0-9]+)/pitches/$', contractorviews.PitchListView.as_view(), name='contractor_pitches'),
-    url(r'^contractor/list/$', contractorviews.PublicContractorListView.as_view(), name='public_contractor_list'),
-    url(r'^contractor/pool/$', contractorviews.AffiliationListView.as_view(), name='affiliation_list'),
-    url(r'^contractor/pool/add/$', contractorviews.AffiliationCreateView.as_view(), name='affiliation_new'),
-    url(r'^contractor/pool/(?P<pk>[0-9]+)/$', contractorviews.AffiliationDetailView.as_view(), name='affiliation_detail'),
-    url(r'^contractor/pool/(?P<pk>[0-9]+)/edit/$', contractorviews.AffiliationUpdateView.as_view(), name='affiliation_edit'),
-    url(r'^talenteditor/list/$', contractorviews.PublicTalentEditorListView.as_view(), name='public_editor_list'),
-    url(r'^talenteditor/(?P<pk>[0-9]+)/$', contractorviews.PublicTalentEditorDetailView.as_view(), name='talent_editor_detail'),
-    url(r'^talenteditor/(?P<pk>[0-9]+)/dashboard/$', contractorviews.PublicTalentEditorDashboardView.as_view(), name='talent_editor_dashboard'),
-    url(r'^assignment/new/$', contractorviews.AssignmentCreateView.as_view(), name='assignment_new'),
-    url(r'^assignments/$', contractorviews.AssignmentListView.as_view(), name='assignment_list'),
-    url(r'^assignment/(?P<pk>[0-9]+)/$', contractorviews.AssignmentDetailView.as_view(), name='assignment_detail'),
-    url(r'^assignment/(?P<pk>[0-9]+)/edit/$', contractorviews.AssignmentUpdateView.as_view(), name='assignment_edit'),
-    url(r'^assignment/(?P<pk>[0-9]+)/delete/$', contractorviews.AssignmentDeleteView.as_view(), name='assignment_delete'),
-    url(r'^call/new/$', contractorviews.CallCreateView.as_view(), name='call_new'),
-    url(r'^calls/$', contractorviews.CallListView.as_view(), name='call_list'),
-    url(r'^call/(?P<pk>[0-9]+)/$', contractorviews.CallDetailView.as_view(), name='call_detail'),
-    url(r'^call/(?P<pk>[0-9]+)/edit/$', contractorviews.CallUpdateView.as_view(), name='call_edit'),
-    url(r'^call/(?P<pk>[0-9]+)/delete/$', contractorviews.CallDeleteView.as_view(), name='call_delete'),
-    url(r'^pitch/new/$', contractorviews.PitchCreateView.as_view(), name='pitch_new'),
-    url(r'^pitches/$', contractorviews.PitchListView.as_view(), name='pitch_list'),
-    url(r'^pitch/(?P<pk>[0-9]+)/$', contractorviews.PitchDetailView.as_view(), name='pitch_detail'),
-    url(r'^pitch/(?P<pk>[0-9]+)/edit/$', contractorviews.PitchUpdateView.as_view(), name='pitch_edit'),
-    url(r'^pitch/(?P<pk>[0-9]+)/delete/$', contractorviews.PitchDeleteView.as_view(), name='pitch_delete'),
-    #----------------------------------------------------------------------#
+
+    url(r'^contractor/new/$', contractors.ContractorCreateView.as_view(), name='contractor_new'),
+    url(r'^contractor/(?P<pk>[0-9]+)/$', contractors.ContractorDetailView.as_view(), name='contractor_detail'),
+    url(r'^contractor/(?P<pk>[0-9]+)/edit/$', contractors.ContractorUpdateView.as_view(), name='contractor_edit'),
+    url(r'^contractor/(?P<pk>[0-9]+)/calls/$', contractors.CallListView.as_view(), name='contractor_calls'),
+    url(r'^contractor/(?P<pk>[0-9]+)/pitches/$', contractors.PitchListView.as_view(), name='contractor_pitches'),
+    url(r'^contractor/list/$', contractors.PublicContractorListView.as_view(), name='public_contractor_list'),
+    url(r'^contractor/pool/$', contractors.AffiliationListView.as_view(), name='affiliation_list'),
+    url(r'^contractor/pool/add/$', contractors.AffiliationCreateView.as_view(), name='affiliation_new'),
+    url(r'^contractor/pool/(?P<pk>[0-9]+)/$', contractors.AffiliationDetailView.as_view(), name='affiliation_detail'),
+    url(r'^contractor/pool/(?P<pk>[0-9]+)/edit/$', contractors.AffiliationUpdateView.as_view(), name='affiliation_edit'),
+    url(r'^talenteditor/list/$', contractors.PublicTalentEditorListView.as_view(), name='public_editor_list'),
+    url(r'^talenteditor/(?P<pk>[0-9]+)/$', contractors.PublicTalentEditorDetailView.as_view(), name='talent_editor_detail'),
+    url(r'^talenteditor/(?P<pk>[0-9]+)/dashboard/$', contractors.PublicTalentEditorDashboardView.as_view(), name='talent_editor_dashboard'),
+    url(r'^assignment/new/$', contractors.AssignmentCreateView.as_view(), name='assignment_new'),
+    url(r'^assignments/$', contractors.AssignmentListView.as_view(), name='assignment_list'),
+    url(r'^assignment/(?P<pk>[0-9]+)/$', contractors.AssignmentDetailView.as_view(), name='assignment_detail'),
+    url(r'^assignment/(?P<pk>[0-9]+)/edit/$', contractors.AssignmentUpdateView.as_view(), name='assignment_edit'),
+    url(r'^assignment/(?P<pk>[0-9]+)/delete/$', contractors.AssignmentDeleteView.as_view(), name='assignment_delete'),
+    url(r'^call/new/$', contractors.CallCreateView.as_view(), name='call_new'),
+    url(r'^calls/$', contractors.CallListView.as_view(), name='call_list'),
+    url(r'^call/(?P<pk>[0-9]+)/$', contractors.CallDetailView.as_view(), name='call_detail'),
+    url(r'^call/(?P<pk>[0-9]+)/edit/$', contractors.CallUpdateView.as_view(), name='call_edit'),
+    url(r'^call/(?P<pk>[0-9]+)/delete/$', contractors.CallDeleteView.as_view(), name='call_delete'),
+    url(r'^pitch/new/$', contractors.PitchCreateView.as_view(), name='pitch_new'),
+    url(r'^pitches/$', contractors.PitchListView.as_view(), name='pitch_list'),
+    url(r'^pitch/(?P<pk>[0-9]+)/$', contractors.PitchDetailView.as_view(), name='pitch_detail'),
+    url(r'^pitch/(?P<pk>[0-9]+)/edit/$', contractors.PitchUpdateView.as_view(), name='pitch_edit'),
+    url(r'^pitch/(?P<pk>[0-9]+)/delete/$', contractors.PitchDeleteView.as_view(), name='pitch_delete'),
+
     #   Project URLS
-    #----------------------------------------------------------------------#
-    url(r'^project/new/$', projectviews.ProjectCreateView.as_view(), name='project_new'),
-    url(r'^projects$', projectviews.ProjectListView.as_view(), name='project_list'),
-    url(r'^project/(?P<pk>[0-9]+)/$', projectviews.ProjectDetailView.as_view(), name='project_detail'),
-    url(r'^project/(?P<pk>[0-9]+)/edit/$', projectviews.ProjectUpdateView.as_view(), name='project_edit'),
-    url(r'^project/(?P<pk>[0-9]+)/delete/$', projectviews.ProjectDeleteView.as_view(), name='project_delete'),
-    url(r'^project/(?P<pk>[0-9]+)/notes/$', noteviews.ProjectNoteView.as_view(), name='project_notes'),
-    url(r'^project/(?P<project>\d+)/note/(?P<note>\d+)/content$', noteviews.NoteContent.as_view(), name='project_note_content'),
-    url(r'^project/(?P<pk>[0-9]+)/schedule/$', projectviews.project_schedule, name='project_schedule'),
-    url(r'^project/(?P<pk>[0-9]+)/assets/$', projectviews.ProjectAssetTemplateView.as_view(), name='project_assets'),
-    url(r'^project/(?P<pk>[0-9]+)/stories/$', projectviews.ProjectStoryTemplateView.as_view(), name='project_stories'),
-    #----------------------------------------------------------------------#
+
+    url(r'^project/new/$', projects.ProjectCreateView.as_view(), name='project_new'),
+    url(r'^projects$', projects.ProjectListView.as_view(), name='project_list'),
+    url(r'^project/(?P<pk>[0-9]+)/$', projects.ProjectDetailView.as_view(), name='project_detail'),
+    url(r'^project/(?P<pk>[0-9]+)/edit/$', projects.ProjectUpdateView.as_view(), name='project_edit'),
+    url(r'^project/(?P<pk>[0-9]+)/delete/$', projects.ProjectDeleteView.as_view(), name='project_delete'),
+    url(r'^project/(?P<pk>[0-9]+)/notes/$', notes.ProjectNoteView.as_view(), name='project_notes'),
+    url(r'^project/(?P<project>\d+)/note/(?P<note>\d+)/content$', notes.NoteContent.as_view(), name='project_note_content'),
+    url(r'^project/(?P<pk>[0-9]+)/schedule/$', projects.project_schedule, name='project_schedule'),
+    url(r'^project/(?P<pk>[0-9]+)/assets/$', projects.ProjectAssetTemplateView.as_view(), name='project_assets'),
+    url(r'^project/(?P<pk>[0-9]+)/stories/$', projects.ProjectStoryTemplateView.as_view(), name='project_stories'),
+
     #   Series URLS
-    #----------------------------------------------------------------------#
-    url(r'^series/new/$', seriesviews.SeriesCreateView.as_view(), name='series_new'),
-    url(r'^series$', seriesviews.SeriesListView.as_view(), name='series_list'),
-    url(r'^series/json$', seriesviews.series_json, name='series_json'),
-    url(r'^series/(?P<pk>[0-9]+)/$', seriesviews.SeriesDetailView.as_view(), name='series_detail'),
-    url(r'^series/(?P<pk>[0-9]+)/edit/$', seriesviews.SeriesUpdateView.as_view(), name='series_edit'),
-    url(r'^series/(?P<pk>[0-9]+)/delete/$', seriesviews.SeriesDeleteView.as_view(), name='series_delete'),
-    url(r'^series/(?P<pk>[0-9]+)/assets/$', seriesviews.SeriesAssetTemplateView.as_view(), name='series_assets'),
-    url(r'^series/(?P<pk>[0-9]+)/schedule/$', seriesviews.series_schedule, name='series_schedule'),
-    url(r'^series/(?P<pk>[0-9]+)/notes/$', noteviews.SeriesNoteView.as_view(), name='series_notes'),
-    url(r'^series/(?P<series>\d+)/note/(?P<note>\d+)/content$', noteviews.NoteContent.as_view(), name='series_note_content'),
-    #----------------------------------------------------------------------#
+
+    url(r'^series/new/$', series.SeriesCreateView.as_view(), name='series_new'),
+    url(r'^series$', series.SeriesListView.as_view(), name='series_list'),
+    url(r'^series/json$', series.series_json, name='series_json'),
+    url(r'^series/(?P<pk>[0-9]+)/$', series.SeriesDetailView.as_view(), name='series_detail'),
+    url(r'^series/(?P<pk>[0-9]+)/edit/$', series.SeriesUpdateView.as_view(), name='series_edit'),
+    url(r'^series/(?P<pk>[0-9]+)/delete/$', series.SeriesDeleteView.as_view(), name='series_delete'),
+    url(r'^series/(?P<pk>[0-9]+)/assets/$', series.SeriesAssetTemplateView.as_view(), name='series_assets'),
+    url(r'^series/(?P<pk>[0-9]+)/schedule/$', series.series_schedule, name='series_schedule'),
+    url(r'^series/(?P<pk>[0-9]+)/notes/$', notes.SeriesNoteView.as_view(), name='series_notes'),
+    url(r'^series/(?P<series>\d+)/note/(?P<note>\d+)/content$', notes.NoteContent.as_view(), name='series_note_content'),
+
     #   Story URLS
-    #----------------------------------------------------------------------#
-    url(r'^story/new/$', storyviews.StoryCreateView.as_view(), name='story_new'),
-    url(r'^stories$', storyviews.StoryListView.as_view(), name='story_list'),
-    url(r'^story/(?P<pk>[0-9]+)/$', storyviews.StoryDetailView.as_view(), name='story_detail'),
-    url(r'^story/(?P<pk>[0-9]+)/edit/$', storyviews.StoryUpdateView.as_view(), name='story_edit'),
-    url(r'^story/(?P<pk>[0-9]+)/delete/$', storyviews.StoryDeleteView.as_view(), name='story_delete'),
-    url(r'^story/(?P<pk>[0-9]+)/schedule/$', storyviews.story_schedule, name='story_schedule'),
-    url(r'^story/(?P<pk>[0-9]+)/notes/$', noteviews.StoryNoteView.as_view(), name='story_notes'),
-    url(r'^story/(?P<story>\d+)/note/(?P<note>\d+)/content$', noteviews.NoteContent.as_view(), name='story_note_content'),
-    url(r'^story/(?P<pk>[0-9]+)/team/json$', storyviews.story_team_options_json, name='story_team_options_json'),
-    #----------------------------------------------------------------------#
+
+    url(r'^story/new/$', story.StoryCreateView.as_view(), name='story_new'),
+    url(r'^stories$', story.StoryListView.as_view(), name='story_list'),
+    url(r'^story/(?P<pk>[0-9]+)/$', story.StoryDetailView.as_view(), name='story_detail'),
+    url(r'^story/(?P<pk>[0-9]+)/edit/$', story.StoryUpdateView.as_view(), name='story_edit'),
+    url(r'^story/(?P<pk>[0-9]+)/delete/$', story.StoryDeleteView.as_view(), name='story_delete'),
+    url(r'^story/(?P<pk>[0-9]+)/schedule/$', story.story_schedule, name='story_schedule'),
+    url(r'^story/(?P<pk>[0-9]+)/notes/$', notes.StoryNoteView.as_view(), name='story_notes'),
+    url(r'^story/(?P<story>\d+)/note/(?P<note>\d+)/content$', notes.NoteContent.as_view(), name='story_note_content'),
+    url(r'^story/(?P<pk>[0-9]+)/team/json$', story.story_team_options_json, name='story_team_options_json'),
+
     #   Facet URLS
-    #----------------------------------------------------------------------#
+
     url(r'^story/(?P<story>[0-9]+)/facet/add/$', facetviews.FacetPreCreateView.as_view(), name="facet_precreate"),
     url(r'^story/(?P<story>[0-9]+)/facet/add/(?P<template_id>\d+)/$', facetviews.FacetCreateView.as_view(), name="facet_add"),
     url(r'^story/(?P<story>[0-9]+)/facet/(?P<pk>\d+)/edit/$', facetviews.FacetUpdateView.as_view(), name="facet_edit"),
     url(r'^facet/template/create/$', facetviews.FacetTemplateCreateView.as_view(), name="facet_template_create"),
     url(r'^facet/template/(?P<pk>\d+)/edit$', facetviews.FacetTemplateUpdateView.as_view(), name="facet_template_edit"),
     url(r'^story/(?P<story>[0-9]+)/facet/(?P<pk>\d+)/delete/$', facetviews.FacetDeleteView.as_view(), name="facet_delete"),
-    #----------------------------------------------------------------------#
+
     #   Task URLS
-    #----------------------------------------------------------------------#
-    url(r'^task/new/$', taskviews.TaskCreateView.as_view(), name='task_new'),
-    url(r'^task/(?P<pk>[0-9]+)/$', taskviews.TaskUpdateView.as_view(), name='task_detail'),
-    url(r'^task/(?P<pk>[0-9]+)/notes/$', noteviews.TaskNoteView.as_view(), name='task_notes'),
-    url(r'^task/(?P<pk>[0-9]+)/delete/$', taskviews.TaskDeleteView.as_view(), name='task_delete'),
-    url(r'^task/(?P<task>\d+)/note/(?P<note>\d+)/content$', noteviews.NoteContent.as_view(), name='task_note_content'),
-    url(r'^project/(?P<pk>[0-9]+)/tasks/$', taskviews.ProjectTaskView.as_view(), name='project_task_list'),
-    url(r'^series/(?P<pk>[0-9]+)/tasks/$', taskviews.SeriesTaskView.as_view(), name='series_task_list'),
-    url(r'^story/(?P<pk>[0-9]+)/tasks/$', taskviews.StoryTaskView.as_view(), name='story_task_list'),
-    url(r'^event/(?P<pk>[0-9]+)/tasks/$', taskviews.EventTaskView.as_view(), name='event_task_list'),
-    #----------------------------------------------------------------------#
+
+    url(r'^task/new/$', tasks.TaskCreateView.as_view(), name='task_new'),
+    url(r'^task/(?P<pk>[0-9]+)/$', tasks.TaskUpdateView.as_view(), name='task_detail'),
+    url(r'^task/(?P<pk>[0-9]+)/notes/$', notes.TaskNoteView.as_view(), name='task_notes'),
+    url(r'^task/(?P<pk>[0-9]+)/delete/$', tasks.TaskDeleteView.as_view(), name='task_delete'),
+    url(r'^task/(?P<task>\d+)/note/(?P<note>\d+)/content$', notes.NoteContent.as_view(), name='task_note_content'),
+    url(r'^project/(?P<pk>[0-9]+)/tasks/$', tasks.ProjectTaskView.as_view(), name='project_task_list'),
+    url(r'^series/(?P<pk>[0-9]+)/tasks/$', tasks.SeriesTaskView.as_view(), name='series_task_list'),
+    url(r'^story/(?P<pk>[0-9]+)/tasks/$', tasks.StoryTaskView.as_view(), name='story_task_list'),
+    url(r'^event/(?P<pk>[0-9]+)/tasks/$', tasks.EventTaskView.as_view(), name='event_task_list'),
+
     #   Event URLS
-    #----------------------------------------------------------------------#
-    url(r'^event/new/$', eventviews.EventCreateView.as_view(), name='event_new'),
-    url(r'^event/(?P<pk>[0-9]+)/$', eventviews.EventUpdateView.as_view(), name='event_detail'),
-    url(r'^event/(?P<pk>[0-9]+)/notes/$', noteviews.EventNoteView.as_view(), name='event_notes'),
-    url(r'^event/(?P<pk>[0-9]+)/delete/$', eventviews.EventDeleteView.as_view(), name='event_delete'),
-    url(r'^event/(?P<event>\d+)/note/(?P<note>\d+)/content$', noteviews.NoteContent.as_view(), name='event_note_content'),
-    url(r'^organization/(?P<pk>[0-9]+)/events/$', eventviews.OrganizationEventView.as_view(), name='organization_event_list'),
-    url(r'^project/(?P<pk>[0-9]+)/events/$', eventviews.ProjectEventView.as_view(), name='project_event_list'),
-    url(r'^series/(?P<pk>[0-9]+)/events/$', eventviews.SeriesEventView.as_view(), name='series_event_list'),
-    url(r'^story/(?P<pk>[0-9]+)/events/$', eventviews.StoryEventView.as_view(), name='story_event_list'),
-    #----------------------------------------------------------------------#
+
+    url(r'^event/new/$', events.EventCreateView.as_view(), name='event_new'),
+    url(r'^event/(?P<pk>[0-9]+)/$', events.EventUpdateView.as_view(), name='event_detail'),
+    url(r'^event/(?P<pk>[0-9]+)/notes/$', notes.EventNoteView.as_view(), name='event_notes'),
+    url(r'^event/(?P<pk>[0-9]+)/delete/$', events.EventDeleteView.as_view(), name='event_delete'),
+    url(r'^event/(?P<event>\d+)/note/(?P<note>\d+)/content$', notes.NoteContent.as_view(), name='event_note_content'),
+    url(r'^organization/(?P<pk>[0-9]+)/events/$', events.OrganizationEventView.as_view(), name='organization_event_list'),
+    url(r'^project/(?P<pk>[0-9]+)/events/$', events.ProjectEventView.as_view(), name='project_event_list'),
+    url(r'^series/(?P<pk>[0-9]+)/events/$', events.SeriesEventView.as_view(), name='series_event_list'),
+    url(r'^story/(?P<pk>[0-9]+)/events/$', events.StoryEventView.as_view(), name='story_event_list'),
+
     #   Asset URLS
-    #----------------------------------------------------------------------#
+
     # Images
-    url(r'^image/new/$', assetviews.ImageAssetCreateView.as_view(), name='upload_image'),
-    url(r'^story/(?P<story>\d+)/facet/(?P<facet>\d+)/images/add/$', assetviews.LibraryImageAssociateView.as_view(), name='libraryimage_add'),
+    url(r'^image/new/$', assets.ImageAssetCreateView.as_view(), name='upload_image'),
+    url(r'^story/(?P<story>\d+)/facet/(?P<facet>\d+)/images/add/$', assets.LibraryImageAssociateView.as_view(), name='libraryimage_add'),
     # Documents
-    url(r'^document/new/$', assetviews.DocumentAssetCreateView.as_view(), name='upload_document'),
-    url(r'^story/(?P<story>\d+)/facet/(?P<facet>\d+)/documents/add/$', assetviews.LibraryDocumentAssociateView.as_view(), name='librarydocument_add'),
+    url(r'^document/new/$', assets.DocumentAssetCreateView.as_view(), name='upload_document'),
+    url(r'^story/(?P<story>\d+)/facet/(?P<facet>\d+)/documents/add/$', assets.LibraryDocumentAssociateView.as_view(), name='librarydocument_add'),
     # Audio
-    url(r'^audio/new/$', assetviews.AudioAssetCreateView.as_view(), name='upload_audio'),
-    url(r'^story/(?P<story>\d+)/facet/(?P<facet>\d+)/audio/add/$', assetviews.LibraryAudioAssociateView.as_view(), name='libraryaudio_add'),
+    url(r'^audio/new/$', assets.AudioAssetCreateView.as_view(), name='upload_audio'),
+    url(r'^story/(?P<story>\d+)/facet/(?P<facet>\d+)/audio/add/$', assets.LibraryAudioAssociateView.as_view(), name='libraryaudio_add'),
     # Video
-    url(r'^video/new/$', assetviews.VideoAssetCreateView.as_view(), name='upload_video'),
-    url(r'^story/(?P<story>\d+)/facet/(?P<facet>\d+)/video/add/$', assetviews.LibraryVideoAssociateView.as_view(), name='libraryvideo_add'),
+    url(r'^video/new/$', assets.VideoAssetCreateView.as_view(), name='upload_video'),
+    url(r'^story/(?P<story>\d+)/facet/(?P<facet>\d+)/video/add/$', assets.LibraryVideoAssociateView.as_view(), name='libraryvideo_add'),
     # Simple Images
-    url(r'^simpleimage/new/$', assetviews.SimpleImageCreateView.as_view(), name='upload_simple_image'),
+    url(r'^simpleimage/new/$', assets.SimpleImageCreateView.as_view(), name='upload_simple_image'),
     # Simple documents
-    url(r'^simpledocument/new/$', assetviews.SimpleDocumentCreateView.as_view(), name='upload_simple_document'),
+    url(r'^simpledocument/new/$', assets.SimpleDocumentCreateView.as_view(), name='upload_simple_document'),
     # Simple Audio
-    url(r'^simpleaudio/new/$', assetviews.SimpleAudioCreateView.as_view(), name='upload_simple_audio'),
+    url(r'^simpleaudio/new/$', assets.SimpleAudioCreateView.as_view(), name='upload_simple_audio'),
     # Simple Video
-    url(r'^simplevideo/new/$', assetviews.SimpleVideoCreateView.as_view(), name='upload_simple_video'),
-    #----------------------------------------------------------------------#
+    url(r'^simplevideo/new/$', assets.SimpleVideoCreateView.as_view(), name='upload_simple_video'),
+
     #   Network URLS
-    #----------------------------------------------------------------------#
-    url(r'^network/new/$', networkviews.NetworkCreateView.as_view(), name='network_new'),
-    url(r'^network/(?P<pk>[0-9]+)/$', networkviews.NetworkDetailView.as_view(), name='network_detail'),
-    url(r'^network/invitation/$', networkviews.send_network_invite, name='send_network_invite'),
-    url(r'^network/invitation/accept/$', networkviews.confirm_network_invite, name='confirm_network_invite'),
-    url(r'^network/(?P<pk>[0-9]+)/edit/$', networkviews.NetworkUpdateView.as_view(), name='network_edit'),
-    url(r'^network/list$', networkviews.NetworkListView.as_view(), name='network_list'),
-    url(r'^network/stories$', networkviews.NetworkStoryListView.as_view(), name='network_stories'),
+
+    url(r'^network/new/$', networks.NetworkCreateView.as_view(), name='network_new'),
+    url(r'^network/(?P<pk>[0-9]+)/$', networks.NetworkDetailView.as_view(), name='network_detail'),
+    url(r'^network/invitation/$', networks.send_network_invite, name='send_network_invite'),
+    url(r'^network/invitation/accept/$', networks.confirm_network_invite, name='confirm_network_invite'),
+    url(r'^network/(?P<pk>[0-9]+)/edit/$', networks.NetworkUpdateView.as_view(), name='network_edit'),
+    url(r'^network/list$', networks.NetworkListView.as_view(), name='network_list'),
+    url(r'^network/stories$', networks.NetworkStoryListView.as_view(), name='network_stories'),
     # url(r'^network/stories/json$', networkviews.network_stories_json, name='network_stories_json'),
-    url(r'^network/(?P<pk>[0-9]+)/notes/$', noteviews.NetworkNoteView.as_view(), name='network_notes'),
-    url(r'^network/(?P<network>\d+)/note/(?P<note>\d+)/content$', noteviews.NoteContent.as_view(), name='network_note_content'),
+    url(r'^network/(?P<pk>[0-9]+)/notes/$', notes.NetworkNoteView.as_view(), name='network_notes'),
+    url(r'^network/(?P<network>\d+)/note/(?P<note>\d+)/content$', notes.NoteContent.as_view(), name='network_note_content'),
 ]
