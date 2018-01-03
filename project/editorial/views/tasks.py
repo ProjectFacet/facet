@@ -8,7 +8,7 @@
 from __future__ import unicode_literals
 
 from actstream import action
-from braces.views import LoginRequiredMixin
+from braces.views import LoginRequiredMixin, FormMessagesMixin
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect, get_object_or_404
@@ -36,11 +36,14 @@ from editorial.models import (
 # should be able to create an event for P, Sr, St, F.
 # Contractors should only be able to create events for P, Sr or St they are
 # assigned to.
-class TaskCreateView(LoginRequiredMixin, CreateView):
+class TaskCreateView(LoginRequiredMixin, FormMessagesMixin, CreateView):
     """Create a new task."""
 
     model = Task
     form_class = TaskForm
+
+    form_invalid_message = "Something went wrong. Check the form."
+    form_valid_message = "Task created."
 
     def get_form_kwargs(self):
         """Pass user organization to the form."""
@@ -75,12 +78,14 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
 # should be able to edit an event for P, Sr, St, F.
 # Contractors should only be able to edit events for P, Sr or St they are
 # assigned to.
-class TaskUpdateView(LoginRequiredMixin, UpdateView):
+class TaskUpdateView(LoginRequiredMixin, FormMessagesMixin, UpdateView):
     """The detail page for a task.
     Displays the task information."""
 
     model = Task
     form_class = TaskForm
+    form_invalid_message = "Something went wrong. Check the form."
+    form_valid_message = "Change saved."
 
     def get_form_kwargs(self):
         """Pass organization to form."""
@@ -114,8 +119,7 @@ class TaskUpdateView(LoginRequiredMixin, UpdateView):
 
 # ACCESS: Any org user that is an admin or editor should be able to delete an
 # event associated with their org, or an org PSS.
-# class TaskDeleteView(DeleteView, FormMessagesMixin):
-class TaskDeleteView(LoginRequiredMixin, DeleteView):
+class TaskDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteView):
     """View for handling deletion of a task.
 
     In this project, we expect deletion to be done via a JS pop-up UI; we don't expect to
@@ -123,13 +127,11 @@ class TaskDeleteView(LoginRequiredMixin, DeleteView):
     available if useful.
     """
 
-    # FIXME: this would be a great place to use braces' messages; usage commented out for now
-
     model = Task
     template_name = "editorial/task_delete.html"
 
-    # form_valid_message = "Deleted."
-    # form_invalid_message = "Please check form."
+    form_valid_message = "Deleted."
+    form_invalid_message = "Please check form."
 
     def get_success_url(self):
         """Post-deletion, return to the task parent URL."""
@@ -155,12 +157,15 @@ class TaskDeleteView(LoginRequiredMixin, DeleteView):
 # by their organization
 # A user from an organization that is in collaborate_with on a project
 # should be able to view/create a task for a project they have access to.
-class ProjectTaskView(LoginRequiredMixin, CreateView):
+class ProjectTaskView(LoginRequiredMixin, FormMessagesMixin, CreateView):
     """Create a project task."""
 
     context_object_name = 'tasks'
     template_name = 'editorial/task_list.html'
     form_class = TaskForm
+
+    form_invalid_message = "Something went wrong. Check the form."
+    form_valid_message = "Task created."
 
     def get_form_kwargs(self):
         """Pass organization to form."""
@@ -197,12 +202,15 @@ class ProjectTaskView(LoginRequiredMixin, CreateView):
 # by their organization
 # A user from an organization that is in collaborate_with on a series
 # should be able to view/create a task for a series they have access to.
-class SeriesTaskView(LoginRequiredMixin, CreateView):
+class SeriesTaskView(LoginRequiredMixin, FormMessagesMixin, CreateView):
     """Create a series task."""
 
     context_object_name = 'tasks'
     template_name = 'editorial/task_list.html'
     form_class = TaskForm
+
+    form_invalid_message = "Something went wrong. Check the form."
+    form_valid_message = "Task created."
 
     def get_form_kwargs(self):
         """Pass organization to form."""
@@ -239,12 +247,15 @@ class SeriesTaskView(LoginRequiredMixin, CreateView):
 # by their organization
 # A user from an organization that is in collaborate_with on a story
 # should be able to view/create a task for a story they have access to.
-class StoryTaskView(LoginRequiredMixin, CreateView):
+class StoryTaskView(LoginRequiredMixin, FormMessagesMixin, CreateView):
     """Create a story task."""
 
     context_object_name = 'tasks'
     template_name = 'editorial/task_list.html'
     form_class = TaskForm
+
+    form_invalid_message = "Something went wrong. Check the form."
+    form_valid_message = "Task created."
 
     def get_form_kwargs(self):
         """Pass organization to form."""
@@ -277,12 +288,15 @@ class StoryTaskView(LoginRequiredMixin, CreateView):
         return context
 
 
-class EventTaskView(LoginRequiredMixin, CreateView):
+class EventTaskView(LoginRequiredMixin, FormMessagesMixin, CreateView):
     """Create event task."""
 
     context_object_name = 'tasks'
     template_name = 'editorial/task_list.html'
     form_class = TaskForm
+
+    form_invalid_message = "Something went wrong. Check the form."
+    form_valid_message = "Task created."
 
     def get_form_kwargs(self):
         """Pass organization to form."""

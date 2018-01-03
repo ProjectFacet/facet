@@ -8,7 +8,7 @@
 from __future__ import unicode_literals
 
 from actstream import action
-from braces.views import LoginRequiredMixin
+from braces.views import LoginRequiredMixin, FormMessagesMixin
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
@@ -57,11 +57,14 @@ class NoteContent(LoginRequiredMixin, View):
 # should be able to create a note for P, Sr, St, F, T or E they have access to.
 # Contractors should only be able to do so for PSSFTE that they have access to
 # That should be handled by limiting which PSSF they have access to.
-class NoteCreateView(LoginRequiredMixin, CreateView):
+class NoteCreateView(LoginRequiredMixin, FormMessagesMixin, CreateView):
     """Create a note."""
 
     model = Note
     form_class = NoteForm
+    form_invalid_message = "Something went wrong. Check the form."
+    form_valid_message = "Note created."
+
 
     def form_valid(self, form):
         """Save -- but first add some information and association
@@ -226,7 +229,7 @@ class NoteCreateView(LoginRequiredMixin, CreateView):
 
 # ACCESS: Any org user, or user from an organization that is in collaborate_with
 # should be able to delete a note for P, Sr, St, F, T or E that they have access to
-class NoteDelete(LoginRequiredMixin, DeleteView):
+class NoteDelete(LoginRequiredMixin, FormMessagesMixin, DeleteView):
     """View for handling deletion of a note.
 
     In this project, we expect deletion to be done via a JS pop-up UI; we don't expect to
@@ -234,13 +237,11 @@ class NoteDelete(LoginRequiredMixin, DeleteView):
     available if useful.
     """
 
-    # FIXME: this would be a great place to use braces' messages; usage commented out for now
-
     model = Note
     template_name = "editorial/note_delete.html"
 
-    # form_valid_message = "Deleted."
-    # form_invalid_message = "Please check form."
+    form_valid_message = "Deleted."
+    form_invalid_message = "Please check form."
 
     def get_success_url(self):
         """Post-deletion, return to the parent object detail url."""

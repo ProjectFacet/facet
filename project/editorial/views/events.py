@@ -8,7 +8,7 @@
 from __future__ import unicode_literals
 
 from actstream import action
-from braces.views import LoginRequiredMixin
+from braces.views import LoginRequiredMixin, FormMessagesMixin
 from django.conf import settings
 from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import UpdateView, CreateView, DeleteView
@@ -17,6 +17,7 @@ from editorial.forms import (
     CommentForm,
     NoteForm,
 )
+
 from editorial.models import (
     Organization,
     Project,
@@ -35,7 +36,7 @@ from editorial.models import (
 # should be able to create an event for P, Sr, St, F.
 # Contractors should only be able to create events for P, Sr or St they are
 # assigned to.
-class EventCreateView(LoginRequiredMixin, CreateView):
+class EventCreateView(LoginRequiredMixin, FormMessagesMixin, CreateView):
     """A logged in user can create a event.
 
     Events are used to manage information about events.
@@ -49,6 +50,9 @@ class EventCreateView(LoginRequiredMixin, CreateView):
 
     model = Event
     form_class = EventForm
+
+    form_invalid_message = "Check the form."
+    form_valid_message = "Event created."
 
     def get_form_kwargs(self):
         """Pass user organization to the form."""
@@ -83,7 +87,7 @@ class EventCreateView(LoginRequiredMixin, CreateView):
 # should be able to edit an event for P, Sr, St, F.
 # Contractors should only be able to edit events for P, Sr or St they are
 # assigned to.
-class EventUpdateView(LoginRequiredMixin, UpdateView):
+class EventUpdateView(LoginRequiredMixin, FormMessagesMixin, UpdateView):
     """ The detail page for a event.
 
     Displays the event information.
@@ -91,6 +95,9 @@ class EventUpdateView(LoginRequiredMixin, UpdateView):
 
     model = Event
     form_class = EventForm
+
+    form_invalid_message = "Something went wrong. Check the form."
+    form_valid_message = "Changes saved."
 
     def get_form_kwargs(self):
         """Pass organization to form."""
@@ -123,8 +130,7 @@ class EventUpdateView(LoginRequiredMixin, UpdateView):
 
 # ACCESS: Any org user that is an admin or editor should be able to delete an
 # event associated with their org, or an org PSS.
-# class EventDeleteView(DeleteView, FormMessagesMixin):
-class EventDeleteView(LoginRequiredMixin, DeleteView):
+class EventDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteView):
     """View for handling deletion of an event.
 
     In this project, we expect deletion to be done via a JS pop-up UI; we don't expect to
@@ -132,13 +138,11 @@ class EventDeleteView(LoginRequiredMixin, DeleteView):
     available if useful.
     """
 
-    # FIXME: this would be a great place to use braces' messages; usage commented out for now
-
     model = Event
     template_name = "editorial/event_delete.html"
 
-    # form_valid_message = "Deleted."
-    # form_invalid_message = "Please check form."
+    form_valid_message = "Deleted."
+    form_invalid_message = "Please check form."
 
     def get_success_url(self):
         """Post-deletion, return to the task parent URL."""
