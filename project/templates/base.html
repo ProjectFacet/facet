@@ -721,12 +721,32 @@
     </div> <!-- End of container -->
 
 
-
-    <!-- ================================================= -->
     <!-- ================================================= -->
                       <!--     JS       -->
     <!-- ================================================= -->
+
+    <!-- Messages Timeout -->
+    <script>
+      $(document).ready(function() {
+          // messages timeout for 10 sec
+          setTimeout(function() {
+              $('.messages').fadeOut('slow');
+          }, 5000); // <-- time in milliseconds, 1000 =  1 sec
+
+          // delete message
+          // $('.del-msg').live('click',function(){
+          $('.del-msg').on('click', 'a', function(){
+              $('.del-msg').parent().attr('style', 'display:none;');
+          })
+      });
+    </script>
+
     <!-- ================================================= -->
+                      <!--     JS LINKS       -->
+    <!-- ================================================= -->
+
+
+
     <!-- <script src="{% static 'bower_components/jquery/dist/jquery.js' %}"></script> IN HEAD-->
     <script src="{% static 'bower_components/tether/dist/js/tether.js' %}"></script>
     <script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.js' %}"></script>
