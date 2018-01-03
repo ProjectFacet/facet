@@ -10,10 +10,13 @@
 
 {% block breadcrumb %}
 <div>
-    <ol class="breadcrumb icon-angle-right icon-th">
+    <ol class="breadcrumb pull-left icon-angle-right icon-th">
         <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
         <li class="fadeIn"><a href="{% url 'project_list' %}" title="View Project"> Projects </a></li>
         <li class="fadeIn"> {{ project.name }}</li>
+    </ol>
+    <ol class="breadcrumb pull-right">
+        <li class="fadeIn"><a href="#" data-toggle="modal" data-target="#projectDetailGuide" title="Here's what you can do on this page.">What's on this page?</a></li>
     </ol>
 </div>
 {% endblock breadcrumb %}
@@ -845,7 +848,6 @@
 <!-- ================================================= -->
 <!-- ================================================= -->
 
-
 {% block modals %}
 <!-- Add Task Modal -->
 {% with view.project_tasks as task %}
@@ -1200,5 +1202,11 @@
   </div>
 </div>
 {% endwith %}
+
+<!-- ================================================= -->
+            <!-- Project Detail Guide Modal -->
+<!-- ================================================= -->
+
+{% include "editorial/guides/_project_detail_guide.html" %}
 
 {% endblock modals %}
