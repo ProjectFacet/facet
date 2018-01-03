@@ -1,7 +1,5 @@
 import time
 
-from django.utils.deprecation import MiddlewareMixin
-
 
 class TimingMiddleware(object):
     """Times a request and adds timing information to the content.
