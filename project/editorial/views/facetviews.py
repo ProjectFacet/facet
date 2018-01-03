@@ -28,6 +28,8 @@ class FacetTemplateCreateView(LoginRequiredMixin, CreateView):
 
     model = FacetTemplate
     form_class = FacetTemplateForm
+    form_invalid_message = "Something went wrong."
+    form_valid_message = "Template created."
 
     def form_valid(self, form):
         """Save -- but first adding owner and organization."""
@@ -51,7 +53,7 @@ class FacetTemplateCreateView(LoginRequiredMixin, CreateView):
 
 
 # ACCESS: Only org users should be able to edit their org's templates.
-class FacetTemplateUpdateView(LoginRequiredMixin, UpdateView):
+class FacetTemplateUpdateView(LoginRequiredMixin, UpdateView, FormMessagesMixin):
     """Edit a facet template."""
 
     # handle users that are not logged in
@@ -59,6 +61,8 @@ class FacetTemplateUpdateView(LoginRequiredMixin, UpdateView):
 
     model = FacetTemplate
     form_class = FacetTemplateForm
+    form_invalid_message = "Something went wrong."
+    form_valid_message = "Changes saved."
 
     def get_success_url(self):
         """Record action for activity stream."""
@@ -71,7 +75,7 @@ class FacetTemplateUpdateView(LoginRequiredMixin, UpdateView):
 # should be able to create a facet for a story they have access to
 # Contractors should only be able to do so for stories that they have access to
 # That should be handled by limiting which story they have access to.
-class FacetPreCreateView(LoginRequiredMixin, FormView):
+class FacetPreCreateView(LoginRequiredMixin, FormView, FormMessagesMixin):
     """First step in creating a facet."""
 
     # handle users that are not logged in
@@ -79,6 +83,7 @@ class FacetPreCreateView(LoginRequiredMixin, FormView):
 
     form_class = FacetPreCreateForm
     template_name = "editorial/facet_precreate_form.html"
+    form_invalid_message = "Something went wrong."
 
     def form_valid(self, form):
         """Redirect to real facet-creation form."""
@@ -95,13 +100,12 @@ class FacetPreCreateView(LoginRequiredMixin, FormView):
 # should be able to create a facet for a story they have access to
 # Contractors should only be able to do so for stories that they have access to
 # That should be handled by limiting which story they have access to.
-class FacetCreateView(LoginRequiredMixin, CreateView):
+class FacetCreateView(LoginRequiredMixin, CreateView, FormMessagesMixin):
     """Create a facet (dynamically using right template)."""
 
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
-
     model = Facet
+    form_invalid_message = "Something went wrong."
+    form_valid_message = "Facet created."
 
     def get_form_class(self):
         """Get dynamic form, based on this template."""
@@ -129,13 +133,13 @@ class FacetCreateView(LoginRequiredMixin, CreateView):
 # should be able to update a facet for a story they have access to
 # Contractors should only be able to do so for stories that they have access to
 # That should be handled by limiting which story they have access to.
-class FacetUpdateView(LoginRequiredMixin, UpdateView):
+class FacetUpdateView(LoginRequiredMixin, UpdateView, FormMessagesMixin):
     """Update a facet (dynamically using right template)."""
 
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
-
     model = Facet
+
+    form_invalid_message = "Something went wrong."
+    form_valid_message = "Changes saved."
 
     def get_form_class(self):
         """Get dynamic form based on this template."""
@@ -199,9 +203,8 @@ class FacetUpdateView(LoginRequiredMixin, UpdateView):
 
 
 # ACCESS: Only an org user that is an admin or editor should be able to delete a
-# facet for one of their org's stories. 
-# class FacetDeleteView(DeleteView, FormMessagesMixin):
-class FacetDeleteView(LoginRequiredMixin, DeleteView):
+# facet for one of their org's stories.
+class FacetDeleteView(LoginRequiredMixin, DeleteView, FormMessagesMixin):
     """View for handling deletion of a facet.
 
     In this project, we expect deletion to be done via a JS pop-up UI; we don't expect to
@@ -209,16 +212,11 @@ class FacetDeleteView(LoginRequiredMixin, DeleteView):
     available if useful.
     """
 
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
-
-    # FIXME: this would be a great place to use braces' messages; usage commented out for now
-
     model = Facet
     template_name = "editorial/facet_delete.html"
 
-    # form_valid_message = "Deleted."
-    # form_invalid_message = "Please check form."
+    form_valid_message = "Deleted."
+    form_invalid_message = "Please check form."
 
     def get_success_url(self):
         """Post-deletion, return to the story URL."""

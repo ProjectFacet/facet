@@ -135,8 +135,8 @@ class StoryUpdateView(CustomUserTest, FormMessagesMixin, UpdateView):
 
     model = Story
     form_class = StoryForm
-    form_invalid_message = "Something went wrong, changes were not saved"
-    form_valid_message = "Changes saved"
+    form_invalid_message = "Something went wrong."
+    form_valid_message = "Changes saved."
 
     def test_user(self, user):
         """User must be member of the story's org or a collaborating org."""
@@ -267,7 +267,7 @@ class StoryDetailView(CustomUserTest, DetailView):
         return {'images': images, 'documents': documents, 'audio': audio, 'video': video, }
 
 
-# ACCESS: Only an org admin or editor can delete a story belonging to their organization. 
+# ACCESS: Only an org admin or editor can delete a story belonging to their organization.
 # class StoryDeleteView(DeleteView, FormMessagesMixin):
 class StoryDeleteView(CustomUserTest, DeleteView):
     """Delete a story and it's associated items.

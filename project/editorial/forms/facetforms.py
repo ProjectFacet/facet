@@ -112,7 +112,7 @@ def get_facet_form_for_template(template_id):
             )
         )
 
-        content = forms.CharField(widget=TinyMCE(attrs={'rows':20, 'id': 'content'}))
+        content = forms.CharField(widget=TinyMCE(attrs={'rows':20,}))
 
         class Meta:
             model = Facet
