@@ -22,7 +22,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': os.environ.get('DB_NAME', 'facet'),
-        'USER': os.environ.get('DB_USERNAME', 'fact'),
+        'USER': os.environ.get('DB_USERNAME', 'facet'),
         'PASSWORD': os.environ.get('DB_PASSWORD', 'collaborate'),
         'HOST': os.environ.get('DB_HOSTNAME', 'localhost'),
         'PORT': os.environ.get('DB_PORT', 5432),

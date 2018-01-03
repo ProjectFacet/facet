@@ -1,5 +1,6 @@
 -r base.txt
-django-debug-toolbar
+-r test.txt
 
-# pin old version for old toolbar
-# sqlparse==0.1.19
+# Additional requirements for dev instances
+
+django-debug-toolbar==1.9.1

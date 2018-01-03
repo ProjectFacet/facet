@@ -1,2 +1,8 @@
 -r base.txt
+
+# Additional requirements for testing
+#
+# This is separate from dev requirements, so that a "testable production" or
+# "testable staging" environment  could be created.
+
 factory-boy==2.9.2

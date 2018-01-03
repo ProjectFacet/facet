@@ -1,1 +1,6 @@
 -r base.txt
+
+# Additional requirements for production instances
+
+boto==2.48.0
+django-storages==1.6.5
