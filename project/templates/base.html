@@ -327,9 +327,48 @@
     <!-- <div class="container-fluid">
       <div class="row">
           <div class="col-xs-12"> -->
-              {% block messages %}
-              <!-- Message Content -->
-              {% endblock messages %}
+          {% block messages %}
+
+            {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                  {% if message.tags == "success" %}
+                    <div class="alert bg-success-100 fadeIn" role="alert">
+                      <button type="button" class="close btn-sm" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                        <span class="sr-only">Close</span>
+                      </button>
+                      <span class="f-r-8">{{ message }}</span>
+                      <a href="#" class="del-msg"></a>
+                    </div>
+                    {% elif message.tags == "error" %}
+                    <div class="alert bg-danger-100 fadeIn" role="alert">
+                      <button type="button" class="close btn-sm" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                        <span class="sr-only">Close</span>
+                      </button>
+                      <span class="f-r-8">{{ message }}</span>
+                      <a href="#" class="del-msg"></a>
+                    </div>
+                    {% comment %}
+                    <div class="alert bg-info-100 fadeIn" role="alert">
+                      <button type="button" class="close btn-sm" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                        <span class="sr-only">Close</span>
+                      </button>
+                      <span class="f-r-8">{{ message }}</span>
+                      <a href="#" class="del-msg"></a>
+                    </div>
+                    {% endcomment %}
+                    {% endif %}
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="no-message">
+            </div>
+            {% endif %}
+
+          {% endblock messages %}
           <!-- </div>
       </div>
     </div> -->
