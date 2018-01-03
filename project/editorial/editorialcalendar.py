@@ -1,5 +1,7 @@
 """A Calendar to display editorial content."""
 
+# FIXME: wtf is this and why is it all commented out?
+
 from calendar import HTMLCalendar
 from datetime import date
 from itertools import groupby
