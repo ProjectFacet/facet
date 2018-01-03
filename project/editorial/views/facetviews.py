@@ -1,3 +1,4 @@
+from django.core.exceptions import PermissionDenied
 from django.views.generic import CreateView, FormView, UpdateView, DetailView, ListView, DeleteView
 from django.shortcuts import redirect
 from django.core.urlresolvers import reverse
@@ -5,6 +6,7 @@ from django.conf import settings
 from actstream import action
 from editorial.models import Story
 from braces.views import LoginRequiredMixin, FormMessagesMixin
+from editorial.views import CustomUserTest
 
 from ..models import Facet, FacetTemplate
 from ..forms import (
@@ -75,7 +77,7 @@ class FacetTemplateUpdateView(LoginRequiredMixin, UpdateView, FormMessagesMixin)
 # should be able to create a facet for a story they have access to
 # Contractors should only be able to do so for stories that they have access to
 # That should be handled by limiting which story they have access to.
-class FacetPreCreateView(LoginRequiredMixin, FormView, FormMessagesMixin):
+class FacetPreCreateView(CustomUserTest, FormView, FormMessagesMixin):
     """First step in creating a facet."""
 
     # handle users that are not logged in
@@ -84,6 +86,16 @@ class FacetPreCreateView(LoginRequiredMixin, FormView, FormMessagesMixin):
     form_class = FacetPreCreateForm
     template_name = "editorial/facet_precreate_form.html"
     form_invalid_message = "Something went wrong."
+
+    def test_user(self, user):
+        """User must be member of the right org(s)."""
+
+        story = Story.objects.get(self.kwargs['story'])
+
+        if story.get_object().is_editable_by_org(self.request.org):
+            return True
+
+        raise PermissionDenied()
 
     def form_valid(self, form):
         """Redirect to real facet-creation form."""
