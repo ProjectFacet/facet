@@ -1,4 +1,9 @@
-""" Forms for editorial application."""
+"""Forms for editorial application.
+
+Because of the number of forms in this app, this is divided into submodules.
+Please import forms from this file, rather than depending on the individual
+module it appears in, as those may change as the codebase is refactored.
+"""
 
 from .assets import (
     ImageAssetForm,

@@ -6,10 +6,12 @@
     Assignment
 
 """
+
 from bootstrap3_datetime.widgets import DateTimePicker
 from django import forms
 from django.db.models import Q
 from django.forms import Textarea, TextInput, Select
+
 from editorial.models import (
     ContractorProfile,
     TalentEditorProfile,
@@ -28,6 +30,7 @@ class ContractorProfileForm(forms.ModelForm):
 
     class Meta:
         model = ContractorProfile
+
         fields = [
             'resume',
             'address',
@@ -39,6 +42,7 @@ class ContractorProfileForm(forms.ModelForm):
             'portfolio_link3',
             'public',
         ]
+
         widgets = {
             'address': Textarea(
                 attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Address'}),
@@ -75,6 +79,7 @@ class OrganizationContractorAffiliationForm(forms.ModelForm):
 
     class Meta:
         model = OrganizationContractorAffiliation
+
         fields = [
             'contractor',
             'w9_on_file',
@@ -85,6 +90,7 @@ class OrganizationContractorAffiliationForm(forms.ModelForm):
             'talent_pool',
             'status',
         ]
+
         widgets = {
             'rates': TextInput(attrs={'class': 'form-control', 'placeholder': 'Rates'}),
             'strengths': TextInput(
@@ -122,6 +128,7 @@ class CallForm(forms.ModelForm):
 
     class Meta:
         model = Call
+
         fields = [
             'name',
             'text',
@@ -131,6 +138,7 @@ class CallForm(forms.ModelForm):
             'timeframe',
             'status',
         ]
+
         widgets = {
             'name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Name'}),
             'text': Textarea(attrs={'class': 'form-control', 'placeholder': 'Text'}),
@@ -151,6 +159,7 @@ class PitchForm(forms.ModelForm):
 
     class Meta:
         model = Pitch
+
         fields = [
             'name',
             'text',
@@ -158,6 +167,7 @@ class PitchForm(forms.ModelForm):
             'exclusive',
             'recipient',
         ]
+
         widgets = {
             'name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Name'}),
             'text': Textarea(attrs={'class': 'form-control', 'placeholder': 'Text'}),
@@ -188,6 +198,7 @@ class AssignmentForm(forms.ModelForm):
 
     class Meta:
         model = Assignment
+
         fields = [
             'name',
             'text',
@@ -197,6 +208,7 @@ class AssignmentForm(forms.ModelForm):
             'story',
             'facet',
         ]
+
         widgets = {
             'name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Name'}),
             'text': Textarea(attrs={'class': 'form-control', 'placeholder': 'Text'}),

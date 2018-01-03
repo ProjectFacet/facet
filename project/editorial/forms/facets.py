@@ -4,18 +4,16 @@ from bootstrap3_datetime.widgets import DateTimePicker
 from django import forms
 from django.db.models import Q
 from django.forms import Textarea, TextInput, Select, CheckboxInput
+from tinymce.widgets import TinyMCE
+
 from editorial.models import (
     Facet,
     FacetTemplate,
     ContentLicense,
 )
 from editorial.models.facets import COMMON_FIELDS
-from tinymce.widgets import TinyMCE
 
 from editorial.widgets import ArrayFieldSelectMultiple
-
-
-# from django.contrib.staticfiles.templatetags.staticfiles import static
 
 
 class FacetTemplateForm(forms.ModelForm):
@@ -25,6 +23,8 @@ class FacetTemplateForm(forms.ModelForm):
         """There may be spaces around entries; strip these off."""
 
         return [f.strip() for f in self.cleaned_data['fields_used']]
+
+    # FIXME from Joel: why is this here and commented out?
 
     # fields = forms.ArrayField(
     #     required=True,
@@ -47,7 +47,12 @@ class FacetTemplateForm(forms.ModelForm):
 
 
 def get_facet_form_for_template(template_id):
-    """Return custom facet form."""
+    """Return custom facet form.
+
+    The form for a facet depends upon the template for that facet, rather than always
+    being a particular set of fields. Therefore, this function generates a dynamic class
+    with the correct fields for the facet.
+    """
 
     extra_fields = FacetTemplate.objects.get(id=template_id).fields_used
 
@@ -71,17 +76,21 @@ def get_facet_form_for_template(template_id):
             if organization:
                 self.instance.organization = organization
 
-            # limit to org users or users or a collaborating organization (done via model method)
-            self.fields['credit'].queryset = self.instance.story.get_story_team_vocab()
-            self.fields['editor'].queryset = self.instance.story.get_story_team_vocab()
+            # limit to org users or users or a collaborating organization
+
+            story = self.instance.story
+            story_team_vocab = story.get_story_team_vocab()
+
+            self.fields['credit'].queryset = story_team_vocab
+            self.fields['editor'].queryset = story_team_vocab
 
             if 'content_license' in self.fields:
                 self.fields['content_license'].queryset = ContentLicense.objects.filter(
-                    Q(organization=self.instance.story.organization) | Q(
-                        organization__isnull=True))
+                    Q(organization=story.organization) | Q(organization__isnull=True))
                 self.fields['content_license'].empty_label = 'Select a license'
+
             if 'producer' in self.fields:
-                self.fields['producer'].queryset = self.instance.story.get_story_team_vocab()
+                self.fields['producer'].queryset = story_team_vocab
                 self.fields['producer'].empty_label = 'Select a producer'
 
         due_edit = forms.DateTimeField(
@@ -108,10 +117,11 @@ def get_facet_form_for_template(template_id):
             )
         )
 
-        content = forms.CharField(widget=TinyMCE(attrs={'rows': 20, }))
+        content = forms.CharField(widget=TinyMCE(attrs={'rows': 20}))
 
         class Meta:
             model = Facet
+
             fields = list(COMMON_FIELDS) + extra_fields
 
             widgets = {
@@ -196,7 +206,12 @@ def get_facet_form_for_template(template_id):
 
 
 class FacetPreCreateForm(forms.Form):
-    """Form to "pre-create" a facet; used to create correct Facet form."""
+    """Form to "pre-create" a facet; used to create correct Facet form.
+
+    The job of this form is just to gather the name of the facet and the template; it is
+    used by a view that then uses these two fields to prepopulate the real facet creation
+    form.
+    """
 
     name = forms.CharField(
         label="Facet Name",

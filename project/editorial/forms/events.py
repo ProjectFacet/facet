@@ -1,10 +1,10 @@
-"""Forms for Events and related entities.
+"""Forms for Events and related entities."""
 
-"""
 from bootstrap3_datetime.widgets import DateTimePicker
 from django import forms
 from django.db.models import Q
 from django.forms import Textarea, Select
+
 from editorial.models import (
     Project,
     Series,
@@ -21,11 +21,14 @@ class EventForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         org = kwargs.pop("organization")
         super(EventForm, self).__init__(*args, **kwargs)
+
         # limit team options to team members from user's org
         self.fields['team'].queryset = org.get_org_users()
+
         # limit evt_org options to organizations that user org is partnered with or self
         # FIXME add self.org to evt_organization
         self.fields['evt_organization'].queryset = org.get_org_collaborators_vocab()
+
         # limit project, series and stories to those owned by org or part of content and org is collaborator for
         self.fields['project'].queryset = Project.objects.filter(
             Q(collaborate_with=org) | (Q(organization=org)))
@@ -33,6 +36,7 @@ class EventForm(forms.ModelForm):
             Q(collaborate_with=org) | (Q(organization=org)))
         self.fields['story'].queryset = Story.objects.filter(
             Q(collaborate_with=org) | (Q(organization=org)))
+
         # set empty labels
         self.fields['event_type'].empty_label = 'Event Type'
         self.fields['evt_organization'].empty_label = 'Select an Organization'
@@ -50,6 +54,7 @@ class EventForm(forms.ModelForm):
 
     class Meta:
         model = Event
+
         fields = [
             'name',
             'text',
@@ -62,6 +67,7 @@ class EventForm(forms.ModelForm):
             'series',
             'story',
         ]
+
         widgets = {
             'name': Textarea(
                 attrs={'class': 'form-control', 'rows': 1, 'placeholder': 'Name'}),
@@ -81,7 +87,5 @@ class EventForm(forms.ModelForm):
         }
 
     class Media:
-        css = {
-            'all': ('css/bootstrap-datetimepicker.css', 'css/chosen.min.css')
-        }
+        css = {'all': ('css/bootstrap-datetimepicker.css', 'css/chosen.min.css')}
         js = ('scripts/chosen.jquery.min.js',)
