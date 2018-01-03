@@ -245,7 +245,25 @@ class NetworkStoryListView(LoginRequiredMixin, ListView):
 class CopyNetworkStoryView(LoginRequiredMixin, View):
     """Copy a story and related facets.
 
-    TODO Needs to let user select story and facets/assets for copying.
+    FIXME A user should be able to click and copy a partner story
+    this should make a copy of the story for the new organization
+    it should come with all associated assets - image, doc, audio, video
+    it should not come with events, notes, tasks, or simple assets
+    After a user has copied a story, there should be a visual cue in the interface
+    or a js alert (something) that notifies a user should they try to copy a
+    story that another user from their org has already copied that specific story.
+
+    Phases of Functionality:
+    1. A user can copy a story from a sharing partner. This accomplished what's
+    listed above.
+    2. A user should be able to select the specific facets of a story they
+    want to copy. (Doesn't need to be more granular than that, they don't need to
+    select images like in download)
+    3. A story that's been updated since it was marked ready_to_share has a visual cue
+    that it has been updated. Users who have already copied it, should get some sort
+    of notification that updates are available. This is important in the case of
+    corrections.
+
     """
 
     def post(self, request, story):

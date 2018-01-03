@@ -92,7 +92,7 @@ urlpatterns = [
 
     #   Download URLS
 
-    url(r'^story/(?P<pk>\d+)/download/$', downloads.create_download, name='create_download'),
+    url(r'^story/(?P<pk>\d+)/download/$', downloads.StoryDownload.as_view(), name='create_download'),
 
     #   Search URLS
 
