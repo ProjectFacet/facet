@@ -7,17 +7,14 @@
 
 from __future__ import unicode_literals
 
+from braces.views import LoginRequiredMixin
+from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.views.generic import FormView
-from django.conf import settings
-from braces.views import LoginRequiredMixin, FormMessagesMixin
-
 from editorial.forms import (
     PlatformAccountFormSet,
 )
 
-from editorial.models import PlatformAccount, User
-from extra_views import InlineFormSetView, ModelFormSetView
 
 # ----------------------------------------------------------------------#
 #   Platform Views
@@ -26,9 +23,6 @@ from extra_views import InlineFormSetView, ModelFormSetView
 # ACCESS: Any user can edit their own platforms.
 class UserPlatformAccountCreateView(LoginRequiredMixin, FormView):
     """Display formset to add social accounts to a user, organization or project."""
-
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
 
     form_class = PlatformAccountFormSet
     template_name = "editorial/platformaccounts_form.html"

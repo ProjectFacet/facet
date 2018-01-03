@@ -4,42 +4,32 @@
 """
 
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-from django.shortcuts import render, redirect, get_object_or_404
-from django.conf import settings
-from django.core.mail import send_mail
-from django.http import HttpResponse
-from django.utils import timezone
-from django.views.generic import TemplateView , UpdateView, DetailView, CreateView, ListView, DeleteView
-from django.views.decorators.csrf import csrf_exempt
-import datetime
-import json
-from actstream import action
-from braces.views import LoginRequiredMixin, FormMessagesMixin
 
+from __future__ import unicode_literals
+
+from actstream import action
+from braces.views import LoginRequiredMixin
+from django.conf import settings
+from django.shortcuts import redirect, get_object_or_404
+from django.views.generic import UpdateView, CreateView, DeleteView
 from editorial.forms import (
     EventForm,
     CommentForm,
     NoteForm,
-    )
-
-
+)
 from editorial.models import (
     Organization,
     Project,
     Series,
     Story,
-    Task,
     Event,
-    Comment,
     Discussion,
-    Note,
-    )
+)
 
 
-#----------------------------------------------------------------------#
+# ----------------------------------------------------------------------#
 #   Events Views
-#----------------------------------------------------------------------#
+# ----------------------------------------------------------------------#
 
 # ACCESS: Any org user, or user from an organization that is in collaborate_with
 # should be able to create an event for P, Sr, St, F.
@@ -56,9 +46,6 @@ class EventCreateView(LoginRequiredMixin, CreateView):
     Ex. Administrative = An internal event like an org or team meeting.
     Events have a connection to either a Project, Series, Story or Event.
     """
-
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
 
     model = Event
     form_class = EventForm
@@ -102,9 +89,6 @@ class EventUpdateView(LoginRequiredMixin, UpdateView):
     Displays the event information.
     """
 
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
-
     model = Event
     form_class = EventForm
 
@@ -122,7 +106,7 @@ class EventUpdateView(LoginRequiredMixin, UpdateView):
         discussion = self.object.discussion
         comments = discussion.comment_set.all()
         form = CommentForm()
-        return {'discussion': discussion, 'comments': comments, 'form': form,}
+        return {'discussion': discussion, 'comments': comments, 'form': form, }
 
     def event_notes(self):
         """Get notes and note form for event."""
@@ -133,7 +117,6 @@ class EventUpdateView(LoginRequiredMixin, UpdateView):
         return {'notes': notes, 'form': form}
 
     def get_success_url(self):
-
         action.send(self.request.user, verb="edited", action_object=self.object)
         return super(EventUpdateView, self).get_success_url()
 
@@ -148,9 +131,6 @@ class EventDeleteView(LoginRequiredMixin, DeleteView):
     actually use the "do you want to delete this?" Django-generated page. However, this is
     available if useful.
     """
-
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
 
     # FIXME: this would be a great place to use braces' messages; usage commented out for now
 
@@ -176,18 +156,16 @@ class EventDeleteView(LoginRequiredMixin, DeleteView):
             organization = self.object.evt_organization
             return reverse('organization_event_list', kwargs={'pk': organization.id})
 
-#----------------------------------------------------------------------#
+
+# ----------------------------------------------------------------------#
 #   Content Event Views
-#----------------------------------------------------------------------#
+# ----------------------------------------------------------------------#
 
 # ACCESS: Any org user should be able to create an event associated
 # with their organization
 class OrganizationEventView(LoginRequiredMixin, CreateView):
     """Display all the events associated with an organization.
     """
-
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
 
     context_object_name = 'events'
     template_name = 'editorial/event_list.html'
@@ -223,9 +201,6 @@ class ProjectEventView(LoginRequiredMixin, CreateView):
     """Display all the events associated with a project.
     """
 
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
-
     context_object_name = 'events'
     template_name = 'editorial/event_list.html'
     form_class = EventForm
@@ -255,11 +230,7 @@ class ProjectEventView(LoginRequiredMixin, CreateView):
 # ACCESS: Any org user should be able to view/create an event associated a series owned
 # by their organization
 class SeriesEventView(LoginRequiredMixin, CreateView):
-    """Display all the events associated with a series.
-    """
-
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
+    """Display all the events associated with a series."""
 
     context_object_name = 'events'
     template_name = 'editorial/event_list.html'
@@ -293,9 +264,6 @@ class SeriesEventView(LoginRequiredMixin, CreateView):
 # should be able to view/create an event for a story they have access to.
 class StoryEventView(LoginRequiredMixin, CreateView):
     """Display all the events associated with a story."""
-
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
 
     context_object_name = 'events'
     template_name = 'editorial/event_list.html'

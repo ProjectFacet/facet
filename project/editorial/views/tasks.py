@@ -4,36 +4,29 @@
 """
 
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-from django.shortcuts import render, redirect, get_object_or_404
-from django.conf import settings
-from django.core.mail import send_mail
-from django.http import HttpResponse
-from django.utils import timezone
-from django.views.generic import TemplateView , UpdateView, DetailView, CreateView, ListView, View, DeleteView
-from django.views.decorators.csrf import csrf_exempt
-import datetime
-import json
-from actstream import action
-from django.core.urlresolvers import reverse
-from braces.views import LoginRequiredMixin, FormMessagesMixin
 
+from __future__ import unicode_literals
+
+from actstream import action
+from braces.views import LoginRequiredMixin
+from django.conf import settings
+from django.core.urlresolvers import reverse
+from django.shortcuts import redirect, get_object_or_404
+from django.views.generic import UpdateView, CreateView, DeleteView
 from editorial.forms import (
     TaskForm,
     CommentForm,
     NoteForm,
-    )
-
+)
 from editorial.models import (
     Project,
     Series,
     Story,
     Task,
     Event,
-    Comment,
     Discussion,
-    Note,
-    )
+)
+
 
 #----------------------------------------------------------------------#
 #   General Task Views
@@ -45,9 +38,6 @@ from editorial.models import (
 # assigned to.
 class TaskCreateView(LoginRequiredMixin, CreateView):
     """Create a new task."""
-
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
 
     model = Task
     form_class = TaskForm
@@ -88,9 +78,6 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
 class TaskUpdateView(LoginRequiredMixin, UpdateView):
     """The detail page for a task.
     Displays the task information."""
-
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
 
     model = Task
     form_class = TaskForm
@@ -136,9 +123,6 @@ class TaskDeleteView(LoginRequiredMixin, DeleteView):
     available if useful.
     """
 
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
-
     # FIXME: this would be a great place to use braces' messages; usage commented out for now
 
     model = Task
@@ -173,9 +157,6 @@ class TaskDeleteView(LoginRequiredMixin, DeleteView):
 # should be able to view/create a task for a project they have access to.
 class ProjectTaskView(LoginRequiredMixin, CreateView):
     """Create a project task."""
-
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
 
     context_object_name = 'tasks'
     template_name = 'editorial/task_list.html'
@@ -219,9 +200,6 @@ class ProjectTaskView(LoginRequiredMixin, CreateView):
 class SeriesTaskView(LoginRequiredMixin, CreateView):
     """Create a series task."""
 
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
-
     context_object_name = 'tasks'
     template_name = 'editorial/task_list.html'
     form_class = TaskForm
@@ -264,9 +242,6 @@ class SeriesTaskView(LoginRequiredMixin, CreateView):
 class StoryTaskView(LoginRequiredMixin, CreateView):
     """Create a story task."""
 
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
-
     context_object_name = 'tasks'
     template_name = 'editorial/task_list.html'
     form_class = TaskForm
@@ -302,12 +277,8 @@ class StoryTaskView(LoginRequiredMixin, CreateView):
         return context
 
 
-
 class EventTaskView(LoginRequiredMixin, CreateView):
     """Create event task."""
-
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
 
     context_object_name = 'tasks'
     template_name = 'editorial/task_list.html'

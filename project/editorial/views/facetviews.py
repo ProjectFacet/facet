@@ -25,9 +25,6 @@ from ..forms import (
 class FacetTemplateCreateView(LoginRequiredMixin, CreateView):
     """Create a facet template."""
 
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
-
     model = FacetTemplate
     form_class = FacetTemplateForm
     form_invalid_message = "Something went wrong."
@@ -57,9 +54,6 @@ class FacetTemplateCreateView(LoginRequiredMixin, CreateView):
 # ACCESS: Only org users should be able to edit their org's templates.
 class FacetTemplateUpdateView(LoginRequiredMixin, UpdateView, FormMessagesMixin):
     """Edit a facet template."""
-
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
 
     model = FacetTemplate
     form_class = FacetTemplateForm

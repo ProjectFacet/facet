@@ -1,57 +1,20 @@
-""" General views for editorial app. """
+"""Inbox views for editorial app. """
 
 # -*- coding: utf-8 -*-
+
 from __future__ import unicode_literals
-from django.shortcuts import render, redirect, get_object_or_404
-from django.conf import settings
-from django.core.mail import send_mail
+
 from django.http import HttpResponse
-from django.utils import timezone
-from django.views.generic import TemplateView , UpdateView, DetailView
-from django.views.decorators.csrf import csrf_exempt
-from datetime import datetime, timedelta, time
-import json
+from django.shortcuts import render, get_object_or_404
 from django.template.loader import render_to_string
-from braces.views import LoginRequiredMixin, FormMessagesMixin
-
-# All imports are included for use in test view
-
 from editorial.forms import (
-    AddUserForm,
-    UserProfileForm,
-    OrganizationForm,
-    NetworkForm,
-    SeriesForm,
-    StoryForm,
-    ImageAssetForm,
-    DocumentAssetForm,
-    AddToNetworkForm,
-    InviteToNetworkForm,
     PrivateMessageForm,
-    CommentForm,
-    NoteForm,
-    )
-
+)
 from editorial.models import (
     User,
-    Organization,
-    Network,
-    Series,
-    Story,
-    Note,
-    ImageAsset,
-    DocumentAsset,
-    AudioAsset,
-    VideoAsset,
-    Comment,
     PrivateMessage,
-    Discussion,
-    StoryCopyDetail,
-    )
+)
 
-
-# # handle users that are not logged in
-# login_url = settings.LOGIN_URL
 
 #----------------------------------------------------------------------#
 #   Inbox Views

@@ -145,9 +145,6 @@ class NetworkDeleteView(LoginRequiredMixin, DeleteView):
     available if useful.
     """
 
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
-
     # FIXME: this would be a great place to use braces' messages; usage commented out for now
 
     model = Network
@@ -225,9 +222,6 @@ class NetworkStoryListView(LoginRequiredMixin, ListView):
     it once it becomes available.)
     """
 
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
-
     context_object_name = 'networkstories'
     template_name = 'editorial/networkstory_list.html'
 
@@ -253,11 +247,6 @@ class CopyNetworkStoryView(LoginRequiredMixin, View):
 
     TODO Needs to let user select story and facets/assets for copying.
     """
-
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
-
-    # import pdb; pdb.set_trace()
 
     def post(self, request, story):
         print "In post"

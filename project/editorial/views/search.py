@@ -1,39 +1,16 @@
-""" Custom search view for editorial app.
+"""Custom search view for editorial app.
 
-    Subclasses waton get_queryset to filter for only results
-    from a user's own organization.
+Subclasses watson's get_queryset to filter for only results
+from a user's own organization.
 """
 
 # -*- coding: utf-8 -*-
+
 from __future__ import unicode_literals
-from django.shortcuts import render, redirect, get_object_or_404
-from django.conf import settings
-from django.http import HttpResponse
-from django.utils import timezone
-from django.views.generic import TemplateView , UpdateView, DetailView
-from django.views.decorators.csrf import csrf_exempt
-import datetime
-import json
-from braces.views import LoginRequiredMixin, FormMessagesMixin
 
 from watson import search as watson
 from watson.views import SearchView as BaseWatsonSearchView
 
-# All model imports are included for use in search view
-from editorial.models import (
-    User,
-    Organization,
-    Project,
-    Network,
-    Series,
-    Story,
-    Facet,
-    ImageAsset,
-    Comment,
-    PrivateMessage,
-    Discussion,
-    Note,
-    )
 
 #----------------------------------------------------------------------#
 #   Custom Search View
@@ -43,14 +20,17 @@ from editorial.models import (
 # except other users notes
 # Contractors should only be able to search their own pitches, assignments.
 class EditorialSearchView(BaseWatsonSearchView):
+    """Search view that filters to only show results from user's org."""
+
     def get_queryset(self):
         """Returns list of querysets containing content a user is allowed to search.
 
         This is determined by a user's organization.
         """
+
         # FIXME Revise for both org users and contractors
 
-        user_org = self.request.user.organization
+        user_org = self.request.org
         user = self.request.user
 
         # retrieve all content a user is allowed to search
@@ -61,5 +41,10 @@ class EditorialSearchView(BaseWatsonSearchView):
         projects, series, stories, facets, imageassets, notes = searchable_org_objects
         usernotes = searchable_user_objects
 
+        # FIXME from joel: should usernotes be in the list below? it's not used anywhere
+
         # pass all querysets to search method
-        return watson.search(self.query, models=[projects, series, stories, facets, imageassets, notes,])
+        return watson.search(
+            self.query,
+            models=[projects, series, stories, facets, imageassets, notes]
+        )

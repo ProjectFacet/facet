@@ -1,17 +1,17 @@
+from datetime import datetime, timedelta, time
+
+from django.contrib.auth.models import AbstractUser
+from django.contrib.postgres.fields import ArrayField
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import Q
-from django.contrib.postgres.fields import ArrayField# from simple_history.models import
-from imagekit.models import ProcessedImageField, ImageSpecField
-import time as timemk
-from datetime import datetime, timedelta, time
-from django.utils import timezone
-from pilkit.processors import ResizeToFit, SmartResize
-from django.contrib.auth.models import AbstractUser
-from django.utils.encoding import python_2_unicode_compatible
-from django.core.urlresolvers import reverse
-from django.shortcuts import get_object_or_404
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.utils import timezone
+from django.utils.encoding import python_2_unicode_compatible
+from imagekit.models import ImageSpecField
+from pilkit.processors import SmartResize
+
 
 # from .discussion import Discussion, Comment, PrivateMessage
 
@@ -507,7 +507,7 @@ class Organization(models.Model):
         collaborator on.
         """
 
-        from .project import Project
+        from .projects import Project
         from .series import Series
         from .story import Story
         external_collaborative_content = []
@@ -519,15 +519,11 @@ class Organization(models.Model):
         external_collaborative_content.extend()
         return external_collaborative_content
 
-
     def get_org_internal_collaborations(self):
         """ Return all content that an organization owns that is a collaboration
         with partner organizations.
         """
 
-        from .project import Project
-        from .series import Series
-        from .story import Story
         internal_collaborative_content = []
         internal_projects = self.project_set.filter(Q(collaborate=True))
         internal_series = self.series_set.filter(Q(collaborate=True))
@@ -536,7 +532,6 @@ class Organization(models.Model):
         internal_collaborative_content.extend()
         internal_collaborative_content.extend()
         return internal_collaborative_content
-
 
     def get_org_stories_running_today(self):
         """Return list of content scheduled to run today.
@@ -592,7 +587,7 @@ class Organization(models.Model):
         return projects
 
     def get_org_searchable_content(self):
-        """ Return queryset of all objects that can be searched by a user."""
+        """Return queryset of all objects that can be searched by a user."""
 
         #TODO add notes
 
@@ -600,7 +595,6 @@ class Organization(models.Model):
         from .series import Series
         from .story import Story
         from .facets import Facet
-        from .notes import Note
 
         #additional required info
         networks = self.get_org_networks()
@@ -637,9 +631,12 @@ class Organization(models.Model):
 
 @receiver(post_save, sender=Organization)
 def add_discussion(sender, instance, **kwargs):
+    from . import Discussion
+
     if not instance.discussion:
         instance.discussion = Discussion.objects.create_discussion("ORG")
         instance.save()
+
 
 class OrganizationSubscriptionManager(models.Manager):
     """Custom manager for Subscription."""
@@ -680,7 +677,6 @@ class OrganizationSubscription(models.Model):
 
     objects = OrganizationSubscriptionManager()
 
-
     def __str__(self):
         return "Organization Subscription - {organization}".format(organization=self.organization.name)
 
@@ -689,7 +685,7 @@ class OrganizationSubscription(models.Model):
 
 @python_2_unicode_compatible
 class Network(models.Model):
-    """ A group of organizations.
+    """A group of organizations.
 
     A network is a collection of two or more organizations seeking to create a sharing
     or collaborating relationship.
@@ -773,7 +769,6 @@ class Network(models.Model):
 
         network_stories = Story.objects.filter(Q(share_with=self))
         return network_stories
-
 
     @property
     def description(self):

@@ -4,19 +4,19 @@
 """
 
 # -*- coding: utf-8 -*-
+
 from __future__ import unicode_literals
-from django.shortcuts import render, redirect, get_object_or_404
-from django.conf import settings
-from django.core.mail import send_mail
-from django.http import HttpResponse
-from django.core.urlresolvers import reverse_lazy, reverse
-from django.utils import timezone
-from django.views.generic import TemplateView , UpdateView, DetailView, ListView, CreateView, DeleteView
-from django.views.decorators.csrf import csrf_exempt
-import datetime
+
 import json
+
 from actstream import action
-from braces.views import LoginRequiredMixin, FormMessagesMixin
+from braces.views import LoginRequiredMixin
+from django.conf import settings
+from django.core.urlresolvers import reverse
+from django.http import HttpResponse
+from django.shortcuts import redirect, get_object_or_404
+from django.views.generic import TemplateView, UpdateView, DetailView, ListView, CreateView, \
+    DeleteView
 
 from editorial.forms import (
     SeriesForm,
@@ -26,19 +26,12 @@ from editorial.forms import (
     EventForm,
     SimpleImageForm,
     SimpleDocumentForm,
-    )
-
+)
 from editorial.models import (
     Series,
-    Note,
-    ImageAsset,
-    Comment,
     Discussion,
-    Task,
-    Event,
-    SimpleImage,
-    SimpleDocument,
-    )
+)
+
 
 #----------------------------------------------------------------------#
 #   Series Views
@@ -51,9 +44,6 @@ class SeriesListView(LoginRequiredMixin, ListView):
     Initial display organizes content by series name.
     """
 
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
-
     context_object_name = 'series'
 
     def get_queryset(self):
@@ -61,6 +51,7 @@ class SeriesListView(LoginRequiredMixin, ListView):
 
         org = self.request.user.organization
         return org.series_organization.all()
+
 
 # ACCESS: Any org user should be able to create a series for their org.
 class SeriesCreateView(LoginRequiredMixin, CreateView):
@@ -73,9 +64,6 @@ class SeriesCreateView(LoginRequiredMixin, CreateView):
     stories technically have a series, but in that case the user does not interact with any
     series interface.
     """
-
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
 
     model = Series
     form_class = SeriesForm
@@ -114,11 +102,8 @@ class SeriesDetailView(LoginRequiredMixin, DetailView):
     """ The detail page for a series.
 
     Displays the series' planning notes, discussion, assets, share and collaboration status
-    and sensivity status.
+    and sensitivity status.
     """
-
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
 
     model = Series
 
@@ -132,31 +117,27 @@ class SeriesDetailView(LoginRequiredMixin, DetailView):
     def stories(self):
         """Get all stories associated with a series."""
 
-        self.object = self.get_object()
         return self.object.story_set.all()
 
     def series_discussion(self):
         """Get discussion, comments and comment form for a series."""
 
-        self.object = self.get_object()
         discussion = self.object.discussion
         comments = discussion.comment_set.all()
         form = CommentForm()
+
         return {'discussion': discussion, 'comments': comments, 'form': form}
 
     def series_notes(self):
         """Get notes and note form for a series."""
 
-        self.object = self.get_object()
         notes = self.object.notes.all().order_by('-creation_date')
         form = NoteForm()
         return {'notes': notes, 'form': form}
 
-
     def series_tasks(self):
         """Get tasks and task form for a series."""
 
-        self.object = self.get_object()
         tasks = self.object.task_set.all()
         identified = self.object.task_set.filter(status="Identified")
         inprogress = self.object.task_set.filter(status="In Progress")
@@ -165,6 +146,7 @@ class SeriesDetailView(LoginRequiredMixin, DetailView):
         inprogress_ct = inprogress.count()
         complete_ct = complete.count()
         form = TaskForm(organization = self.object.organization)
+
         return {
                 'tasks': tasks,
                 'identified': identified,
@@ -176,20 +158,16 @@ class SeriesDetailView(LoginRequiredMixin, DetailView):
                 'form': form,
                 }
 
-
     def series_events(self):
         """Get events and event form for a series."""
 
-        self.object = self.get_object()
         events = self.object.event_set.all()
         form = EventForm(organization = self.object.organization)
         return {'events': events, 'form': form}
 
-
     def series_assets(self):
         """Get all the assets associated with facets of stories in a series."""
 
-        self.object = self.get_object()
         images = self.object.get_series_images()
         documents = self.object.get_series_documents()
         audio = self.object.get_series_audio()
@@ -199,7 +177,6 @@ class SeriesDetailView(LoginRequiredMixin, DetailView):
     def simple_images(self):
         """Return simple images."""
 
-        self.object = self.get_object()
         images = self.object.simple_image_assets.all()
         print "IMG: ", images
         form = SimpleImageForm()
@@ -208,7 +185,6 @@ class SeriesDetailView(LoginRequiredMixin, DetailView):
     def simple_documents(self):
         """Return simple documents."""
 
-        self.object = self.get_object()
         documents = self.object.simple_document_assets.all()
         print "DOC: ", documents
         form = SimpleDocumentForm()

@@ -1,6 +1,7 @@
-""" General views for editorial app. """
+"""General views for editorial app."""
 
 # -*- coding: utf-8 -*-
+
 from __future__ import unicode_literals
 from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
@@ -63,7 +64,7 @@ from editorial.models import (
 
 # This is the only general view that does not require login
 class LandingTemplateView(TemplateView):
-    """Return static homepage for prelogin users."""
+    """Return static homepage for pre-login users."""
 
     template_name = 'editorial/home.html'
 
@@ -85,9 +86,6 @@ class DashboardTemplateView(LoginRequiredMixin, TemplateView):
     """
 
     template_name = 'editorial/dashboard.html'
-
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
 
     def get_context_data(self):
         """Return all the assorted items associated with a team user dashboard."""
@@ -143,6 +141,7 @@ class DashboardTemplateView(LoginRequiredMixin, TemplateView):
                 'communication': communication,
             }
 
+
 #----------------------------------------------------------------------#
 #   Team Views
 #----------------------------------------------------------------------#
@@ -154,9 +153,6 @@ class TeamTemplateView(LoginRequiredMixin, TemplateView):
     Displays team members from the user's own organization.
     Displays team members from any network that the user's organization is part of.
     """
-
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
 
     template_name = 'editorial/team.html'
 
@@ -179,17 +175,14 @@ class TeamTemplateView(LoginRequiredMixin, TemplateView):
             'adduserform': adduserform,
         }
 
+
 #----------------------------------------------------------------------#
 #   Collaborations View
 #----------------------------------------------------------------------#
 
 # ACCESS: All org users have access to their org's list of collaborations.
 class CollaborationTemplateView(LoginRequiredMixin, TemplateView):
-    """ Return dashboard of series and stories that are part of a collaboration.
-    """
-
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
+    """Return dashboard of series and stories that are part of a collaboration."""
 
     template_name = 'editorial/collaborations.html'
 

@@ -1,15 +1,10 @@
 # -*- coding: utf-8 -*-
+
 from __future__ import unicode_literals
 from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
-from django.core.mail import send_mail
-from django.http import HttpResponse
-from django.core.urlresolvers import reverse_lazy, reverse
-from django.utils import timezone
+from django.core.urlresolvers import reverse
 from django.views.generic import CreateView, FormView, UpdateView, DetailView, ListView, DeleteView, TemplateView
-from django.views.decorators.csrf import csrf_exempt
-import datetime
-import json
 from actstream import action
 from django.db.models import Q
 from braces.views import LoginRequiredMixin, FormMessagesMixin
@@ -58,9 +53,6 @@ class ContractorCreateView(LoginRequiredMixin, CreateView):
     This view creates a new contractor profile to associate with user.
     """
 
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
-
     model = ContractorProfile
     form_class = ContractorProfileForm
 
@@ -89,9 +81,6 @@ class ContractorCreateView(LoginRequiredMixin, CreateView):
 # Future: Contractors can see each other/message each other (eventually collaborate as individuals)
 class ContractorDetailView(LoginRequiredMixin, DetailView):
     """Display details about a contractor."""
-
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
 
     model = ContractorProfile
 
@@ -130,9 +119,6 @@ class ContractorDetailView(LoginRequiredMixin, DetailView):
 class ContractorUpdateView(LoginRequiredMixin, UpdateView):
     """Edit a contractor's profile."""
 
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
-
     model = ContractorProfile
     form_class = ContractorProfileForm
 
@@ -155,9 +141,6 @@ class PublicTalentEditorDetailView(LoginRequiredMixin, DetailView):
     that works with contractors.
     Contractors see assignments and calls from this editor and pitches they've submitted.
     """
-
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
 
     model = TalentEditorProfile
     template_name = 'editorial/talenteditor_detail.html'
@@ -192,12 +175,10 @@ class PublicTalentEditorDetailView(LoginRequiredMixin, DetailView):
         calls = self.object.call_set.all()
         return calls
 
+
 # ACCESS: Only the user associated with the profile
 class PublicTalentEditorDashboardView(LoginRequiredMixin, DetailView):
     """A dashboard of relevant content for a contractor."""
-
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
 
     model = TalentEditorProfile
     template_name = 'editorial/talenteditor_dashboard.html'
@@ -227,6 +208,7 @@ class PublicTalentEditorDashboardView(LoginRequiredMixin, DetailView):
         contractors = ContractorProfile.objects.all()
         return PrivateMessage.objects.filter(Q(recipient=user)).order_by('date')
 
+
 #----------------------------------------------------------------------#
 #   Public Listing Views
 #----------------------------------------------------------------------#
@@ -235,9 +217,6 @@ class PublicTalentEditorDashboardView(LoginRequiredMixin, DetailView):
 # FUTURE contractors will be able to see each other (future functionality for individual collaborations)
 class PublicContractorListView(LoginRequiredMixin, ListView):
     """Listing of all public contractors."""
-
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
 
     context_object_name = "contractors"
     template_name = "editorial/publiccontractor_list.html"
@@ -254,9 +233,6 @@ class PublicContractorListView(LoginRequiredMixin, ListView):
 class PublicTalentEditorListView(LoginRequiredMixin, ListView):
     """Listing of all public contractors."""
 
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
-
     context_object_name = "editors"
     template_name = "editorial/publictalenteditor_list.html"
 
@@ -266,6 +242,7 @@ class PublicTalentEditorListView(LoginRequiredMixin, ListView):
         public_editors = TalentEditorProfile.objects.filter(Q(public=True))
         return public_editors
 
+
 #----------------------------------------------------------------------#
 #   Organization / Contractor Affiliation Views
 #----------------------------------------------------------------------#
@@ -274,9 +251,6 @@ class PublicTalentEditorListView(LoginRequiredMixin, ListView):
 # Future: May be another view to include organization/pk/ in url
 class AffiliationListView(LoginRequiredMixin, ListView):
     """Return all the contractors that an organization has a relationship with."""
-
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
 
     context_object_name = "affiliations"
     template_name='editorial/affiliation_list.html'
@@ -291,9 +265,6 @@ class AffiliationListView(LoginRequiredMixin, ListView):
 # ACCESS: Only TalentEditors can access
 class AffiliationCreateView(LoginRequiredMixin, CreateView):
     """Create a relationship between a contractor and an organization."""
-
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
 
     model = OrganizationContractorAffiliation
     form_class = OrganizationContractorAffiliationForm
@@ -318,9 +289,6 @@ class AffiliationDetailView(LoginRequiredMixin, DetailView):
     contractor.
     """
 
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
-
     model = OrganizationContractorAffiliation
     template_name='editorial/affiliation_detail.html'
 
@@ -330,9 +298,6 @@ class AffiliationUpdateView(LoginRequiredMixin, UpdateView):
     """ Edit the record of affiliation between an organization and a
     contractor.
     """
-
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
 
     model = OrganizationContractorAffiliation
     form_class = OrganizationContractorAffiliationForm
@@ -352,9 +317,6 @@ class AffiliationUpdateView(LoginRequiredMixin, UpdateView):
 # ACCESS: Only contractorprofile users
 class PitchCreateView(LoginRequiredMixin, CreateView):
     """Create a pitch."""
-
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
 
     model = Pitch
     form_class = PitchForm
@@ -376,9 +338,6 @@ class PitchCreateView(LoginRequiredMixin, CreateView):
 # from their own org
 class PitchDetailView(LoginRequiredMixin, DetailView):
     """Show pitch details."""
-
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
 
     model = Pitch
 
@@ -420,9 +379,6 @@ class PitchDetailView(LoginRequiredMixin, DetailView):
 class PitchUpdateView(LoginRequiredMixin, UpdateView):
     """View and edit a pitch. Add assets to a pitch."""
 
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
-
     model = Pitch
     form_class = PitchForm
 
@@ -454,14 +410,12 @@ class PitchUpdateView(LoginRequiredMixin, UpdateView):
         return {'audio': audio, 'form': form}
 
     def simple_video(self):
-        """Return all associated simple video and the form to add.
-        """
+        """Return all associated simple video and the form to add."""
 
         self.object = self.get_object()
         videos = self.object.simple_video_assets.all()
         form = SimpleVideoForm()
         return {'videos': videos, 'form': form}
-
 
     def get_success_url(self):
         """Record action for activity stream."""
@@ -473,9 +427,6 @@ class PitchUpdateView(LoginRequiredMixin, UpdateView):
 # ACCESS: Only contractorprofile users
 class PitchListView(LoginRequiredMixin, ListView):
     """Return all of a contractor's pitches."""
-
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
 
     context_object_name = 'pitches'
 
@@ -505,9 +456,6 @@ class PitchDeleteView(LoginRequiredMixin, DeleteView):
     available if useful.
     """
 
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
-
     # FIXME: this would be a great place to use braces' messages; usage commented out for now
 
     model = Pitch
@@ -521,6 +469,7 @@ class PitchDeleteView(LoginRequiredMixin, DeleteView):
 
         return reverse('pitch_list')
 
+
 #----------------------------------------------------------------------#
 #   Call Views
 #----------------------------------------------------------------------#
@@ -528,9 +477,6 @@ class PitchDeleteView(LoginRequiredMixin, DeleteView):
 # ACCESS: Only talenteditor users
 class CallCreateView(LoginRequiredMixin, CreateView):
     """Create a call."""
-
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
 
     model = Call
     form_class = CallForm
@@ -560,9 +506,6 @@ class CallCreateView(LoginRequiredMixin, CreateView):
 # All contractorprofile users
 class CallDetailView(LoginRequiredMixin, DetailView):
     """Show call details."""
-
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
 
     model = Call
 
@@ -603,9 +546,6 @@ class CallDetailView(LoginRequiredMixin, DetailView):
 # ACCESS: TalentEditor User that owns it (Maybe other TE from same org?)
 class CallUpdateView(LoginRequiredMixin, UpdateView):
     """Edit a call."""
-
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
 
     model = Call
     form_class = CallForm
@@ -665,9 +605,6 @@ class CallUpdateView(LoginRequiredMixin, UpdateView):
 class CallListView(LoginRequiredMixin, ListView):
     """List all calls from public talent editors."""
 
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
-
     context_object_name = 'calls'
 
     def get_queryset(self):
@@ -699,9 +636,6 @@ class CallDeleteView(LoginRequiredMixin, DeleteView):
     available if useful.
     """
 
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
-
     # FIXME: this would be a great place to use braces' messages; usage commented out for now
 
     model = Call
@@ -715,6 +649,7 @@ class CallDeleteView(LoginRequiredMixin, DeleteView):
 
         return reverse('call_list')
 
+
 #----------------------------------------------------------------------#
 #   Assignment Views
 #----------------------------------------------------------------------#
@@ -722,9 +657,6 @@ class CallDeleteView(LoginRequiredMixin, DeleteView):
 # ACCESS: Only talenteditor users
 class AssignmentCreateView(LoginRequiredMixin, CreateView):
     """Create a new assignment."""
-
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
 
     model = Assignment
     form_class = AssignmentForm
@@ -754,9 +686,6 @@ class AssignmentCreateView(LoginRequiredMixin, CreateView):
 # The Contractor connected to the assignment
 class AssignmentDetailView(LoginRequiredMixin, DetailView):
     """Show assignment details."""
-
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
 
     model = Assignment
 
@@ -797,9 +726,6 @@ class AssignmentDetailView(LoginRequiredMixin, DetailView):
 # ACCESS: TalentEditor users + admins from the org
 class AssignmentUpdateView(LoginRequiredMixin, UpdateView):
     """Edit an assignment."""
-
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
 
     model = Assignment
     form_class = AssignmentForm
@@ -859,9 +785,6 @@ class AssignmentUpdateView(LoginRequiredMixin, UpdateView):
 class AssignmentListView(LoginRequiredMixin, ListView):
     """Return all the assignments dependent on viewer."""
 
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
-
     context_object_name = 'assignments'
 
     def get_queryset(self):
@@ -889,9 +812,6 @@ class AssignmentDeleteView(LoginRequiredMixin, DeleteView):
     actually use the "do you want to delete this?" Django-generated page. However, this is
     available if useful.
     """
-
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
 
     # FIXME: this would be a great place to use braces' messages; usage commented out for now
 

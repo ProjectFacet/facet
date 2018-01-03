@@ -33,6 +33,7 @@ from editorial.models import (
 
 from editorial.views import CustomUserTest
 
+
 # ----------------------------------------------------------------------#
 #   Story Views
 # ----------------------------------------------------------------------#
@@ -223,11 +224,9 @@ class StoryDetailView(CustomUserTest, DetailView):
         form = NoteForm()
         return {'notes': notes, 'form': form}
 
-
     def story_tasks(self):
         """Get tasks and task form for the story."""
 
-        self.object = self.get_object()
         tasks = self.object.task_set.all()
         identified = self.object.task_set.filter(status="Identified")
         inprogress = self.object.task_set.filter(status="In Progress")
@@ -235,7 +234,8 @@ class StoryDetailView(CustomUserTest, DetailView):
         identified_ct = identified.count()
         inprogress_ct = inprogress.count()
         complete_ct = complete.count()
-        form = TaskForm(organization = self.object.organization)
+        form = TaskForm(organization=self.object.organization)
+
         return {
             'tasks': tasks,
             'identified': identified,
@@ -247,11 +247,9 @@ class StoryDetailView(CustomUserTest, DetailView):
             'form': form,
         }
 
-
     def story_events(self):
         """Get events and event form for the story."""
 
-        self.object = self.get_object()
         events = self.object.event_set.all()
         form = EventForm(organization = self.object.organization)
         return {'events': events, 'form': form}
@@ -259,12 +257,11 @@ class StoryDetailView(CustomUserTest, DetailView):
     def story_assets(self):
         """Return all the assets associated with a story."""
 
-        self.object = self.get_object()
         images = self.object.get_story_images()
         documents = self.object.get_story_documents()
         audio = self.object.get_story_audio()
         video = self.object.get_story_video()
-        return {'images': images, 'documents': documents, 'audio': audio, 'video': video, }
+        return {'images': images, 'documents': documents, 'audio': audio, 'video': video}
 
 
 # ACCESS: Only an org admin or editor can delete a story belonging to their organization.

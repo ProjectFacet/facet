@@ -4,25 +4,20 @@
 """
 
 # -*- coding: utf-8 -*-
-from __future__ import unicode_literals
-from django.shortcuts import render, redirect, get_object_or_404
-from django.conf import settings
-from django.core.mail import send_mail
-from django.http import HttpResponse, HttpResponseRedirect
-from django.core.urlresolvers import reverse
-from django.utils import timezone
-from django.views.generic import TemplateView , UpdateView, DetailView, CreateView, DeleteView, View
-from django.views.decorators.csrf import csrf_exempt
-from django.template.loader import render_to_string
-import datetime
-import json
-from actstream import action
-from braces.views import LoginRequiredMixin, FormMessagesMixin
 
+from __future__ import unicode_literals
+
+from actstream import action
+from braces.views import LoginRequiredMixin
+from django.conf import settings
+from django.core.urlresolvers import reverse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import get_object_or_404
+from django.template.loader import render_to_string
+from django.views.generic import TemplateView, CreateView, DeleteView, View
 from editorial.forms import (
     NoteForm,
-    )
-
+)
 from editorial.models import (
     User,
     Organization,
@@ -30,11 +25,10 @@ from editorial.models import (
     Project,
     Series,
     Story,
-    Facet,
     Event,
     Task,
     Note,
-    )
+)
 
 
 #----------------------------------------------------------------------#
@@ -47,9 +41,6 @@ from editorial.models import (
 # That should be handled by limiting which PSSF they have access to.
 class NoteContent(LoginRequiredMixin, View):
     """Return note content as html for display on <object>notes.html pages."""
-
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
 
     def get(self, request, *args, **kwargs):
 
@@ -68,9 +59,6 @@ class NoteContent(LoginRequiredMixin, View):
 # That should be handled by limiting which PSSF they have access to.
 class NoteCreateView(LoginRequiredMixin, CreateView):
     """Create a note."""
-
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
 
     model = Note
     form_class = NoteForm
@@ -246,15 +234,10 @@ class NoteDelete(LoginRequiredMixin, DeleteView):
     available if useful.
     """
 
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
-
     # FIXME: this would be a great place to use braces' messages; usage commented out for now
-    # FIXME ATTN JOEL: It's not deleting the correct note, it's deleting the oldest note
 
     model = Note
     template_name = "editorial/note_delete.html"
-
 
     # form_valid_message = "Deleted."
     # form_invalid_message = "Please check form."
@@ -307,9 +290,6 @@ class NoteDelete(LoginRequiredMixin, DeleteView):
 class NetworkNoteView(LoginRequiredMixin, TemplateView):
     """Display all of the notes for a network."""
 
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
-
     template_name = 'editorial/networknotes.html'
 
     def get_context_data(self, pk):
@@ -326,9 +306,6 @@ class NetworkNoteView(LoginRequiredMixin, TemplateView):
 # ACCESS: Any org user should be able to view/create notes for the organization
 class OrganizationNoteView(LoginRequiredMixin, TemplateView):
     """Display all of the notes for an organization."""
-
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
 
     template_name = 'editorial/organizationnotes.html'
 
@@ -347,9 +324,6 @@ class OrganizationNoteView(LoginRequiredMixin, TemplateView):
 # ACCESS: Any should be able to view/create notes for theirself
 class UserNoteView(LoginRequiredMixin, TemplateView):
     """Display all of the notes for a user."""
-
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
 
     template_name = 'editorial/usernotes.html'
 
@@ -370,9 +344,6 @@ class UserNoteView(LoginRequiredMixin, TemplateView):
 class ProjectNoteView(LoginRequiredMixin, TemplateView):
     """Display all of the notes for a project."""
 
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
-
     template_name = 'editorial/projectnotes.html'
 
     def get_context_data(self, pk):
@@ -391,9 +362,6 @@ class ProjectNoteView(LoginRequiredMixin, TemplateView):
 # A contractor with access to the series should be able to viewcreate a note for it.
 class SeriesNoteView(LoginRequiredMixin, TemplateView):
     """Display all of the notes for a project."""
-
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
 
     template_name = 'editorial/seriesnotes.html'
 
@@ -414,9 +382,6 @@ class SeriesNoteView(LoginRequiredMixin, TemplateView):
 class StoryNoteView(LoginRequiredMixin, TemplateView):
     """Display all of the notes for a story."""
 
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
-
     template_name = 'editorial/storynotes.html'
 
     def get_context_data(self, pk):
@@ -435,9 +400,6 @@ class StoryNoteView(LoginRequiredMixin, TemplateView):
 class TaskNoteView(LoginRequiredMixin, TemplateView):
     """Display all of the notes for a task."""
 
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
-
     template_name = 'editorial/tasknotes.html'
 
     def get_context_data(self, pk):
@@ -450,13 +412,11 @@ class TaskNoteView(LoginRequiredMixin, TemplateView):
             'notes': notes,
         }
 
+
 # ACCESS: Any org user, user from organization that is part of a collaborate_with
 # for an object related to the event can view and create notes for an event.
 class EventNoteView(LoginRequiredMixin, TemplateView):
     """Display all of the notes for an event."""
-
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
 
     template_name = 'editorial/eventnotes.html'
 
