@@ -1,4 +1,4 @@
-""" A Calendar to display editorial content."""
+"""A Calendar to display editorial content."""
 
 from calendar import HTMLCalendar
 from datetime import date
