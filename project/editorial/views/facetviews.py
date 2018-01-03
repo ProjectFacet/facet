@@ -92,7 +92,7 @@ class FacetPreCreateView(CustomUserTest, FormView, FormMessagesMixin):
 
         story = Story.objects.get(self.kwargs['story'])
 
-        if story.get_object().is_editable_by_org(self.request.org):
+        if story.is_editable_by_org(self.request.org):
             return True
 
         raise PermissionDenied()
