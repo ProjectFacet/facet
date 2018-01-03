@@ -2,121 +2,115 @@
 
 from .base import *
 
-# -------------------------------------------------------------- #
-# KEYS #
-# -------------------------------------------------------------- #
+##############################################################################
+# Core Django stuff
 
-# SECURITY WARNING: keep the secret key used in production secret!
-
-# FIXME: Uggo, but makes it so you know everything you haven't set without
-# needing to connect to aws each time. 
-
-unset_secrets = False
-
-if 'SECRET_KEY' in os.environ:
-    SECRET_KEY = os.environ['SECRET_KEY']
-else:
-    print "You haven't set your Django SECRET_KEY. Use `$ python manage.py generatekey` to generate one. "
-    unset_secrets = True
-
-if 'AWS_STORAGE_BUCKET_NAME' in os.environ:
-    AWS_STORAGE_BUCKET_NAME = os.environ['AWS_STORAGE_BUCKET_NAME']
-else:
-    print "You haven't set your AWS_STORAGE_BUCKET_NAME"
-    unset_secrets = True
-
-if 'AWS_ACCESS_KEY_ID' in os.environ:
-    AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
-else:
-    print "You haven't set your AWS_ACCESS_KEY_ID"
-    unset_secrets = True
-
-if 'AWS_SECRET_ACCESS_KEY' in os.environ:
-    AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
-else:
-    print "You haven't set your AWS_SECRET_ACCESS_KEY"
-    unset_secrets = True
-
-if unset_secrets:
-    raise KeyError, "There are unset keys. Use `$ eb setenv KEY=value` to set."
-
-# -------------------------------------------------------------- #
-# MODULES #
-# -------------------------------------------------------------- #
-
-# FIXME from WJB: this should prob migrate to base settings
+SECRET_KEY = os.environ['SECRET_KEY']
 
 INSTALLED_APPS += [
     'storages',  # for use with S3
 ]
 
-# -------------------------------------------------------------- #
-# DEBUGGING #
-# -------------------------------------------------------------- #
-
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-# -------------------------------------------------------------- #
-# S3 FILE STORAGE #
-# -------------------------------------------------------------- #
+ALLOWED_HOSTS = ['facet.org']
+
+######################################
+# Database: local PostgreSQL
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('DB_NAME', 'facet'),
+        'USER': os.environ.get('DB_USERNAME', 'fact'),
+        'PASSWORD': os.environ.get('DB_PASSWORD', 'collaborate'),
+        'HOST': os.environ.get('DB_HOSTNAME', 'localhost'),
+        'PORT': os.environ.get('DB_PORT', 5432),
+        'CONN_MAX_AGE': 600,
+    }
+}
+
+######################################
+# Logging & Error Reporting
+
+# By default, we write reasonably important things (INFO and above) to the console
+# We email admins on a site error or a security issue and also propagate
+# this up to the Heroku logs. This is obviously overridden in the development settings.
+
+LOGGING = {
+    'disable_existing_loggers': False,
+    'version': 1,
+
+    'handlers': {
+        'console': {
+            'level': 'INFO',
+            'class': 'logging.StreamHandler',
+        },
+        'mail_admins': {
+            'level': 'WARNING',
+            'class': 'django.utils.log.AdminEmailHandler'
+        },
+    },
+    'loggers': {
+        'django.request': {
+            'handlers': ['console', 'mail_admins'],
+            'level': 'ERROR',
+            'propagate': True,
+        },
+        'django.security': {
+            'handlers': ['console', 'mail_admins'],
+            'level': 'WARNING',
+            'propagate': True,
+        },
+        '': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        },
+    },
+}
+
+######################################
+# Template Loaders
+#
+# Performance improvement; template changes not effective until the process is restarted.
+
+TEMPLATES[0]['OPTIONS']['loaders'] = [
+    ('django.template.loaders.cached.Loader',
+     ('django.template.loaders.filesystem.Loader',
+      'django.template.loaders.app_directories.Loader')
+     )
+]
+del TEMPLATES[0]['APP_DIRS']
+
+##############################################################################
+# 3rd Party Products
+
+######################################
+# Store static/media at S3
+
+AWS_STORAGE_BUCKET_NAME = os.environ['AWS_STORAGE_BUCKET_NAME']
+AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
+AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 
-AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+AWS_S3_CUSTOM_DOMAIN = AWS_STORAGE_BUCKET_NAME + '.s3.amazonaws.com'
 
 STATIC_URL = "https://%s/" % AWS_S3_CUSTOM_DOMAIN
-
-# -------------------------------------------------------------- #
-# APPLICATION DEFINITION? #
-# -------------------------------------------------------------- #
-
-ALLOWED_HOSTS = [
-    "facet-katie-dev.us-west-1.elasticbeanstalk.com",
-    "facet-dev.us-west-1.elasticbeanstalk.com",
-]
-
-# -------------------------------------------------------------- #
-# DATABASE #
-# -------------------------------------------------------------- #
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': os.environ.get('RDS_DB_NAME', 'facet'),
-        'USER': os.environ.get('RDS_USERNAME', 'localhost'),
-        'PASSWORD': os.environ.get('RDS_PASSWORD', 'collaborate'),
-        'HOST': os.environ.get('RDS_HOSTNAME', 'facet'),
-        'PORT': os.environ.get('RDS_PORT', 5432),
-    }
-}
-
-# Are these RDS_* keys predetermined by Amazon?
-# TODO remove below once above is answered
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-#         'NAME': os.environ.get('PD_DB','facet'),
-#         'HOST': os.environ.get('PD_HOST', 'localhost'),
-#         'PORT': os.environ.get('PD_PORT', 5432),
-#         'USER': os.environ.get('PD_USER', 'facet'),
-#         'PASSWORD': os.environ.get('PD_PW', 'collaborate'),
-#     }
-# }
-
 
 # -------------------------------------------------------------- #
 # EMAIL #
 # -------------------------------------------------------------- #
 
-EMAIL_BACKEND = 'django_smtp_ssl.SSLEmailBackend'
+# shouldn't need with current django/common AWS setup
+# EMAIL_BACKEND = 'django_smtp_ssl.SSLEmailBackend'
 
 EMAIL_HOST = 'email-smtp.us-west-2.amazonaws.com'
 EMAIL_HOST_USER = os.environ['AWS_EMAIL_HOST_USER']
 EMAIL_HOST_PASSWORD = os.environ['AWS_EMAIL_HOST_PASSWORD']
-EMAIL_PORT = 465
+EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-AWS_SES_REGION_ENDPOINT = 'email-smtp.us-west-2.amazonaws.com'
+# WJB: unsure what this would be for, commented out for now
+# AWS_SES_REGION_ENDPOINT = 'email-smtp.us-west-2.amazonaws.com'
 SERVER_EMAIL = DEFAULT_FROM_EMAIL = os.environ['EMAIL_HOST_USER']
