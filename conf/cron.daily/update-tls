@@ -1,1 +1,3 @@
+#!/bin/sh
 letsencrypt renew --agree-tos
+service nginx reload

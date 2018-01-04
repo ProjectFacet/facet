@@ -1,6 +1,6 @@
 #!/bin/sh
 
-cd /home/django/frodo/
+cd /home/ubuntu/facet/
 . venv/bin/activate
 rm -f backups/*
 python project/manage.py dbbackup -z
