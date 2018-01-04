@@ -91,10 +91,6 @@
                           {% for message in private_messages_received %}
                           <tr id="{{message.id}}-table-row">
                               <td>
-                                  <label class="c-input c-checkbox">
-                                      <input type="checkbox"><span class="c-indicator c-indicator-default"></span> </label>
-                              </td>
-                              <td>
                                   <a href="{% url 'message_html' message.pk %}" class="specific-message"> <span class="email-contact">{{ message.user.credit_name }}</span> </a>
                               </td>
                               <td class="subject"><a href="{% url 'message_html' message.pk %}" class="specific-message">{{ message.subject }}</a> </td>

@@ -75,16 +75,16 @@ urlpatterns = [
     #   Inbox URLS - Labeled as Inbox in navigation
 
     url(r'^inbox/$', inbox.Inbox.as_view(), name='inbox'),
-    url(r'^inbox/compose/$', inbox.compose_message_html, name='compose_message_html'),
-    url(r'^inbox/sent/$', inbox.sent_html, name='sent_html'),
-    url(r'^inbox/(?P<comment_type>[-\w]+)/comments$', inbox.comments_html, name='comments_html'),
+    url(r'^inbox/compose/$', inbox.ComposeMessage.as_view(), name='compose_message_html'),
+    url(r'^inbox/sent/$', inbox.SentMessages.as_view(), name='sent_html'),
+    url(r'^inbox/(?P<comment_type>[-\w]+)/comments$', inbox.CommentList.as_view(), name='comments_html'),
     # url(r'^inbox/important/$', inboxviews.inbox_important, name='inbox_important'),
     # url(r'^inbox/trash/$', inboxviews.inbox_trash, name='inbox_trash'),
 
     #   Private Message URLS
 
     url(r'^privatemessage/new/$', discussion.PrivateMessageSend.as_view(), name='private_message_new'),
-    url(r'^privatemessage/(?P<pk>\d+)/content/$', inbox.message_html, name='message_html'),
+    url(r'^privatemessage/(?P<pk>\d+)/content/$', inbox.MessageContent.as_view(), name='message_html'),
 
     #   Copy URLS
 
