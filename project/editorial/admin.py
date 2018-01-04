@@ -1,4 +1,7 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.forms import UserChangeForm
+
 
 from models import (
     Assignment,
@@ -38,10 +41,14 @@ from models import (
 
 from .forms import FacetTemplateForm
 
+class FacetUserChangeForm(UserChangeForm):
+    class Meta(UserChangeForm.Meta):
+        model = User
 
 @admin.register(User)
-class UserAdmin(admin.ModelAdmin):
-    list_display = ['username', 'email']
+class FacetUserAdmin(UserAdmin):
+    form = FacetUserChangeForm
+    # list_display = ['username', 'email']
 
 
 @admin.register(FacetTemplate)
