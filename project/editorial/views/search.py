@@ -38,7 +38,7 @@ class EditorialSearchView(BaseWatsonSearchView):
         # FIXME searchable_user_objects = user.get_user_searchable_content()
 
         # unpack the querysets from the list of querysets returned
-        projects, series, stories, facets, imageassets, notes = searchable_org_objects
+        projects, series, stories, facets, imageassets = searchable_org_objects
         # FIXME usernotes = searchable_user_objects
 
         # FIXME from joel: should usernotes be in the list below? it's not used anywhere
@@ -46,5 +46,5 @@ class EditorialSearchView(BaseWatsonSearchView):
         # pass all querysets to search method
         return watson.search(
             self.query,
-            models=[projects, series, stories, facets, imageassets, notes]
+            models=[projects, series, stories, facets, imageassets]
         )
