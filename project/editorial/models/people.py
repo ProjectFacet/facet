@@ -201,7 +201,7 @@ class User(AbstractUser):
 
         organization = self.organization
         org_collaborators = organization.get_org_collaborators_vocab()
-        contact_list = User.objects.filter(Q(Q(organization=org_collaborators) | Q(organization=organization)))
+        contact_list = User.objects.filter(Q(Q(organization__in=org_collaborators) | Q(organization=organization)))
         return contact_list
 
     def private_messages_received(self):
@@ -373,7 +373,7 @@ class Organization(models.Model):
         # get list of networks that an org is a member of
         networks = self.get_org_networks()
         # get list of organizations that are members of any of those networks
-        all_organizations = Organization.objects.filter(Q(network_organization=networks))
+        all_organizations = Organization.objects.filter(Q(network_organization__in=networks))
         # remove user's organization from queryset
         organizations = all_organizations.exclude(id=self.id)
         # get distinct list of organizations
