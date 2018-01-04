@@ -3,7 +3,8 @@
 from bootstrap3_datetime.widgets import DateTimePicker
 from django import forms
 from django.db.models import Q
-from django.forms import Textarea, TextInput, Select, CheckboxInput
+from django.forms import Textarea, TextInput, Select, CheckboxInput, CheckboxSelectMultiple
+from django.contrib.postgres.forms import SimpleArrayField
 from tinymce.widgets import TinyMCE
 
 from editorial.models import (
@@ -11,7 +12,8 @@ from editorial.models import (
     FacetTemplate,
     ContentLicense,
 )
-from editorial.models.facets import COMMON_FIELDS
+
+from editorial.models.facets import COMMON_FIELDS, FACETTEMPLATE_FIELD_CHOICES
 
 from editorial.widgets import ArrayFieldSelectMultiple
 
@@ -26,7 +28,7 @@ class FacetTemplateForm(forms.ModelForm):
 
     # FIXME from Joel: why is this here and commented out?
 
-    # fields = forms.ArrayField(
+    # fields = SimpleArrayField(
     #     required=True,
     #     widget=forms.CheckboxSelectMultiple,
     #     choices=FACETTEMPLATE_FIELD_CHOICES,
@@ -42,7 +44,6 @@ class FacetTemplateForm(forms.ModelForm):
                 attrs={'class': 'form-control', 'rows': 3, 'placeholder': 'Description'}),
             'is_active': CheckboxInput(
                 attrs={'class': 'c-input c-checkbox c-indicator c-indicator-default'}),
-            # 'fields': CheckboxSelectMultiple(attrs={'class': 'c-input c-checkbox c-indicator c-indicator-default'}),
         }
 
 
