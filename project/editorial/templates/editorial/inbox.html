@@ -48,19 +48,22 @@
             <h4>Comment Feed Categories</h4>
             <ul class="list-group">
                 <li class="list-group-item">
-                    <a href="{% url 'comments_html' comment_type='organization' %}" id="organization_comments" title="View Organization Comments"> <i class="sidebar-icon fa fa-circle color-danger"></i>Organization</a>
+                    <a href="{% url 'comments_html' comment_type='organization' %}" id="organization_comments" title="View Organization Comments"> <i class="sidebar-icon fa fa-circle color-warning"></i>Organization</a>
                 </li>
                 <li class="list-group-item">
-                    <a href="{% url 'comments_html' comment_type='network' %}" id="network_comments" title="View Network Comments"> <i class="sidebar-icon fa fa-circle color-warning"></i>Network</a>
+                    <a href="{% url 'comments_html' comment_type='network' %}" id="network_comments" title="View Network Comments"> <i class="sidebar-icon fa fa-circle color-danger"></i>Network</a>
                 </li>
                 <li class="list-group-item">
-                    <a href="{% url 'comments_html' comment_type='story' %}" id="story_comments" title="View Organization Story Comments"> <i class="sidebar-icon fa fa-circle color-success"></i>Story</a>
+                    <a href="{% url 'comments_html' comment_type='project' %}" id="project_comments" title="View Organization Project Comments"> <i class="sidebar-icon fa fa-circle color-purple"></i>Project</a>
+                </li>
+                <li class="list-group-item">
+                    <a href="{% url 'comments_html' comment_type='story' %}" id="story_comments" title="View Organization Story Comments"> <i class="sidebar-icon fa fa-circle color-primary"></i>Story</a>
                 </li>
                 <li class="list-group-item">
                     <a href="{% url 'comments_html' comment_type='series' %}" id="series_comments" title="View Organization Series Comments"> <i class="sidebar-icon fa fa-circle color-info"></i>Series</a>
                 </li>
                 <li class="list-group-item">
-                    <a href="{% url 'comments_html' comment_type='facet' %}" id="facet_comments" title="View Organization Story Facet Comments"> <i class="sidebar-icon fa fa-circle color-primary"></i>Facet</a>
+                    <a href="{% url 'comments_html' comment_type='facet' %}" id="facet_comments" title="View Organization Story Facet Comments"> <i class="sidebar-icon fa fa-circle color-success"></i>Facet</a>
                 </li>
             </ul>
           </div>
@@ -87,10 +90,6 @@
                       <tbody>
                           {% for message in private_messages_received %}
                           <tr id="{{message.id}}-table-row">
-                              <td>
-                                  <label class="c-input c-checkbox">
-                                      <input type="checkbox"><span class="c-indicator c-indicator-default"></span> </label>
-                              </td>
                               <td>
                                   <a href="{% url 'message_html' message.pk %}" class="specific-message"> <span class="email-contact">{{ message.user.credit_name }}</span> </a>
                               </td>
@@ -160,6 +159,18 @@ $(function() {
 <script>
 $(function() {
     $("#network_comments").click(function(event) {
+        event.preventDefault();
+        var page_url = jQuery(this).attr("href")
+        console.log(page_url);
+        $('#inbox-main')
+           .load(page_url);
+    });
+});
+</script>
+
+<script>
+$(function() {
+    $("#project_comments").click(function(event) {
         event.preventDefault();
         var page_url = jQuery(this).attr("href")
         console.log(page_url);

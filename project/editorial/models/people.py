@@ -445,6 +445,19 @@ class Organization(models.Model):
         network_comments = Comment.objects.filter(discussion__in=network_discussions)
         return network_comments
 
+
+    def get_project_comments(self):
+        """Retrieve all comments for projects belonging to an organization.
+
+        Used to display all project comments in dashboard and inbox."""
+
+        from . import Project, Comment
+
+        org_projects = self.project_organization.all()
+        project_discussions = [project.discussion for project in org_projects]
+        project_comments = Comment.objects.filter(discussion__in=project_discussions)
+        return project_comments
+
     def get_story_comments(self):
         """Retrieve all comments for stories belonging to an organization.
 
@@ -479,7 +492,7 @@ class Organization(models.Model):
         # WJB XXX: this seems inefficient, we should reduce to discussion fields on orig
         # querysets
 
-        org_facets = Facet.objects.filter(organization=self)
+        org_facets = self.facet_set.all()
         facet_discussions = [facet.discussion for facet in org_facets]
         facet_comments = Comment.objects.filter(discussion__in=facet_discussions)
         return facet_comments
@@ -586,7 +599,7 @@ class Organization(models.Model):
     def get_org_searchable_content(self):
         """Return queryset of all objects that can be searched by a user."""
 
-        #TODO add notes
+        #TODO add tasks, events, notes and comments
 
         from .projects import Project
         from .series import Series

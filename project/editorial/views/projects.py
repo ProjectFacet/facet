@@ -10,13 +10,13 @@ from __future__ import unicode_literals
 import json
 
 from actstream import action
-from braces.views import LoginRequiredMixin
+from braces.views import LoginRequiredMixin, FormMessagesMixin
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.shortcuts import redirect, get_object_or_404
-from django.views.generic import TemplateView, UpdateView, DetailView, ListView, CreateView, \
-    DeleteView
+from django.views.generic import TemplateView, UpdateView, DetailView, ListView, CreateView, DeleteView
+
 from editorial.forms import (
     ProjectForm,
     CommentForm,
@@ -26,6 +26,7 @@ from editorial.forms import (
     SimpleImageForm,
     SimpleDocumentForm,
 )
+
 from editorial.models import (
     Project,
     Discussion,
@@ -57,7 +58,7 @@ class ProjectListView(LoginRequiredMixin, ListView):
 
 
 # ACCESS: Any org user should be able to create a project for their org.
-class ProjectCreateView(LoginRequiredMixin, CreateView):
+class ProjectCreateView(LoginRequiredMixin, FormMessagesMixin, CreateView):
     """A logged in user with an organization can create a project.
 
     Projects are a large-scale organizational component made up of multiple project and or
@@ -68,6 +69,8 @@ class ProjectCreateView(LoginRequiredMixin, CreateView):
 
     model = Project
     form_class = ProjectForm
+    form_invalid_message = "Check the form."
+    form_valid_message = "Project created."
 
     def get_form_kwargs(self):
         """Pass user organization to the form."""
@@ -99,11 +102,13 @@ class ProjectCreateView(LoginRequiredMixin, CreateView):
 
 
 # ACCESS: Any org user should be able to update details for a project belonging to their org
-class ProjectUpdateView(LoginRequiredMixin, UpdateView):
+class ProjectUpdateView(LoginRequiredMixin, FormMessagesMixin, UpdateView):
     """Update a project."""
 
     model = Project
     form_class = ProjectForm
+    form_invalid_message = "Something went wrong. Check the form."
+    form_valid_message = "Changes saved."
 
     def get_form_kwargs(self):
         """Pass user organization to the form."""
@@ -295,8 +300,7 @@ def project_schedule(request, pk):
 
 
 # ACCESS: Only an org admin should be able to delete a project owned by that org
-# class ProjectDeleteView(DeleteView, FormMessagesMixin):
-class ProjectDeleteView(LoginRequiredMixin, DeleteView):
+class ProjectDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteView):
     """Delete a project and it's associated notes.
 
     Stories and media should not be deleted.
@@ -306,13 +310,11 @@ class ProjectDeleteView(LoginRequiredMixin, DeleteView):
     available if useful.
     """
 
-    # FIXME: this would be a great place to use braces' messages; usage commented out for now
-
     model = Project
     template_name = "editorial/project_delete.html'"
 
-    # form_valid_message = "Deleted."
-    # form_invalid_message = "Please check form."
+    form_valid_message = "Deleted."
+    form_invalid_message = "Please check form."
 
     def get_success_url(self):
         """Post-deletion, return to the project list."""

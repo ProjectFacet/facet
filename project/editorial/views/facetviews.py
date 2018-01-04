@@ -52,7 +52,7 @@ class FacetTemplateCreateView(LoginRequiredMixin, CreateView):
 
 
 # ACCESS: Only org users should be able to edit their org's templates.
-class FacetTemplateUpdateView(LoginRequiredMixin, UpdateView, FormMessagesMixin):
+class FacetTemplateUpdateView(LoginRequiredMixin, FormMessagesMixin, UpdateView):
     """Edit a facet template."""
 
     model = FacetTemplate
@@ -71,22 +71,13 @@ class FacetTemplateUpdateView(LoginRequiredMixin, UpdateView, FormMessagesMixin)
 # should be able to create a facet for a story they have access to
 # Contractors should only be able to do so for stories that they have access to
 # That should be handled by limiting which story they have access to.
-class FacetPreCreateView(CustomUserTest, FormView, FormMessagesMixin):
+class FacetPreCreateView(FormMessagesMixin, FormView):
     """First step in creating a facet."""
 
     form_class = FacetPreCreateForm
     template_name = "editorial/facet_precreate_form.html"
     form_invalid_message = "Something went wrong."
-
-    def test_user(self, user):
-        """User must be member of the right org(s)."""
-
-        story = Story.objects.get(self.kwargs['story'])
-
-        if story.is_editable_by_org(self.request.org):
-            return True
-
-        raise PermissionDenied()
+    form_valid_message = "Facet started. Add a status, headline and content to get started."
 
     def form_valid(self, form):
         """Redirect to real facet-creation form."""
@@ -103,7 +94,7 @@ class FacetPreCreateView(CustomUserTest, FormView, FormMessagesMixin):
 # should be able to create a facet for a story they have access to
 # Contractors should only be able to do so for stories that they have access to
 # That should be handled by limiting which story they have access to.
-class FacetCreateView(LoginRequiredMixin, CreateView, FormMessagesMixin):
+class FacetCreateView(LoginRequiredMixin, FormMessagesMixin, CreateView):
     """Create a facet (dynamically using right template)."""
 
     model = Facet
@@ -136,7 +127,7 @@ class FacetCreateView(LoginRequiredMixin, CreateView, FormMessagesMixin):
 # should be able to update a facet for a story they have access to
 # Contractors should only be able to do so for stories that they have access to
 # That should be handled by limiting which story they have access to.
-class FacetUpdateView(LoginRequiredMixin, UpdateView, FormMessagesMixin):
+class FacetUpdateView(LoginRequiredMixin, FormMessagesMixin, UpdateView):
     """Update a facet (dynamically using right template)."""
 
     model = Facet
@@ -149,15 +140,6 @@ class FacetUpdateView(LoginRequiredMixin, UpdateView, FormMessagesMixin):
 
         return get_facet_form_for_template(self.object.template_id)
 
-    # def get_form_kwargs(self):
-    #     """Pass current story to the form."""
-    #
-    #     # self.object = self.get_object()
-    #     # facet = self.object
-    #     kw = super(FacetUpdateView, self).get_form_kwargs()
-    #     # kw.update({'story': facet.story})
-    #
-    #     return kw
 
     def facet_discussion(self):
         """Get discussion, comments and comment form for the facet."""
@@ -207,7 +189,7 @@ class FacetUpdateView(LoginRequiredMixin, UpdateView, FormMessagesMixin):
 
 # ACCESS: Only an org user that is an admin or editor should be able to delete a
 # facet for one of their org's stories.
-class FacetDeleteView(LoginRequiredMixin, DeleteView, FormMessagesMixin):
+class FacetDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteView):
     """View for handling deletion of a facet.
 
     In this project, we expect deletion to be done via a JS pop-up UI; we don't expect to

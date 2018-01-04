@@ -132,9 +132,8 @@ SERVER_EMAIL = DEFAULT_FROM_EMAIL = "facet-mail@example.com"
 # Email these people when errors happen on production sites
 
 ADMINS = [
+    ('Heather', 'heather@projectfacet.org'),
     ('Joel', 'joel@joelburton.com'),
-    ('Meggie', 'meggie@hackbrightacademy.com'),
-    ('Jessica', 'jessica@hackbrightacademy.com'),
 ]
 
 ######################################

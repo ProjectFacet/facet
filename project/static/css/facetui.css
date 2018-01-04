@@ -436,3 +436,7 @@ img.image-center {
 .no-message {
   height: .8rem !important;
 }
+
+.color-purple {
+  color: #673AB7 !important;
+}

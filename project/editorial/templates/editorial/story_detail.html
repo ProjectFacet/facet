@@ -17,11 +17,14 @@
 
 {% block breadcrumb %}
   <div>
-      <ol class="breadcrumb icon-angle-right icon-th">
+      <ol class="breadcrumb pull-left icon-angle-right icon-th">
           <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
           <li class="fadeIn"> Content </li>
           <li class="fadeIn"><a href="{% url 'story_list' %}" title="View Story List"> Stories </a></li>
           <li class="fadeIn"><a href="{% url 'story_detail' story.id %}" title="You are Here"> {{ story.name }} </li>
+      </ol>
+      <ol class="breadcrumb pull-right">
+          <li class="fadeIn"><a href="#" data-toggle="modal" data-target="#storyDetailGuide" title="Here's what you can do on this page.">What's on this page?</a></li>
       </ol>
   </div>
 {% endblock breadcrumb %}
@@ -353,7 +356,7 @@
           </a>
         </h4>
         <div id="displaynotes" class="activity-widget-4">
-          {% for note in notes.notes %}
+          {% for note in notes.notes|slice:":5" %}
             <div class="row">
                 <div class="col-xs-12">
                   <div class="media">
@@ -619,7 +622,7 @@
               <div class="row">
                 <div class="col-xs-12">
                   <input type="hidden" name="story" value="{{ story.pk }}" />
-                  <button type="submit" class="btn btn-default">Add Story</button>
+                  <button type="submit" class="btn btn-default">Add Task to Story</button>
                 </div>
               </div>
 
@@ -888,7 +891,7 @@
         <!-- Hidden Inputs -->
         <input type="hidden" name="association" value="story" />
         <input type="hidden" name="story" value="{{ story.pk }}" />
-        <button type="submit" class="btn btn-default">Post Note</button>
+        <button type="submit" class="btn btn-default">Save Event</button>
         </form>
       </div>
       <div class="modal-footer">
@@ -903,6 +906,13 @@
                 <!-- DOWNLOAD MODAL -->
 <!-- ================================================= -->
 {% include "editorial/_storydownloadmodal.html" %}
+
+<!-- ================================================= -->
+            <!-- Story Detail Guide Modal -->
+<!-- ================================================= -->
+
+{% include "editorial/guides/_story_detail_guide.html" %}
+
 
 
 {% endblock modals %}

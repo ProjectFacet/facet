@@ -74,7 +74,7 @@ class StoryListView(CustomUserTest, ListView):
 # be able to create a story for that project or series.
 # Future: A contractor with access to a project or series should be able to create
 # a story for that project or series.
-class StoryCreateView(CustomUserTest, CreateView):
+class StoryCreateView(CustomUserTest, FormMessagesMixin, CreateView):
     """Create a story."""
 
     # TODO From Joel: see note above; make this /orgs/1/stories/new, so the URL is bound
@@ -82,6 +82,8 @@ class StoryCreateView(CustomUserTest, CreateView):
 
     model = Story
     form_class = StoryForm
+    form_invalid_message = "Check the form."
+    form_valid_message = "Story created."
 
     def test_user(self, user):
         """User must be member of an org."""
@@ -136,7 +138,7 @@ class StoryUpdateView(CustomUserTest, FormMessagesMixin, UpdateView):
 
     model = Story
     form_class = StoryForm
-    form_invalid_message = "Something went wrong."
+    form_invalid_message = "Something went wrong. Check the form."
     form_valid_message = "Changes saved."
 
     def test_user(self, user):
@@ -265,8 +267,7 @@ class StoryDetailView(CustomUserTest, DetailView):
 
 
 # ACCESS: Only an org admin or editor can delete a story belonging to their organization.
-# class StoryDeleteView(DeleteView, FormMessagesMixin):
-class StoryDeleteView(CustomUserTest, DeleteView):
+class StoryDeleteView(CustomUserTest, FormMessagesMixin, DeleteView):
     """Delete a story and it's associated items.
 
     In this project, we expect deletion to be done via a JS pop-up UI; we don't expect to
@@ -274,13 +275,11 @@ class StoryDeleteView(CustomUserTest, DeleteView):
     available if useful.
     """
 
-    # FIXME: this would be a great place to use braces' messages; usage commented out for now
-
     model = Story
     template_name = "editorial/story_delete.html'"
 
-    # form_valid_message = "Deleted."
-    # form_invalid_message = "Please check form."
+    form_valid_message = "Deleted."
+    form_invalid_message = "Please check form."
 
     def test_user(self, user):
         """User must be member of the story's org or a collaborating org."""

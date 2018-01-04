@@ -44,7 +44,6 @@ class Note(models.Model):
     important = models.BooleanField(
         default=False,
         help_text='Mark as important for pinning to top of notes',
-        blank=True,
     )
 
     # Choices for Note Type
