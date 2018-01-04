@@ -35,11 +35,11 @@ class EditorialSearchView(BaseWatsonSearchView):
 
         # retrieve all content a user is allowed to search
         searchable_org_objects = user_org.get_org_searchable_content()
-        searchable_user_objects = user.get_user_searchable_content()
+        # FIXME searchable_user_objects = user.get_user_searchable_content()
 
         # unpack the querysets from the list of querysets returned
         projects, series, stories, facets, imageassets, notes = searchable_org_objects
-        usernotes = searchable_user_objects
+        # FIXME usernotes = searchable_user_objects
 
         # FIXME from joel: should usernotes be in the list below? it's not used anywhere
 
