@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Upgrade & restart deployed
+
+cd "$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+git pull
+. venv/bin/activate
+pip install -r requirements.txt
+python project/manage.py collectstatic --noinput
+python project/manage.py migrate
+touch touch-to-reload
+echo 'Done'
