@@ -1,0 +1,12 @@
+#!/bin/sh
+
+cd /home/django/frodo/
+. venv/bin/activate
+rm -f backups/*
+python project/manage.py dbbackup -z
+python project/manage.py mediabackup -z
+
+# Store things in s3 with reduced redundancy (cheaper); we delete things from this bucket
+# every 30 days
+
+s3cmd put --rr backups/* s3://hb-frodo-backup/`date +"%Y-%m-%d-%H%M%S"`/

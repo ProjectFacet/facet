@@ -1,0 +1,10 @@
+#!/bin/bash
+
+# Pull down, set up venv, and migrate most current merge for developer.
+
+git pull
+. venv/bin/activate
+which pip
+pip install -r requirements/local.txt
+python project/manage.py migrate
+echo 'Done'
