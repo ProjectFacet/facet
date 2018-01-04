@@ -1,7 +1,7 @@
 """Forms for Note and related entities."""
 
 from django import forms
-from django.forms import Textarea
+from django.forms import Textarea, CheckboxInput
 
 from editorial.models import (
     Note,
@@ -25,5 +25,5 @@ class NoteForm(forms.ModelForm):
                 attrs={'id': 'nn-text', 'required': True, 'placeholder': 'Note',
                        'class': 'form-control', 'rows': 10}
             ),
-            # 'keywords': TextInput(attrs={'class': 'form-control', 'placeholder': 'Keywords'}),
+            'important': CheckboxInput(attrs={'class': ''}),
         }

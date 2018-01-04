@@ -7,6 +7,9 @@ from __future__ import unicode_literals
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.template.loader import render_to_string
+from django.views.generic import TemplateView, View
+
+
 from editorial.forms import (
     PrivateMessageForm,
 )
@@ -19,38 +22,32 @@ from editorial.models import (
 #----------------------------------------------------------------------#
 #   Inbox Views
 #----------------------------------------------------------------------#
-### TODO
-# class Inbox(TemplateView):
-#     """ Return discussion inbox.
-#
-#     Displays comments from SeriesPlan Discussions involving user.
-#     Displays comments from StoryPlan Discussions involving user.
-#     Displays comments from any Facet Editing Discussion involving user.
-#     Displays comments from any PrivateDiscussion involving user.
-#     """
-
-
 
 # ACCESS: All users have access to their inbox.
-def inbox(request):
+class Inbox(TemplateView):
     """ Return discussion inbox.
 
-    Displays comments from SeriesPlan Discussions involving user.
-    Displays comments from StoryPlan Discussions involving user.
-    Displays comments from any Facet Editing Discussion involving user.
+    Displays inbox and sent messages.
+
+    Displays comments from Project Discussions involving user.
+    Displays comments from Series Discussions involving user.
+    Displays comments from Story Discussions involving user.
+    Displays comments from any Facet Discussion involving user.
     Displays comments from any PrivateDiscussion involving user.
     """
 
-    comments = User.inbox_comments(request.user)
+    template_name = 'editorial/inbox.html'
 
-    private_messages_received = User.private_messages_received(request.user)
-    private_messages_sent = User.private_messages_sent(request.user)
+    def get_context_data(self):
+        """Return all the assorted items associated with a team user inbox."""
 
-    return render(request, 'editorial/inbox.html', {
-        'comments': comments,
-        'private_messages_received': private_messages_received,
-        'private_messages_sent': private_messages_sent,
-    })
+        private_messages_received = self.request.user.private_messages_received()
+
+        return {
+            'private_messages_received': private_messages_received,
+    }
+
+
 
 
 def sent_html(request):
@@ -76,6 +73,9 @@ def comments_html(request, comment_type):
     elif comment_type=="network":
     # returns all comments for any networks an Organization is part of
         comments = organization.get_network_comments()
+    elif comment_type=="project":
+    # returns all comments for all projects an Organization owns.
+        comments = organization.get_project_comments()
     elif comment_type=="story":
     # returns all comments for any story of an Organization
         comments = organization.get_story_comments()

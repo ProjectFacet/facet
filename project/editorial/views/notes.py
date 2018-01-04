@@ -65,7 +65,6 @@ class NoteCreateView(LoginRequiredMixin, FormMessagesMixin, CreateView):
     form_invalid_message = "Something went wrong. Check the form."
     form_valid_message = "Note created."
 
-
     def form_valid(self, form):
         """Save -- but first add some information and association
         with the correct object."""
@@ -80,7 +79,7 @@ class NoteCreateView(LoginRequiredMixin, FormMessagesMixin, CreateView):
             # retrieve or set values for note attributes
             title = self.request.POST.get('title')
             text = self.request.POST.get('text')
-            important = self.request.POST.get('important')
+            important = form.cleaned_data['important']
             note_type = "NET"
             # create and save note
             note = Note.objects.create_note(owner=self.request.user, title=title, text=text, note_type=note_type, important=important)
@@ -99,7 +98,7 @@ class NoteCreateView(LoginRequiredMixin, FormMessagesMixin, CreateView):
             # retrieve or set values for note attributes
             title = self.request.POST.get('title')
             text = self.request.POST.get('text')
-            important = self.request.POST.get('important')
+            important = form.cleaned_data['important']
             note_type = "ORG"
             # create and save note
             note = Note.objects.create_note(owner=self.request.user, title=title, text=text, note_type=note_type, important=important)
@@ -118,7 +117,7 @@ class NoteCreateView(LoginRequiredMixin, FormMessagesMixin, CreateView):
             # retrieve or set values for note attributes
             title = self.request.POST.get('title')
             text = self.request.POST.get('text')
-            important = self.request.POST.get('important')
+            important = form.cleaned_data['important']
             note_type = "USER"
             # create and save note
             note = Note.objects.create_note(owner=self.request.user, title=title, text=text, note_type=note_type, important=important)
@@ -137,7 +136,7 @@ class NoteCreateView(LoginRequiredMixin, FormMessagesMixin, CreateView):
             # retrieve or set values for note attributes
             title = self.request.POST.get('title')
             text = self.request.POST.get('text')
-            important = self.request.POST.get('important')
+            important = form.cleaned_data['important']
             note_type = "PRO"
             # create and save note
             note = Note.objects.create_note(owner=self.request.user, title=title, text=text, note_type=note_type, important=important)
@@ -156,7 +155,7 @@ class NoteCreateView(LoginRequiredMixin, FormMessagesMixin, CreateView):
             # retrieve or set values for note attributes
             title = self.request.POST.get('title')
             text = self.request.POST.get('text')
-            important = self.request.POST.get('important')
+            important = form.cleaned_data['important']
             note_type = "SER"
             # create and save note
             note = Note.objects.create_note(owner=self.request.user, title=title, text=text, note_type=note_type, important=important)
@@ -175,7 +174,7 @@ class NoteCreateView(LoginRequiredMixin, FormMessagesMixin, CreateView):
             # retrieve or set values for note attributes
             title = self.request.POST.get('title')
             text = self.request.POST.get('text')
-            important = self.request.POST.get('important')
+            important = form.cleaned_data['important']
             note_type = "STO"
             # create and save note
             note = Note.objects.create_note(owner=self.request.user, title=title, text=text, note_type=note_type, important=important)
@@ -194,7 +193,7 @@ class NoteCreateView(LoginRequiredMixin, FormMessagesMixin, CreateView):
             # retrieve or set values for note attributes
             title = self.request.POST.get('title')
             text = self.request.POST.get('text')
-            important = self.request.POST.get('important')
+            important = form.cleaned_data['important']
             note_type = "TSK"
             # create and save note
             note = Note.objects.create_note(owner=self.request.user, title=title, text=text, note_type=note_type, important=important)
@@ -213,7 +212,7 @@ class NoteCreateView(LoginRequiredMixin, FormMessagesMixin, CreateView):
             # retrieve or set values for note attributes
             title = self.request.POST.get('title')
             text = self.request.POST.get('text')
-            important = self.request.POST.get('important')
+            important = form.cleaned_data['important']
             note_type = "EV"
             # create and save note
             note = Note.objects.create_note(owner=self.request.user, title=title, text=text, note_type=note_type, important=important)

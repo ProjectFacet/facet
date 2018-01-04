@@ -74,7 +74,7 @@ urlpatterns = [
 
     #   Inbox URLS - Labeled as Inbox in navigation
 
-    url(r'^inbox/$', inbox.inbox, name='inbox'),
+    url(r'^inbox/$', inbox.Inbox.as_view(), name='inbox'),
     url(r'^inbox/compose/$', inbox.compose_message_html, name='compose_message_html'),
     url(r'^inbox/sent/$', inbox.sent_html, name='sent_html'),
     url(r'^inbox/(?P<comment_type>[-\w]+)/comments$', inbox.comments_html, name='comments_html'),
