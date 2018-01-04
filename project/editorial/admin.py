@@ -44,7 +44,8 @@ from .forms import FacetTemplateForm
 class FacetUserChangeForm(UserChangeForm):
     class Meta(UserChangeForm.Meta):
         model = User
-
+        fields = "__all__"
+        
 @admin.register(User)
 class FacetUserAdmin(UserAdmin):
     form = FacetUserChangeForm
