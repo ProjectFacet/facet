@@ -764,12 +764,14 @@ label {
 .mce-content-body {
   font-size: 12px !important;
   color: #374355 !important;
+  height: 400px !important;
 }
 
 .mce-label {
   font-size: 12px !important;
   color: #374355;
 }
+
 
 /* ---------------------------------------*/
 /*            Scrollbar Styles            */

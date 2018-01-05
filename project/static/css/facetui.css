@@ -226,10 +226,6 @@ input[type="checkbox"] {
   margin-top: -12px !important;
 }
 
-#wf_content_ifr, #pf_content_ifr, #af_content_ifr, #vf_content_ifr {
-  height: 450px !important;
-}
-
 #wf_dueedit_picker {
   color: #fff !important;
 }
@@ -355,7 +351,7 @@ img.image-center {
 }
 
 .facetdiscussion {
-  height: 350px !important;
+  height: 600px !important;
 }
 
 .eventdiscussion, .taskdiscussion {
@@ -439,4 +435,8 @@ img.image-center {
 
 .color-purple {
   color: #673AB7 !important;
+}
+
+iframe#id_content_ifr {
+  height: 450px !important;
 }
