@@ -8,12 +8,12 @@ from .base import *
 SECRET_KEY = os.environ['SECRET_KEY']
 
 INSTALLED_APPS += [
-    'storages',  # for use with S3
+    #'storages',  # for use with S3
 ]
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['facet.org']
+ALLOWED_HOSTS = ['projectfacet.com']
 
 ######################################
 # Database: local PostgreSQL
@@ -92,12 +92,12 @@ AWS_STORAGE_BUCKET_NAME = os.environ['AWS_STORAGE_BUCKET_NAME']
 AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
 AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
 
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+#DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+#STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 
 AWS_S3_CUSTOM_DOMAIN = AWS_STORAGE_BUCKET_NAME + '.s3.amazonaws.com'
 
-STATIC_URL = "https://%s/" % AWS_S3_CUSTOM_DOMAIN
+#STATIC_URL = "https://%s/" % AWS_S3_CUSTOM_DOMAIN
 
 # -------------------------------------------------------------- #
 # EMAIL #
