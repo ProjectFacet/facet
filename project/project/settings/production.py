@@ -88,14 +88,16 @@ del TEMPLATES[0]['APP_DIRS']
 ######################################
 # Store static/media at S3
 
-AWS_STORAGE_BUCKET_NAME = os.environ['AWS_STORAGE_BUCKET_NAME']
-AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
-AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
+# Not storing things at S3 at this time; will explore later
+
+# AWS_STORAGE_BUCKET_NAME = os.environ['AWS_STORAGE_BUCKET_NAME']
+# AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
+# AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
 
 #DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 #STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 
-AWS_S3_CUSTOM_DOMAIN = AWS_STORAGE_BUCKET_NAME + '.s3.amazonaws.com'
+# AWS_S3_CUSTOM_DOMAIN = AWS_STORAGE_BUCKET_NAME + '.s3.amazonaws.com'
 
 #STATIC_URL = "https://%s/" % AWS_S3_CUSTOM_DOMAIN
 
