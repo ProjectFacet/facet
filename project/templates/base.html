@@ -201,8 +201,9 @@
                         <a class="nav-link dropdown-toggle no-after f-s-16" data-toggle="dropdown"> People </a>
                         <div class="dropdown-menu dropdown-menu-scale from-right dropdown-menu-right">
                             <a class="dropdown-item" href="{% url 'team_list' %}" title="View Teams and Collaborators"> <span class="title"> Teams </span> </a>
-                            <!-- TODO Add if statement to qualify whether this should appear based on user status as a editor who manages contractors -->
+                            {% if request.user.talenteditorprofile %}
                             <a class="dropdown-item" href="{% url 'public_contractor_list' %}" title="View Contractors"> </span> <span class="title"> Contractors </span> </a>
+                            {% endif %}
                         </div>
                     </li>
                   </ul>
