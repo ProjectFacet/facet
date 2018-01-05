@@ -230,9 +230,10 @@ urlpatterns = [
     url(r'^story/(?P<story>\d+)/facet/(?P<pk>\d+)/delete/$', facetviews.FacetDeleteView.as_view(), name="facet_delete"),
 
     # Facet templates
-
+    # TODO append organization to these urls as templates return are specific to organization
     url(r'^facet/templates/$', facetviews.FacetTemplateView.as_view(), name="facet_template_list"),
     url(r'^facet/template/create/$', facetviews.FacetTemplateCreateView.as_view(), name="facet_template_create"),
+    url(r'^facet/template/(?P<pk>\d+)/$', facetviews.FacetTemplateDetailView.as_view(), name="facet_template_detail"),
     url(r'^facet/template/(?P<pk>\d+)/edit/$', facetviews.FacetTemplateUpdateView.as_view(), name="facet_template_edit"),
 
 

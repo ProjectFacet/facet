@@ -102,37 +102,6 @@ COMMON_FIELDS = {
     # "story",
 }
 
-FACETTEMPLATE_FIELD_CHOICES = {
-    "excerpt",
-    "update_note",
-    "share_note",
-    "edit_note",
-    "dateline",
-    "topic_code",
-    "internal_code",
-    "content_license",
-    "length",
-    "wordcount",
-    "related_links",
-    "github_link",
-    "embeds",
-    "sources",
-    "pronounciations",
-    "sponsors",
-    "pull_quotes",
-    "sidebar_content",
-    "producer",
-    "series_title",
-    "episode_number",
-    "usage_rights",
-    "tape_datetime",
-    "locations",
-    "custom_one",
-    "custom_two",
-    "custom_three",
-    "custom_four",
-    "custom_five",
-}
 
 class Facet(models.Model):
     """A version of a story.

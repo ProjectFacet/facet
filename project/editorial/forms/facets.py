@@ -13,7 +13,7 @@ from editorial.models import (
     ContentLicense,
 )
 
-from editorial.models.facets import COMMON_FIELDS, FACETTEMPLATE_FIELD_CHOICES
+from editorial.models.facets import COMMON_FIELDS
 
 from editorial.widgets import ArrayFieldSelectMultiple
 
@@ -25,14 +25,6 @@ class FacetTemplateForm(forms.ModelForm):
         """There may be spaces around entries; strip these off."""
 
         return [f.strip() for f in self.cleaned_data['fields_used']]
-
-    # FIXME from Joel: why is this here and commented out?
-
-    # fields = SimpleArrayField(
-    #     required=True,
-    #     widget=forms.CheckboxSelectMultiple,
-    #     choices=FACETTEMPLATE_FIELD_CHOICES,
-    # )
 
     class Meta:
         model = FacetTemplate

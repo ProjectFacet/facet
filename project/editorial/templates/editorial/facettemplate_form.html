@@ -42,8 +42,10 @@
 
 <div class="row">
   <div class="col-xs-12">
-    {% if facettemplate.id %}
+    {% if facettemplate %}
     <h4>Template: {{ facettemplate.name }}</h4>
+    {% else %}
+    <h4>Create new facet template</h4>
     {% endif %}
   </div>
 </div>
@@ -51,6 +53,9 @@
 <!-- ================================================= -->
                     <!-- CONTENT -->
 <!-- ================================================= -->
+
+
+{% if facettemplate.organization or not facettemplate %}
 <div class="row">
   <form method="POST">
   {% csrf_token %}
@@ -95,7 +100,7 @@
     <div class="row m-t-20">
       <div class="col-xs-12">
         <p class="f-s-14 f-w-400 slim-margin m-l-5 m-b-20">Default Fields</p>
-        <p class="f-s-12 f-w-300 m-l-5 m-b-10 color-default">Included for all facets and available via the Base Template</p>
+        <p class="f-s-12 f-w-300 m-l-5 m-b-10 color-default">Included for all facets. Select Base Template to use <span class="f-w-600">only</span> these fields.</p>
         <div class="row">
           <div class="col-xs-12 col-sm-6">
             <p>
@@ -130,6 +135,8 @@
   <!-- Right Column Column -->
   <div class="col-xs-12 col-lg-9">
 
+
+    <!-- If fields are editable - A non-sitewide template -->
     <div class="row">
       <p class="f-s-14 f-s-400 spread-01 subtle slim-margin m-t-10 m-l-5 m-b-10">Fields</p>
       <p class="f-s-12 f-w-300 m-l-5 m-b-10">Select fields to include in template</p>
@@ -360,12 +367,17 @@
       </div>
     </div>
 
-
   </div>
 
   </form>
 </div>
-
+{% else %}
+<div class="row m-t-50">
+  <div class="col-xs-12">
+    <p class="f-r-10 f-w-300 text-center">Sorry, but you are not allowed to edit this template.</p>
+  </div>
+</div>
+{% endif %}
 <!-- ================================================= -->
                   <!-- JS SCRIPTS -->
 <!-- ================================================= -->

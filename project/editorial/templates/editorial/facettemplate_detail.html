@@ -1,0 +1,355 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load bootstrap3 %}
+{% load embed_video_tags %}
+
+{% block head %}
+{{ form.media }}
+{% endblock %}
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+<!--             BREADCRUMB NAVIGATION                 -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
+{% block breadcrumb %}
+<div>
+    <ol class="breadcrumb icon-angle-right icon-th">
+        <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
+        <li class="fadeIn"><a href="{% url 'facet_template_list' %}" title="See all Facet Templates"> Facet Templates </a></li>
+        <li class="fadeIn"> {{ facettemplate.name }} </li>
+    </ol>
+</div>
+{% endblock breadcrumb %}
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+<!--                   Main Section                    -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
+{% block content %}
+
+<!-- ================================================= -->
+                    <!-- TABS -->
+<!-- ================================================= -->
+
+<div class="row">
+  <div class="col-xs-12">
+    <h5>Template Details</h5>
+  </div>
+</div>
+
+<!-- ================================================= -->
+                    <!-- CONTENT -->
+<!-- ================================================= -->
+
+
+
+<div class="row m-t-20">
+
+  <!-- Left Column -->
+  <div class="col-xs-12 col-lg-3">
+    <p class="f-s-18 f-w-300 thin m-b-20">{{ facettemplate.name }}</p>
+    <p class="f-s-14 f-w-300 thin"><i>{{ facettemplate.description }}</i></p>
+
+
+    <!-- Default Fields -->
+    <div class="row m-t-40">
+      <div class="col-xs-12">
+        <p class="f-s-14 f-w-400 slim-margin m-l-5 m-b-20">Default Fields</p>
+        <p class="f-s-12 f-w-300 m-l-5 m-b-10 color-default">Included for all facets. Base Template uses only these fields.</p>
+        <div class="row">
+          <div class="col-xs-12 col-sm-6">
+            <p>
+              <span class="sameline subtle"><i class="fa fa-check-square subtle" aria-hidden="true"></i> </span><span class="f-s-12 f-w-300 slim-margin m-l-5 m-b-10"> Name</span>
+              <br><span class="sameline subtle"><i class="fa fa-check-square subtle" aria-hidden="true"></i> </span><span class="f-s-12 f-w-300 slim-margin m-l-5 m-b-10"> Headline</span>
+              <br><span class="sameline subtle"><i class="fa fa-check-square subtle" aria-hidden="true"></i> </span><span class="f-s-12 f-w-300 slim-margin m-l-5 m-b-10"> Credit</span>
+              <br><span class="sameline subtle"><i class="fa fa-check-square subtle" aria-hidden="true"></i> </span><span class="f-s-12 f-w-300 slim-margin m-l-5 m-b-10"> Editor</span>
+              <br><span class="sameline subtle"><i class="fa fa-check-square subtle" aria-hidden="true"></i> </span><span class="f-s-12 f-w-300 slim-margin m-l-5 m-b-10"> Description</span>
+              <br><span class="sameline subtle"><i class="fa fa-check-square subtle" aria-hidden="true"></i> </span><span class="f-s-12 f-w-300 slim-margin m-l-5 m-b-10"> Content</span>
+              <br><span class="sameline subtle"><i class="fa fa-check-square subtle" aria-hidden="true"></i> </span><span class="f-s-12 f-w-300 slim-margin m-l-5 m-b-10"> Keywords</span>
+            </p>
+          </div>
+          <div class="col-xs-12 col-sm-6">
+            <p>
+              <span class="sameline subtle"><i class="fa fa-check-square subtle" aria-hidden="true"></i> </span><span class="f-s-12 f-w-300 slim-margin m-l-5 m-b-10"> Status</span>
+              <br><span class="sameline subtle"><i class="fa fa-check-square subtle" aria-hidden="true"></i> </span><span class="f-s-12 f-w-300 slim-margin m-l-5 m-b-10"> Due for Edit</span>
+              <br><span class="sameline subtle"><i class="fa fa-check-square subtle" aria-hidden="true"></i> </span><span class="f-s-12 f-w-300 slim-margin m-l-5 m-b-10"> Run Date</span>
+              <br><span class="sameline subtle"><i class="fa fa-check-square subtle" aria-hidden="true"></i> </span><span class="f-s-12 f-w-300 slim-margin m-l-5 m-b-10"> Images</span>
+              <br><span class="sameline subtle"><i class="fa fa-check-square subtle" aria-hidden="true"></i> </span><span class="f-s-12 f-w-300 slim-margin m-l-5 m-b-10"> Documents</span>
+              <br><span class="sameline subtle"><i class="fa fa-check-square subtle" aria-hidden="true"></i> </span><span class="f-s-12 f-w-300 slim-margin m-l-5 m-b-10"> Audio</span>
+              <br><span class="sameline subtle"><i class="fa fa-check-square subtle" aria-hidden="true"></i> </span><span class="f-s-12 f-w-300 slim-margin m-l-5 m-b-10"> Video</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Right Column Column -->
+  <div class="col-xs-12 col-lg-9">
+
+
+    <!-- If fields are editable - A non-sitewide template -->
+    <div class="row">
+      <p class="f-s-16 f-s-400 spread-01 slim-margin m-t-10 m-l-5 m-b-10">Fields</p>
+      <p class="f-s-12 f-w-300 m-l-5 m-b-10">Fields included in this template. <span class="color-default">(Not editable in this view)</span></p>
+      <!-- Outer Left Column-->
+      <div class="col-xs-12 col-sm-6 col-md-3">
+        <div class="c-inputs-stacked m-t-20">
+          <label class="c-input c-checkbox m-t-20">
+            {% if "excerpt" in facettemplate.fields_used %}
+            <input type="checkbox" name="fields" value="excerpt" checked disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Excerpt </span>
+            {% else %}
+            <input type="checkbox" name="fields" value="excerpt" disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Excerpt </span>
+            {% endif %}
+          </label>
+          <label class="c-input c-checkbox m-t-20">
+            {% if "update_note" in facettemplate.fields_used %}
+            <input type="checkbox" name="fields" value="update_note" checked disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Update Note </span>
+            {% else %}
+            <input type="checkbox" name="fields" value="update_note" disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Update Note </span>
+            {% endif %}
+          </label>
+          <label class="c-input c-checkbox m-t-20">
+            {% if "share_note" in facettemplate.fields_used %}
+            <input type="checkbox" name="fields" value="share_note" checked disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Share Note </span>
+              {% else %}
+            <input type="checkbox" name="fields" value="share_note" disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Share Note </span>
+            {% endif %}
+          </label>
+          <label class="c-input c-checkbox m-t-20">
+            {% if "edit_note" in facettemplate.fields_used %}
+            <input type="checkbox" name="fields" value="edit_note" checked disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Edit Note </span>
+              {% else %}
+            <input type="checkbox" name="fields" value="edit_note" disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Edit Note </span>
+            {% endif %}
+          </label>
+          <label class="c-input c-checkbox m-t-20">
+            {% if "dateline" in facettemplate.fields_used %}
+            <input type="checkbox" name="fields" value="dateline" checked disabled><span class="c-indicator c-indicator-info active"></span> <span class="c-input-text"> Dateline </span>
+            {% else %}
+            <input type="checkbox" name="fields" value="dateline" disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Dateline </span>
+            {% endif %}
+          </label>
+          <label class="c-input c-checkbox m-t-20">
+            {% if "topic_code" in facettemplate.fields_used %}
+            <input type="checkbox" name="fields" value="topic_code" checked disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Topic Code </span>
+              {% else %}
+            <input type="checkbox" name="fields" value="topic_code" disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Topic Code </span>
+            {% endif %}
+          </label>
+          <label class="c-input c-checkbox m-t-20">
+            {% if "internal_code" in facettemplate.fields_used %}
+            <input type="checkbox" name="fields" value="internal_code" checked disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Internal Code </span>
+              {% else %}
+            <input type="checkbox" name="fields" value="internal_code" disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Internal Code </span>
+            {% endif %}
+          </label>
+          <label class="c-input c-checkbox m-t-20">
+            {% if "content_license" in facettemplate.fields_used %}
+            <input type="checkbox" name="fields" value="content_license" checked disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Content License </span>
+              {% else %}
+            <input type="checkbox" name="fields" value="content_license" disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Content License </span>
+            {% endif %}
+          </label>
+        </div>
+      </div>
+      <!-- Inner Left Column -->
+      <div class="col-xs-12 col-sm-6 col-md-3">
+        <div class="c-inputs-stacked m-t-20">
+          <label class="c-input c-checkbox m-t-20">
+            {% if "length" in facettemplate.fields_used %}
+            <input type="checkbox" name="fields" value="length" checked disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Length </span>
+              {% else %}
+            <input type="checkbox" name="fields" value="length" disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Length </span>
+            {% endif %}
+          </label>
+          <label class="c-input c-checkbox m-t-20">
+            {% if "wordcount" in facettemplate.fields_used %}
+            <input type="checkbox" name="fields" value="wordcount" checked disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Wordcount </span>
+              {% else %}
+            <input type="checkbox" name="fields" value="wordcount" disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Wordcount </span>
+            {% endif %}
+          </label>
+          <label class="c-input c-checkbox m-t-20">
+            {% if "related_links" in facettemplate.fields_used %}
+            <input type="checkbox" name="fields" value="related_links" checked disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Related Links </span>
+              {% else %}
+            <input type="checkbox" name="fields" value="related_links" disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Related Links </span>
+            {% endif %}
+          </label>
+          <label class="c-input c-checkbox m-t-20">
+            {% if "github_link" in facettemplate.fields_used %}
+            <input type="checkbox" name="fields" value="github_link" checked disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Github Link </span>
+              {% else %}
+            <input type="checkbox" name="fields" value="github_link" disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Github Link </span>
+            {% endif %}
+          </label>
+          <label class="c-input c-checkbox m-t-20">
+            {% if "embeds" in facettemplate.fields_used %}
+            <input type="checkbox" name="fields" value="embeds" checked disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Embeds </span>
+              {% else %}
+            <input type="checkbox" name="fields" value="embeds" disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Embeds </span>
+            {% endif %}
+          </label>
+          <label class="c-input c-checkbox m-t-20">
+            {% if "sources" in facettemplate.fields_used %}
+            <input type="checkbox" name="fields" value="sources" checked disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Sources </span>
+              {% else %}
+            <input type="checkbox" name="fields" value="sources" disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Sources </span>
+            {% endif %}
+          </label>
+          <label class="c-input c-checkbox m-t-20">
+            {% if "pronounciations" in facettemplate.fields_used %}
+            <input type="checkbox" name="fields" value="pronounciations" checked disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Pronounciations </span>
+              {% else %}
+            <input type="checkbox" name="fields" value="pronounciations" disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Pronounciations </span>
+            {% endif %}
+          </label>
+          <label class="c-input c-checkbox m-t-20">
+            {% if "sponsors" in facettemplate.fields_used %}
+            <input type="checkbox" name="fields" value="sponsors" checked disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Sponsors </span>
+              {% else %}
+            <input type="checkbox" name="fields" value="sponsors" disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Sponsors </span>
+            {% endif %}
+          </label>
+        </div>
+      </div>
+      <!-- Inner Right Column -->
+      <div class="col-xs-12 col-sm-6 col-md-3">
+        <div class="c-inputs-stacked m-t-20">
+          <label class="c-input c-checkbox m-t-20">
+            {% if "pull_quotes" in facettemplate.fields_used %}
+            <input type="checkbox" name="fields" value="pull_quotes" checked disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Pull Quotes </span>
+              {% else %}
+            <input type="checkbox" name="fields" value="pull_quotes" disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Pull Quotes </span>
+            {% endif %}
+          </label>
+          <label class="c-input c-checkbox m-t-20">
+            {% if "sidebar_content" in facettemplate.fields_used %}
+            <input type="checkbox" name="fields" value="sidebar_content" checked disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Sidebar Content </span>
+              {% else %}
+            <input type="checkbox" name="fields" value="sidebar_content" disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Sidebar Content </span>
+            {% endif %}
+          </label>
+          <label class="c-input c-checkbox m-t-20">
+            {% if "producer" in facettemplate.fields_used %}
+            <input type="checkbox" name="fields" value="producer" checked disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Producer </span>
+              {% else %}
+            <input type="checkbox" name="fields" value="producer" disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Producer </span>
+            {% endif %}
+          </label>
+          <label class="c-input c-checkbox m-t-20">
+            {% if "series_title" in facettemplate.fields_used %}
+            <input type="checkbox" name="fields" value="series_title" checked disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Series Title </span>
+              {% else %}
+            <input type="checkbox" name="fields" value="series_title" disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Series Title </span>
+            {% endif %}
+          </label>
+          <label class="c-input c-checkbox m-t-20">
+            {% if "episode_number" in facettemplate.fields_used %}
+            <input type="checkbox" name="fields" value="episode_number" checked disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Episode Number </span>
+              {% else %}
+            <input type="checkbox" name="fields" value="episode_number" disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Episode Number </span>
+            {% endif %}
+          </label>
+          <label class="c-input c-checkbox m-t-20">
+            {% if "usage_rights" in facettemplate.fields_used %}
+            <input type="checkbox" name="fields" value="usage_rights" checked disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Usage Rights </span>
+              {% else %}
+            <input type="checkbox" name="fields" value="usage_rights" disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Usage Rights </span>
+            {% endif %}
+          </label>
+          <label class="c-input c-checkbox m-t-20">
+            {% if "tape_datetime" in facettemplate.fields_used %}
+            <input type="checkbox" name="fields" value="tape_datetime" checked disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Tape Datetime </span>
+              {% else %}
+            <input type="checkbox" name="fields" value="tape_datetime" disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Tape Datetime </span>
+            {% endif %}
+          </label>
+          <label class="c-input c-checkbox m-t-20">
+            {% if "locations" in facettemplate.fields_used %}
+            <input type="checkbox" name="fields" value="locations" checked disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Locations </span>
+              {% else %}
+            <input type="checkbox" name="fields" value="locations" disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Locations </span>
+            {% endif %}
+          </label>
+        </div>
+
+      </div>
+      <!-- Outer Right Column -->
+      <div class="col-xs-12 col-sm-6 col-md-3">
+        <div class="c-inputs-stacked m-t-20">
+          <label class="c-input c-checkbox m-t-20">
+            {% if "custom_one" in facettemplate.fields_used %}
+            <input type="checkbox" name="fields" value="custom_one" checked disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Custom One </span>
+              {% else %}
+            <input type="checkbox" name="fields" value="custom_one" disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Custom One </span>
+            {% endif %}
+          </label>
+          <label class="c-input c-checkbox m-t-20">
+            {% if "custom_two" in facettemplate.fields_used %}
+            <input type="checkbox" name="fields" value="custom_two" checked disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Custom Two </span>
+              {% else %}
+            <input type="checkbox" name="fields" value="custom_two" disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Custom Two </span>
+            {% endif %}
+          </label>
+          <label class="c-input c-checkbox m-t-20">
+            {% if "custom_three" in facettemplate.fields_used %}
+            <input type="checkbox" name="fields" value="custom_three" checked disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Custom Three </span>
+              {% else %}
+            <input type="checkbox" name="fields" value="custom_three" disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Custom Three </span>
+            {% endif %}
+          </label>
+          <label class="c-input c-checkbox m-t-20">
+            {% if "custom_four" in facettemplate.fields_used %}
+            <input type="checkbox" name="fields" value="custom_four" checked disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Custom Four </span>
+              {% else %}
+            <input type="checkbox" name="fields" value="custom_four" disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Custom Four </span>
+            {% endif %}
+          </label>
+          <label class="c-input c-checkbox m-t-20">
+            {% if "custom_five" in facettemplate.fields_used %}
+            <input type="checkbox" name="fields" value="custom_five" checked disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Custom Five </span>
+              {% else %}
+            <input type="checkbox" name="fields" value="custom_five" disabled><span class="c-indicator c-indicator-info"></span> <span class="c-input-text"> Custom Five </span>
+            {% endif %}
+          </label>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+
+</div>
+
+<!-- ================================================= -->
+                  <!-- JS SCRIPTS -->
+<!-- ================================================= -->
+
+<script>
+  $(".chosen-select").chosen()
+</script>
+
+
+{% endblock %}
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+                <!-- MODALS -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
+{% block modals %}
+
+
+
+
+{% endblock modals %}

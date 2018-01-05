@@ -116,6 +116,15 @@ class FacetTemplateView(LoginRequiredMixin, FormMessagesMixin, TemplateView):
         return context
 
 
+# ACCESS Only org users should be able to see detail pages for templates:
+class FacetTemplateDetailView(LoginRequiredMixin, FormMessagesMixin, DetailView):
+    """Used to display details about sitewide tempates that are not editable by users.
+
+    For editable templates, the users are sent directly to the edit form for details.
+    """
+
+    model = FacetTemplate
+    template_name = 'editorial/facettemplate_detail.html'
 
 
 # ACCESS: Any org user, or user from an organization that is in collaborate_with
