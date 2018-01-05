@@ -206,6 +206,12 @@ class FacetPreCreateForm(forms.Form):
     form.
     """
 
+    def __init__(self, *args, **kwargs):
+        organization = kwargs.pop('organization', None)
+        super(FacetPreCreateForm, self).__init__(*args, **kwargs)
+        self.fields['template'].queryset = FacetTemplate.objects.filter(Q(organization_id__isnull=True) | Q(organization=organization) & Q(is_active=True))
+        self.fields['template'].empty_label = "Select a template"
+
     name = forms.CharField(
         label="Facet Name",
     )
@@ -215,9 +221,3 @@ class FacetPreCreateForm(forms.Form):
     template = forms.ModelChoiceField(
         FacetTemplate.objects.all(),
     )
-
-    # class Meta:
-    #     widgets = {
-    #         'name': TextInput(attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Label'}),
-    #         'template': Select(attrs={'class': 'form-control'}),
-    #     }

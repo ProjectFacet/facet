@@ -1,5 +1,5 @@
 from django.core.exceptions import PermissionDenied
-from django.views.generic import CreateView, FormView, UpdateView, DetailView, ListView, DeleteView, TemplateView
+from django.views.generic import CreateView, FormView, UpdateView, DetailView, ListView, DeleteView, TemplateView, View
 from django.shortcuts import redirect
 from django.core.urlresolvers import reverse
 from django.conf import settings
@@ -18,7 +18,8 @@ from ..forms import (
     ImageAssetForm,
     DocumentAssetForm,
     AudioAssetForm,
-    VideoAssetForm,)
+    VideoAssetForm,
+    )
 
 
 # ACCESS: Only org users should be able to create a template for their org.
@@ -81,12 +82,6 @@ class FacetTemplateUpdateView(LoginRequiredMixin, FormMessagesMixin, UpdateView)
 
         return redirect(facettemplate)
 
-    # def get_success_url(self):
-    #     """Record action for activity stream."""
-    #
-    #     action.send(self.request.user, verb="edited", action_object=self.object)
-    #     return super(FacetTemplateUpdateView, self).get_success_url()
-
 
 # ACCESS: Only org users should be able to see their org's templates.
 class FacetTemplateView(LoginRequiredMixin, FormMessagesMixin, TemplateView):
@@ -138,6 +133,13 @@ class FacetPreCreateView(FormMessagesMixin, FormView):
     template_name = "editorial/facet_precreate_form.html"
     form_invalid_message = "Something went wrong."
     form_valid_message = "Facet started. Add a status, headline and content to get started."
+
+    def get_form_kwargs(self):
+        """Pass user organization to the form."""
+
+        kw = super(FacetPreCreateView, self).get_form_kwargs()
+        kw.update({'organization': self.request.user.organization})
+        return kw
 
     def form_valid(self, form):
         """Redirect to real facet-creation form."""
@@ -199,7 +201,6 @@ class FacetUpdateView(LoginRequiredMixin, FormMessagesMixin, UpdateView):
         """Get dynamic form based on this template."""
 
         return get_facet_form_for_template(self.object.template_id)
-
 
     def facet_discussion(self):
         """Get discussion, comments and comment form for the facet."""
