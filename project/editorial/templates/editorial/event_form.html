@@ -43,8 +43,6 @@
 <!-------------------------------------------->
 
 {% block content %}
-ERRORS={{form.errors}}
-
 <div class="row m-b-20">
   <div class="col-xs-12">
     <h5 class="m-b-20 sameline">
@@ -323,26 +321,30 @@ $(".chosen-select").chosen()
         });
 </script>
 
+<!-- Note Delete Confirmation -->
 <script>
+  var form;
   $('.note-delete a').on('click', function(e) {
-       e.preventDefault();
-          swal({
-              title: 'Are you sure?',
-              text: 'You will not be able to recover this note.',
-              type: 'warning',
-              showCancelButton: true,
-              confirmButtonColor: '#3085d6',
-              cancelButtonColor: '#d33',
-              confirmButtonText: 'Yes, delete it!',
-              closeOnConfirm: true
-          }, function(result) {
-              if (result) {
-                $(".note-delete").attr("method", "POST").submit();
-              } else {
-                // do nothing on cancel
-            }
-          });
+      form = e.currentTarget.closest("form");
+      e.preventDefault();
+        swal({
+            title: 'Are you sure?',
+            text: 'You will not be able to recover this note.',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+            closeOnConfirm: true
+        }, function(result) {
+            if (result) {
+              form.method = "POST";
+              form.submit();
+            } else {
+              // do nothing on cancel
+          }
         });
+      });
 </script>
 
 

@@ -92,21 +92,45 @@
     <hr>
     <div class="networknotes">
       <div>
-      <h4 class="m-b-20">Notes <a data-toggle="modal" data-target="#addNetworkNote" title="Add Network Note"><i class="fa fa-plus sameline dark"></i></a></h4>
+        <h4 class="m-b-20">
+          <a data-toggle="modal" data-target="#addNetworkNote" title="Add Network Note">
+            <i class="fa fa-plus sameline subtle m-r-20"></i>
+          </a>
+          Notes
+          <a href="{% url 'network_notes' pk=network.id %}" class="link-text m-b-40 subtle">
+            <span class="f-s-12 f-w-400 m-l-10 subtle"> (All notes <i class="fa fa-long-arrow-right subtle" aria-hidden="true">)</i></span>
+          </a>
+        </h4>
       </div>
-      <div class="displaynotes">
+      <div class="activity-widget-4">
       {% for note in notes|slice:":6" %}
-          <div class="col-xs-12 col-sm-12 col-md-3 col-lg-3">
-            <div class="card bs-card">
-                <div class="card-block">
-                    <a data-toggle="modal" data-target="#viewNote{{note.id}}" title="View Network Note"><h4 class="f-s-16 f-w-500 m-b-20">{{ note.title }}</h4></a>
-                    <p class="card-text color-default f-s-12">{{ note.owner.credit_name }}
-                        <br>{{ note.creation_date|date:'N j' }}, {{ note.creation_date|date:'g:i a' }}</p>
-                </div>
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="media">
+              <div class="media-body">
+                <h5 class="media-heading">
+                  {% if note.important == True %}
+                  <i class="fa fa-star f-r-8 color-warning-100" aria-hidden="true"></i>
+                  {% else %}
+                  <i class="fa fa-star-o f-r-8 subtle" aria-hidden="true"></i>
+                  {% endif %}
+                  <a data-toggle="modal" data-target="#viewNote{{note.id}}" title="View Event Note"> {{ note.title }} </a>
+                </h5>
+                <small class="f-s-14">{{ note.owner.credit_name }}</small></br>
+                <small class="color-default">{{ note.creation_date|date:'N j, g:i a' }}</small>
+                <!-- Note Delete -->
+                <form class="note-delete sameline" method="GET"
+                      action="{% url 'note_delete' note.id %}">
+                      <!-- onsubmit="return confirm('Do you want to delete this task?')"> -->
+                      {% csrf_token %}
+                  <a href="javascript:$('.note-delete').submit();"><i class="fa fa-trash subtle float-right" style="float:right;" aria-hidden="true"></i></a>
+                  <!-- <input type="submit" class="btn btn-sm btn-danger-100" value="Delete"> -->
+                </form>
+              </div>
             </div>
-          </div><!-- /.cols -->
+          </div>
+        </div>
       {% endfor %}
-      <a href="{% url 'network_notes' pk=network.id %}" class="link-text m-b-40"><small>See all notes...</small></a>
     </div>
     </div>
 
@@ -141,6 +165,31 @@
                   <!-- JS SCRIPTS -->
 <!-- ================================================= -->
 
+<!-- Note Delete Confirmation -->
+<script>
+  var form;
+  $('.note-delete a').on('click', function(e) {
+      form = e.currentTarget.closest("form");
+      e.preventDefault();
+        swal({
+            title: 'Are you sure?',
+            text: 'You will not be able to recover this note.',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+            closeOnConfirm: true
+        }, function(result) {
+            if (result) {
+              form.method = "POST";
+              form.submit();
+            } else {
+              // do nothing on cancel
+          }
+        });
+      });
+</script>
 
 
 

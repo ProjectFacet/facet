@@ -262,7 +262,7 @@
           <h4 class="m-b-20">Usage</h4>
           {% with view.video_usage as facets %}
           {% for facet in facets %}
-            <a href="{% url 'facet_edit' facet.id %}" title="Go to Facet"><p class="f-s-14 m-t-10"><i class="fa fa-long-arrow-right subtle m-r-5" aria-hidden="true"></i> {{ facet.name }} | Story: {{ facet.story.name }}</p></a>
+            <a href="{% url 'facet_edit' pk=facet.id story=facet.story.id %}" title="Go to Facet"><p class="f-s-14 m-t-10"><i class="fa fa-long-arrow-right subtle m-r-5" aria-hidden="true"></i> {{ facet.name }} | Story: {{ facet.story.name }}</p></a>
           {% endfor %}
           {% endwith %}
         </div>
