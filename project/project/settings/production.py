@@ -113,4 +113,4 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 # WJB: unsure what this would be for, commented out for now
 # AWS_SES_REGION_ENDPOINT = 'email-smtp.us-west-2.amazonaws.com'
-SERVER_EMAIL = DEFAULT_FROM_EMAIL = os.environ['EMAIL_HOST_USER']
+SERVER_EMAIL = DEFAULT_FROM_EMAIL = "collaborate@projectfacet.org"

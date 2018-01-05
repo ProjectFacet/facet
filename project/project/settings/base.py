@@ -127,7 +127,7 @@ LOGIN_REDIRECT_URL = '/dashboard'
 #######################################
 # Email
 
-SERVER_EMAIL = DEFAULT_FROM_EMAIL = "facet-mail@example.com"
+SERVER_EMAIL = DEFAULT_FROM_EMAIL = "collaborate@projectfacet.org"
 
 # Email these people when errors happen on production sites
 

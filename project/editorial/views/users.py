@@ -40,7 +40,7 @@ class UserCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         """Save user -- but first set a few values."""
 
-        user = form.save(commit=False)
+        user = self.object = form.save(commit=False)
         user.organization = self.request.user.organization
         user.save()
 
@@ -48,8 +48,7 @@ class UserCreateView(LoginRequiredMixin, CreateView):
         mail_subject = "New User Details"
         message = "You've been added to Facet. Your login is your email and your password is please."
         recipient = [user.email]
-        sender_email = self.request.user.email
-        send_mail(mail_subject, message, settings.EMAIL_HOST_USER, recipient, fail_silently=True)
+        send_mail(mail_subject, message, settings.DEFAULT_FROM_EMAIL, recipient, fail_silently=False)
 
         # record action for activity stream
         new_user = get_object_or_404(User, pk=user.pk)
