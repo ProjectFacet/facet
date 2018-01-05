@@ -35,8 +35,6 @@ class FacetTemplateCreateView(LoginRequiredMixin, CreateView):
 
         self.object = template = form.save(commit=False)
 
-        # NOTE What's the appropriate way to retrieve these fields?
-        # This or defining all the choices in forms?
         form_fields = self.request.POST.getlist('fields')
 
         template.owner = self.request.user
@@ -60,11 +58,24 @@ class FacetTemplateUpdateView(LoginRequiredMixin, FormMessagesMixin, UpdateView)
     form_invalid_message = "Something went wrong."
     form_valid_message = "Changes saved."
 
-    def get_success_url(self):
-        """Record action for activity stream."""
+    def form_valid(self, form):
+        """Handle submission of form."""
+
+        ft_id = self.request.POST.get('facettemplate')
+        form_fields = self.request.POST.getlist('fields')
+        facettemplate = FacetTemplate.objects.get(id=ft_id)
+        facettemplate.fields_used = form_fields
+        facettemplate.save()
 
         action.send(self.request.user, verb="edited", action_object=self.object)
-        return super(FacetTemplateUpdateView, self).get_success_url()
+
+        return redirect(facettemplate)
+
+    # def get_success_url(self):
+    #     """Record action for activity stream."""
+    #
+    #     action.send(self.request.user, verb="edited", action_object=self.object)
+    #     return super(FacetTemplateUpdateView, self).get_success_url()
 
 
 # ACCESS: Any org user, or user from an organization that is in collaborate_with
