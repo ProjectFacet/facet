@@ -5,3 +5,7 @@ tmpenv/
 secrets.sh
 /media/
 .DS_Store
+/venv/
+/static/
+/project/env.py
+touch-to-reload
