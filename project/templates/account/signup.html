@@ -2,6 +2,7 @@
 
 {% load i18n %}
 {% load bootstrap3 %}
+{% load staticfiles %}
 
 {% block title %}{% trans "Signup" %}{% endblock title %}
 
@@ -19,6 +20,9 @@
 
 {% block content %}
 
+
+{% comment %}
+<!-- Commented out to prevent sign up during beta. -->
 <div class="container-fluid">
   <div class="row">
     <div class="col-xs-12">
@@ -45,6 +49,32 @@
 
   </div>
 </div>
+{% endcomment %}
 
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="text-center animated fadeIn delay-2000">
+          <img src="{% static 'images/logo/brand-text-light.png' %}" alt="project facet logo" class="center m-50"/>
+          <p class="f-r-20 f-w-300 m-50">Thank you for your interest</p>
+          <p class="f-w-300">We're not accepting signups during beta. If you're interested in participating in beta, please contact us at collaborate@projectfacet.org.
+          </p>
+          <p class="f-w-300">Find out more about Facet at <a href="http://www.projectfacet.org/">projectfacet.org</a>.</p>
+          <p class="social-buttons m-t-50">
+            <a href="https://www.facebook.com/projectfacet" title="Join us on Facebook"><button type="button" class="btn btn-solid btn-circle btn-facebook btn-lg">
+                <i class="fa fa-facebook"></i>
+            </button></a>
+            <a href="https://twitter.com/projectfacet" title="Follow us on Facebook"><button type="button" class="btn btn-solid btn-circle btn-twitter btn-lg">
+                <i class="fa fa-twitter"></i>
+            </button> </a>
+            <a href="https://medium.com/facet" title="Read about us on Medium"><button type="button" class="btn btn-solid btn-circle btn-medium btn-lg">
+                <i class="fa fa-medium"></i>
+            </button> </a>
+          </p>
+          <p class="copyright text-sm">© Copyright 2018</p>
+      </div>
+    </div>
+  </div>
+</div>
 
 {% endblock content %}
