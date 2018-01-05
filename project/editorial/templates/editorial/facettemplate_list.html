@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load bootstrap3 %}
+{% load embed_video_tags %}
+{% load staticfiles %}
+
+{% block head %}
+{{ webform.media }}
+{% endblock %}
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+<!--             BREADCRUMB NAVIGATION                 -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
+{% block breadcrumb %}
+<div>
+    <ol class="breadcrumb icon-angle-right icon-th">
+        <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
+        <li class="fadeIn"> Facet Templates </li>
+    </ol>
+</div>
+{% endblock breadcrumb %}
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+<!--                   Main Section                    -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
+{% block content %}
+
+<!-- ================================================= -->
+                    <!-- CONTENT -->
+<!-- ================================================= -->
+
+<div class="row m-b-40">
+  <div class="col-xs-12">
+    <h4>Facet Templates</h4>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12 col-sm-6 col-lg-3">
+    <h5 class="m-b-20 underline-default underline-120">Base <span class="subtle f-s-14 f-w-600 m-l-10">( {{ basetemplates.count}} )</span></h5>
+    <div class="activity-widget-1">
+      <div class="row">
+        <div class="col-xs-12">
+          <ul class="list-group">
+            {% for facettemplate in basetemplates %}
+                <li class="list-group-item">
+                  <span class="color-default-300 text-xs pull-right">In Use: {{ facettemplate.facet_set.count }}</span>
+                  <span>
+                    <a href="{% url 'facet_template_edit'  facettemplate.id %}" title="Go to template details">{{ facettemplate.name }}</a>
+                  </span>
+                </li>
+            {% endfor %}
+           </ul>
+         </div>
+       </div>
+    </div>
+  </div>
+  <div class="col-xs-12 col-sm-6 col-lg-6">
+    <h5 class="m-b-20 underline-success underline-120">Active <span class="subtle f-s-14 f-w-600 m-l-10">( {{ activetemplates.count }} )</span></h5>
+    <div class="activity-widget-1">
+      <div class="row">
+        <div class="col-xs-12">
+          <ul class="list-group">
+            {% for facettemplate in activetemplates %}
+            <li class="list-group-item">
+              <!-- Pulled right -->
+              <span class="color-success-300 text-xs pull-right m-l-50">In Use: {{ facettemplate.facet_set.count }}</span>
+              <span class="text-xs pull-right">Fields: {{ facettemplate.fields_used|length }}</span>
+              <!-- Pulled Left -->
+              <span class="pull-left">
+              <a href="{% url 'facet_template_edit'  facettemplate.id %}" title="Go to template details">{{ facettemplate.name }}</a>
+              </span>
+              <!-- Regular -->
+              <span class="m-l-30">
+              <a href="{% url 'facet_template_edit'  facettemplate.id %}" title="Go to template details">{{ facettemplate.description }}</a>
+              </span>
+              </li>
+            {% endfor %}
+           </ul>
+         </div>
+       </div>
+    </div>
+  </div>
+  <div class="col-xs-12 col-sm-6 col-lg-3">
+    <h5 class="m-b-20 underline-danger underline-120">InActive <span class="subtle f-s-14 f-w-600 m-l-10">( {{ inactivetemplates.count }} )</span></h5>
+    <div class="activity-widget-1">
+      <div class="row">
+        <div class="col-xs-12">
+          <ul class="list-group">
+            {% for facettemplate in inactivetemplates %}
+                <li class="list-group-item">
+                  <span class="color-danger-300 text-xs pull-right">In Use: {{ facettemplate.facet_set.count }}</span>
+                  <span>
+                    <a href="{% url 'facet_template_edit'  facettemplate.id %}" title="Go to template details">{{ facettemplate.name }}</a>
+                  </span>
+                </li>
+            {% endfor %}
+           </ul>
+         </div>
+       </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================================================= -->
+                  <!-- JS SCRIPTS -->
+<!-- ================================================= -->
+
+<script>
+  $(".chosen-select").chosen()
+</script>
+
+{% endblock %}
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+                <!-- MODALS -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
+{% block modals %}
+
+
+
+{% endblock modals %}

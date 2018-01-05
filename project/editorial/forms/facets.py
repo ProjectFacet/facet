@@ -218,6 +218,8 @@ class FacetPreCreateForm(forms.Form):
         label="Facet Name",
     )
 
+    # FIXME filter for only the templates an organization should have access to
+    # Sitewide ones with no org id or the ones whose org id matches the user.
     template = forms.ModelChoiceField(
         FacetTemplate.objects.all(),
     )

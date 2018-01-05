@@ -18,6 +18,7 @@
 <div>
     <ol class="breadcrumb icon-angle-right icon-th">
         <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
+        <li class="fadeIn"><a href="{% url 'facet_template_list' %}" title="See all Facet Templates"> Facet Templates </a></li>
         {% if facettemplate.id %}
         <li class="fadeIn"> Edit facet template: {{ facettemplate.name }} </li>
         {% else %}
@@ -91,7 +92,7 @@
     </div>
 
     <!-- Default Fields -->
-    <div class="row">
+    <div class="row m-t-20">
       <div class="col-xs-12">
         <p class="f-s-14 f-w-400 slim-margin m-l-5 m-b-20">Default Fields</p>
         <p class="f-s-12 f-w-300 m-l-5 m-b-10 color-default">Included for all facets and available via the Base Template</p>

@@ -227,9 +227,14 @@ urlpatterns = [
     url(r'^story/(?P<story>\d+)/facet/add/$', facetviews.FacetPreCreateView.as_view(), name="facet_precreate"),
     url(r'^story/(?P<story>\d+)/facet/add/(?P<template_id>\d+)/$', facetviews.FacetCreateView.as_view(), name="facet_add"),
     url(r'^story/(?P<story>\d+)/facet/(?P<pk>\d+)/edit/$', facetviews.FacetUpdateView.as_view(), name="facet_edit"),
+    url(r'^story/(?P<story>\d+)/facet/(?P<pk>\d+)/delete/$', facetviews.FacetDeleteView.as_view(), name="facet_delete"),
+
+    # Facet templates
+
+    url(r'^facet/templates/$', facetviews.FacetTemplateView.as_view(), name="facet_template_list"),
     url(r'^facet/template/create/$', facetviews.FacetTemplateCreateView.as_view(), name="facet_template_create"),
     url(r'^facet/template/(?P<pk>\d+)/edit/$', facetviews.FacetTemplateUpdateView.as_view(), name="facet_template_edit"),
-    url(r'^story/(?P<story>\d+)/facet/(?P<pk>\d+)/delete/$', facetviews.FacetDeleteView.as_view(), name="facet_delete"),
+
 
     #   Task URLS
 

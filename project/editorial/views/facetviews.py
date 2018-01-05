@@ -1,5 +1,5 @@
 from django.core.exceptions import PermissionDenied
-from django.views.generic import CreateView, FormView, UpdateView, DetailView, ListView, DeleteView
+from django.views.generic import CreateView, FormView, UpdateView, DetailView, ListView, DeleteView, TemplateView
 from django.shortcuts import redirect
 from django.core.urlresolvers import reverse
 from django.conf import settings
@@ -7,6 +7,7 @@ from actstream import action
 from editorial.models import Story
 from braces.views import LoginRequiredMixin, FormMessagesMixin
 from editorial.views import CustomUserTest
+from django.db.models import Q
 
 from ..models import Facet, FacetTemplate
 from ..forms import (
@@ -59,11 +60,20 @@ class FacetTemplateUpdateView(LoginRequiredMixin, FormMessagesMixin, UpdateView)
     form_valid_message = "Changes saved."
 
     def form_valid(self, form):
-        """Handle submission of form."""
+        """Handle submission of form manually."""
 
+        # Retrieve form values manually
         ft_id = self.request.POST.get('facettemplate')
         form_fields = self.request.POST.getlist('fields')
+        name = self.request.POST.get('name')
+        description = self.request.POST.get('description')
+        is_active = form.cleaned_data['is_active']
+        # Retrieve template
         facettemplate = FacetTemplate.objects.get(id=ft_id)
+        # Set new values
+        facettemplate.name = name
+        facettemplate.description = description
+        facettemplate.is_active = is_active
         facettemplate.fields_used = form_fields
         facettemplate.save()
 
@@ -76,6 +86,36 @@ class FacetTemplateUpdateView(LoginRequiredMixin, FormMessagesMixin, UpdateView)
     #
     #     action.send(self.request.user, verb="edited", action_object=self.object)
     #     return super(FacetTemplateUpdateView, self).get_success_url()
+
+
+# ACCESS: Only org users should be able to see their org's templates.
+class FacetTemplateView(LoginRequiredMixin, FormMessagesMixin, TemplateView):
+    """List all sitewide and organization facet templates. Distinguishes between
+    active and not active templates.
+    """
+
+    context_object_name = 'facettemplates'
+    template_name = 'editorial/facettemplate_list.html'
+
+    def get_context_data(self, **kwargs):
+        """Group facettemplates for display."""
+
+        context = super(FacetTemplateView, self).get_context_data(**kwargs)
+        org = self.request.user.organization
+        basetemplates = FacetTemplate.objects.filter(organization_id__isnull=True)
+        print "*******************************"
+        print "BT: ", basetemplates
+        activetemplates = FacetTemplate.objects.filter(Q(organization_id=org) & Q(is_active=True))
+        print "AT: ", activetemplates
+        inactivetemplates = FacetTemplate.objects.filter(Q(organization_id=org) & Q(is_active=False))
+        print "IT: ", inactivetemplates
+        print "*******************************"
+        context['basetemplates'] = basetemplates
+        context['activetemplates'] = activetemplates
+        context['inactivetemplates'] = inactivetemplates
+        return context
+
+
 
 
 # ACCESS: Any org user, or user from an organization that is in collaborate_with
