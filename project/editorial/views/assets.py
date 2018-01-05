@@ -9,7 +9,7 @@ from __future__ import unicode_literals
 from django.shortcuts import redirect, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
-from django.views.generic import TemplateView , UpdateView, DetailView, ListView, CreateView, FormView
+from django.views.generic import TemplateView , UpdateView, DetailView, ListView, CreateView, FormView, DeleteView
 from actstream import action
 from braces.views import LoginRequiredMixin, FormMessagesMixin
 
@@ -156,6 +156,26 @@ class ImageAssetUpdateView(LoginRequiredMixin, UpdateView):
         return super(ImageAssetUpdateView, self).get_success_url()
 
 
+# ACCESS: Only users with access to an organization's media library should be
+# able to delete items in it.
+class ImageAssetDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteView):
+    """View for handling deletion of an image asset.
+
+    Assets can only be deleted from the library.
+    """
+
+    model = ImageAsset
+    template_name = "editorial/imageasset_delete.html"
+
+    form_valid_message = "Deleted."
+    form_invalid_message = "Please check form."
+
+    def get_success_url(self):
+        """Post deletion return to the media library."""
+
+        return reverse('asset_library')
+
+
 #----------------------------------------------------------------------#
 #   Document Asset Views
 #----------------------------------------------------------------------#
@@ -246,6 +266,25 @@ class DocumentAssetUpdateView(LoginRequiredMixin, UpdateView):
         return super(DocumentAssetUpdateView, self).get_success_url()
 
 
+# ACCESS: Only users with access to an organization's media library should be
+# able to delete items in it.
+class DocumentAssetDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteView):
+    """View for handling deletion of a document asset.
+
+    Assets can only be deleted from the library.
+    """
+
+    model = DocumentAsset
+    template_name = "editorial/documentasset_delete.html"
+
+    form_valid_message = "Deleted."
+    form_invalid_message = "Please check form."
+
+    def get_success_url(self):
+        """Post deletion return to the media library."""
+
+        return reverse('asset_library')
+
 #----------------------------------------------------------------------#
 #   Audio Asset Views
 #----------------------------------------------------------------------#
@@ -332,6 +371,25 @@ class AudioAssetUpdateView(LoginRequiredMixin, UpdateView):
         action.send(self.request.user, verb="edited", action_object=self.object)
         return super(AudioAssetUpdateView, self).get_success_url()
 
+
+# ACCESS: Only users with access to an organization's media library should be
+# able to delete items in it.
+class AudioAssetDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteView):
+    """View for handling deletion of an audio asset.
+
+    Assets can only be deleted from the library.
+    """
+
+    model = AudioAsset
+    template_name = "editorial/audioasset_delete.html"
+
+    form_valid_message = "Deleted."
+    form_invalid_message = "Please check form."
+
+    def get_success_url(self):
+        """Post deletion return to the media library."""
+
+        return reverse('asset_library')
 
 #----------------------------------------------------------------------#
 #   Video Asset Views
@@ -420,6 +478,24 @@ class VideoAssetUpdateView(LoginRequiredMixin, UpdateView):
         return super(VideoAssetUpdateView, self).get_success_url()
 
 
+# ACCESS: Only users with access to an organization's media library should be
+# able to delete items in it.
+class VideoAssetDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteView):
+    """View for handling deletion of a video asset.
+
+    Assets can only be deleted from the library.
+    """
+
+    model = VideoAsset
+    template_name = "editorial/videoasset_delete.html"
+
+    form_valid_message = "Deleted."
+    form_invalid_message = "Please check form."
+
+    def get_success_url(self):
+        """Post deletion return to the media library."""
+
+        return reverse('asset_library')
 #----------------------------------------------------------------------#
 #   Simple Asset Views
 #----------------------------------------------------------------------#

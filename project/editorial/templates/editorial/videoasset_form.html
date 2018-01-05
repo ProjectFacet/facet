@@ -175,7 +175,16 @@
   <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
     <div class="row">
       <div class="col-xs-12">
-        <h4 class="m-b-20">Details</h4>
+        <h4 class="m-b-20">Details
+          <form class="video-delete sameline" method="GET"
+                action="{% url 'video_asset_delete' videoasset.id %}">
+                <!-- onsubmit="return confirm('Do you want to delete this task?')"> -->
+                {% csrf_token %}
+            <a href="javascript:$('.video-delete').submit();" title="Delete this video"><i class="fa fa-trash subtle m-l-20" aria-hidden="true"></i></a>
+            <!-- <input type="submit" class="btn btn-sm btn-danger-100" value="Delete"> -->
+          </form>
+
+        </h4>
       </div>
     </div>
 
@@ -271,6 +280,35 @@
 </div>
 
 
+<!-- ================================================= -->
+                  <!-- JS SCRIPTS -->
+<!-- ================================================= -->
+
+<!-- Video Delete Confirmation -->
+<script>
+  var form;
+  $('.video-delete a').on('click', function(e) {
+      form = e.currentTarget.closest("form");
+      e.preventDefault();
+        swal({
+            title: 'Are you sure?',
+            text: 'You will not be able to recover this video.',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!',
+            closeOnConfirm: true
+        }, function(result) {
+            if (result) {
+              form.method = "POST";
+              form.submit();
+            } else {
+              // do nothing on cancel
+          }
+        });
+      });
+</script>
 
 {% endblock %}
 
