@@ -20,13 +20,11 @@ class AddUserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['email', 'password', 'username', 'is_superuser', 'is_staff', 'user_type']
+        fields = ['email', 'password', 'username', 'user_type']
         widgets = {
             'email': TextInput(attrs={'class': 'form-control', 'placeholder': 'Email'}),
             'password': TextInput(attrs={'class': 'form-control', 'placeholder': 'Password'}),
             'username': TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}),
-            'is_superuser': CheckboxInput(attrs={'class': 'c-indicator c-indicator-default'}),
-            'is_staff': CheckboxInput(attrs={'class': 'c-indicator c-indicator-default'}),
             'user_type': Select(attrs={'class': 'c-select', 'id': 'user-type'}),
         }
 
