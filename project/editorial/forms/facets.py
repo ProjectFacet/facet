@@ -76,6 +76,7 @@ def get_facet_form_for_template(template_id):
 
             self.fields['credit'].queryset = story_team_vocab
             self.fields['editor'].queryset = story_team_vocab
+            self.fields['template'].queryset = self.instance.organization.get_org_facettemplates()
 
             if 'content_license' in self.fields:
                 self.fields['content_license'].queryset = ContentLicense.objects.filter(
@@ -115,7 +116,7 @@ def get_facet_form_for_template(template_id):
         class Meta:
             model = Facet
 
-            fields = list(COMMON_FIELDS) + extra_fields
+            fields = list(COMMON_FIELDS) + ['template'] + extra_fields
 
             widgets = {
                 'name': TextInput(
@@ -133,6 +134,8 @@ def get_facet_form_for_template(template_id):
                 'status': Select(attrs={'class': 'form-control'}),
                 'keywords': TextInput(
                     attrs={'class': 'form-control', 'placeholder': 'Keywords'}),
+                # template field
+                'template': Select(attrs={'class': 'form-control'}),                    
                 # Optional Fields
                 'excerpt': TextInput(
                     attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Excerpt'}),
@@ -209,15 +212,14 @@ class FacetPreCreateForm(forms.Form):
     def __init__(self, *args, **kwargs):
         organization = kwargs.pop('organization', None)
         super(FacetPreCreateForm, self).__init__(*args, **kwargs)
-        self.fields['template'].queryset = FacetTemplate.objects.filter(Q(organization_id__isnull=True) | Q(organization=organization) & Q(is_active=True))
+        # Expand filter to accomodate network partners creating a facet on a collaborative story
+        self.fields['template'].queryset = organization.get_org_facettemplates()
         self.fields['template'].empty_label = "Select a template"
 
     name = forms.CharField(
         label="Facet Name",
     )
 
-    # FIXME filter for only the templates an organization should have access to
-    # Sitewide ones with no org id or the ones whose org id matches the user.
     template = forms.ModelChoiceField(
         FacetTemplate.objects.all(),
     )

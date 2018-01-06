@@ -626,6 +626,14 @@ class Organization(models.Model):
 
         return searchable_objects
 
+    def get_org_facettemplates(self):
+        """Return queryset of facet templates that should be available of org facets."""
+
+        from . import FacetTemplate
+
+        return FacetTemplate.objects.filter(Q(organization_id__isnull=True) | Q(organization=self) & Q(is_active=True))
+
+
     @property
     def description(self):
         return "{description}".format(description=self.org_description)

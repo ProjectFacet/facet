@@ -98,13 +98,8 @@ class FacetTemplateView(LoginRequiredMixin, FormMessagesMixin, TemplateView):
         context = super(FacetTemplateView, self).get_context_data(**kwargs)
         org = self.request.user.organization
         basetemplates = FacetTemplate.objects.filter(organization_id__isnull=True)
-        print "*******************************"
-        print "BT: ", basetemplates
         activetemplates = FacetTemplate.objects.filter(Q(organization_id=org) & Q(is_active=True))
-        print "AT: ", activetemplates
         inactivetemplates = FacetTemplate.objects.filter(Q(organization_id=org) & Q(is_active=False))
-        print "IT: ", inactivetemplates
-        print "*******************************"
         context['basetemplates'] = basetemplates
         context['activetemplates'] = activetemplates
         context['inactivetemplates'] = inactivetemplates
