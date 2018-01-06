@@ -16,7 +16,7 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import TemplateView, UpdateView, DetailView, ListView, CreateView, \
-    DeleteView
+    DeleteView, View
 
 from editorial.forms import (
     SeriesForm,
@@ -263,6 +263,19 @@ class SeriesDeleteView(LoginRequiredMixin, DeleteView):
         """Post-deletion, return to the series list."""
 
         return reverse('series_list')
+
+
+class SeriesSchedule(View):
+    """Return JSON of series schedule information."""
+
+    def get(self, request, *args, **kwargs):
+        series_id = self.kwargs['pk']
+        series = Series.objects.get(id=series_id)
+        series_calendar = series.get_series_schedule()
+
+        return HttpResponse(json.dumps(series_calendar), content_type='application/json')
+
+
 
 
 def series_json(request):
