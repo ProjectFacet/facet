@@ -286,13 +286,13 @@
           <a href="{% url 'series_stories' series.id %}" title="View Stories"><span class="f-s-12 f-w-400 subtle"> (All stories <i class="fa fa-long-arrow-right subtle" aria-hidden="true">)</i></span></a>
           {% endcomment %}
         </h4>
-        <table class="table table-hover table-striped table-sm table-unbordered" cellspacing="0" width="100%">
+        <table class="table table-hover table-striped table-unbordered" cellspacing="0" width="100%">
           <thead>
             <td>Story</td>
             <td>Facets</td>
           </thead>
           <tbody>
-            {% for story in series.story_set.all %}
+            {% for story in series.story_set.all|slice:":9" %}
               <tr>
                 <td><a href="{% url 'story_detail' story.id %}" class="f-s-14">{{ story.name }}</a></td>
                 <td>{{ story.facet_set.count }}</td>
