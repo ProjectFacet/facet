@@ -198,6 +198,96 @@ class Series(models.Model):
 
         return set(series_video)
 
+    def get_series_event_schedule(self):
+        """Return series events for a series.
+
+        Used for returning a single series' event schedule.
+        """
+
+        data = []
+
+        series = Series.objects.get(pk=self.id)
+
+        # gather schedule dates for all series events
+        if series.event_set.all():
+            for event in series.event_set.filter(event_type="Hosting"):
+                hosting_event_dict = {}
+
+                item_date = event.event_date
+
+                hosting_event_dict['id'] = event.id
+                hosting_event_dict['title'] = event.name
+                hosting_event_dict['event_date'] = item_date.isoformat()
+                hosting_event_dict['url'] = event.get_absolute_url()
+                hosting_event_dict['start'] = item_date.isoformat()
+                hosting_event_dict['end'] = item_date.isoformat()
+                hosting_event_dict['overlap'] = True
+                hosting_event_dict['all_day'] = False
+                hosting_event_dict['backgroundColor'] = '#3F51B5'
+                hosting_event_dict['textColor'] = 'fff'
+                hosting_event_dict['class'] = "calevent"
+
+                data.append(hosting_event_dict)
+
+            for event in series.event_set.filter(event_type="Reporting"):
+                reporting_event_dict = {}
+
+                item_date = event.event_date
+
+                reporting_event_dict['id'] = event.id
+                reporting_event_dict['title'] = event.name
+                reporting_event_dict['event_date'] = item_date.isoformat()
+                reporting_event_dict['url'] = event.get_absolute_url()
+                reporting_event_dict['start'] = item_date.isoformat()
+                reporting_event_dict['end'] = item_date.isoformat()
+                reporting_event_dict['overlap'] = True
+                reporting_event_dict['all_day'] = False
+                reporting_event_dict['backgroundColor'] = '#2196F3'
+                reporting_event_dict['textColor'] = 'fff'
+                reporting_event_dict['class'] = "calevent"
+
+                data.append(reporting_event_dict)
+
+            for event in series.event_set.filter(event_type="Administrative"):
+                administrative_event_dict = {}
+
+                item_date = event.event_date
+
+                administrative_event_dict['id'] = event.id
+                administrative_event_dict['title'] = event.name
+                administrative_event_dict['event_date'] = item_date.isoformat()
+                administrative_event_dict['url'] = event.get_absolute_url()
+                administrative_event_dict['start'] = item_date.isoformat()
+                administrative_event_dict['end'] = item_date.isoformat()
+                administrative_event_dict['overlap'] = True
+                administrative_event_dict['all_day'] = False
+                administrative_event_dict['backgroundColor'] = '#03A9F4'
+                administrative_event_dict['textColor'] = 'fff'
+                administrative_event_dict['class'] = "calevent"
+
+                data.append(administrative_event_dict)
+
+            for event in series.event_set.filter(event_type="Other"):
+                other_event_dict = {}
+
+                item_date = event.event_date
+
+                other_event_dict['id'] = event.id
+                other_event_dict['title'] = event.name
+                other_event_dict['event_date'] = item_date.isoformat()
+                other_event_dict['url'] = event.get_absolute_url()
+                other_event_dict['start'] = item_date.isoformat()
+                other_event_dict['end'] = item_date.isoformat()
+                other_event_dict['overlap'] = True
+                other_event_dict['all_day'] = False
+                other_event_dict['backgroundColor'] = '#00BCD4'
+                other_event_dict['textColor'] = 'fff'
+                other_event_dict['class'] = "calevent"
+
+                data.append(other_event_dict)
+
+        return data
+
     def get_series_schedule(self):
         """Return all the relevant dates for a series.
         Used for returning a single series's schedule.

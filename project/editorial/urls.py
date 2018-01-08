@@ -256,8 +256,11 @@ urlpatterns = [
     url(r'^event/(?P<event>\d+)/note/(?P<note>\d+)/content/$', notes.NoteContent.as_view(), name='event_note_content'),
     url(r'^organization/(?P<pk>\d+)/events/$', events.OrganizationEventView.as_view(), name='organization_event_list'),
     url(r'^project/(?P<pk>\d+)/events/$', events.ProjectEventView.as_view(), name='project_event_list'),
+    url(r'^project/(?P<pk>\d+)/events/schedule/$', events.ProjectEventSchedule.as_view(), name='project_event_schedule'),
     url(r'^series/(?P<pk>\d+)/events/$', events.SeriesEventView.as_view(), name='series_event_list'),
+    url(r'^series/(?P<pk>\d+)/events/schedule/$', events.SeriesEventSchedule.as_view(), name='series_event_schedule'),
     url(r'^story/(?P<pk>\d+)/events/$', events.StoryEventView.as_view(), name='story_event_list'),
+    url(r'^story/(?P<pk>\d+)/events/schedule$', events.StoryEventSchedule.as_view(), name='story_event_schedule'),
 
     #   Asset URLS
 

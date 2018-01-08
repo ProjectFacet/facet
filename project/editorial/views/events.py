@@ -7,11 +7,14 @@
 
 from __future__ import unicode_literals
 
+import json
+
 from actstream import action
 from braces.views import LoginRequiredMixin, FormMessagesMixin
 from django.conf import settings
 from django.shortcuts import redirect, get_object_or_404
-from django.views.generic import UpdateView, CreateView, DeleteView
+from django.http import HttpResponse
+from django.views.generic import UpdateView, CreateView, DeleteView, View
 from editorial.forms import (
     EventForm,
     CommentForm,
@@ -190,11 +193,27 @@ class OrganizationEventView(LoginRequiredMixin, CreateView):
         events = organization.event_set.all()
         reporting_ct = organization.event_set.filter(event_type="Reporting").count()
         hosting_ct = organization.event_set.filter(event_type="Hosting").count()
+        administrative_ct = organization.event_set.filter(event_type="Administrative").count()
+        other_ct = organization.event_set.filter(event_type="Other").count()
         context['organization'] = organization
         context['events'] = events
         context['reporting_ct'] = reporting_ct
         context['hosting_ct'] = hosting_ct
+        context['administrative_ct'] = administrative_ct
+        context['other_ct'] = other_ct
         return context
+
+
+# TODO
+# class OrganizationEventSchedule(View):
+#     """Return JSON of organization event schedule."""
+#
+#     def get(self, request, *args, **kwargs):
+#         org_id = self.kwargs['pk']
+#         org = Organization.objects.get(id=org_id)
+#         org_event_cal = org.get_org_event_schedule()
+#
+#         return HttpResponse(json.dumps(org_event_cal), content_type='application/json')
 
 
 # ACCESS: Any org user should be able to view/create an event associated a project owned
@@ -224,11 +243,29 @@ class ProjectEventView(LoginRequiredMixin, CreateView):
         events = project.event_set.all()
         reporting_ct = project.event_set.filter(event_type="Reporting").count()
         hosting_ct = project.event_set.filter(event_type="Hosting").count()
+        administrative_ct = project.event_set.filter(event_type="Administrative").count()
+        other_ct = project.event_set.filter(event_type="Other").count()
         context['project'] = project
         context['events'] = events
         context['reporting_ct'] = reporting_ct
         context['hosting_ct'] = hosting_ct
+        context['administrative_ct'] = administrative_ct
+        context['other_ct'] = other_ct
         return context
+
+
+class ProjectEventSchedule(View):
+    """Return JSON of project event schedule.
+
+    displayed at /project/pk/events/
+    """
+
+    def get(self, request, *args, **kwargs):
+        project_id = self.kwargs['pk']
+        project = Project.objects.get(id=project_id)
+        project_event_cal = project.get_project_event_schedule()
+
+        return HttpResponse(json.dumps(project_event_cal), content_type='application/json')
 
 
 # ACCESS: Any org user should be able to view/create an event associated a series owned
@@ -255,11 +292,29 @@ class SeriesEventView(LoginRequiredMixin, CreateView):
         events = series.event_set.all()
         reporting_ct = series.event_set.filter(event_type="Reporting").count()
         hosting_ct = series.event_set.filter(event_type="Hosting").count()
+        administrative_ct = series.event_set.filter(event_type="Administrative").count()
+        other_ct = series.event_set.filter(event_type="Other").count()
         context['series'] = series
         context['events'] = events
         context['reporting_ct'] = reporting_ct
         context['hosting_ct'] = hosting_ct
+        context['administrative_ct'] = administrative_ct
+        context['other_ct'] = other_ct
         return context
+
+
+class SeriesEventSchedule(View):
+    """Return JSON of series event schedule.
+
+    displayed at /series/pk/events/
+    """
+
+    def get(self, request, *args, **kwargs):
+        series_id = self.kwargs['pk']
+        series = Series.objects.get(id=series_id)
+        series_event_cal = series.get_series_event_schedule()
+
+        return HttpResponse(json.dumps(series_event_cal), content_type='application/json')
 
 
 # ACCESS: Any org user should be able to view/create an event associated a story owned
@@ -288,8 +343,26 @@ class StoryEventView(LoginRequiredMixin, CreateView):
         events = story.event_set.all()
         reporting_ct = story.event_set.filter(event_type="Reporting").count()
         hosting_ct = story.event_set.filter(event_type="Hosting").count()
+        administrative_ct = story.event_set.filter(event_type="Administrative").count()
+        other_ct = story.event_set.filter(event_type="Other").count()
         context['story'] = story
         context['events'] = events
         context['reporting_ct'] = reporting_ct
         context['hosting_ct'] = hosting_ct
+        context['administrative_ct'] = administrative_ct
+        context['other_ct'] = other_ct
         return context
+
+
+class StoryEventSchedule(View):
+    """Return JSON of story event schedule.
+
+    displayed at /story/pk/events/
+    """
+
+    def get(self, request, *args, **kwargs):
+        story_id = self.kwargs['pk']
+        story = Story.objects.get(id=story_id)
+        story_event_cal = story.get_story_event_schedule()
+
+        return HttpResponse(json.dumps(story_event_cal), content_type='application/json')
