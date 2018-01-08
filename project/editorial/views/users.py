@@ -42,11 +42,13 @@ class UserCreateView(LoginRequiredMixin, CreateView):
 
         user = self.object = form.save(commit=False)
         user.organization = self.request.user.organization
+        temp_pass = self.request.POST.get('password')
         user.save()
 
         # notify new user of of account creation
         mail_subject = "New User Details"
-        message = "You've been added to Facet. Your login is your email and your password is please."
+        message = "You've been added to Facet. Your login is your email and your password is {pw}. Login to projectfacet.com and update your password.".format(pw=temp_pass)
+        print "MESSAGE: ", message
         recipient = [user.email]
         send_mail(mail_subject, message, settings.DEFAULT_FROM_EMAIL, recipient, fail_silently=False)
 
