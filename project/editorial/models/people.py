@@ -445,7 +445,6 @@ class Organization(models.Model):
         network_comments = Comment.objects.filter(discussion__in=network_discussions)
         return network_comments
 
-
     def get_project_comments(self):
         """Retrieve all comments for projects belonging to an organization.
 
@@ -625,6 +624,14 @@ class Organization(models.Model):
         # searchable_objects.append(notes)    FIXME: where should notes come from
 
         return searchable_objects
+
+    def get_org_facettemplates(self):
+        """Return queryset of facet templates that should be available of org facets."""
+
+        from . import FacetTemplate
+
+        return FacetTemplate.objects.filter(Q(organization_id__isnull=True) | Q(organization=self) & Q(is_active=True))
+
 
     @property
     def description(self):

@@ -193,7 +193,7 @@ urlpatterns = [
     url(r'^project/(?P<pk>\d+)/delete/$', projects.ProjectDeleteView.as_view(), name='project_delete'),
     url(r'^project/(?P<pk>\d+)/notes/$', notes.ProjectNoteView.as_view(), name='project_notes'),
     url(r'^project/(?P<project>\d+)/note/(?P<note>\d+)/content$', notes.NoteContent.as_view(), name='project_note_content'),
-    url(r'^project/(?P<pk>\d+)/schedule/$', projects.project_schedule, name='project_schedule'),
+    url(r'^project/(?P<pk>\d+)/schedule/$', projects.ProjectSchedule.as_view(), name='project_schedule'),
     url(r'^project/(?P<pk>\d+)/assets/$', projects.ProjectAssetTemplateView.as_view(), name='project_assets'),
     url(r'^project/(?P<pk>\d+)/stories/$', projects.ProjectStoryTemplateView.as_view(), name='project_stories'),
 
@@ -206,7 +206,7 @@ urlpatterns = [
     url(r'^series/(?P<pk>\d+)/edit/$', series.SeriesUpdateView.as_view(), name='series_edit'),
     url(r'^series/(?P<pk>\d+)/delete/$', series.SeriesDeleteView.as_view(), name='series_delete'),
     url(r'^series/(?P<pk>\d+)/assets/$', series.SeriesAssetTemplateView.as_view(), name='series_assets'),
-    url(r'^series/(?P<pk>\d+)/schedule/$', series.series_schedule, name='series_schedule'),
+    url(r'^series/(?P<pk>\d+)/schedule/$', series.SeriesSchedule.as_view(), name='series_schedule'),
     url(r'^series/(?P<pk>\d+)/notes/$', notes.SeriesNoteView.as_view(), name='series_notes'),
     url(r'^series/(?P<series>\d+)/note/(?P<note>\d+)/content/$', notes.NoteContent.as_view(), name='series_note_content'),
 
@@ -217,10 +217,10 @@ urlpatterns = [
     url(r'^story/(?P<pk>\d+)/$', story.StoryDetailView.as_view(), name='story_detail'),
     url(r'^story/(?P<pk>\d+)/edit/$', story.StoryUpdateView.as_view(), name='story_edit'),
     url(r'^story/(?P<pk>\d+)/delete/$', story.StoryDeleteView.as_view(), name='story_delete'),
-    url(r'^story/(?P<pk>\d+)/schedule/$', story.story_schedule, name='story_schedule'),
+    url(r'^story/(?P<pk>\d+)/schedule/$', story.StorySchedule.as_view(), name='story_schedule'),
     url(r'^story/(?P<pk>\d+)/notes/$', notes.StoryNoteView.as_view(), name='story_notes'),
     url(r'^story/(?P<story>\d+)/note/(?P<note>\d+)/content/$', notes.NoteContent.as_view(), name='story_note_content'),
-    url(r'^story/(?P<pk>\d+)/team/json/$', story.story_team_options_json, name='story_team_options_json'),
+    # url(r'^story/(?P<pk>\d+)/team/json/$', story.story_team_options_json, name='story_team_options_json'),
 
     #   Facet URLS
 
@@ -256,8 +256,11 @@ urlpatterns = [
     url(r'^event/(?P<event>\d+)/note/(?P<note>\d+)/content/$', notes.NoteContent.as_view(), name='event_note_content'),
     url(r'^organization/(?P<pk>\d+)/events/$', events.OrganizationEventView.as_view(), name='organization_event_list'),
     url(r'^project/(?P<pk>\d+)/events/$', events.ProjectEventView.as_view(), name='project_event_list'),
+    url(r'^project/(?P<pk>\d+)/events/schedule/$', events.ProjectEventSchedule.as_view(), name='project_event_schedule'),
     url(r'^series/(?P<pk>\d+)/events/$', events.SeriesEventView.as_view(), name='series_event_list'),
+    url(r'^series/(?P<pk>\d+)/events/schedule/$', events.SeriesEventSchedule.as_view(), name='series_event_schedule'),
     url(r'^story/(?P<pk>\d+)/events/$', events.StoryEventView.as_view(), name='story_event_list'),
+    url(r'^story/(?P<pk>\d+)/events/schedule$', events.StoryEventSchedule.as_view(), name='story_event_schedule'),
 
     #   Asset URLS
 

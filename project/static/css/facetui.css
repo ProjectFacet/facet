@@ -440,3 +440,7 @@ img.image-center {
 iframe#id_content_ifr {
   height: 450px !important;
 }
+
+.fc-title {
+  font-size: .75rem !important;
+}

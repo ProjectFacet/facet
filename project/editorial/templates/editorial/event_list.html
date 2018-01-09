@@ -2,10 +2,18 @@
 
 {% load i18n %}
 {% load bootstrap3 %}
+{% load staticfiles %}
+{% load embed_video_tags %}
 
-<!-------------------------------------------->
-<!--      BREADCRUMB NAVIGATION             -->
-<!-------------------------------------------->
+{% block head %}
+{{ webform.media }}
+{% endblock %}
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+<!--             BREADCRUMB NAVIGATION                 -->
+<!-- ================================================= -->
+<!-- ================================================= -->
 
 {% block breadcrumb %}
 <div>
@@ -29,91 +37,162 @@
 </div>
 {% endblock breadcrumb %}
 
-<!-------------------------------------------->
-<!--            Main Section                -->
-<!-------------------------------------------->
+<!-- ================================================= -->
+<!-- ================================================= -->
+<!--                   Main Section                    -->
+<!-- ================================================= -->
+<!-- ================================================= -->
 
 {% block content %}
 
 <div class="row">
   <div class="col-xs-12">
     {% if evt_organization %}
-      <h5 class="m-b-20"> {{ evt_organization.name }} Events<span class="pull-right">Add new event to {{evt_organization.name}} <a data-toggle="modal" data-target="#addEvtOrgEvent" title="Add Organization Event"><i class="m-l-20 fa fa-plus" aria-hidden="true"></i></a></span></h5>
+      <h5 class="m-b-20"> {{ evt_organization.name }} Events<span class="pull-right">Add new event to {{evt_organization.name}} <a data-toggle="modal" data-target="#addEvent" title="Add Organization Event"><i class="m-l-20 fa fa-plus" aria-hidden="true"></i></a></span></h5>
     {% elif project %}
-      <h5 class="m-b-20"> {{ project.name }} Events<span class="pull-right">Add new event to {{project.name}} <a data-toggle="modal" data-target="#addProjectEvent" title="Add Project Event"><i class="m-l-20 fa fa-plus" aria-hidden="true"></i></a></span></h5>
+      <h5 class="m-b-20"> {{ project.name }} Events<span class="pull-right">Add new event to {{project.name}} <a data-toggle="modal" data-target="#addEvent" title="Add Project Event"><i class="m-l-20 fa fa-plus" aria-hidden="true"></i></a></span></h5>
     {% elif series %}
-    <h5 class="m-b-20"> {{ series.name }} Events<span class="pull-right">Add new event to {{series.name}} <a data-toggle="modal" data-target="#addSeriesEvent" title="Add Series Event"><i class="m-l-20 fa fa-plus" aria-hidden="true"></i></a></span></h5>
+    <h5 class="m-b-20"> {{ series.name }} Events<span class="pull-right">Add new event to {{series.name}} <a data-toggle="modal" data-target="#addEvent" title="Add Series Event"><i class="m-l-20 fa fa-plus" aria-hidden="true"></i></a></span></h5>
     {% elif story %}
-    <h5 class="m-b-20"> {{ story.name }} Events<span class="pull-right">Add new event to {{story.name}} <a data-toggle="modal" data-target="#addStoryEvent" title="Add Story Event"><i class="m-l-20 fa fa-plus" aria-hidden="true"></i></a></span></h5>
+    <h5 class="m-b-20"> {{ story.name }} Events<span class="pull-right">Add new event to {{story.name}} <a data-toggle="modal" data-target="#addEvent" title="Add Story Event"><i class="m-l-20 fa fa-plus" aria-hidden="true"></i></a></span></h5>
     {% endif %}
   </div>
 </div>
 <div class="row m-t-20">
   <!-- Left column -->
   <div class="col-xs-12 col-md-4">
-    <h5>Calendar</h5>
-
-
-
+    <h5>Events Calendar</h5>
+    <div id="calendar"></div>
   </div>
+
   <!-- Middle column -->
   <div class="col-xs-12 col-md-4">
-    <h5 class="m-b-20 underline-primary underline-120">Reporting Events <span class="subtle f-s-14 f-w-600">( {{ reporting_ct}} )</span></h5>
-    <div class="activity-widget-5">
-        <div class="row">
-            <div class="col-xs-12 bs-media" id="board-2">
-              {% for event in events %}
-                {% if event.event_type == "Reporting"  %}
-                <div class="media">
-                    <a href="{% url 'event_detail' event.id %}" title="View more detail">
-                    <div class="media-body">
-                        <h5 class="media-heading">
-                          <span class="f-s-18 f-w-600">{{ event.name }}</span>
-                        </h5>
-                        <p class="f-s-14">{{ event.text|truncatechars:150 }}</p>
-                        <p class="color-primary-500 f-s-12 m-t-10">Due: {{ event.event_date|date:'D, N j, g:i a' }}</p>
+    <div class="row">
+      <div class="col-xs-12">
+        <h5 class="m-b-20 underline-primary underline-120">Reporting Events <span class="subtle f-s-14 f-w-600">( {{ reporting_ct}} )</span></h5>
+        <div class="activity-widget-5">
+            <div class="row">
+                <div class="col-xs-12 bs-media" id="board-2">
+                  {% for event in events %}
+                    {% if event.event_type == "Reporting"  %}
+                    <div class="media">
+                        <a href="{% url 'event_detail' event.id %}" title="View more detail">
+                        <div class="media-body">
+                            <h5 class="media-heading">
+                              <span class="f-s-18 f-w-600">{{ event.name }}</span>
+                            </h5>
+                            <p class="f-s-14">{{ event.text|truncatechars:150 }}</p>
+                            <p class="color-primary-500 f-s-12 m-t-10">Due: {{ event.event_date|date:'D, N j, g:i a' }}</p>
+                        </div>
+                        </a>
+                        {% for user in event.team.all %}
+                          {% if user.display_photo %}
+                            <a href="{% url 'user_detail' user.id %}" title="See user profile"><img class="img-circle w-40 h-40 m-t-10" src="{{ user.display_photo.url }}" alt="user"></a>
+                          {% endif %}
+                        {% endfor %}
                     </div>
-                    </a>
-                    {% for user in event.team.all %}
-                      {% if user.display_photo %}
-                        <a href="{% url 'user_detail' user.id %}" title="See user profile"><img class="img-circle w-40 h-40 m-t-10" src="{{ user.display_photo.url }}" alt="user"></a>
-                      {% endif %}
-                    {% endfor %}
+                    {% endif %}
+                  {% endfor %}
                 </div>
-                {% endif %}
-              {% endfor %}
             </div>
         </div>
+      </div>
+    </div>
+    <div class="row m-t-20">
+      <div class="col-xs-12">
+        <h5 class="m-b-20 underline-warning underline-120">Administrative Events <span class="subtle f-s-14 f-w-600">( {{ administrative_ct}} )</span></h5>
+        <div class="activity-widget-5">
+            <div class="row">
+                <div class="col-xs-12 bs-media" id="board-2">
+                  {% for event in events %}
+                    {% if event.event_type == "Administrative"  %}
+                    <div class="media">
+                        <a href="{% url 'event_detail' event.id %}" title="View more detail">
+                        <div class="media-body">
+                            <h5 class="media-heading">
+                              <span class="f-s-18 f-w-600">{{ event.name }}</span>
+                            </h5>
+                            <p class="f-s-14">{{ event.text|truncatechars:150 }}</p>
+                            <p class="color-warning-500 f-s-12 m-t-10">Due: {{ event.event_date|date:'D, N j, g:i a' }}</p>
+                        </div>
+                        </a>
+                        {% for user in event.team.all %}
+                          {% if user.display_photo %}
+                            <a href="{% url 'user_detail' user.id %}" title="See user profile"><img class="img-circle w-40 h-40 m-t-10" src="{{ user.display_photo.url }}" alt="user"></a>
+                          {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+            </div>
+        </div>
+      </div>
     </div>
   </div>
   <!-- Right column -->
   <div class="col-xs-12 col-md-4">
-    <h5 class="m-b-20 underline-success underline-120">Hosting Events <span class="subtle f-s-14 f-w-600">( {{ hosting_ct}} )</span></h5>
-    <div class="activity-widget-5">
-        <div class="row">
-            <div class="col-xs-12 bs-media" id="board-2">
-              {% for event in events %}
-                {% if event.event_type == "Hosting"  %}
-                <div class="media">
-                    <a href="{% url 'event_detail' event.id %}" title="View more detail">
-                    <div class="media-body">
-                        <h5 class="media-heading">
-                          <span class="f-s-18 f-w-600">{{ event.name }}</span>
-                        </h5>
-                        <p class="f-s-14">{{ event.text|truncatechars:150 }}</p>
-                        <p class="color-success-500 f-s-12 m-t-10">Due: {{ event.event_date|date:'D, N j, g:i a' }}</p>
+    <div class="row">
+      <div class="col-xs-12">
+        <h5 class="m-b-20 underline-success underline-120">Hosting Events <span class="subtle f-s-14 f-w-600">( {{ hosting_ct}} )</span></h5>
+        <div class="activity-widget-5">
+            <div class="row">
+                <div class="col-xs-12 bs-media" id="board-2">
+                  {% for event in events %}
+                    {% if event.event_type == "Hosting"  %}
+                    <div class="media">
+                        <a href="{% url 'event_detail' event.id %}" title="View more detail">
+                        <div class="media-body">
+                            <h5 class="media-heading">
+                              <span class="f-s-18 f-w-600">{{ event.name }}</span>
+                            </h5>
+                            <p class="f-s-14">{{ event.text|truncatechars:150 }}</p>
+                            <p class="color-success-500 f-s-12 m-t-10">Due: {{ event.event_date|date:'D, N j, g:i a' }}</p>
+                        </div>
+                        </a>
+                        {% for user in event.team.all %}
+                          {% if user.display_photo %}
+                            <a href="{% url 'user_detail' user.id %}" title="See user profile"><img class="img-circle w-40 h-40 m-t-10" src="{{ user.display_photo.url }}" alt="user"></a>
+                          {% endif %}
+                        {% endfor %}
                     </div>
-                    </a>
-                    {% for user in event.team.all %}
-                      {% if user.display_photo %}
-                        <a href="{% url 'user_detail' user.id %}" title="See user profile"><img class="img-circle w-40 h-40 m-t-10" src="{{ user.display_photo.url }}" alt="user"></a>
-                      {% endif %}
-                    {% endfor %}
+                    {% endif %}
+                  {% endfor %}
                 </div>
-                {% endif %}
-              {% endfor %}
             </div>
         </div>
+      </div>
+    </div>
+    <div class="row m-t-20">
+      <div class="col-xs-12">
+        <h5 class="m-b-20 underline-danger underline-120">Other Events <span class="subtle f-s-14 f-w-600">( {{ other_ct}} )</span></h5>
+        <div class="activity-widget-5">
+            <div class="row">
+                <div class="col-xs-12 bs-media" id="board-2">
+                  {% for event in events %}
+                    {% if event.event_type == "Other"  %}
+                    <div class="media">
+                        <a href="{% url 'event_detail' event.id %}" title="View more detail">
+                        <div class="media-body">
+                            <h5 class="media-heading">
+                              <span class="f-s-18 f-w-600">{{ event.name }}</span>
+                            </h5>
+                            <p class="f-s-14">{{ event.text|truncatechars:150 }}</p>
+                            <p class="color-danger-500 f-s-12 m-t-10">Due: {{ event.event_date|date:'D, N j, g:i a' }}</p>
+                        </div>
+                        </a>
+                        {% for user in event.team.all %}
+                          {% if user.display_photo %}
+                            <a href="{% url 'user_detail' user.id %}" title="See user profile"><img class="img-circle w-40 h-40 m-t-10" src="{{ user.display_photo.url }}" alt="user"></a>
+                          {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+            </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
@@ -129,6 +208,115 @@
 $(".chosen-select").chosen()
 </script>
 
+
+{% if project %}
+<!-- Project Schedule -->
+<script>
+    (function() {
+        'use strict';
+
+        $(function() {
+            var events_array = $.get('{% url "project_event_schedule" project.id %}')
+            $('#calendar').fullCalendar({
+                dayClick: function(date, jsEvent, view) {
+                    console.log('Clicked on: ' + date.format());
+                    console.log('Event: ', jsEvent);
+                    console.log('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+                    console.log('Current view: ' + view.name);
+                    //$(this).css('background-color', 'red');
+                },
+                header: {
+                    left: 'prev,next',
+                    center: '',
+                    right: 'title'
+                },
+                // defaultDate: '2016-03-12',
+                defaultView: 'month',
+                editable: true,
+                events: '{% url "project_event_schedule" project.id %}',
+                // events: [{
+                //     title: 'Click for Google',
+                //     url: 'http://google.com/',
+                //     start: '2016-08-28'
+                // }]
+            });
+        });
+    })();
+</script>
+{% elif series %}
+<!-- Series Schedule -->
+<script>
+    (function() {
+        'use strict';
+
+        $(function() {
+            var events_array = $.get('{% url "series_event_schedule" series.id %}')
+            $('#calendar').fullCalendar({
+                dayClick: function(date, jsEvent, view) {
+                    console.log('Clicked on: ' + date.format());
+                    console.log('Event: ', jsEvent);
+                    console.log('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+                    console.log('Current view: ' + view.name);
+                    //$(this).css('background-color', 'red');
+                },
+                header: {
+                    left: 'prev,next',
+                    center: '',
+                    right: 'title'
+                },
+                // defaultDate: '2016-03-12',
+                defaultView: 'month',
+                editable: true,
+                events: '{% url "series_event_schedule" series.id %}',
+                // events: [{
+                //     title: 'Click for Google',
+                //     url: 'http://google.com/',
+                //     start: '2016-08-28'
+                // }]
+            });
+        });
+    })();
+</script>
+
+{% elif story %}
+<!-- Story Schedule -->
+<script>
+    (function() {
+        'use strict';
+
+        $(function() {
+            var events_array = $.get('{% url "story_event_schedule" story.id %}')
+            $('#calendar').fullCalendar({
+                dayClick: function(date, jsEvent, view) {
+                    console.log('Clicked on: ' + date.format());
+                    console.log('Event: ', jsEvent);
+                    console.log('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
+                    console.log('Current view: ' + view.name);
+                    //$(this).css('background-color', 'red');
+                },
+                header: {
+                    left: 'prev,next',
+                    center: '',
+                    right: 'title'
+                },
+                // defaultDate: '2016-03-12',
+                defaultView: 'month',
+                editable: true,
+                events: '{% url "story_event_schedule" story.id %}',
+                // events: [{
+                //     title: 'Click for Google',
+                //     url: 'http://google.com/',
+                //     start: '2016-08-28'
+                // }]
+            });
+        });
+    })();
+</script>
+
+{% endif %}
+
+
+
 {% endblock %}
 
 <!-- ================================================= -->
@@ -139,15 +327,16 @@ $(".chosen-select").chosen()
 
 {% block modals %}
 
-<!-- Add Project Event -->
-<div class="modal fade" id="addProjectEvent" tabindex="-1" role="dialog" aria-labelledby="addProjectEventModalLabel" aria-hidden="true">
+<!-- Add Event Modal -->
+
+<div class="modal fade" id="addEvent" tabindex="-1" role="dialog" aria-labelledby="addEventModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h5 class="modal-title" id="addEventModalLabel">Add an event for this project:</h5>
+                <h5 class="modal-title" id="addEventModalLabel">Add an event:</h5>
             </div>
             <div class="modal-body">
               <form action="{% url 'event_new' %}" method="POST" class="post-form">
@@ -218,292 +407,20 @@ $(".chosen-select").chosen()
               </div>
               <div class="row">
                 <div class="col-xs-12">
+                  <!-- Hidden Inputs -->
+                  {% if evt_organization %}
+                  <input type="hidden" name="association" value="evt_organization" />
+                  <input type="hidden" name="evt_organization" value="{{ evt_organization.pk }}" />
+                  {% elif project %}
+                  <input type="hidden" name="association" value="project" />
                   <input type="hidden" name="project" value="{{ project.pk }}" />
-                  <button type="submit" class="btn btn-default">Add Event</button>
-                </div>
-              </div>
-
-              </form>
-            </div>
-            <div class="modal-footer">
-            </div>
-        </div>
-    </div>
-    <script>
-    $(".chosen-select").chosen()
-    </script>
-</div>
-
-<!-- Add Series Event -->
-<div class="modal fade" id="addSeriesEvent" tabindex="-1" role="dialog" aria-labelledby="addSeriesEventModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h5 class="modal-title" id="addEventModalLabel">Add an event for this series:</h5>
-            </div>
-            <div class="modal-body">
-              <form action="{% url 'event_new' %}" method="POST" class="post-form">
-              {% csrf_token %}
-              <div class="row">
-                <div class="col-xs-8">
-                  <!-- Name -->
-                  <fieldset class="form-group m-b-10">
-                    {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.name.label_tag }}</label>{% endcomment %}
-                    {{ form.name }}
-                    {% if form.name.errors %}
-                      <small class="text-muted">{{ form.name.errors }}</small>
-                    {% endif %}
-                  </fieldset>
-                </div>
-                <div class="col-xs-4">
-                  <!-- Event Date -->
-                  <fieldset class="form-group m-b-10">
-                    {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.event_date.label_tag }}</label>{% endcomment %}
-                    {{ form.event_date }}
-                    {% if form.event_date.errors %}
-                      <small class="text-muted">{{ form.event_date.errors }}</small>
-                    {% endif %}
-                  </fieldset>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-xs-12">
-                      <!-- Details -->
-                      <fieldset class="form-group m-b-10">
-                        {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.text.label_tag }}</label>{% endcomment %}
-                        {{ form.text }}
-                        {% if form.text.errors %}
-                          <small class="text-muted">{{ form.text.errors }}</small>
-                        {% endif %}
-                      </fieldset>
-                      <!-- Assigned To -->
-                      <fieldset class="form-group m-b-10">
-                        {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.team.label_tag }}</label>{% endcomment %}
-                        {{ form.team }}
-                        {% if form.team.errors %}
-                          <small class="text-muted">{{ form.team.errors }}</small>
-                        {% endif %}
-                      </fieldset>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-xs-12 col-md-6">
-                    <!-- Venue -->
-                    <fieldset class="form-group m-b-10">
-                      <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.venue.label_tag }}</label>
-                      {{ form.venue }}
-                      {% if form.venue.errors %}
-                        <small class="text-muted">{{ form.venue.errors }}</small>
-                      {% endif %}
-                    </fieldset>
-                </div>
-                <div class="col-xs-12 col-md-6">
-                    <!-- Type -->
-                    <fieldset class="form-group m-b-10">
-                      <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.event_type.label_tag }}</label>
-                      {{ form.event_type }}
-                      {% if form.event_type.errors %}
-                        <small class="text-muted">{{ form.event_type.errors }}</small>
-                      {% endif %}
-                    </fieldset>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-xs-12">
+                  {% elif series %}
+                  <input type="hidden" name="association" value="series" />
                   <input type="hidden" name="series" value="{{ series.pk }}" />
-                  <button type="submit" class="btn btn-default">Add Event</button>
-                </div>
-              </div>
-
-              </form>
-            </div>
-            <div class="modal-footer">
-            </div>
-        </div>
-    </div>
-    <script>
-    $(".chosen-select").chosen()
-    </script>
-</div>
-
-<!-- Add Story Event -->
-<div class="modal fade" id="addStoryEvent" tabindex="-1" role="dialog" aria-labelledby="addStoryEventModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h5 class="modal-title" id="addEventModalLabel">Add an event for this story:</h5>
-            </div>
-            <div class="modal-body">
-              <form action="{% url 'event_new' %}" method="POST" class="post-form">
-              {% csrf_token %}
-              <div class="row">
-                <div class="col-xs-8">
-                  <!-- Name -->
-                  <fieldset class="form-group m-b-10">
-                    {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.name.label_tag }}</label>{% endcomment %}
-                    {{ form.name }}
-                    {% if form.name.errors %}
-                      <small class="text-muted">{{ form.name.errors }}</small>
-                    {% endif %}
-                  </fieldset>
-                </div>
-                <div class="col-xs-4">
-                  <!-- Event Date -->
-                  <fieldset class="form-group m-b-10">
-                    {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.event_date.label_tag }}</label>{% endcomment %}
-                    {{ form.event_date }}
-                    {% if form.event_date.errors %}
-                      <small class="text-muted">{{ form.event_date.errors }}</small>
-                    {% endif %}
-                  </fieldset>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-xs-12">
-                      <!-- Details -->
-                      <fieldset class="form-group m-b-10">
-                        {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.text.label_tag }}</label>{% endcomment %}
-                        {{ form.text }}
-                        {% if form.text.errors %}
-                          <small class="text-muted">{{ form.text.errors }}</small>
-                        {% endif %}
-                      </fieldset>
-                      <!-- Assigned To -->
-                      <fieldset class="form-group m-b-10">
-                        {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.team.label_tag }}</label>{% endcomment %}
-                        {{ form.team }}
-                        {% if form.team.errors %}
-                          <small class="text-muted">{{ form.team.errors }}</small>
-                        {% endif %}
-                      </fieldset>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-xs-12 col-md-6">
-                    <!-- Venue -->
-                    <fieldset class="form-group m-b-10">
-                      <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.venue.label_tag }}</label>
-                      {{ form.venue }}
-                      {% if form.venue.errors %}
-                        <small class="text-muted">{{ form.venue.errors }}</small>
-                      {% endif %}
-                    </fieldset>
-                </div>
-                <div class="col-xs-12 col-md-6">
-                    <!-- Type -->
-                    <fieldset class="form-group m-b-10">
-                      <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.event_type.label_tag }}</label>
-                      {{ form.event_type }}
-                      {% if form.event_type.errors %}
-                        <small class="text-muted">{{ form.event_type.errors }}</small>
-                      {% endif %}
-                    </fieldset>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-xs-12">
+                  {% elif story %}
+                  <input type="hidden" name="association" value="story" />
                   <input type="hidden" name="story" value="{{ story.pk }}" />
-                  <button type="submit" class="btn btn-default">Add Event</button>
-                </div>
-              </div>
-
-              </form>
-            </div>
-            <div class="modal-footer">
-            </div>
-        </div>
-    </div>
-    <script>
-    $(".chosen-select").chosen()
-    </script>
-</div>
-
-<!-- Add Organization Event -->
-<div class="modal fade" id="addOrganizationEvent" tabindex="-1" role="dialog" aria-labelledby="addOrganizationEventModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h5 class="modal-title" id="addEventModalLabel">Add an event for this organization:</h5>
-            </div>
-            <div class="modal-body">
-              <form action="{% url 'event_new' %}" method="POST" class="post-form">
-              {% csrf_token %}
-              <div class="row">
-                <div class="col-xs-8">
-                  <!-- Name -->
-                  <fieldset class="form-group m-b-10">
-                    {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.name.label_tag }}</label>{% endcomment %}
-                    {{ form.name }}
-                    {% if form.name.errors %}
-                      <small class="text-muted">{{ form.name.errors }}</small>
-                    {% endif %}
-                  </fieldset>
-                </div>
-                <div class="col-xs-4">
-                  <!-- Event Date -->
-                  <fieldset class="form-group m-b-10">
-                    {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.event_date.label_tag }}</label>{% endcomment %}
-                    {{ form.event_date }}
-                    {% if form.event_date.errors %}
-                      <small class="text-muted">{{ form.event_date.errors }}</small>
-                    {% endif %}
-                  </fieldset>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-xs-12">
-                      <!-- Details -->
-                      <fieldset class="form-group m-b-10">
-                        {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.text.label_tag }}</label>{% endcomment %}
-                        {{ form.text }}
-                        {% if form.text.errors %}
-                          <small class="text-muted">{{ form.text.errors }}</small>
-                        {% endif %}
-                      </fieldset>
-                      <!-- Assigned To -->
-                      <fieldset class="form-group m-b-10">
-                        {% comment %}<label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.team.label_tag }}</label>{% endcomment %}
-                        {{ form.team }}
-                        {% if form.team.errors %}
-                          <small class="text-muted">{{ form.team.errors }}</small>
-                        {% endif %}
-                      </fieldset>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-xs-12 col-md-6">
-                    <!-- Venue -->
-                    <fieldset class="form-group m-b-10">
-                      <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.venue.label_tag }}</label>
-                      {{ form.venue }}
-                      {% if form.venue.errors %}
-                        <small class="text-muted">{{ form.venue.errors }}</small>
-                      {% endif %}
-                    </fieldset>
-                </div>
-                <div class="col-xs-12 col-md-6">
-                    <!-- Type -->
-                    <fieldset class="form-group m-b-10">
-                      <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.event_type.label_tag }}</label>
-                      {{ form.event_type }}
-                      {% if form.event_type.errors %}
-                        <small class="text-muted">{{ form.event_type.errors }}</small>
-                      {% endif %}
-                    </fieldset>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-xs-12">
-                  <input type="hidden" name="organization" value="{{ organization.pk }}" />
+                  {% endif %}
                   <button type="submit" class="btn btn-default">Add Event</button>
                 </div>
               </div>

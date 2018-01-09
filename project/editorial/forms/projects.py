@@ -19,6 +19,7 @@ class ProjectForm(forms.ModelForm):
         self.fields['collaborate_with'].queryset = org.get_org_collaborators_vocab()
         # FIXME should be org users, partner org users and eligible contractors
         self.fields['team'].queryset = org.get_org_users()
+        # self.fields['team'].queryset = project.get_project_team_vocab()
 
     class Meta:
         model = Project

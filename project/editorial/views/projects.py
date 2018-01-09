@@ -15,7 +15,7 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.shortcuts import redirect, get_object_or_404
-from django.views.generic import TemplateView, UpdateView, DetailView, ListView, CreateView, DeleteView
+from django.views.generic import TemplateView, UpdateView, DetailView, ListView, CreateView, DeleteView, View
 
 from editorial.forms import (
     ProjectForm,
@@ -275,28 +275,15 @@ class ProjectStoryTemplateView(LoginRequiredMixin, TemplateView):
         return {'project': project, 'stories': stories}
 
 
-# class ProjectSchedule(LoginRequiredMixin, View):
-#     """Generate a JSON object containing entries to display on project calendar."""
-#
-#     # handle users that are not logged in
-#     login_url = settings.LOGIN_URL
-#
-#     def get(self, request, *args, **kwargs):
-#
-#         project_id = self.kwargs['project']
-#         project = get_object_or_404(Project, pk=project_id)
-#         project_calendar = project.get_project_events()
-#
-#         return HttpResponse(json.dumps(project_calendar), content_type='application/json')
+class ProjectSchedule(View):
+    """Return JSON of project schedule information."""
 
+    def get(self, request, *args, **kwargs):
+        project_id = self.kwargs['pk']
+        project = Project.objects.get(id=project_id)
+        project_calendar = project.get_project_schedule()
 
-def project_schedule(request, pk):
-    """Generate a JSON object containing entries to display on project calendar."""
-
-    project = get_object_or_404(Project, pk=pk)
-    project_calendar = Project.get_project_story_events(project)
-
-    return HttpResponse(json.dumps(project_calendar), content_type='application/json')
+        return HttpResponse(json.dumps(project_calendar), content_type='application/json')
 
 
 # ACCESS: Only an org admin should be able to delete a project owned by that org

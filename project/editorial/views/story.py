@@ -15,7 +15,7 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.shortcuts import redirect, get_object_or_404
 from django.views.generic import UpdateView, DetailView, CreateView, ListView, \
-    DeleteView
+    DeleteView, View
 
 from editorial.forms import (
     StoryForm,
@@ -300,25 +300,26 @@ class StoryDeleteView(CustomUserTest, FormMessagesMixin, DeleteView):
         return reverse('story_list')
 
 
-def story_team_options_json(request, pk):
-    """Returns JSON of team members that can be assigned to a story."""
+class StorySchedule(View):
+    """Return JSON of story schedule information."""
 
-    story = get_object_or_404(Story, pk=pk)
-    print story
+    def get(self, request, *args, **kwargs):
+        story_id = self.kwargs['pk']
+        story = Story.objects.get(id=story_id)
+        story_calendar = story.get_story_schedule()
 
-    team = Story.get_story_team(story)
-    story_team = {}
-    for item in team:
-        story_team[item.id] = item.credit_name
-    print story_team
-    return HttpResponse(json.dumps(story_team), content_type="application/json")
+        return HttpResponse(json.dumps(story_calendar), content_type='application/json')
 
 
-def story_schedule(request, pk):
-    """Generate a JSON object containing entries to display on project calendar."""
-
-    story = get_object_or_404(Story, pk=pk)
-    story_calendar = story.get_story_events()
-    # FIXME [<Event: Tour of Lab>] is not JSON serializable
-
-    return HttpResponse(json.dumps(story_calendar), content_type='application/json')
+# def story_team_options_json(request, pk):
+#     """Returns JSON of team members that can be assigned to a story."""
+#
+#     story = get_object_or_404(Story, pk=pk)
+#     print story
+#
+#     team = Story.get_story_team(story)
+#     story_team = {}
+#     for item in team:
+#         story_team[item.id] = item.credit_name
+#     print story_team
+#     return HttpResponse(json.dumps(story_team), content_type="application/json")

@@ -80,7 +80,7 @@
 
 
     <!-- ================================================= -->
-    <!--                 Javascript                    -->
+    <!--                 Javascript                        -->
     <!-- ================================================= -->
 
     <!-- jQuery -->
@@ -297,6 +297,11 @@
                           </div>
                       </li>
                   </ul>
+                  <a href="https://goo.gl/forms/r6erwIPhgkC0Z03J2" title="Provide feedback or report a bug" target="_blank">
+                    <button class="nav navbar-nav pull-right btn btn-sm btn-info-700" type="button" style="height: 25px; font-size: 12px;">
+                      <span class="m-l-5 m-r-5">Feedback</span>
+                    </button>
+                  </a>
             {% else %}
             <li><a href="/accounts/login/" class="pull-right thin">Login</a></li>
             {% endif %}
@@ -379,7 +384,7 @@
     <!-- ====================================== -->
     <!-- ====================================== -->
     <div class="container-fluid">
-        <div class="row">
+        <div class="row m-t-20">
             <!-- ====================================== -->
             <!--            Right Sidebar               -->
             <!-- ====================================== -->
@@ -649,7 +654,7 @@
                 <!-- ====================================== -->
                 <div class="footer">
                     <div class="row">
-                        <div class="col-xs-12"> <p class="f-s-12 subtle-text">© 2016. Project Facet. </p></div>
+                        <div class="col-xs-12"> <p class="f-s-12 subtle-text">© 2018. Project Facet. </p></div>
                     </div>
                 </div>
 
@@ -715,8 +720,29 @@
                 </div>
               </div>
             </div>
-          <!-- End of Modal Windows -->
+          <!-- End of Modal Window -->
 
+          {% comment %}
+          <!-- Beta Feedback Modal -->
+          <div class="modal fade" id="betaFeedback" tabindex="-1" role="dialog" aria-labelledby="betaFeedbackModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-lg" role="document">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                          </button>
+                          <h5 class="modal-title" id="addTaskModalLabel">Beta Feedback</h5>
+                      </div>
+                      <div class="modal-body">
+                          <iframe src="https://docs.google.com/forms/d/e/1FAIpQLSd6axX-2jrPFkJT7fRQcY7ibpswldYahpMoAuveEAIsxdezVQ/viewform?embedded=true" width="760" height="500" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
+                      </div>
+                      <div class="modal-footer">
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <!-- End of Beta Feedback Modal -->
+          {% endcomment %}
 
     </div> <!-- End of container -->
 
