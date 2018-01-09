@@ -445,7 +445,6 @@ class Organization(models.Model):
         network_comments = Comment.objects.filter(discussion__in=network_discussions)
         return network_comments
 
-
     def get_project_comments(self):
         """Retrieve all comments for projects belonging to an organization.
 

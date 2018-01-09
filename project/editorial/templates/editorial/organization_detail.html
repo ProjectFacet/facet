@@ -17,7 +17,7 @@
         {% if request.user.organization %}
         <li class="fadeIn"><a href="{% url 'org_detail' pk=request.user.organization.id %}" title="You are here"> Organization </a></li>
         {% endif %}
-        <li class="hidden-md-down">{{ organization.name }} | {{ organization.org_description }}</li>
+        <li class="hidden-md-down">{{ organization.name }} </li>
     </ol>
 </div>
 {% endblock breadcrumb %}
