@@ -14,12 +14,15 @@ class ProjectForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         org = kwargs.pop("organization")
+        project = kwargs.pop("project", None)
         super(ProjectForm, self).__init__(*args, **kwargs)
 
         self.fields['collaborate_with'].queryset = org.get_org_collaborators_vocab()
-        # FIXME should be org users, partner org users and eligible contractors
-        self.fields['team'].queryset = org.get_org_users()
-        # self.fields['team'].queryset = project.get_project_team_vocab()
+        # TODO Future team options should include eligible contractors
+        if project:
+            self.fields['team'].queryset = project.get_project_team_vocab()
+        else:
+            self.fields['team'].queryset = org.get_org_users()
 
     class Meta:
         model = Project

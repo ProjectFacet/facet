@@ -14,11 +14,15 @@ class SeriesForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         org = kwargs.pop("organization")
+        series = kwargs.pop("series", None)
         super(SeriesForm, self).__init__(*args, **kwargs)
 
         self.fields['collaborate_with'].queryset = org.get_org_collaborators_vocab()
-        # FIXME should be org users, series partner org users and eligible contractors
-        self.fields['team'].queryset = org.get_org_users()
+        # TODO Future should include eligible contractors
+        if series:
+            self.fields['team'].queryset = series.get_series_team()
+        else:
+            self.fields['team'].queryset = org.get_org_users()
 
     class Meta:
         model = Series

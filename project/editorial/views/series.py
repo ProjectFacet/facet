@@ -205,7 +205,7 @@ class SeriesUpdateView(LoginRequiredMixin, UpdateView):
         """Pass current user organization to the series form."""
 
         kw = super(SeriesUpdateView, self).get_form_kwargs()
-        kw.update({'organization': self.request.user.organization})
+        kw.update({'organization': self.request.user.organization, 'series': self.object})
         return kw
 
     def get_success_url(self):

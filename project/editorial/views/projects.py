@@ -114,7 +114,7 @@ class ProjectUpdateView(LoginRequiredMixin, FormMessagesMixin, UpdateView):
         """Pass user organization to the form."""
 
         kw = super(ProjectUpdateView, self).get_form_kwargs()
-        kw.update({'organization': self.request.user.organization})
+        kw.update({'organization': self.request.user.organization, 'project': self.object})
         return kw
 
     def get_success_url(self):

@@ -158,7 +158,7 @@ class StoryUpdateView(CustomUserTest, FormMessagesMixin, UpdateView):
         """Pass current user organization to the form."""
 
         kw = super(StoryUpdateView, self).get_form_kwargs()
-        kw.update({'organization': self.request.user.organization})
+        kw.update({'organization': self.request.user.organization, 'story': self.object})
         return kw
 
     def org_partners(self):

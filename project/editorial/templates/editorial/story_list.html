@@ -30,18 +30,28 @@
       <thead>
         <tr class="f-s-12">
           <th class="dark">Story</th>
-          <th class="dark">Credit</th>
-          <th class="dark">Sharing</th>
-          <th class="dark">Collaboration</th>
+          <th class="dark">Team</th>
+          <th class="dark text-center">Facets</th>
+          <th class="dark">Series | Project</th>
+          <th class="dark text-center">Sharing</th>
+          <th class="dark text-center">Collaboration</th>
         </tr>
       </thead>
       <tbody>
         {% for story in stories %}
         <tr class="f-s-14">
           <td><a href="{% url 'story_detail' story.id %}">{{ story.name }}</a></th>
-          <td>{% for user in story.team.all %}{{user.credit_name }}{% endfor %}</td>
-          <td>{% if story.share == True %}<i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</td>
-          <td>{% if story.collaborate == True %}<i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</td>
+          <td>{% for user in story.team.all|slice:":3" %}{{user.credit_name }}, {% endfor %}</td>
+          <td class="text-center">{{ story.facet_set.count }}</td>
+          <td>
+            {% if story.series %}
+              Series: {{ story.series.name }}
+            {% elif story.project %}
+              Project: {{ story.project.name }}
+            {% endif %}
+          </td>
+          <td class="text-center">{% if story.share == True %}<i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</td>
+          <td class="text-center">{% if story.collaborate == True %}<i class="fa fa-check-square-o"></i>{% else %}<i class="fa fa-square-o"></i>{% endif %}</td>
         </tr>
         {% endfor %}
       </tbody>

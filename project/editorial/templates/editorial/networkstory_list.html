@@ -45,7 +45,7 @@
             {% if facet.story.ready_to_share %}
             <tr>
               <td>{{ facet.story.name }}<form action="{% url 'copy_network_story' story=story.id %}" method="POST" class="sameline">{% csrf_token %}<button class="clear clear-button" type="submit"><i class="fa fa-clone"></i></button></form></td>
-              <td><a href="#" data-toggle="tooltip" title="{{ facet.description }}">{{ facet.headline }}</a> {% if story.ready_to_share %}<button type="button" class="clear clear-button m-l-10 subtle" data-toggle="modal" data-target="#previewModal" data-modaltitle="{{ facet.headline }}" data-modalcontent="{{ facet.content }}"><i class="fa fa-eye"></i></button>{% endif %}</td>
+              <td><a href="#" data-toggle="tooltip" title="{{ facet.description }}">{{ facet.headline }}</a> {% if story.ready_to_share %}<button type="button" class="clear clear-button m-l-10 subtle" data-toggle="modal" data-target="#previewModal" data-modaltitle="{{ facet.headline }}" data-modalcontent="{{ facet.content }}"><span class="m-r-10 label label-default-outline label-xs">Preview</span></button>{% endif %}</td>
               <td>{% for user in facet.credit.all %}{{ user.credit_name }}, {% endfor %}</td>
               <td>{{ facet.organization.name }}</td>
               <td>{{ facet.story.share_with_date|date:'n/j, g:i a'}}</td>
@@ -53,7 +53,7 @@
             {% else %}
             <tr>
               <td>{{ facet.story.name }}</td>
-              <td><a href="#" data-toggle="tooltip" title="{{ facet.description }}">{{ facet.headline }}</a> {% if story.ready_to_share %}<button type="button" class="clear clear-button m-l-10 subtle" data-toggle="modal" data-target="#previewModal" data-modaltitle="{{ facet.headline }}" data-modalcontent="{{ facet.content }}"><i class="fa fa-eye"></i></button>{% endif %}</td>
+              <td><a href="#" data-toggle="tooltip" title="{{ facet.description }}">{{ facet.headline }}</a> {% if story.ready_to_share %}<button type="button" class="clear clear-button m-l-10 subtle" data-toggle="modal" data-target="#previewModal" data-modaltitle="{{ facet.headline }}" data-modalcontent="{{ facet.content }}"><span class="m-r-10 label label-default-outline label-xs">Preview</span></button>{% endif %}</td>
               <td>{{ facet.owner.credit_name }}</td>
               <td>{{ facet.organization.name }}</td>
               <td>{{ facet.story.share_with_date|date:'n/j, g:i a'}}</td>
