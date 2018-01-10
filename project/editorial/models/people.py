@@ -160,7 +160,6 @@ class User(AbstractUser):
 
         return user_assets
 
-
     def inbox_comments(self):
         """ Return list of comments from discussions the user is a participant in.
 
@@ -452,6 +451,7 @@ class Organization(models.Model):
 
         from . import Project, Comment
 
+        # TODO include projects that are collaborative
         org_projects = self.project_organization.all()
         project_discussions = [project.discussion for project in org_projects]
         project_comments = Comment.objects.filter(discussion__in=project_discussions)
@@ -465,6 +465,7 @@ class Organization(models.Model):
 
         from . import Story, Comment
 
+        # TODO include stories that are collaborative
         org_stories = Story.objects.filter(organization=self)
         story_discussions = [story.discussion for story in org_stories]
         story_comments = Comment.objects.filter(discussion__in=story_discussions)
@@ -476,6 +477,8 @@ class Organization(models.Model):
         Used to display all series comments in dashboard and inbox.
         """
         from . import Series, Comment
+
+        # TODO include series that are collaborative
         org_series = Series.objects.filter(organization=self)
         series_discussions = [series.discussion for series in org_series]
         series_comments = Comment.objects.filter(discussion__in=series_discussions)
@@ -491,6 +494,7 @@ class Organization(models.Model):
         # WJB XXX: this seems inefficient, we should reduce to discussion fields on orig
         # querysets
 
+        # TODO include facets on stories that are collaborative
         org_facets = self.facet_set.all()
         facet_discussions = [facet.discussion for facet in org_facets]
         facet_comments = Comment.objects.filter(discussion__in=facet_discussions)
@@ -595,6 +599,33 @@ class Organization(models.Model):
         projects.extend(org_projects)
         return projects
 
+    def get_org_content_tasks(self):
+        """Return all the tasks associated with projects, series, stories, or events.
+
+        This includes items from content that is collaborative.
+        """
+        pass
+
+    def get_org_events(self):
+        """Return all the events associated with the org or org content.
+
+        This includes items from content that is collaborative.
+        """
+        pass
+
+    def get_org_searchable_comments(self):
+        """Return all the comments that should appear in search results.
+
+        This includes comments from items that are collaborative.
+        """
+        pass
+
+    def get_org_searchable_notes(self):
+        """Return all the notes that should appear in search results.
+        This includes notes from items that are collaborative."""
+        pass
+
+
     def get_org_searchable_content(self):
         """Return queryset of all objects that can be searched by a user."""
 
@@ -615,12 +646,18 @@ class Organization(models.Model):
         stories = Story.objects.filter(Q(Q(organization=self) | Q(collaborate_with=self)))
         facets = Facet.objects.filter(Q(organization=self))
         imageassets = self.imageasset_set.all()
+        documentassets = self.documentasset_set.all()
+        # tasks = self.get_org_content_tasks()
+        # events = self.get_org_events()
+        # comments = self.get_org_searchable_comments()
+        # notes = self.get_org_searchable_notes()
 
         searchable_objects.append(projects)
         searchable_objects.append(series)
         searchable_objects.append(stories)
         searchable_objects.append(facets)
         searchable_objects.append(imageassets)
+        searchable_objects.append(documentassets)
         # TODO
         # searchable_objects.append(tasks)
         # searchable_objects.append(events)
