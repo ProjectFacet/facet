@@ -160,6 +160,14 @@ class User(AbstractUser):
 
         return user_assets
 
+    def get_user_tasks(self):
+        """Return all the tasks for a user."""
+
+        from . import Task
+
+        tasks = Task.objects.filter(Q(owner=self) | Q(assigned_to=self))
+        return tasks
+
     def inbox_comments(self):
         """ Return list of comments from discussions the user is a participant in.
 

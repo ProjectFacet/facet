@@ -78,6 +78,20 @@ class UserDetailView(LoginRequiredMixin, DetailView):
 
         return self.object.get_user_assets()
 
+    def tasks(self):
+        """Get all tasks associated with a user."""
+
+        user_tasks = self.object.get_user_tasks()
+        identified_tasks = user_tasks.filter(status="Identified")
+        identified_ct = identified_tasks.count()
+        inprogress_tasks = user_tasks.filter(status="In Progress")
+        inprogress_ct = inprogress_tasks.count()
+        return { 'identified_tasks': identified_tasks,
+                'identified_ct': identified_ct,
+                'inprogress_tasks': inprogress_tasks,
+                'inprogress_ct': inprogress_ct,
+        }
+
     def notes(self):
         """Get all user notes associated with user and note form."""
 

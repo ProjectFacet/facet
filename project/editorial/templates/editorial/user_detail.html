@@ -80,6 +80,92 @@
         {% else %}
           <p class="f-s-18 subtle text-center italic m-b-40 m-t-40">Welcome to the {{ user.credit_name }}'s page. This is where you will see all of the current active content for {{ user.credit_name }}.</p>
         {% endif %}
+        <!-- Tasks -->
+        {% if request.user.id == user.id %}
+        <div class="row m-t-50">
+          <div class="col-xs-12">
+            <h4>Tasks</h4>
+          </div>
+        </div>
+        <div class="row m-t-20">
+            {% with view.tasks as tasks %}
+              <!-- Left column -->
+              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <h5 class="m-b-20 underline-warning underline-120">Identified <span class="subtle f-s-14 f-w-600">( {{ tasks.identified_ct}} )</span></h5>
+                <div class="activity-widget-1">
+                  <div class="row">
+                    <div class="col-xs-12">
+                      <ul class="list-group">
+                        {% for task in tasks.identified_tasks %}
+                            <li class="list-group-item">
+                              <span class="color-warning-300 text-xs pull-right">{{ task.due_date|date:'D, N j, g:i a' }}</span>
+                              <span class="pull-left">
+                                {% for user in task.assigned_to.all|slice:":1" %}
+                                    {% if user.display_photo %}
+                                      <img class="media-object img-circle h-25 w-25" src="{{ user.display_photo.url }}" alt="user">
+                                    {% else %}
+                                      <img class="media-object img-circle h-25 w-25" src="{% static 'images/nophoto.jpg' %}" alt="user">
+                                    {% endif %}
+                                {% endfor %}
+                              </span>
+                              {% if task.assigned_to.count > 1 %}
+                              <span class="pull-left text-xs color-warning-300">+ {{ task.assigned_to.count|add:"-1" }}</span>
+                              {% endif %}
+                              <span class="m-l-30">
+                                {% if task.important == True %}
+                                    <span class="label"><i class="fa fa-star" aria-hidden="true"></i></span>
+                                {% else %}
+                                    <span class="label"><i class="fa fa-star-o" aria-hidden="true"></i></span>
+                                {% endif %}
+                                <a href="{% url 'task_detail'  task.id %}" title="Go to task details">{{ task.name }}</a>
+                              </span>
+                            </li>
+                        {% endfor %}
+                       </ul>
+                     </div>
+                   </div>
+                 </div>
+              </div>
+              <!-- Right Column -->
+              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <h5 class="m-b-20 underline-primary underline-120">In Progress <span class="subtle f-s-14 f-w-600">( {{ tasks.inprogress_ct}} )</span></h5>
+                <div class="activity-widget-1">
+                  <div class="row">
+                    <div class="col-xs-12">
+                      <ul class="list-group">
+                        {% for task in tasks.inprogress_tasks %}
+                            <li class="list-group-item">
+                              <span class="color-primary-300 text-xs pull-right">{{ task.due_date|date:'D, N j, g:i a' }}</span>
+                              <span class="pull-left">
+                                {% for user in task.assigned_to.all|slice:":1" %}
+                                    {% if user.display_photo %}
+                                      <img class="media-object img-circle h-25 w-25" src="{{ user.display_photo.url }}" alt="user">
+                                    {% else %}
+                                      <img class="media-object img-circle h-25 w-25" src="{% static 'images/nophoto.jpg' %}" alt="user">
+                                    {% endif %}
+                                {% endfor %}
+                              </span>
+                              {% if task.assigned_to.count > 1 %}
+                              <span class="pull-left text-xs color-primary-300">+ {{ task.assigned_to.count|add:"-1" }}</span>
+                              {% endif %}
+                              <span class="m-l-30">
+                                {% if task.important == True %}
+                                    <span class="label"><i class="fa fa-star" aria-hidden="true"></i></span>
+                                {% else %}
+                                    <span class="label"><i class="fa fa-star-o" aria-hidden="true"></i></span>
+                                {% endif %}
+                                <a href="{% url 'task_detail'  task.id %}" title="Go to task details">{{ task.name }}</a>
+                              </span>
+                            </li>
+                        {% endfor %}
+                       </ul>
+                     </div>
+                   </div>
+                 </div>
+              </div>
+            {% endwith %}
+        </div>
+        {% endif %}
     </div>
     {% endwith %}
     <!-- Right Column -->
