@@ -1,6 +1,7 @@
 """A Calendar to display editorial content."""
 
 # FIXME: wtf is this and why is it all commented out?
+# TODO cleanup with removing this
 
 from calendar import HTMLCalendar
 from datetime import date

@@ -447,8 +447,7 @@ class PitchListView(LoginRequiredMixin, ListView):
 
 
 # ACCESS: Only contractorprofile users
-# class PitchDeleteView(DeleteView, FormMessagesMixin):
-class PitchDeleteView(LoginRequiredMixin, DeleteView):
+class PitchDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteView):
     """Delete a pitch.
 
     In this project, we expect deletion to be done via a JS pop-up UI; we don't expect to
@@ -456,13 +455,11 @@ class PitchDeleteView(LoginRequiredMixin, DeleteView):
     available if useful.
     """
 
-    # FIXME: this would be a great place to use braces' messages; usage commented out for now
-
     model = Pitch
     template_name = "editorial/pitch_delete.html'"
 
-    # form_valid_message = "Deleted."
-    # form_invalid_message = "Please check form."
+    form_valid_message = "Deleted."
+    form_invalid_message = "Please check form."
 
     def get_success_url(self):
         """Post-deletion, return to the pitch list."""
@@ -627,8 +624,7 @@ class CallListView(LoginRequiredMixin, ListView):
 
 
 # ACCESS: The TalentEditor that owns it or an admin of the organization
-# class CallDeleteView(DeleteView, FormMessagesMixin):
-class CallDeleteView(LoginRequiredMixin, DeleteView):
+class CallDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteView):
     """Delete a call.
 
     In this project, we expect deletion to be done via a JS pop-up UI; we don't expect to
@@ -636,13 +632,11 @@ class CallDeleteView(LoginRequiredMixin, DeleteView):
     available if useful.
     """
 
-    # FIXME: this would be a great place to use braces' messages; usage commented out for now
-
     model = Call
     template_name = "editorial/call_delete.html'"
 
-    # form_valid_message = "Deleted."
-    # form_invalid_message = "Please check form."
+    form_valid_message = "Deleted."
+    form_invalid_message = "Please check form."
 
     def get_success_url(self):
         """Post-deletion, return to the call list."""
@@ -673,8 +667,8 @@ class AssignmentCreateView(LoginRequiredMixin, CreateView):
 
         self.object = assignment = form.save(commit=False)
 
-        assignment.editor = self.request.user
-        assignment.organization = self.request.organization
+        assignment.editor = self.request.user.talenteditorprofile
+        assignment.organization = self.request.user.organization
 
         assignment.save()
         form.save_m2m()
@@ -804,8 +798,7 @@ class AssignmentListView(LoginRequiredMixin, ListView):
 
 
 # ACCESS: The TalentEditor that owns it or an admin of the organization
-# class AssignmentDeleteView(DeleteView, FormMessagesMixin):
-class AssignmentDeleteView(LoginRequiredMixin, DeleteView):
+class AssignmentDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteView):
     """Delete an assignment.
 
     In this project, we expect deletion to be done via a JS pop-up UI; we don't expect to
@@ -813,13 +806,11 @@ class AssignmentDeleteView(LoginRequiredMixin, DeleteView):
     available if useful.
     """
 
-    # FIXME: this would be a great place to use braces' messages; usage commented out for now
-
     model = Assignment
     template_name = "editorial/assignment_delete.html'"
 
-    # form_valid_message = "Deleted."
-    # form_invalid_message = "Please check form."
+    form_valid_message = "Deleted."
+    form_invalid_message = "Please check form."
 
     def get_success_url(self):
         """Post-deletion, return to the assignment list."""

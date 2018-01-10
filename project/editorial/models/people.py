@@ -621,7 +621,11 @@ class Organization(models.Model):
         searchable_objects.append(stories)
         searchable_objects.append(facets)
         searchable_objects.append(imageassets)
-        # searchable_objects.append(notes)    FIXME: where should notes come from
+        # TODO
+        # searchable_objects.append(tasks)
+        # searchable_objects.append(events)
+        # searchable_objects.append(notes)
+        # searchable_objects.append(comments)
 
         return searchable_objects
 

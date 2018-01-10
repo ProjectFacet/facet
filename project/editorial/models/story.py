@@ -188,8 +188,6 @@ class Story(models.Model):
         story copy detail record.
         """
 
-        # FIXME Copied stories need to maintain attribution of team
-
         story_copy = get_object_or_404(Story, id=self.id)
 
         # Set the id = None to create the copy the story instance
@@ -275,7 +273,7 @@ class Story(models.Model):
         """
 
         from . import User
-        # FIXME add contractors added to a story
+        # TODO future: add contractors added to a story
         collaborators = self.collaborate_with.all()
         story_team = User.objects.filter(Q(Q(organization=self.organization) | Q(organization__in=collaborators)))
         return story_team

@@ -136,8 +136,7 @@ class NetworkDetailView(LoginRequiredMixin, DetailView):
 
 
 # ACCESS: Only an admin of an org that owns a network can delete a network
-# class NetworkDeleteView(DeleteView, FormMessagesMixin):
-class NetworkDeleteView(LoginRequiredMixin, DeleteView):
+class NetworkDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteView):
     """View for handling deletion of a network.
 
     In this project, we expect deletion to be done via a JS pop-up UI; we don't expect to
@@ -145,13 +144,11 @@ class NetworkDeleteView(LoginRequiredMixin, DeleteView):
     available if useful.
     """
 
-    # FIXME: this would be a great place to use braces' messages; usage commented out for now
-
     model = Network
     template_name = "editorial/network_delete.html"
 
-    # form_valid_message = "Deleted."
-    # form_invalid_message = "Please check form."
+    form_valid_message = "Deleted."
+    form_invalid_message = "Please check form."
 
     def get_success_url(self):
         """Post-deletion, return to the story URL."""
@@ -245,7 +242,7 @@ class NetworkStoryListView(LoginRequiredMixin, ListView):
 class CopyNetworkStoryView(LoginRequiredMixin, View):
     """Copy a story and related facets.
 
-    FIXME A user should be able to click and copy a partner story
+    A user should be able to click and copy a partner story
     this should make a copy of the story for the new organization
     it should come with all associated assets - image, doc, audio, video
     it should not come with events, notes, tasks, or simple assets

@@ -28,7 +28,7 @@ class EditorialSearchView(BaseWatsonSearchView):
         This is determined by a user's organization.
         """
 
-        # FIXME Revise for both org users and contractors
+        # FIXME Future Revise for both org users and contractors
 
         user_org = self.request.org
         user = self.request.user

@@ -144,7 +144,7 @@ class StoryUpdateView(CustomUserTest, FormMessagesMixin, UpdateView):
     def test_user(self, user):
         """User must be member of the story's org or a collaborating org."""
 
-        # FIXME : needs to handle contractors
+        # TODO Future: needs to handle contractors
 
         story = self.object = self.get_object()
         org = user.organization
@@ -186,7 +186,7 @@ class StoryDetailView(CustomUserTest, DetailView):
     def test_user(self, user):
         """User must be member of the story's org or a collaborating org."""
 
-        # FIXME : needs to handle contractors
+        # TODO Future: needs to handle contractors
 
         story = self.object = self.get_object()
         org = user.organization
@@ -284,7 +284,7 @@ class StoryDeleteView(CustomUserTest, FormMessagesMixin, DeleteView):
     def test_user(self, user):
         """User must be member of the story's org or a collaborating org."""
 
-        # FIXME : needs to handle contractors
+        # TODO Future: needs to handle contractors
 
         story = self.object = self.get_object()
         org = user.organization

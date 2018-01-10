@@ -10,7 +10,7 @@ from __future__ import unicode_literals
 import json
 
 from actstream import action
-from braces.views import LoginRequiredMixin
+from braces.views import LoginRequiredMixin, FormMessagesMixin
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
@@ -239,8 +239,7 @@ class SeriesAssetTemplateView(LoginRequiredMixin, TemplateView):
 
 
 # ACCESS: Only an org admin should be able to delete a series belonging to their org
-# class SeriesDeleteView(DeleteView, FormMessagesMixin):
-class SeriesDeleteView(LoginRequiredMixin, DeleteView):
+class SeriesDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteView):
     """Delete a series and its associated items.
 
     In this series, we expect deletion to be done via a JS pop-up UI; we don't expect to
@@ -248,16 +247,11 @@ class SeriesDeleteView(LoginRequiredMixin, DeleteView):
     available if useful.
     """
 
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
-
-    # FIXME: this would be a great place to use braces' messages; usage commented out for now
-
     model = Series
     template_name = "editorial/series_delete.html'"
 
-    # form_valid_message = "Deleted."
-    # form_invalid_message = "Please check form."
+    form_valid_message = "Deleted."
+    form_invalid_message = "Please check form."
 
     def get_success_url(self):
         """Post-deletion, return to the series list."""

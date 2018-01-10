@@ -17,8 +17,7 @@ class PrivateMessageForm(forms.ModelForm):
         super(PrivateMessageForm, self).__init__(*args, **kwargs)
 
         if self.request.org:
-            # FIXME Limit Private Message Recipient list to org team members or network partner team members
-            # If the organization manages contractors, allow private messages between contractors and editors
+            # TODO If the organization manages contractors, allow private messages between contractors and editors
             self.fields['recipient'].queryset = self.request.user.get_user_contact_list_vocab()
 
     class Meta:
