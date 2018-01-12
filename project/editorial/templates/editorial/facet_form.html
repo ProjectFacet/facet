@@ -207,6 +207,7 @@
             <!-- ================================================= -->
                       <!-- ASSETS -->
             <!-- ================================================= -->
+            {% if facet %}
             <div class="row m-t-20">
                     <!-- Image Assets -->
                     {% with view.facet_image_assets as facet_images %}
@@ -472,10 +473,12 @@
                     </div>
                     {% endwith %}
             </div>
+            {% endif %}
             <!-- ================================================= -->
                 <!-- CUSTOM FORM FIELDS -->
             <!-- ================================================= -->
-            <div class="row">
+            {% if facet.template.name != "Base" %}
+            <div class="row m-b-20">
               <p class="f-r-12 m-l-20 f-w-300 m-t-20">Additional Information</p>
               {% for f in form.get_fields_to_show %}
                 <div class="col-xs-12 col-sm-3">
@@ -489,6 +492,7 @@
                 </div>
               {% endfor %}
             </div>
+            {% endif %}
 
 
         </form>
