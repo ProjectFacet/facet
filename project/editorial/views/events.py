@@ -19,6 +19,8 @@ from editorial.forms import (
     EventForm,
     CommentForm,
     NoteForm,
+    SimpleImageForm,
+    SimpleDocumentForm,
 )
 
 from editorial.models import (
@@ -125,6 +127,21 @@ class EventUpdateView(LoginRequiredMixin, FormMessagesMixin, UpdateView):
         notes = self.object.notes.all().order_by('-creation_date')
         form = NoteForm()
         return {'notes': notes, 'form': form}
+
+    def simple_images(self):
+        """Return simple images."""
+
+        images = self.object.simple_image_assets.all()
+        form = SimpleImageForm()
+
+        return {'images': images, 'form': form}
+
+    def simple_documents(self):
+        """Return simple documents."""
+
+        documents = self.object.simple_document_assets.all()
+        form = SimpleDocumentForm()
+        return {'documents': documents, 'form': form}
 
     def get_success_url(self):
         action.send(self.request.user, verb="edited", action_object=self.object)

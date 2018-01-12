@@ -36,6 +36,8 @@ from editorial.models import (
     Project,
     Story,
     Series,
+    Event,
+    Task,
     ImageAsset,
     DocumentAsset,
     AudioAsset,
