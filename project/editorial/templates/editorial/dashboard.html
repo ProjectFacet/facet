@@ -77,7 +77,7 @@
                                                 {% endfor %}
                                               {% elif comment.discussion.facet_set.all %}
                                                 {% for facet in comment.discussion.facet_set.all %}
-                                                  <a href="{% url 'facet_edit' pk=facet.id story=facet.story.id %}"> {{ facet.type }} - {{ facet.title }}<span class="color-default">  |  {{ comment.date|date:'N j' }} at {{ comment.date|date:'g:i a' }} </span></a>
+                                                  <a href="{% url 'facet_edit' pk=facet.id story=facet.story.id %}"> {{ facet.type }} - {{ facet.headline }}<span class="color-default">  |  {{ comment.date|date:'N j' }} at {{ comment.date|date:'g:i a' }} </span></a>
                                                 {% endfor %}
                                               {% endif %}
                                             </p>
@@ -93,7 +93,7 @@
                               <p class="f-s-14 subtle text-center">
                                 This is the Discussion Panel. As your team and partners discuss content, new additions to the conversation will appear here for quick access.
                               </p>
-                              {% if old_stories or new_stories %}
+                              {% if recent_stories or new_stories %}
                                 {% if networks %}
                                 <p class="f-s-14 subtle text-center italic">It looks like no one has commented on any <a href="{% url 'story_list' %}" title="View Story List" class="default">content</a> or in your <a href="{% url 'org_detail' pk=request.user.organization.id %}" class="default">organization</a>. Click one of those options to add a comment.</p>
                                 {% else %}
@@ -124,6 +124,9 @@
                   <li class="nav-item"> <a ng-href="" class="nav-link" data-toggle="tab" data-target="#stories-edit">Due for Edit</a> </li>
               </ul>
               <div class="tab-content f-s-12">
+                  <!-- ========================== -->
+                  <!--        Running Today       -->
+                  <!-- ========================== -->
                   <div role="tabpanel" class="tab-pane in active p-t-0" id="stories-running">
                     {% if running_today %}
                     <!-- Full table for md and lg displays -->
@@ -132,7 +135,6 @@
                         <thead>
                             <tr>
                                 <th>Title</th>
-                                <th>Platform</th>
                                 <th>Credit</th>
                                 <th>Time</th>
                             </tr>
@@ -141,7 +143,6 @@
                         <tfoot class="hidden">
                             <tr>
                               <th>Title</th>
-                              <th>Platform</th>
                               <th>Credit</th>
                               <th>Time</th>
                             </tr>
@@ -150,9 +151,8 @@
                             {% for facet in running_today|slice:":7" %}
                               <tr>
                                   <td>
-                                    <a href="{% url 'facet_edit' pk=facet.id story=facet.story.id %}">{{ facet.title }}</a>
+                                    <a href="{% url 'facet_edit' pk=facet.id story=facet.story.id %}">{{ facet.headline }}</a>
                                   </td>
-                                  <td>{{ facet.type }}</td>
                                   <td>{{ facet.credit.all.0.credit_name }}</td>
                                   <td>{{ facet.run_date|date:'g:i a'}}</td>
                               </tr>
@@ -166,7 +166,7 @@
                         <thead>
                             <tr>
                                 <th>Title</th>
-                                <th>Platform</th>
+                                <th>Credit</th>
                                 <th>Time</th>
                             </tr>
                         </thead>
@@ -174,7 +174,7 @@
                         <tfoot class="hidden">
                             <tr>
                               <th>Title</th>
-                              <th>Type</th>
+                              <th>Credit</th>
                               <th>Time</th>
                             </tr>
                         </tfoot>
@@ -182,9 +182,9 @@
                             {% for facet in running_today %}
                               <tr>
                                   <td>
-                                    <a href="{% url 'facet_edit' pk=facet.id story=facet.story.id %}">{{ facet.title }}</a>
+                                    <a href="{% url 'facet_edit' pk=facet.id story=facet.story.id %}">{{ facet.headline }}</a>
                                   </td>
-                                  <td>{{ facet.type }}</td>
+                                  <td>{{ facet.credit.all.0.credit_name }}</td>
                                   <td>{{ facet.run_date|date:'g:i a'}}</td>
                               </tr>
                             {% endfor %}
@@ -199,8 +199,11 @@
                   {% endif %}
 
                   </div>
+                  <!-- ========================== -->
+                  <!--        New Stories         -->
+                  <!-- ========================== -->
                   <div role="tabpanel" class="tab-pane p-t-0" id="stories-new">
-                    {% if old_stories %}
+                    {% if recent_stories %}
                     <table class="table table-hover table-striped" cellspacing="0" width="100%">
                         {% comment %}
                         <thead>
@@ -217,7 +220,7 @@
                             </tr>
                         </tfoot>
                         <tbody>
-                          {% for story in old_stories|slice:":5" %}
+                          {% for story in recent_stories|slice:":5" %}
                             <tr>
                               <td><a href="{% url 'story_detail' story.id %}">{{ story.name }}</a></td>
                               <td>{{ story.story_description }}</td>
@@ -225,7 +228,7 @@
                           {% endfor %}
                         </tbody>
                     </table>
-                    <a href="{% url 'story_list' %}" title="View Story List"><p class="f-w-300 f-s-12 p-l-10">All Stories</p></a>
+                    <a href="{% url 'story_list' %}" title="View Story List"><p class="f-w-300 f-s-12 p-l-10 subtle">( All Stories <i class="fa fa-long-arrow-right subtle m-l-20" aria-hidden="true"></i>)</p></a>
                     {% else %}
                     <p class="f-s-14 subtle m-t-20">
                       It looks like you don't have any new stories to display.
@@ -234,15 +237,17 @@
                     {% endif %}
                   </div>
 
-                  <!-- Full table for md and lg displays -->
+                  <!-- ========================== -->
+                  <!--        Edit Today          -->
+                  <!-- ========================== -->
                   <div role="tabpanel" class="tab-pane p-t-0" id="stories-edit">
                     {% if edit_today %}
+                    <!-- Full table for md and lg displays -->
                     <table class="table table-hover table-striped hidden-sm-down" cellspacing="0" width="100%">
                         {% comment %}
                         <thead>
                             <tr>
                                 <th>Title</th>
-                                <th>Platform</th>
                                 <th>Credit</th>
                                 <th>Due</th>
                             </tr>
@@ -251,7 +256,6 @@
                         <tfoot class="hidden">
                             <tr>
                               <th>Title</th>
-                              <th>Type</th>
                               <th>Credit</th>
                               <th>Due</th>
                             </tr>
@@ -260,9 +264,8 @@
                           {% for facet in edit_today|slice:":7" %}
                             <tr>
                               <td>
-                                <a href="{% url 'facet_edit' pk=facet.id story=facet.story.id %}">{{ facet.title }}</a>
+                                <a href="{% url 'facet_edit' pk=facet.id story=facet.story.id %}">{{ facet.headline }}</a>
                               </td>
-                              <td>{{ facet.type }}</td>
                               <td>{{ facet.credit.all.0.credit_name }}</td>
                               <td>{{ facet.due_edit|date:'g:i a'}}</td>
                             </tr>
@@ -274,16 +277,16 @@
                         {% comment %}
                         <thead>
                             <tr>
-                                <th>Title</th>
-                                <th>Platform</th>
-                                <th>Due</th>
+                              <th>Title</th>
+                              <th>Credit</th>
+                              <th>Due</th>
                             </tr>
                         </thead>
                         {% endcomment %}
                         <tfoot class="hidden">
                             <tr>
                               <th>Title</th>
-                              <th>Type</th>
+                              <th>Credit</th>
                               <th>Due</th>
                             </tr>
                         </tfoot>
@@ -291,9 +294,9 @@
                           {% for facet in edit_today|slice:":7" %}
                             <tr>
                               <td>
-                                <a href="{% url 'facet_edit' pk=facet.id story=facet.story.id %}">{{ facet.title }}</a>
+                                <a href="{% url 'facet_edit' pk=facet.id story=facet.story.id %}">{{ facet.headline }}</a>
                               </td>
-                              <td>{{ facet.type }}</td>
+                              <td>{{ facet.credit.all.0.credit_name }}</td>
                               <td>{{ facet.due_edit|date:'g:i a'}}</td>
                             </tr>
                           {% endfor %}

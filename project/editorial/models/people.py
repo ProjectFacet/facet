@@ -563,9 +563,10 @@ class Organization(models.Model):
 
         from . import Facet
 
+        #FIXME today, tomorrow if off by one day (hacky fix in place)
         # establish timeliness of content
-        today = timezone.now().date()
-        tomorrow = today + timedelta(1)
+        today = timezone.now().date() - timedelta(1)
+        tomorrow = timezone.now().date()
         today_start = datetime.combine(today, time())
         today_end = datetime.combine(tomorrow, time())
 
@@ -583,9 +584,10 @@ class Organization(models.Model):
 
         from .facets import Facet
 
+        #FIXME today, tomorrow if off by one day (hacky fix in place)
         # establish timeliness of content
-        today = timezone.now().date()
-        tomorrow = today + timedelta(1)
+        today = timezone.now().date() - timedelta(1)
+        tomorrow = timezone.now().date()
         today_start = datetime.combine(today, time())
         today_end = datetime.combine(tomorrow, time())
 

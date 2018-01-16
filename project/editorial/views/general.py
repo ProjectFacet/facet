@@ -38,6 +38,7 @@ from editorial.models import (
     User,
     Organization,
     Network,
+    Project,
     Series,
     Story,
     Task,
@@ -106,10 +107,17 @@ class DashboardTemplateView(LoginRequiredMixin, TemplateView):
             shared_networkstories = organization.get_org_network_content()
             shared_networkstories = [story for story in shared_networkstories if story.organization != organization]
             networkstories = set(shared_networkstories)
+
+
             # query for any new content created since last_login
             new_stories = Story.objects.filter(creation_date__gte = self.request.user.last_login)[:8]
-            # if no new stories, display 10 most recent stories
-            old_stories = Story.objects.filter(organization = self.request.user.organization)[:10]
+            # new_projects = Project.objects.filter(creation_date__gte = self.request.user.last_login)[:8]
+            # new_series = Series.objects.filter(creation_date__gte = self.request.user.last_login)[:8]
+
+            # if no new, display 10 most recent stories
+            recent_stories = Story.objects.filter(organization = self.request.user.organization)[:10]
+            # recent_projects = Project.objects.filter(organization = self.request.user.organization)[:10]
+            # recent_series = Series.objects.filter(organization = self.request.user.organization)[:10]
 
             copied_shared_stories = StoryCopyDetail.objects.filter(original_org=self.request.user.organization)
 
@@ -119,7 +127,7 @@ class DashboardTemplateView(LoginRequiredMixin, TemplateView):
                 'older_comments': older_comments,
                 'all_comments': all_comments,
                 'new_stories': new_stories,
-                'old_stories': old_stories,
+                'recent_stories': recent_stories,
                 'running_today': running_today,
                 'edit_today': edit_today,
                 'shared_networkstories': shared_networkstories,
