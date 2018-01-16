@@ -242,6 +242,12 @@ class FacetUpdateView(LoginRequiredMixin, FormMessagesMixin, UpdateView):
         uploadform = VideoAssetForm()
         return {'videos': videos, 'org_videos': org_videos, 'uploadform': uploadform}
 
+    def facet_kwargs(self):
+        """Return kwargs from url for navigation."""
+        facet_kwargs = self.kwargs['pk']
+        print "FK: ", facet_kwargs
+        return facet_kwargs
+
 
 # ACCESS: Only an org user that is an admin or editor should be able to delete a
 # facet for one of their org's stories.

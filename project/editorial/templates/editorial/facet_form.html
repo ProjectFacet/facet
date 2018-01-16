@@ -50,10 +50,10 @@
         <li class="nav-item"><a href="{% url 'story_detail' view.kwargs.story %}"><p class="f-r-14 f-w-300 m-b-0">Story Detail </p></a></li>
         <li class="nav-item"><p class="f-r-14 f-w-400 m-b-0 m-l-20 m-r-10"> | </p></li>
         {% for facet in facet.story.facet_set.all %}
-        {% if facet.id|stringformat:"s" in request.path %}
-          <li class="nav-item"><a href="{% url 'facet_edit' pk=facet.id story=facet.story.id %}" class="nav-link active"><p class="f-r-10 f-w-300 m-b-0"> {{ facet.name }} </p></a></li>
+        {% if facet.id|stringformat:"s" == view.facet_kwargs %}
+          <li class="nav-item"><a href="{% url 'facet_edit' pk=facet.id story=facet.story.id %}" class="nav-link active"><p class="f-r-10 f-w-300 m-b-0">{{ facet.name }} </p></a></li>
         {% else %}
-          <li class="nav-item"><a href="{% url 'facet_edit' pk=facet.id story=facet.story.id %}" class="nav-link"><p class="f-r-10 f-w-300 m-b-0"> {{ facet.name }} </p></a></li>
+          <li class="nav-item"><a href="{% url 'facet_edit' pk=facet.id story=facet.story.id %}" class="nav-link"><p class="f-r-10 f-w-300 m-b-0">{{ facet.name }} </p></a></li>
         {% endif %}
         {% endfor %}
         <li class="nav-item"><a href="{% url 'facet_precreate' view.kwargs.story %}"><p class="f-r-12 f-w-300"><i class="fa fa-plus-square" id="menu-plus" aria-hidden="true"></i></p></a></li>
