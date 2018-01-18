@@ -206,7 +206,7 @@ class DocumentAssetCreateView(LoginRequiredMixin, CreateView):
         document.organization = self.request.user.organization
         document.save()
 
-        # add image asset to facet image_assets
+        # add document asset to facet document_assets
         facet.document_assets.add(document)
         facet.save()
 
@@ -238,11 +238,9 @@ class LibraryDocumentAssociateView(LoginRequiredMixin, FormView):
 
         facet = self.kwargs['facet']
         documents = form.cleaned_data['documents']
-        print "FACET: ", facet
-        print "DOCS: ", documents
-        # facet = get_object_or_404(Facet, id=facet)
-        # facet.image_assets.add(*documents)
-        # action.send(self.request.user, verb="added document", target=facet)
+        facet = get_object_or_404(Facet, id=facet)
+        facet.document_assets.add(*documents)
+        action.send(self.request.user, verb="added document", target=facet)
 
         return redirect('facet_edit', pk=facet.id, story=facet.story.id)
 
@@ -345,9 +343,9 @@ class LibraryAudioAssociateView(LoginRequiredMixin, FormView):
         """Handle submission of form."""
 
         facet = self.kwargs['facet']
-        images = form.cleaned_data['audio']
+        audio = form.cleaned_data['audio']
         facet = get_object_or_404(Facet, id=facet)
-        facet.image_assets.add(*audio)
+        facet.audio_assets.add(*audio)
         action.send(self.request.user, verb="added audio", target=facet)
 
         return redirect('facet_edit', pk=facet.id, story=facet.story.id)
@@ -426,7 +424,7 @@ class VideoAssetCreateView(LoginRequiredMixin, CreateView):
         facet.save()
 
         # record action for activity stream
-        action.send(self.request.user, verb="uploaded video", action_object=video, target=facet)
+        action.send(self.request.user, verb="created video", action_object=video, target=facet)
 
         return redirect('facet_edit', pk=facet.id, story=facet.story.id)
 
@@ -451,9 +449,9 @@ class LibraryVideoAssociateView(LoginRequiredMixin, FormView):
         """Handle submission of form."""
 
         facet = self.kwargs['facet']
-        images = form.cleaned_data['video']
+        video = form.cleaned_data['video']
         facet = get_object_or_404(Facet, id=facet)
-        facet.image_assets.add(*video)
+        facet.video_assets.add(*video)
         action.send(self.request.user, verb="added video", target=facet)
 
         return redirect('facet_edit', pk=facet.id, story=facet.story.id)
