@@ -325,14 +325,14 @@
       <!-- Images -->
       <div class="col-xs-12 col-sm-6">
         <p class="f-s-12 f-w-400 subtle">Images</p>
-        <div class="row" id="project-thumbs">
+        <div class="row project-thumbs">
         {% for image in assets.images|slice:":6" %}
           {% if image.display_photo %}
             <div class="col-xs-6">
               <a href="{{ image.display_photo.url }}" class="thumbnail"><img src="{{ image.display_photo.url }}" alt="{{ image.description }}" class="img-fluid m-b-10"></a>
             </div>
             {% if forloop.counter|divisibleby:"2" and not forloop.last %}
-              </div><div class="row">
+              </div><div class="row project-thumbs">
             {% endif %}
           {% endif %}
         {% endfor %}
@@ -341,7 +341,7 @@
       <!-- Documents -->
       <div class="col-xs-12 col-sm-6">
         <p class="f-s-12 f-w-400 subtle">Documents</p>
-        <div class="row" id="project-thumbs">
+        <div class="row">
           <div class="col-xs-12">
           {% for document in assets.documents|slice:":4" %}
               {% if document.asset_type == 'OTHER' %}
@@ -725,7 +725,7 @@
 <script>
   $(".chosen-select").chosen()
 
-  $('#project-thumbs').magnificPopup({
+  $('.project-thumbs').magnificPopup({
     delegate: 'a',
     type: 'image',
     gallery: {enabled:true}
