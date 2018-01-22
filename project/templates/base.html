@@ -284,10 +284,8 @@
                           <a class="nav-link dropdown-toggle no-after" data-toggle="dropdown">
                             {% if request.user.display_photo %}
                             <img class="img-circle img-fluid profile-image" src="{{ request.user.display_photo.url }}">
-                            {% elif request.user.first_name %}
-                            <p>{{request.user.first_name}}</p>
                             {% else %}
-                            <i class="fa fa-user" aria-hidden="true"></i>
+                            <img class="img-circle img-fluid profile-image" src="{% static 'images/nophoto.jpg' %}" alt="profile image">
                             {% endif %}
                           </a>
                           <div class="dropdown-menu dropdown-menu-scale from-right dropdown-menu-right">
