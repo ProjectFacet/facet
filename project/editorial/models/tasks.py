@@ -172,6 +172,7 @@ class Task(models.Model):
 
         if self.project:
             parent = self.project
+            print "PROJECT: ", parent
         elif self.series:
             parent = self.series
         elif self.story:
@@ -181,7 +182,8 @@ class Task(models.Model):
 
         if parent.type == "project" or "series" or "story":
             collaborators = parent.collaborate_with.all()
-            task_vocab = User.objects.filter(Q(Q(organization=self.organization) | Q(organization__in=collaborators)))
+            owner = parent.organization
+            task_vocab = User.objects.filter(Q(Q(organization=self.organization) | Q(organization__in=collaborators) | Q(organization=owner)))
         else:
             task_vocab = self.organization.get_org_users()
 

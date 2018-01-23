@@ -182,7 +182,8 @@ class Event(models.Model):
 
         if parent.type == "project" or "series" or "story":
             collaborators = parent.collaborate_with.all()
-            event_vocab = User.objects.filter(Q(Q(organization=self.organization) | Q(organization__in=collaborators)))
+            owner = parent.organization
+            event_vocab = User.objects.filter(Q(Q(organization=self.organization) | Q(organization__in=collaborators) | Q(organization=owner)))
         else:
             event_vocab = self.organization.get_org_users()
 

@@ -26,6 +26,7 @@ class TaskForm(forms.ModelForm):
 
         # TODO future: make assignment team include org users, partner users and collaborators assigned to content
         if task:
+            people = task.get_task_assignment_vocab()
             self.fields['assigned_to'].queryset = task.get_task_assignment_vocab()
         else:
             self.fields['assigned_to'].queryset = org.get_org_users()
