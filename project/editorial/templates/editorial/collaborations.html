@@ -26,22 +26,32 @@
 <div class="row m-b-40">
   <div class="col-xs-12 f-s-12">
 
-    {% if story_collaborations %}
+    {% if external_collaborations %}
     <!-- Full table for xs, sm, md and lg displays -->
-      <table id="collaboration-stories" class="table table-condensed table-striped">
+      <table id="collaboration-content" class="table table-condensed table-striped">
         <thead>
           <tr>
-            <th>Story</th>
+            <th>Content</th>
             <th>Description</th>
             <th>Owner</th>
           </tr>
         </thead>
         <tbody>
-          {% for story in story_collaborations %}
+          {% for item in external_collaborations %}
           <tr>
-            <td><a href="{% url 'story_detail' pk=story.id %}">{{story.name}}</a></td>
-            <td>{{ story.description }}</td>
-            <td>{{ story.organization }}</td>
+            {% if item.type == "Project" %}
+            <td><a href="{% url 'project_detail' pk=item.id %}">Project: {{item.name}}</a></td>
+            <td>{{ item.description }}</td>
+            <td>{{ item.organization }}</td>
+            {% elif item.type == "Series" %}
+            <td><a href="{% url 'series_detail' pk=item.id %}">Series: {{item.name}}</a></td>
+            <td>{{ item.description }}</td>
+            <td>{{ item.organization }}</td>
+            {% elif item.type == "Story" %}
+            <td><a href="{% url 'story_detail' pk=item.id %}">Story: {{item.name}}</a></td>
+            <td>{{ item.description }}</td>
+            <td>{{ item.organization }}</td>
+            {% endif %}
           </tr>
           {% endfor %}
         </tbody>
@@ -54,7 +64,7 @@
 
 <script>
 $(document).ready(function() {
-    $('#collaboration-stories').DataTable();
+    $('#collaboration-content').DataTable();
 } );
 </script>
 

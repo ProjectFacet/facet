@@ -195,9 +195,7 @@ class CollaborationTemplateView(LoginRequiredMixin, TemplateView):
     template_name = 'editorial/collaborations.html'
 
     def get_context_data(self):
-        series_collaborations = Series.objects.filter(collaborate=True)
-        story_collaborations = self.request.user.organization.get_org_collaborative_content()
+        external_collaborations = self.request.user.organization.get_org_external_collaborations()
         return {
-            'series_collaborations': series_collaborations,
-            'story_collaborations': story_collaborations,
+            'external_collaborations': external_collaborations,
         }

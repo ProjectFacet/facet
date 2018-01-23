@@ -528,16 +528,17 @@ class Organization(models.Model):
         collaborator on.
         """
 
-        from .projects import Project
-        from .series import Series
-        from .story import Story
+        from . import Project
+        from . import Series
+        from . import Story
         external_collaborative_content = []
         external_projects = Project.objects.filter(Q(collaborate_with=self))
         external_series = Series.objects.filter(Q(collaborate_with=self))
         external_stories = Story.objects.filter(Q(collaborate_with=self))
-        external_collaborative_content.extend()
-        external_collaborative_content.extend()
-        external_collaborative_content.extend()
+        external_collaborative_content.extend(external_projects)
+        external_collaborative_content.extend(external_series)
+        external_collaborative_content.extend(external_stories)
+        print "MEC: ", external_collaborative_content
         return external_collaborative_content
 
     def get_org_internal_collaborations(self):
