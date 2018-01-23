@@ -1,6 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.db import models
+from django.db.models import Q
 
 from . import SimpleImage, SimpleDocument, SimpleAudio, SimpleVideo
 from . import User, Organization, Project, Series, Story
@@ -161,6 +162,30 @@ class Task(models.Model):
     def get_absolute_url(self):
         return reverse('task_detail', kwargs={'pk': self.id})
 
+    def get_task_assignment_vocab(self):
+        """Return queryset with org users and users from collaborating orgs for the parent
+        of the task. Used in selecting assigned users for a task.
+        """
+
+        from . import User
+        # TODO future: add contractors
+
+        if self.project:
+            parent = self.project
+        elif self.series:
+            parent = self.series
+        elif self.story:
+            parent = self.story
+        else:
+            parent = self.event
+
+        if parent.type == "project" or "series" or "story":
+            collaborators = parent.collaborate_with.all()
+            task_vocab = User.objects.filter(Q(Q(organization=self.organization) | Q(organization__in=collaborators)))
+        else:
+            task_vocab = self.organization.get_org_users()
+
+        return task_vocab
 
     @property
     def search_title(self):

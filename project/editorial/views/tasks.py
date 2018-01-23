@@ -93,7 +93,7 @@ class TaskUpdateView(LoginRequiredMixin, FormMessagesMixin, UpdateView):
         """Pass organization to form."""
 
         kw = super(TaskUpdateView, self).get_form_kwargs()
-        kw.update({'organization': self.request.user.organization})
+        kw.update({'organization': self.request.user.organization, 'task': self.object})
         return kw
 
     def task_notes(self):

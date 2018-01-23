@@ -14,6 +14,7 @@ from braces.views import LoginRequiredMixin, FormMessagesMixin
 from django.conf import settings
 from django.shortcuts import redirect, get_object_or_404
 from django.http import HttpResponse
+
 from django.core.urlresolvers import reverse
 from django.views.generic import UpdateView, CreateView, DeleteView, View
 from editorial.forms import (
@@ -109,7 +110,7 @@ class EventUpdateView(LoginRequiredMixin, FormMessagesMixin, UpdateView):
         """Pass organization to form."""
 
         kw = super(EventUpdateView, self).get_form_kwargs()
-        kw.update({'organization': self.request.user.organization})
+        kw.update({'organization': self.request.user.organization, 'event': self.object})
         return kw
 
     def event_discussion(self):

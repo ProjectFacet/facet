@@ -31,7 +31,8 @@
                   <div class="col-xs-3"> <h5 class="m-l-20"><a href="{% url 'network_detail' network.id %}">{{ network.name }}</a></h5> </div>
                   <div class="col-xs-9 text-left">
                     <p class="f-s-14 f-w-300">{{ network.network_description }} {% if request.user.organization == network.owner_organization %}<a href="{% url 'network_edit' pk=network.id %}"> <i class="fa fa-pencil sameline"></i></a>{% endif %}</p>
-                    <span class="f-w-600 f-s-11 uppercase">Organizations</span>
+                    <p class="f-s-12 f-w-300"><span class="f-w-600 f-s-11 uppercase">Managing Organization</span> {{ network.owner_organization }}</p>
+                    <span class="f-w-600 f-s-11 uppercase">Members</span>
                     <p class="f-s-12 f-w-300">{% for organization in network.organizations.all %}{{ organization.name }}, {% endfor %}</p>
                   </div>
               </div>

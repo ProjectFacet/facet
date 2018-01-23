@@ -20,10 +20,14 @@ class EventForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         org = kwargs.pop("organization")
+        event = kwargs.pop("event", None)
         super(EventForm, self).__init__(*args, **kwargs)
 
-        # limit team options to team members from user's org
-        self.fields['team'].queryset = org.get_org_users()
+        # TODO make assignment team include org users, partner users and collaborators assigned to content
+        if event:
+            self.fields['team'].queryset = event.get_event_team_vocab()
+        else:
+            self.fields['team'].queryset = org.get_org_users()
 
         # limit evt_org options to organizations that user org is partnered with or self
         # FIXME add self.org to evt_organization

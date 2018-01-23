@@ -1,6 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.core.urlresolvers import reverse
 from django.db import models
+from django.db.models import Q
 
 from . import SimpleImage, SimpleDocument, SimpleAudio, SimpleVideo
 from . import User, Organization, Project, Series, Story
@@ -160,6 +161,33 @@ class Event(models.Model):
 
     def get_absolute_url(self):
         return reverse('event_detail', kwargs={'pk': self.id})
+
+
+    def get_event_team_vocab(self):
+        """Return queryset with org users and users from collaborating orgs for the parent
+        of the event. Used in selecting assigned users for event team.
+        """
+
+        from . import User
+        # TODO future: add contractors
+
+        if self.evt_organization:
+            parent = self.evt_organization
+        elif self.project:
+            parent = self.project
+        elif self.series:
+            parent = self.project
+        elif self.story:
+            parent = self.story
+
+        if parent.type == "project" or "series" or "story":
+            collaborators = parent.collaborate_with.all()
+            event_vocab = User.objects.filter(Q(Q(organization=self.organization) | Q(organization__in=collaborators)))
+        else:
+            event_vocab = self.organization.get_org_users()
+
+        return event_vocab
+
 
     @property
     def search_title(self):
