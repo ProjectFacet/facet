@@ -135,7 +135,7 @@ def get_facet_form_for_template(template_id):
                 'keywords': TextInput(
                     attrs={'class': 'form-control', 'placeholder': 'Keywords'}),
                 # template field
-                'template': Select(attrs={'class': 'form-control'}),                    
+                'template': Select(attrs={'class': 'form-control'}),
                 # Optional Fields
                 'excerpt': TextInput(
                     attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Excerpt'}),
