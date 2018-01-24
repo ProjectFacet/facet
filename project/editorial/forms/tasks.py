@@ -29,6 +29,9 @@ class TaskForm(forms.ModelForm):
             people = task.get_task_assignment_vocab()
             self.fields['assigned_to'].queryset = task.get_task_assignment_vocab()
         else:
+            print "NO TASK"
+            print "ORGANIZATION: ", org
+            print "Options: ", org.get_org_users()
             self.fields['assigned_to'].queryset = org.get_org_users()
 
         # limit project, series and stories to those owned by org or part of content and org is collaborator for
