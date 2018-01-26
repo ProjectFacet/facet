@@ -31,7 +31,7 @@ class EventForm(forms.ModelForm):
 
         # limit evt_org options to organizations that user org is partnered with or self
         # FIXME add self.org to evt_organization
-        self.fields['evt_organization'].queryset = org.get_org_collaborators_vocab()
+        # self.fields['evt_organization'].queryset = org.get_org_collaborators_vocab()
 
         # limit project, series and stories to those owned by org or part of content and org is collaborator for
         self.fields['project'].queryset = Project.objects.filter(
@@ -43,7 +43,7 @@ class EventForm(forms.ModelForm):
 
         # set empty labels
         self.fields['event_type'].empty_label = 'Event Type'
-        self.fields['evt_organization'].empty_label = 'Select an Organization'
+        # self.fields['evt_organization'].empty_label = 'Select an Organization'
         self.fields['project'].empty_label = 'Select a Project'
         self.fields['series'].empty_label = 'Select a Series'
         self.fields['story'].empty_label = 'Select a Story'
@@ -66,7 +66,7 @@ class EventForm(forms.ModelForm):
             'event_type',
             'event_date',
             'venue',
-            'evt_organization',
+            # 'evt_organization',
             'project',
             'series',
             'story',
@@ -83,8 +83,8 @@ class EventForm(forms.ModelForm):
                 attrs={'class': 'chosen-select form-control facet-select', 'id': 'event-team',
                        'data-placeholder': 'Team'}),
             'event_type': Select(attrs={'class': 'custom-select', 'id': 'task-status'}),
-            'evt_organization': Select(
-                attrs={'class': 'custom-select', 'id': 'event-organization'}),
+            # 'evt_organization': Select(
+            #     attrs={'class': 'custom-select', 'id': 'event-organization'}),
             'project': Select(attrs={'class': 'custom-select', 'id': 'event-project'}),
             'series': Select(attrs={'class': 'custom-select', 'id': 'event-series'}),
             'story': Select(attrs={'class': 'custom-select', 'id': 'event-story'}),

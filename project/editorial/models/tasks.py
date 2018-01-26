@@ -172,7 +172,6 @@ class Task(models.Model):
 
         if self.project:
             parent = self.project
-            print "PROJECT: ", parent
         elif self.series:
             parent = self.series
         elif self.story:

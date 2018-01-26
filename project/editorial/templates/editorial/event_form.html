@@ -43,6 +43,7 @@
 <!-------------------------------------------->
 
 {% block content %}
+
 <div class="row m-b-20">
   <div class="col-xs-12">
     <h5 class="m-b-20 sameline">
@@ -55,13 +56,15 @@
       {% endif %}
       {{ event.name}}
     </h5>
+    {% if event %}
     <form class="event-delete sameline" method="GET"
           action="{% url 'event_delete' pk=event.id %}">
-          <!-- onsubmit="return confirm('Do you want to delete this task?')"> -->
+          <!-- onsubmit="return confirm('Do you want to delete this event?')"> -->
           {% csrf_token %}
       <a href="javascript:$('.event-delete').submit();"><i class="fa fa-trash subtle" aria-hidden="true"></i></a>
       <!-- <input type="submit" class="btn btn-sm btn-danger-100" value="Delete"> -->
     </form>
+    {% endif %}
   </div>
 </div>
 
@@ -191,6 +194,7 @@
 </div>
 <!-- End of form -->
 
+{% if event %}
 <div class="row m-t-20">
   <!-- Left Column -->
   <div class="col-xs-12 col-md-6 col-lg-4">
@@ -270,7 +274,7 @@
               <!-- Note Delete -->
               <form class="note-delete sameline" method="GET"
                     action="{% url 'note_delete' note.id %}">
-                    <!-- onsubmit="return confirm('Do you want to delete this task?')"> -->
+                    <!-- onsubmit="return confirm('Do you want to delete this event?')"> -->
                     {% csrf_token %}
                 <a href="javascript:$('.note-delete').submit();"><i class="fa fa-trash subtle float-right" style="float:right;" aria-hidden="true"></i></a>
                 <!-- <input type="submit" class="btn btn-sm btn-danger-100" value="Delete"> -->
@@ -321,6 +325,7 @@
     </div>
   </div>
 </div>
+{% endif %}
 
 <!-- ================================================= -->
 <!-- ================================================= -->
