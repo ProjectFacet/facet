@@ -145,7 +145,7 @@ class SeriesDetailView(LoginRequiredMixin, DetailView):
         identified_ct = identified.count()
         inprogress_ct = inprogress.count()
         complete_ct = complete.count()
-        form = TaskForm(organization = self.object.organization)
+        form = TaskForm(organization = self.request.user.organization)
 
         return {
                 'tasks': tasks,
@@ -162,7 +162,7 @@ class SeriesDetailView(LoginRequiredMixin, DetailView):
         """Get events and event form for a series."""
 
         events = self.object.event_set.all()
-        form = EventForm(organization = self.object.organization)
+        form = EventForm(organization = self.request.user.organization)
         return {'events': events, 'form': form}
 
     def series_assets(self):

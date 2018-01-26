@@ -50,7 +50,6 @@ class TaskCreateView(LoginRequiredMixin, FormMessagesMixin, CreateView):
     def get_form_kwargs(self):
         """Pass user organization to the form."""
 
-        # FIXME the org isn't being passed to the form accurately
         kw = super(TaskCreateView, self).get_form_kwargs()
         kw.update({'organization': self.request.user.organization})
         return kw
