@@ -65,6 +65,8 @@
     <!-- Story Details -->
     <div id="story_details">
       <div class="row m-b-20">
+        <!-- A story's detail should only be editable or deletable by a user of the owner admin -->
+        {% if request.user.organization.id == story.organization.id %}
         <!-- Story Edit -->
         <div class="col-xs-4 col-sm-2">
             <a href="{% url 'story_edit' story.id %}" title="Edit story details"><i class="fa fa-pencil-square-o subtle fa-lg" aria-hidden="true"></i></a>
@@ -79,6 +81,8 @@
             <!-- <input type="submit" class="btn btn-sm btn-danger-100" value="Delete"> -->
           </form>
         </div>
+        {% endif %}
+
         <!-- Download -->
         <div class="col-xs-4 col-sm-8">
           <a data-toggle="modal" href="#downloadStory" title="Download this story"><i class="fa fa-cloud-download subtle fa-lg" aria-hidden="true"></i></a>
