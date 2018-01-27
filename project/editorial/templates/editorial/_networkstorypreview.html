@@ -19,12 +19,15 @@
 <script>
   $('#previewModal').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget) // Button that triggered the modal
+    console.log("----In the event----");
     var modaltitle = button.data('modaltitle') // Extract info from data-* attributes
+    console.log(modaltitle);
     var modalcontent = button.data('modalcontent')
+    console.log(modalcontent);
     // var modalstoryid = button.data('storyid')
 
     var modal = $(this)
-    modal.find('.modal-title').replaceWith('<h4>Preview: ' + modaltitle + '</h4>')
+    modal.find('.modal-title').html('<h4>Preview: ' + modaltitle + '</h4>')
     modal.find('.modal-body').html(modalcontent)
     // modal.find('.modal-footer').replaceWith('<form action="/story/copy/' + modalstoryid + '/" method="POST" class="sameline">{% csrf_token %}<button class="btn btn-info" type="submit"><i class="fa fa-clone"></i> Copy</button></form> <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>')
   })

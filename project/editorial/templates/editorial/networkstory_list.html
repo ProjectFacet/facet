@@ -31,85 +31,106 @@
       <thead>
         <tr>
           <th>Story</th>
-          <th>Title</th>
-          <th>Credit</th>
-          <th>Organization</th>
+          <th>Pickup</th>
+          <th>Facets</th>
           <th>Available</th>
+          <th>Organization</th>
         </tr>
       </thead>
       <tbody>
-      {% for story in networkstories %}
+        {% for story in networkstories %}
+          <tr>
+            <!-- Story Name -->
+            <td>
+              {{ story.name }}
+            </td>
+              <!-- Story Ready to Share -->
+            <td>
+              {% if story.ready_to_share %}
+                <form action="{% url 'copy_network_story' story=story.id %}" method="POST" class="sameline">
+                  {% csrf_token %}
+                  <button class="clear clear-button" type="submit">
+                    <i class="fa fa-clone"></i>
+                  </button>
+                </form>
+              {% endif %}
+            </td>
+            <!-- Story Facets -->
+            <td>
+              {% if story.facet_set.all %}
+                <span>
+                  <button class="btn btn-sm clear clear-button collapsed" type="button" data-toggle="collapse" data-target="#story_{{ story.id }}_facet_collapse" aria-expanded="false" aria-controls="collapse-example-1"> {{ story.facet_set.count }} <i class="fa fa-angle-down" aria-hidden="true"></i> </button>
+                </span>
+                <div class="collapse" id="story_{{ story.id }}_facet_collapse" aria-expanded="true" style="">
+                  <div class="card card-block" style="padding-top:1rem;padding-left:0rem;padding-bottom:.5rem;margin-bottom:0px;background:inherit !important;border:none;">
+                    {% for facet in story.facet_set.all %}
+                      <p class="f-r-8 f-w-300"> {{ facet.headline }}
+                        {% if story.ready_to_share %}
+                        <button type="button" class="clear clear-button m-l-10 subtle" data-toggle="modal" data-target="#previewModal" data-modaltitle="{{ facet.headline }}" data-modalcontent="{{ facet.content }}">
+                          <span class="m-r-10 label label-default-outline label-xs">Preview</span>
+                        </button>
+                        {% endif %}
+                      </p>
+                    {% endfor %}
+                  </div>
+                </div>
+              {% else %}
+                <span class="f-r-8 f-w-300">No facets yet</span>
+              {% endif %}
+            </td>
+            <!-- Story Available -->
+              {% if story.share_with_date %}
+                <td>{{ story.share_with_date|date:'n/j, g:i a'}}</td>
+              {% else %}
+                <td><span class="f-r-8 f-w-300 color-default">No estimate available</span></td>
+              {% endif %}
+            <!-- Story Organization -->
+            <td>{{ story.organization.name }}</td>
+          </tr>
+        {% endfor %}
 
-        {% if story.facet_set.all %}
-          {% for facet in story.facet_set.all %}
-            {% if facet.story.ready_to_share %}
-            <tr>
-              <td>{{ facet.story.name }}<form action="{% url 'copy_network_story' story=story.id %}" method="POST" class="sameline">{% csrf_token %}<button class="clear clear-button" type="submit"><i class="fa fa-clone"></i></button></form></td>
-              <td><a href="#" data-toggle="tooltip" title="{{ facet.description }}">{{ facet.headline }}</a> {% if story.ready_to_share %}<button type="button" class="clear clear-button m-l-10 subtle" data-toggle="modal" data-target="#previewModal" data-modaltitle="{{ facet.headline }}" data-modalcontent="{{ facet.content }}"><span class="m-r-10 label label-default-outline label-xs">Preview</span></button>{% endif %}</td>
-              <td>{% for user in facet.credit.all %}{{ user.credit_name }}, {% endfor %}</td>
-              <td>{{ facet.organization.name }}</td>
-              <td>{{ facet.story.share_with_date|date:'n/j, g:i a'}}</td>
-            </tr>
-            {% else %}
-            <tr>
-              <td>{{ facet.story.name }}</td>
-              <td><a href="#" data-toggle="tooltip" title="{{ facet.description }}">{{ facet.headline }}</a> {% if story.ready_to_share %}<button type="button" class="clear clear-button m-l-10 subtle" data-toggle="modal" data-target="#previewModal" data-modaltitle="{{ facet.headline }}" data-modalcontent="{{ facet.content }}"><span class="m-r-10 label label-default-outline label-xs">Preview</span></button>{% endif %}</td>
-              <td>{{ facet.owner.credit_name }}</td>
-              <td>{{ facet.organization.name }}</td>
-              <td>{{ facet.story.share_with_date|date:'n/j, g:i a'}}</td>
-            </tr>
-            {% endif %}
-          {% endfor %}
-        {% else %}
-            <tr>
-              <td>{{ story.name }}{% if story.ready_to_share %}<form action="{% url 'copy_network_story' story=story.id %}" method="POST" class="sameline">{% csrf_token %}<button class="clear clear-button" type="submit"><i class="fa fa-clone"></i></button></form>{% endif %}</td>
-              <td><i class="tiny-text">No Facets Currently</i></td>
-              <td>{{ story.owner.credit_name }}</td>
-              <td>{{ story.organization.name }}</td>
-              <td>{{ story.share_with_date|date:'n/j, g:i a'}}</td>
-            </tr>
-        {% endif %}
-
-      {% endfor %}
       </tbody>
     </table>
     <!-- End full table -->
+
 
     <!-- Partial table for xs and sm displays -->
     <table class="table table-condensed table-striped hidden-md-up">
       <thead>
         <tr>
           <th>Story</th>
-          <th>Facets</th>
+          <th>Pickup</th>
           <th>Organization</th>
-          <th>Available</th>
         </tr>
       </thead>
       <tbody>
         {% for story in networkstories %}
 
-          {% if story.facet_set.all %}
           <tr>
-            <td>{{ story.name }}<form action="{% url 'copy_network_story' story=story.id %}" method="POST" class="sameline">{% csrf_token %}<button class="clear" type="submit"><i class="fa fa-clone"></i></button></form></td>
+            <!-- Story Name -->
             <td>
-              {% if story.facet_set.all %}{{ story.facet_set.all.count }}{% endif %}
+              {{ story.name }}
             </td>
-            <td>{{ story.organization.name }}</td>
-            <td>{{ story.share_with_date|date:'n/j, g:i a'}}</td>
+              <!-- Story Ready to Share -->
+            <td>
+              {% if story.ready_to_share %}
+                <form action="{% url 'copy_network_story' story=story.id %}" method="POST" class="sameline">
+                  {% csrf_token %}
+                  <button class="clear clear-button" type="submit">
+                    <i class="fa fa-clone"></i>
+                  </button>
+                </form>
+              {% endif %}
+            </td>
+            <!-- Story Organization -->
+            <td><p class="f-r-10 f-w-300">{{ story.organization.name }}</p></td>
           </tr>
-          {% else %}
-              <tr>
-                <td>{{ story.name }}</td>
-                <td></td>
-                <td>{{ story.organization.name }}</td>
-                <td>{{ story.share_with_date|date:'n/j, g:i a'}}</td>
-              </tr>
-          {% endif %}
 
         {% endfor %}
       </tbody>
     </table>
     <!-- End partial table -->
+
     {% else %}
       <p class="f-s-18 subtle text-center italic m-b-40 m-t-40">Welcome to the Network Stories page. This is where you will see all of the current shared stories from your network partners.</p>
     {% endif %}
