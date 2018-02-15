@@ -49,9 +49,13 @@
               {% if story.ready_to_share %}
                 <form action="{% url 'copy_network_story' story=story.id %}" method="POST" class="sameline">
                   {% csrf_token %}
+                  {% if story.already_picked_up %}
+                  <span class="f-r-8 f-w-300 color-success">Acquired</span>
+                  {% else %}
                   <button class="clear clear-button" type="submit">
                     <i class="fa fa-clone"></i>
                   </button>
+                  {% endif %}
                 </form>
               {% endif %}
             </td>
@@ -147,6 +151,20 @@
   $(document).ready(function() {
       $('#network-stories-list').DataTable();
   } );
+</script>
+
+<script>
+(function() {
+    'use strict';
+    $(function() {
+        var config = $.localStorage.get('config');
+        $('body').attr('data-layout', config.layout);
+        $('body').attr('data-palette', config.theme);
+        $('body').attr('data-direction', config.direction);
+        $('[data-toggle="tooltip"]').tooltip();
+        $('[data-toggle="popover"]').popover();
+    });
+})();
 </script>
 
 {% endblock %}

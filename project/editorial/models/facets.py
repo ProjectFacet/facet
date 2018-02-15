@@ -475,8 +475,11 @@ class Facet(models.Model):
         self.due_edit = None
         self.run_date = None
         self.discussion = Discussion.objects.create_discussion("F")
-        self.edit_history = None
+        # self.edit_history = HistoricalRecords()
+        print "pre copy save"
         self.save()
+        print "saved"
+        print "new id", self.id
         return self
 
     def get_facet_images(self):

@@ -235,6 +235,16 @@ class NetworkStoryListView(LoginRequiredMixin, ListView):
         shared_networkstories = [story for story in shared_networkstories if story.organization != organization]
         networkstories = set(shared_networkstories)
 
+        # get list of stories an organization has copied
+        org_copied_content = organization.get_org_copied_content()
+
+        # temp attribute showing whether the user org has already copied a story
+        for story in networkstories:
+            if story in org_copied_content:
+                story.already_picked_up=True
+            else:
+                story.already_picked_up=False
+
         return networkstories
 
 
@@ -292,8 +302,6 @@ class CopyNetworkStoryView(LoginRequiredMixin, View):
         if original_facets:
             print "if original facets"
             for facet in original_facets:
-                # FIXME next line creates error
-                # 'NoneType' object has no attribute 'create'
                 copied_facet = facet.copy()
                 print "Copied Facet exists"
                 print "CF: ", copied_facet

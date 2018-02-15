@@ -369,6 +369,18 @@ class Organization(models.Model):
 
         return network_content
 
+    def get_org_copied_content(self):
+        """Returns queryset of content that an organization has picked up from
+        a network partner."""
+
+        from . import StoryCopyDetail
+        from . import Story
+
+        copyrecords = StoryCopyDetail.objects.exclude(original_org=self)
+        org_copied_content = [record.original_story for record in copyrecords]
+
+        return org_copied_content
+
     # formerly get_org_collaborators
     def get_org_collaborators_vocab(self):
         """ Return list of all organizations that are members of the same networks as self.
@@ -635,7 +647,6 @@ class Organization(models.Model):
         This includes notes from items that are collaborative."""
         pass
 
-
     def get_org_searchable_content(self):
         """Return queryset of all objects that can be searched by a user."""
 
@@ -682,6 +693,7 @@ class Organization(models.Model):
         from . import FacetTemplate
 
         return FacetTemplate.objects.filter(Q(organization_id__isnull=True) | Q(organization=self) & Q(is_active=True))
+
 
 
     @property
