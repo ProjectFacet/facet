@@ -196,7 +196,7 @@ class Story(models.Model):
 
         # clear relationships if they exist
         if story_copy.series:
-            story_copy.series.clear()
+            story_copy.series=None
         if story_copy.share_with:
             story_copy.share_with.clear()
         if story_copy.collaborate_with:
