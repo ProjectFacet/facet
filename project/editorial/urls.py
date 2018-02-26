@@ -31,33 +31,26 @@ from views.search import EditorialSearchView
 
 urlpatterns = [
     #   Account URLS
-
     url(r'^account/selection/$', accounts.AccountSelectionView.as_view(), name='account_selection'),
 
     #   API URL - Used API endpoints
-
     url('^api/', include(api.router.urls)),
 
     #   Facet to WordPress URL - On demand pushing
-
     url(r'^facet/json/$', pushcontent.facet_json, name='facet_json'),
     # url(r'^facet/wordpress/$', pushcontentviews.push_facet_wp, name='push_facet_wp'),
 
     #   Homepage URLS
-
     url(r'^$', general.LandingTemplateView.as_view(), name='index'),
 
     #   Dashboard URLS
-
     url(r'^dashboard/$', general.DashboardTemplateView.as_view(), name='dashboard'),
 
     #   Schedule URLS
-
     url(r'^schedule/$', schedules.schedule, name='schedule'),
     url(r'^schedulecontent/$', schedules.schedule_content, name='schedule-content'),
 
     #   Asset Library URLS
-
     url(r'^assets/$', assets.AssetLibraryTemplateView.as_view(), name='asset_library'),
     url(r'^asset/image/(?P<pk>\d+)/$', assets.ImageAssetUpdateView.as_view(), name='image_asset_detail'),
     url(r'^asset/image/(?P<pk>\d+)/delete/$', assets.ImageAssetDeleteView.as_view(), name='image_asset_delete'),
@@ -69,15 +62,12 @@ urlpatterns = [
     url(r'^asset/video/(?P<pk>\d+)/delete/$', assets.VideoAssetDeleteView.as_view(), name='video_asset_delete'),
 
     #   Collaborations URLS
-
     url(r'^collaborations/$', general.CollaborationTemplateView.as_view(), name='collaborations'),
 
     #   Team URLS
-
     url(r'^team/$', general.TeamTemplateView.as_view(), name='team_list'),
 
     #   Inbox URLS - Labeled as Inbox in navigation
-
     url(r'^inbox/$', inbox.Inbox.as_view(), name='inbox'),
     url(r'^inbox/compose/$', inbox.ComposeMessage.as_view(), name='compose_message_html'),
     url(r'^inbox/sent/$', inbox.SentMessages.as_view(), name='sent_html'),
@@ -86,24 +76,19 @@ urlpatterns = [
     # url(r'^inbox/trash/$', inboxviews.inbox_trash, name='inbox_trash'),
 
     #   Private Message URLS
-
     url(r'^privatemessage/new/$', discussion.PrivateMessageSend.as_view(), name='private_message_new'),
     url(r'^privatemessage/(?P<pk>\d+)/content/$', inbox.MessageContent.as_view(), name='message_html'),
 
     #   Copy URLS
-
     url(r'^story/(?P<story>\d+)/copy/$', networks.CopyNetworkStoryView.as_view(), name='copy_network_story'),
 
     #   Download URLS
-
     url(r'^story/(?P<pk>\d+)/download/$', downloads.StoryDownload.as_view(), name='create_download'),
 
     #   Search URLS
-
     url(r"^search/$", EditorialSearchView.as_view(), name="search"),
 
     #   Comment URLS
-
     url(r'^organization/comment/new/$', discussion.CommentCreateView.as_view(), name='create_orgcomment'),
     url(r'^network/comment/new/$', discussion.CommentCreateView.as_view(), name='create_networkcomment'),
     url(r'^project/comment/new/$', discussion.CommentCreateView.as_view(), name='create_projectcomment'),
@@ -115,7 +100,6 @@ urlpatterns = [
     url(r'^assignment/comment/new/$', discussion.CommentCreateView.as_view(), name='create_assignmentcomment'),
 
     #   Note URLS
-
     url(r'^organization/note/new/$', notes.NoteCreateView.as_view(), name='create_orgnote'),
     url(r'^user/note/new/$', notes.NoteCreateView.as_view(), name='create_usernote'),
     url(r'^network/note/new/$', notes.NoteCreateView.as_view(), name='create_networknote'),
@@ -129,13 +113,11 @@ urlpatterns = [
     # url(r'^assignment/note/new/$', noteviews.NoteCreateView.as_view(), name='create_assignmentnote'),
 
     #   Platform URLS
-
     url(r'^user/(?P<pk>\d+)/platformaccounts/edit/$', platforms.UserPlatformAccountCreateView.as_view(), name='user_platformaccounts_create'),
     # url(r'^organization/(?P<pk>\d+)/platformaccounts/edit/$', platformviews.organization_platformaccounts_create, name='organization_platformaccounts_create'),
     # url(r'^project/(?P<pk>\d+)/platformaccounts/edit/$', platformviews.project_platformaccounts_create, name='project_platformaccounts_create'),
 
     #   Organization URLS
-
     url(r'^organization/new/$', organizations.OrganizationCreateView.as_view(), name="org_new"),
     url(r'^organization/(?P<pk>\d+)/$', organizations.OrganizationDetailView.as_view(), name='org_detail'),
     url(r'^organization/(?P<pk>\d+)/edit/$', organizations.OrganizationUpdateView.as_view(), name='org_edit'),
@@ -144,7 +126,6 @@ urlpatterns = [
     # url(r'^organization/(?P<pk>\d+)/comments/$', communicationviews.org_comments, name='org_comments'),
 
     #   User URLS
-
     url(r'^user/new/$', users.UserCreateView.as_view(), name='user_new'),
     url(r'^user/(?P<pk>\d+)/$', users.UserDetailView.as_view(), name='user_detail'),
     url(r'^user/(?P<pk>\d+)/edit/$', users.UserUpdateView.as_view(), name='user_edit'),
@@ -154,7 +135,6 @@ urlpatterns = [
     url(r'^user/activate/$', users.UserActivateView.as_view(), name='user_activate'),
 
     #   Contractor URLS
-
     url(r'^contractor/new/$', contractors.ContractorCreateView.as_view(), name='contractor_new'),
     url(r'^contractor/(?P<pk>\d+)/$', contractors.ContractorDetailView.as_view(), name='contractor_detail'),
     url(r'^contractor/(?P<pk>\d+)/edit/$', contractors.ContractorUpdateView.as_view(), name='contractor_edit'),
@@ -185,7 +165,6 @@ urlpatterns = [
     url(r'^pitch/(?P<pk>\d+)/delete/$', contractors.PitchDeleteView.as_view(), name='pitch_delete'),
 
     #   Project URLS
-
     url(r'^project/new/$', projects.ProjectCreateView.as_view(), name='project_new'),
     url(r'^projects/$', projects.ProjectListView.as_view(), name='project_list'),
     url(r'^project/(?P<pk>\d+)/$', projects.ProjectDetailView.as_view(), name='project_detail'),
@@ -198,7 +177,6 @@ urlpatterns = [
     url(r'^project/(?P<pk>\d+)/stories/$', projects.ProjectStoryTemplateView.as_view(), name='project_stories'),
 
     #   Series URLS
-
     url(r'^series/new/$', series.SeriesCreateView.as_view(), name='series_new'),
     url(r'^series/$', series.SeriesListView.as_view(), name='series_list'),
     url(r'^series/json/$', series.series_json, name='series_json'),
@@ -211,7 +189,6 @@ urlpatterns = [
     url(r'^series/(?P<series>\d+)/note/(?P<note>\d+)/content/$', notes.NoteContent.as_view(), name='series_note_content'),
 
     #   Story URLS
-
     url(r'^story/new/$', story.StoryCreateView.as_view(), name='story_new'),
     url(r'^stories/$', story.StoryListView.as_view(), name='story_list'),
     url(r'^story/(?P<pk>\d+)/$', story.StoryDetailView.as_view(), name='story_detail'),
@@ -223,7 +200,6 @@ urlpatterns = [
     # url(r'^story/(?P<pk>\d+)/team/json/$', story.story_team_options_json, name='story_team_options_json'),
 
     #   Facet URLS
-
     url(r'^story/(?P<story>\d+)/facet/add/$', facetviews.FacetPreCreateView.as_view(), name="facet_precreate"),
     url(r'^story/(?P<story>\d+)/facet/add/(?P<template_id>\d+)/$', facetviews.FacetCreateView.as_view(), name="facet_add"),
     url(r'^story/(?P<story>\d+)/facet/(?P<pk>\d+)/edit/$', facetviews.FacetUpdateView.as_view(), name="facet_edit"),
@@ -236,7 +212,6 @@ urlpatterns = [
     url(r'^facet/template/(?P<pk>\d+)/edit/$', facetviews.FacetTemplateUpdateView.as_view(), name="facet_template_edit"),
 
     #   Task URLS
-
     url(r'^task/new/$', tasks.TaskCreateView.as_view(), name='task_new'),
     url(r'^task/(?P<pk>\d+)/$', tasks.TaskUpdateView.as_view(), name='task_detail'),
     url(r'^task/(?P<pk>\d+)/notes/$', notes.TaskNoteView.as_view(), name='task_notes'),
@@ -248,7 +223,6 @@ urlpatterns = [
     url(r'^event/(?P<pk>\d+)/tasks/$', tasks.EventTaskView.as_view(), name='event_task_list'),
 
     #   Event URLS
-
     url(r'^event/new/$', events.EventCreateView.as_view(), name='event_new'),
     url(r'^event/(?P<pk>\d+)/$', events.EventUpdateView.as_view(), name='event_detail'),
     url(r'^event/(?P<pk>\d+)/notes/$', notes.EventNoteView.as_view(), name='event_notes'),
@@ -286,7 +260,6 @@ urlpatterns = [
     url(r'^simplevideo/new/$', assets.SimpleVideoCreateView.as_view(), name='upload_simple_video'),
 
     #   Network URLS
-
     url(r'^network/new/$', networks.NetworkCreateView.as_view(), name='network_new'),
     url(r'^network/(?P<pk>\d+)/$', networks.NetworkDetailView.as_view(), name='network_detail'),
     url(r'^network/invitation/$', networks.send_network_invite, name='send_network_invite'),
