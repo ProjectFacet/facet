@@ -153,19 +153,6 @@
   } );
 </script>
 
-<script>
-(function() {
-    'use strict';
-    $(function() {
-        var config = $.localStorage.get('config');
-        $('body').attr('data-layout', config.layout);
-        $('body').attr('data-palette', config.theme);
-        $('body').attr('data-direction', config.direction);
-        $('[data-toggle="tooltip"]').tooltip();
-        $('[data-toggle="popover"]').popover();
-    });
-})();
-</script>
 
 {% endblock %}
 
@@ -175,6 +162,6 @@
 
 {% block modals %}
 
-{% include "editorial/_networkstorypreview.html" %}
+{% include "editorial/_storypreview.html" %}
 
 {% endblock modals %}
