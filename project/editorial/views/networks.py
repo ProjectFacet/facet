@@ -164,7 +164,7 @@ class NetworkInvitationSend(LoginRequiredMixin, FormMessagesMixin, RedirectView)
 
     permanent = False
     msg_subject = "Invitation for {organization} to join {network}"
-    msg_body = """{sender} has invited you..."""
+    msg_body = """{sender} has invited {organization} to join {network}."""
 
     def get_redirect_url(self, pk):
         """ Send private message with link to join a network."""
