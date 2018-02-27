@@ -169,7 +169,7 @@ class User(AbstractUser):
         return tasks
 
     def inbox_comments(self):
-        """ Return list of comments from discussions the user is a participant in.
+        """Return list of comments from discussions the user is a participant in.
 
         Collects all relevant comments for a specific user to show in their
         dashboard and inbox.
@@ -177,26 +177,40 @@ class User(AbstractUser):
 
         from . import Comment
 
-        discussion_ids = self.comment_set.all().values('discussion_id')
-        user_comments = self.comment_set.all()
-        all_comments = Comment.objects.filter(discussion_id__in=discussion_ids)
-        inbox_comments = all_comments.exclude(id__in=user_comments)
-        return inbox_comments
+        user_discussion_ids = self.comment_set.all().values('discussion_id')
+
+        return (Comment
+                .objects
+                .filter(discussion_id__in=user_discussion_ids)
+                .exclude(user_id=self.id)
+                .select_related('user', 'discussion')
+                )
 
     def recent_comments(self):
-        """Return list of comments from discussions the user is a participant in
-        since the user's last login.
+        """Recent comments in users's discussions.
+
+        Return list of comments:
+         - from discussions the user is a participant in
+         - since the user's last login
+         - where the user isn't the author
 
         For display on primary dashboard.
         """
 
+        # FIXME: this appear to just be a subset of inbox_comments; can this use that?
+
         from . import Comment
 
-        discussion_ids = self.comment_set.all().values('discussion_id')
-        user_comments = self.comment_set.all()
-        all_comments = Comment.objects.filter(discussion_id__in=discussion_ids, date__gte=self.last_login)
-        recent_comments = all_comments.exclude(id__in=user_comments)
-        return recent_comments
+        # Discussions user is involved in
+        user_discussion_ids = self.comment_set.all().values('discussion_id')
+
+        # Comments tht
+        return (Comment
+                .objects
+                .filter(discussion_id__in=user_discussion_ids,
+                        date__gte=self.last_login)
+                .exclude(user_id=self.id)
+               )
 
     # formerly get_user_contact_list
     def get_user_contact_list_vocab(self):
@@ -355,16 +369,20 @@ class Organization(models.Model):
         from . import Network
 
         all_organization_networks = Network.objects.filter(Q(Q(owner_organization=self) | Q(organizations=self)))
+
         # not necessary but leaving in for now, check to make sure unique list of networks
         organization_networks = all_organization_networks.distinct()
+
         return organization_networks
 
     def get_org_network_content(self):
         """Return queryset of content shared with any network an organization is a member of excluding their own content."""
 
+        # FIXME: does this actually exclude their own content? - Joel
+
         from . import Story
 
-        networks = Organization.get_org_networks(self)
+        networks = self.get_org_networks()
         network_content = Story.objects.filter(share_with__in=networks).select_related('organization')
 
         return network_content

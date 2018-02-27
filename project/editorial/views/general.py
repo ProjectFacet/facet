@@ -13,7 +13,7 @@ from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime, timedelta, time
 import json
 from django.template.loader import render_to_string
-from django.db.models import Q
+from django.db.models import Q, Count
 from braces.views import LoginRequiredMixin, FormMessagesMixin
 
 # All imports are included for use in test view
@@ -94,36 +94,45 @@ class DashboardTemplateView(LoginRequiredMixin, TemplateView):
         # placeholder of data for now to maintain status quo
         # some rethinking about what goes here tbd
 
-        if self.request.user.organization:
-            organization = self.request.user.organization
-            recent_comments = self.request.user.recent_comments()
-            older_comments = self.request.user.inbox_comments()[:4]
+        user = self.request.user
+        org = user.organization
 
-            all_comments = organization.get_org_comments()
-            networks = organization.get_org_networks()
-            running_today = organization.get_org_stories_running_today()
-            edit_today = organization.get_org_stories_due_for_edit_today()
+        if org:
+            # FIXME: wasn't being used on template, commented out for now - Joel
+            # recent_comments = user.recent_comments()
 
-            shared_networkstories = organization.get_org_network_content()
-            shared_networkstories = [story for story in shared_networkstories if story.organization != organization]
+            older_comments = user.inbox_comments()[:4]
+
+            all_comments = org.get_org_comments()
+            networks = org.get_org_networks()
+            running_today = org.get_org_stories_running_today()
+            edit_today = org.get_org_stories_due_for_edit_today()
+
+            # FIXME from Joel: this should all happen in one query
+            shared_networkstories = (org.get_org_network_content()
+                                     .exclude(organization=org)
+                                     .annotate(num_facets=Count('facet'))
+                                     .distinct())
+            # shared_networkstories = [story for story in shared_networkstories if story.organization != org]
             networkstories = set(shared_networkstories)
 
-
             # query for any new content created since last_login
-            new_stories = Story.objects.filter(creation_date__gte = self.request.user.last_login)[:8]
+            new_stories = Story.objects.filter(creation_date__gte = user.last_login)[:8]
             # new_projects = Project.objects.filter(creation_date__gte = self.request.user.last_login)[:8]
             # new_series = Series.objects.filter(creation_date__gte = self.request.user.last_login)[:8]
 
             # if no new, display 10 most recent stories
-            recent_stories = Story.objects.filter(organization = self.request.user.organization)[:10]
+            recent_stories = Story.objects.filter(organization =org)[:10]
             # recent_projects = Project.objects.filter(organization = self.request.user.organization)[:10]
             # recent_series = Series.objects.filter(organization = self.request.user.organization)[:10]
 
-            copied_shared_stories = StoryCopyDetail.objects.filter(original_org=self.request.user.organization)
+            copied_shared_stories = StoryCopyDetail.objects.filter(original_org=org)
 
             return {
                 'networks': networks,
-                'recent_comments': recent_comments,
+                # FIXME: recent_comments is not being used on dashboard template right now;
+                # FIXME: should this by removed?
+                # 'recent_comments': recent_comments,
                 'older_comments': older_comments,
                 'all_comments': all_comments,
                 'new_stories': new_stories,
@@ -135,13 +144,15 @@ class DashboardTemplateView(LoginRequiredMixin, TemplateView):
                 'networkstories': networkstories,
                 # 'shared_networkstory_facets': shared_networkstory_facets,
             }
-        elif self.request.user.contractorprofile:
-            contractor = self.request.user.contractorprofile
+
+        elif user.contractorprofile:
+            contractor = user.contractorprofile
             assignments = contractor.get_active_assignments()
             print assignments
+            # FIXME from Joel: next line should be "Published", no doubt?
             calls = Call.objects.filter(Q(is_active=True)| Q(status="Publised")).order_by('-creation_date')
             pitches = contractor.get_active_pitches()
-            communication = PrivateMessage.objects.filter(recipient=self.request.user).order_by('date')
+            communication = PrivateMessage.objects.filter(recipient=user).order_by('date')
             return {
                 'assignments': assignments,
                 'calls': calls,
