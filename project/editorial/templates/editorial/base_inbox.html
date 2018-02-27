@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load bootstrap3 %}
+
+<!-------------------------------------------->
+<!--      BREADCRUMB NAVIGATION             -->
+<!-------------------------------------------->
+
+{% block breadcrumb %}
+<div>
+    <ol class="breadcrumb icon-angle-right icon-th">
+        <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
+        <li class="fadeIn"><a href="{% url 'inbox' %}" title="You are here"> Inbox </a></li>
+    </ol>
+</div>
+{% endblock breadcrumb %}
+
+<!-------------------------------------------->
+<!--            Main Section                -->
+<!-------------------------------------------->
+
+{% block content %}
+
+<div class="row email-inbox">
+
+  <!-- Inbox Sidebar -->
+    <div class="col-xs-12 col-lg-2">
+        <div class="email-sidebar">
+            <a href="{% url 'privatemessage_compose' %}" class="btn btn-block btn-default" id="compose-message">Compose Message</a>
+            <h4>Folders</h4>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <a href="{% url 'inbox' %}"> <i class="sidebar-icon fa fa-inbox color-false"></i> Inbox <span class="label label-warning label-rounded pull-right"></span> </a>
+                </li>
+                <li class="list-group-item">
+                    <a href="{% url 'sent_html' %}" id="sent_messages"> <i class="sidebar-icon fa fa-envelope-o color-false"></i> Sent</a>
+                </li>
+                {% comment %}
+                <li class="list-group-item">
+                    <a href="{% url 'inbox_important' %}"> <i class="sidebar-icon fa fa-certificate color-false"></i> Important <span class="label label-success label-rounded pull-right"></span> </a>
+                </li>
+                <li class="list-group-item">
+                    <a href="{% url 'inbox_trash' %}"> <i class="sidebar-icon fa fa-trash-o color-false"></i> Trash</a>
+                </li>
+                {% endcomment %}
+            </ul>
+            <h4>Comment Feed Categories</h4>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <a href="{% url 'comments_html' comment_type='organization' %}" id="organization_comments" title="View Organization Comments"> <i class="sidebar-icon fa fa-circle color-warning"></i>Organization</a>
+                </li>
+                <li class="list-group-item">
+                    <a href="{% url 'comments_html' comment_type='network' %}" id="network_comments" title="View Network Comments"> <i class="sidebar-icon fa fa-circle color-danger"></i>Network</a>
+                </li>
+                <li class="list-group-item">
+                    <a href="{% url 'comments_html' comment_type='project' %}" id="project_comments" title="View Organization Project Comments"> <i class="sidebar-icon fa fa-circle color-purple"></i>Project</a>
+                </li>
+                <li class="list-group-item">
+                    <a href="{% url 'comments_html' comment_type='story' %}" id="story_comments" title="View Organization Story Comments"> <i class="sidebar-icon fa fa-circle color-primary"></i>Story</a>
+                </li>
+                <li class="list-group-item">
+                    <a href="{% url 'comments_html' comment_type='series' %}" id="series_comments" title="View Organization Series Comments"> <i class="sidebar-icon fa fa-circle color-info"></i>Series</a>
+                </li>
+                <li class="list-group-item">
+                    <a href="{% url 'comments_html' comment_type='facet' %}" id="facet_comments" title="View Organization Story Facet Comments"> <i class="sidebar-icon fa fa-circle color-success"></i>Facet</a>
+                </li>
+            </ul>
+          </div>
+    </div>
+    <!-- End of Inbox Sidebar -->
+    <!-- Inbox Main -->
+    <div class="col-xs-12 col-lg-10">
+      <div id="inbox-main">
+
+          {% block content_inbox %}
+          {% endblock %}
+
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block modals %}
+<!-- Modal -->
+
+{% endblock modals %}

@@ -1,3 +1,8 @@
+{% extends 'editorial/base_inbox.html' %}
+
+{% block content_inbox %}
+
+
 <div class="inbox-header">
     <h3 class="capitalize"> {{comment_type}} Comments </h3>
     <div class="m-b-20">
@@ -26,9 +31,22 @@
                   <p class="f-w-300 f-s-16">{{ comment.text }}</p>
                 </td>
                 <td class="text-right f-s-12 f-w-300">
+
+                    {% comment %}
+                       {% for thing in comment.get-thing-to-loop-over}
+                       <a href="{{ thing.get_absolute_url }}"> {{ thing.type }} - {{ thing.name }}<span class="color-default">  |  {{ comment.date|date:'N j' }} at {{ comment.date|date:'g:i a' }} </span></a>
+                       {% endfor}
+
+                       in comment model:
+
+                          def get-thing-to-loop-over(self):
+                             if comment is discussion: return self.org_discussion.all()
+                             else if comment is series: ...
+                    {% endcomment %}
+
                   {% if comment.discussion.organization_discussion.all %}
                     {% for organization in comment.discussion.organization_discussion.all %}
-                      <a href="{% url 'org_detail' pk=organization.id %}"> {{ organization.type }} - {{ organization.name }}<span class="color-default">  |  {{ comment.date|date:'N j' }} at {{ comment.date|date:'g:i a' }} </span></a>
+                      <a href="{{ organization.get_absolute_url }}"> {{ organization.type }} - {{ organization.name }}<span class="color-default">  |  {{ comment.date|date:'N j' }} at {{ comment.date|date:'g:i a' }} </span></a>
                     {% endfor %}
                   {% elif comment.discussion.network_discussion.all %}
                     {% for network in comment.discussion.network_discussion.all %}
@@ -56,3 +74,5 @@
         </tbody>
     </table>
 </div>
+
+{% endblock %}

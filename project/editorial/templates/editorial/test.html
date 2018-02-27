@@ -24,138 +24,20 @@
 
 <div class="row m-b-20">
   <div class="col-xs-12">
-    <div class="col-xs-12 col-sm-6 col-lg-3">
-      <h5>Sidebar</h5>
-    </div>
-    <div class="col-xs-12 col-sm-6 col-lg-3">
-        <h5 class="m-b-20">Identified</h5>
-        <div class="activity-widget-5">
-            <div class="row">
-                <div class="col-xs-12 bs-media" id="board-1">
-                  {% for task in tasks %}
-                    {% if task.task_status == "Identified"  %}
-                    <div class="media">
-                        <div class="media-body">
-                            <h5 class="media-heading">
-                              {% if task.important == True %}
-                                <span class="label"><i class="fa fa-star" aria-hidden="true"></i></span>
-                              {% else %}
-                                <span class="label"><i class="fa fa-star-o" aria-hidden="true"></i></span>
-                              {% endif %}
-                              {{ task.title }}
-                            </h5>
-                            <p>{{ task.text|truncatechars:150 }}</p>
-                            <p class="color-default f-s-12 m-t-10">Due: {{ task.due_date|date:'D, N j, g:i a' }}</p>
-                        </div>
-                        {% for user in task.assigned_to.all %}
-                          {% if user.display_photo %}
-                            <img class="img-circle w-40 h-40 m-t-10" src="{{ user.display_photo.url }}" alt="user">
-                          {% endif %}
-                        {% endfor %}
-                    </div>
-                    {% endif %}
-                  {% endfor %}
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-xs-12 col-sm-6 col-lg-3">
-        <h5 class="m-b-20">In Progress</h5>
-        <div class="activity-widget-5">
-            <div class="row">
-                <div class="col-xs-12 bs-media" id="board-2">
-                  {% for task in tasks %}
-                    {% if task.task_status == "In Progress"  %}
-                    <div class="media">
-                        <div class="media-body">
-                            <h5 class="media-heading">
-                              {% if task.important == True %}
-                                <span class="label"><i class="fa fa-star" aria-hidden="true"></i></span>
-                              {% else %}
-                                <span class="label"><i class="fa fa-star-o" aria-hidden="true"></i></span>
-                              {% endif %}
-                              {{ task.title }}
-                            </h5>
-                            <p>{{ task.text|truncatechars:150 }}</p>
-                            <p class="color-default f-s-12 m-t-10">Due: {{ task.due_date|date:'D, N j, g:i a' }}</p>
-                        </div>
-                        {% for user in task.assigned_to.all %}
-                          {% if user.display_photo %}
-                            <img class="img-circle w-40 h-40 m-t-10" src="{{ user.display_photo.url }}" alt="user">
-                          {% endif %}
-                        {% endfor %}
-                    </div>
-                    {% endif %}
-                  {% endfor %}
 
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="col-xs-12 col-sm-6 col-lg-3">
-        <h5 class="m-b-20">Complete</h5>
-        <div class="activity-widget-5">
-            <div class="row">
-                <div class="col-xs-12 bs-media" id="board-3">
-                  {% for task in tasks %}
-                    {% if task.task_status == "Complete"  %}
-                    <div class="media">
-                        <div class="media-body">
-                            <h5 class="media-heading">
-                              {% if task.important == True %}
-                                <span class="label"><i class="fa fa-star" aria-hidden="true"></i></span>
-                              {% else %}
-                                <span class="label"><i class="fa fa-star-o" aria-hidden="true"></i></span>
-                              {% endif %}
-                              {{ task.title }}
-                            </h5>
-                            <p>{{ task.text|truncatechars:150 }}</p>
-                            <p class="color-default f-s-12 m-t-10">Due: {{ task.due_date|date:'D, N j, g:i a' }}</p>
-                        </div>
-                        {% for user in task.assigned_to.all %}
-                          {% if user.display_photo %}
-                            <img class="img-circle w-40 h-40 m-t-10" src="{{ user.display_photo.url }}" alt="user">
-                          {% endif %}
-                        {% endfor %}
-                    </div>
-                    {% endif %}
-                  {% endfor %}
+<button id="compose">Compose</button>
 
-                </div>
-            </div>
-        </div>
-    </div>
-
-  </div>
-
-<!-- <script>
-
-(function() {
-    'use strict';
-    $(function() {
-        var config = $.localStorage.get('config');
-        $('body').attr('data-layout', config.layout);
-        $('body').attr('data-palette', config.theme);
-        $('body').attr('data-direction', config.direction);
-        dragula([document.getElementById('board-1'), document.getElementById('board-2'), document.getElementById('board-3'), document.getElementById('board-4')]);
-        dragula([document.getElementById('left-list'), document.getElementById('right-list')])
-            .on('drag', function(el) {
-                el.className = el.className.replace('ex-moved', '');
-            })
-            .on('drop', function(el) {
-                el.className += 'ex-moved';
-            })
-            .on('over', function(el, container) {
-                container.className += 'ex-over';
-            })
-            .on('out', function(el, container) {
-                container.className = container.className.replace('ex-over', '');
-            });
-    });
-})();
-</script> -->
+<div id="compose-modal" style="border: solid 1px white">yo</div>
 
 </div>
+</div>
+
+<script>
+$("#compose").on("click", function () {
+   $("#compose-modal").load("/privatemessage/compose-modal/");
+});
+</script>
+
 
 {% endblock %}
 

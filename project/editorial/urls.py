@@ -25,11 +25,15 @@ from views import (
     users,
     )
 
+from django.views import generic
+
 from . import api
 
 from views.search import EditorialSearchView
 
 urlpatterns = [
+    url(r'test/$', generic.TemplateView.as_view(template_name='editorial/test.html')),
+
     #   Account URLS
     url(r'^account/selection/$', accounts.AccountSelectionView.as_view(), name='account_selection'),
 
@@ -76,6 +80,9 @@ urlpatterns = [
 
     #   Private Message URLS
     url(r'^privatemessage/compose/$', inbox.PrivateMessageCompose.as_view(), name='privatemessage_compose'),
+    url(r'^privatemessage/compose-modal/$', inbox.PrivateMessageComposeModal.as_view(), name='privatemessage_compose_modal'),
+    url(r'^privatemessage/compose-modal-success/$', generic.TemplateView.as_view(template_name='editorial/privatemessage_compose_modal_success.html'), name='privatemessage_compose_modal_success'),
+
     url(r'^privatemessage/(?P<pk>\d+)/content/$', inbox.MessageContent.as_view(), name='message_html'),
 
     #   Copy URLS

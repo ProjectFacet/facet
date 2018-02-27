@@ -8,6 +8,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404, reverse
 from django.template.loader import render_to_string
 from django.views.generic import TemplateView, View, FormView
+from braces.views import LoginRequiredMixin, FormMessagesMixin, CsrfExemptMixin
 
 
 from editorial.forms import (
@@ -29,12 +30,6 @@ class Inbox(TemplateView):
     """ Return discussion inbox.
 
     Displays inbox and sent messages.
-
-    Displays comments from Project Discussions involving user.
-    Displays comments from Series Discussions involving user.
-    Displays comments from Story Discussions involving user.
-    Displays comments from any Facet Discussion involving user.
-    Displays comments from any PrivateDiscussion involving user.
     """
 
     template_name = 'editorial/inbox.html'
@@ -45,28 +40,34 @@ class Inbox(TemplateView):
         private_messages_received = self.request.user.private_messages_received()
 
         return {
-            'private_messages_received': private_messages_received,
+            'messages': private_messages_received,
     }
 
 
-class SentMessages(View):
+class SentMessages(TemplateView):
     """Return sent messages."""
 
-    def get(self, request):
+    template_name = 'editorial/sent-messages.html'
+
+    def get_context_data(self):
+        """Return all the assorted items associated with a team user inbox."""
 
         sent_messages = self.request.user.private_messages_sent()
 
-        sent_messages_html = render_to_string('sent-messages.html', {'sent_messages': sent_messages})
+        return {
+            'messages': sent_messages,
+    }
 
-        return HttpResponse(sent_messages_html)
 
-
-class CommentList(View):
+class CommentList(TemplateView):
     """Return comment feeds."""
 
-    def get(self, request, comment_type):
+    template_name = 'editorial/inbox-comments.html'
 
-        organization = request.user.organization
+    def get_context_data(self, comment_type):
+        """Return all the assorted items associated with a team user inbox."""
+
+        organization = self.request.user.organization
         # returns all comments involving any user of an Organization
         all_comments = organization.get_org_user_comments()
 
@@ -89,12 +90,10 @@ class CommentList(View):
         # returns all comments for any facets of stories of an Organization
             comments = organization.get_facet_comments()
 
-        comments_html = render_to_string('inbox-comments.html', {
-                                'comments': comments,
-                                'comment_type': comment_type,
-        })
-
-        return HttpResponse(comments_html)
+        return {
+            'comments': comments,
+            'comment_type': comment_type,
+        }
 
 
 class MessageContent(TemplateView):
@@ -112,11 +111,13 @@ class MessageContent(TemplateView):
 # Any user with a talenteditor profile should be able to message any user with a contractorprofile and public is true
 
 
-class PrivateMessageCompose(FormView):
+class PrivateMessageCompose(FormMessagesMixin, CsrfExemptMixin, FormView):
     """Compose private messages (form & form handling)."""
 
-    template_name = "editorial/compose-message.html"
+    template_name = "editorial/privatemessage_compose_form.html"
     form_class = PrivateMessageForm
+    form_valid_message = "Message sent."
+    form_invalid_message = "Please correct the errors below."
 
     def get_form_kwargs(self):
         kwargs = super(PrivateMessageCompose, self).get_form_kwargs()
@@ -141,6 +142,13 @@ class PrivateMessageCompose(FormView):
     def get_success_url(self):
         # TODO: pass through "where i should return to"
         return reverse("inbox")
+
+
+class PrivateMessageComposeModal(PrivateMessageCompose):
+    template_name = "editorial/privatemessage_compose_form_modal.html"
+
+    def get_success_url(self):
+        return reverse("privatemessage_compose_modal_success")
 
 
 # def inbox_important(request):

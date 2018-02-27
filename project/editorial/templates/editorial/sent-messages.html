@@ -1,3 +1,7 @@
+{% extends 'editorial/base_inbox.html' %}
+
+{% block content_inbox %}
+
 <div class="inbox-header">
     <h3> Sent Messages </h3>
     <div class="m-b-20">
@@ -13,7 +17,7 @@
 <div class="inbox-content">
     <table class="table">
         <tbody>
-            {% for message in sent_messages %}
+            {% for message in messages %}
             <tr id="{{message.id}}-table-row">
                 <td>
                     <a href="{% url 'message_html' message.pk %}" class="specific-message"> <span class="email-contact">To: {{ message.recipient.credit_name }}</span> </a>
@@ -26,15 +30,4 @@
     </table>
 </div>
 
-<script>
-$(function() {
-    $(".specific-message").click(function(event) {
-        console.log("sent messages");
-        event.preventDefault();
-        var page_url = jQuery(this).attr("href")
-        console.log(page_url);
-        $('#inbox-main')
-           .load(page_url);
-    });
-});
-</script>
+{% endblock %}

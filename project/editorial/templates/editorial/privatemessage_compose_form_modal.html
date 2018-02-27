@@ -1,0 +1,24 @@
+
+{% load bootstrap3 %}
+
+<div class="inbox-header">
+    <h3> Compose Message </h3> </div>
+<div class="email-compose">
+
+  <form id="compose-form" action="{% url 'privatemessage_compose' %}" method="POST" class="post-form">
+  {% csrf_token %}
+  {% bootstrap_form form %}
+  <button type="submit" class="btn btn-primary">Send Message</button>
+  </form>
+
+</div>
+
+<script>
+  $("#compose-form").on("submit", function (evt) {
+    evt.preventDefault();
+    var fields = $("#compose-form").serialize();
+    $.post("{% url 'privatemessage_compose_modal' %}", fields, function (res) {
+      $("#compose-modal").html(res);
+    });
+  });
+</script>
