@@ -3,11 +3,12 @@
 <div class="inbox-header">
     <h3> Compose Message </h3> </div>
 <div class="email-compose">
-  {% if privatemessageform %}
-  <form action="{% url 'private_message_new' %}" method="POST" class="post-form">
+
+  <form action="{% url 'privatemessage_compose' %}" method="POST" class="post-form">
   {% csrf_token %}
-  {% bootstrap_form privatemessageform %}
+  {% bootstrap_form form %}
+  Errors = {{ form.errors }}
   <button type="submit" class="btn btn-primary">Send Message</button>
   </form>
-  {% endif %}
+
 </div>

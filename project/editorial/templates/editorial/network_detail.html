@@ -257,7 +257,7 @@
         <h4 class="modal-title" id="inviteOrgToNetworkModalLabel">Invite an organization to join {{ network.name }}</h4>
       </div>
       <div class="modal-body">
-        <form action="{% url 'send_network_invite' %}" method="POST" class="post-form">
+        <form action="{% url 'network_invitation_send' pk=network.pk %}" method="POST" class="post-form">
         {% csrf_token %}
         {% bootstrap_form networkinvitationform %}
         <input type="hidden" name="network" value="{{ network.pk }}" />

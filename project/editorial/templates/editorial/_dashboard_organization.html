@@ -303,7 +303,7 @@
         {% if shared_networkstories %}
           <ul class="list-group m-10">
             {% for story in shared_networkstories|slice:":5" %}
-              <li class="list-group-item"> <span class="text-xs pull-right">{{story.organization.name}}</span> <a href="{% url 'network_stories' %}" title="Go to network stories">{{story.name}}</a> </li>
+              <li class="list-group-item"> <span class="text-xs pull-right">{{story.organization.name}}</span> <a href="{% url 'network_stories' %}" title="Preview this story in network stories">{{story.name}}</a> <span class="m-l-10 color-default f-r-7">(Facets: {{ story.facet_set.count }})</span> </li>
             {% endfor %}
           </ul>
         {% else %}

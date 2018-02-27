@@ -5,12 +5,12 @@
 
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404, reverse
 from django.conf import settings
 from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.utils import timezone
-from django.views.generic import TemplateView , UpdateView, DetailView, CreateView, ListView, DeleteView, View
+from django.views.generic import TemplateView , UpdateView, DetailView, CreateView, ListView, DeleteView, View, RedirectView
 from django.views.decorators.csrf import csrf_exempt
 from django.core.serializers.json import DjangoJSONEncoder
 import datetime
@@ -158,36 +158,47 @@ class NetworkDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteView):
 
 # ACCESS: Only an admin of an org that owns a network can invite other admins
 # to a network
-def send_network_invite(request):
-    """ Send private message with link to join a network."""
 
-    network = request.POST.get('network')
-    network = get_object_or_404(Network, id=network)
-    user_email = request.POST.get('invited_user')
-    user = get_object_or_404(User, email=user_email)
-    organization = get_object_or_404(Organization, id=user.organization_id)
-    message_subject = "Invitation for {organization} to join {network}".format(organization = organization.name, network=network.name)
-    message_text = '<form action="/network/invitation/accept/" method="POST" class="post-form"><input type="hidden" name="network" value="{network}" /><button type="submit" class="btn btn-primary">Accept Invitation</button></form>'.format(network=network.id)
-    discussion = Discussion.objects.create_discussion('PRI')
-    invitation_message = PrivateMessage.objects.create_private_message(user=request.user, recipient=user, discussion=discussion, subject=message_subject, text=message_text)
-    return redirect('network_detail', pk=network.pk)
+class NetworkInvitationSend(LoginRequiredMixin, FormMessagesMixin, RedirectView):
+    """Send invite email and redirect back to network page."""
 
-    # on Priv?essage, add field for .org_invite_id
-    # on message render view:   {% if msg.org_invite_id %} <form...> {% csrf_Except %} ... </form>
+    permanent = False
+    msg_subject = "Invitation for {organization} to join {network}"
+    msg_body = """{sender} has invited you..."""
+
+    def get_redirect_url(self, pk):
+        """ Send private message with link to join a network."""
+
+        network = get_object_or_404(Network, id=pk)
+        recip_email = self.request.POST.get('invited_user')
+        recip = get_object_or_404(User, email=recip_email)
+        organization = recip.organization
+        sender = self.request.user
+        message_subject = self.msg_subject.format(organization=organization.name, network=network.name)
+        message_text = self.msg_body.format(sender=sender)
+        discussion = Discussion.objects.create_discussion('PRI')
+        invitation_message = PrivateMessage.objects.create_private_message(
+                user=sender,
+                recipient=recip,
+                discussion=discussion,
+                subject=message_subject,
+                text=message_text,
+                network_invitation=network)
+
+        return reverse('network_detail', kwargs={'pk': network.pk})
 
 
-@csrf_exempt
-def confirm_network_invite(request):
+class NetworkInvitationAccept(LoginRequiredMixin, FormMessagesMixin, RedirectView):
     """ Receive confirmed networkwork invitation and create new NetworkOrganization
     connection."""
 
-    network_id = request.POST.get('network')
-    network = get_object_or_404(Network, id=network_id)
-    organization = request.user.organization
-    network.organizations.add(organization)
-    network.save()
-    print "Successfully joined Network!"
-    return redirect('network_detail', pk=network.pk)
+    def get_redirect_url(self, pk):
+        network = get_object_or_404(Network, id=pk)
+        organization = self.request.user.organization
+        network.organizations.add(organization)
+        # network.save()
+        print "Successfully joined Network!"
+        return reverse('network_detail', kwargs={'pk': network.pk})
 
 
 def org_to_network(request, pk):

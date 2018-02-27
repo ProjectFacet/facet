@@ -67,30 +67,7 @@ class AjaxResponseMixin(object):
             return response
 
 
-#----------------------------------------------------------------------#
-#   Private Message Views
-#----------------------------------------------------------------------#
 
-# ACCESS Any org user should be able to message any other same org user
-# Any org user should be able to message org users from organizations in shared networks
-# Contractors should be able to message any user with a talenteditor profile & public is true
-# Any user with a talenteditor profile should be able to message any user with a contractorprofile and public is true
-class PrivateMessageSend(LoginRequiredMixin, View):
-    """Send a private message."""
-
-    # handle users that are not logged in
-    login_url = settings.LOGIN_URL
-
-    def post(self, request, *args, **kwargs):
-        message_subject = self.request.POST.get('subject')
-        message_text = self.request.POST.get('text')
-        send_to = self.request.POST.get('recipient')
-        recipient = get_object_or_404(User, id=send_to)
-        discussion = Discussion.objects.create_discussion('PRI')
-        message = PrivateMessage.objects.create_private_message(user=request.user, recipient=recipient, discussion=discussion, subject=message_subject, text=message_text)
-        message.save()
-
-        return redirect('dashboard')
 
 
 #----------------------------------------------------------------------#

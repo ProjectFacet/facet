@@ -5,9 +5,9 @@
 from __future__ import unicode_literals
 
 from django.http import HttpResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, reverse
 from django.template.loader import render_to_string
-from django.views.generic import TemplateView, View
+from django.views.generic import TemplateView, View, FormView
 
 
 from editorial.forms import (
@@ -16,6 +16,7 @@ from editorial.forms import (
 from editorial.models import (
     User,
     PrivateMessage,
+    Discussion,
 )
 
 
@@ -96,27 +97,50 @@ class CommentList(View):
         return HttpResponse(comments_html)
 
 
-class MessageContent(View):
+class MessageContent(TemplateView):
     """Return html for displaying a specific message."""
 
-    def get(self, request, pk):
+    template_name = "editorial/private-message-content.html"
 
+    def get_context_data(self, pk):
         message = get_object_or_404(PrivateMessage, id=pk)
+        return {'message': message}
 
-        message_html = render_to_string('private-message-content.html', {'message': message})
-        return HttpResponse(message_html)
+# ACCESS Any org user should be able to message any other same org user
+# Any org user should be able to message org users from organizations in shared networks
+# Contractors should be able to message any user with a talenteditor profile & public is true
+# Any user with a talenteditor profile should be able to message any user with a contractorprofile and public is true
 
 
-class ComposeMessage(View):
-    """Return private message form."""
+class PrivateMessageCompose(FormView):
+    """Compose private messages (form & form handling)."""
 
-    def get(self, request):
+    template_name = "editorial/compose-message.html"
+    form_class = PrivateMessageForm
 
-        privatemessageform = PrivateMessageForm(request=request)
+    def get_form_kwargs(self):
+        kwargs = super(PrivateMessageCompose, self).get_form_kwargs()
+        kwargs['request'] = self.request
+        return kwargs
 
-        compose_message_html = render_to_string('compose-message.html', {'privatemessageform' : privatemessageform})
-        return HttpResponse(compose_message_html)
+    def form_valid(self, form):
+        message_subject = form.cleaned_data['subject']
+        message_text = form.cleaned_data['text']
+        recipient = form.cleaned_data['recipient']
+        discussion = Discussion.objects.create_discussion('PRI')
+        sender = self.request.user
+        message = PrivateMessage.objects.create_private_message(
+                user=sender,
+                recipient=recipient,
+                discussion=discussion,
+                subject=message_subject,
+                text=message_text)
+        # message.save()
+        return super(PrivateMessageCompose, self).form_valid(form)
 
+    def get_success_url(self):
+        # TODO: pass through "where i should return to"
+        return reverse("inbox")
 
 
 # def inbox_important(request):

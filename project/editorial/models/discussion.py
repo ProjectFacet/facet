@@ -86,10 +86,21 @@ class PrivateDiscussion(models.Model):
 class PrivateMessageManager(models.Manager):
     """ Customer manager for private messaging."""
 
-    def create_private_message(self, user, recipient, discussion, subject, text):
-        """ Method for quick creation of a private discussion."""
+    def create_private_message(self,
+                               user,
+                               recipient,
+                               discussion,
+                               subject,
+                               text,
+                               network_invitation=None):
+        """Method for quick creation of a private discussion."""
 
-        message = self.create(user=user, recipient=recipient, discussion=discussion, subject=subject, text=text)
+        message = self.create(user=user,
+                              recipient=recipient,
+                              discussion=discussion,
+                              subject=subject,
+                              text=text,
+                              network_invitation=network_invitation)
         return message
 
 
@@ -128,6 +139,19 @@ class PrivateMessage(models.Model):
 
     date = models.DateTimeField(
         auto_now_add=True,
+    )
+
+    # This message is an invitation to a network
+    network_invitation = models.ForeignKey(
+        "Network",
+        blank=True,
+        null=True,
+    )
+
+    # What was response to invitation? (T=accepted, F=declined,
+    # NULL=not-yet-acted-on)
+    network_invitation_response = models.NullBooleanField(
+        null=True,
     )
 
     objects = PrivateMessageManager()

@@ -240,7 +240,7 @@
                   <!---------------->
                   <ul class="nav navbar-nav pull-right">
                     <li class="nav-item dropdown dropdown-menu-right">
-                        <a class="nav-link dropdown-toggle no-after" data-toggle="dropdown"> <span class="zmdi zmdi-settings"></span> </a>
+                        <a class="nav-link dropdown-toggle no-after" data-toggle="dropdown" title="Manage organization and networks"> <span class="zmdi zmdi-settings"></span> </a>
                         <div class="dropdown-menu dropdown-menu-scale from-right dropdown-menu-right">
                             {% if request.user.organization %}
                               <a class="dropdown-item" href="{% url 'org_detail' pk=request.user.organization.id %}"> <span class="title">Organization</span> </a>
@@ -275,7 +275,7 @@
 
                   <ul class="nav navbar-nav pull-right hidden-sm-down navbar-notifications">
                       <li class="nav-item">
-                          <a class="nav-link" data-click="toggle-right-sidebar"> <i class="zmdi zmdi-notifications-active"></i></a>
+                          <a class="nav-link" data-click="toggle-right-sidebar" title="Activity"> <i class="zmdi zmdi-notifications-active"></i></a>
                       </li>
                   </ul>
 
@@ -682,7 +682,7 @@
                 </div>
                 <div class="modal-body">
                   {% if privatemessageform %}
-                  <form action="{% url 'private_message_new' %}" method="POST" class="post-form">
+                  <form action="{% url 'privatemessage_compose' %}" method="POST" class="post-form">
                   {% csrf_token %}
                   {% bootstrap_form privatemessageform %}
                   <button type="submit" class="btn btn-primary">Send Message</button>

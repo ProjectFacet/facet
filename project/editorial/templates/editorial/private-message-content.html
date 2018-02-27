@@ -6,7 +6,15 @@
     </div>
     <h3 class="m-b-20"> <span>Subject: </span> <span>{{ message.subject }}</span> </h3>
     <p class="text-bold m-b-20"> <span class="pull-right email-date">{{ message.date|date:'D, M j' }} | {{ message.date|date:'g:i a' }}</span> <span class="email-from"><strong>From: </strong></span> {{ message.user.credit_name }}</p>
-    <p>{{ message.text|safe }}</p>
+
+    {% if message.network_invitation %}
+    <form action="{% url 'network_invitation_accept' pk=message.network_invitation_id %}" method="POST" class="post-form">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-primary">Accept Invitation</button>
+    </form>
+    {% endif %}
+
+    <p>{{ message.text|linebreaksbr }}</p>
 </div>
 <div class="text-left">
     {% comment %}<button type="button" class="btn btn-default"><i class="fa fa-trash-o"></i> Remove</button>{% endcomment %}

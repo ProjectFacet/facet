@@ -69,14 +69,13 @@ urlpatterns = [
 
     #   Inbox URLS - Labeled as Inbox in navigation
     url(r'^inbox/$', inbox.Inbox.as_view(), name='inbox'),
-    url(r'^inbox/compose/$', inbox.ComposeMessage.as_view(), name='compose_message_html'),
     url(r'^inbox/sent/$', inbox.SentMessages.as_view(), name='sent_html'),
     url(r'^inbox/(?P<comment_type>[-\w]+)/comments$', inbox.CommentList.as_view(), name='comments_html'),
     # url(r'^inbox/important/$', inboxviews.inbox_important, name='inbox_important'),
     # url(r'^inbox/trash/$', inboxviews.inbox_trash, name='inbox_trash'),
 
     #   Private Message URLS
-    url(r'^privatemessage/new/$', discussion.PrivateMessageSend.as_view(), name='private_message_new'),
+    url(r'^privatemessage/compose/$', inbox.PrivateMessageCompose.as_view(), name='privatemessage_compose'),
     url(r'^privatemessage/(?P<pk>\d+)/content/$', inbox.MessageContent.as_view(), name='message_html'),
 
     #   Copy URLS
@@ -262,8 +261,8 @@ urlpatterns = [
     #   Network URLS
     url(r'^network/new/$', networks.NetworkCreateView.as_view(), name='network_new'),
     url(r'^network/(?P<pk>\d+)/$', networks.NetworkDetailView.as_view(), name='network_detail'),
-    url(r'^network/invitation/$', networks.send_network_invite, name='send_network_invite'),
-    url(r'^network/invitation/accept/$', networks.confirm_network_invite, name='confirm_network_invite'),
+    url(r'^network/(?P<pk>\d+)/invitation/$', networks.NetworkInvitationSend.as_view(), name='network_invitation_send'),
+    url(r'^network/(?P<pk>\d+)/invitation/accept/$', networks.NetworkInvitationAccept.as_view(), name='network_invitation_accept'),
     url(r'^network/(?P<pk>\d+)/edit/$', networks.NetworkUpdateView.as_view(), name='network_edit'),
     url(r'^network/list/$', networks.NetworkListView.as_view(), name='network_list'),
     url(r'^network/stories/$', networks.NetworkStoryListView.as_view(), name='network_stories'),
