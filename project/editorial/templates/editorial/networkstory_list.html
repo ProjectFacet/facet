@@ -29,7 +29,7 @@
     <!-- Full table for md and lg displays -->
     <table id="network-stories-list" class="table table-condensed table-striped hidden-sm-down">
       <thead>
-        <tr>
+        <tr class="f-s-12">
           <th>Story</th>
           <th>Pickup</th>
           <th>Facets</th>
@@ -39,7 +39,7 @@
       </thead>
       <tbody>
         {% for story in networkstories %}
-          <tr>
+          <tr class="f-s-14">
             <!-- Story Name -->
             <td>
               {{ story.name }}
@@ -47,16 +47,18 @@
               <!-- Story Ready to Share -->
             <td>
               {% if story.ready_to_share %}
-                <form action="{% url 'copy_network_story' story=story.id %}" method="POST" class="sameline">
-                  {% csrf_token %}
-                  {% if story.already_picked_up %}
-                  <span class="f-r-8 f-w-300 color-success">Acquired</span>
-                  {% else %}
-                  <button class="clear clear-button" type="submit">
-                    <i class="fa fa-clone"></i>
-                  </button>
-                  {% endif %}
-                </form>
+                {% if story.already_picked_up %}
+                <span class="f-r-8 f-w-300 color-success">Acquired</span>
+                {% else %}
+                  <form action="{% url 'copy_network_story' story=story.id %}" method="POST" class="sameline">
+                    {% csrf_token %}
+                    <button class="clear clear-button" type="submit">
+                      <i class="fa fa-clone"></i>
+                    </button>
+                  </form>
+                {% endif %}
+              {% else %}
+                <span class="f-r-8 f-w-300 color-warning">Not Yet Available</span>
               {% endif %}
             </td>
             <!-- Story Facets -->

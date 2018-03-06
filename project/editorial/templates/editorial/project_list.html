@@ -29,7 +29,7 @@
     <!-- Full table for xs, sm, md and lg displays -->
     <table id="project-list" class="table table-condensed table-striped">
       <thead>
-        <tr>
+        <tr class="f-s-12">
           <th>Projects</th>
           <th>Description</th>
           <th>Story Count</th>
@@ -37,7 +37,7 @@
       </thead>
       <tbody>
         {% for project in projects %}
-          <tr>
+          <tr class="f-s-14">
             <td><a href="{% url 'project_detail' project.id %}">{{ project.name }}</a></td>
             <td>{{ project.project_description }}</td>
             <td>{{ project.story_set.count }}</td>

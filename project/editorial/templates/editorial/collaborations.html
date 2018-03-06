@@ -30,7 +30,7 @@
     <!-- Full table for xs, sm, md and lg displays -->
       <table id="collaboration-content" class="table table-condensed table-striped">
         <thead>
-          <tr>
+          <tr class="f-s-12">
             <th>Content</th>
             <th>Description</th>
             <th>Owner</th>
@@ -38,7 +38,7 @@
         </thead>
         <tbody>
           {% for item in external_collaborations %}
-          <tr>
+          <tr class="f-s-14">
             {% if item.type == "Project" %}
             <td><a href="{% url 'project_detail' pk=item.id %}">Project: {{item.name}}</a></td>
             <td>{{ item.description }}</td>
