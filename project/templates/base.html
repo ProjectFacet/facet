@@ -261,23 +261,27 @@
                   </ul>
                   {% endcomment %}
 
+                  {% comment %}
                   <ul class="nav navbar-nav pull-right hidden-sm-down">
                       <li class="nav-item dropdown dropdown-menu-right">
                           <a class="nav-link dropdown-toggle no-after" data-toggle="modal" data-target="#addUserNote" href="#" title="Add a note"> <span class="fa fa-sticky-note"></span> </a>
                       </li>
                   </ul>
+                  {% endcomment %}
 
                   <ul class="nav navbar-nav pull-right hidden-sm-down">
                       <li class="nav-item dropdown dropdown-menu-right">
-                          <a class="nav-link dropdown-toggle no-after" data-toggle="modal" data-target="#sendPrivateMessage" href="#" title="Send a private message"> <span class="fa fa-comment"></span> </a>
+                          <a href="{% url 'privatemessage_compose' %}" class="nav-link dropdown-toggle no-after" title="Send a private message"> <span class="fa fa-comment"></span> </a>
                       </li>
                   </ul>
 
+                  {% comment %}
                   <ul class="nav navbar-nav pull-right hidden-sm-down navbar-notifications">
                       <li class="nav-item">
                           <a class="nav-link" data-click="toggle-right-sidebar" title="Activity"> <i class="zmdi zmdi-notifications-active"></i></a>
                       </li>
                   </ul>
+                  {% endcomment %}
 
                   <ul class="nav navbar-nav pull-right navbar-profile">
                       <li class="nav-item dropdown">

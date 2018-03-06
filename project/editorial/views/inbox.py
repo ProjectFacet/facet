@@ -69,7 +69,7 @@ class CommentList(TemplateView):
 
         organization = self.request.user.organization
         # returns all comments involving any user of an Organization
-        all_comments = organization.get_org_user_comments()
+        # all_comments = organization.get_org_user_comments()
 
         if comment_type=="organization":
         # returns all comments made for an Organization

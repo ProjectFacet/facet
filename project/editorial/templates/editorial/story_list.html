@@ -48,9 +48,9 @@
                 <button class="btn btn-sm clear clear-button collapsed" type="button" data-toggle="collapse" data-target="#story_{{ story.id }}_facet_collapse" aria-expanded="false" aria-controls="collapse-example-1"> {{ story.facet_set.count }} <i class="fa fa-angle-down" aria-hidden="true"></i> </button>
               </span>
               <div class="collapse" id="story_{{ story.id }}_facet_collapse" aria-expanded="true" style="">
-                <div class="card card-block" style="padding-top:1rem;padding-left:0rem;padding-bottom:.5rem;margin-bottom:0px;background:inherit !important;border:none;">
+                <div class="card card-block" style="padding-top:1rem;padding-left:0rem;padding-bottom:.5rem;margin-bottom:0px;background:inherit !important;border:none; width: 500%;">
                   {% for facet in story.facet_set.all %}
-                    <p class="f-r-8 f-w-300"> <a href="{% url 'facet_edit' pk=facet.id story=story.id %}">{{ facet.headline }}</a>
+                    <p class="f-r-8 f-w-300"> <a href="{% url 'facet_edit' pk=facet.id story=story.id %}"><i class="fa fa-angle-right m-r-10 subtle" aria-hidden="true"></i>{{ facet.headline }}</a>
                       <button type="button" class="clear clear-button m-l-10 subtle" data-toggle="modal" data-target="#previewModal" data-modaltitle="{{ facet.headline }}" data-modalcontent="{{ facet.content }}">
                         <span class="m-r-10 label label-default-outline label-xs">Preview</span>
                       </button>
