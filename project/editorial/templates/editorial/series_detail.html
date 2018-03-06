@@ -298,14 +298,14 @@
           {% endcomment %}
         </h4>
 
-        {% if series.story_set.all %}
+        {% if view.stories %}
         <table class="table table-hover table-striped table-unbordered" cellspacing="0" width="100%">
           <thead>
             <td>Story</td>
             <td>Facets</td>
           </thead>
           <tbody>
-            {% for story in series.story_set.all|slice:":9" %}
+            {% for story in view.stories|slice:":9" %}
               <tr>
                 <td><a href="{% url 'story_detail' story.id %}" class="f-s-14">{{ story.name }}</a></td>
                 <td>{{ story.facet_set.count }}</td>

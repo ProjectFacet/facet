@@ -117,7 +117,7 @@ class SeriesDetailView(LoginRequiredMixin, DetailView):
     def stories(self):
         """Get all stories associated with a series."""
 
-        return self.object.story_set.all()
+        return self.object.story_set.filter(original_story=True).all()
 
     def series_discussion(self):
         """Get discussion, comments and comment form for a series."""
@@ -178,7 +178,6 @@ class SeriesDetailView(LoginRequiredMixin, DetailView):
         """Return simple images."""
 
         images = self.object.simple_image_assets.all()
-        print "IMG: ", images
         form = SimpleImageForm()
         return {'images': images, 'form':form,}
 
@@ -186,7 +185,6 @@ class SeriesDetailView(LoginRequiredMixin, DetailView):
         """Return simple documents."""
 
         documents = self.object.simple_document_assets.all()
-        print "DOC: ", documents
         form = SimpleDocumentForm()
         return {'documents': documents, 'form':form,}
 

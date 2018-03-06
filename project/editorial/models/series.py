@@ -150,8 +150,8 @@ class Series(models.Model):
 
         from .story import Story
 
-        # get all stories associated with a project
-        series_stories = self.story_set.all()
+        # get all original stories associated with a project
+        series_stories = self.story_set.filter(original_story=True).all()
         # get all image assets associated with those stories.
         series_images = []
         for story in series_stories:
@@ -162,8 +162,8 @@ class Series(models.Model):
     def get_series_documents(self):
         """Return all document assets associated with facets that are part of a series."""
 
-        # get all stories associated with a series
-        series_stories = self.story_set.all()
+        # get all original stories associated with a series
+        series_stories = self.story_set.filter(original_story=True).all()
         # get all document assets associated with those stories.
         series_documents = []
         for story in series_stories:
@@ -174,8 +174,8 @@ class Series(models.Model):
     def get_series_audio(self):
         """Return all audio assets associated with facets that are part of a series."""
 
-        # get all stories associated with a series
-        series_stories = self.story_set.all()
+        # get all original stories associated with a series
+        series_stories = self.story_set.filter(original_story=True).all()
         # get all audio assets associated with those stories.
         series_audio = []
         for story in series_stories:
@@ -186,8 +186,8 @@ class Series(models.Model):
     def get_series_video(self):
         """Return all video assets associated with facets that are part of a series."""
 
-        # get all stories associated with a series
-        series_stories = self.story_set.all()
+        # get all original stories associated with a series
+        series_stories = self.story_set.filter(original_story=True).all()
 
         # get all video assets associated with those stories.
         series_video = []
@@ -410,10 +410,6 @@ class Series(models.Model):
                 task_event_dict['class'] = "calevent"
 
                 data.append(task_event_dict)
-
-        print "******************************"
-        print "DATA: ", data
-        print "******************************"
 
         return data
 
