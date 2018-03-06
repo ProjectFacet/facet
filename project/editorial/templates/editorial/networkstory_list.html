@@ -72,7 +72,7 @@
                     {% for facet in story.facet_set.all %}
                       <p class="f-r-8 f-w-300"><i class="fa fa-angle-right m-r-10 subtle" aria-hidden="true"></i>{{ facet.headline }}
                         {% if story.ready_to_share %}
-                        <button type="button" class="clear clear-button m-l-10 subtle" data-toggle="modal" data-target="#previewModal" data-modaltitle="{{ facet.headline }}" data-modalcontent="{{ facet.content }}">
+                        <button type="button" class="clear clear-button m-l-10 subtle" data-toggle="modal" data-target="#previewModal" data-modaltitle="{{ facet.headline }}" data-modalcontent="{{ facet.content|linebreaksbr }}">
                           <span class="m-r-10 label label-default-outline label-xs">Preview</span>
                         </button>
                         {% endif %}
