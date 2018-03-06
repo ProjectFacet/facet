@@ -146,7 +146,6 @@ class ProjectDetailView(LoginRequiredMixin, DetailView):
 
     def stories(self):
         """Get all project stories."""
-
         return self.object.get_project_stories()
 
     def project_assets(self):

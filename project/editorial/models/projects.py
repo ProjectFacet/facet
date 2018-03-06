@@ -206,7 +206,7 @@ class Project(models.Model):
     def get_project_video(self):
         """Return all video assets associated with facets that are part of a project."""
 
-        # get all stories associated with a project
+        # get all original stories associated with a project
         project_stories = self.story_set.all()
         # get all video assets associated with those stories.
         project_video = []
@@ -221,7 +221,8 @@ class Project(models.Model):
 
     def get_project_stories(self):
         """Return all stories associated with a project."""
-        return self.story_set.all()
+        import pdb; pdb.set_trace()
+        return self.story_set.filter(original_story=True).all()
 
     def get_project_event_schedule(self):
         """Return project events for a project.
