@@ -11,9 +11,6 @@ from editorial.models import (
 )
 
 
-# ------------------------------ #
-#          User Forms            #
-# ------------------------------ #
 
 class AddUserForm(forms.ModelForm):
     """Handles creating users for an organization."""
@@ -64,64 +61,3 @@ class UserProfileForm(forms.ModelForm):
             'expertise': Textarea(
                 attrs={'class': 'form-control', 'rows': 5, 'placeholder': 'Expertise'}),
         }
-
-
-# ------------------------------ #
-#      Organization Forms        #
-# ------------------------------ #
-
-class OrganizationForm(forms.ModelForm):
-    """Create an Organization."""
-
-    class Meta:
-        model = Organization
-        fields = ['name', 'org_description', 'location', 'logo']
-        widgets = {
-            'name': TextInput(
-                attrs={'class': 'form-control', 'placeholder': 'Organization Name'}),
-            'location': TextInput(
-                attrs={'class': 'form-control', 'placeholder': 'Organization Location'}),
-            'org_description': Textarea(
-                attrs={'class': 'form-control', 'placeholder': 'Organization Description'}),
-        }
-
-
-# ------------------------------ #
-#      Account Forms        #
-# ------------------------------ #
-
-class OrganizationSubscriptionForm(forms.ModelForm):
-    """ Form to edit an organization subscription."""
-
-    class Meta:
-        model = OrganizationSubscription
-        fields = ['collaborations', 'contractors', ]
-
-
-# ------------------------------ #
-#         Network Forms          #
-# ------------------------------ #
-
-class NetworkForm(forms.ModelForm):
-    """Create a new network."""
-
-    class Meta:
-        model = Network
-
-        fields = ['name', 'network_description', 'logo']
-
-        widgets = {
-            'name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Network Name'}),
-            'network_description': Textarea(
-                attrs={'class': 'form-control', 'placeholder': 'Description'}),
-        }
-
-
-class AddToNetworkForm(forms.Form):
-    """Add an organization to a network."""
-
-
-class InviteToNetworkForm(forms.Form):
-    """Send private message inviting an organization to a network."""
-
-    invited_user = forms.CharField(max_length=100)

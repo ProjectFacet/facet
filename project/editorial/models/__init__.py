@@ -25,7 +25,9 @@
 
 """
 
-from .people import User, Organization, Network, OrganizationSubscription
+from .user import User
+from .organization import Organization, OrganizationSubscription
+from .network import Network
 from .assets import ImageAsset, DocumentAsset, AudioAsset, VideoAsset
 from .assets import SimpleImage, SimpleDocument, SimpleAudio, SimpleVideo
 from .discussion import Discussion, Comment, PrivateMessage

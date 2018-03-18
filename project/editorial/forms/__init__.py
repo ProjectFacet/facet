@@ -48,11 +48,17 @@ from .notes import (
     NoteForm,
 )
 
-from .people import (
+from .user import (
     AddUserForm,
     UserProfileForm,
+)
+
+from .organization import (
     OrganizationForm,
     OrganizationSubscriptionForm,
+)
+
+from .network import (
     NetworkForm,
     AddToNetworkForm,
     InviteToNetworkForm,

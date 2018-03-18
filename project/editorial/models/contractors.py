@@ -5,7 +5,8 @@ from django.utils.encoding import python_2_unicode_compatible
 
 from .assets import SimpleImage, SimpleAudio, SimpleVideo, SimpleDocument
 from .facets import Facet
-from .people import User, Organization
+from .user import User
+from .organization import Organization
 from .story import Story
 
 

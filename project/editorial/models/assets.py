@@ -4,7 +4,8 @@ from django.db import models
 from django.utils.encoding import python_2_unicode_compatible
 from imagekit.models import ImageSpecField
 
-from .people import User, Organization
+from .user import User
+from .organization import Organization
 
 
 #-----------------------------------------------------------------------#
