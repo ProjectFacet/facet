@@ -9,7 +9,7 @@ from views import (
     discussion,
     downloads,
     events,
-    facetviews,
+    facet,
     general,
     inbox,
     networks,
@@ -206,16 +206,16 @@ urlpatterns = [
     # url(r'^story/(?P<pk>\d+)/team/json/$', story.story_team_options_json, name='story_team_options_json'),
 
     #   Facet URLS
-    url(r'^story/(?P<story>\d+)/facet/add/$', facetviews.FacetPreCreateView.as_view(), name="facet_precreate"),
-    url(r'^story/(?P<story>\d+)/facet/add/(?P<template_id>\d+)/$', facetviews.FacetCreateView.as_view(), name="facet_add"),
-    url(r'^story/(?P<story>\d+)/facet/(?P<pk>\d+)/edit/$', facetviews.FacetUpdateView.as_view(), name="facet_edit"),
-    url(r'^story/(?P<story>\d+)/facet/(?P<pk>\d+)/delete/$', facetviews.FacetDeleteView.as_view(), name="facet_delete"),
+    url(r'^story/(?P<story>\d+)/facet/add/$', facet.FacetPreCreateView.as_view(), name="facet_precreate"),
+    url(r'^story/(?P<story>\d+)/facet/add/(?P<template_id>\d+)/$', facet.FacetCreateView.as_view(), name="facet_add"),
+    url(r'^story/(?P<story>\d+)/facet/(?P<pk>\d+)/edit/$', facet.FacetUpdateView.as_view(), name="facet_edit"),
+    url(r'^story/(?P<story>\d+)/facet/(?P<pk>\d+)/delete/$', facet.FacetDeleteView.as_view(), name="facet_delete"),
     # Facet templates
     # TODO append organization to these urls as templates return are specific to organization
-    url(r'^facet/templates/$', facetviews.FacetTemplateView.as_view(), name="facet_template_list"),
-    url(r'^facet/template/create/$', facetviews.FacetTemplateCreateView.as_view(), name="facet_template_create"),
-    url(r'^facet/template/(?P<pk>\d+)/$', facetviews.FacetTemplateDetailView.as_view(), name="facet_template_detail"),
-    url(r'^facet/template/(?P<pk>\d+)/edit/$', facetviews.FacetTemplateUpdateView.as_view(), name="facet_template_edit"),
+    url(r'^facet/templates/$', facet.FacetTemplateView.as_view(), name="facet_template_list"),
+    url(r'^facet/template/create/$', facet.FacetTemplateCreateView.as_view(), name="facet_template_create"),
+    url(r'^facet/template/(?P<pk>\d+)/$', facet.FacetTemplateDetailView.as_view(), name="facet_template_detail"),
+    url(r'^facet/template/(?P<pk>\d+)/edit/$', facet.FacetTemplateUpdateView.as_view(), name="facet_template_edit"),
 
     #   Task URLS
     url(r'^task/new/$', tasks.TaskCreateView.as_view(), name='task_new'),

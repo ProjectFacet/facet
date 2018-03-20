@@ -177,7 +177,10 @@ class FacetCreateView(LoginRequiredMixin, FormMessagesMixin, CreateView):
         """Initial data for form:
         - name (optionally, from request data)
         """
-        return {'name': self.request.GET.get('name', ''), 'content': 'Content here'}
+
+        template = FacetTemplate.objects.get(pk=self.kwargs['template_id'])
+
+        return {'name': self.request.GET.get('name', ''), 'template': template, 'content': 'Content here', 'status': 'Draft'}
 
 
 # ACCESS: Any org user, or user from an organization that is in collaborate_with
