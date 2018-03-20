@@ -11,7 +11,7 @@
 
 Django==1.11.9
 django-activity-stream==0.6.4
-django-allauth==0.34.0
+django-allauth==0.35.0
 django-bootstrap3-datetimepicker-2==2.5.0
 django-bootstrap3==9.1.0
 django-braces==1.12.0
