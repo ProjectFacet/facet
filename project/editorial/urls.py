@@ -181,6 +181,7 @@ urlpatterns = [
     url(r'^project/(?P<pk>\d+)/schedule/$', projects.ProjectSchedule.as_view(), name='project_schedule'),
     url(r'^project/(?P<pk>\d+)/assets/$', projects.ProjectAssetTemplateView.as_view(), name='project_assets'),
     url(r'^project/(?P<pk>\d+)/stories/$', projects.ProjectStoryTemplateView.as_view(), name='project_stories'),
+    url(r'^project/(?P<pk>\d+)/team/edit/$', projects.ProjectTeamUpdateView.as_view(), name='project_team_edit'),
 
     #   Series URLS
     url(r'^series/new/$', series.SeriesCreateView.as_view(), name='series_new'),

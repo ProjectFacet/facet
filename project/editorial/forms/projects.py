@@ -18,22 +18,14 @@ class ProjectForm(forms.ModelForm):
         super(ProjectForm, self).__init__(*args, **kwargs)
 
         self.fields['collaborate_with'].queryset = org.get_org_collaborators_vocab()
-        # TODO Future team options should include eligible contractors
-        if project:
-            self.fields['team'].queryset = project.get_project_team_vocab()
-        else:
-            self.fields['team'].queryset = org.get_org_users()
 
     class Meta:
         model = Project
-        fields = ['name', 'project_description', 'collaborate', 'collaborate_with', 'team']
+        fields = ['name', 'project_description', 'collaborate', 'collaborate_with']
         widgets = {
             'name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Project Name'}),
             'project_description': Textarea(
                 attrs={'class': 'form-control', 'placeholder': 'Description'}),
-            'team': ArrayFieldSelectMultiple(
-                attrs={'class': 'chosen-select form-control facet-select',
-                       'id': 'project-team', 'data-placeholder': 'Select Project Team'}),
             'collaborate_with': ArrayFieldSelectMultiple(
                 attrs={'class': 'chosen-select form-control facet-select',
                        'id': 'collaborate-with', 'data-placeholder': 'Select Collaborators'}),

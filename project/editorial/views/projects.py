@@ -15,10 +15,11 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.shortcuts import redirect, get_object_or_404
-from django.views.generic import TemplateView, UpdateView, DetailView, ListView, CreateView, DeleteView, View
+from django.views.generic import TemplateView, UpdateView, DetailView, ListView, CreateView, DeleteView, FormView, View
 
 from editorial.forms import (
     ProjectForm,
+    ProjectTeamForm,
     CommentForm,
     NoteForm,
     TaskForm,
@@ -220,6 +221,39 @@ class ProjectDetailView(LoginRequiredMixin, DetailView):
         documents = self.object.simple_document_assets.all()
         form = SimpleDocumentForm()
         return {'documents': documents, 'form': form}
+
+
+class ProjectTeamUpdateView(LoginRequiredMixin, FormMessagesMixin, UpdateView):
+    """Process project team form."""
+
+    model = Project
+    template_name = 'editorial/projectteam_form.html'
+    form_class = ProjectTeamForm
+    form_valid_message = "Project team updated."
+    form_invalid_message = "Something went wrong. Please check the form."
+
+    def get_form_kwargs(self):
+        kw = super(ProjectTeamUpdateView, self).get_form_kwargs()
+        project = Project.objects.get(id=self.kwargs['pk'])
+        kw.update({'organization': self.request.user.organization, 'project': project})
+        return kw
+
+    def project_details(self):
+        """Get project object to display information."""
+
+        project = Project.objects.get(id=self.kwargs['pk'])
+        return project
+
+    def form_valid(self, form):
+        """Handle submission of form."""
+
+        project = Project.objects.get(id=self.kwargs['pk'])
+        team_list = form.cleaned_data['team']
+        print team_list
+        project.team = team_list
+        project.save()
+
+        return redirect('project_detail', pk=project.id)
 
 
 # ACCESS: Any org user, or user from an organization that is in collaborate_with

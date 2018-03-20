@@ -73,6 +73,7 @@ from .platforms import (
 
 from .projects import (
     ProjectForm,
+    ProjectTeamForm,
 )
 
 from .series import (
