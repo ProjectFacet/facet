@@ -19,6 +19,7 @@ from django.views.generic import UpdateView, DetailView, CreateView, ListView, \
 
 from editorial.forms import (
     StoryForm,
+    StoryTeamForm,
     CommentForm,
     NoteForm,
     TaskForm,
@@ -264,6 +265,39 @@ class StoryDetailView(CustomUserTest, DetailView):
         audio = self.object.get_story_audio()
         video = self.object.get_story_video()
         return {'images': images, 'documents': documents, 'audio': audio, 'video': video}
+
+
+class StoryTeamUpdateView(LoginRequiredMixin, FormMessagesMixin, UpdateView):
+    """Process story team form."""
+
+    model = Story
+    template_name = 'editorial/storyteam_form.html'
+    form_class = StoryTeamForm
+    form_valid_message = "Story team updated."
+    form_invalid_message = "Something went wrong. Please check the form."
+
+    def get_form_kwargs(self):
+        kw = super(StoryTeamUpdateView, self).get_form_kwargs()
+        story = Story.objects.get(id=self.kwargs['pk'])
+        kw.update({'organization': self.request.user.organization, 'story': story})
+        return kw
+
+    def story_details(self):
+        """Get story object to display information."""
+
+        story = Story.objects.get(id=self.kwargs['pk'])
+        return story
+
+    def form_valid(self, form):
+        """Handle submission of form."""
+
+        story = Story.objects.get(id=self.kwargs['pk'])
+        team_list = form.cleaned_data['team']
+        print team_list
+        story.team = team_list
+        story.save()
+
+        return redirect('story_detail', pk=story.id)
 
 
 # ACCESS: Only an org admin or editor can delete a story belonging to their organization.

@@ -37,7 +37,7 @@ class ProjectForm(forms.ModelForm):
 
 
 class ProjectTeamForm(forms.ModelForm):
-    """ Form to add a team to a project after a project is created."""
+    """Form to add and edit a project team."""
 
     def __init__(self, *args, **kwargs):
         org = kwargs.pop("organization")

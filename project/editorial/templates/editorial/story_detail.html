@@ -109,7 +109,7 @@
           {% for collaborator in story.collaborate_with.all %}
           <p>{{ collaborator.name }}</p>
           {% endfor %}
-      <p class="f-s-14 f-w-500 subtle slim-margin m-b-10">Team: </p>
+      <p class="f-s-14 f-w-500 subtle m-b-20">Team: <a href="{% url 'story_team_edit' story.id %}" title="Edit story team"><i class="fa fa-pencil-square-o subtle fa-lg" aria-hidden="true"></i></a></p>
       {% for user in story.team.all %}
           {% if user.display_photo %}
           <img class="img-circle m-b-5" width="24" src="{{ user.display_photo.url }}" alt="user">

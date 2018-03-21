@@ -194,6 +194,7 @@ urlpatterns = [
     url(r'^series/(?P<pk>\d+)/schedule/$', series.SeriesSchedule.as_view(), name='series_schedule'),
     url(r'^series/(?P<pk>\d+)/notes/$', notes.SeriesNoteView.as_view(), name='series_notes'),
     url(r'^series/(?P<series>\d+)/note/(?P<note>\d+)/content/$', notes.NoteContent.as_view(), name='series_note_content'),
+    url(r'^series/(?P<pk>\d+)/team/edit/$', series.SeriesTeamUpdateView.as_view(), name='series_team_edit'),
 
     #   Story URLS
     url(r'^story/new/$', story.StoryCreateView.as_view(), name='story_new'),
@@ -204,6 +205,7 @@ urlpatterns = [
     url(r'^story/(?P<pk>\d+)/schedule/$', story.StorySchedule.as_view(), name='story_schedule'),
     url(r'^story/(?P<pk>\d+)/notes/$', notes.StoryNoteView.as_view(), name='story_notes'),
     url(r'^story/(?P<story>\d+)/note/(?P<note>\d+)/content/$', notes.NoteContent.as_view(), name='story_note_content'),
+    url(r'^story/(?P<pk>\d+)/team/edit/$', story.StoryTeamUpdateView.as_view(), name='story_team_edit'),
     # url(r'^story/(?P<pk>\d+)/team/json/$', story.story_team_options_json, name='story_team_options_json'),
 
     #   Facet URLS

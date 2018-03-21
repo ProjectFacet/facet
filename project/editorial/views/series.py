@@ -20,6 +20,7 @@ from django.views.generic import TemplateView, UpdateView, DetailView, ListView,
 
 from editorial.forms import (
     SeriesForm,
+    SeriesTeamForm,
     CommentForm,
     NoteForm,
     TaskForm,
@@ -187,6 +188,44 @@ class SeriesDetailView(LoginRequiredMixin, DetailView):
         documents = self.object.simple_document_assets.all()
         form = SimpleDocumentForm()
         return {'documents': documents, 'form':form,}
+
+
+class SeriesTeamUpdateView(LoginRequiredMixin, FormMessagesMixin, UpdateView):
+    """Process series team form."""
+
+    model = Series
+    template_name = 'editorial/seriesteam_form.html'
+    form_class = SeriesTeamForm
+    form_valid_message = "Series team updated."
+    form_invalid_message = "Something went wrong. Please check the form."
+
+    def get_form_kwargs(self):
+        kw = super(SeriesTeamUpdateView, self).get_form_kwargs()
+        series = Series.objects.get(id=self.kwargs['pk'])
+        print "SERIES: ", series
+        kw.update({'organization': self.request.user.organization, 'series': series})
+        return kw
+
+    def series_details(self):
+        """Get series object to display information."""
+
+        series = Series.objects.get(id=self.kwargs['pk'])
+        return series
+
+    def form_valid(self, form):
+        """Handle submission of form."""
+
+        series = Series.objects.get(id=self.kwargs['pk'])
+        team_list = form.cleaned_data['team']
+        print team_list
+        series.team = team_list
+        series.save()
+
+        return redirect('series_detail', pk=series.id)
+
+
+
+
 
 
 # ACCESS: Any org user should be able to update details for a series belonging to their org

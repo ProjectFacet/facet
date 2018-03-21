@@ -11,12 +11,11 @@
 <div>
     <ol class="breadcrumb icon-angle-right icon-th">
         <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
+        <li class="fadeIn"><a href="{% url 'series_list' %}" title="See Series"> Series </a></li>
         {% if series %}
-        <li class="fadeIn"><a href="{% url 'series_list' %}" title="See Series"> Series </a></li>
-        <li class="fadeIn"><a href="{% url 'series_detail' series.id %}" title="See {{series.name}}"> {{series.name }} </a></li>
-        <li class="fadeIn"><a href="{% url 'series_edit' series.id %}" title="You are Here"> Edit  {{series.name }} </a></li>
+        <li class="fadeIn"> {{series.name }} </li>
+        <li class="fadeIn"> Edit </li>
         {% else %}
-        <li class="fadeIn"><a href="{% url 'series_list' %}" title="See Series"> Series </a></li>
         <li class="fadeIn"> Create New Series </li>
         {% endif %}
     </ol>
@@ -68,19 +67,6 @@
       <!-- Right Side -->
       <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
         <div class="row">
-          <fieldset class="form-group m-b-20">
-            {% comment %}
-            <div class="col-xs-2">
-              <label class="capitalize">{{ form.team.label_tag }}</label>
-            </div>
-            {% endcomment %}
-            <div class="col-xs-12">
-              {{ form.team }}
-              {% if form.team.errors %}
-              <small class="text-muted">{{ form.team.errors }}</small>
-              {% endif %}
-            </div>
-          </fieldset>
 
           <fieldset class="form-group m-b-20">
             <span class="col-xs-2">

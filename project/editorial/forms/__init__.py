@@ -78,10 +78,12 @@ from .projects import (
 
 from .series import (
     SeriesForm,
+    SeriesTeamForm,
 )
 
 from .story import (
     StoryForm,
+    StoryTeamForm,
 )
 
 from .tasks import (

@@ -24,11 +24,6 @@ class StoryForm(forms.ModelForm):
 
         self.fields['share_with'].queryset = org.get_org_networks()
         self.fields['collaborate_with'].queryset = org.get_org_collaborators_vocab()
-        # TODO future should include eligible contractors
-        if story:
-            self.fields['team'].queryset = story.get_story_team_vocab()
-        else:
-            self.fields['team'].queryset = org.get_org_users()
 
         # limit project and series to those owned by org or part of content and org is collaborator for
         self.fields['project'].queryset = Project.objects.filter(
@@ -62,7 +57,6 @@ class StoryForm(forms.ModelForm):
                   'series',
                   'collaborate',
                   'collaborate_with',
-                  'team',
                   'embargo',
                   'embargo_datetime',
                   'sensitive',
@@ -76,9 +70,6 @@ class StoryForm(forms.ModelForm):
             'name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Story Name'}),
             'story_description': Textarea(
                 attrs={'class': 'form-control', 'placeholder': 'Description'}),
-            'team': ArrayFieldSelectMultiple(
-                attrs={'class': 'chosen-select', 'id': 'story-team',
-                       'data-placeholder': 'Select Team'}),
             'collaborate_with': ArrayFieldSelectMultiple(
                 attrs={'class': 'chosen-select', 'id': 'collaborate-with',
                        'data-placeholder': 'Select Partners'}),
@@ -94,6 +85,32 @@ class StoryForm(forms.ModelForm):
     #         'all': ('css/bootstrap-datetimepicker.css', 'css/chosen.min.css')
     #     }
     #     js = ('scripts/chosen.jquery.min.js',)
+
+
+class StoryTeamForm(forms.ModelForm):
+    """Form to create/edit a new story."""
+
+    def __init__(self, *args, **kwargs):
+        org = kwargs.pop("organization")
+        story = kwargs.pop("story", None)
+        super(StoryTeamForm, self).__init__(*args, **kwargs)
+
+
+        # TODO future should include eligible contractors
+        if story:
+            self.fields['team'].queryset = story.get_story_team_vocab()
+        else:
+            self.fields['team'].queryset = org.get_org_users()
+
+    class Meta:
+        model = Story
+        fields = ['team']
+        widgets = {
+            'team': ArrayFieldSelectMultiple(
+                attrs={'class': 'chosen-select', 'id': 'story-team',
+                       'data-placeholder': 'Select Team'}),
+        }
+
 
 # ------------------------------ #
 #        Download Form           #

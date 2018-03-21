@@ -11,8 +11,8 @@
 <div>
     <ol class="breadcrumb icon-angle-right icon-th">
         <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
-        <li class="fadeIn"><a href="{% url 'project_list' %}" title="View Project"> Projects </a></li>
-        <li class="fadeIn"><a href="{% url 'project_detail' pk=project.id %}">Project: {{project.name}} </a></li>
+        <li class="fadeIn"><a href="{% url 'story_list' %}" title="View Stories"> Stories </a></li>
+        <li class="fadeIn"><a href="{% url 'story_detail' pk=story.id %}">Story: {{story.name}} </a></li>
         <li class="fadeIn"> Edit Team </li>
     </ol>
 </div>
@@ -33,7 +33,7 @@
         <div class="row">
           <!-- Team -->
           <p class="f-s-18 f-w-400 thin m-b-20">Team</p>
-          {% with view.project_details as details %}
+          {% with view.story_details as details %}
             {% for user in details.team.all %}
                 {% if user.display_photo %}
                 <a href="#" title="{{ user.credit_name }}"><img class="img-circle m-b-5" width="60" src="{{ user.display_photo.url }}" alt="user"></a>
@@ -67,15 +67,15 @@
       <!-- Right Side -->
       <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
         <div class="row">
-          {% with view.project_details as details %}
+          {% with view.story_details as details %}
           <p class="f-s-18 f-w-400 thin m-b-20">{{ details.name }}
           <p class="f-s-14 f-w-300 thin">{{ details.description}}</p>
 
 
-          {% if project.collaborate == True %}
+          {% if story.collaborate == True %}
           <p class="f-s-18 f-w-400 thin m-b-20 m-t-20">Partners</p>
           {% endif %}
-              {% for collaborator in project.collaborate_with.all %}
+              {% for collaborator in story.collaborate_with.all %}
               <p class="f-s-14 f-w-300 thin">{{ collaborator.name }}</p>
               {% endfor %}
           {% endwith %}

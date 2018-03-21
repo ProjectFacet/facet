@@ -68,7 +68,7 @@
             {% for collaborator in series.collaborate_with.all %}
             <p>{{ collaborator.name }}</p>
             {% endfor %}
-        <p class="f-s-14 f-w-500 subtle slim-margin m-b-10">Team: </p>
+        <p class="f-s-14 f-w-500 subtle m-b-20">Team: <a href="{% url 'series_team_edit' series.id %}" title="Edit series team"><i class="fa fa-pencil-square-o subtle fa-lg" aria-hidden="true"></i></a></p>
         {% for user in series.team.all %}
             {% if user.display_photo %}
             <img class="img-circle m-b-5" width="32" src="{{ user.display_photo.url }}" alt="user">
