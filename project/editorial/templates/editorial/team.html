@@ -82,6 +82,7 @@
                               {% if user.display_photo %}
                               <img class="img-fluid w-40 img-circle" src="{{ user.display_photo.url }}" alt="user photo">
                               {% else %}
+                              <img class="img-fluid w-40 img-circle" src="{% static 'images/nophoto.jpg' %}" alt="profile image">
                               {% endif %}
                             </td>
                             <td>{{ user.credit_name }}</td>

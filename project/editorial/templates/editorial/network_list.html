@@ -23,26 +23,39 @@
 {% block content %}
 
 <div class="row m-b-40">
-  {% if networks %}
-    {% for network in networks %}
-    <div class="col-xs-12 col-lg-4 m-b-5">
-          <div class="text-widget-1">
-              <div class="row">
-                  <div class="col-xs-3"> <h5 class="m-l-20"><a href="{% url 'network_detail' network.id %}">{{ network.name }}</a></h5> </div>
-                  <div class="col-xs-9 text-left">
-                    <p class="f-s-14 f-w-300">{{ network.network_description }} {% if request.user.organization == network.owner_organization %}<a href="{% url 'network_edit' pk=network.id %}"> <i class="fa fa-pencil sameline"></i></a>{% endif %}</p>
-                    <p class="f-s-12 f-w-300"><span class="f-w-600 f-s-11 uppercase">Managing Organization</span> {{ network.owner_organization }}</p>
-                    <span class="f-w-600 f-s-11 uppercase">Members</span>
-                    <p class="f-s-12 f-w-300">{% for organization in network.organizations.all %}{{ organization.name }}, {% endfor %}</p>
-                  </div>
-              </div>
-          </div>
-      </div>
-      {% endfor %}
+  <div class="col-xs-12">
+    {% if networks %}
+    <!-- Full table for xs, sm, md and lg displays -->
+    <table id="network-list" class="table table-condensed table-striped">
+      <thead>
+        <tr class="f-s-12">
+          <th>Network</th>
+          <th>Description</th>
+          <th>Managing Org</th>
+          <th>Members</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for network in networks %}
+          <tr class="f-s-14">
+            <td><a href="{% url 'network_detail' network.id %}">{{ network.name }}</a></td>
+            <td>{{ network.network_description }} {% if request.user.organization == network.owner_organization %}<a href="{% url 'network_edit' pk=network.id %}"> <i class="fa fa-pencil sameline"></i></a>{% endif %}</td>
+            <td>{{ network.owner_organization }}</td>
+            <td>{% for organization in network.organizations.all %}{{ organization.name }}, {% endfor %}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
     {% else %}
-    <p class="f-s-18 subtle text-center italic m-b-40 m-t-40">Welcome to the Network page. This is where you will see all of the networks that your organization manages or belongs. Click here to create a <a href="{% url 'network_new' %}" title="Create New Network" class="default">network</a>.</p>
+      <p class="f-s-18 subtle text-center italic m-b-40 m-t-40">Welcome to the Network page. This is where you will see all of the networks that your organization manages or belongs. Click here to create a <a href="{% url 'network_new' %}" title="Create New Network" class="default">network</a>.</p>
     {% endif %}
-
+  </div>
 </div>
+
+<script>
+$(document).ready(function() {
+    $('#network-list').DataTable();
+} );
+</script>
 
 {% endblock %}

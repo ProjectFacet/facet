@@ -76,39 +76,24 @@ class LandingTemplateView(TemplateView):
 
 # ACCESS: All users have access to dashboard
 class DashboardTemplateView(LoginRequiredMixin, TemplateView):
-    """ Returns user's unique dashboard.
-
-    Displays new comments since last_login from any discussions including user.
-    Ex: Felicity S. replied to Series: "Palmer Tech Innovation Conference" discussion
-    Displays table of new content created since last_login
-    Displays any content with deadlines sameday/next day for any content where user is part of team.
-    Displays log of other user activity since last_login
-    Ex: Oliver Q. added "Dhark Indicted" to Story: "Star City Organized Crime Leader Arrested"
-    """
+    """ Returns user's unique dashboard."""
 
     template_name = 'editorial/dashboard.html'
 
     def get_context_data(self):
-        """Return all the assorted items associated with a team user dashboard."""
-
+        """Return all the assorted items associated with a user's dashboard."""
         # placeholder of data for now to maintain status quo
-        # some rethinking about what goes here tbd
 
         user = self.request.user
         org = user.organization
 
-        if org:
-            # FIXME: wasn't being used on template, commented out for now - Joel
-            # recent_comments = user.recent_comments()
-
+        if user.organization:
             older_comments = user.inbox_comments()[:4]
-
             all_comments = org.get_org_comments()
             networks = org.get_org_networks()
             running_today = org.get_org_stories_running_today()
             edit_today = org.get_org_stories_due_for_edit_today()
 
-            # FIXME from Joel: this should all happen in one query
             shared_networkstories = (org.get_org_network_content()
                                      .exclude(organization=org)
                                      .annotate(num_facets=Count('facet'))
@@ -117,12 +102,12 @@ class DashboardTemplateView(LoginRequiredMixin, TemplateView):
             networkstories = set(shared_networkstories)
 
             # query for any new content created since last_login
-            new_stories = Story.objects.filter(creation_date__gte = user.last_login)[:8]
+            new_stories = Story.objects.filter(creation_date__gte=user.last_login)[:8]
             # new_projects = Project.objects.filter(creation_date__gte = self.request.user.last_login)[:8]
             # new_series = Series.objects.filter(creation_date__gte = self.request.user.last_login)[:8]
 
             # if no new, display 10 most recent stories
-            recent_stories = Story.objects.filter(organization =org)[:10]
+            recent_stories = Story.objects.filter(organization=org)[:10]
             # recent_projects = Project.objects.filter(organization = self.request.user.organization)[:10]
             # recent_series = Series.objects.filter(organization = self.request.user.organization)[:10]
 
@@ -130,9 +115,6 @@ class DashboardTemplateView(LoginRequiredMixin, TemplateView):
 
             return {
                 'networks': networks,
-                # FIXME: recent_comments is not being used on dashboard template right now;
-                # FIXME: should this by removed?
-                # 'recent_comments': recent_comments,
                 'older_comments': older_comments,
                 'all_comments': all_comments,
                 'new_stories': new_stories,
@@ -148,9 +130,7 @@ class DashboardTemplateView(LoginRequiredMixin, TemplateView):
         elif user.contractorprofile:
             contractor = user.contractorprofile
             assignments = contractor.get_active_assignments()
-            print assignments
-            # FIXME from Joel: next line should be "Published", no doubt?
-            calls = Call.objects.filter(Q(is_active=True)| Q(status="Publised")).order_by('-creation_date')
+            calls = Call.objects.filter(Q(is_active=True)| Q(status="Published")).order_by('-creation_date')
             pitches = contractor.get_active_pitches()
             communication = PrivateMessage.objects.filter(recipient=user).order_by('date')
             return {
@@ -159,6 +139,10 @@ class DashboardTemplateView(LoginRequiredMixin, TemplateView):
                 'pitches': pitches,
                 'communication': communication,
             }
+
+        # else:
+        #     print "USER associated with NOTHING"
+        #     return redirect('account_selection')
 
 
 #----------------------------------------------------------------------#
