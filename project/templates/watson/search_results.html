@@ -49,25 +49,23 @@
       {% with searchresults=search_results.all %}
         {% if searchresults %}
             {% for result in searchresults %}
-                <div class="result">
-                  {% if result.url %}
-                  <h3 class="m-b-10"> <a href="{{ result.url }}">{{ result.title }}</a> </h3>
-                  <small class="m-b-10 color-default">{{ result.meta.get_type }} </small>
-                  {% else %}
-                  <h3 class="m-b-10">{{ result.title }} </h3>
-                  <small class="m-b-10 color-default">{{ result.meta.get_type }} </small>
+              <div class="result">
+                <div class="media">
+                  <div class="media-body">
+                    {% if result.url %}
+                    <h3 class="media-heading"> <a href="{{ result.url }}">{{ result.title }}</a> </h3>
+                    {% else %}
+                    <h3 class="media-heading"> {{ result.title }} </h3>
+                    {% endif %}
+                    <small class="m-b-10 color-default">{{ result.meta.get_type }} </small>
+                    <p class="description">{{ result.description|safe }}</p>
+                  </div>
+                  {% if result.object.display_photo %}
+                  <a href="{{ result.url }}" class="media-right media-middle">
+                    <img class="media-object m-l-20 m-r-20 w-100" alt="search result image" src="{{ result.object.display_photo.url }}">
+                  </a>
                   {% endif %}
-                  <p class="description">{{ result.description|safe }}</p>
-                  {% comment %}
-                    {% if result.meta.get_type == "Image Asset" %}
-                    {% if result.display_photo %}
-                    <div class="search-media pull-right">
-                      <img class="img-fluid w-50 img-thumbnail bs-img-thumbnail" src="{{ result.display_photo.url }}">
-                    </div>
-                    {% endif %}
-                    {% endif %}
-                  {% endcomment %}
-
+                </div>
               </div>
             {% endfor %}
 

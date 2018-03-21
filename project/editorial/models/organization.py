@@ -13,6 +13,7 @@ from imagekit.models import ImageSpecField
 from pilkit.processors import SmartResize
 
 from .user import User
+from .notes import Note
 
 
 @python_2_unicode_compatible
@@ -315,7 +316,6 @@ class Organization(models.Model):
         external_collaborative_content.extend(external_projects)
         external_collaborative_content.extend(external_series)
         external_collaborative_content.extend(external_stories)
-        print "MEC: ", external_collaborative_content
         return external_collaborative_content
 
     def get_org_internal_collaborations(self):
@@ -392,26 +392,30 @@ class Organization(models.Model):
 
         This includes items from content that is collaborative.
         """
-        pass
+
+        return self.task_set.all()
+
 
     def get_org_events(self):
         """Return all the events associated with the org or org content.
 
         This includes items from content that is collaborative.
         """
-        pass
+        return self.event_set.all()
 
     def get_org_searchable_comments(self):
         """Return all the comments that should appear in search results.
 
         This includes comments from items that are collaborative.
         """
-        pass
+        return self.get_org_user_comments()
 
     def get_org_searchable_notes(self):
         """Return all the notes that should appear in search results.
         This includes notes from items that are collaborative."""
-        pass
+
+        return Note.objects.filter(user__organization=self).exclude(note_type='User')
+
 
     def get_org_searchable_content(self):
         """Return queryset of all objects that can be searched by a user."""
@@ -434,10 +438,11 @@ class Organization(models.Model):
         facets = Facet.objects.filter(Q(organization=self))
         imageassets = self.imageasset_set.all()
         documentassets = self.documentasset_set.all()
-        # tasks = self.get_org_content_tasks()
-        # events = self.get_org_events()
-        # comments = self.get_org_searchable_comments()
-        # notes = self.get_org_searchable_notes()
+        audioassets = self.audioasset_set.all()
+        tasks = self.get_org_content_tasks()
+        events = self.get_org_events()
+        comments = self.get_org_searchable_comments()
+        notes = self.get_org_searchable_notes()
 
         searchable_objects.append(projects)
         searchable_objects.append(series)
@@ -445,11 +450,11 @@ class Organization(models.Model):
         searchable_objects.append(facets)
         searchable_objects.append(imageassets)
         searchable_objects.append(documentassets)
-        # TODO
-        # searchable_objects.append(tasks)
-        # searchable_objects.append(events)
-        # searchable_objects.append(notes)
-        # searchable_objects.append(comments)
+        searchable_objects.append(audioassets)
+        searchable_objects.append(tasks)
+        searchable_objects.append(events)
+        searchable_objects.append(notes)
+        searchable_objects.append(comments)
 
         return searchable_objects
 

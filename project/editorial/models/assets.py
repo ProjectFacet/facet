@@ -190,10 +190,17 @@ class ImageAsset(BaseImage, BaseAssetMetadata):
     def get_absolute_url(self):
         return reverse('image_asset_detail', kwargs={'pk': self.id})
 
+    @property
+    def type(self):
+        return "ImageAsset"
+
 
 class SimpleImage(BaseImage):
     """Simple image (with some metadata) for attaching to tasks, events, etc."""
 
+    @property
+    def type(self):
+        return "SimpleImage"
 
 #-----------------------------------------------------------------------#
 # DocumentAsset
@@ -262,10 +269,17 @@ class DocumentAsset(BaseDocumentAsset, BaseAssetMetadata):
     def get_absolute_url(self):
         return reverse('document_asset_detail', kwargs={'pk': self.id})
 
+    @property
+    def type(self):
+        return "DocumentAsset"
+
 
 class SimpleDocument(BaseDocumentAsset):
     """Simple Document (file upload, attached to events, tasks, etc.)"""
 
+    @property
+    def type(self):
+        return "SimpleDocument"
 
 #-----------------------------------------------------------------------#
 # AudioAsset
@@ -333,10 +347,17 @@ class AudioAsset(BaseAudio, BaseAssetMetadata):
     def get_absolute_url(self):
         return reverse('audio_asset_detail', kwargs={'pk': self.id})
 
+    @property
+    def type(self):
+        return "AudioAsset"
+
 
 class SimpleAudio(BaseAudio):
     """Simple Audio (attaches to an event, task, etc.)"""
 
+    @property
+    def type(self):
+        return "SimpleAudio"
 
 #-----------------------------------------------------------------------#
 #VideoAsset
@@ -409,6 +430,14 @@ class VideoAsset(BaseVideo, BaseAssetMetadata):
     def get_absolute_url(self):
         return reverse('video_asset_detail', kwargs={'pk': self.id})
 
+    @property
+    def type(self):
+        return "VideoAsset"
+
 
 class SimpleVideo(BaseVideo):
     """Uploaded video (attaches to tasks, events, etc)"""
+
+    @property
+    def type(self):
+        return "SimpleVideo"

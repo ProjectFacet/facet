@@ -37,6 +37,12 @@ class EditorialAppConfig(AppConfig):
         ]:
             register_watson(self, model_name)
 
+            # TODO register keywords fields for facet and all kinds of assets
+            # image_asset = self.get_model("ImageAsset")
+            # register_watson(image_asset, "keywords")
+
+
+        # register models for activity
         from actstream import registry
 
         registry.register(self.get_model('User'))

@@ -36,8 +36,7 @@ class EditorialSearchView(BaseWatsonSearchView):
         # retrieve all content a user is allowed to search
         searchable_org_objects = user_org.get_org_searchable_content()
         # unpack the querysets from the list of querysets returned
-        projects, series, stories, facets, imageassets, documentassets = searchable_org_objects
-
+        projects, series, stories, facets, imageassets, documentassets, audioassets, tasks, events, notes, comments = searchable_org_objects
         # XXX If this ever include user notes as well
         # searchable_user_objects = user.get_user_searchable_content()
         # usernotes = searchable_user_objects
@@ -46,5 +45,5 @@ class EditorialSearchView(BaseWatsonSearchView):
         # pass all querysets to search method
         return watson.search(
             self.query,
-            models=[projects, series, stories, facets, imageassets, documentassets]
+            models=[projects, series, stories, facets, tasks, events, notes, comments, imageassets, documentassets, audioassets,]
         )
