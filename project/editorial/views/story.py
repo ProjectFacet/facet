@@ -215,7 +215,7 @@ class StoryDetailView(CustomUserTest, DetailView):
 
         self.object = self.get_object()
         discussion = self.object.discussion
-        comments = discussion.comment_set.all()
+        comments = discussion.comment_set.all().order_by('date')
         form = CommentForm()
         return {'discussion': discussion, 'comments': comments, 'form': form}
 

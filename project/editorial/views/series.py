@@ -124,7 +124,7 @@ class SeriesDetailView(LoginRequiredMixin, DetailView):
         """Get discussion, comments and comment form for a series."""
 
         discussion = self.object.discussion
-        comments = discussion.comment_set.all()
+        comments = discussion.comment_set.all().order_by('date')
         form = CommentForm()
 
         return {'discussion': discussion, 'comments': comments, 'form': form}

@@ -110,7 +110,7 @@ class OrganizationDetailView(CustomUserTest, DetailView):
         form = NoteForm()
         notes = self.object.notes.order_by('-creation_date')[:4]
         # users = Organization.get_org_users(self.object)
-        organizationcomments = Comment.objects.filter(discussion=self.object.discussion).order_by('-date')
+        organizationcomments = Comment.objects.filter(discussion=self.object.discussion).order_by('date')
         organizationcommentform = CommentForm()
 
         context.update({

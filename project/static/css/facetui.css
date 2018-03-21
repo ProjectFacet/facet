@@ -444,3 +444,9 @@ iframe#id_content_ifr {
 .fc-title {
   font-size: .75rem !important;
 }
+
+.preview-modal-header, .preview-modal-body, .preview-modal-footer {
+  background-color: #ffffff !important;
+  color: #252525 !important;
+  border-color: #ffffff !important;
+}

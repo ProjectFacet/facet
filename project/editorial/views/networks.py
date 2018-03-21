@@ -120,7 +120,7 @@ class NetworkDetailView(LoginRequiredMixin, DetailView):
 
         form = NoteForm()
         notes = self.object.notes.order_by('-creation_date')[:4]
-        comments = self.object.discussion.comment_set.all()
+        comments = self.object.discussion.comment_set.all().order_by('date')
         commentform = CommentForm()
         networkinvitationform = InviteToNetworkForm()
 
