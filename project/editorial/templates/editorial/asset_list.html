@@ -41,6 +41,11 @@
     <!--            Pseudo Tabs                 -->
     <!-------------------------------------------->
       <ul class="nav nav-tabs nav-animated-border-from-left m-b-40">
+          {% if tab == "Recent Assets" %}
+          <li class="nav-item m-l-20 m-r-20"> <a href="{% url 'asset_library' %}" title="graphics" class="nav-link active"><h5>Recent Uploads</h5></a> </li>
+          {% else %}
+          <li class="nav-item m-l-20 m-r-20"> <a href="{% url 'asset_library' %}" title="graphics" class="nav-link"><h5>Recent Uploads</h5></a> </li>
+          {% endif %}
           {% if tab == "Image Assets" %}
           <li class="nav-item m-l-20 m-r-20"> <a href="{% url 'image_asset_list' %}" title="graphics" class="nav-link active"><h5>Graphics</h5></a> </li>
           {% else %}
@@ -236,6 +241,7 @@
                 {% endif %}
                 {% if item.asset_type == 'SC' %}
                   <a href="{{ item.link }}" title="{{ item.description }}" target="_blank"><i class="fa fa-soundcloud sameline"></i> <span class="small-text dark sameline">{{ item.title }}</span></a>
+                  <a href="{% url 'audio_asset_detail' pk=audio.id %}" title="{{ audio.description }}"><p class="subtle f-s-14 m-t-10"><i class="fa fa-angle-right subtle" aria-hidden="true"></i> Details</p></a>
                 {% endif %}
                 {% comment %}
                   <a href="{% url 'audio_asset_detail' pk=item.id %}" title="{{ item.description }}"><p class="subtle f-s-14 m-t-10"><i class="fa fa-angle-right subtle" aria-hidden="true"></i> Details</p></a>
@@ -409,7 +415,7 @@
         <div class="p-t-0" id="documents">
             <div id="document-asset-library">
             {% for document in documents %}
-                <div class="col-xs-6 col-sm-4 col-md-2 col-lg-2">
+                <div class="col-xs-6 col-sm-4 col-md-3 col-lg-3">
                   <div class="docs">
                     {% if document.asset_type == "PDF" %}
                     <a href="{% url 'document_asset_detail' pk=document.id %}">
@@ -499,27 +505,39 @@
         <div class="p-t-0" id="audio">
 
             {% for audio in audio %}
-            <div class="col-xs-2">
+            <div class="col-xs-6 col-sm-4 col-md-3 col-lg-3">
 
               {% if audio.asset_type == 'MP3' or audio.asset_type == 'WAV' %}
-              <div id="jplayer_audio_{{audio.pk}}" class="jp-jplayer"></div>
-
-              <div id="jp_container_audio_{{audio.pk}}" class="jp-flat-audio" role="application" aria-label="media player">
-                <div class="jp-play-control jp-control">
-                  <button class="jp-play jp-button" role="button" aria-label="play" tabindex="0"></button>
-                </div>
-                <div class="jp-bar">
-                  <div class="jp-seek-bar jp-seek-bar-display"></div>
-                  <div class="jp-seek-bar">
-                    <div class="jp-play-bar"></div>
-                    <div class="jp-details"><span class="jp-title" aria-label="title"></span></div>
-                    <div class="jp-timing"><span class="jp-duration" role="timer" aria-label="duration"></span></div>
+              <div class="card bs-card">
+                  <div class="card-block background-purple">
+                    {% if audio.asset_type == 'MP3' %}
+                    <a href="{% url 'audio_asset_detail' pk=audio.id %}" title="{{ audio.description }}"><p class="f-r-14 f-w-300 text-center m-t-10"> <i class="fa fa-headphones fa-1x text-center m-b-10"></i> .mp3 </p></a>
+                    {% elif audio.asset_type == 'WAV' %}
+                    <a href="{% url 'audio_asset_detail' pk=audio.id %}" title="{{ audio.description }}"><p class="f-r-14 f-w-300 text-center m-t-10"> <i class="fa fa-headphones fa-1x text-center m-b-10"></i> .wav </p></a>
+                    {% endif %}
                   </div>
-                </div>
-                <div class="jp-no-solution">
-                  Media Player Error<br />
-                  Update your browser or Flash plugin
-                </div>
+                  <div class="card-block p-0">
+                      <div id="jplayer_audio_{{audio.pk}}" class="jp-jplayer"></div>
+
+                      <div id="jp_container_audio_{{audio.pk}}" class="jp-flat-audio" role="application" aria-label="media player">
+                          <div class="jp-play-control jp-control">
+                              <button class="jp-play jp-button" role="button" aria-label="play" tabindex="0"></button>
+                          </div>
+                          <div class="jp-bar">
+                              <div class="jp-seek-bar jp-seek-bar-display"></div>
+                              <div class="jp-seek-bar">
+                                  <div class="jp-play-bar"></div>
+                                  <div class="jp-details"><span class="jp-title" aria-label="title"></span></div>
+                                  <div class="jp-timing"><span class="jp-duration" role="timer" aria-label="duration"></span></div>
+                              </div>
+                          </div>
+                          <div class="jp-no-solution">
+                              Media Player Error<br />
+                              Update your browser or Flash plugin
+                          </div>
+                      </div>
+                    <a href="{% url 'audio_asset_detail' pk=audio.id %}" title="{{ audio.description }}"><p class="f-r-8 m-t-10 f-w-300"><i class="fa fa-angle-right" aria-hidden="true"></i> Details</p></a>
+                  </div>
               </div>
 
               <script>
@@ -560,8 +578,8 @@
               {% endif %}
               {% if audio.asset_type == 'SC' %}
               <a href="{{ audio.link }}" title="{{ audio.description }}" target="_blank"><i class="fa fa-soundcloud sameline"></i> <span class="small-text dark sameline">{{ audio.title }}</span></a>
-              {% endif %}
               <a href="{% url 'audio_asset_detail' pk=audio.id %}" title="{{ audio.description }}"><p class="subtle f-s-14 m-t-10"><i class="fa fa-angle-right subtle" aria-hidden="true"></i> Details</p></a>
+              {% endif %}
 
             </div>
             <div class="col-xs-1">
