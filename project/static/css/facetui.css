@@ -437,6 +437,10 @@ img.image-center {
   color: #673AB7 !important;
 }
 
+.background-purple {
+  background-color: #673AB7 !important;
+}
+
 iframe#id_content_ifr {
   height: 450px !important;
 }
@@ -449,4 +453,13 @@ iframe#id_content_ifr {
   background-color: #ffffff !important;
   color: #252525 !important;
   border-color: #ffffff !important;
+}
+
+.card-block {
+  padding: 1rem !important;
+}
+
+.vp-player-layout {
+  width: 317px !important;
+  height: 200px !important;
 }

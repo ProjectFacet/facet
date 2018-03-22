@@ -9,7 +9,7 @@ from __future__ import unicode_literals
 from django.shortcuts import redirect, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
-from django.views.generic import TemplateView , UpdateView, DetailView, ListView, CreateView, FormView, DeleteView
+from django.views.generic import TemplateView , UpdateView, DetailView, ListView, CreateView, FormView, DeleteView, RedirectView
 from actstream import action
 from braces.views import LoginRequiredMixin, FormMessagesMixin
 
@@ -64,11 +64,66 @@ class AssetLibraryTemplateView(LoginRequiredMixin, TemplateView):
         """Return all the (complex) assets associated with an organization."""
 
         organization = self.request.user.organization
+        tab = "Recent Assets"
+        recentassets = organization.get_org_recent_media()
+        print "RECENT ASSETS: ", recentassets
+        return {'recentassets': recentassets, 'tab': tab,}
+
+
+class ImageAssetLibraryTemplateView(LoginRequiredMixin, TemplateView):
+    """ Display media library of all organization image assets."""
+
+    template_name = 'editorial/asset_list.html'
+
+    def get_context_data(self):
+        """Return all the (complex) assets associated with an organization."""
+
+        tab = "Image Assets"
+        organization = self.request.user.organization
         images = organization.get_org_image_library()
+        return {'images': images, 'tab': tab,}
+
+
+class DocumentAssetLibraryTemplateView(LoginRequiredMixin, TemplateView):
+    """ Display media library of all organization document assets."""
+
+    template_name = 'editorial/asset_list.html'
+
+    def get_context_data(self):
+        """Return all the (complex) assets associated with an organization."""
+
+        tab = "Document Assets"
+        organization = self.request.user.organization
         documents = organization.get_org_document_library()
+        return {'documents': documents, 'tab': tab,}
+
+
+class AudioAssetLibraryTemplateView(LoginRequiredMixin, TemplateView):
+    """ Display media library of all organization audio assets."""
+
+    template_name = 'editorial/asset_list.html'
+
+    def get_context_data(self):
+        """Return all the (complex) assets associated with an organization."""
+
+        tab = "Audio Assets"
+        organization = self.request.user.organization
         audio = organization.get_org_audio_library()
+        return {'audio': audio, 'tab': tab,}
+
+
+class VideoAssetLibraryTemplateView(LoginRequiredMixin, TemplateView):
+    """ Display media library of all organization video assets."""
+
+    template_name = 'editorial/asset_list.html'
+
+    def get_context_data(self):
+        """Return all the (complex) assets associated with an organization."""
+
+        tab = "Video Assets"
+        organization = self.request.user.organization
         video = organization.get_org_video_library()
-        return {'images': images, 'documents': documents, 'audio': audio, 'video': video,}
+        return {'video': video, 'tab': tab,}
 
 
 #----------------------------------------------------------------------#

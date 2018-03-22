@@ -193,6 +193,23 @@ class Organization(models.Model):
         """
         return self.videoasset_set.all()
 
+    def get_org_recent_media(self):
+        """ Return 24 most recently uploaded media asset files."""
+
+        # FIXME how to best query for the 24 most recent media assets across types.
+        images = self.imageasset_set.all().order_by("-creation_date")[:12]
+        docs = self.documentasset_set.all().order_by("-creation_date")[:12]
+        audio = self.audioasset_set.all().order_by("-creation_date")[:12]
+        video = self.videoasset_set.all().order_by("-creation_date")[:12]
+        recentmedia = []
+        recentmedia.extend(images)
+        recentmedia.extend(docs)
+        recentmedia.extend(audio)
+        recentmedia.extend(video)
+        print "RECENT MEDIA: ", recentmedia
+
+        return recentmedia
+
     def get_org_user_comments(self):
         """Retrieve all the comments associated with users of an organization.
 
@@ -395,7 +412,6 @@ class Organization(models.Model):
 
         return self.task_set.all()
 
-
     def get_org_events(self):
         """Return all the events associated with the org or org content.
 
@@ -415,7 +431,6 @@ class Organization(models.Model):
         This includes notes from items that are collaborative."""
 
         return Note.objects.filter(user__organization=self).exclude(note_type='User')
-
 
     def get_org_searchable_content(self):
         """Return queryset of all objects that can be searched by a user."""

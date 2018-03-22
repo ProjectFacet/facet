@@ -56,14 +56,18 @@ urlpatterns = [
 
     #   Asset Library URLS
     url(r'^assets/$', assets.AssetLibraryTemplateView.as_view(), name='asset_library'),
-    url(r'^asset/image/(?P<pk>\d+)/$', assets.ImageAssetUpdateView.as_view(), name='image_asset_detail'),
-    url(r'^asset/image/(?P<pk>\d+)/delete/$', assets.ImageAssetDeleteView.as_view(), name='image_asset_delete'),
-    url(r'^asset/document/(?P<pk>\d+)/$', assets.DocumentAssetUpdateView.as_view(), name='document_asset_detail'),
-    url(r'^asset/document/(?P<pk>\d+)/delete/$', assets.DocumentAssetDeleteView.as_view(), name='document_asset_delete'),
-    url(r'^asset/audio/(?P<pk>\d+)/$', assets.AudioAssetUpdateView.as_view(), name='audio_asset_detail'),
-    url(r'^asset/audio/(?P<pk>\d+)/delete/$', assets.AudioAssetDeleteView.as_view(), name='audio_asset_delete'),
-    url(r'^asset/video/(?P<pk>\d+)/$', assets.VideoAssetUpdateView.as_view(), name='video_asset_detail'),
-    url(r'^asset/video/(?P<pk>\d+)/delete/$', assets.VideoAssetDeleteView.as_view(), name='video_asset_delete'),
+    url(r'^assets/images/$', assets.ImageAssetLibraryTemplateView.as_view(), name='image_asset_list'),
+    url(r'^assets/image/(?P<pk>\d+)/$', assets.ImageAssetUpdateView.as_view(), name='image_asset_detail'),
+    url(r'^assets/image/(?P<pk>\d+)/delete/$', assets.ImageAssetDeleteView.as_view(), name='image_asset_delete'),
+    url(r'^assets/documents/$', assets.DocumentAssetLibraryTemplateView.as_view(), name='document_asset_list'),
+    url(r'^assets/document/(?P<pk>\d+)/$', assets.DocumentAssetUpdateView.as_view(), name='document_asset_detail'),
+    url(r'^assets/document/(?P<pk>\d+)/delete/$', assets.DocumentAssetDeleteView.as_view(), name='document_asset_delete'),
+    url(r'^assets/audio/$', assets.AudioAssetLibraryTemplateView.as_view(), name='audio_asset_list'),
+    url(r'^assets/audio/(?P<pk>\d+)/$', assets.AudioAssetUpdateView.as_view(), name='audio_asset_detail'),
+    url(r'^assets/audio/(?P<pk>\d+)/delete/$', assets.AudioAssetDeleteView.as_view(), name='audio_asset_delete'),
+    url(r'^assets/video/$', assets.VideoAssetLibraryTemplateView.as_view(), name='video_asset_list'),
+    url(r'^assets/video/(?P<pk>\d+)/$', assets.VideoAssetUpdateView.as_view(), name='video_asset_detail'),
+    url(r'^assets/video/(?P<pk>\d+)/delete/$', assets.VideoAssetDeleteView.as_view(), name='video_asset_delete'),
 
     #   Collaborations URLS
     url(r'^collaborations/$', general.CollaborationTemplateView.as_view(), name='collaborations'),
