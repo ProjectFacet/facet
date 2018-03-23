@@ -80,7 +80,7 @@ class FacetTemplate(models.Model):
         return "Facet Template"
 
     def get_absolute_url(self):
-        return reverse('facet_template_edit', kwargs={'pk': self.id})
+        return reverse('facet_template_edit', kwargs={'template': self.id, 'org': self.organization.id})
 
 
 # field which will appear on all facet-editing forms -- and therefore do not

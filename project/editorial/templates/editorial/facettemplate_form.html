@@ -18,7 +18,7 @@
 <div>
     <ol class="breadcrumb icon-angle-right icon-th">
         <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
-        <li class="fadeIn"><a href="{% url 'facet_template_list' %}" title="See all Facet Templates"> Facet Templates </a></li>
+        <li class="fadeIn"><a href="{% url 'facet_template_list' org=request.user.organization_id %}" title="See all Facet Templates"> Facet Templates </a></li>
         {% if facettemplate.id %}
         <li class="fadeIn"> Edit facet template: {{ facettemplate.name }} </li>
         {% else %}
@@ -84,10 +84,10 @@
     <!-- Is Active -->
     <div class="row">
         <fieldset class="form-group m-b-10">
-          <div class="col-xs-3">
+          <div class="col-xs-4">
             <label class="f-s-12 f-s-400 spread-01 subtle slim-margin">{{ form.is_active.label_tag }}</label>
           </div>
-          <div class="col-xs-9">
+          <div class="col-xs-8">
             {{ form.is_active }}
             {% if form.is_active.errors %}
               <small class="text-muted">{{ form.is_active.errors }}</small>
@@ -96,8 +96,20 @@
         </fieldset>
     </div>
 
+    <div>
+      {% comment %}
+      {% if facettemplate %}
+      <form class="facettemplate-delete" method="GET"
+            action="{% url 'facet_template_delete' template=facettemplate.id org=request.user.organization.id %}">
+            {% csrf_token %}
+        <a href="javascript:$('.facettemplate-delete').submit();" title="Delete this facet template"><i class="fa fa-trash fa-lg subtle m-l-20" aria-hidden="true"></i></a>
+      </form>
+      {% endif %}
+      {% endcomment %}
+    </div>
+
     <!-- Default Fields -->
-    <div class="row m-t-20">
+    <div class="row m-t-10">
       <div class="col-xs-12">
         <p class="f-s-14 f-w-400 slim-margin m-l-5 m-b-20">Default Fields</p>
         <p class="f-s-12 f-w-300 m-l-5 m-b-10 color-default">Included for all facets. Select Base Template to use <span class="f-w-600">only</span> these fields.</p>
@@ -386,6 +398,28 @@
   $(".chosen-select").chosen()
 </script>
 
+<!-- Facet Delete Confirmation alerts -->
+<script>
+  $('.facettemplate-delete a').on('click', function(e) {
+       e.preventDefault();
+          swal({
+              title: 'Are you sure?',
+              text: 'You will not be able to recover this facet template. Do not delete templates associated with facets until you select a new template for the facet.',
+              type: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Yes, delete it!',
+              closeOnConfirm: true
+          }, function(result) {
+              if (result) {
+                $(".facettemplate-delete").attr("method", "POST").submit();
+              } else {
+                // do nothing on cancel
+            }
+          });
+        });
+</script>
 
 {% endblock %}
 

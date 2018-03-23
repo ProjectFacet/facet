@@ -9,7 +9,7 @@ from braces.views import LoginRequiredMixin, FormMessagesMixin
 from editorial.views import CustomUserTest
 from django.db.models import Q
 
-from ..models import Facet, FacetTemplate
+from ..models import Facet, FacetTemplate, Organization
 from ..forms import (
     FacetTemplateForm,
     get_facet_form_for_template,
@@ -21,6 +21,10 @@ from ..forms import (
     VideoAssetForm,
     )
 
+
+# -------------------------------------- #
+#         Facet Template Views           #
+# -------------------------------------- #
 
 # ACCESS: Only org users should be able to create a template for their org.
 # Future, some thinking about how to handle this for shared facets...
@@ -60,27 +64,41 @@ class FacetTemplateUpdateView(LoginRequiredMixin, FormMessagesMixin, UpdateView)
     form_invalid_message = "Something went wrong."
     form_valid_message = "Changes saved."
 
+    def get_object(self):
+        facettemplate = FacetTemplate.objects.get(pk=self.kwargs['template'])
+        return facettemplate
+
     def form_valid(self, form):
         """Handle submission of form manually."""
 
+        org = Organization.objects.get(pk=self.kwargs['org'])
         # Retrieve form values manually
         ft_id = self.request.POST.get('facettemplate')
+        print "FTID: ", ft_id
         form_fields = self.request.POST.getlist('fields')
+        print "FORM FIELDS: ", form_fields
         name = self.request.POST.get('name')
+        print "NAME: ", name
         description = self.request.POST.get('description')
+        print "DESC: ", description
         is_active = form.cleaned_data['is_active']
-        # Retrieve template
-        facettemplate = FacetTemplate.objects.get(id=ft_id)
+        print "IA: ", is_active
+
         # Set new values
+        facettemplate = FacetTemplate.objects.get(id=ft_id)
+        print "TEMP: ", facettemplate
         facettemplate.name = name
+        print "FTA: ", facettemplate.name
         facettemplate.description = description
+        print "FTD: ", facettemplate.description
         facettemplate.is_active = is_active
         facettemplate.fields_used = form_fields
         facettemplate.save()
+        print "FORM SAVED"
 
         action.send(self.request.user, verb="edited", action_object=self.object)
 
-        return redirect(facettemplate)
+        return redirect('facet_template_list', org=org.id)
 
 
 # ACCESS: Only org users should be able to see their org's templates.
@@ -96,7 +114,7 @@ class FacetTemplateView(LoginRequiredMixin, FormMessagesMixin, TemplateView):
         """Group facettemplates for display."""
 
         context = super(FacetTemplateView, self).get_context_data(**kwargs)
-        org = self.request.user.organization
+        org = Organization.objects.get(pk=self.kwargs['org'])
         basetemplates = FacetTemplate.objects.filter(organization_id__isnull=True)
         activetemplates = FacetTemplate.objects.filter(Q(organization_id=org) & Q(is_active=True))
         inactivetemplates = FacetTemplate.objects.filter(Q(organization_id=org) & Q(is_active=False))
@@ -116,6 +134,36 @@ class FacetTemplateDetailView(LoginRequiredMixin, FormMessagesMixin, DetailView)
     model = FacetTemplate
     template_name = 'editorial/facettemplate_detail.html'
 
+    def get_object(self):
+        return FacetTemplate.objects.get(pk=self.kwargs['template'])
+
+
+# Access only org users should be able to delete templates that belong to their organization.
+class FacetTemplateDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteView):
+    """View for handling deletion of a facet template.
+
+    In this project, we expect deletion to be done via a JS pop-up UI; we don't expect to
+    actually use the "do you want to delete this?" Django-generated page. However, this is
+    available if useful.
+    """
+
+    model = FacetTemplate
+    template_name = "editorial/facettemplate_delete.html"
+
+    form_valid_message = "Deleted."
+    form_invalid_message = "Please check form."
+
+    def get_object(self):
+        return FacetTemplate.objects.get(pk=self.kwargs['template'])
+
+    def get_success_url(self):
+        """Post-deletion, return to the template list."""
+
+        return reverse('facet_template_list',kwargs={'org':self.request.user.organization.id})
+
+# -------------------------------------- #
+#           Facet Views                  #
+# -------------------------------------- #
 
 # ACCESS: Any org user, or user from an organization that is in collaborate_with
 # should be able to create a facet for a story they have access to
@@ -248,7 +296,6 @@ class FacetUpdateView(LoginRequiredMixin, FormMessagesMixin, UpdateView):
     def facet_kwargs(self):
         """Return kwargs from url for navigation."""
         facet_kwargs = self.kwargs['pk']
-        print "FK: ", facet_kwargs
         return facet_kwargs
 
 

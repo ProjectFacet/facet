@@ -18,7 +18,7 @@
 <div>
     <ol class="breadcrumb icon-angle-right icon-th">
         <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
-        <li class="fadeIn"><a href="{% url 'facet_template_list' %}" title="See all Facet Templates"> Facet Templates </a></li>
+        <li class="fadeIn"><a href="{% url 'facet_template_list' org=request.user.organization_id %}" title="See all Facet Templates"> Facet Templates </a></li>
         <li class="fadeIn"> {{ facettemplate.name }} </li>
     </ol>
 </div>

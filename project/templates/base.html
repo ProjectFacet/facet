@@ -173,9 +173,10 @@
                             <a class="dropdown-item" href="{% url 'schedule' %}" title="View Schedule"> <span class="title">Schedule</span> </a>
                             {% endcomment %}
                             <a class="dropdown-item" href="{% url 'project_list' %}" title="View Project List"> <span class="title">Projects</span> </a>
-                            <a class="dropdown-item" href="{% url 'story_list' %}" title="View Story List"> </span> <span class="title">Stories</span> </a>
-                            <a class="dropdown-item" href="{% url 'series_list' %}" title="View Series List"> </span> <span class="title">Series</span> </a>
-                            <a class="dropdown-item" href="{% url 'collaborations' %}" title="View Content in Collaboration"> </span> <span class="title">Collaborations</span> </a>
+                            <a class="dropdown-item" href="{% url 'series_list' %}" title="View Series List"> <span class="title">Series</span> </a>
+                            <a class="dropdown-item" href="{% url 'story_list' %}" title="View Story List"> <span class="title">Stories</span> </a>
+                            <a class="dropdown-item" href="{% url 'facet_template_list' org=request.user.organization_id %}" title="See all Facet Templates"> <span class="title">Facet Templates</span> </a>
+                            <a class="dropdown-item" href="{% url 'collaborations' %}" title="View Content in Collaboration"> <span class="title">Collaborations</span> </a>
                         </div>
                     </li>
                   </ul>
