@@ -220,7 +220,7 @@ urlpatterns = [
     # Facet templates
     url(r'^organization/(?P<org>\d+)/facet/templates/$', facet.FacetTemplateView.as_view(), name="facet_template_list"),
     url(r'^organization/(?P<org>\d+)/facet/templates/create/$', facet.FacetTemplateCreateView.as_view(), name="facet_template_create"),
-    url(r'^organization/(?P<org>\d+)/facet/templates/(?P<template>\d+)/$', facet.FacetTemplateDetailView.as_view(), name="facet_template_detail"),
+    url(r'^organization/basic/facet/templates/(?P<template>\d+)/$', facet.FacetTemplateDetailView.as_view(), name="facet_template_detail"),
     url(r'^organization/(?P<org>\d+)/facet/templates/(?P<template>\d+)/edit/$', facet.FacetTemplateUpdateView.as_view(), name="facet_template_edit"),
     url(r'^organization/(?P<org>\d+)/facet/templates/(?P<template>\d+)/delete/$', facet.FacetTemplateDeleteView.as_view(), name="facet_template_delete"),
 

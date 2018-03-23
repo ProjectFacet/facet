@@ -74,27 +74,18 @@ class FacetTemplateUpdateView(LoginRequiredMixin, FormMessagesMixin, UpdateView)
         org = Organization.objects.get(pk=self.kwargs['org'])
         # Retrieve form values manually
         ft_id = self.request.POST.get('facettemplate')
-        print "FTID: ", ft_id
         form_fields = self.request.POST.getlist('fields')
-        print "FORM FIELDS: ", form_fields
         name = self.request.POST.get('name')
-        print "NAME: ", name
         description = self.request.POST.get('description')
-        print "DESC: ", description
         is_active = form.cleaned_data['is_active']
-        print "IA: ", is_active
 
         # Set new values
         facettemplate = FacetTemplate.objects.get(id=ft_id)
-        print "TEMP: ", facettemplate
         facettemplate.name = name
-        print "FTA: ", facettemplate.name
         facettemplate.description = description
-        print "FTD: ", facettemplate.description
         facettemplate.is_active = is_active
         facettemplate.fields_used = form_fields
         facettemplate.save()
-        print "FORM SAVED"
 
         action.send(self.request.user, verb="edited", action_object=self.object)
 
@@ -147,6 +138,7 @@ class FacetTemplateDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteView)
     available if useful.
     """
 
+    #FIXME troubleshoot delete js
     model = FacetTemplate
     template_name = "editorial/facettemplate_delete.html"
 

@@ -90,7 +90,7 @@
     <button type="submit" class="btn btn-info content-bottom-10 btn btn-block no-border" name="form">Save</button>
     </form>
 
-    <a href="{% url 'facet_template_create' %}" title="Create a new template"><p>Create a new template</p></a>
+    <a href="{% url 'facet_template_create' org=request.user.organization.id %}" title="Create a new template"><p>Create a new template</p></a>
 
   </div>
   <div class="col-xs-12 col-lg-4"></div>

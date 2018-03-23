@@ -79,6 +79,19 @@ class FacetTemplate(models.Model):
     def type(self):
         return "Facet Template"
 
+
+    def copy(self):
+        """ Create a copy of a facet template for a partner organization in a network."""
+
+        print "in facet template copy"
+        self.id = None
+        self.is_active=False
+        print "pre copy save"
+        self.save()
+        print "saved"
+        print "new id", self.id
+        return self
+
     def get_absolute_url(self):
         return reverse('facet_template_edit', kwargs={'template': self.id, 'org': self.organization.id})
 

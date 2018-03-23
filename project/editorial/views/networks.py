@@ -311,8 +311,16 @@ class CopyNetworkStoryView(LoginRequiredMixin, View):
         # Create copy of facets if they exist
         # Copy the Facet
         if original_facets:
+            # get facet templates and make copies if org is not null
             print "if original facets"
             for facet in original_facets:
+                print "copy the facet template"
+                print "FT: ", facet.template
+                if facet.template.organization:
+                    copied_facet_template = facet.template.copy()
+                else:
+                    copied_facet_template = facet.template
+                print "facet template copied"
                 copied_facet = facet.copy()
                 print "Copied Facet exists"
                 print "CF: ", copied_facet
@@ -322,6 +330,8 @@ class CopyNetworkStoryView(LoginRequiredMixin, View):
                 print "CFO"
                 copied_facet.organization = organization
                 print "CFOR"
+                copied_facet.template = copied_facet_template
+                print "CFT"
                 copied_facet.save()
                 print "CF Saved"
                 facet_copy_record = FacetCopyDetail.objects.create_facet_copy_record(

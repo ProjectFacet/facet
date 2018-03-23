@@ -77,7 +77,12 @@
         <a href="javascript:$('.facet-delete').submit();" title="Delete this facet"><i class="fa fa-trash subtle m-l-20" aria-hidden="true"></i></a>
         <!-- <input type="submit" class="btn btn-sm btn-danger-100" value="Delete"> -->
       </form>
-      <a href="{% url 'facet_template_edit' facet.template.id %}" title="Edit facet template"><i class="fa fa-pencil-square-o m-l-20 subtle" aria-hidden="true"></i></a>
+        {% if facet.template.organization %}
+        <a href="{% url 'facet_template_edit' template=facet.template.id org=request.user.organization.id %}" title="Edit facet template"><i class="fa fa-pencil-square-o m-l-20 subtle" aria-hidden="true"></i></a>
+        {% else %}
+        <a href="{% url 'facet_template_detail' template=facet.template.id %}" title="View facet template"><i class="fa fa-info-square m-l-20 subtle" aria-hidden="true"></i></a>
+        {% endif %}
+
       {% endif %}
       </h5>
         <form method="POST" class="post-form">
