@@ -226,9 +226,18 @@
                           <div class="row m-b-10">
                             {% for image in facet_images.images %}
                               {% if image.display_photo %}
-                                <div class="col-xs-4">
+                                <div class="col-xs-4 hover-remove-{{image.id}}">
+                                  <!-- Image thumbnail and link to facet image gallery -->
                                   <a href="{{ image.display_photo.url }}" class="thumbnail"><img src="{{ image.display_photo.url }}" alt="{{ image.description }}" class="img-fluid"></a>
+                                  <!-- Opens modal to remove image -->
+                                  <button type="button" class="btn btn-sm clear-button f-r-8 subtle" title="Remove this image" data-toggle="modal" data-target="#removeImageModal" data-imageid="{{ image.id }}" data-imageurl="{{ image.display_photo.url }}" data-actionurl="{% url 'image_asset_remove' image=image.id %}">Remove</button>
                                 </div>
+                                {% comment %}
+                                <script>
+                                  $(".hover-remove-{{image.id}}").mouseover(function() { $(".remove-image-link-{{image.id}}").css('visibility','visible'); });
+                                  $(".hover-remove-{{image.id}}").mouseout(function() { $(".remove-image-link-{{image.id}}").css('visibility','hidden'); });
+                                </script>
+                                {% endcomment %}
                                 {% if forloop.counter|divisibleby:"3" and not forloop.last %}
                                   </div><div class="row m-b-10">
                                 {% endif %}
@@ -602,16 +611,19 @@
                   <!-- JS SCRIPTS -->
 <!-- ================================================= -->
 
+
 <script>
   $(".chosen-select").chosen()
 
   $('#image-thumbs').magnificPopup({
     delegate: 'a',
+    class: 'thumbnail',
     type: 'image',
     gallery: {enabled:true}
   });
 </script>
 
+<!-- Embedded Video Popup -->
 <script>
   $('.embedded-video').magnificPopup({
     type: 'iframe',
@@ -663,6 +675,26 @@
         });
 </script>
 
+<script>
+
+$(document).ready(function () {
+
+  $('#removeImageModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget) // Button that triggered the modal
+    var image = button.data('imageid') // Extract info from data-* attributes
+    var imageURL = button.data('imageurl') // Extract info from data-* attributes
+    var action = button.data('actionurl')
+    console.log(action);
+    var modal = $(this)
+    modal.find('#img_src').attr('src', imageURL)
+    modal.find('#hidden_image').attr('value', image)
+    modal.find('#removeform').attr('action', action);
+  });
+
+});
+
+
+</script>
 
 {% endblock %}
 
@@ -673,6 +705,31 @@
 <!-- ================================================= -->
 
 {% block modals %}
+
+
+<div class="modal" id="removeImageModal" tabindex="-1" role="dialog" aria-labelledby="removeImageModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title sameline" id="removeImageLabel">Remove Image</h5>
+        <button type="button" class="close sameline" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <img id="img_src" src="{{ image.display_photo.url }}" alt="{{ image.description }}" class="img-fluid"></a>
+        <form id="removeform" action="#" method="POST" class="post-form">
+        {% csrf_token %}
+        <input id="hidden_facet" type="hidden" name="facet" value="{{ facet.pk }}" />
+        <input id="hidden_image" type="hidden" name="image" value="{{ image.pk }}" />
+        <button type="submit" class="remove-image-link-{{image.id}} btn btn-primary btn-sm f-r-8 m-t-20" title="Remove this image">Remove</button>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 
 <!-- ================================================= -->
             <!-- NEW FACET  MODAL -->

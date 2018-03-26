@@ -59,6 +59,7 @@ urlpatterns = [
     url(r'^assets/images/$', assets.ImageAssetLibraryTemplateView.as_view(), name='image_asset_list'),
     url(r'^assets/image/(?P<pk>\d+)/$', assets.ImageAssetUpdateView.as_view(), name='image_asset_detail'),
     url(r'^assets/image/(?P<pk>\d+)/delete/$', assets.ImageAssetDeleteView.as_view(), name='image_asset_delete'),
+    url(r'^assets/image/(?P<image>\d+)/remove/$', assets.ImageAssetDisassociateView.as_view(), name='image_asset_remove'),
     url(r'^assets/documents/$', assets.DocumentAssetLibraryTemplateView.as_view(), name='document_asset_list'),
     url(r'^assets/document/(?P<pk>\d+)/$', assets.DocumentAssetUpdateView.as_view(), name='document_asset_detail'),
     url(r'^assets/document/(?P<pk>\d+)/delete/$', assets.DocumentAssetDeleteView.as_view(), name='document_asset_delete'),

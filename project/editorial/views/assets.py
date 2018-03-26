@@ -9,7 +9,7 @@ from __future__ import unicode_literals
 from django.shortcuts import redirect, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.core.urlresolvers import reverse
-from django.views.generic import TemplateView , UpdateView, DetailView, ListView, CreateView, FormView, DeleteView, RedirectView
+from django.views.generic import View, TemplateView, UpdateView, DetailView, ListView, CreateView, FormView, DeleteView, RedirectView
 from actstream import action
 from braces.views import LoginRequiredMixin, FormMessagesMixin
 
@@ -188,6 +188,25 @@ class LibraryImageAssociateView(LoginRequiredMixin, FormView):
         facet = get_object_or_404(Facet, id=facet)
         facet.image_assets.add(*images)
         action.send(self.request.user, verb="added image", target=facet)
+
+        return redirect('facet_edit', pk=facet.id, story=facet.story.id)
+
+
+# ACCESS: Any org user should be able to remove an asset for a F
+# A user from an organization that is in collaborate_with or
+# contractors should be able to do this as it is easily reversed.
+class ImageAssetDisassociateView(LoginRequiredMixin, View):
+    """ Process form to remove an image from a facet."""
+
+    def post(self, request, image):
+        """ Retrieve facet and image from kwargs and remove image from facet imageasset_set."""
+
+        facet_id = request.POST.get('facet')
+        image_id = self.kwargs['image']
+        facet = Facet.objects.get(id=facet_id)
+        image = ImageAsset.objects.get(id=image_id)
+        facet.image_assets.remove(image)
+        print facet.image_assets.all()
 
         return redirect('facet_edit', pk=facet.id, story=facet.story.id)
 
