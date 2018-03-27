@@ -230,7 +230,7 @@
                                   <!-- Image thumbnail and link to facet image gallery -->
                                   <a href="{{ image.display_photo.url }}" class="thumbnail"><img src="{{ image.display_photo.url }}" alt="{{ image.description }}" class="img-fluid"></a>
                                   <!-- Opens modal to remove image -->
-                                  <button type="button" class="btn btn-sm clear-button f-r-8 subtle" title="Remove this image" data-toggle="modal" data-target="#removeImageModal" data-imageid="{{ image.id }}" data-imageurl="{{ image.display_photo.url }}" data-actionurl="{% url 'image_asset_remove' image=image.id facet=facet.id %}">Remove</button>
+                                  <button type="button" class="btn btn-sm clear-button f-r-6 subtle" title="Remove this image" data-toggle="modal" data-target="#removeImageModal" data-imageid="{{ image.id }}" data-imageurl="{{ image.display_photo.url }}" data-actionurl="{% url 'image_asset_remove' image=image.id facet=facet.id %}">Remove</button>
                                 </div>
                                 {% comment %}
                                 <script>
@@ -275,7 +275,7 @@
                             {% endif %}
                             <!-- Opens modal to remove document -->
                             <button type="button"
-                                    class="btn btn-sm clear-button f-r-8 subtle m-b-10"
+                                    class="btn btn-sm clear-button f-r-6 subtle m-b-10"
                                     title="Remove this document"
                                     data-toggle="modal"
                                     data-target="#removeDocumentModal"
@@ -298,7 +298,7 @@
                       <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
                         <p class="f-r-12 f-w-300 m-b-20">Audio <a href="#" data-toggle="modal" data-target="#AudioAssetModal" data-facet="facet_audio" title="Add Audio"><i class="fa fa-plus sameline subtle"></i></a></p>
                         {% for audio in facet_audio.audio %}
-                        <div class="col-xs-12 col-md-6">
+                        <div class="col-xs-12">
                           {% if audio.asset_type == 'MP3' or audio.asset_type == 'WAV' %}
                               <div id="jplayer_audio_{{audio.pk}}" class="jp-jplayer"></div>
 
@@ -358,6 +358,19 @@
                             {% if audio.asset_type == 'SC' %}
                                 <a href="{{ audio.link }}" title="{{ audio.description }}" target="_blank"><i class="fa fa-soundcloud sameline"></i> <span class="small-text dark sameline">{{ audio.title }}</span></a>
                             {% endif %}
+                            <!-- Button to open modal to remove audio file -->
+                            <button type="button"
+                                    class="btn btn-sm clear-button f-r-8 subtle"
+                                    title="Remove this audio"
+                                    data-toggle="modal"
+                                    data-target="#removeAudioModal"
+                                    data-actionurl="{% url 'audio_asset_remove' audio=audio.id facet=facet.id %}"
+                                    data-audiotitle="{{ audio.title }}"
+                                    data-audiotype="{{ audio.asset_type }}"
+                                    data-audioid="{{audio.id}}"
+                                    data-audiourl="{{audio.audio.url}}">
+                                    Remove
+                            </button>
                           {% if forloop.counter|divisibleby:"2" and not forloop.last %}
                             </div><div class="row m-b-10">
                           {% endif %}
@@ -710,14 +723,10 @@ $(document).ready(function () {
     var button = $(event.relatedTarget)
     // Extract info from data-* attributes
     var detailURL = button.data('detailurl')
-    console.log(detailURL);
     var documentTitle = button.data('doctitle')
-    console.log(documentTitle);
     var documentType = button.data('doctype')
     documentType = documentType.replace(/\s+/g, '');
-    console.log(documentType);
     var action = button.data('actionurl')
-    console.log(action);
     var modal = $(this)
     // Replace modal attributes
     modal.find('#'+ documentType).show();
@@ -731,17 +740,29 @@ $(document).ready(function () {
 
   });
 
-
   // Remove Audio Modal
   $('#removeAudioModal').on('show.bs.modal', function (event) {
-    var button = $(event.relatedTarget) // Button that triggered the modal
-    var audio = button.data('audioid') // Extract info from data-* attributes
-    var audioURL = button.data('audiourl') // Extract info from data-* attributes
+    // Button that triggered the modal
+    var button = $(event.relatedTarget)
+    // Extract info from data-* attributes
+    var audioID = button.data('audioid')
+    console.log(audioID);
+    var audioTitle = button.data('audiotitle')
+    console.log(audioTitle);
+    var audioURL = button.data('audiourl')
+    console.log(audioURL);
+    var audioType = button.data('audiotype')
+    console.log(audioType);
     var action = button.data('actionurl')
+    console.log(action);
     var modal = $(this)
-    modal.find('#audio_src').attr('src', audioURL)
-    modal.find('#hidden_audio').attr('value', audio)
+    // Replace modal attributes
+    // modal.find('#'+ audioType +"'").attr('style', "visibile")
+    modal.find('#jplayer_audio').attr('title', audioTitle)
+    modal.find('#jplayer_audio').attr('wav', audioURL);
+    modal.find('#jplayer_audio').attr('mp3', audioURL);
     modal.find('#removeform').attr('action', action);
+    modal.find('h4#display-audio-title').html(audioTitle);
   });
 
   // Remove Video Modal
@@ -874,6 +895,83 @@ $(document).ready(function () {
         <form id="removeform" action="#" method="POST" class="post-form">
         {% csrf_token %}
         <button type="submit" class="remove-document-link-{{document.id}} btn btn-primary btn-sm f-r-8 m-t-20" title="Remove this document">Remove</button>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="removeAudioModal" tabindex="-1" role="dialog" aria-labelledby="removeAudioModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title sameline" id="removeAudioLabel">Remove Audio</h5>
+        <button type="button" class="close sameline" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Display asset -->
+        {% comment %}
+        <div id="jplayer_audio" class="jp-jplayer"></div>
+        <div id="jp_container_audio" class="jp-flat-audio m-t-10" role="application" aria-label="media player">
+          <div class="jp-play-control jp-control">
+            <button class="jp-play jp-button" role="button" aria-label="play" tabindex="0"></button>
+          </div>
+          <div class="jp-bar">
+            <div class="jp-seek-bar jp-seek-bar-display"></div>
+            <div class="jp-seek-bar">
+              <div class="jp-play-bar"></div>
+              <div class="jp-details"><span class="jp-title" aria-label="title"></span></div>
+              <div class="jp-timing"><span class="jp-duration" role="timer" aria-label="duration"></span></div>
+            </div>
+          </div>
+          <div class="jp-no-solution">
+            Media Player Error<br />
+            Update your browser or Flash plugin
+          </div>
+        </div>
+        <script>
+            jQuery(document).ready(function($) {
+            $("#jplayer_audio").jPlayer({
+              ready: function(event) {
+                $(this).jPlayer("setMedia", {
+                  title: "",
+                  wav: "",
+                  mp3: "",
+                });
+              },
+              play: function() { // Avoid multiple jPlayers playing together.
+                $(this).jPlayer("pauseOthers");
+              },
+              timeFormat: {
+                padMin: false
+              },
+              swfPath: "js",
+              supplied: "wav, mp3",
+              cssSelectorAncestor: "#jp_container_audio",
+              useStateClassSkin: true,
+              autoBlur: false,
+              smoothPlayBar: true,
+              remainingDuration: true,
+              keyEnabled: true,
+              keyBindings: {
+                // Disable some of the default key controls
+                loop: null,
+                muted: null,
+                volumeUp: null,
+                volumeDown: null
+              },
+              wmode: "window"
+            });
+            });
+        </script>
+        {% endcomment %}
+        <h4 id="display-audio-title"></h4>
+        <form id="removeform" action="#" method="POST" class="post-form">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary btn-sm f-r-8 m-t-20" title="Remove this audio">Remove</button>
       </form>
       </div>
     </div>
