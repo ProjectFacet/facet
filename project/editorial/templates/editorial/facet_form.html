@@ -360,7 +360,7 @@
                             {% endif %}
                             <!-- Button to open modal to remove audio file -->
                             <button type="button"
-                                    class="btn btn-sm clear-button f-r-8 subtle"
+                                    class="btn btn-sm clear-button f-r-6 subtle"
                                     title="Remove this audio"
                                     data-toggle="modal"
                                     data-target="#removeAudioModal"
@@ -383,7 +383,7 @@
                       <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
                         <p class="f-r-12 f-w-300 m-b-20">Video <a href="#" data-toggle="modal" data-target="#VideoAssetModal" data-facet="facet_video" title="Add Video"><i class="fa fa-plus sameline subtle"></i></a></p>
                         {% for video in facet_video.videos %}
-                            <div class="col-xs-12 col-md-6">
+                            <div class="col-xs-12">
                               {% if video.asset_type == 'MP4' %}
                                   <div id="jp_container_video_{{video.pk}}" class="jp-flat-video" role="application" aria-label="media player">
                                     <div id="jplayer_video_{{video.pk}}" class="jp-jplayer"></div>
@@ -509,6 +509,17 @@
                               {% if video.asset_type == 'VIMEO' %}
                                 <a href="{{ video.link }}" title="View {{ video.title }}" class="embedded-video"><p class="f-r-10 f-w-300 f-r-9"><i class="fa fa-vimeo subtle"></i> {{ video.title }}</p></a>
                               {% endif %}
+                              <button type="button"
+                                      class="btn btn-sm clear-button f-r-6 subtle"
+                                      title="Remove this video"
+                                      data-toggle="modal"
+                                      data-target="#removeVideoModal"
+                                      data-actionurl="{% url 'video_asset_remove' video=video.id facet=facet.id %}"
+                                      data-videotitle="{{ video.title }}"
+                                      data-videotype="{{ video.asset_type }}"
+                                      data-videoid="{{video.id}}">
+                                      Remove
+                              </button>
                             {% if forloop.counter|divisibleby:"2" and not forloop.last %}
                           </div><div class="row m-b-5">
                             {% endif %}
@@ -767,14 +778,22 @@ $(document).ready(function () {
 
   // Remove Video Modal
   $('#removeVideoModal').on('show.bs.modal', function (event) {
-    var button = $(event.relatedTarget) // Button that triggered the modal
-    var video = button.data('videoid') // Extract info from data-* attributes
-    var videoURL = button.data('videourl') // Extract info from data-* attributes
+    // Button that triggered the modal
+    var button = $(event.relatedTarget)
+    // Extract info from data-* attributes
+    var videoID = button.data('videoid')
+    console.log(videoID);
+    var videoTitle = button.data('videotitle')
+    console.log(videoTitle);
+    var videoType = button.data('videotype')
+    console.log(videoType);
     var action = button.data('actionurl')
+    console.log(action);
     var modal = $(this)
-    modal.find('#video_src').attr('src', videoURL)
-    modal.find('#hidden_video').attr('value', video)
+    // Replace modal attributes
+    // modal.find('#'+ videoType +"'").attr('style', "visibile")
     modal.find('#removeform').attr('action', action);
+    modal.find('h4#display-video-title').html(videoTitle);
   });
 
 });
@@ -972,6 +991,28 @@ $(document).ready(function () {
         <form id="removeform" action="#" method="POST" class="post-form">
         {% csrf_token %}
         <button type="submit" class="btn btn-primary btn-sm f-r-8 m-t-20" title="Remove this audio">Remove</button>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="removeVideoModal" tabindex="-1" role="dialog" aria-labelledby="removeVideoModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title sameline" id="removeVideoLabel">Remove Video</h5>
+        <button type="button" class="close sameline" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Display asset -->
+        <h4 id="display-video-title"></h4>
+        <form id="removeform" action="#" method="POST" class="post-form">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary btn-sm f-r-8 m-t-20" title="Remove this video">Remove</button>
       </form>
       </div>
     </div>
