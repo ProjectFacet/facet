@@ -198,15 +198,14 @@ class LibraryImageAssociateView(LoginRequiredMixin, FormView):
 class ImageAssetDisassociateView(LoginRequiredMixin, View):
     """ Process form to remove an image from a facet."""
 
-    def post(self, request, image):
+    def post(self, request, facet, image):
         """ Retrieve facet and image from kwargs and remove image from facet imageasset_set."""
 
-        facet_id = request.POST.get('facet')
+        facet_id = self.kwargs['facet']
         image_id = self.kwargs['image']
         facet = Facet.objects.get(id=facet_id)
         image = ImageAsset.objects.get(id=image_id)
         facet.image_assets.remove(image)
-        print facet.image_assets.all()
 
         return redirect('facet_edit', pk=facet.id, story=facet.story.id)
 
@@ -319,6 +318,24 @@ class LibraryDocumentAssociateView(LoginRequiredMixin, FormView):
         return redirect('facet_edit', pk=facet.id, story=facet.story.id)
 
 
+# ACCESS: Any org user should be able to remove an asset for a F
+# A user from an organization that is in collaborate_with or
+# contractors should be able to do this as it is easily reversed.
+class DocumentAssetDisassociateView(LoginRequiredMixin, View):
+    """ Process form to remove a document from a facet."""
+
+    def post(self, request, facet, document):
+        """ Retrieve facet and document from kwargs and remove document from facet document_assets."""
+
+        facet_id = self.kwargs['facet']
+        doc_id = self.kwargs['document']
+        facet = Facet.objects.get(id=facet_id)
+        document = DocumentAsset.objects.get(id=doc_id)
+        facet.document_assets.remove(document)
+
+        return redirect('facet_edit', pk=facet.id, story=facet.story.id)
+
+
 # ACCESS: Any org user should be able to update an asset
 # A user from an organization that is in collaborate_with should be able to update
 # assets they are the owner of.
@@ -425,6 +442,24 @@ class LibraryAudioAssociateView(LoginRequiredMixin, FormView):
         return redirect('facet_edit', pk=facet.id, story=facet.story.id)
 
 
+# ACCESS: Any org user should be able to remove an asset for a F
+# A user from an organization that is in collaborate_with or
+# contractors should be able to do this as it is easily reversed.
+class AudioAssetDisassociateView(LoginRequiredMixin, View):
+    """ Process form to remove an audio file from a facet."""
+
+    def post(self, request, facet, audio):
+        """ Retrieve facet and audio from kwargs and remove audio from facet audio_assets."""
+
+        facet_id = self.kwargs['facet']
+        audio_id = self.kwargs['audio']
+        facet = Facet.objects.get(id=facet_id)
+        audio = AudioAsset.objects.get(id=audio_id)
+        facet.audio_assets.remove(audio)
+
+        return redirect('facet_edit', pk=facet.id, story=facet.story.id)
+
+
 # ACCESS: Any org user should be able to update an asset
 # A user from an organization that is in collaborate_with should be able to update
 # assets they are the owner of.
@@ -527,6 +562,24 @@ class LibraryVideoAssociateView(LoginRequiredMixin, FormView):
         facet = get_object_or_404(Facet, id=facet)
         facet.video_assets.add(*video)
         action.send(self.request.user, verb="added video", target=facet)
+
+        return redirect('facet_edit', pk=facet.id, story=facet.story.id)
+
+
+# ACCESS: Any org user should be able to remove an asset for a F
+# A user from an organization that is in collaborate_with or
+# contractors should be able to do this as it is easily reversed.
+class VideoAssetDisassociateView(LoginRequiredMixin, View):
+    """ Process form to remove a video file from a facet."""
+
+    def post(self, request, facet, video):
+        """ Retrieve facet and video from kwargs and remove video from facet video_assets."""
+
+        facet_id = self.kwargs['facet']
+        video_id = self.kwargs['video']
+        facet = Facet.objects.get(id=facet_id)
+        video = VideoAsset.objects.get(id=video_id)
+        facet.video_assets.remove(video)
 
         return redirect('facet_edit', pk=facet.id, story=facet.story.id)
 

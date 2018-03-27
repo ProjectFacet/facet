@@ -230,7 +230,7 @@
                                   <!-- Image thumbnail and link to facet image gallery -->
                                   <a href="{{ image.display_photo.url }}" class="thumbnail"><img src="{{ image.display_photo.url }}" alt="{{ image.description }}" class="img-fluid"></a>
                                   <!-- Opens modal to remove image -->
-                                  <button type="button" class="btn btn-sm clear-button f-r-8 subtle" title="Remove this image" data-toggle="modal" data-target="#removeImageModal" data-imageid="{{ image.id }}" data-imageurl="{{ image.display_photo.url }}" data-actionurl="{% url 'image_asset_remove' image=image.id %}">Remove</button>
+                                  <button type="button" class="btn btn-sm clear-button f-r-8 subtle" title="Remove this image" data-toggle="modal" data-target="#removeImageModal" data-imageid="{{ image.id }}" data-imageurl="{{ image.display_photo.url }}" data-actionurl="{% url 'image_asset_remove' image=image.id facet=facet.id %}">Remove</button>
                                 </div>
                                 {% comment %}
                                 <script>
@@ -254,24 +254,37 @@
                         <div class="row">
                         {% for document in facet_documents.documents %}
                         <div class="col-xs-12 col-md-6">
+                            <!-- Display of document title and icon -->
                             {% if document.asset_type == 'OTHER' %}
-                                <a href="{% url 'document_asset_detail' document.id %}" title="{{ document.description }}" target="_blank"><p class="f-w-300 m-l-10 f-r-9"><i class="fa fa-file-file-o subtle m-r-5"></i> {{ document.title }}</p></a>
+                                <a href="{% url 'document_asset_detail' document.id %}" title="{{ document.description }}" target="_blank"><p class="f-w-300 f-r-9 m-b-0"><i class="fa fa-file-file-o color-warning m-r-5"></i> {{ document.title }}</p></a>
                             {% endif %}
                             {% if document.asset_type == 'TEXT' %}
-                                <a href="{% url 'document_asset_detail' document.id %}" title="{{ document.description }}" target="_blank"><p class="f-w-300 m-l-10 f-r-9"><i class="fa fa-file-text-o subtle m-r-5"></i> {{ document.title }}</p></a>
+                                <a href="{% url 'document_asset_detail' document.id %}" title="{{ document.description }}" target="_blank"><p class="f-w-300 f-r-9 m-b-0"><i class="fa fa-file-text-o color-primary m-r-5"></i> {{ document.title }}</p></a>
                             {% endif %}
                             {% if document.asset_type == 'WORD DOC' %}
-                                <a href="{% url 'document_asset_detail' document.id %}" title="{{ document.description }}" target="_blank"><p class="f-w-300 m-l-10 f-r-9"><i class="fa fa-file-word-o subtle m-r-5"></i> {{ document.title }}</p></a>
+                                <a href="{% url 'document_asset_detail' document.id %}" title="{{ document.description }}" target="_blank"><p class="f-w-300 f-r-9 m-b-0"><i class="fa fa-file-word-o color-info m-r-5"></i> {{ document.title }}</p></a>
                             {% endif %}
                             {% if document.asset_type == 'EXCEL' %}
-                                <a href="{% url 'document_asset_detail' document.id %}" title="{{ document.description }}" target="_blank"><p class="f-w-300 m-l-10 f-r-9"><i class="fa fa-file-excel-o subtle m-r-5"></i> {{ document.title }}</p></a>
+                                <a href="{% url 'document_asset_detail' document.id %}" title="{{ document.description }}" target="_blank"><p class="f-w-300 f-r-9 m-b-0"><i class="fa fa-file-excel-o color-success m-r-5"></i> {{ document.title }}</p></a>
                             {% endif %}
                             {% if document.asset_type == 'PDF' %}
-                                <a href="{% url 'document_asset_detail' document.id %}" title="{{ document.description }}" target="_blank"><p class="f-w-300 m-l-10 f-r-9"><i class="fa fa-file-pdf-o subtle m-r-5"></i> {{ document.title }}</p></a>
+                                <a href="{% url 'document_asset_detail' document.id %}" title="{{ document.description }}" target="_blank"><p class="f-w-300 f-r-9 m-b-0"><i class="fa fa-file-pdf-o color-danger m-r-5"></i> {{ document.title }}</p></a>
                             {% endif %}
                             {% if document.asset_type == 'COMMA SEPARATED' %}
-                                <a href="{% url 'document_asset_detail' document.id %}" title="{{ document.description }}" target="_blank"><p class="f-w-300 m-l-10 f-r-9"><i class="fa fa-file-o subtle m-r-5"></i> {{ document.title }}</p></a>
+                                <a href="{% url 'document_asset_detail' document.id %}" title="{{ document.description }}" target="_blank"><p class="f-w-300 f-r-9 m-b-0"><i class="fa fa-file-o color-success m-r-5"></i> {{ document.title }}</p></a>
                             {% endif %}
+                            <!-- Opens modal to remove document -->
+                            <button type="button"
+                                    class="btn btn-sm clear-button f-r-8 subtle m-b-10"
+                                    title="Remove this document"
+                                    data-toggle="modal"
+                                    data-target="#removeDocumentModal"
+                                    data-detailurl="{% url 'document_asset_detail' document.id %}"
+                                    data-actionurl="{% url 'document_asset_remove' document=document.id facet=facet.id %}"
+                                    data-doctitle="{{ document.title }}"
+                                    data-doctype="{{ document.asset_type }}">
+                                    Remove
+                            </button>
                           {% if forloop.counter|divisibleby:"2" and not forloop.last %}
                         </div><div class="row">
                           {% endif %}
@@ -677,22 +690,73 @@
 
 <script>
 
+
+// Remove Asset Modals
 $(document).ready(function () {
 
+  // Remove Image Modal
   $('#removeImageModal').on('show.bs.modal', function (event) {
     var button = $(event.relatedTarget) // Button that triggered the modal
-    var image = button.data('imageid') // Extract info from data-* attributes
     var imageURL = button.data('imageurl') // Extract info from data-* attributes
+    var action = button.data('actionurl')
+    var modal = $(this)
+    modal.find('#img_src').attr('src', imageURL);
+    modal.find('#removeform').attr('action', action);
+  });
+
+  // Remove Document Modal
+  $('#removeDocumentModal').on('show.bs.modal', function (event) {
+    // Button that triggered the modal
+    var button = $(event.relatedTarget)
+    // Extract info from data-* attributes
+    var detailURL = button.data('detailurl')
+    console.log(detailURL);
+    var documentTitle = button.data('doctitle')
+    console.log(documentTitle);
+    var documentType = button.data('doctype')
+    documentType = documentType.replace(/\s+/g, '');
+    console.log(documentType);
     var action = button.data('actionurl')
     console.log(action);
     var modal = $(this)
-    modal.find('#img_src').attr('src', imageURL)
-    modal.find('#hidden_image').attr('value', image)
+    // Replace modal attributes
+    modal.find('#'+ documentType).show();
+    modal.find('#'+ documentType).attr('href', detailURL);
+    modal.find('#removeform').attr('action', action);
+    modal.find('p#title').html(documentTitle);
+    // When modal is closed change style back to hidden to prevent multiple previews in modal
+    $('#removeDocumentModal').on('hidden.bs.modal', function () {
+      modal.find('#'+ documentType).attr('style', 'display:none');
+    });
+
+  });
+
+
+  // Remove Audio Modal
+  $('#removeAudioModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget) // Button that triggered the modal
+    var audio = button.data('audioid') // Extract info from data-* attributes
+    var audioURL = button.data('audiourl') // Extract info from data-* attributes
+    var action = button.data('actionurl')
+    var modal = $(this)
+    modal.find('#audio_src').attr('src', audioURL)
+    modal.find('#hidden_audio').attr('value', audio)
+    modal.find('#removeform').attr('action', action);
+  });
+
+  // Remove Video Modal
+  $('#removeVideoModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget) // Button that triggered the modal
+    var video = button.data('videoid') // Extract info from data-* attributes
+    var videoURL = button.data('videourl') // Extract info from data-* attributes
+    var action = button.data('actionurl')
+    var modal = $(this)
+    modal.find('#video_src').attr('src', videoURL)
+    modal.find('#hidden_video').attr('value', video)
     modal.find('#removeform').attr('action', action);
   });
 
 });
-
 
 </script>
 
@@ -720,9 +784,7 @@ $(document).ready(function () {
         <img id="img_src" src="{{ image.display_photo.url }}" alt="{{ image.description }}" class="img-fluid"></a>
         <form id="removeform" action="#" method="POST" class="post-form">
         {% csrf_token %}
-        <input id="hidden_facet" type="hidden" name="facet" value="{{ facet.pk }}" />
-        <input id="hidden_image" type="hidden" name="image" value="{{ image.pk }}" />
-        <button type="submit" class="remove-image-link-{{image.id}} btn btn-primary btn-sm f-r-8 m-t-20" title="Remove this image">Remove</button>
+        <button type="submit" class="btn btn-primary btn-sm f-r-8 m-t-20" title="Remove this image">Remove</button>
       </form>
       </div>
     </div>
@@ -730,6 +792,93 @@ $(document).ready(function () {
 </div>
 
 
+<div class="modal" id="removeDocumentModal" tabindex="-1" role="dialog" aria-labelledby="removeDocumentModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title sameline" id="removeDocumentLabel">Remove Document</h5>
+        <button type="button" class="close sameline" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Display Asset Here -->
+        <div id="document-asset-library">
+          <!-- PDF -->
+          <a id="PDF" href="#" target="_blank" style="display: none;">
+            <div class="card bs-card">
+              <div class="card-block bg-danger-500">
+                <p class="f-r-14 f-w-300 text-center m-t-10"> <i class="fa fa-file-pdf-o fa-1x text-center m-b-10"></i> .pdf </p>
+              </div>
+              <div class="card-block">
+                <p id="title" class="f-r-10 f-w-500"></p>
+              </div>
+            </div>
+          </a>
+          <!-- WORD DOC -->
+          <a id="WORDDOC" href="#" target="_blank" style="display: none;">
+            <div class="card bs-card">
+              <div class="card-block bg-info-500">
+                <p class="f-r-14 f-w-300 text-center m-t-10"> <i class="fa fa-file-word-o fa-1x text-center m-b-10"> </i> .docx </p>
+              </div>
+              <div class="card-block">
+                <p id="title" class="f-r-10 f-w-500"></p>
+              </div>
+            </div>
+          </a>
+          <!-- TEXT -->
+          <a id="TEXT" href="#" target="_blank" style="display: none;">
+            <div class="card bs-card">
+              <div class="card-block bg-primary-500">
+                <p class="f-r-14 f-w-300 text-center m-t-10"> <i class="fa fa-file-text-o fa-1x text-center m-b-10"> </i> .txt </p>
+              </div>
+              <div class="card-block">
+                <p id="title" class="f-r-10 f-w-500"></p>
+              </div>
+            </div>
+          </a>
+          <!-- COMMA SEPARATED -->
+          <a id="COMMASEPARATED" href="#" target="_blank" style="display: none;">
+            <div class="card bs-card">
+              <div class="card-block bg-success-500">
+                <p class="f-r-14 f-w-300 text-center m-t-10"> <i class="fa fa-file-excel-o fa-1x text-center m-b-10"> </i> .csv </p>
+              </div>
+              <div class="card-block">
+                <p id="title" class="f-r-10 f-w-500"></p>
+              </div>
+            </div>
+          </a>
+          <!-- EXCEL -->
+          <a id="EXCEL" href="#" target="_blank" style="display: none;">
+            <div class="card bs-card">
+              <div class="card-block bg-success-500">
+                <p class="f-r-14 f-w-300 text-center m-t-10"> <i class="fa fa-file-excel-o fa-1x text-center m-b-10"> </i> .xls </p>
+              </div>
+              <div class="card-block">
+                <p id="title" class="f-r-10 f-w-500"></p>
+              </div>
+            </div>
+          </a>
+          <!-- OTHER -->
+          <a id="OTHER" href="#" target="_blank" style="display: none;">
+            <div class="card bs-card">
+              <div class="card-block bg-warning-500">
+                <p class="f-r-14 f-w-300 text-center m-t-10"> <i class="fa fa-file-o fa-1x text-center m-b-10"> </i> other </p>
+              </div>
+              <div class="card-block">
+                <p id="title" class="f-r-10 f-w-500"></p>
+              </div>
+            </div>
+          </a>
+        </div>
+        <form id="removeform" action="#" method="POST" class="post-form">
+        {% csrf_token %}
+        <button type="submit" class="remove-document-link-{{document.id}} btn btn-primary btn-sm f-r-8 m-t-20" title="Remove this document">Remove</button>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- ================================================= -->
             <!-- NEW FACET  MODAL -->
