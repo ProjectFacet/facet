@@ -27,7 +27,7 @@
 
   <div class="col-xs-12">
     <div class="row">
-    <form method="POST" class="post-form forms-basic">{% csrf_token %}
+    <form id="network_form" method="POST" class="post-form forms-basic">{% csrf_token %}
       <div class="col-xs-12 col-sm-12 col-md-2 col-md-offset-2 col-lg-8 col-lg-offset-2">
           <div class="row">
             <fieldset class="form-group m-b-20">
@@ -53,11 +53,17 @@
                 {% endif %}
               </div>
             </fieldset>
-          <button type="submit" class="save btn btn-default">Save</button>
-          <a href="{% url 'network_list' %}"><button class="save btn btn-danger-100">Cancel</button></a>
         </div>
       </div>
-      </form>
+    </form>
+      <div class="col-xs-12 col-sm-12 col-md-2 col-md-offset-2 col-lg-8 col-lg-offset-2">
+        <button form="network_form" type="submit" class="save btn btn-default">Save</button>
+        {% if network %}
+        <a href="{% url 'network_detail' network.id %}" title="Return to network"><button class="save btn btn-danger-100">Cancel</button></a>
+        {% else %}
+        <a href="{% url 'network_list' %}"><button class="save btn btn-danger-100">Cancel</button></a>
+        {% endif %}
+      </div>
     </div>
   </div>
 </div>

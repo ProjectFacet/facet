@@ -82,7 +82,6 @@
                           <i class="fa fa-paper-plane"></i>
                       </button>
                     </div>
-                    <!-- <input type="submit" name="seriescommentform" value="Post Comment"/> -->
                 </div>
               </form>
             </div>
@@ -192,7 +191,6 @@
 </script>
 
 
-
 {% endblock %}
 
 <!-- ================================================= -->
@@ -202,7 +200,7 @@
 <!-- ================================================= -->
 
 {% block modals %}
-{% for note in notes %}
+
 <!-- Add Note Modal -->
 <div class="modal fade" id="addNetworkNote" tabindex="-1" role="dialog" aria-labelledby="addNetworkNoteModalLabel">
   <div class="modal-dialog" role="document">
@@ -227,6 +225,8 @@
   </div>
 </div>
 <!-- END Add Note Modal -->
+
+{% for note in notes %}
 <!-- View Note Modals -->
 <div class="modal fade" id="viewNote{{note.id}}" tabindex="-1" role="dialog" aria-labelledby="viewNote{{note.id}}">
   <div class="modal-dialog" role="document">
