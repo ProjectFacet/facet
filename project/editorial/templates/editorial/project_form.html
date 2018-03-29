@@ -13,7 +13,7 @@
         <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
         <li class="fadeIn"><a href="{% url 'project_list' %}" title="View Project"> Projects </a></li>
         {% if project %}
-        <li class="fadeIn"> {{ project.name }} </li>
+        <li class="fadeIn"><a href="{% url 'project_detail' project.id %}" title="Go to project"> {{ project.name }} </a></li>
         <li class="fadeIn"> Edit </li>
         {% else %}
         <li class="fadeIn"> Create New Project </li>
@@ -31,7 +31,7 @@
 <div class="row m-b-40">
   <div class="col-xs-12">
     <div class="row">
-    <form method="POST" class="post-form forms-basic">{% csrf_token %}
+    <form id="project_form" method="POST" class="post-form forms-basic">{% csrf_token %}
       <!-- Left Side -->
       <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
         <div class="row">
@@ -95,16 +95,19 @@
             </div>
           </fieldset>
 
-
-          <div class="col-xs-12">
-            <button type="submit" class="save btn btn-default">Save</button>
-            <a href="{% url 'project_new' %}"><button class="btn btn-danger-100">Cancel</button></a>
-          </div>
         </div>
 
       </div>
 
       </form>
+      <div class="col-xs-12">
+        <button form="project_form" type="submit" class="save btn btn-default">Save</button>
+        {% if project %}
+        <a href="{% url 'project_detail' project.id %}"><button class="btn btn-danger-100">Cancel</button></a>
+        {% else %}
+        <a href="{% url 'dashboard' %}"><button class="btn btn-danger-100">Cancel</button></a>
+        {% endif %}
+      </div>
     </div>
   </div>
 </div>
