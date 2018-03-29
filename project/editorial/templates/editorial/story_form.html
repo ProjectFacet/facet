@@ -40,7 +40,7 @@
       {% endif %}
     </div>
     <div class="row">
-      <form method="POST" class="post-form forms-basic">{% csrf_token %}
+      <form id="story_form" method="POST" class="post-form forms-basic">{% csrf_token %}
         <!-- Left Side -->
         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
             <h4 class="m-b-20">Story Details</h4>
@@ -216,11 +216,17 @@
         <h5>Start or join a network to enable sharing or collaboration.</h5>
         {% endif %}
 
-        <a href="{% url 'dashboard' %}" title="Go to Dashboard"><button class="btn btn-danger-100 m-t-40 m-r-10 pull-right">Cancel</button></a>
-        <button type="submit" class="save btn btn-default m-t-40 m-r-10 pull-right">Save</button>
       </div>
 
     </form>
+    <div class="col-xs-12">
+      <button form="story_form" type="submit" class="save btn btn-default m-t-40 m-r-10 pull-right">Save</button>
+      {% if story %}
+      <a href="{% url 'story_detail' story.id %}" title="Go back to story"><button class="btn btn-danger-100 m-t-40 m-r-10 pull-right">Cancel</button></a>
+      {% else %}
+      <a href="{% url 'dashboard' %}" title="Go to Dashboard"><button class="btn btn-danger-100 m-t-40 m-r-10 pull-right">Cancel</button></a>
+      {% endif %}
+    </div>
 
     </div>
   </div>
