@@ -150,7 +150,7 @@ class StoryUpdateView(CustomUserTest, FormMessagesMixin, UpdateView):
         story = self.object = self.get_object()
         org = user.organization
 
-        if story.is_editable_by_org(org) and user.user_type in [User.ADMIN, User.EDITOR]:
+        if story.is_editable_by_org(org) and user.user_type in [User.ADMIN, User.EDITOR, user.STAFF, user.OTHER]:
             return True
 
         raise PermissionDenied()
@@ -192,7 +192,7 @@ class StoryDetailView(CustomUserTest, DetailView):
         story = self.object = self.get_object()
         org = user.organization
 
-        if story.is_editable_by_org(org) and user.user_type in [User.ADMIN, User.EDITOR]:
+        if story.is_editable_by_org(org) and user.user_type in [User.ADMIN, User.EDITOR, user.STAFF, user.OTHER]:
             return True
 
         raise PermissionDenied()
@@ -323,7 +323,7 @@ class StoryDeleteView(CustomUserTest, FormMessagesMixin, DeleteView):
         story = self.object = self.get_object()
         org = user.organization
 
-        if story.is_editable_by_org(org) and user.user_type in [User.ADMIN, User.EDITOR]:
+        if story.is_editable_by_org(org) and user.user_type in [User.ADMIN, User.EDITOR, user.STAFF, user.OTHER]:
             return True
 
         raise PermissionDenied()
