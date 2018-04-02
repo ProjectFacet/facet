@@ -480,8 +480,6 @@ class Organization(models.Model):
 
         return FacetTemplate.objects.filter(Q(organization_id__isnull=True) | Q(organization=self) & Q(is_active=True))
 
-
-
     @property
     def description(self):
         return "{description}".format(description=self.org_description)
@@ -507,15 +505,14 @@ def add_discussion(sender, instance, **kwargs):
 class OrganizationSubscriptionManager(models.Manager):
     """Custom manager for Subscription."""
 
-    def create_subscription(self, organization, subscription_type, collaborations, contractors):
+    def create_subscription(self, organization, collaborations, contractors):
         """Method for quick creation of subscription."""
 
         subscription = self.create(
-                        organization,
+                        organization=organization,
                         collaborations=collaborations,
                         contractors=contractors,
                         )
-
         return subscription
 
 

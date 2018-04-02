@@ -55,7 +55,6 @@ urlpatterns = [
     url(r'^schedulecontent/$', schedules.schedule_content, name='schedule-content'),
 
     #   Asset Library URLS
-    # FIXME Q for Joel, should the facet pk be passed through the url?
     url(r'^assets/$', assets.AssetLibraryTemplateView.as_view(), name='asset_library'),
     url(r'^assets/images/$', assets.ImageAssetLibraryTemplateView.as_view(), name='image_asset_list'),
     url(r'^assets/image/(?P<pk>\d+)/$', assets.ImageAssetUpdateView.as_view(), name='image_asset_detail'),
@@ -226,7 +225,7 @@ urlpatterns = [
     url(r'^story/(?P<story>\d+)/facet/(?P<pk>\d+)/edit/$', facet.FacetUpdateView.as_view(), name="facet_edit"),
     url(r'^story/(?P<story>\d+)/facet/(?P<pk>\d+)/delete/$', facet.FacetDeleteView.as_view(), name="facet_delete"),
     # Facet templates
-    url(r'^organization/(?P<org>\d+)/facet/templates/$', facet.FacetTemplateView.as_view(), name="facet_template_list"),
+    url(r'^organization/(?P<org>\d+)/facet/templates/$', facet.FacetTemplateListView.as_view(), name="facet_template_list"),
     url(r'^organization/(?P<org>\d+)/facet/templates/create/$', facet.FacetTemplateCreateView.as_view(), name="facet_template_create"),
     url(r'^organization/basic/facet/templates/(?P<template>\d+)/$', facet.FacetTemplateDetailView.as_view(), name="facet_template_detail"),
     url(r'^organization/(?P<org>\d+)/facet/templates/(?P<template>\d+)/edit/$', facet.FacetTemplateUpdateView.as_view(), name="facet_template_edit"),

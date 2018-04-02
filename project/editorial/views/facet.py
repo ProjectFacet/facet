@@ -93,7 +93,7 @@ class FacetTemplateUpdateView(LoginRequiredMixin, FormMessagesMixin, UpdateView)
 
 
 # ACCESS: Only org users should be able to see their org's templates.
-class FacetTemplateView(LoginRequiredMixin, FormMessagesMixin, TemplateView):
+class FacetTemplateListView(LoginRequiredMixin, FormMessagesMixin, TemplateView):
     """List all sitewide and organization facet templates. Distinguishes between
     active and not active templates.
     """
@@ -104,7 +104,7 @@ class FacetTemplateView(LoginRequiredMixin, FormMessagesMixin, TemplateView):
     def get_context_data(self, **kwargs):
         """Group facettemplates for display."""
 
-        context = super(FacetTemplateView, self).get_context_data(**kwargs)
+        context = super(FacetTemplateListView, self).get_context_data(**kwargs)
         org = Organization.objects.get(pk=self.kwargs['org'])
         basetemplates = FacetTemplate.objects.filter(organization_id__isnull=True)
         activetemplates = FacetTemplate.objects.filter(Q(organization_id=org) & Q(is_active=True))

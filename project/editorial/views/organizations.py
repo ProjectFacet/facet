@@ -31,7 +31,7 @@ from editorial.views import CustomUserTest
 #   Organization Views
 #----------------------------------------------------------------------#
 
-class OrganizationCreateView(SuperuserRequiredMixin, CreateView):
+class OrganizationCreateView(CreateView):
     """Create a new organization."""
 
     model = Organization

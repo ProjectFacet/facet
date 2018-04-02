@@ -7,6 +7,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.conf import settings
 from django.core.mail import send_mail
 from django.http import HttpResponse
+from django.http import HttpResponseRedirect
+from django.core.urlresolvers import reverse
+
 from django.utils import timezone
 from django.views.generic import TemplateView , UpdateView, DetailView, ListView, CreateView
 from django.views.decorators.csrf import csrf_exempt
@@ -85,9 +88,9 @@ class DashboardTemplateView(LoginRequiredMixin, TemplateView):
         # placeholder of data for now to maintain status quo
 
         user = self.request.user
-        org = user.organization
 
         if user.organization:
+            org = user.organization
             older_comments = user.inbox_comments()[:4]
             all_comments = org.get_org_comments()
             networks = org.get_org_networks()
@@ -140,9 +143,8 @@ class DashboardTemplateView(LoginRequiredMixin, TemplateView):
                 'communication': communication,
             }
 
-        # else:
-        #     print "USER associated with NOTHING"
-        #     return redirect('account_selection')
+        elif not user.organization and not user.contractorprofile:
+            return HttpResponseRedirect('account_selection')
 
 
 #----------------------------------------------------------------------#
