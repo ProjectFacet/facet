@@ -100,8 +100,7 @@ urlpatterns = [
     url(r'^story/(?P<story>\d+)/copy/$', networks.CopyNetworkStoryView.as_view(), name='copy_network_story'),
 
     #   Download URLS
-    url(r'^story/(?P<pk>\d+)/select-download/$', downloads.StoryDownloadTemplateView.as_view(), name='story_download_form'),
-    url(r'^story/(?P<pk>\d+)/download/$', downloads.StoryDownloadProcessView.as_view(), name='create_download'),
+    url(r'^story/(?P<pk>\d+)/download/$', downloads.StoryDownload.as_view(), name='create_download'),
 
     #   Search URLS
     url(r"^search/$", EditorialSearchView.as_view(), name="search"),
