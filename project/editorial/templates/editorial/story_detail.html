@@ -85,7 +85,7 @@
 
         <!-- Download -->
         <div class="col-xs-4 col-sm-8">
-          <a data-toggle="modal" href="#downloadStory" title="Download this story"><i class="fa fa-cloud-download subtle fa-lg" aria-hidden="true"></i></a>
+          <a href="{% url 'story_download_form' pk=story.id %}" title="Download this story"><i class="fa fa-cloud-download subtle fa-lg" aria-hidden="true"></i></a>
         </div>
       </div>
       <p class="f-s-18 f-w-400 thin m-b-20">{{ story.name }}</p>
