@@ -2,6 +2,7 @@
 
 {% load i18n %}
 {% load bootstrap3 %}
+{% load staticfiles %}
 
 <!-------------------------------------------->
 <!--      BREADCRUMB NAVIGATION             -->
@@ -174,6 +175,7 @@
           {% if person.display_photo %}
           <img class="media-object img-rounded" width="100%" src="{{ person.display_photo.url }}" alt="user">
           {% else %}
+          <img class="media-object img-rounded" width="100%" src="{% static 'images/nophoto.jpg' %}" alt="profile image">
           {% endif %}
         </div>
         <div class="col-xs-4">

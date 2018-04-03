@@ -203,17 +203,22 @@
     <!-- Display Comments -->
     <div class="eventdiscussion">
         <div class="row">
-          {% for comment in discussion.comments %}
-            <div class="col-md-10">
-              <p class="f-s-12">{{ comment.text }} <span class="f-s-10 color-default">| {{ comment.date|date:'D, M j g:i a' }}</span></p>
-            </div>
-            <div class="col-md-2">
-              {% if comment.user.display_photo %}
-              <a href="" title="{{ comment.user.first_name }}"><img class="media-object img-circle neg-m-l-10" width="32" src="{{ comment.user.display_photo.url }}" alt="user"></a>
-              {% else %}
-              {% endif %}
-            </div>
-          {% endfor %}
+          {% if discussion.comments %}
+            {% for comment in discussion.comments %}
+              <div class="col-md-10">
+                <p class="f-s-12">{{ comment.text }} <span class="f-s-10 color-default">| {{ comment.date|date:'D, M j g:i a' }}</span></p>
+              </div>
+              <div class="col-md-2">
+                {% if comment.user.display_photo %}
+                <a href="" title="{{ comment.user.first_name }}"><img class="media-object img-circle neg-m-l-10" width="32" src="{{ comment.user.display_photo.url }}" alt="user"></a>
+                {% else %}
+                {% endif %}
+              </div>
+            {% endfor %}
+          {% else %}
+            <p class="f-r-8 subtle text-center italic m-b-40 m-t-40">This is where you will see comments <br> from the event discussion.</p>
+            <p class="f-r-8 subtle text-center italic m-b-40 m-t-40">Add a comment below to <br>start the conversation.</p>
+          {% endif %}
         </div>
     </div>
     <!-- Comment Form -->

@@ -15,6 +15,7 @@
                   </div>
               </div>
               <div class="inbox-content">
+                  {% if messages %}
                   <table class="table">
                       <tbody>
                           {% for message in messages %}
@@ -28,6 +29,9 @@
                           {% endfor %}
                       </tbody>
                   </table>
+                  {% else %}
+                  <p class="f-r-10 subtle text-center italic m-b-40 m-t-40">Welcome to your inbox. This is where you will see all your private messages. Click here to <a href="{% url 'privatemessage_compose' %}" title="Compose a message" class="default">compose a message</a>.</p>
+                  {% endif %}
               </div>
 
 {% endblock %}

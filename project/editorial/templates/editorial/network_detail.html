@@ -34,28 +34,31 @@
       <h4 class="m-b-20">Discussion</h4>
       <div class="discussion-container">
           {% if comments %}
-          {% for comment in comments %}
-          <div class="row m-b-10">
-              <div class="col-xs-12">
-                  <div class="media">
-                      <a class="media-left">
-                        {% if comment.user.display_photo %}
-                          <img class="media-object img-circle h-40 w-40" src="{{ comment.user.display_photo.url }}" alt="user">
-                        {% else %}
-                          <p class="f-w-300 f-s-12">{{ comment.user.first_name }}</p>
-                        {% endif %}
-                      </a>
-                      <div class="media-body">
-                          <p class="f-w-300 f-s-16">{{ comment.text }}
-                          <span class="f-w-400 f-s-12 color-default p-r-40" style="float: right;">
-                            {{ comment.date|date:'N j' }} at {{ comment.date|date:'g:i a' }}
-                          </span>
-                          </p>
-                      </div>
-                  </div>
-              </div>
-          </div>
-          {% endfor %}
+            {% for comment in comments %}
+            <div class="row m-b-10">
+                <div class="col-xs-12">
+                    <div class="media">
+                        <a class="media-left">
+                          {% if comment.user.display_photo %}
+                            <img class="media-object img-circle h-40 w-40" src="{{ comment.user.display_photo.url }}" alt="user">
+                          {% else %}
+                            <p class="f-w-300 f-s-12">{{ comment.user.first_name }}</p>
+                          {% endif %}
+                        </a>
+                        <div class="media-body">
+                            <p class="f-w-300 f-s-16">{{ comment.text }}
+                            <span class="f-w-400 f-s-12 color-default p-r-40" style="float: right;">
+                              {{ comment.date|date:'N j' }} at {{ comment.date|date:'g:i a' }}
+                            </span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+          {% else %}
+            <p class="f-r-10 subtle text-center italic m-b-40 m-t-40">This is where you will see comments <br> from the network discussion.</p>
+            <p class="f-r-10 subtle text-center italic m-b-40 m-t-40">Add a comment below to <br>start the conversation.</p>
           {% endif %}
       </div>
       <div class="post-comment">
