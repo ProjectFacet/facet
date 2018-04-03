@@ -7,7 +7,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.http import HttpResponse
 from django.utils import timezone
-from django.views.generic import TemplateView , UpdateView, DetailView, View
+from django.views.generic import TemplateView , UpdateView, DetailView, FormView, View
 from django.views.decorators.csrf import csrf_exempt
 from cStringIO import StringIO
 from zipfile import ZipFile
@@ -24,16 +24,44 @@ from editorial.models import (
     ImageAsset,
     DocumentAsset,
     AudioAsset,
+    VideoAsset
 )
 
 #----------------------------------------------------------------------#
 #   Download View
 #----------------------------------------------------------------------#
 
+class StoryDownloadTemplateView(CustomUserTest, TemplateView):
+    """Display form for a story download."""
+
+    template_name = 'editorial/story_download_form.html'
+
+    def test_user(self, user):
+        """User must be member of an org."""
+
+        if user.organization:
+            return True
+        raise PermissionDenied()
+
+    def get_context_data(self, pk):
+        story = Story.objects.get(id=pk)
+        story_images = story.get_story_images
+        story_documents = story.get_story_documents
+        story_audio = story.get_story_audio
+        story_video = story.get_story_video
+        return {
+            'story': story,
+            'story_images': story_images,
+            'story_documents': story_documents,
+            'story_audio': story_audio,
+            'story_video': story_video,
+        }
+
+
 # ACCESS: Any org user, or user from an organization that is in collaborate_with
 # should be able to download a story
 # Contractors should not be able to download
-class StoryDownload(CustomUserTest, View):
+class StoryDownloadProcessView(CustomUserTest, View):
     """Create the download for a story and its facets."""
 
     def test_user(self, user):
@@ -41,9 +69,7 @@ class StoryDownload(CustomUserTest, View):
 
         if user.organization:
             return True
-
         raise PermissionDenied()
-
 
     def post(self, request, pk):
         """ Process download form to collect objects and create download file."""
