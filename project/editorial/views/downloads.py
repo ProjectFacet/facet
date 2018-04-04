@@ -91,14 +91,13 @@ class StoryDownloadProcessView(CustomUserTest, View):
         fp = StringIO()
         z = ZipFile(fp, mode="w")
         # Always Zip up story meta
-        z.writestr("story_detail.txt", story_txt)
+        z.writestr("story_details.txt", story_txt)
 
         # ------------------------------ #
         #          IF SELECT ALL         #
         # ------------------------------ #
         # if select_all is chosen, then all items will be downloaded
         story_sa_id = request.POST.get('select_all')
-        print "STORY ALL: ", story_sa_id
 
         if story_sa_id:
             story = get_object_or_404(Story, id=story_sa_id)
@@ -117,19 +116,19 @@ class StoryDownloadProcessView(CustomUserTest, View):
                     z.writestr("{document}.pdf".format(document=document.title), document.document.read())
                     new_info = document.get_asset_download_info()
                     document_txt += new_info
-                if document.asset_type == "WORD":
+                if document.asset_type == "WORD DOC":
                     z.writestr("{document}.docx".format(document=document.title), document.document.read())
                     new_info = document.get_asset_download_info()
                     document_txt += new_info
-                if document.asset_type == "TXT":
+                if document.asset_type == "TEXT":
                     z.writestr("{document}.txt".format(document=document.title), document.document.read())
                     new_info = document.get_asset_download_info()
                     document_txt += new_info
-                if document.asset_type == "CSV":
+                if document.asset_type == "COMMA SEPARATED":
                     z.writestr("{document}.csv".format(document=document.title), document.document.read())
                     new_info = document.get_asset_download_info()
                     document_txt += new_info
-                if document.asset_type == "XLS":
+                if document.asset_type == "EXCEL":
                     z.writestr("{document}.xls".format(document=document.title), document.document.read())
                     new_info = document.get_asset_download_info()
                     document_txt += new_info
@@ -177,19 +176,19 @@ class StoryDownloadProcessView(CustomUserTest, View):
                         z.writestr("{document}.pdf".format(document=document.title), document.document.read())
                         new_info = document.get_asset_download_info()
                         document_txt += new_info
-                    if document.asset_type == "WORD":
+                    if document.asset_type == "WORD DOC":
                         z.writestr("{document}.docx".format(document=document.title), document.document.read())
                         new_info = document.get_asset_download_info()
                         document_txt += new_info
-                    if document.asset_type == "TXT":
+                    if document.asset_type == "TEXT":
                         z.writestr("{document}.txt".format(document=document.title), document.document.read())
                         new_info = document.get_asset_download_info()
                         document_txt += new_info
-                    if document.asset_type == "CSV":
+                    if document.asset_type == "COMMA SEPARATED":
                         z.writestr("{document}.csv".format(document=document.title), document.document.read())
                         new_info = document.get_asset_download_info()
                         document_txt += new_info
-                    if document.asset_type == "XLS":
+                    if document.asset_type == "EXCEL":
                         z.writestr("{document}.xls".format(document=document.title), document.document.read())
                         new_info = document.get_asset_download_info()
                         document_txt += new_info
@@ -222,7 +221,6 @@ class StoryDownloadProcessView(CustomUserTest, View):
         #      IF FACET SPECIFIC      #
         # ------------------------------ #
         facet_sp_id = request.POST.getlist('facet_specific_content')
-        print "FACET SPECIFIC"
 
         if facet_sp_id:
             for facet_id in facet_sp_id:
@@ -235,10 +233,8 @@ class StoryDownloadProcessView(CustomUserTest, View):
         # ------------------------------ #
         # if not select all or by facet, then user chooses specific images
         images = request.POST.getlist('images')
-        print "SPECIFIC IMAGES: ", images
 
         images = ImageAsset.objects.filter(pk__in=images)
-        print "IMAGES: ", images
 
         if images:
             for image in images:
@@ -252,10 +248,8 @@ class StoryDownloadProcessView(CustomUserTest, View):
         # ------------------------------ #
         # if not select all or by facet, then user chooses specific documents
         documents = request.POST.getlist('documents')
-        print "SPECIFIC DOCUMENTS: ", documents
 
         documents = DocumentAsset.objects.filter(pk__in=documents)
-        print "DOCUMENTS: ", documents
 
         if documents:
             for document in documents:
@@ -263,19 +257,19 @@ class StoryDownloadProcessView(CustomUserTest, View):
                     z.writestr("{document}.pdf".format(document=document.title), document.document.read())
                     new_info = document.get_asset_download_info()
                     document_txt += new_info
-                if document.asset_type == "WORD":
+                if document.asset_type == "WORD DOC":
                     z.writestr("{document}.docx".format(document=document.title), document.document.read())
                     new_info = document.get_asset_download_info()
                     document_txt += new_info
-                if document.asset_type == "TXT":
+                if document.asset_type == "TEXT":
                     z.writestr("{document}.txt".format(document=document.title), document.document.read())
                     new_info = document.get_asset_download_info()
                     document_txt += new_info
-                if document.asset_type == "CSV":
+                if document.asset_type == "COMMA SEPARATED":
                     z.writestr("{document}.csv".format(document=document.title), document.document.read())
                     new_info = document.get_asset_download_info()
                     document_txt += new_info
-                if document.asset_type == "XLS":
+                if document.asset_type == "EXCEL":
                     z.writestr("{document}.xls".format(document=document.title), document.document.read())
                     new_info = document.get_asset_download_info()
                     document_txt += new_info
@@ -286,10 +280,8 @@ class StoryDownloadProcessView(CustomUserTest, View):
         # ------------------------------ #
         # if not select all or by facet, then user chooses specific audiofiles
         audiofiles = request.POST.getlist('audiofiles')
-        print "SPECIFIC AUDIO: ", audiofiles
 
         audiofiles = AudioAsset.objects.filter(pk__in=audiofiles)
-        print "AUDIOFILES: ", audiofiles
 
         if audiofiles:
             for audiofile in audiofiles:
@@ -308,10 +300,8 @@ class StoryDownloadProcessView(CustomUserTest, View):
         # ------------------------------ #
         # if not select all or by facet, then user chooses specific video files
         videos = request.POST.getlist('videofiles')
-        print "SPECIFIC VIDEO: ", videos
 
         videos = VideoAsset.objects.filter(pk__in=videos)
-        print "VIDEO: ", videos
 
         if videos:
             for video in videos:
@@ -334,19 +324,17 @@ class StoryDownloadProcessView(CustomUserTest, View):
         # ------------------------------ #
         #Take the final version of asset_txts and write it.
         if image_txt:
-            z.writestr("image.txt", image_txt)
+            z.writestr("image_details.txt", image_txt)
         if document_txt:
-            z.writestr("document.txt", document_txt)
+            z.writestr("document_details.txt", document_txt)
         if audio_txt:
-            z.writestr("audio.txt", audio_txt)
+            z.writestr("audio_details.txt", audio_txt)
         if video_txt:
-            z.writestr("video.txt", video_txt)
-
+            z.writestr("video_details.txt", video_txt)
 
         z.close()
         fp.seek(0)
         response = HttpResponse(fp, content_type='application/zip')
         fp.close()
-
 
         return response
