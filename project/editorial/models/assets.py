@@ -106,20 +106,33 @@ class BaseAssetMetadata(models.Model):
         description = self.description.encode('utf-8')
         attribution = self.attribution.encode('utf-8')
 
+        if self.type == "ImageAsset" or self.type == "DocumentAsset":
+            link = "NA"
+        else:
+            link = self.link
+
+
         asset_info="""
-        {title}
-        =======
-        Description: {description}
-        Attribution: {attribution}
-        Creation Date: {date}
-        Owner: {owner}
-        Organization: {organization}
-        Original: {original}
-        Keywords: {keywords}
-        """.format(title=title, description=description, attribution=attribution,
-        date=self.creation_date, owner=self.owner,
-        organization=self.organization.name, original=self.original,
-        keywords=self.keywords)
+        {title}\r\n
+        =======\r\n
+        Description: {description}\r\n
+        Attribution: {attribution}\r\n
+        Link: {link}\r\n
+        Creation Date: {date}\r\n
+        Owner: {owner}\r\n
+        Organization: {organization}\r\n
+        Original: {original}\r\n
+        Keywords: {keywords}\r\n
+        """.format(title=title,
+                description=description,
+                attribution=attribution,
+                link=link,
+                date=self.creation_date,
+                owner=self.owner,
+                organization=self.organization.name,
+                original=self.original,
+                keywords=self.keywords,
+        )
 
         return asset_info
 

@@ -238,27 +238,27 @@ class Story(models.Model):
         series_name = self.series.name if self.series else ""
 
         story_download = """
-        Story
-        ========
-        {name}
-        --------------
-        Description: {desc}
-        Series: {series}
-        Owner: {owner}
-        Organization: {organization}
-        Original: {original}
-        Team: {team}
-        Created: {created}
-        Sensitive: {sensitive}
-        Embargo Status: {embargo}
-        Embargo Date/Time: {embargo_dt}
-        Share: {share}
-        Share Date: {sharedate}
-        Shared With: {sharewith}
-        Ready for Sharing: {shareready}
-        Collaborate: {collaborate}
-        Collaborate With: {collaboratewith}
-        Archived: {archived}
+        Story\r\n
+        ========\r\n
+        {name}\r\n
+        --------------\r\n
+        Description: {desc}\r\n
+        Series: {series}\r\n
+        Owner: {owner}\r\n
+        Organization: {organization}\r\n
+        Original: {original}\r\n
+        Team: {team}\r\n
+        Created: {created}\r\n
+        Sensitive: {sensitive}\r\n
+        Embargo Status: {embargo}\r\n
+        Embargo Date/Time: {embargo_dt}\r\n
+        Share: {share}\r\n
+        Share Date: {sharedate}\r\n
+        Shared With: {sharewith}\r\n
+        Ready for Sharing: {shareready}\r\n
+        Collaborate: {collaborate}\r\n
+        Collaborate With: {collaboratewith}\r\n
+        Archived: {archived}\r\n
         """.format(name=name, desc=description, series=series_name, owner=self.owner, organization=self.organization.name,
         original=self.original_story, team=team, created=self.creation_date, sensitive=self.sensitive,
         embargo=self.embargo, embargo_dt=self.embargo_datetime, share=self.share,

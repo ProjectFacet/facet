@@ -518,26 +518,31 @@ class Facet(models.Model):
         # loop over m2m and get the values as string
         credits = self.credit.all()
         credits = [ user.credit_name for user in credits]
-        credits = ",".join(credits)
+        credits = ", ".join(credits)
 
         editors = self.editor.all()
         editors = [ user.credit_name for user in editors]
-        editors = ",".join(editors)
+        editors = ", ".join(editors)
 
         # loop over m2m and get the values as string
         images = self.image_assets.all()
         images = [image.title for image in images]
-        images = ",".join(images)
+        images = ", ".join(images)
 
         # loop over m2m and get the values as string
         documents = self.document_assets.all()
         documents = [document.title for document in documents]
-        documents = ",".join(documents)
+        documents = ", ".join(documents)
 
         # loop over m2m and get the values as string
         audiofiles = self.audio_assets.all()
         audiofiles = [audiofile.title for audiofile in audiofiles]
-        audiofiles = ",".join(audiofiles)
+        audiofiles = ", ".join(audiofiles)
+
+        # Loop over m2m and get the values as string
+        videos = self.video_assets.all()
+        videos = [video.title for video in videos]
+        videos = ", ".join(videos)
 
         # verify the text area fields have correct encoding
         name = self.name.encode('utf-8')
@@ -547,36 +552,37 @@ class Facet(models.Model):
         content = self.content.encode('utf-8')
 
         facet_download = """
-        Facet
-        ========
-        {name}
-        --------------
-        Description: {desc}\n
-        Story: {story}\n
-        Owner: {owner}\n
-        Organization: {organization}\n
-        Original: {original}\n
-        Editor: {editor}\n
-        Credit: {credit}\n
-        Code: {code}\n
-        Excerpt: {excerpt}\n
-        Keywords: {keywords}\n
-        Status: {status}\n
-        Due Edit: {dueedit}\n
-        Run Date: {rundate}\n
-        Share Note: {sharenote}\n
-        Images: {images}\n
-        Documents: {documents}\n
-        AudioFiles: {audiofiles}\n
-        \n
-        Content\n
-        -------
+        Facet\r\n
+        ========\r\n
+        {name}\r\n
+        --------------\r\n
+        Description: {desc}\r\n
+        Story: {story}\r\n
+        Owner: {owner}\r\n
+        Organization: {organization}\r\n
+        Original: {original}\r\n
+        Editor: {editor}\r\n
+        Credit: {credit}\r\n
+        Code: {code}\r\n
+        Excerpt: {excerpt}\r\n
+        Keywords: {keywords}\r\n
+        Status: {status}\r\n
+        Due Edit: {dueedit}\r\n
+        Run Date: {rundate}\r\n
+        Share Note: {sharenote}\r\n
+        Images: {images}\r\n
+        Documents: {documents}\r\n
+        AudioFiles: {audiofiles}\r\n
+        Videos: {videos}\r\n
+        \r\n
+        Content\r\n
+        -------\r\n
         {content}
         """.format(name=name, desc=description, story=self.story, owner=self.owner,
         organization=self.organization.name, original=self.original, editor=editors,
         credit=credits, code=self.internal_code, excerpt=excerpt,
         keywords=self.keywords, status=self.status, dueedit=self.due_edit, rundate=self.run_date,
-        sharenote=share_note, images=images, documents=documents, audiofiles=audiofiles, content=content)
+        sharenote=share_note, images=images, documents=documents, audiofiles=audiofiles, videos=videos, content=content)
 
         return facet_download
 
