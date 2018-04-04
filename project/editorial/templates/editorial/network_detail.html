@@ -260,6 +260,9 @@
         <h4 class="modal-title" id="inviteOrgToNetworkModalLabel">Invite an organization to join {{ network.name }}</h4>
       </div>
       <div class="modal-body">
+        <div>
+          <p class="f-r-10 f-w-300">To invite another organization to join this network, enter the email address of that organization's administrator.</p>
+        </div>
         <form action="{% url 'network_invitation_send' pk=network.pk %}" method="POST" class="post-form">
         {% csrf_token %}
         {% bootstrap_form networkinvitationform %}

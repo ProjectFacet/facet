@@ -185,6 +185,7 @@
         </div>
         <!-- Middle Column -->
         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
+          {% comment %}
           <!-- Is User Public? -->
           {% if request.user.user_type == "Admin" or request.user.user_type == "Editor" %}
             <p>Would you like to be listed publicly and viewable to freelance contractors?</p>
@@ -200,6 +201,7 @@
               </div>
             </fieldset>
           {% endif %}
+          {% endcomment %}
         </div>
         <!-- Right Column -->
         <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">

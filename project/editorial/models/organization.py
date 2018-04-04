@@ -521,6 +521,7 @@ class OrganizationSubscription(models.Model):
     """Details of an organization subscription."""
 
     # if subscription is for an org account, associate with that org
+    # FIXME should be a one to one relationship
     organization = models.ForeignKey(
         Organization,
         help_text='Organization associated with this subscription if Org subscription type.',
