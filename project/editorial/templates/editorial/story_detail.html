@@ -92,10 +92,10 @@
       <p class="f-s-14 f-w-300 thin"><i>{{ story.story_description }}</i></p>
       <p class="m-b-20"><span class="f-s-14 f-w-500 subtle slim-margin m-b-10">Created:</span> <span class="sameline bright f-s-12 f-w-300">{{ story.creation_date|date:'N d, Y' }}</span></p>
       {% if story.project %}
-      <a href="{% url 'project_detail' story.project.id %}" title="Go to Project detail"> <p class="f-s-14 f-w-300 thin">Project: {{ story.project.name }}</p></a>
+      <a href="{% url 'project_detail' story.project.id %}" title="Go to Project detail"> <p class="f-s-14 f-w-300 thin"> Project: {{ story.project.name }}</p></a>
       {% endif %}
       {% if story.series %}
-      <a href="{% url 'series_detail' story.series.id %}" title="Go to Series detail"> <p class="f-s-14 f-w-300 thin">Series: {{ story.series.name }}</p></a>
+      <a href="{% url 'series_detail' story.series.id %}" title="Go to Series detail"> <p class="f-s-14 f-w-300 thin"> Series: {{ story.series.name }}</p></a>
       {% endif %}
       <p style="margin-left:-10px;">
         <span class="sameline subtle">{% if story.sensitive == True %} <i class="fa fa-check-square-o subtle"></i>{% else %}  <i class="fa fa-square subtle"></i>{% endif %}</span><span class="f-s-14 f-w-500 slim-margin m-b-10"> Sensitive</span>
