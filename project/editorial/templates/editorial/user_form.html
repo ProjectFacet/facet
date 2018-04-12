@@ -35,8 +35,14 @@
     </div>
     <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
         <h4 class="m-t-5 m-b-10"><a href="{% url 'user_detail' user.id %}">{{ user.credit_name }}</a></h4>
-        <p class="f-s-300"> <span class="color-white m-r-20">{{ user.title }}</span> | <span class="color-white m-l-20 m-r-20">{{user.organization.name}}</span> | <i class="fa fa-map-marker color-white m-l-20"></i> <span class="color-white m-r-20">{{ user.location }}</span></p>
-        <p class="f-s-300"> <i class="fa fa-phone color-white"></i> <span class="color-white m-r-20">{{ user.phone }}</span> | <i class="fa fa-envelope-o color-white m-l-20"></i> <span class="color-white m-r-20">{{ user.email }}</span> </p>
+        {% if user.pronoun or user.name_pronunciation %}
+        <p class="f-w-400 f-r-8">
+          {% if user.name_pronunciation %}<span class="m-r-20"><i>{{ user.name_pronunciation }}</i></span>{% endif %}
+          {% if user.pronoun %}<span class="m-r-20"> | </span><span><i>{{ user.pronoun }}</i></span>{% endif %}
+        </p>
+        {% endif %}
+        <p class="f-w-300"> <span class="color-white m-r-20">{{ user.title }}</span> | <span class="color-white m-l-20 m-r-20">{{user.organization.name}}</span> | <i class="fa fa-map-marker color-white m-l-20"></i> <span class="color-white m-r-20">{{ user.location }}</span></p>
+        <p class="f-w-300"> <i class="fa fa-phone color-white"></i> <span class="color-white m-r-20">{{ user.phone }}</span> | <i class="fa fa-envelope-o color-white m-l-20"></i> <span class="color-white m-r-20">{{ user.email }}</span> </p>
     </div>
     <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
       <h5> Bio</h5>
@@ -72,7 +78,7 @@
             <div class="form-row">
               <!-- User First Name -->
               <div class="form-group col-xs-12 col-md-6">
-                <label>{{ form.first_name.label_tag }}</label>
+                <label class="subtle">{{ form.first_name.label_tag }}</label>
                 {{ form.first_name }}
                 {% if form.first_name.errors %}
                 <small class="text-muted">{{ form.first_name.errors }}</small>
@@ -80,7 +86,7 @@
               </div>
               <!-- User Last Name -->
               <div class="form-group col-xs-12 col-md-6">
-                <label>{{ form.last_name.label_tag }}</label>
+                <label class="subtle">{{ form.last_name.label_tag }}</label>
                 {{ form.last_name }}
                 {% if form.last_name.errors %}
                 <small class="text-muted">{{ form.last_name.errors }}</small>
@@ -91,7 +97,7 @@
             <div class="form-row">
               <!-- Credit Name -->
               <div class="form-group col-xs-12 col-md-6">
-                <label>Byline: </label>
+                <label class="subtle">Byline: </label>
                 {{ form.credit_name }}
                 {% if form.credit_name.errors %}
                 <small class="text-muted">{{ form.credit_name.errors }}</small>
@@ -99,7 +105,7 @@
               </div>
               <!-- User Title -->
               <div class="form-group col-xs-12 col-md-6">
-                <label>Title: </label>
+                <label class="subtle">Title: </label>
                 {{ form.title }}
                 {% if form.title.errors %}
                 <small class="text-muted">{{ form.title.errors }}</small>
@@ -108,9 +114,29 @@
             </div>
 
             <div class="form-row">
+              <!-- Pronunciation -->
+              <div class="form-group col-xs-12 col-md-6">
+                <label class="subtle">Pronunciation: </label>
+                {{ form.name_pronunciation }}
+                {% if form.name_pronunciation.errors %}
+                <small class="text-muted">{{ form.name_pronunciation.errors }}</small>
+                {% endif %}
+              </div>
+              <!-- Pronoun -->
+              <div class="form-group col-xs-12 col-md-6">
+                <label class="subtle">Pronoun: </label>
+                {{ form.pronoun }}
+                {% if form.pronoun.errors %}
+                <small class="text-muted">{{ form.pronoun.errors }}</small>
+                {% endif %}
+              </div>
+            </div>
+
+
+            <div class="form-row">
               <!-- User Email -->
               <div class="form-group col-xs-12 col-md-6">
-                <label>Email: </label>
+                <label class="subtle">Email: </label>
                 {{ form.email }}
                 {% if form.email.errors %}
                 <small class="text-muted">{{ form.email.errors }}</small>
@@ -118,7 +144,7 @@
               </div>
               <!-- User Phone -->
               <div class="form-group col-xs-12 col-md-6">
-                <label>Phone: </label>
+                <label class="subtle">Phone: </label>
                 {{ form.phone }}
                 {% if form.phone.errors %}
                 <small class="text-muted">{{ form.phone.errors }}</small>
@@ -129,7 +155,7 @@
             <div class="form-row">
               <!-- User Location -->
               <div class="form-group col-xs-12 col-md-6">
-                <label>{{ form.location.label_tag }}</label>
+                <label class="subtle">{{ form.location.label_tag }}</label>
                 {{ form.location }}
                 {% if form.location.errors %}
                 <small class="text-muted">{{ form.location.errors }}</small>
@@ -137,7 +163,7 @@
               </div>
               <!-- User Website -->
               <div class="form-group col-xs-12 col-md-6">
-                <label>{{ form.website.label_tag }}</label>
+                <label class="subtle">{{ form.website.label_tag }}</label>
                 {{ form.website }}
                 {% if form.website.errors %}
                 <small class="text-muted">{{ form.website.errors }}</small>
@@ -150,7 +176,7 @@
           <div class="col-xs-12 col-sm-12 col-md-4 col-lg-4">
               <!-- User Bio -->
               <div class="form-group">
-                <label>{{ form.bio.label_tag }}</label>
+                <label class="subtle">{{ form.bio.label_tag }}</label>
                 {{ form.bio }}
                 {% if form.bio.errors %}
                 <small class="text-muted">{{ form.bio.errors }}</small>
@@ -159,7 +185,7 @@
 
               <!-- User Expertise -->
               <div class="form-group">
-                <label>{{ form.expertise.label_tag }}</label>
+                <label class="subtle">{{ form.expertise.label_tag }}</label>
                 {{ form.expertise }}
                 {% if form.bio.errors %}
                 <small class="text-muted">{{ form.expertise.errors }}</small>
