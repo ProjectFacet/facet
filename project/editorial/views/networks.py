@@ -25,6 +25,8 @@ from editorial.forms import (
     InviteToNetworkForm,
     CommentForm,
     NoteForm,
+    SimpleImageForm,
+    SimpleDocumentForm,
     )
 
 from editorial.models import (
@@ -133,6 +135,21 @@ class NetworkDetailView(LoginRequiredMixin, DetailView):
         })
 
         return context
+
+    def simple_images(self):
+        """Return simple images."""
+
+        images = self.object.simple_image_assets.all()
+        form = SimpleImageForm()
+
+        return {'images': images, 'form': form}
+
+    def simple_documents(self):
+        """Return simple documents."""
+
+        documents = self.object.simple_document_assets.all()
+        form = SimpleDocumentForm()
+        return {'documents': documents, 'form': form}
 
 
 # ACCESS: Only an admin of an org that owns a network can delete a network

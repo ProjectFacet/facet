@@ -38,6 +38,8 @@ from editorial.models import (
     Series,
     Event,
     Task,
+    Organization,
+    Network,
     ImageAsset,
     DocumentAsset,
     AudioAsset,
@@ -623,6 +625,8 @@ class VideoAssetDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteView):
         """Post deletion return to the media library."""
 
         return reverse('asset_library')
+
+
 #----------------------------------------------------------------------#
 #   Simple Asset Views
 #----------------------------------------------------------------------#
@@ -688,6 +692,28 @@ class SimpleImageCreateView(LoginRequiredMixin, CreateView):
             action.send(self.request.user, verb="uploaded image", action_object=image, target=action_target)
             # redirect to the associated object
             return HttpResponseRedirect(reverse('story_detail', args=(story.id,)))
+        elif associated_object == 'organization':
+            org_id = self.request.POST.get('organization')
+            organization = Organization.objects.get(id=org_id)
+            # add simple image to the associated object
+            organization.simple_image_assets.add(image)
+            organization.save()
+            action_target = organization
+            # record action for activity stream
+            action.send(self.request.user, verb="uploaded image", action_object=image, target=action_target)
+            # redirect to the associated object
+            return HttpResponseRedirect(reverse('org_detail', args=(organization.id,)))
+        elif associated_object == 'network':
+            network_id = self.request.POST.get('network')
+            network = Network.objects.get(id=network_id)
+            # add simple image to the associated object
+            network.simple_image_assets.add(image)
+            network.save()
+            action_target = network
+            # record action for activity stream
+            action.send(self.request.user, verb="uploaded image", action_object=image, target=action_target)
+            # redirect to the associated object
+            return HttpResponseRedirect(reverse('network_detail', args=(network.id,)))
         elif associated_object == 'task':
             task_id = self.request.POST.get('task')
             task = get_object_or_404(Task, id=task_id)
@@ -806,6 +832,28 @@ class SimpleDocumentCreateView(LoginRequiredMixin, CreateView):
             action.send(self.request.user, verb="uploaded document", action_object=document, target=action_target)
             # redirect to the associated object
             return HttpResponseRedirect(reverse('story_detail', args=(story.id,)))
+        elif associated_object == 'organization':
+            org_id = self.request.POST.get('organization')
+            organization = Organization.objects.get(id=org_id)
+            # add simple document to the associated object
+            organization.simple_document_assets.add(document)
+            organization.save()
+            action_target = organization
+            # record action for activity stream
+            action.send(self.request.user, verb="uploaded document", action_object=document, target=action_target)
+            # redirect to the associated object
+            return HttpResponseRedirect(reverse('org_detail', args=(organization.id,)))
+        elif associated_object == 'network':
+            network_id = self.request.POST.get('network')
+            network = Network.objects.get(id=network_id)
+            # add simple document to the associated object
+            network.simple_document_assets.add(document)
+            network.save()
+            action_target = network
+            # record action for activity stream
+            action.send(self.request.user, verb="uploaded document", action_object=document, target=action_target)
+            # redirect to the associated object
+            return HttpResponseRedirect(reverse('network_detail', args=(network.id,)))
         elif associated_object == 'task':
             task_id = self.request.POST.get('task')
             task = get_object_or_404(Task, id=task_id)
