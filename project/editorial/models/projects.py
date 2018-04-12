@@ -72,24 +72,6 @@ class Project(models.Model):
         help_text='Is a project sensitive, for limited viewing?'
     )
 
-    share = models.BooleanField(
-        default=False,
-        help_text='The project is being shared with a network.'
-    )
-
-    share_with = models.ManyToManyField(
-        Network,
-        related_name='project_shared_with_network',
-        help_text='Network ids that a project is shared with.',
-        blank=True,
-    )
-
-    share_with_date = models.DateTimeField(
-        help_text="Estimated date the project will be available",
-        blank=True,
-        null=True,
-    )
-
     collaborate = models.BooleanField(
         default=False,
         help_text='The project is being collaborated on with a network.'

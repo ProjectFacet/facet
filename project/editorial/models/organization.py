@@ -15,7 +15,6 @@ from pilkit.processors import SmartResize
 from .user import User
 from .notes import Note
 
-
 @python_2_unicode_compatible
 class Organization(models.Model):
     """ Media Organization.
@@ -87,6 +86,31 @@ class Organization(models.Model):
 
     notes = models.ManyToManyField(
         'Note',
+        blank=True,
+    )
+
+    # simple assets
+    simple_image_assets = models.ManyToManyField(
+        'SimpleImage',
+        related_name='organization_simple_image',
+        blank=True,
+    )
+
+    simple_document_assets = models.ManyToManyField(
+        'SimpleDocument',
+        related_name='organization_simple_document',
+        blank=True,
+    )
+
+    simple_audio_assets = models.ManyToManyField(
+        'SimpleAudio',
+        related_name='organization_simple_audio',
+        blank=True,
+    )
+
+    simple_video_assets = models.ManyToManyField(
+        'SimpleVideo',
+        related_name='organization_simple_video',
         blank=True,
     )
 

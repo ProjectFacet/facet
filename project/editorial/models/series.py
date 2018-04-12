@@ -2,6 +2,8 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import Q
 from django.utils.encoding import python_2_unicode_compatible
+from imagekit.models import ImageSpecField
+from pilkit.processors import SmartResize
 
 from . import SimpleImage, SimpleDocument, SimpleAudio, SimpleVideo
 from . import User, Organization, Network
@@ -43,6 +45,18 @@ class Series(models.Model):
         help_text='The org'
     )
 
+    series_logo = models.ImageField(
+        upload_to='series',
+        blank=True,
+    )
+
+    display_logo = ImageSpecField(
+        source='series_logo',
+        processors=[SmartResize(500, 500)],
+        format='JPEG',
+    )
+
+
     team = models.ManyToManyField(
         User,
         related_name='series_team_member',
@@ -57,24 +71,6 @@ class Series(models.Model):
     sensitive = models.BooleanField(
         default=False,
         help_text='Is a series sensitive, for limited viewing?'
-    )
-
-    share = models.BooleanField(
-        default=False,
-        help_text='The series is being shared with a network.'
-    )
-
-    share_with = models.ManyToManyField(
-        Network,
-        related_name='series_shared_with_network',
-        help_text='Network ids that a series is shared with.',
-        blank=True,
-    )
-
-    share_with_date = models.DateTimeField(
-        help_text="Estimated date the series will be available",
-        blank=True,
-        null=True,
     )
 
     collaborate = models.BooleanField(

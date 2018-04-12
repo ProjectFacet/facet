@@ -80,6 +80,27 @@ class Network(models.Model):
         blank=True,
     )
 
+    # simple assets
+    simple_image_assets = models.ManyToManyField(
+        'SimpleImage',
+        blank=True,
+    )
+
+    simple_document_assets = models.ManyToManyField(
+        'SimpleDocument',
+        blank=True,
+    )
+
+    simple_audio_assets = models.ManyToManyField(
+        'SimpleAudio',
+        blank=True,
+    )
+
+    simple_video_assets = models.ManyToManyField(
+        'SimpleVideo',
+        blank=True,
+    )
+
     class Meta:
         verbose_name = 'Network'
         verbose_name_plural = "Networks"

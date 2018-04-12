@@ -54,6 +54,17 @@ class User(AbstractUser):
         blank=True,
     )
 
+    name_pronunciation = models.TextField(
+        help_text="Instruction on the proper pronunciation of the users name.",
+        blank=True,
+    )
+
+    pronoun = models.CharField(
+        max_length=50,
+        help_text='Users preferred pronoun.',
+        blank=True,
+    )
+
     title = models.CharField(
         max_length=100,
         help_text='Professional title.',
