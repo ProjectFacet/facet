@@ -50,6 +50,7 @@ class SeriesListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         """Return series belonging to the organization."""
 
+        # FIXME exclude sensitive unless user is owner or a member of the team
         org = self.request.user.organization
         return org.series_organization.all()
 

@@ -65,6 +65,8 @@ class StoryListView(CustomUserTest, ListView):
 
     def get_queryset(self):
         """Return stories belonging to the organization."""
+
+        # FIXME exclude sensitive unless user is owner or a member of the team
         org = self.request.user.organization
         # print "STORY STORY STORY: ", stories
         return org.story_set.all()

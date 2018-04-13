@@ -631,6 +631,23 @@ class VideoAssetDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteView):
 #   Simple Asset Views
 #----------------------------------------------------------------------#
 
+# ACCESS: Only an org's users should be able to see an organization's asset library
+# FUTURE TODO: This is likely another place to add organization/ to url
+class SimpleAssetLibraryTemplateView(LoginRequiredMixin, TemplateView):
+    """ Display media library of all organization assets."""
+
+    template_name = 'editorial/simple_asset_list.html'
+
+    pass
+    # def get_context_data(self):
+    #     """Return all the (complex) assets associated with an organization."""
+    #
+    #     organization = self.request.user.organization
+    #     simpleassets = organization.
+    #     print "SIMPLE ASSETS: ", simpleassets
+    #     return {'simpleassets': simpleassets,}
+
+
 # ACCESS: Any org user, or user from an organization that is in collaborate_with
 # should be able to create a simple asset for P, Sr, St, F
 # Contractors should only be able to do so for PSSF that they have access to
@@ -769,6 +786,13 @@ class SimpleImageCreateView(LoginRequiredMixin, CreateView):
             action.send(self.request.user, verb="uploaded image", action_object=image, target=action_target)
             # redirect to the associated object
             return HttpResponseRedirect(reverse('assignment_detail', args=(assignment.id,)))
+
+
+class SimpleImageAssetDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteView):
+    pass
+
+class SimpleImageAssetDisassociateView(LoginRequiredMixin, View):
+    pass
 
 
 # SAA
@@ -911,6 +935,13 @@ class SimpleDocumentCreateView(LoginRequiredMixin, CreateView):
             return HttpResponseRedirect(reverse('assignment_detail', args=(assignment.id,)))
 
 
+class SimpleDocumentAssetDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteView):
+    pass
+
+class SimpleDocumentAssetDisassociateView(LoginRequiredMixin, View):
+    pass
+
+
 # SAA
 class SimpleAudioCreateView(LoginRequiredMixin, CreateView):
     """Upload a simple audio."""
@@ -1026,6 +1057,12 @@ class SimpleAudioCreateView(LoginRequiredMixin, CreateView):
             return HttpResponseRedirect(reverse('assignment_detail', args=(assignment.id,)))
 
 
+class SimpleAudioAssetDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteView):
+    pass
+
+class SimpleAudioAssetDisassociateView(LoginRequiredMixin, View):
+    pass
+
 # SAA
 class SimpleVideoCreateView(LoginRequiredMixin, CreateView):
     """Upload a simple video."""
@@ -1139,3 +1176,10 @@ class SimpleVideoCreateView(LoginRequiredMixin, CreateView):
             action.send(self.request.user, verb="uploaded video", action_object=video, target=action_target)
             # redirect to the associated object
             return HttpResponseRedirect(reverse('assignment_detail', args=(assignment.id,)))
+
+
+class SimpleVideoAssetDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteView):
+    pass
+
+class SimpleVideoAssetDisassociateView(LoginRequiredMixin, View):
+    pass

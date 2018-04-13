@@ -275,14 +275,25 @@ urlpatterns = [
     # Video
     url(r'^video/new/$', assets.VideoAssetCreateView.as_view(), name='upload_video'),
     url(r'^story/(?P<story>\d+)/facet/(?P<facet>\d+)/video/add/$', assets.LibraryVideoAssociateView.as_view(), name='libraryvideo_add'),
+
     # Simple Images
-    url(r'^simpleimage/new/$', assets.SimpleImageCreateView.as_view(), name='upload_simple_image'),
+    url(r'^organization/(?P<org>\d+)/simpleassets/$', assets.SimpleAssetLibraryTemplateView.as_view(), name='simple_asset_library'),
+
+    url(r'^simpleassets/simpleimage/new/$', assets.SimpleImageCreateView.as_view(), name='upload_simple_image'),
+    url(r'^simpleassets/simpleimage/(?P<pk>\d+)/delete/$', assets.SimpleImageAssetDeleteView.as_view(), name='simple_image_asset_delete'),
+    url(r'^simpleassets/simpleimage/(?P<simpleimage>\d+)/remove/$', assets.SimpleImageAssetDisassociateView.as_view(), name='simple_image_asset_remove'),
     # Simple documents
-    url(r'^simpledocument/new/$', assets.SimpleDocumentCreateView.as_view(), name='upload_simple_document'),
+    url(r'^simpleassets/simpledocument/new/$', assets.SimpleDocumentCreateView.as_view(), name='upload_simple_document'),
+    url(r'^simpleassets/simpledocument/(?P<pk>\d+)/delete/$', assets.SimpleDocumentAssetDeleteView.as_view(), name='simple_document_asset_delete'),
+    url(r'^simpleassetssimpledocument/(?P<simpledocument>\d+)/remove/$', assets.SimpleDocumentAssetDisassociateView.as_view(), name='simple_document_asset_remove'),
     # Simple Audio
-    url(r'^simpleaudio/new/$', assets.SimpleAudioCreateView.as_view(), name='upload_simple_audio'),
+    url(r'^simpleassets/simpleaudio/new/$', assets.SimpleAudioCreateView.as_view(), name='upload_simple_audio'),
+    url(r'^simpleassets/simpleaudio/(?P<pk>\d+)/delete/$', assets.SimpleAudioAssetDeleteView.as_view(), name='simple_audio_asset_delete'),
+    url(r'^simpleassets/simpleaudio/(?P<simpleaudio>\d+)/remove/$', assets.SimpleAudioAssetDisassociateView.as_view(), name='simple_audio_asset_remove'),
     # Simple Video
-    url(r'^simplevideo/new/$', assets.SimpleVideoCreateView.as_view(), name='upload_simple_video'),
+    url(r'^simpleassets/simplevideo/new/$', assets.SimpleVideoCreateView.as_view(), name='upload_simple_video'),
+    url(r'^simpleassets/simplevideo/(?P<pk>\d+)/delete/$', assets.SimpleVideoAssetDeleteView.as_view(), name='simple_video_asset_delete'),
+    url(r'^simpleassets/simplevideo/(?P<simplevideo>\d+)/remove/$', assets.SimpleVideoAssetDisassociateView.as_view(), name='simple_video_asset_remove'),
 
     #   Network URLS
     url(r'^network/new/$', networks.NetworkCreateView.as_view(), name='network_new'),

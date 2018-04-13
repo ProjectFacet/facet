@@ -53,6 +53,7 @@ class ProjectListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         """Return projects belonging to the organization."""
 
+        # FIXME exclude sensitive unless user is owner or a member of the team
         org = self.request.user.organization
 
         return org.project_organization.all()
