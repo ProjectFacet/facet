@@ -32,6 +32,10 @@ from . import api
 from views.search import EditorialSearchView
 
 urlpatterns = [
+    # robots
+    url(r'^robots.txt$', lambda r: HttpResponse("User-agent: *\nDisallow: /", mimetype="text/plain")),
+
+
     url(r'test/$', generic.TemplateView.as_view(template_name='editorial/test.html')),
 
     #   Account URLS
@@ -85,7 +89,7 @@ urlpatterns = [
     #   Inbox URLS - Labeled as Inbox in navigation
     url(r'^inbox/$', inbox.Inbox.as_view(), name='inbox'),
     url(r'^inbox/sent/$', inbox.SentMessages.as_view(), name='sent_html'),
-    url(r'^inbox/(?P<comment_type>[-\w]+)/comments$', inbox.CommentList.as_view(), name='comments_html'),
+    url(r'^inbox/(?P<comment_type>[-\w]+)/comments/$', inbox.CommentList.as_view(), name='comments_html'),
     # url(r'^inbox/important/$', inboxviews.inbox_important, name='inbox_important'),
     # url(r'^inbox/trash/$', inboxviews.inbox_trash, name='inbox_trash'),
 

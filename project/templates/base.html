@@ -10,7 +10,7 @@
     <meta name="description" content="Project Facet">
     <meta name="viewport" content="initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,width=device-width,height=device-height,target-densitydpi=device-dpi,user-scalable=yes">
     <!-- Favicon -->
-    <link rel="icon" href="{% static 'images/favicons/facet_favicon-64x64.png' %}"/>
+    <link rel="icon" href="{% static 'images/favicons/facet_favicon-64x64.png' %}" type="image/png"/>
 
     <!--[if IE]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
@@ -23,11 +23,8 @@
 
 
     <!-- Bootstrap -->
-
     <link rel="stylesheet" href="{% static 'css/components/bootstrap.css' %}">
-
     <link rel="stylesheet" href="{% static 'css/bootstrap-datetimepicker.css' %}">
-
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
@@ -43,12 +40,6 @@
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800,300italic,400italic,600italic,700italic,800italic' rel='stylesheet' type='text/css'>
     <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic,900,900italic" rel="stylesheet" type="text/css">
 
-    <!-- Datatables -->
-    <!-- <link href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css"> -->
-
-
-
-
     <!-- SweetAlert Styles -->
     <link rel="stylesheet" href="{% static 'bower_components/sweetalert2/dist/sweetalert2.css' %}">
 
@@ -58,24 +49,14 @@
     <!-- Calendar Styles -->
     <link rel="stylesheet" href="{% static 'bower_components/fullcalendar/dist/fullcalendar.css' %}">
 
-    <!-- X-Editable -->
-    <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/css/bootstrap-editable.css" rel="stylesheet"/>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
-
-
     <!-- Flat jPlayer Skin -->
     <link rel="stylesheet" href="{% static 'flat-jplayer/css/flat.audio.css' %}">
     <link rel="stylesheet" href="{% static 'flat-jplayer/css/flat.video.css' %}">
-
-    <!-- Overlay Styles -->
-    <!-- <link rel="stylesheet" href="{% static 'color-overlay/css/overlaymain.css' %}"> -->
-
 
     <!-- Project Facet Styles -->
     <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
     <link rel="stylesheet" href="{% static 'css/chosen.css' %}">
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
-    <!-- <link rel="stylesheet" href="{% static 'css/facet.css' %}"> -->
     <link rel="stylesheet" href="{% static 'css/facetui.css' %}">
 
 
@@ -103,25 +84,13 @@
     <!-- Calendar JS -->
     <script src="{% static 'bower_components/fullcalendar/dist/fullcalendar.js' %}"></script>
 
-    <!-- jQuery Sticky Tabs -->
-    <!-- Allows for direct linking to bootstrap tabs -->
-    <script src="{% static 'scripts/jquery.stickytabs.js' %}"></script>
-
     <!-- Flat jPlayer JS -->
     <script src="{% static 'flat-jplayer/js/jquery.jplayer.js' %}"></script>
     <script src="{% static 'flat-jplayer/js/flat.audio.js' %}"></script>
     <script src="{% static 'flat-jplayer/js/flat.video.js' %}"></script>
 
-    <!-- Dragula JS -->
-    <script src="{% static 'bower_components/dragula.js/dist/dragula.js' %}"></script>
-
     <!-- SlimScroll -->
     <script src="{% static 'scripts/jquery.slimscroll.js' %}"></script>
-
-    <!-- Treegrid JS -->
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-treegrid/0.2.0/js/jquery.treegrid.min.js"></script>
-    <script src="{% static 'scripts/tables-jquery-treegrid.js' %}"></script> -->
-
 
     {% block head %}
     <!-- Child Head Items -->
@@ -395,258 +364,12 @@
             <!-- ====================================== -->
             <!--            Right Sidebar               -->
             <!-- ====================================== -->
+            <!-- Sidebar is hidden until a button is clicked for it to appear -->
+
             {% if request.user.is_authenticated %}
-            <div class="right-sidebar-outer">
-                <div class="right-sidebar-inner">
-                    <div class="right-sidebar">
-                        <div class="bs-nav-tabs nav-tabs-default justified">
-                            <ul class="nav nav-tabs nav-animated-border-from-center">
-                                <li class="nav-item"> <a class="nav-link active" data-toggle="tab" data-target="#rtab-left">Activity</a> </li>
-                                <li class="nav-item"> <a class="nav-link" data-toggle="tab" data-target="#rtab-center">Users</a> </li>
-                                {% comment %}<li class="nav-item"> <a class="nav-link" data-toggle="tab" data-target="#rtab-right">Social</a> </li>{% endcomment%}
-                            </ul>
-                            <div class="tab-content">
-                                <div class="tab-pane fade in active" id="rtab-left">
-                                    <h5>Recent Activity</h5>
-                                    <div class="timeline-widget-4">
-                                      {% for activity in activitystream %}
-                                        <div class="row {% cycle 'bg-odd-color' 'bg-even-color' %}">
 
-                                            {% if activity.verb == 'created' or activity.verb == 'added note' or activity.verb == 'added' %}
-                                                <div class="col-xs-12 timeline timeline-info">
-                                                  <div class="p-10">
-                                                      {% if activity.action_object.type == 'User' %}
-                                                        <p>{{ activity.actor }} {{ activity.verb }} User: {{activity.action_object.credit_name }}</p>
-                                                      {% elif activity.action_object.type == 'Organization' %}
-                                                        <p>{{ activity.actor }} {{ activity.verb }} Organization: {{activity.action_object.name }}</p>
-                                                      {% elif activity.action_object.type == 'Network' %}
-                                                        <p>{{ activity.actor }} {{ activity.verb }} Network: {{activity.action_object.name }}</p>
-                                                      {% elif activity.action_object.type == 'Series' %}
-                                                        <p>{{ activity.actor }} {{ activity.verb }} Series: {{activity.action_object.name }}</p>
-                                                      {% elif activity.action_object.type == 'Story' %}
-                                                        <p>{{ activity.actor }} {{ activity.verb }} Story: {{activity.action_object.name }}</p>
-                                                      {% elif activity.action_object.type == 'Facet' %}
-                                                        <p>{{ activity.actor }} {{ activity.verb }} Facet: {{activity.action_object.title }}</p>
-                                                      {% elif activity.action_object.type == 'Image' %}
-                                                        <p>{{ activity.actor }} {{ activity.verb }} Image: {{activity.action_object.title }}</p>
-                                                      {% elif activity.action_object.type == 'Document' %}
-                                                        <p>{{ activity.actor }} {{ activity.verb }} Document: {{activity.action_object.title }}</p>
-                                                      {% elif activity.action_object.type == 'Audio' %}
-                                                        <p>{{ activity.actor }} {{ activity.verb }} Audio: {{activity.action_object.title }}</p>
-                                                      {% elif activity.action_object.type == 'Video' %}
-                                                        <p>{{ activity.actor }} {{ activity.verb }} Audio: {{activity.action_object.title }}</p>
-                                                      {% endif %}
+              {% include "editorial/_base_right_sidebar.html" %}
 
-                                                      <p class="text-sm text-muted">{{ activity.timestamp|timesince }} </p>
-                                                  </div>
-                                                </div>
-                                            {% elif activity.verb == 'edited' or activity.verb == 'shared' or activity.verb == 'picked up' %}
-                                                <div class="col-xs-12 timeline timeline-success">
-                                                  <div class="p-10">
-                                                      {% if activity.action_object.type == 'User' %}
-                                                        <p>{{ activity.actor }} {{ activity.verb }} User: {{activity.action_object.credit_name }}</p>
-                                                      {% elif activity.action_object.type == 'Organization' %}
-                                                        <p>{{ activity.actor }} {{ activity.verb }} Organization: {{activity.action_object.name }}</p>
-                                                      {% elif activity.action_object.type == 'Network' %}
-                                                        <p>{{ activity.actor }} {{ activity.verb }} Network: {{activity.action_object.name }}</p>
-                                                      {% elif activity.action_object.type == 'Series' %}
-                                                        <p>{{ activity.actor }} {{ activity.verb }} Series: {{activity.action_object.name }}</p>
-                                                      {% elif activity.action_object.type == 'Story' %}
-                                                        <p>{{ activity.actor }} {{ activity.verb }} Story: {{activity.action_object.name }}</p>
-                                                      {% elif activity.action_object.type == 'Facet' %}
-                                                        <p>{{ activity.actor }} {{ activity.verb }} Facet: {{activity.action_object.title }}</p>
-                                                      {% elif activity.action_object.type == 'Image' %}
-                                                        <p>{{ activity.actor }} {{ activity.verb }} Image: {{activity.action_object.title }}</p>
-                                                      {% elif activity.action_object.type == 'Document' %}
-                                                        <p>{{ activity.actor }} {{ activity.verb }} Document: {{activity.action_object.title }}</p>
-                                                      {% elif activity.action_object.type == 'Audio' %}
-                                                        <p>{{ activity.actor }} {{ activity.verb }} Audio: {{activity.action_object.title }}</p>
-                                                      {% elif activity.action_object.type == 'Video' %}
-                                                        <p>{{ activity.actor }} {{ activity.verb }} Audio: {{activity.action_object.title }}</p>
-                                                      {% endif %}
-
-                                                      <p class="text-sm text-muted">{{ activity.timestamp|timesince }} </p>
-                                                  </div>
-                                                </div>
-                                            {% elif activity.verb == 'commented on' %}
-                                                <div class="col-xs-12 timeline timeline-warning">
-                                                  <div class="p-10">
-                                                      {% if activity.action_object.type == 'User' %}
-                                                        <p>{{ activity.actor }} {{ activity.verb }} User: {{activity.action_object.credit_name }}</p>
-                                                      {% elif activity.action_object.type == 'Organization' %}
-                                                        <p>{{ activity.actor }} {{ activity.verb }} Organization: {{activity.action_object.name }}</p>
-                                                      {% elif activity.action_object.type == 'Network' %}
-                                                        <p>{{ activity.actor }} {{ activity.verb }} Network: {{activity.action_object.name }}</p>
-                                                      {% elif activity.action_object.type == 'Series' %}
-                                                        <p>{{ activity.actor }} {{ activity.verb }} Series: {{activity.action_object.name }}</p>
-                                                      {% elif activity.action_object.type == 'Story' %}
-                                                        <p>{{ activity.actor }} {{ activity.verb }} Story: {{activity.action_object.name }}</p>
-                                                      {% elif activity.action_object.type == 'Facet' %}
-                                                        <p>{{ activity.actor }} {{ activity.verb }} Facet: {{activity.action_object.title }}</p>
-                                                      {% elif activity.action_object.type == 'Image' %}
-                                                        <p>{{ activity.actor }} {{ activity.verb }} Image: {{activity.action_object.title }}</p>
-                                                      {% elif activity.action_object.type == 'Document' %}
-                                                        <p>{{ activity.actor }} {{ activity.verb }} Document: {{activity.action_object.title }}</p>
-                                                      {% elif activity.action_object.type == 'Audio' %}
-                                                        <p>{{ activity.actor }} {{ activity.verb }} Audio: {{activity.action_object.title }}</p>
-                                                      {% elif activity.action_object.type == 'Video' %}
-                                                        <p>{{ activity.actor }} {{ activity.verb }} Audio: {{activity.action_object.title }}</p>
-                                                      {% endif %}
-
-                                                      <p class="text-sm text-muted">{{ activity.timestamp|timesince }} </p>
-                                                  </div>
-                                                </div>
-                                            {% elif activity.verb == 'uploaded image' or activity.verb == 'uploaded document' or activity.verb == 'uploaded audio' or activity.verb == 'added image' or activity.verb == 'added document' or activity.verb == 'added audio' %}
-                                                <div class="col-xs-12 timeline timeline-danger">
-                                                  <div class="p-10">
-                                                      {% if activity.action_object.type == 'User' %}
-                                                        <p>{{ activity.actor }} {{ activity.verb }} User: {{activity.action_object.credit_name }}</p>
-                                                      {% elif activity.action_object.type == 'Organization' %}
-                                                        <p>{{ activity.actor }} {{ activity.verb }} Organization: {{activity.action_object.name }}</p>
-                                                      {% elif activity.action_object.type == 'Network' %}
-                                                        <p>{{ activity.actor }} {{ activity.verb }} Network: {{activity.action_object.name }}</p>
-                                                      {% elif activity.action_object.type == 'Series' %}
-                                                        <p>{{ activity.actor }} {{ activity.verb }} Series: {{activity.action_object.name }}</p>
-                                                      {% elif activity.action_object.type == 'Story' %}
-                                                        <p>{{ activity.actor }} {{ activity.verb }} Story: {{activity.action_object.name }}</p>
-                                                      {% elif activity.action_object.type == 'Facet' %}
-                                                        <p>{{ activity.actor }} {{ activity.verb }} Facet: {{activity.action_object.title }}</p>
-                                                      {% elif activity.action_object.type == 'Image' %}
-                                                        <p>{{ activity.actor }} {{ activity.verb }} Image: {{activity.action_object.title }}</p>
-                                                      {% elif activity.action_object.type == 'Document' %}
-                                                        <p>{{ activity.actor }} {{ activity.verb }} Document: {{activity.action_object.title }}</p>
-                                                      {% elif activity.action_object.type == 'Audio' %}
-                                                        <p>{{ activity.actor }} {{ activity.verb }} Audio: {{activity.action_object.title }}</p>
-                                                      {% elif activity.action_object.type == 'Video' %}
-                                                        <p>{{ activity.actor }} {{ activity.verb }} Audio: {{activity.action_object.title }}</p>
-                                                      {% endif %}
-
-                                                      <p class="text-sm text-muted">{{ activity.timestamp|timesince }} </p>
-                                                  </div>
-                                                </div>
-                                            {% endif %}
-
-                                        </div>
-                                      {% endfor %}
-                                    </div>
-                                </div>
-                                <div class="tab-pane fade" id="rtab-center">
-                                    <h5>Online</h5>
-                                    <div class="user-widget-8">
-                                        <div class="row">
-                                            <div class="col-xs-12 bs-media">
-                                                {% for user in current_users %}
-
-                                                  <div class="media">
-                                                      <a class="media-left"> <i class="fa fa-circle icon color-success"></i>
-                                                        {% if user.display_photo %}
-                                                        <img class="media-object img-circle h-40 w-40" alt="User" src="{{ user.display_photo.url }}">
-                                                        {% elif user.first_name %}
-                                                        <p>{{user.first_name}}</p>
-                                                        {% else %}
-                                                        <p>{{user.email}}</p>
-                                                        {% endif %}
-                                                      </a>
-                                                      <div class="media-body">
-                                                          <h5 class="media-heading"> {{ user.credit_name }} </h5>
-                                                          <p>{{ user.title }}</p>
-                                                      </div>
-                                                  </div>
-
-                                                {% endfor %}
-
-
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                {% comment %}
-                                <div class="tab-pane fade" id="rtab-right">
-                                    <h5>Twitter</h5>
-                                    <div class="m-b-10">
-                                        <div class="icon-widget-3 bg-twitter">
-                                            <div class="row icon">
-                                                <div class="col-xs-12 text-center"> <i class="color-white"></i> </div>
-                                            </div>
-                                            <div class="row icons">
-                                                <div class="col-xs-12 col-md-4 col-lg-4 text-center">
-                                                    <div class="amount"> <i class="fa fa-twitter color-white"></i> <span class="color-white">90</span> </div>
-                                                </div>
-                                                <div class="col-xs-12 col-md-4 col-lg-4 text-center">
-                                                    <div class="amount"> <i class="fa fa-comment-o color-white"></i> <span class="color-white">22</span> </div>
-                                                </div>
-                                                <div class="col-xs-12 col-md-4 col-lg-4 text-center">
-                                                    <div class="amount"> <i class="fa fa-star-o color-white"></i> <span class="color-white">33</span> </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <h5>Facebook</h5>
-                                    <div class="m-b-10">
-                                        <div class="icon-widget-3 bg-facebook">
-                                            <div class="row icon">
-                                                <div class="col-xs-12 text-center"> <i class="color-white"></i> </div>
-                                            </div>
-                                            <div class="row icons">
-                                                <div class="col-xs-12 col-md-4 col-lg-4 text-center">
-                                                    <div class="amount"> <i class="fa fa-thumbs-o-up color-white"></i> <span class="color-white">45</span> </div>
-                                                </div>
-                                                <div class="col-xs-12 col-md-4 col-lg-4 text-center">
-                                                    <div class="amount"> <i class="fa fa-comment-o color-white"></i> <span class="color-white">51</span> </div>
-                                                </div>
-                                                <div class="col-xs-12 col-md-4 col-lg-4 text-center">
-                                                    <div class="amount"> <i class="fa fa-star-o color-white"></i> <span class="color-white">13</span> </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <h5>Google</h5>
-                                    <div class="m-b-10">
-                                        <div class="icon-widget-3 bg-google">
-                                            <div class="row icon">
-                                                <div class="col-xs-12 text-center"> <i class="color-white"></i> </div>
-                                            </div>
-                                            <div class="row icons">
-                                                <div class="col-xs-12 col-md-4 col-lg-4 text-center">
-                                                    <div class="amount"> <i class="fa fa-heart-o color-white"></i> <span class="color-white">8</span> </div>
-                                                </div>
-                                                <div class="col-xs-12 col-md-4 col-lg-4 text-center">
-                                                    <div class="amount"> <i class="fa fa-comment-o color-white"></i> <span class="color-white">13</span> </div>
-                                                </div>
-                                                <div class="col-xs-12 col-md-4 col-lg-4 text-center">
-                                                    <div class="amount"> <i class="fa fa-star-o color-white"></i> <span class="color-white">44</span> </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <h5>Recent Mentions</h5>
-                                    <div class="m-b-10 p-20">
-                                        <div class="row">
-                                          <div class="icon-widget-2 bg-twitter color-white">
-                                              <div class="row">
-                                                  <div class="col-xs-12">
-                                                      <div class="p-20">
-                                                          <a class="media-left media-middle"> <i class="fa fa-twitter color-white"></i> </a>
-                                                          <div class="media-body">
-                                                              <blockquote class="blockquote">
-                                                                  <div class="blockquote-text color-white">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</div>
-                                                                  <div class="blockquote-author">@john.doe</div>
-                                                              </blockquote>
-                                                          </div>
-                                                      </div>
-                                                  </div>
-                                              </div>
-                                          </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                {% endcomment %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
             {% endif %}
             <!-- ====================================== -->
             <!--            Main Section                -->
@@ -778,8 +501,6 @@
                       <!--     JS LINKS       -->
     <!-- ================================================= -->
 
-
-
     <!-- <script src="{% static 'bower_components/jquery/dist/jquery.js' %}"></script> IN HEAD-->
     <script src="{% static 'bower_components/tether/dist/js/tether.js' %}"></script>
     <script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.js' %}"></script>
@@ -801,44 +522,12 @@
     <script src="{% static 'bower_components/d3/d3.js' %}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
     <script src="http://bower.batchthemes.com/bower_components/datamaps/dist/datamaps.all.js"></script>
-    <!-- <script src="{% static 'scripts/dashboards.js' %}"></script> -->
-    <!-- <script src="{% static 'scripts/index.js' %}"></script> -->
-    <!-- <script src="{% static 'bower_components/fullcalendar/dist/fullcalendar.js' %}"></script> -->
-    <!-- <script src="{% static 'scripts/extras-calendar.js' %}"></script> -->
+
     <script src="{% static 'scripts/alerts_and_notifications.js' %}"></script>
-    <!-- <script src="{% static 'color-overlay/scripts/classie.js' %}"></script> -->
-    <!-- Overlay Scripts -->
-    <!-- <script src="{% static 'color-overlay/scripts/classie.js' %}"></script> -->
-    <!-- <script src="{% static 'color-overlay/scripts/overlaymain.js' %}"></script> -->
-
-
-
-    <!-- Flat jPlayer JS -->
-    <!-- <script src="{% static 'flat-jplayer/js/jquery.jplayer.js' %}"></script>
-    <script src="{% static 'flat-jplayer/js/flat.audio.js' %}"></script>
-    <script src="{% static 'flat-jplayer/js/flat.video.js' %}"></script> -->
-    <!------------>
-    <!-- OLD JS -->
-    <!------------>
-    <!-- Multiselect for Arrays  -->
-    <!-- <script src="{% static 'scripts/chosen.jquery.min.js' %}"></script> -->
-
-    <!-- Popup JS -->
-    <!-- <script src="{% static 'scripts/jquery.magnific-popup.min.js' %}"></script> -->
 
     <!-- Content Tables -->
     <script src="{% static 'scripts/jquery.dataTables.min.js' %}"></script>
     <!-- <script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script> -->
-
-    <!-- Datetime Picker JS  -->
-    <!-- <script src="{% static 'scripts/moment.js' %}"></script>
-    <script src="{% static 'scripts/jquery.datetimepicker.js' %}"></script>
-    <script src="{% static 'scripts/bootstrap-datetimepicker.js' %}"></script> -->
-
-    <!-- Bootstrap Calendar JS -->
-    <!-- <script src="{% static 'bootstrap-calendar/js/calendar.js' %}"></script>
-    <script src="{% static 'scripts/underscore/underscore-min.js' %}"></script> -->
-    <!-- <script src="{% static 'bootstrap-calendar/js/app.js' %}"></script> -->
 
     <!-- Text Editor JS -->
     <script src="{% static 'scripts/tiny_mce/tinymce.min.js' %}"></script>
@@ -852,24 +541,8 @@
     <!-- Truncates text so it fits into containers and ends with an ellipsis and a link -->
     <script src="{% static 'scripts/jquery.dotdotdot.js' %}"></script>
 
-    <!-- jQuery Sticky Tabs -->
-    <!-- Allows for direct linking to bootstrap tabs -->
-    <!-- <script src="{% static 'scripts/jquery.stickytabs.js' %}"></script> -->
-
     <!-- Main JS -->
     <script src="{% static 'scripts/facet.js' %}"></script>
-
-    <!-- DEPENDENCIES : Required plugins -->
-    <!-- <script src="{% static 'scripts/dependencies.js' %}"></script> -->
-
-    <!-- Wrapkit -->
-    <!-- <script src="{% static 'scripts/wrapkit.js' %}"></script> -->
-    <!-- <script src="{% static 'scripts/wrapkit-setup.js' %}"></script> -->
-
-    <!-- Plugin Setups: vendors & dependencies setups -->
-    <!-- <script src="{% static 'scripts/plugin-setups.js' %}"></script> -->
-
-
 
     <!-- SweetAlert -->
     <script src="{% static 'bower_components/sweetalert2/src/sweetalert2.js' %}"></script>
