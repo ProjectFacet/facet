@@ -121,7 +121,6 @@ class OrganizationDetailView(CustomUserTest, DetailView):
                 'organizationcomments': organizationcomments,
                 'organizationcommentform': organizationcommentform,
         })
-
         return context
 
     def simple_images(self):
@@ -136,5 +135,8 @@ class OrganizationDetailView(CustomUserTest, DetailView):
         """Return simple documents."""
 
         documents = self.object.simple_document_assets.all()
+        # for document in documents:
+        #     name, extension = os.path.splitext(document.document.name)
+        #     document.extension = extension
         form = SimpleDocumentForm()
         return {'documents': documents, 'form': form}

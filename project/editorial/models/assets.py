@@ -211,6 +211,30 @@ class ImageAsset(BaseImage, BaseAssetMetadata):
 class SimpleImage(BaseImage):
     """Simple image (with some metadata) for attaching to tasks, events, etc."""
 
+    def get_usage(self):
+        """Return Organizations, Networks, Projects, Series, Events and Tasks
+        the simple asset is associated with."""
+
+        associations = []
+        orgs = self.organization_simple_image.all()
+        networks = self.network_set.all()
+        projects = self.project_set.all()
+        series = self.series_set.all()
+        events = self.event_set.all()
+        tasks = self.event_set.all()
+        associations.extend(orgs)
+        associations.extend(networks)
+        associations.extend(projects)
+        associations.extend(series)
+        associations.extend(events)
+        associations.extend(tasks)
+
+        return associations
+
+
+    def get_absolute_url(self):
+        return reverse('simple_image_detail', kwargs={'pk': self.id})
+
     @property
     def type(self):
         return "SimpleImage"
@@ -290,6 +314,31 @@ class DocumentAsset(BaseDocumentAsset, BaseAssetMetadata):
 class SimpleDocument(BaseDocumentAsset):
     """Simple Document (file upload, attached to events, tasks, etc.)"""
 
+    def get_usage(self):
+        """Return Organizations, Networks, Projects, Series, Events and Tasks
+        the simple asset is associated with."""
+
+        associations = []
+        orgs = self.organization_simple_document.all()
+        networks = self.network_set.all()
+        projects = self.project_set.all()
+        series = self.series_set.all()
+        events = self.event_set.all()
+        tasks = self.event_set.all()
+        associations.extend(orgs)
+        associations.extend(networks)
+        associations.extend(projects)
+        associations.extend(series)
+        associations.extend(events)
+        associations.extend(tasks)
+
+        return associations
+
+
+    def get_absolute_url(self):
+        return reverse('simple_document_detail', kwargs={'pk': self.id})
+
+
     @property
     def type(self):
         return "SimpleDocument"
@@ -367,6 +416,29 @@ class AudioAsset(BaseAudio, BaseAssetMetadata):
 
 class SimpleAudio(BaseAudio):
     """Simple Audio (attaches to an event, task, etc.)"""
+
+    def get_usage(self):
+        """Return Organizations, Networks, Projects, Series, Events and Tasks
+        the simple asset is associated with."""
+
+        associations = []
+        orgs = self.organization_simple_audio.all()
+        networks = self.network_set.all()
+        projects = self.project_set.all()
+        series = self.series_set.all()
+        events = self.event_set.all()
+        tasks = self.event_set.all()
+        associations.extend(orgs)
+        associations.extend(networks)
+        associations.extend(projects)
+        associations.extend(series)
+        associations.extend(events)
+        associations.extend(tasks)
+
+        return associations
+
+    def get_absolute_url(self):
+        return reverse('simple_audio_detail', kwargs={'pk': self.id})
 
     @property
     def type(self):
@@ -450,6 +522,30 @@ class VideoAsset(BaseVideo, BaseAssetMetadata):
 
 class SimpleVideo(BaseVideo):
     """Uploaded video (attaches to tasks, events, etc)"""
+
+    def get_usage(self):
+        """Return Organizations, Networks, Projects, Series, Events and Tasks
+        the simple asset is associated with."""
+
+        associations = []
+        orgs = self.organization_simple_video.all()
+        networks = self.network_set.all()
+        projects = self.project_set.all()
+        series = self.series_set.all()
+        events = self.event_set.all()
+        tasks = self.event_set.all()
+        associations.extend(orgs)
+        associations.extend(networks)
+        associations.extend(projects)
+        associations.extend(series)
+        associations.extend(events)
+        associations.extend(tasks)
+
+        return associations
+
+    def get_absolute_url(self):
+        return reverse('simple_image_detail', kwargs={'pk': self.id})
+
 
     @property
     def type(self):

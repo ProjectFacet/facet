@@ -720,88 +720,88 @@
 <script>
 
 
-// Remove Asset Modals
-$(document).ready(function () {
+  // Remove Asset Modals
+  $(document).ready(function () {
 
-  // Remove Image Modal
-  $('#removeImageModal').on('show.bs.modal', function (event) {
-    var button = $(event.relatedTarget) // Button that triggered the modal
-    var imageURL = button.data('imageurl') // Extract info from data-* attributes
-    var action = button.data('actionurl')
-    var modal = $(this)
-    modal.find('#img_src').attr('src', imageURL);
-    modal.find('#removeform').attr('action', action);
-  });
+    // Remove Image Modal
+    $('#removeImageModal').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget) // Button that triggered the modal
+      var imageURL = button.data('imageurl') // Extract info from data-* attributes
+      var action = button.data('actionurl')
+      var modal = $(this)
+      modal.find('#img_src').attr('src', imageURL);
+      modal.find('#removeform').attr('action', action);
+    });
 
-  // Remove Document Modal
-  $('#removeDocumentModal').on('show.bs.modal', function (event) {
-    // Button that triggered the modal
-    var button = $(event.relatedTarget)
-    // Extract info from data-* attributes
-    var detailURL = button.data('detailurl')
-    var documentTitle = button.data('doctitle')
-    var documentType = button.data('doctype')
-    documentType = documentType.replace(/\s+/g, '');
-    var action = button.data('actionurl')
-    var modal = $(this)
-    // Replace modal attributes
-    modal.find('#'+ documentType).show();
-    modal.find('#'+ documentType).attr('href', detailURL);
-    modal.find('#removeform').attr('action', action);
-    modal.find('p#title').html(documentTitle);
-    // When modal is closed change style back to hidden to prevent multiple previews in modal
-    $('#removeDocumentModal').on('hidden.bs.modal', function () {
-      modal.find('#'+ documentType).attr('style', 'display:none');
+    // Remove Document Modal
+    $('#removeDocumentModal').on('show.bs.modal', function (event) {
+      // Button that triggered the modal
+      var button = $(event.relatedTarget)
+      // Extract info from data-* attributes
+      var detailURL = button.data('detailurl')
+      var documentTitle = button.data('doctitle')
+      var documentType = button.data('doctype')
+      documentType = documentType.replace(/\s+/g, '');
+      var action = button.data('actionurl')
+      var modal = $(this)
+      // Replace modal attributes
+      modal.find('#'+ documentType).show();
+      modal.find('#'+ documentType).attr('href', detailURL);
+      modal.find('#removeform').attr('action', action);
+      modal.find('p#title').html(documentTitle);
+      // When modal is closed change style back to hidden to prevent multiple previews in modal
+      $('#removeDocumentModal').on('hidden.bs.modal', function () {
+        modal.find('#'+ documentType).attr('style', 'display:none');
+      });
+
+    });
+
+    // Remove Audio Modal
+    $('#removeAudioModal').on('show.bs.modal', function (event) {
+      // Button that triggered the modal
+      var button = $(event.relatedTarget)
+      // Extract info from data-* attributes
+      var audioID = button.data('audioid')
+      console.log(audioID);
+      var audioTitle = button.data('audiotitle')
+      console.log(audioTitle);
+      var audioURL = button.data('audiourl')
+      console.log(audioURL);
+      var audioType = button.data('audiotype')
+      console.log(audioType);
+      var action = button.data('actionurl')
+      console.log(action);
+      var modal = $(this)
+      // Replace modal attributes
+      // modal.find('#'+ audioType +"'").attr('style', "visibile")
+      modal.find('#jplayer_audio').attr('title', audioTitle)
+      modal.find('#jplayer_audio').attr('wav', audioURL);
+      modal.find('#jplayer_audio').attr('mp3', audioURL);
+      modal.find('#removeform').attr('action', action);
+      modal.find('h4#display-audio-title').html(audioTitle);
+    });
+
+    // Remove Video Modal
+    $('#removeVideoModal').on('show.bs.modal', function (event) {
+      // Button that triggered the modal
+      var button = $(event.relatedTarget)
+      // Extract info from data-* attributes
+      var videoID = button.data('videoid')
+      console.log(videoID);
+      var videoTitle = button.data('videotitle')
+      console.log(videoTitle);
+      var videoType = button.data('videotype')
+      console.log(videoType);
+      var action = button.data('actionurl')
+      console.log(action);
+      var modal = $(this)
+      // Replace modal attributes
+      // modal.find('#'+ videoType +"'").attr('style', "visibile")
+      modal.find('#removeform').attr('action', action);
+      modal.find('h4#display-video-title').html(videoTitle);
     });
 
   });
-
-  // Remove Audio Modal
-  $('#removeAudioModal').on('show.bs.modal', function (event) {
-    // Button that triggered the modal
-    var button = $(event.relatedTarget)
-    // Extract info from data-* attributes
-    var audioID = button.data('audioid')
-    console.log(audioID);
-    var audioTitle = button.data('audiotitle')
-    console.log(audioTitle);
-    var audioURL = button.data('audiourl')
-    console.log(audioURL);
-    var audioType = button.data('audiotype')
-    console.log(audioType);
-    var action = button.data('actionurl')
-    console.log(action);
-    var modal = $(this)
-    // Replace modal attributes
-    // modal.find('#'+ audioType +"'").attr('style', "visibile")
-    modal.find('#jplayer_audio').attr('title', audioTitle)
-    modal.find('#jplayer_audio').attr('wav', audioURL);
-    modal.find('#jplayer_audio').attr('mp3', audioURL);
-    modal.find('#removeform').attr('action', action);
-    modal.find('h4#display-audio-title').html(audioTitle);
-  });
-
-  // Remove Video Modal
-  $('#removeVideoModal').on('show.bs.modal', function (event) {
-    // Button that triggered the modal
-    var button = $(event.relatedTarget)
-    // Extract info from data-* attributes
-    var videoID = button.data('videoid')
-    console.log(videoID);
-    var videoTitle = button.data('videotitle')
-    console.log(videoTitle);
-    var videoType = button.data('videotype')
-    console.log(videoType);
-    var action = button.data('actionurl')
-    console.log(action);
-    var modal = $(this)
-    // Replace modal attributes
-    // modal.find('#'+ videoType +"'").attr('style', "visibile")
-    modal.find('#removeform').attr('action', action);
-    modal.find('h4#display-video-title').html(videoTitle);
-  });
-
-});
 
 </script>
 

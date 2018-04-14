@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load bootstrap3 %}
+
+{% block head %}
+{{ form.media }}
+{% endblock %}
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+<!--             BREADCRUMB NAVIGATION                 -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
+{% block breadcrumb %}
+<div>
+  <ol class="breadcrumb icon-angle-right icon-th">
+    <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
+    <li class="fadeIn"><a href="{% url 'simple_asset_library' request.user.organization.id %}" title="Return to Internal Assets Library"> Internal Assets Library </a></li>
+    {% if simpleimage %}
+    <li class="fadeIn"> Image: {{ simpleimage.title }} </li>
+    {% elif simpledocument %}
+    <li class="fadeIn"> Document: {{ simpledocument.title }} </li>
+    {% elif simpleaudio %}
+    <li class="fadeIn"> Audio: {{ simpleaudio.title }} </li>
+    {% elif simplevideo %}
+    <li class="fadeIn"> Video: {{ simplevideo.title }} </li>
+    {% endif %}
+    <li class="fadeIn"> Delete </li>
+  </ol>
+</div>
+{% endblock breadcrumb %}
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+<!--                   Main Section                    -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
+{% block content %}
+
+
+<!-- ================================================= -->
+<!-- CONTENT -->
+<!-- ================================================= -->
+
+{% if simpleimage %}
+  <h4>{{ simpleimage }} </h4>
+{% elif simpledocument %}
+  <h4>{{ simpledocument }} </h4>
+{% elif simpleaudio %}
+  <h4>{{ simpleaudio }} </h4>
+{% elif simplevideo %}
+  <h4>{{ simplevideo }} </h4>
+{% endif %}
+
+<form method="POST" class="post-form">
+  {% csrf_token %}
+  <input type="submit" value="Delete">
+</form>
+
+{% endblock content %}

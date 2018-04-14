@@ -631,21 +631,84 @@ class VideoAssetDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteView):
 #   Simple Asset Views
 #----------------------------------------------------------------------#
 
-# ACCESS: Only an org's users should be able to see an organization's asset library
-# FUTURE TODO: This is likely another place to add organization/ to url
+
+# Simple Asset Library Views
+
+
+# ACCESS: Only an org's users should be able to see an organization's internal asset library
 class SimpleAssetLibraryTemplateView(LoginRequiredMixin, TemplateView):
     """ Display media library of all organization assets."""
 
     template_name = 'editorial/simple_asset_list.html'
 
-    pass
-    # def get_context_data(self):
-    #     """Return all the (complex) assets associated with an organization."""
-    #
-    #     organization = self.request.user.organization
-    #     simpleassets = organization.
-    #     print "SIMPLE ASSETS: ", simpleassets
-    #     return {'simpleassets': simpleassets,}
+    def get_context_data(self, org):
+        """Return all the (complex) assets associated with an organization."""
+
+        tab = "Recent Internal Assets"
+        org_id = self.kwargs['org']
+        organization = Organization.objects.get(id=org_id)
+        simpleassets = organization.get_org_simple_asset_library()
+        return {'simpleassets': simpleassets, 'tab': tab,}
+
+
+class SimpleImageAssetLibraryTemplateView(LoginRequiredMixin, TemplateView):
+    """ Display media library of all organization simple image assets."""
+
+    template_name = 'editorial/simple_asset_list.html'
+
+    def get_context_data(self, org):
+        """Return all the simple assets associated with an organization."""
+
+        tab = "Internal Images"
+        org_id = self.kwargs['org']
+        organization = Organization.objects.get(id=org_id)
+        images = organization.get_org_simple_image_library()
+        return {'images': images, 'tab': tab,}
+
+
+class SimpleDocumentAssetLibraryTemplateView(LoginRequiredMixin, TemplateView):
+    """ Display media library of all organization simple document assets."""
+
+    template_name = 'editorial/simple_asset_list.html'
+
+    def get_context_data(self, org):
+        """Return all the simple assets associated with an organization."""
+
+        tab = "Internal Documents"
+        org_id = self.kwargs['org']
+        organization = Organization.objects.get(id=org_id)
+        documents = organization.get_org_simple_document_library()
+        return {'documents': documents, 'tab': tab,}
+
+
+class SimpleAudioAssetLibraryTemplateView(LoginRequiredMixin, TemplateView):
+    """ Display media library of all organization simple audio assets."""
+
+    template_name = 'editorial/simple_asset_list.html'
+
+    def get_context_data(self, org):
+        """Return all the simple assets associated with an organization."""
+
+        tab = "Internal Audio"
+        org_id = self.kwargs['org']
+        organization = Organization.objects.get(id=org_id)
+        audio = organization.get_org_simple_audio_library()
+        return {'audio': audio, 'tab': tab,}
+
+
+class SimpleVideoAssetLibraryTemplateView(LoginRequiredMixin, TemplateView):
+    """ Display media library of all organization simple video assets."""
+
+    template_name = 'editorial/simple_asset_list.html'
+
+    def get_context_data(self, org):
+        """Return all the simple assets associated with an organization."""
+
+        tab = "Internal Video"
+        org_id = self.kwargs['org']
+        organization = Organization.objects.get(id=org_id)
+        videos = organization.get_org_simple_video_library()
+        return {'videos': videos, 'tab': tab,}
 
 
 # ACCESS: Any org user, or user from an organization that is in collaborate_with
@@ -788,11 +851,79 @@ class SimpleImageCreateView(LoginRequiredMixin, CreateView):
             return HttpResponseRedirect(reverse('assignment_detail', args=(assignment.id,)))
 
 
+class SimpleImageUpdateView(LoginRequiredMixin, UpdateView):
+    """ Display editable detail information for a specific simple asset."""
+
+    model = SimpleImage
+    form_class = SimpleImageForm
+    template_name = "editorial/simple_asset_form.html"
+
+    def usage(self):
+        """Get all facets the simple asset is associated with."""
+        return self.object.get_usage()
+
+    def get_success_url(self):
+        """Record edit activity for activity stream."""
+
+        action.send(self.request.user, verb="edited", action_object=self.object)
+        return super(SimpleImageUpdateView, self).get_success_url()
+
+
 class SimpleImageAssetDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteView):
-    pass
+    """View for handling deletion of a simple asset.
+
+    Assets can only be deleted from the library.
+    """
+
+    model = SimpleImage
+    template_name = "editorial/simple_asset_delete.html"
+
+    form_valid_message = "Deleted."
+    form_invalid_message = "Please check form."
+
+    def get_success_url(self):
+        """Post deletion return to the media library."""
+
+        return reverse('simple_asset_library', kwargs={'org': self.request.user.organization.id})
+
 
 class SimpleImageAssetDisassociateView(LoginRequiredMixin, View):
-    pass
+    """ Process form to remove a simple asset from an associated Organization, Network,
+    Project, Series, Story, Task or Event.
+    """
+
+    def post(self, request, simpleimage):
+        """ Retrieve facet and image from kwargs and remove image from facet imageasset_set."""
+
+        association = self.request.POST.get('association')
+        association_id = self.request.POST.get('association_id')
+        simple_image_id = self.kwargs['simpleimage']
+        simpleimage = SimpleImage.objects.get(id=simple_image_id)
+
+        if association == 'organization':
+            organization = Organization.objects.get(id=association_id)
+            organization.simple_image_assets.remove(simpleimage)
+            return redirect('org_detail', pk=organization.id)
+        elif association == 'network':
+            network = Network.objects.get(id=association_id)
+            network.simple_image_assets.remove(simpleimage)
+            return redirect('network_detail', pk=network.id)
+        elif association == 'project':
+            project = Project.objects.get(id=association_id)
+            project.simple_image_assets.remove(simpleimage)
+            return redirect('project_detail', pk=project.id)
+        elif association == 'series':
+            series = Series.objects.get(id=association_id)
+            series.simple_image_assets.remove(simpleimage)
+            return redirect('series_detail', pk=series.id)
+        elif association == 'task':
+            task = Task.objects.get(id=association_id)
+            task.simple_image_assets.remove(simpleimage)
+            return redirect('task_detail', pk=task.id)
+        elif association == 'event':
+            event = Event.objects.get(id=association_id)
+            event.simple_image_assets.remove(simpleimage)
+            return redirect('event_detail', pk=event.id)
 
 
 # SAA
@@ -935,11 +1066,83 @@ class SimpleDocumentCreateView(LoginRequiredMixin, CreateView):
             return HttpResponseRedirect(reverse('assignment_detail', args=(assignment.id,)))
 
 
+class SimpleDocumentUpdateView(LoginRequiredMixin, UpdateView):
+    """ Display editable detail information for a specific simple asset."""
+
+    model = SimpleDocument
+    form_class = SimpleDocumentForm
+    template_name = "editorial/simple_asset_form.html"
+
+    def extension(self):
+        name, extension = os.path.splitext(self.file.name)
+        return extension
+
+    def usage(self):
+        """Get all facets the simple asset is associated with."""
+        return self.object.get_usage()
+
+    def get_success_url(self):
+        """Record edit activity for activity stream."""
+
+        action.send(self.request.user, verb="edited", action_object=self.object)
+        return super(SimpleDocumentUpdateView, self).get_success_url()
+
+
 class SimpleDocumentAssetDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteView):
-    pass
+    """View for handling deletion of a simple asset.
+
+    Assets can only be deleted from the library.
+    """
+
+    model = SimpleDocument
+    template_name = "editorial/simple_asset_delete.html"
+
+    form_valid_message = "Deleted."
+    form_invalid_message = "Please check form."
+
+    def get_success_url(self):
+        """Post deletion return to the media library."""
+
+        return reverse('simple_asset_library', kwargs={'org': self.request.user.organization.id})
+
 
 class SimpleDocumentAssetDisassociateView(LoginRequiredMixin, View):
-    pass
+    """ Process form to remove a simple asset from an associated Organization, Network,
+    Project, Series, Story, Task or Event.
+    """
+
+    def post(self, request, simpledocument):
+        """ Retrieve facet and image from kwargs and remove image from facet imageasset_set."""
+
+        association = self.request.POST.get('association')
+        association_id = self.request.POST.get('association_id')
+        simple_document_id = self.kwargs['simpledocument']
+        simpledocument = SimpleDocument.objects.get(id=simple_document_id)
+
+        if association == 'organization':
+            organization = Organization.objects.get(id=association_id)
+            organization.simple_document_assets.remove(simpledocument)
+            return redirect('org_detail', pk=organization.id)
+        elif association == 'network':
+            network = Network.objects.get(id=association_id)
+            network.simple_document_assets.remove(simpledocument)
+            return redirect('network_detail', pk=network.id)
+        elif association == 'project':
+            project = Project.objects.get(id=association_id)
+            project.simple_document_assets.remove(simpledocument)
+            return redirect('project_detail', pk=project.id)
+        elif association == 'series':
+            series = Series.objects.get(id=association_id)
+            series.simple_document_assets.remove(simpledocument)
+            return redirect('series_detail', pk=series.id)
+        elif association == 'task':
+            task = Task.objects.get(id=association_id)
+            task.simple_document_assets.remove(simpledocument)
+            return redirect('task_detail', pk=task.id)
+        elif association == 'event':
+            event = Event.objects.get(id=association_id)
+            event.simple_document_assets.remove(simpledocument)
+            return redirect('event_detail', pk=event.id)
 
 
 # SAA
@@ -1057,11 +1260,79 @@ class SimpleAudioCreateView(LoginRequiredMixin, CreateView):
             return HttpResponseRedirect(reverse('assignment_detail', args=(assignment.id,)))
 
 
+class SimpleAudioUpdateView(LoginRequiredMixin, UpdateView):
+    """ Display editable detail information for a specific simple asset."""
+
+    model = SimpleAudio
+    form_class = SimpleAudioForm
+    template_name = "editorial/simple_asset_form.html"
+
+    def usage(self):
+        """Get all facets the simple asset is associated with."""
+        return self.object.get_usage()
+
+    def get_success_url(self):
+        """Record edit activity for activity stream."""
+
+        action.send(self.request.user, verb="edited", action_object=self.object)
+        return super(SimpleAudioUpdateView, self).get_success_url()
+
+
 class SimpleAudioAssetDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteView):
-    pass
+    """View for handling deletion of a simple asset.
+
+    Assets can only be deleted from the library.
+    """
+
+    model = SimpleAudio
+    template_name = "editorial/simple_asset_delete.html"
+
+    form_valid_message = "Deleted."
+    form_invalid_message = "Please check form."
+
+    def get_success_url(self):
+        """Post deletion return to the media library."""
+
+        return reverse('simple_asset_library', kwargs={'org': self.request.user.organization.id})
+
 
 class SimpleAudioAssetDisassociateView(LoginRequiredMixin, View):
-    pass
+    """ Process form to remove a simple asset from an associated Organization, Network,
+    Project, Series, Story, Task or Event.
+    """
+
+    def post(self, request, simpleaudio):
+        """ Retrieve facet and image from kwargs and remove image from facet imageasset_set."""
+
+        association = self.request.POST.get('association')
+        association_id = self.request.POST.get('association_id')
+        simple_audio_id = self.kwargs['simpleaudio']
+        simpleaudio = SimpleAudio.objects.get(id=simple_audio_id)
+
+        if association == 'organization':
+            organization = Organization.objects.get(id=association_id)
+            organization.simple_audio_assets.remove(simpleaudio)
+            return redirect('org_detail', pk=organization.id)
+        elif association == 'network':
+            network = Network.objects.get(id=association_id)
+            network.simple_audio_assets.remove(simpleaudio)
+            return redirect('network_detail', pk=network.id)
+        elif association == 'project':
+            project = Project.objects.get(id=association_id)
+            project.simple_audio_assets.remove(simpleaudio)
+            return redirect('project_detail', pk=project.id)
+        elif association == 'series':
+            series = Series.objects.get(id=association_id)
+            series.simple_audio_assets.remove(simpleaudio)
+            return redirect('series_detail', pk=series.id)
+        elif association == 'task':
+            task = Task.objects.get(id=association_id)
+            task.simple_audio_assets.remove(simpleaudio)
+            return redirect('task_detail', pk=task.id)
+        elif association == 'event':
+            event = Event.objects.get(id=association_id)
+            event.simple_audio_assets.remove(simpleaudio)
+            return redirect('event_detail', pk=event.id)
 
 # SAA
 class SimpleVideoCreateView(LoginRequiredMixin, CreateView):
@@ -1178,8 +1449,76 @@ class SimpleVideoCreateView(LoginRequiredMixin, CreateView):
             return HttpResponseRedirect(reverse('assignment_detail', args=(assignment.id,)))
 
 
+class SimpleVideoUpdateView(LoginRequiredMixin, UpdateView):
+    """ Display editable detail information for a specific simple asset."""
+
+    model = SimpleVideo
+    form_class = SimpleVideoForm
+    template_name = "editorial/simple_asset_form.html"
+
+    def usage(self):
+        """Get all facets the simple asset is associated with."""
+        return self.object.get_usage()
+
+    def get_success_url(self):
+        """Record edit activity for activity stream."""
+
+        action.send(self.request.user, verb="edited", action_object=self.object)
+        return super(SimpleVideoUpdateView, self).get_success_url()
+
+
 class SimpleVideoAssetDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteView):
-    pass
+    """View for handling deletion of a simple asset.
+
+    Assets can only be deleted from the library.
+    """
+
+    model = SimpleVideo
+    template_name = "editorial/simple_asset_delete.html"
+
+    form_valid_message = "Deleted."
+    form_invalid_message = "Please check form."
+
+    def get_success_url(self):
+        """Post deletion return to the media library."""
+
+        return reverse('simple_asset_library', kwargs={'org': self.request.user.organization.id})
+
 
 class SimpleVideoAssetDisassociateView(LoginRequiredMixin, View):
-    pass
+    """ Process form to remove a simple asset from an associated Organization, Network,
+    Project, Series, Story, Task or Event.
+    """
+
+    def post(self, request, simplevideo):
+        """ Retrieve facet and image from kwargs and remove image from facet imageasset_set."""
+
+        association = self.request.POST.get('association')
+        association_id = self.request.POST.get('association_id')
+        simple_video_id = self.kwargs['simplevideo']
+        simplevideo = SimpleVideo.objects.get(id=simple_video_id)
+
+        if association == 'organization':
+            organization = Organization.objects.get(id=association_id)
+            organization.simple_video_assets.remove(simplevideo)
+            return redirect('org_detail', pk=organization.id)
+        elif association == 'network':
+            network = Network.objects.get(id=association_id)
+            network.simple_video_assets.remove(simplevideo)
+            return redirect('network_detail', pk=network.id)
+        elif association == 'project':
+            project = Project.objects.get(id=association_id)
+            project.simple_video_assets.remove(simplevideo)
+            return redirect('project_detail', pk=project.id)
+        elif association == 'series':
+            series = Series.objects.get(id=association_id)
+            series.simple_video_assets.remove(simplevideo)
+            return redirect('series_detail', pk=series.id)
+        elif association == 'task':
+            task = Task.objects.get(id=association_id)
+            task.simple_video_assets.remove(simplevideo)
+            return redirect('task_detail', pk=task.id)
+        elif association == 'event':
+            event = Event.objects.get(id=association_id)
+            event.simple_video_assets.remove(simplevideo)
+            return redirect('event_detail', pk=event.id)
