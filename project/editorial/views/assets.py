@@ -26,6 +26,10 @@ from editorial.forms import (
     LibraryDocumentAssociateForm,
     LibraryAudioAssociateForm,
     LibraryVideoAssociateForm,
+    SimpleImageLibraryAssociateForm,
+    SimpleDocumentLibraryAssociateForm,
+    SimpleAudioLibraryAssociateForm,
+    SimpleVideoLibraryAssociateForm,
     )
 
 from editorial.models import (
@@ -851,6 +855,62 @@ class SimpleImageCreateView(LoginRequiredMixin, CreateView):
             return HttpResponseRedirect(reverse('assignment_detail', args=(assignment.id,)))
 
 
+# ACCESS: Any org user should be able to add an asset for a P, Sr, St, F
+# A user from an organization that is in collaborate_with or
+# contractors should not be able to do this because doing so requires access to
+# an org's entire asset library.
+class SimpleImageLibraryAssociateView(LoginRequiredMixin, FormView):
+    """ Add existing simple image(s) in the library to another object."""
+
+    form_class = SimpleImageLibraryAssociateForm
+    template_name = "editorial/_simpleimage_library.html"
+
+    def get_form_kwargs(self):
+        """Pass some initial things to scaffold form."""
+        kwargs = super(SimpleImageLibraryAssociateView, self).get_form_kwargs()
+        kwargs['organization'] = self.request.user.organization
+        return kwargs
+
+    def form_valid(self, form):
+        """Process form to associate simple image."""
+
+        # get thing that the image is being associated with
+        association = self.request.POST.get('association')
+        association_id = self.request.POST.get('association_id')
+        simpleimages = form.cleaned_data['simpleimages']
+
+        if association == "organization":
+            organization = Organization.objects.get(id=association_id)
+            organization.simple_image_assets.add(*simpleimages)
+            action.send(self.request.user, verb="added simple images", target=organization)
+            return redirect('org_detail', pk=organization.id)
+        if association == "network":
+            network = Network.objects.get(id=association_id)
+            network.simple_image_assets.add(*simpleimages)
+            action.send(self.request.user, verb="added simple images", target=network)
+            return redirect('network_detail', pk=network.id)
+        if association == "project":
+            project = Project.objects.get(id=association_id)
+            project.simple_image_assets.add(*simpleimages)
+            action.send(self.request.user, verb="added simple images", target=project)
+            return redirect('project_detail', pk=project.id)
+        if association == "series":
+            series = Series.objects.get(id=association_id)
+            series.simple_image_assets.add(*simpleimages)
+            action.send(self.request.user, verb="added simple images", target=series)
+            return redirect('series_detail', pk=series.id)
+        if association == "task":
+            task = Task.objects.get(id=association_id)
+            task.simple_image_assets.add(*simpleimages)
+            action.send(self.request.user, verb="added simple images", target=task)
+            return redirect('task_detail', pk=task.id)
+        if association == "event":
+            event = Event.objects.get(id=association_id)
+            event.simple_image_assets.add(*simpleimages)
+            action.send(self.request.user, verb="added simple images", target=event)
+            return redirect('event_detail', pk=event.id)
+
+
 class SimpleImageUpdateView(LoginRequiredMixin, UpdateView):
     """ Display editable detail information for a specific simple asset."""
 
@@ -1106,6 +1166,62 @@ class SimpleDocumentAssetDeleteView(LoginRequiredMixin, FormMessagesMixin, Delet
         return reverse('simple_asset_library', kwargs={'org': self.request.user.organization.id})
 
 
+# ACCESS: Any org user should be able to add an asset for a P, Sr, St, F
+# A user from an organization that is in collaborate_with or
+# contractors should not be able to do this because doing so requires access to
+# an org's entire asset library.
+class SimpleDocumentLibraryAssociateView(LoginRequiredMixin, FormView):
+    """ Add existing simple document(s) in the library to another object."""
+
+    form_class = SimpleDocumentLibraryAssociateForm
+    template_name = "editorial/_simpledocument_library.html"
+
+    def get_form_kwargs(self):
+        """Pass some initial things to scaffold form."""
+        kwargs = super(SimpleDocumentLibraryAssociateView, self).get_form_kwargs()
+        kwargs['organization'] = self.request.user.organization
+        return kwargs
+
+    def form_valid(self, form):
+        """Process form to associate simple document."""
+
+        # get thing that the document is being associated with
+        association = self.request.POST.get('association')
+        association_id = self.request.POST.get('association_id')
+        simpledocuments = form.cleaned_data['simpledocuments']
+
+        if association == "organization":
+            organization = Organization.objects.get(id=association_id)
+            organization.simple_document_assets.add(*simpledocuments)
+            action.send(self.request.user, verb="added simple documents", target=organization)
+            return redirect('org_detail', pk=organization.id)
+        if association == "network":
+            network = Network.objects.get(id=association_id)
+            network.simple_document_assets.add(*simpledocuments)
+            action.send(self.request.user, verb="added simple documents", target=network)
+            return redirect('network_detail', pk=network.id)
+        if association == "project":
+            project = Project.objects.get(id=association_id)
+            project.simple_document_assets.add(*simpledocuments)
+            action.send(self.request.user, verb="added simple documents", target=project)
+            return redirect('project_detail', pk=project.id)
+        if association == "series":
+            series = Series.objects.get(id=association_id)
+            series.simple_document_assets.add(*simpledocuments)
+            action.send(self.request.user, verb="added simple documents", target=series)
+            return redirect('series_detail', pk=series.id)
+        if association == "task":
+            task = Task.objects.get(id=association_id)
+            task.simple_document_assets.add(*simpledocuments)
+            action.send(self.request.user, verb="added simple documents", target=task)
+            return redirect('task_detail', pk=task.id)
+        if association == "event":
+            event = Event.objects.get(id=association_id)
+            event.simple_document_assets.add(*simpledocuments)
+            action.send(self.request.user, verb="added simple documents", target=event)
+            return redirect('event_detail', pk=event.id)
+
+
 class SimpleDocumentAssetDisassociateView(LoginRequiredMixin, View):
     """ Process form to remove a simple asset from an associated Organization, Network,
     Project, Series, Story, Task or Event.
@@ -1296,6 +1412,62 @@ class SimpleAudioAssetDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteVi
         return reverse('simple_asset_library', kwargs={'org': self.request.user.organization.id})
 
 
+# ACCESS: Any org user should be able to add an asset for a P, Sr, St, F
+# A user from an organization that is in collaborate_with or
+# contractors should not be able to do this because doing so requires access to
+# an org's entire asset library.
+class SimpleAudioLibraryAssociateView(LoginRequiredMixin, FormView):
+    """ Add existing simple audio(s) in the library to another object."""
+
+    form_class = SimpleAudioLibraryAssociateForm
+    template_name = "editorial/_simpleaudio_library.html"
+
+    def get_form_kwargs(self):
+        """Pass some initial things to scaffold form."""
+        kwargs = super(SimpleAudioLibraryAssociateView, self).get_form_kwargs()
+        kwargs['organization'] = self.request.user.organization
+        return kwargs
+
+    def form_valid(self, form):
+        """Process form to associate simple audio."""
+
+        # get thing that the audio is being associated with
+        association = self.request.POST.get('association')
+        association_id = self.request.POST.get('association_id')
+        simpleaudio = form.cleaned_data['simpleaudio']
+
+        if association == "organization":
+            organization = Organization.objects.get(id=association_id)
+            organization.simple_audio_assets.add(*simpleaudio)
+            action.send(self.request.user, verb="added simple audios", target=organization)
+            return redirect('org_detail', pk=organization.id)
+        if association == "network":
+            network = Network.objects.get(id=association_id)
+            network.simple_audio_assets.add(*simpleaudio)
+            action.send(self.request.user, verb="added simple audios", target=network)
+            return redirect('network_detail', pk=network.id)
+        if association == "project":
+            project = Project.objects.get(id=association_id)
+            project.simple_audio_assets.add(*simpleaudio)
+            action.send(self.request.user, verb="added simple audios", target=project)
+            return redirect('project_detail', pk=project.id)
+        if association == "series":
+            series = Series.objects.get(id=association_id)
+            series.simple_audio_assets.add(*simpleaudio)
+            action.send(self.request.user, verb="added simple audios", target=series)
+            return redirect('series_detail', pk=series.id)
+        if association == "task":
+            task = Task.objects.get(id=association_id)
+            task.simple_audio_assets.add(*simpleaudio)
+            action.send(self.request.user, verb="added simple audios", target=task)
+            return redirect('task_detail', pk=task.id)
+        if association == "event":
+            event = Event.objects.get(id=association_id)
+            event.simple_audio_assets.add(*simpleaudio)
+            action.send(self.request.user, verb="added simple audios", target=event)
+            return redirect('event_detail', pk=event.id)
+
+
 class SimpleAudioAssetDisassociateView(LoginRequiredMixin, View):
     """ Process form to remove a simple asset from an associated Organization, Network,
     Project, Series, Story, Task or Event.
@@ -1483,6 +1655,62 @@ class SimpleVideoAssetDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteVi
         """Post deletion return to the media library."""
 
         return reverse('simple_asset_library', kwargs={'org': self.request.user.organization.id})
+
+
+# ACCESS: Any org user should be able to add an asset for a P, Sr, St, F
+# A user from an organization that is in collaborate_with or
+# contractors should not be able to do this because doing so requires access to
+# an org's entire asset library.
+class SimpleVideoLibraryAssociateView(LoginRequiredMixin, FormView):
+    """ Add existing simple video(s) in the library to another object."""
+
+    form_class = SimpleVideoLibraryAssociateForm
+    template_name = "editorial/_simplevideo_library.html"
+
+    def get_form_kwargs(self):
+        """Pass some initial things to scaffold form."""
+        kwargs = super(SimpleVideoLibraryAssociateView, self).get_form_kwargs()
+        kwargs['organization'] = self.request.user.organization
+        return kwargs
+
+    def form_valid(self, form):
+        """Process form to associate simple video."""
+
+        # get thing that the video is being associated with
+        association = self.request.POST.get('association')
+        association_id = self.request.POST.get('association_id')
+        simplevideo = form.cleaned_data['simplevideo']
+
+        if association == "organization":
+            organization = Organization.objects.get(id=association_id)
+            organization.simple_video_assets.add(*simplevideo)
+            action.send(self.request.user, verb="added simple videos", target=organization)
+            return redirect('org_detail', pk=organization.id)
+        if association == "network":
+            network = Network.objects.get(id=association_id)
+            network.simple_video_assets.add(*simplevideo)
+            action.send(self.request.user, verb="added simple videos", target=network)
+            return redirect('network_detail', pk=network.id)
+        if association == "project":
+            project = Project.objects.get(id=association_id)
+            project.simple_video_assets.add(*simplevideo)
+            action.send(self.request.user, verb="added simple videos", target=project)
+            return redirect('project_detail', pk=project.id)
+        if association == "series":
+            series = Series.objects.get(id=association_id)
+            series.simple_video_assets.add(*simplevideo)
+            action.send(self.request.user, verb="added simple videos", target=series)
+            return redirect('series_detail', pk=series.id)
+        if association == "task":
+            task = Task.objects.get(id=association_id)
+            task.simple_video_assets.add(*simplevideo)
+            action.send(self.request.user, verb="added simple videos", target=task)
+            return redirect('task_detail', pk=task.id)
+        if association == "event":
+            event = Event.objects.get(id=association_id)
+            event.simple_video_assets.add(*simplevideo)
+            action.send(self.request.user, verb="added simple videos", target=event)
+            return redirect('event_detail', pk=event.id)
 
 
 class SimpleVideoAssetDisassociateView(LoginRequiredMixin, View):

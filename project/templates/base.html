@@ -153,8 +153,12 @@
                   </ul>
 
                   <ul class="nav navbar-nav pull-left">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'asset_library' %}" title="View Media Library"> Media </a>
+                    <li class="nav-item dropdown dropdown-menu-right">
+                        <a class="nav-link dropdown-toggle no-after f-s-16" data-toggle="dropdown"> Media </a>
+                        <div class="dropdown-menu dropdown-menu-scale from-right dropdown-menu-right">
+                            <a class="dropdown-item" href="{% url 'asset_library' %}" title="View Media Library"> <span class="title">Content Assets</span> </a>
+                            <a class="dropdown-item" href="{% url 'simple_asset_library' request.user.organization.id %}" title="View Internal Assets Library"> <span class="title">Internal Assets</span> </a>
+                        </div>
                     </li>
                   </ul>
 

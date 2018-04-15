@@ -26,6 +26,8 @@ from editorial.forms import (
     EventForm,
     SimpleImageForm,
     SimpleDocumentForm,
+    SimpleImageLibraryAssociateForm,
+    SimpleDocumentLibraryAssociateForm,
 )
 
 from editorial.models import (

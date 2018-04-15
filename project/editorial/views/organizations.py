@@ -17,6 +17,8 @@ from editorial.forms import (
     NoteForm,
     SimpleImageForm,
     SimpleDocumentForm,
+    SimpleImageLibraryAssociateForm,
+    SimpleDocumentLibraryAssociateForm,
 )
 from editorial.models import (
     User,
@@ -128,15 +130,14 @@ class OrganizationDetailView(CustomUserTest, DetailView):
 
         images = self.object.simple_image_assets.all()
         form = SimpleImageForm()
+        addform = SimpleImageLibraryAssociateForm(organization=self.request.user.organization)
 
-        return {'images': images, 'form': form}
+        return {'images': images, 'form': form, 'addform': addform,}
 
     def simple_documents(self):
         """Return simple documents."""
 
         documents = self.object.simple_document_assets.all()
-        # for document in documents:
-        #     name, extension = os.path.splitext(document.document.name)
-        #     document.extension = extension
         form = SimpleDocumentForm()
-        return {'documents': documents, 'form': form}
+        addform = SimpleDocumentLibraryAssociateForm(organization=self.request.user.organization)
+        return {'documents': documents, 'form': form, 'addform': addform,}

@@ -294,3 +294,63 @@ class SimpleVideoForm(forms.ModelForm):
             'description': _Textarea('Description', rows=3),
             'link': _TextInput('Link'),
         }
+
+
+class SimpleImageLibraryAssociateForm(Form):
+    """Form for adding existing simple images to an Organization, Network,
+    Project, Series, Task or Event."""
+
+    def __init__(self, *args, **kwargs):
+        """Add field with vocabulary set to organization's assets."""
+
+        org = kwargs.pop("organization")
+        super(SimpleImageLibraryAssociateForm, self).__init__(*args, **kwargs)
+
+        self.fields['simpleimages'] = forms.ModelMultipleChoiceField(
+            queryset=org.simpleimage_set.all(),
+            required=False)
+
+
+class SimpleDocumentLibraryAssociateForm(Form):
+    """Form for adding existing simple documents to an Organization, Network,
+    Project, Series, Task or Event."""
+
+    def __init__(self, *args, **kwargs):
+        """Add field with vocabulary set to organization's assets."""
+
+        org = kwargs.pop("organization")
+        super(SimpleDocumentLibraryAssociateForm, self).__init__(*args, **kwargs)
+
+        self.fields['simpledocuments'] = forms.ModelMultipleChoiceField(
+            queryset=org.simpledocument_set.all(),
+            required=False)
+
+
+class SimpleAudioLibraryAssociateForm(Form):
+    """Form for adding existing simple audio files to an Organization, Network,
+    Project, Series, Task or Event."""
+
+    def __init__(self, *args, **kwargs):
+        """Add field with vocabulary set to organization's assets."""
+
+        org = kwargs.pop("organization")
+        super(SimpleAudioLibraryAssociateForm, self).__init__(*args, **kwargs)
+
+        self.fields['simpleaudio'] = forms.ModelMultipleChoiceField(
+            queryset=org.simpleaudio_set.all(),
+            required=False)
+
+
+class SimpleVideoLibraryAssociateForm(Form):
+    """Form for adding existing simple video to an Organization, Network,
+    Project, Series, Task or Event."""
+
+    def __init__(self, *args, **kwargs):
+        """Add field with vocabulary set to organization's assets."""
+
+        org = kwargs.pop("organization")
+        super(SimpleVideoLibraryAssociateForm, self).__init__(*args, **kwargs)
+
+        self.fields['simplevideo'] = forms.ModelMultipleChoiceField(
+            queryset=org.simplevideo_set.all(),
+            required=False)

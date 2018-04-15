@@ -19,6 +19,8 @@ from editorial.forms import (
     NoteForm,
     SimpleImageForm,
     SimpleDocumentForm,
+    SimpleImageLibraryAssociateForm,
+    SimpleDocumentLibraryAssociateForm,
 )
 from editorial.models import (
     Project,

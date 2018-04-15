@@ -181,6 +181,17 @@
                 {% if image.display_photo %}
                   <div class="col-xs-4">
                     <a href="{{ image.display_photo.url }}" class="thumbnail"><img src="{{ image.display_photo.url }}" alt="{{ image.description }}" class="img-fluid"></a>
+                    <!-- Opens modal to remove image -->
+                    <button type="button"
+                            class="btn btn-sm clear-button f-r-6 subtle m-b-10"
+                            title="Remove this image"
+                            data-toggle="modal"
+                            data-target="#removeImageModal"
+                            data-imageid="{{ image.id }}"
+                            data-imageurl="{{ image.display_photo.url }}"
+                            data-actionurl="{% url 'simple_image_remove' simpleimage=image.id %}">
+                            Remove
+                    </button>
                   </div>
                   {% if forloop.counter|divisibleby:"3" and not forloop.last %}
                     </div><div class="row m-b-10">
@@ -197,6 +208,17 @@
           <p class="f-r-12 f-w-300 m-b-20">Documents <a href="#" data-toggle="modal" data-target="#SimpleDocumentAssetModal" title="Add Document"><i class="fa fa-plus sameline subtle"></i></a></p>
           {% for document in documents.documents %}
             <a href="{{ document.document.url }}" target="_blank"><p class="f-w-300 m-l-10 f-r-9"><i class="fa fa-file subtle m-r-5"></i> {{ document.title }}</p></a>
+            <!-- Opens modal to remove document -->
+            <button type="button"
+                    class="btn btn-sm clear-button f-r-6 subtle m-b-10"
+                    title="Remove this document"
+                    data-toggle="modal"
+                    data-target="#removeDocumentModal"
+                    data-detailurl="{% url 'simple_document_detail' document.id %}"
+                    data-actionurl="{% url 'simple_document_remove' simpledocument=document.id %}"
+                    data-doctitle="{{ document.title }}">
+                    Remove
+            </button>
             {% if forloop.counter|divisibleby:"2" and not forloop.last %}
             {% endif %}
           {% endfor %}
@@ -252,6 +274,97 @@
 
 </script>
 
+<!-- Simple Asset Removal -->
+<script>
+
+  // Remove Asset Modals
+  $(document).ready(function () {
+
+    // Remove Image Modal
+    $('#removeImageModal').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget) // Button that triggered the modal
+      var imageURL = button.data('imageurl') // Extract info from data-* attributes
+      var action = button.data('actionurl')
+      var modal = $(this)
+      modal.find('#img_src').attr('src', imageURL);
+      modal.find('#removeform').attr('action', action);
+    });
+
+    // Remove Document Modal
+    $('#removeDocumentModal').on('show.bs.modal', function (event) {
+      // Button that triggered the modal
+      var button = $(event.relatedTarget)
+      // Extract info from data-* attributes
+      var detailURL = button.data('detailurl')
+      var documentTitle = button.data('doctitle')
+      // var documentType = button.data('doctype')
+      var documentType = 'other'
+      // documentType = documentType.replace(/\s+/g, '');
+      var action = button.data('actionurl')
+      var modal = $(this)
+      // Replace modal attributes
+      modal.find('#'+ documentType).show();
+      modal.find('#'+ documentType).attr('href', detailURL);
+      modal.find('#removeform').attr('action', action);
+      modal.find('p#title').html(documentTitle);
+      // When modal is closed change style back to hidden to prevent multiple previews in modal
+      $('#removeDocumentModal').on('hidden.bs.modal', function () {
+        modal.find('#'+ documentType).attr('style', 'display:none');
+      });
+
+    });
+
+    // Remove Audio Modal
+    $('#removeAudioModal').on('show.bs.modal', function (event) {
+      // Button that triggered the modal
+      var button = $(event.relatedTarget)
+      // Extract info from data-* attributes
+      var audioID = button.data('audioid')
+      console.log(audioID);
+      var audioTitle = button.data('audiotitle')
+      console.log(audioTitle);
+      var audioURL = button.data('audiourl')
+      console.log(audioURL);
+      var audioType = button.data('audiotype')
+      console.log(audioType);
+      var action = button.data('actionurl')
+      console.log(action);
+      var modal = $(this)
+      // Replace modal attributes
+      // modal.find('#'+ audioType +"'").attr('style', "visibile")
+      modal.find('#jplayer_audio').attr('title', audioTitle)
+      modal.find('#jplayer_audio').attr('wav', audioURL);
+      modal.find('#jplayer_audio').attr('mp3', audioURL);
+      modal.find('#removeform').attr('action', action);
+      modal.find('h4#display-audio-title').html(audioTitle);
+    });
+
+    // Remove Video Modal
+    $('#removeVideoModal').on('show.bs.modal', function (event) {
+      // Button that triggered the modal
+      var button = $(event.relatedTarget)
+      // Extract info from data-* attributes
+      var videoID = button.data('videoid')
+      console.log(videoID);
+      var videoTitle = button.data('videotitle')
+      console.log(videoTitle);
+      var videoType = button.data('videotype')
+      console.log(videoType);
+      var action = button.data('actionurl')
+      console.log(action);
+      var modal = $(this)
+      // Replace modal attributes
+      // modal.find('#'+ videoType +"'").attr('style', "visibile")
+      modal.find('#removeform').attr('action', action);
+      modal.find('h4#display-video-title').html(videoTitle);
+    });
+
+  });
+
+</script>
+
+
+
 {% endblock %}
 
 <!-- ================================================= -->
@@ -261,6 +374,231 @@
 <!-- ================================================= -->
 
 {% block modals %}
+
+<!-- ================================================= -->
+          <!-- Simple Image Remove Asset Modal -->
+<!-- ================================================= -->
+
+<!-- Remove Simple Image Modal -->
+<div class="modal" id="removeImageModal" tabindex="-1" role="dialog" aria-labelledby="removeImageModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title sameline" id="removeImageLabel">Remove Image</h5>
+        <button type="button" class="close sameline" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <img id="img_src" src="{{ simpleimage.display_photo.url }}" alt="{{ simpleimage.description }}" class="img-fluid"></a>
+        <form id="removeform" action="#" method="POST" class="post-form">
+        {% csrf_token %}
+        <input type="hidden" name="association" value="network" />
+        <input type="hidden" name="association_id" value="{{ network.pk }}" />
+        <button type="submit" class="btn btn-primary btn-sm f-r-8 m-t-20" title="Remove this image">Remove</button>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Remove Simple Document Modal -->
+<div class="modal" id="removeDocumentModal" tabindex="-1" role="dialog" aria-labelledby="removeDocumentModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title sameline" id="removeDocumentLabel">Remove Document</h5>
+        <button type="button" class="close sameline" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Display Asset Here -->
+        <div id="simpledocument-asset-library">
+          <!-- PDF -->
+          <a id="pdf" href="#" target="_blank" style="display: none;">
+            <div class="card bs-card">
+              <div class="card-block bg-danger-500">
+                <p class="f-r-14 f-w-300 text-center m-t-10"> <i class="fa fa-file-pdf-o fa-1x text-center m-b-10"></i> .pdf </p>
+              </div>
+              <div class="card-block">
+                <p id="title" class="f-r-10 f-w-500"></p>
+              </div>
+            </div>
+          </a>
+          <!-- WORD DOC -->
+          <a id="doc" href="#" target="_blank" style="display: none;">
+            <div class="card bs-card">
+              <div class="card-block bg-info-500">
+                <p class="f-r-14 f-w-300 text-center m-t-10"> <i class="fa fa-file-word-o fa-1x text-center m-b-10"> </i> .docx </p>
+              </div>
+              <div class="card-block">
+                <p id="title" class="f-r-10 f-w-500"></p>
+              </div>
+            </div>
+          </a>
+          <!-- TEXT -->
+          <a id="txt" href="#" target="_blank" style="display: none;">
+            <div class="card bs-card">
+              <div class="card-block bg-primary-500">
+                <p class="f-r-14 f-w-300 text-center m-t-10"> <i class="fa fa-file-text-o fa-1x text-center m-b-10"> </i> .txt </p>
+              </div>
+              <div class="card-block">
+                <p id="title" class="f-r-10 f-w-500"></p>
+              </div>
+            </div>
+          </a>
+          <!-- COMMA SEPARATED -->
+          <a id="csv" href="#" target="_blank" style="display: none;">
+            <div class="card bs-card">
+              <div class="card-block bg-success-500">
+                <p class="f-r-14 f-w-300 text-center m-t-10"> <i class="fa fa-file-excel-o fa-1x text-center m-b-10"> </i> .csv </p>
+              </div>
+              <div class="card-block">
+                <p id="title" class="f-r-10 f-w-500"></p>
+              </div>
+            </div>
+          </a>
+          <!-- EXCEL -->
+          <a id="xls" href="#" target="_blank" style="display: none;">
+            <div class="card bs-card">
+              <div class="card-block bg-success-500">
+                <p class="f-r-14 f-w-300 text-center m-t-10"> <i class="fa fa-file-excel-o fa-1x text-center m-b-10"> </i> .xls </p>
+              </div>
+              <div class="card-block">
+                <p id="title" class="f-r-10 f-w-500"></p>
+              </div>
+            </div>
+          </a>
+          <!-- OTHER -->
+          <a id="other" href="#" target="_blank" style="display: none;">
+            <div class="card bs-card">
+              <div class="card-block bg-warning-500">
+                <p class="f-r-14 f-w-300 text-center m-t-10"> <i class="fa fa-file-o fa-1x text-center m-b-10"> </i></p>
+              </div>
+              <div class="card-block">
+                <p id="title" class="f-r-10 f-w-500"></p>
+              </div>
+            </div>
+          </a>
+        </div>
+        <form id="removeform" action="#" method="POST" class="post-form">
+        {% csrf_token %}
+        <input type="hidden" name="association" value="network" />
+        <input type="hidden" name="association_id" value="{{ network.pk }}" />
+        <button type="submit" class="remove-document-link-{{simpledocument.id}} btn btn-primary btn-sm f-r-8 m-t-20" title="Remove this document">Remove</button>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Remove Simple Audio Modal -->
+<div class="modal fade" id="removeAudioModal" tabindex="-1" role="dialog" aria-labelledby="removeAudioModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title sameline" id="removeAudioLabel">Remove Audio</h5>
+        <button type="button" class="close sameline" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Display asset -->
+        {% comment %}
+        <div id="jplayer_audio" class="jp-jplayer"></div>
+        <div id="jp_container_audio" class="jp-flat-audio m-t-10" role="application" aria-label="media player">
+          <div class="jp-play-control jp-control">
+            <button class="jp-play jp-button" role="button" aria-label="play" tabindex="0"></button>
+          </div>
+          <div class="jp-bar">
+            <div class="jp-seek-bar jp-seek-bar-display"></div>
+            <div class="jp-seek-bar">
+              <div class="jp-play-bar"></div>
+              <div class="jp-details"><span class="jp-title" aria-label="title"></span></div>
+              <div class="jp-timing"><span class="jp-duration" role="timer" aria-label="duration"></span></div>
+            </div>
+          </div>
+          <div class="jp-no-solution">
+            Media Player Error<br />
+            Update your browser or Flash plugin
+          </div>
+        </div>
+        <script>
+            jQuery(document).ready(function($) {
+            $("#jplayer_audio").jPlayer({
+              ready: function(event) {
+                $(this).jPlayer("setMedia", {
+                  title: "",
+                  wav: "",
+                  mp3: "",
+                });
+              },
+              play: function() { // Avoid multiple jPlayers playing together.
+                $(this).jPlayer("pauseOthers");
+              },
+              timeFormat: {
+                padMin: false
+              },
+              swfPath: "js",
+              supplied: "wav, mp3",
+              cssSelectorAncestor: "#jp_container_audio",
+              useStateClassSkin: true,
+              autoBlur: false,
+              smoothPlayBar: true,
+              remainingDuration: true,
+              keyEnabled: true,
+              keyBindings: {
+                // Disable some of the default key controls
+                loop: null,
+                muted: null,
+                volumeUp: null,
+                volumeDown: null
+              },
+              wmode: "window"
+            });
+            });
+        </script>
+        {% endcomment %}
+        <h4 id="display-audio-title"></h4>
+        <form id="removeform" action="#" method="POST" class="post-form">
+        {% csrf_token %}
+        <input type="hidden" name="association" value="network" />
+        <input type="hidden" name="association_id" value="{{ network.pk }}" />
+        <button type="submit" class="btn btn-primary btn-sm f-r-8 m-t-20" title="Remove this audio">Remove</button>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Remove Video Modal -->
+<div class="modal fade" id="removeVideoModal" tabindex="-1" role="dialog" aria-labelledby="removeVideoModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title sameline" id="removeVideoLabel">Remove Video</h5>
+        <button type="button" class="close sameline" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Display asset -->
+        <h4 id="display-video-title"></h4>
+        <form id="removeform" action="#" method="POST" class="post-form">
+        {% csrf_token %}
+        <input type="hidden" name="association" value="network" />
+        <input type="hidden" name="association_id" value="{{ network.pk }}" />
+        <button type="submit" class="btn btn-primary btn-sm f-r-8 m-t-20" title="Remove this video">Remove</button>
+      </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
 
 <!-- ================================================= -->
           <!-- Simple Image Asset Modal -->

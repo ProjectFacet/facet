@@ -1,6 +1,7 @@
 """ Forms for editorial app. """
 
 from django.conf.urls import url, include
+from django.http import HttpResponse
 
 from views import (
     accounts,
@@ -284,21 +285,25 @@ urlpatterns = [
     url(r'^organization/(?P<org>\d+)/internalassets/video/$', assets.SimpleVideoAssetLibraryTemplateView.as_view(), name='simple_video_asset_library'),
 
     url(r'^internalassets/simpleimage/new/$', assets.SimpleImageCreateView.as_view(), name='upload_simple_image'),
+    url(r'^internalassets/simpleimage/add/$', assets.SimpleImageLibraryAssociateView.as_view(), name='library_simpleimage_add'),
     url(r'^internalassets/simpleimage/(?P<pk>\d+)/$', assets.SimpleImageUpdateView.as_view(), name='simple_image_detail'),
     url(r'^internalassets/simpleimage/(?P<pk>\d+)/delete/$', assets.SimpleImageAssetDeleteView.as_view(), name='simple_image_delete'),
     url(r'^internalassets/simpleimage/(?P<simpleimage>\d+)/remove/$', assets.SimpleImageAssetDisassociateView.as_view(), name='simple_image_remove'),
     # Simple documents
     url(r'^internalassets/simpledocument/new/$', assets.SimpleDocumentCreateView.as_view(), name='upload_simple_document'),
+    url(r'^internalassets/simpledocument/add/$', assets.SimpleDocumentLibraryAssociateView.as_view(), name='library_simpledocument_add'),
     url(r'^internalassets/simpledocument/(?P<pk>\d+)/$', assets.SimpleDocumentUpdateView.as_view(), name='simple_document_detail'),
     url(r'^internalassets/simpledocument/(?P<pk>\d+)/delete/$', assets.SimpleDocumentAssetDeleteView.as_view(), name='simple_document_delete'),
     url(r'^internalassets/simpledocument/(?P<simpledocument>\d+)/remove/$', assets.SimpleDocumentAssetDisassociateView.as_view(), name='simple_document_remove'),
     # Simple Audio
     url(r'^internalassets/simpleaudio/new/$', assets.SimpleAudioCreateView.as_view(), name='upload_simple_audio'),
+    url(r'^internalassets/simpleaudio/add/$', assets.SimpleAudioLibraryAssociateView.as_view(), name='library_simpleaudio_add'),
     url(r'^internalassets/simpleaudio/(?P<pk>\d+)/$', assets.SimpleAudioUpdateView.as_view(), name='simple_audio_detail'),
     url(r'^internalassets/simpleaudio/(?P<pk>\d+)/delete/$', assets.SimpleAudioAssetDeleteView.as_view(), name='simple_audio_delete'),
     url(r'^internalassets/simpleaudio/(?P<simpleaudio>\d+)/remove/$', assets.SimpleAudioAssetDisassociateView.as_view(), name='simple_audio_remove'),
     # Simple Video
     url(r'^internalassets/simplevideo/new/$', assets.SimpleVideoCreateView.as_view(), name='upload_simple_video'),
+    url(r'^internalassets/simplevideo/add/$', assets.SimpleVideoLibraryAssociateView.as_view(), name='library_simplevideo_add'),
     url(r'^internalassets/simplevideo/(?P<pk>\d+)/$', assets.SimpleVideoUpdateView.as_view(), name='simple_video_detail'),
     url(r'^internalassets/simplevideo/(?P<pk>\d+)/delete/$', assets.SimpleVideoAssetDeleteView.as_view(), name='simple_video_delete'),
     url(r'^internalassets/simplevideo/(?P<simplevideo>\d+)/remove/$', assets.SimpleVideoAssetDisassociateView.as_view(), name='simple_video_remove'),

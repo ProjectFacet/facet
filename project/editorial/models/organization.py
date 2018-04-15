@@ -237,31 +237,31 @@ class Organization(models.Model):
     def get_org_simple_image_library(self):
         """ Return queryset of all simple images associated with an organization."""
 
-        return self.simple_image_assets.all()
+        return self.simpleimage_set.all()
 
     def get_org_simple_document_library(self):
         """ Return queryset of all simple documents associated with an organizaiton."""
 
-        return self.simple_document_assets.all()
+        return self.simpledocument_set.all()
 
     def get_org_simple_audio_library(self):
         """ Return queryset of all simple audio associated with an organization."""
 
-        return self.simple_audio_assets.all()
+        return self.simpleaudio_set.all()
 
     def get_org_simple_video_library(self):
         """ Return queryset of all simple video associated with an organization."""
 
-        return self.simple_video_assets.all()
+        return self.simplevideo_set.all()
 
     def get_org_simple_asset_library(self):
         """ Return organization simple assets."""
 
         recent_internal_assets = []
-        simple_images = self.simple_image_assets.all().order_by("-creation_date")[:12]
-        simple_documents = self.simple_document_assets.all().order_by("-creation_date")[:12]
-        simple_audio = self.simple_audio_assets.all().order_by("-creation_date")[:12]
-        simple_video = self.simple_video_assets.all().order_by("-creation_date")[:12]
+        simple_images = self.simpleimage_set.all().order_by("-creation_date")[:12]
+        simple_documents = self.simpledocument_set.all().order_by("-creation_date")[:12]
+        simple_audio = self.simpleaudio_set.all().order_by("-creation_date")[:12]
+        simple_video = self.simplevideo_set.all().order_by("-creation_date")[:12]
         recent_internal_assets.extend(simple_images)
         recent_internal_assets.extend(simple_documents)
         recent_internal_assets.extend(simple_audio)

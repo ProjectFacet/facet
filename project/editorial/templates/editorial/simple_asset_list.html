@@ -87,8 +87,9 @@
                       <div class="zoom-in-1 overlay-0">
                           <img src="{{ item.display_photo.url }}" alt="{{ item.description }}" class="img-fluid image-center height-200 hidden-sm-down">
                           <div class="overlay bg-dark centered">
-                              <div class="title f-w-800 capitalize"><a href="{% url 'simple_image_detail' item.pk %}" title="See image detail">{{ item.title }}</a></div>
+                              <div class="title f-w-800 capitalize">{{ item.title }}</div>
                               <div class="asset-description f-s-12 m-r-5 m-l-5 f-w-500 hidden-sm-down"> {{ item.description }} </div>
+                              <div class="link hidden-sm-down"><a href="{% url 'simple_image_detail' item.pk %}" title="See image detail"><p class="color-lighter f-w-900"><i class="fa fa-angle-right"></i> Details</p></a></div>
                           </div>
                       </div>
                     {% endif %}
@@ -346,6 +347,7 @@
                       <div class="overlay bg-dark centered">
                           <div class="title f-w-800 capitalize">{{ image.title }}</div>
                           <div class="asset-description f-s-12 m-r-5 m-l-5 f-w-500 hidden-sm-down"> {{ image.description }} </div>
+                          <div class="link hidden-sm-down"><a href="{% url 'simple_image_detail' image.pk %}" title="See image detail"><p class="color-lighter f-w-900"><i class="fa fa-angle-right"></i> Details</p></a></div>
                       </div>
                   </div>
                 {% endif %}

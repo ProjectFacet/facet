@@ -18,6 +18,10 @@ from .assets import (
     LibraryDocumentAssociateForm,
     LibraryAudioAssociateForm,
     LibraryVideoAssociateForm,
+    SimpleImageLibraryAssociateForm,
+    SimpleDocumentLibraryAssociateForm,
+    SimpleAudioLibraryAssociateForm,
+    SimpleVideoLibraryAssociateForm,
 )
 
 from .contractors import (
