@@ -48,6 +48,16 @@ class BaseAsset(models.Model):
         help_text='When the asset was created.'
     )
 
+    # TODO: Addition of sensitive status. If an image is added to a Project or Series
+    # that is marked sensitive, or to a task or even that are part of senstive Projects,
+    # or series, the image should be changed to sensitive.
+    # Sensitive images should be excluded from the library and "image add" forms.
+    
+    # sensitive = models.BooleanField(
+    #     default=False,
+    #     help_text='Is the asset sensitive, or associated with sensitve content?'
+    # )
+
     class Meta:
         abstract = True
 

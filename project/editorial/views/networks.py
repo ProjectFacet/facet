@@ -176,9 +176,7 @@ class NetworkDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteView):
         return reverse('network_list')
 
 
-# ACCESS: Only an admin of an org that owns a network can invite other admins
-# to a network
-
+# ACCESS: Only an admin of an org that owns a network can invite other admins to a network
 class NetworkInvitationSend(LoginRequiredMixin, FormMessagesMixin, RedirectView):
     """Send invite email and redirect back to network page."""
 
@@ -219,21 +217,6 @@ class NetworkInvitationAccept(LoginRequiredMixin, FormMessagesMixin, RedirectVie
         # network.save()
         print "Successfully joined Network!"
         return reverse('network_detail', kwargs={'pk': network.pk})
-
-
-def org_to_network(request, pk):
-    """ Form to add an organization to a network. """
-
-    network = get_object_or_404(Network, pk=pk)
-
-    if request.method == "POST":
-        form = AddToNetworkForm(request.POST or None)
-        if form.is_valid():
-            connection = form.save(commit=False)
-            return redirect('network_detail', pk=network.pk)
-    else:
-        form = AddToNetworkForm()
-    return render(request, 'editorial/networkdetail.html', {'form': form})
 
 
 # ACCESS: Org users should be able to see network content for their organization
@@ -439,147 +422,3 @@ class CopyNetworkStoryView(LoginRequiredMixin, View):
         # action.send(self.request.user, verb="picked up", action_object=original_story)
 
         return redirect('network_stories')
-
-
-# def copy_network_story(request, pk):
-#     """ Copy a story and related facets. """
-#
-#     print "copy time"
-#     original_story = get_object_or_404(Story, pk=pk)
-#     original_org = original_story.organization
-#
-#     original_facets = original_story.facet_set.all()
-#
-#     user = request.user
-#     organization = request.user.organization
-#     partner = request.user.organization
-#
-#     # record action for activity story_team
-#     # action.send(request.user, verb="picked up", action_object=original_story)
-#
-#     if request.method == "POST":
-#         print "stuff is happening"
-#         # Create a copy of the story and a storycopydetail record
-#         copied_story = Story.copy_story(original_story)
-#         copied_story.owner = user
-#         copied_story.organization = organization
-#         copied_story.save()
-#         story_copy_record = StoryCopyDetail.objects.create_story_copy_record(
-#             original_org=original_org,
-#             partner=partner,
-#             original_story=original_story,
-#             partner_story=copied_story
-#             )
-#
-#         # Create copy of facets if they exist
-#         # Copy the Facet
-#         if original_facets:
-#             print "if original facets"
-#             for facet in original_facets:
-#                 copied_facet = Facet.copy_facet(original_facet[0])
-#                 copied_facet.story = copied_story
-#                 copied_facet.owner = user
-#                 copied_facet.organization = organization
-#                 copied_facet.save()
-#                 facet_copy_record = FacetCopyDetail.objects.create_facet_copy_record(
-#                     original_org=original_org,
-#                     partner=partner,
-#                     original_facet=facet,
-#                     partner_facet=copied_facet
-#             )
-#
-#             # create copy of facet images
-#             original_facet_images = original_story.get_story_images()
-#             print "original facet images"
-#             for image in original_facet_images:
-#                 copied_image = ImageAsset.copy_image(image)
-#                 copied_image.owner = user
-#                 copied_image.organization = organization
-#                 copied_image.save()
-#                 imageasset_copy_record = ImageAssetCopyDetail.objects.create_imageasset_copy_record(
-#                     original_org=original_org,
-#                     partner=partner,
-#                     original_imageasset=image,
-#                     partner_imageasset=copied_image
-#                 )
-#                 # add image to copied facet
-#                 copied_facet.image_assets.add(copied_image)
-#                 copied_facet.save()
-#
-#             # create copy of facet documents
-#             original_facet_documents = original_story.get_story_documents()
-#             print "original facet documents"
-#             for document in original_facet_documents:
-#                 copied_document = DocumentAsset.copy_document(document)
-#                 copied_document.owner = user
-#                 copied_document.organization = organization
-#                 copied_document.save()
-#                 documentasset_copy_record = DocumentAssetCopyDetail.objects.create_documentasset_copy_record(
-#                     original_org=original_org,
-#                     partner=partner,
-#                     original_documentasset=document,
-#                     partner_documentasset=copied_document
-#                 )
-#                 # add document to copied facet
-#                 copied_facet.document_assets.add(copied_document)
-#                 copied_facet.save()
-#
-#
-#             # create copy of facet audio
-#             original_facet_audiofiles = original_story.get_story_audio()
-#             print "original facet audio"
-#             for audio in original_facet_audiofiles:
-#                 copied_audio = AudioAsset.copy_audio(audio)
-#                 copied_audio.owner = user
-#                 copied_audio.organization = organization
-#                 copied_audio.save()
-#                 audioasset_copy_record = AudioAssetCopyDetail.objects.create_audioasset_copy_record(
-#                     original_org=original_org,
-#                     partner=partner,
-#                     original_audioasset=audio,
-#                     partner_audioasset=copied_audio
-#                 )
-#                 # add audio to copied facet
-#                 copied_facet.audio_assets.add(copied_audio)
-#                 copied_facet.save()
-#
-#             # create copy of facet video
-#             original_facet_videos = original_story.get_story_video()
-#             print "original facet video"
-#             for video in original_facet_videos:
-#                 copied_video = VideoAsset.copy_video(video)
-#                 copied_video.owner = user
-#                 copied_video.organization = organization
-#                 copied_video.save()
-#                 videoasset_copy_record = VideoAssetCopyDetail.objects.create_videoasset_copy_record(
-#                     original_org=original_org,
-#                     partner=partner,
-#                     original_videoasset=video,
-#                     partner_videoasset=copied_video
-#                 )
-#                 # add video to copied facet
-#                 copied_facet.video_assets.add(copied_video)
-#                 copied_facet.save()
-#
-#
-#     return redirect('network_stories')
-
-
-# def network_stories_json(request):
-#     """Return JSON of network story objects."""
-#
-#     organization = request.user.organization
-#     networks = Organization.get_org_networks(organization)
-#
-#     shared_networkstories = []
-#     for network in networks:
-#         stories = Network.get_network_shared_stories(network)
-#         shared_networkstories.extend(stories)
-#     shared_networkstories = [story for story in shared_networkstories if story.organization != organization]
-#     stories = set(shared_networkstories)
-#     # networkstories = json.dumps(list(stories), cls=DjangoJSONEncoder)
-#
-#     org_network_content = Organization.get_org_network_content(organization)
-#     print "ONC: ", org_network_content
-#
-#     return HttpResponse(json.dumps(networkstories), content_type='application/json')

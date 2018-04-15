@@ -110,36 +110,3 @@ class StoryTeamForm(forms.ModelForm):
                 attrs={'class': 'chosen-select', 'id': 'story-team',
                        'data-placeholder': 'Select Team'}),
         }
-
-
-# ------------------------------ #
-#        Download Form           #
-# ------------------------------ #
-
-# class StoryDownloadForm(forms.Form):
-#     """ Select content and assets to download."""
-#
-#     def __init__(self, *args, **kwargs):
-#         story = kwargs.pop('story')
-#         super(StoryDownloadForm, self).__init__(*args, **kwargs)
-#
-#         if story.facet_set.all():
-#             for facet in story.facet_set.all():
-#                 self.fields['facet_images'].queryset = facet.get_facet_images()
-#
-#     select_all = forms.BooleanField(
-#         widget=CheckboxInput,
-#     )
-#
-#     facet = forms.BooleanField(
-#         widget=CheckboxInput,
-#     )
-#
-#     facet_sa = forms.BooleanField(
-#         widget=CheckboxInput,
-#     )
-#
-#     facet_images = forms.ModelMultipleChoiceField(
-#         widget=CheckboxSelectMultiple,
-#         queryset = ImageAsset.objects.all()
-#     )

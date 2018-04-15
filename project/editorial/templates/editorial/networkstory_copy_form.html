@@ -1,0 +1,287 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load bootstrap3 %}
+{% load embed_video_tags %}
+{% load staticfiles %}
+
+{% block head %}
+{{ webform.media }}
+{% endblock %}
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+<!--             BREADCRUMB NAVIGATION                 -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
+{% block breadcrumb %}
+<div>
+    <ol class="breadcrumb icon-angle-right icon-th">
+      <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
+      <li class="fadeIn"><a href="{% url 'network_list' %}" title="Network List"> Networks </a></li>
+      <li class="fadeIn"><a href="{% url 'network_stories' %}" title="You are here"> Network Content </a></li>
+      <li class="fadeIn"> Network Story: {{ networkstory.name }} </li>
+      <li class="fadeIn"> Pickup </li>
+    </ol>
+</div>
+{% endblock breadcrumb %}
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+<!--                   Main Section                    -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
+{% block content %}
+<!-- ================================================= -->
+                    <!-- CONTENT -->
+<!-- ================================================= -->
+
+<div class="row">
+  <div class="col-xs-12">
+      <h4 class="m-b-50"> <a href="#" title="Return to Network Story List}">Back to {{story.name}}</a><span class="pull-right">Select Items to Pick Up </span></h4>
+  </div>
+</div>
+
+
+<form action="#" method="POST" class="post-form" enctype="multipart/form-data">
+  {% csrf_token %}
+  <input type="hidden" name="story" value="{{ story.id }}" />
+
+  <!-- ========== -->
+  <!-- Select All -->
+  <!-- ========== -->
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="form-group custom-form">
+          <label class="field-label">Select All Story Content
+              <input type="checkbox" name="select_all" value="{{ story.id }}">
+          </label>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== -->
+  <!-- Select Specific Facet -->
+  <!-- ===================== -->
+  <div class="row">
+    <div class="col-xs-12">
+      <hr class="dark">
+        <p class="f-r-10 subtle m-b-30">Or select specific versions | <i class="f-r-10 text-center subtle m-b-30">(Includes each facet's metadata, content and all assets)</i></p>
+    </div>
+    {% if story.facet_set.all %}
+      {% for facet in story.facet_set.all %}
+      <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+        <div class="form-group custom-form">
+              <label class="field-label">{{ facet.name }}
+                  <input type="checkbox" name="facet_select_all" value="{{ facet.id }}">
+              </label>
+        </div>
+      </div>
+      {% endfor %}
+    {% endif %}
+  </div>
+
+  <!-- ====================== -->
+  <!-- Select Specific Content -->
+  <!-- ====================== -->
+  <div class="row">
+    <div class="col-xs-12">
+      <hr class="dark">
+      <p class="f-r-10 subtle m-b-30">Or select specific content</p>
+    </div>
+  </div>
+  <div class="row">
+    {% if story.facet_set.all %}
+        {% for facet in story.facet_set.all %}
+          <!-- ================    FACET   ================== -->
+          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-3">
+            <!-- SELECT FACET CONTENT -->
+            <div class="form-group custom-form">
+              <label class="field-label">{{ facet.name }} Content
+                  <input type="checkbox" name="facet_specific_content" value="{{ facet.id }}">
+              </label>
+            </div>
+          </div>
+        {% endfor %}
+    {% endif %}
+  </div>
+
+  <!-- Assets -->
+  <div class="row">
+
+    <!-- SELECT IMAGES -->
+    <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+      <div class="image-library">
+        <h5 class="subtle m-b-20">Images</h5>
+        <div class="row">
+          {% for image in story_images %}
+            <div class="col-xs-4 m-t-10">
+              <label>
+                <img class="img-fluid" src="{{ image.display_photo.url }}" alt="{{ image.description }}">
+                <input type="checkbox" name="images" value="{{ image.id }}">
+              </label>
+            </div>
+            {% if forloop.counter|divisibleby:"3" and not forloop.last %}
+              </div><div class="row">
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <!-- SELECT DOCUMENTS -->
+    <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+      <div class="document-library">
+        <h5 class="subtle m-b-20">Documents</h5>
+        <div class="row">
+          {% for document in story_documents %}
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+              <label>
+                {% if document.asset_type == 'OTHER' %}
+                  <i class="fa fa-file-o color-warning m-r-5 sameline"></i> <span class="sameline f-r-10 f-w-300 m-r-10">{{ document.title }}</span>
+                {% endif %}
+                {% if document.asset_type == 'TEXT' %}
+                  <i class="fa fa-file-text-o color-primary m-r-5 sameline"></i> <span class="sameline f-r-10 f-w-300 m-r-10">{{ document.title }}</span>
+                {% endif %}
+                {% if document.asset_type == 'WORD DOC' %}
+                  <i class="fa fa-file-word-o color-info m-r-5 sameline"></i> <span class="sameline f-r-10 f-w-300 m-r-10">{{ document.title }}</span>
+                {% endif %}
+                {% if document.asset_type == 'EXCEL' %}
+                  <i class="fa fa-file-excel-o color-success m-r-5 sameline"></i> <span class="sameline f-r-10 f-w-300 m-r-10">{{ document.title }}</span>
+                {% endif %}
+                {% if document.asset_type == 'PDF' %}
+                  <i class="fa fa-file-pdf-o color-danger m-r-5 sameline"></i> <span class="sameline f-r-10 f-w-300 m-r-10">{{ document.title }}</span>
+                {% endif %}
+                {% if document.asset_type == 'COMMA SEPARATED' %}
+                  <i class="fa fa-file-o color-success m-r-5 sameline"></i> <span class="sameline f-r-10 f-w-300 m-r-10">{{ document.title }}</span>
+                {% endif %}
+
+                <input type="checkbox" name="documents" value="{{ document.id }}">
+              </label>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <!-- SELECT AUDIO -->
+    <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+      <div class="audio-library">
+        <h5 class="subtle m-b-20">Audio</h5>
+        <div class="row">
+          {% for audio in story_audio %}
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+              {% if audio.asset_type == 'MP3' or audio.asset_type == 'WAV' %}
+                  <div id="jplayer_audio_{{audio.pk}}" class="jp-jplayer"></div>
+                  <div id="jp_container_audio_{{audio.pk}}" class="jp-flat-audio m-t-10" role="application" aria-label="media player">
+                    <div class="jp-play-control jp-control">
+                      <button class="jp-play jp-button" role="button" aria-label="play" tabindex="0"></button>
+                    </div>
+                    <div class="jp-bar">
+                      <div class="jp-seek-bar jp-seek-bar-display"></div>
+                      <div class="jp-seek-bar">
+                        <div class="jp-play-bar"></div>
+                        <div class="jp-details"><span class="jp-title" aria-label="title"></span></div>
+                        <div class="jp-timing"><span class="jp-duration" role="timer" aria-label="duration"></span></div>
+                      </div>
+                    </div>
+                    <div class="jp-no-solution">
+                      Media Player Error<br />
+                      Update your browser or Flash plugin
+                    </div>
+                  </div>
+                  <script>
+                    jQuery(document).ready(function($) {
+                    $("#jplayer_audio_{{audio.pk}}").jPlayer({
+                      ready: function(event) {
+                        $(this).jPlayer("setMedia", {
+                          title: "{{audio.title}}",
+                          wav: "{{audio.audio.url}}",
+                          mp3: "{{audio.audio.url}}",
+                        });
+                      },
+                      play: function() { // Avoid multiple jPlayers playing together.
+                        $(this).jPlayer("pauseOthers");
+                      },
+                      timeFormat: {
+                        padMin: false
+                      },
+                      swfPath: "js",
+                      supplied: "wav, mp3",
+                      cssSelectorAncestor: "#jp_container_audio_{{audio.pk}}",
+                      useStateClassSkin: true,
+                      autoBlur: false,
+                      smoothPlayBar: true,
+                      remainingDuration: true,
+                      keyEnabled: true,
+                      keyBindings: {
+                        // Disable some of the default key controls
+                        loop: null,
+                        muted: null,
+                        volumeUp: null,
+                        volumeDown: null
+                      },
+                      wmode: "window"
+                    });
+                  });
+                  </script>
+              {% endif %}
+              <label>
+                <input type="checkbox" name="audiofiles" value="{{ audio.id }}">
+              </label>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <!-- SELECT VIDEO -->
+    <div class="col-xs-12 col-sm-6 col-md-3 col-lg-3">
+      <div class="video-library">
+        <h5 class="subtle m-b-20">Video</h5>
+        <div class="row">
+          {% for video in story_video %}
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+              <label>
+                {% if video.asset_type == 'YOUTUBE' %}
+                <i class="fa fa-youtube-play subtle sameline" aria-hidden="true"></i> <span class="sameline f-r-10 f-w-300 m-r-10">{{ video.title }}</span>
+                {% endif %}
+                {% if video.asset_type == 'VIMEO' %}
+                <i class="fa fa-vimeo subtle sameline" aria-hidden="true"></i> <span class="sameline f-r-10 f-w-300 m-r-10">{{ video.title }}</span>
+                {% endif %}
+                <input type="checkbox" name="videofiles" value="{{ video.id }}">
+              </label>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="col-xs-12">
+    <button type="submit" class="btn btn-primary m-t-50">Pick Up This Content</button>
+  </div>
+</form>
+
+<!-- ================================================= -->
+                  <!-- JS SCRIPTS -->
+<!-- ================================================= -->
+
+
+{% endblock %}
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+                <!-- MODALS -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
+{% block modals %}
+
+
+
+
+{% endblock modals %}
