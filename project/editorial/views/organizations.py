@@ -131,7 +131,6 @@ class OrganizationDetailView(CustomUserTest, DetailView):
         images = self.object.simple_image_assets.all()
         form = SimpleImageForm()
         addform = SimpleImageLibraryAssociateForm(organization=self.request.user.organization)
-
         return {'images': images, 'form': form, 'addform': addform,}
 
     def simple_documents(self):

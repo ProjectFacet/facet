@@ -863,6 +863,7 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <ul class="nav nav-tabs nav-animated-border-from-left">
             <li class="nav-item"> <a ng-href="" class="nav-link active" data-toggle="tab" data-target="#uploadimage">Upload a Photo</a></li>
+            <li class="nav-item"> <a ng-href="" class="nav-link" data-toggle="tab" data-target="#addsimpleimage">Add a Photo</a></li>
           </ul>
         </div>
         <div class="modal-body" id="imagemodalbody">
@@ -922,6 +923,49 @@
               </div>
             </div>
             <!-- END UPLOAD PANEL -->
+            <!-- ADD PANEL -->
+            <div role="tabpanel" class="tab-pane" id="addsimpleimage">
+              <div class="simpleimagelibrary" id="scrollthis" data-toggle="slimScroll" style="height:300px, overflow: scroll !important;" data-color="#5D9CEC" data-allow-page-scroll="false">
+                <form action="{% url 'library_simpleimage_add' %}" method="POST" class="post-form" name="addimage">
+                  {% csrf_token %}
+
+                  <div class=" row image-library">
+                  {% for image in images.addform.fields.simpleimages.queryset %}
+                    <div class="col-md-2">
+                      <label>
+                        {% if image.display_photo %}<img class="img-responsive img-thumbnail" src="{{ image.display_photo.url }}" alt="{{ image.title }}">{% endif %}
+                        {% if image in images.images %}
+                        <i class="fa fa-check-square subtle" aria-hidden="true"></i>
+                        {% else %}
+                        <input type="checkbox" name="simpleimages" value="{{ image.id }}">
+                        {% endif %}
+                      </label>
+                    </div>
+                    {% if forloop.counter|divisibleby:"6" and not forloop.last %}
+                      </div><div class="row">
+                    {% endif %}
+                  {% endfor %}
+                  </div>
+
+                <!-- ===================================== -->
+                <!-- ===================================== -->
+                <div class="hidden-image-inputs">
+                  <input id="assoc" type="hidden" name="association" value="task" />
+                  <input id="assoc_id" type="hidden" name="association_id" value="{{ task.id }}" />
+                </div>
+                <!-- ===================================== -->
+                <!-- ===================================== -->
+
+                  <div class="row">
+                    <div class="col-xs-12">
+                      <button type="submit" class="btn btn-primary" name="addimage">Add Images</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+
+            </div>
+            <!-- END ADD PANEL -->
           </div>
         </div>
         </div>
@@ -944,6 +988,7 @@
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
           <ul class="nav nav-tabs nav-animated-border-from-left">
             <li class="nav-item"> <a ng-href="" class="nav-link active" data-toggle="tab" data-target="#uploaddocument">Upload a Document</a></li>
+            <li class="nav-item"> <a ng-href="" class="nav-link" data-toggle="tab" data-target="#addsimpledocument">Add a Document</a></li>
           </ul>
         </div>
         <div class="modal-body" id="documentmodalbody">
@@ -1026,6 +1071,58 @@
               </div>
             </div>
             <!-- END UPLOAD PANEL -->
+            <!-- ADD PANEL -->
+            <div role="tabpanel" class="tab-pane" id="addsimpledocument">
+              <div class="simpledocumentlibrary" id="scrollthis" data-toggle="slimScroll" style="height:300px, overflow: scroll !important;" data-color="#5D9CEC" data-allow-page-scroll="false">
+                <form action="{% url 'library_simpledocument_add' %}" method="POST" class="post-form" name="adddocument">
+                  {% csrf_token %}
+
+                  <div class=" row document-library">
+                  {% for document in documents.addform.fields.simpledocuments.queryset %}
+                    <div class="col-md-2">
+                      <label>
+                        <a href="{% url 'simple_document_detail' pk=document.id %}">
+                          <div class="card bs-card">
+                            <div class="card-block bg-warning-500 p-10">
+                              <p class="f-r-10 f-w-300 text-center m-b-0"> <i class="fa fa-file-o text-center"></i></p>
+                            </div>
+                            <div class="card-block  m-h-100 p-10">
+                              <p class="f-r-8 f-w-400"> {{ document.title }} </p>
+                            </div>
+                          </div>
+                        </a>
+                        {% if document in documents.documents %}
+                        <i class="fa fa-check-square subtle" aria-hidden="true"></i>
+                        {% else %}
+                        <input type="checkbox" name="simpledocuments" value="{{ document.id }}">
+                        {% endif %}
+                      </label>
+                    </div>
+                    {% if forloop.counter|divisibleby:"6" and not forloop.last %}
+                      </div><div class="row">
+                    {% endif %}
+                  {% endfor %}
+                  </div>
+
+                <!-- ===================================== -->
+                <!-- ===================================== -->
+                <div class="hidden-document-inputs">
+                  <input id="assoc" type="hidden" name="association" value="task" />
+                  <input id="assoc_id" type="hidden" name="association_id" value="{{ task.id }}" />
+                </div>
+                <!-- ===================================== -->
+                <!-- ===================================== -->
+
+                  <div class="row">
+                    <div class="col-xs-12">
+                      <button type="submit" class="btn btn-primary" name="adddocument">Add Documents</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+
+            </div>
+            <!-- END ADD PANEL -->
           </div>
         </div>
         </div>

@@ -215,15 +215,16 @@ class ProjectDetailView(LoginRequiredMixin, DetailView):
 
         images = self.object.simple_image_assets.all()
         form = SimpleImageForm()
-
-        return {'images': images, 'form': form}
+        addform = SimpleImageLibraryAssociateForm(organization=self.request.user.organization)
+        return {'images': images, 'form': form, 'addform': addform,}
 
     def simple_documents(self):
         """Return simple documents."""
 
         documents = self.object.simple_document_assets.all()
         form = SimpleDocumentForm()
-        return {'documents': documents, 'form': form}
+        addform = SimpleDocumentLibraryAssociateForm(organization=self.request.user.organization)
+        return {'documents': documents, 'form': form, 'addform': addform,}
 
 
 class ProjectTeamUpdateView(LoginRequiredMixin, FormMessagesMixin, UpdateView):
