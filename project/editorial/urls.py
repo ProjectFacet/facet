@@ -147,6 +147,8 @@ urlpatterns = [
     url(r'^organization/(?P<pk>\d+)/notes/$', notes.OrganizationNoteView.as_view(), name='org_notes'),
     url(r'^organization/(?P<org>\d+)/note/(?P<note>\d+)/content/$', notes.NoteContent.as_view(), name='org_note_content'),
     # url(r'^organization/(?P<pk>\d+)/comments/$', communicationviews.org_comments, name='org_comments'),
+    url(r'^organization/(?P<pk>\d+)/facet/json/$', pushcontent.OrganizationFacetJSONView.as_view(), name='org_facet_json'),
+
 
     #   User URLS
     url(r'^user/new/$', users.UserCreateView.as_view(), name='user_new'),

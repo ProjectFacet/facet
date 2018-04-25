@@ -8,7 +8,14 @@ import json
 
 from django.shortcuts import redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
+from django.views.generic import UpdateView, CreateView, DeleteView, View
+from django.http import HttpResponse, JsonResponse
+from django.core import serializers
 
+from editorial.models import (
+    Facet,
+    Organization,
+)
 
 #----------------------------------------------------------------------#
 #   Facet to WordPress Views
@@ -40,7 +47,11 @@ def facet_json(request):
     return redirect('story_detail', pk=facet.story.pk)
 
 
-# def push_facet_wp(request):
-#     """Push a facet JSON object to a WordPress site."""
-#
-#     print "push facet to wp"
+class OrganizationFacetJSONView(View):
+    """Return JSON of all Organization Facets with status Ready."""
+
+    def get(self, request, *args, **kwargs):
+        org_id = self.kwargs['pk']
+        org = get_object_or_404(Organization, pk=org_id)
+        data = serializers.serialize('json', org.facet_set.filter(status="Ready"), fields=('name','content'))
+        return JsonResponse(data, safe=False)
