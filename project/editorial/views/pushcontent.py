@@ -21,6 +21,17 @@ from editorial.models import (
 #   Facet to WordPress Views
 #----------------------------------------------------------------------#
 
+
+class OrganizationFacetJSONView(View):
+    """Return JSON of all Organization Facets with status Ready."""
+
+    def get(self, request, *args, **kwargs):
+        org_id = self.kwargs['pk']
+        org = get_object_or_404(Organization, pk=org_id)
+        data = serializers.serialize('json', org.facet_set.filter(status="Ready"), fields=('name','content'))
+        return JsonResponse(data, safe=False)
+
+
 @csrf_exempt
 def facet_json(request):
     """ Take a specific facet and create a JSON object for use in a WordPress site."""
@@ -45,13 +56,3 @@ def facet_json(request):
 
     # return HttpResponse(json.dumps(f_json), content_type = "application/json")
     return redirect('story_detail', pk=facet.story.pk)
-
-
-class OrganizationFacetJSONView(View):
-    """Return JSON of all Organization Facets with status Ready."""
-
-    def get(self, request, *args, **kwargs):
-        org_id = self.kwargs['pk']
-        org = get_object_or_404(Organization, pk=org_id)
-        data = serializers.serialize('json', org.facet_set.filter(status="Ready"), fields=('name','content'))
-        return JsonResponse(data, safe=False)
