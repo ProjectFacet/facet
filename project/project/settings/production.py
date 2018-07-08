@@ -9,6 +9,7 @@ SECRET_KEY = os.environ['SECRET_KEY']
 
 INSTALLED_APPS += [
     #'storages',  # for use with S3
+    "dbbackup",
 ]
 
 DEBUG = False
@@ -116,3 +117,20 @@ EMAIL_USE_TLS = True
 # WJB: unsure what this would be for, commented out for now
 # AWS_SES_REGION_ENDPOINT = 'email-smtp.us-west-2.amazonaws.com'
 SERVER_EMAIL = DEFAULT_FROM_EMAIL = "collaborate@projectfacet.org"
+
+
+##############################################################################################
+# Backups
+#
+# We use django-dbbackup; this makes a pgdump and a zip of the media directory.
+# It needs cron to call it, so there's a cron installed for the site on the server.
+# See conf/ for the the setup for that.
+#
+# Separate from this, the cron copies things to Joel's S3 account for off-server
+# storage. Paranoia FTW!
+
+DBBACKUP_STORAGE = "django.core.files.storage.FileSystemStorage"
+DBBACKUP_STORAGE_OPTIONS = {'location': GIT_DIR + '/backups/'}
+HOSTNAME = "projectfacet.com"
+DBBACKUP_CLEANUP_KEEP = 3
+DBBACKUP_CLEANUP_KEEP_MEDIA = 3

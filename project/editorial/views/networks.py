@@ -193,7 +193,7 @@ class NetworkInvitationSend(LoginRequiredMixin, FormMessagesMixin, RedirectView)
         organization = recip.organization
         sender = self.request.user
         message_subject = self.msg_subject.format(organization=organization.name, network=network.name)
-        message_text = self.msg_body.format(sender=sender)
+        message_text = self.msg_body.format(sender=sender, organization=organization.name, network=network.name)
         discussion = Discussion.objects.create_discussion('PRI')
         invitation_message = PrivateMessage.objects.create_private_message(
                 user=sender,
