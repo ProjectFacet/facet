@@ -24,6 +24,11 @@ import allauth.urls
 import watson.urls
 
 
+def throw_error(req):
+    """Throw an error; useful for sanity-checking that errors are raised."""
+
+    raise Exception("Error Successfully Thrown")
+
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
@@ -31,6 +36,7 @@ urlpatterns = [
     url(r'^tinymce/', include('tinymce.urls')),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     url(r'^activity/', include('actstream.urls')),
+    url(r'^_error/', throw_error),
     url(r'', include('editorial.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
