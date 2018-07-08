@@ -74,9 +74,21 @@ def get_facet_form_for_template(template_id):
             story = self.instance.story
             story_team_vocab = story.get_story_team_vocab()
 
-            self.fields['credit'].queryset = story_team_vocab
-            self.fields['editor'].queryset = story_team_vocab
-            self.fields['template'].queryset = self.instance.organization.get_org_facettemplates()
+            # when stories are copied; editors and creditees should remain as
+            # possibilities in the drop-down menu
+            self.fields['credit'].queryset = story_team_vocab | self.instance.credit.all()
+            self.fields['editor'].queryset = story_team_vocab | self.instance.editor.all()
+
+            # We want to handle cases where templates are made inactive, or
+            # when a facet is copied to an organization other than the one
+            # that has the matching templateself.
+            #
+            # So: the list of possible templates for this facet is both:
+            # - the current templates
+            # - templates for this organization
+            self.fields['template'].queryset = (
+                FacetTemplate.objects.filter(id=self.instance.template_id)
+                | self.instance.organization.get_org_facettemplates())
 
             if 'content_license' in self.fields:
                 self.fields['content_license'].queryset = ContentLicense.objects.filter(

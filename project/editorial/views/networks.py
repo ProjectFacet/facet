@@ -317,14 +317,16 @@ class CopyNetworkStoryView(LoginRequiredMixin, View):
             # get facet templates and make copies if org is not null
             print "if original facets"
             for facet in original_facets:
-                print "copy the facet template"
-                print "FT: ", facet.template
-                if facet.template.organization:
-                    copied_facet_template = facet.template.copy()
-                else:
-                    copied_facet_template = facet.template
-                print "facet template copied"
+
+                # copy the editor and credit (m2m's) so we can add on copy
+                editor = facet.editor.all()
+                credit = facet.credit.all()
+
                 copied_facet = facet.copy()
+
+                copied_facet.editor = editor
+                copied_facet.credit = credit
+
                 print "Copied Facet exists"
                 print "CF: ", copied_facet
                 copied_facet.story = copied_story
@@ -333,8 +335,6 @@ class CopyNetworkStoryView(LoginRequiredMixin, View):
                 print "CFO"
                 copied_facet.organization = organization
                 print "CFOR"
-                copied_facet.template = copied_facet_template
-                print "CFT"
                 copied_facet.save()
                 print "CF Saved"
                 facet_copy_record = FacetCopyDetail.objects.create_facet_copy_record(
@@ -344,6 +344,7 @@ class CopyNetworkStoryView(LoginRequiredMixin, View):
                     partner_facet=copied_facet
                 )
                 print "facet copy record"
+
 
             # create copy of facet images
             original_facet_images = original_story.get_story_images()
