@@ -58,3 +58,17 @@ To update the search engine indexes::
 To launch a development webserver::
 
   python project/manage.py runserver
+
+Backup
+++++++
+
+Backups are made into Project Facet's S3:
+
+1) Once, install "s3cmd" onto server::
+
+      sudo apt install s3cmd
+
+2) On server, run `s3cmd --configure` and enter ACCESS KEY and SECRET KEY
+   (all other options are default, just return, do say "Y" at end to save)
+
+   
