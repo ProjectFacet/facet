@@ -51,6 +51,7 @@ class ProjectListView(LoginRequiredMixin, ListView):
     """
 
     context_object_name = 'projects'
+    template_name = 'editorial/projects/project_list.html'
 
     def get_queryset(self):
         """Return projects belonging to the organization."""
@@ -73,6 +74,8 @@ class ProjectCreateView(LoginRequiredMixin, FormMessagesMixin, CreateView):
 
     model = Project
     form_class = ProjectForm
+    template_name = 'editorial/projects/project_form.html'
+
     form_invalid_message = "Check the form."
     form_valid_message = "Project created."
 
@@ -111,6 +114,9 @@ class ProjectUpdateView(LoginRequiredMixin, FormMessagesMixin, UpdateView):
 
     model = Project
     form_class = ProjectForm
+
+    template_name = 'editorial/projects/project_form.html'
+
     form_invalid_message = "Something went wrong. Check the form."
     form_valid_message = "Changes saved."
 
@@ -140,6 +146,8 @@ class ProjectDetailView(LoginRequiredMixin, DetailView):
     """
 
     model = Project
+
+    template_name = 'editorial/projects/project_detail.html'
 
     def get_form_kwargs(self):
         """Pass organization to form."""
@@ -231,7 +239,7 @@ class ProjectTeamUpdateView(LoginRequiredMixin, FormMessagesMixin, UpdateView):
     """Process project team form."""
 
     model = Project
-    template_name = 'editorial/projectteam_form.html'
+    template_name = 'editorial/projects/projectteam_form.html'
     form_class = ProjectTeamForm
     form_valid_message = "Project team updated."
     form_invalid_message = "Something went wrong. Please check the form."
@@ -267,7 +275,7 @@ class ProjectTeamUpdateView(LoginRequiredMixin, FormMessagesMixin, UpdateView):
 class ProjectAssetTemplateView(LoginRequiredMixin, TemplateView):
     """Display media associated with a project."""
 
-    template_name = 'editorial/project_assets.html'
+    template_name = 'editorial/projects/project_assets.html'
 
     def get_context_data(self, pk):
         """Return all the (complex) assets associated with a project."""
@@ -294,7 +302,7 @@ class ProjectAssetTemplateView(LoginRequiredMixin, TemplateView):
 class ProjectStoryTemplateView(LoginRequiredMixin, TemplateView):
     """Return and display all the stories associated with a project."""
 
-    template_name = 'editorial/project_stories.html'
+    template_name = 'editorial/projects/project_stories.html'
 
     def get_context_data(self, pk):
         """Return all the stories."""
@@ -312,17 +320,6 @@ class ProjectStoryTemplateView(LoginRequiredMixin, TemplateView):
         return {'project': project, 'stories': stories}
 
 
-class ProjectSchedule(View):
-    """Return JSON of project schedule information."""
-
-    def get(self, request, *args, **kwargs):
-        project_id = self.kwargs['pk']
-        project = Project.objects.get(id=project_id)
-        project_calendar = project.get_project_schedule()
-
-        return HttpResponse(json.dumps(project_calendar), content_type='application/json')
-
-
 # ACCESS: Only an org admin should be able to delete a project owned by that org
 class ProjectDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteView):
     """Delete a project and it's associated notes.
@@ -335,7 +332,7 @@ class ProjectDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteView):
     """
 
     model = Project
-    template_name = "editorial/project_delete.html'"
+    template_name = "editorial/projects/project_delete.html'"
 
     form_valid_message = "Deleted."
     form_invalid_message = "Please check form."
@@ -344,3 +341,14 @@ class ProjectDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteView):
         """Post-deletion, return to the project list."""
 
         return reverse('project_list')
+
+
+class ProjectSchedule(View):
+    """Return JSON of project schedule information."""
+
+    def get(self, request, *args, **kwargs):
+        project_id = self.kwargs['pk']
+        project = Project.objects.get(id=project_id)
+        project_calendar = project.get_project_schedule()
+
+        return HttpResponse(json.dumps(project_calendar), content_type='application/json')

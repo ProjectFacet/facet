@@ -344,7 +344,7 @@ class UserNoteView(LoginRequiredMixin, TemplateView):
 class ProjectNoteView(LoginRequiredMixin, TemplateView):
     """Display all of the notes for a project."""
 
-    template_name = 'editorial/projectnotes.html'
+    template_name = 'editorial/projects/projectnotes.html'
 
     def get_context_data(self, pk):
         project = get_object_or_404(Project, pk=pk)

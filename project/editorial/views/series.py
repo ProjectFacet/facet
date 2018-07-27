@@ -321,12 +321,3 @@ def series_json(request):
         series[item.id]=item.name
     print series
     return HttpResponse(json.dumps(series), content_type = "application/json")
-
-
-def series_schedule(request, pk):
-    """Generate a JSON object containing entries to display on series calendar."""
-
-    series = get_object_or_404(Series, pk=pk)
-    series_calendar = Series.get_series_story_events(series)
-
-    return HttpResponse(json.dumps(series_calendar), content_type='application/json')
