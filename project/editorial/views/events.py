@@ -59,6 +59,7 @@ class EventCreateView(LoginRequiredMixin, FormMessagesMixin, CreateView):
 
     model = Event
     form_class = EventForm
+    template_name = "editorial/events/event_form.html"
 
     form_invalid_message = "Check the form."
     form_valid_message = "Event created."
@@ -104,6 +105,7 @@ class EventUpdateView(LoginRequiredMixin, FormMessagesMixin, UpdateView):
 
     model = Event
     form_class = EventForm
+    template_name = "editorial/events/event_form.html"
 
     form_invalid_message = "Something went wrong. Check the form."
     form_valid_message = "Changes saved."
@@ -164,7 +166,7 @@ class EventDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteView):
     """
 
     model = Event
-    template_name = "editorial/event_delete.html"
+    template_name = "editorial/events/event_delete.html"
 
     form_valid_message = "Deleted."
     form_invalid_message = "Please check form."
@@ -197,7 +199,7 @@ class OrganizationEventView(LoginRequiredMixin, CreateView):
     """
 
     context_object_name = 'events'
-    template_name = 'editorial/event_list.html'
+    template_name = 'editorial/events/event_list.html'
     form_class = EventForm
 
     def get_form_kwargs(self):
@@ -247,7 +249,7 @@ class ProjectEventView(LoginRequiredMixin, CreateView):
     """
 
     context_object_name = 'events'
-    template_name = 'editorial/event_list.html'
+    template_name = 'editorial/events/event_list.html'
     form_class = EventForm
 
     def get_form_kwargs(self):
@@ -296,7 +298,7 @@ class SeriesEventView(LoginRequiredMixin, CreateView):
     """Display all the events associated with a series."""
 
     context_object_name = 'events'
-    template_name = 'editorial/event_list.html'
+    template_name = 'editorial/events/event_list.html'
     form_class = EventForm
 
     def get_form_kwargs(self):
@@ -347,7 +349,7 @@ class StoryEventView(LoginRequiredMixin, CreateView):
     """Display all the events associated with a story."""
 
     context_object_name = 'events'
-    template_name = 'editorial/event_list.html'
+    template_name = 'editorial/events/event_list.html'
     form_class = EventForm
 
     def get_form_kwargs(self):
