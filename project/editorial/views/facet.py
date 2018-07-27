@@ -21,7 +21,6 @@ from ..forms import (
     VideoAssetForm,
     )
 
-
 # -------------------------------------- #
 #         Facet Template Views           #
 # -------------------------------------- #
@@ -33,6 +32,10 @@ class FacetTemplateCreateView(LoginRequiredMixin, CreateView):
 
     model = FacetTemplate
     form_class = FacetTemplateForm
+
+    template_name = 'editorial/facet/facettemplate_form.html'
+
+
     form_invalid_message = "Something went wrong."
     form_valid_message = "Template created."
 
@@ -61,6 +64,9 @@ class FacetTemplateUpdateView(LoginRequiredMixin, FormMessagesMixin, UpdateView)
 
     model = FacetTemplate
     form_class = FacetTemplateForm
+
+    template_name = 'editorial/facet/facettemplate_form.html'
+
     form_invalid_message = "Something went wrong."
     form_valid_message = "Changes saved."
 
@@ -99,7 +105,7 @@ class FacetTemplateListView(LoginRequiredMixin, FormMessagesMixin, TemplateView)
     """
 
     context_object_name = 'facettemplates'
-    template_name = 'editorial/facettemplate_list.html'
+    template_name = 'editorial/facet/facettemplate_list.html'
 
     def get_context_data(self, **kwargs):
         """Group facettemplates for display."""
@@ -123,7 +129,7 @@ class FacetTemplateDetailView(LoginRequiredMixin, FormMessagesMixin, DetailView)
     """
 
     model = FacetTemplate
-    template_name = 'editorial/facettemplate_detail.html'
+    template_name = 'editorial/facet/facettemplate_detail.html'
 
     def get_object(self):
         return FacetTemplate.objects.get(pk=self.kwargs['template'])
@@ -140,7 +146,7 @@ class FacetTemplateDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteView)
 
     #FIXME troubleshoot delete js
     model = FacetTemplate
-    template_name = "editorial/facettemplate_delete.html"
+    template_name = "editorial/facet/facettemplate_delete.html"
 
     form_valid_message = "Deleted."
     form_invalid_message = "Please check form."
@@ -165,7 +171,8 @@ class FacetPreCreateView(FormMessagesMixin, FormView):
     """First step in creating a facet."""
 
     form_class = FacetPreCreateForm
-    template_name = "editorial/facet_precreate_form.html"
+    template_name = 'editorial/facet/facet_precreate_form.html'
+
     form_invalid_message = "Something went wrong."
     form_valid_message = "Facet started. Add a status, headline and content to get started."
 
@@ -195,6 +202,8 @@ class FacetCreateView(LoginRequiredMixin, FormMessagesMixin, CreateView):
     """Create a facet (dynamically using right template)."""
 
     model = Facet
+    template_name = 'editorial/facet/facet_form.html'
+
     form_invalid_message = "Something went wrong."
     form_valid_message = "Facet created."
 
@@ -231,7 +240,7 @@ class FacetUpdateView(LoginRequiredMixin, FormMessagesMixin, UpdateView):
     """Update a facet (dynamically using right template)."""
 
     model = Facet
-
+    template_name = 'editorial/facet/facet_form.html'
     form_invalid_message = "Something went wrong."
     form_valid_message = "Changes saved."
 
@@ -302,7 +311,7 @@ class FacetDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteView):
     """
 
     model = Facet
-    template_name = "editorial/facet_delete.html"
+    template_name = "editorial/facet/facet_delete.html"
 
     form_valid_message = "Deleted."
     form_invalid_message = "Please check form."
