@@ -32,7 +32,7 @@ class Inbox(TemplateView):
     Displays inbox and sent messages.
     """
 
-    template_name = 'editorial/inbox.html'
+    template_name = 'editorial/inbox/inbox.html'
 
     def get_context_data(self):
         """Return all the assorted items associated with a team user inbox."""
@@ -47,7 +47,7 @@ class Inbox(TemplateView):
 class SentMessages(TemplateView):
     """Return sent messages."""
 
-    template_name = 'editorial/sent-messages.html'
+    template_name = 'editorial/inbox/sent-messages.html'
 
     def get_context_data(self):
         """Return all the assorted items associated with a team user inbox."""
@@ -62,7 +62,7 @@ class SentMessages(TemplateView):
 class CommentList(TemplateView):
     """Return comment feeds."""
 
-    template_name = 'editorial/inbox-comments.html'
+    template_name = 'editorial/inbox/inbox-comments.html'
 
     def get_context_data(self, comment_type):
         """Return all the assorted items associated with a team user inbox."""
@@ -99,7 +99,7 @@ class CommentList(TemplateView):
 class MessageContent(TemplateView):
     """Return html for displaying a specific message."""
 
-    template_name = "editorial/private-message-content.html"
+    template_name = "editorial/inbox/private-message-content.html"
 
     def get_context_data(self, pk):
         message = get_object_or_404(PrivateMessage, id=pk)
@@ -114,7 +114,7 @@ class MessageContent(TemplateView):
 class PrivateMessageCompose(FormMessagesMixin, CsrfExemptMixin, FormView):
     """Compose private messages (form & form handling)."""
 
-    template_name = "editorial/privatemessage_compose_form.html"
+    template_name = "editorial/inbox/privatemessage_compose_form.html"
     form_class = PrivateMessageForm
     form_valid_message = "Message sent."
     form_invalid_message = "Please correct the errors below."
@@ -145,7 +145,7 @@ class PrivateMessageCompose(FormMessagesMixin, CsrfExemptMixin, FormView):
 
 
 class PrivateMessageComposeModal(PrivateMessageCompose):
-    template_name = "editorial/privatemessage_compose_form_modal.html"
+    template_name = "editorial/inbox/privatemessage_compose_form_modal.html"
 
     def get_success_url(self):
         return reverse("privatemessage_compose_modal_success")
