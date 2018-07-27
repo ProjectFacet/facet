@@ -307,7 +307,7 @@ class NetworkNoteView(LoginRequiredMixin, TemplateView):
 class OrganizationNoteView(LoginRequiredMixin, TemplateView):
     """Display all of the notes for an organization."""
 
-    template_name = 'editorial/organizationnotes.html'
+    template_name = 'editorial/organization/organizationnotes.html'
 
     def get_context_data(self, pk):
         organization = get_object_or_404(Organization, pk=pk)

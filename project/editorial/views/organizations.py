@@ -40,6 +40,7 @@ class OrganizationCreateView(CreateView):
 
     model = Organization
     form_class = OrganizationForm
+    template_name = "editorial/organization/organization_form.html"
 
     def form_valid(self, form):
         """Set owner of org to current user."""
@@ -72,6 +73,7 @@ class OrganizationUpdateView(CustomUserTest, UpdateView):
 
     model = Organization
     form_class = OrganizationForm
+    template_name = "editorial/organization/organization_form.html"
 
     def test_user(self, user):
         """"User must be admin of this org to edit it."""
@@ -95,6 +97,7 @@ class OrganizationDetailView(CustomUserTest, DetailView):
     """Detail view of an organization."""
 
     model = Organization
+    template_name = "editorial/organization/organization_detail.html"
 
     def test_user(self, user):
         """"User must be member of this org to edit it."""
