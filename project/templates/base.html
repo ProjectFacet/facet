@@ -21,37 +21,31 @@
     <!--                 Styles & Fonts                    -->
     <!-- ================================================= -->
 
-
     <!-- Bootstrap -->
-    <link rel="stylesheet" href="{% static 'css/components/bootstrap.css' %}">
-    <link rel="stylesheet" href="{% static 'css/bootstrap-datetimepicker.css' %}">
+    <link rel="stylesheet" href="{% static 'css/components/bootstrap.css' %}"> <!-- WJB minify -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap-datetimepicker.css' %}"> <!-- WJB minify, move to form media -->
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
 
     <!-- Animate -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.1/animate.min.css">
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.1/animate.min.css"> -->
 
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/material-design-iconic-font/2.2.0/css/material-design-iconic-font.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/1.0.0/css/flag-icon.min.css" rel="stylesheet" type="text/css">
 
     <!-- Fonts -->
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800,300italic,400italic,600italic,700italic,800italic' rel='stylesheet' type='text/css'>
-    <link href="https://fonts.googleapis.com/css?family=Roboto:400,300,300italic,400italic,500,500italic,700,700italic,900,900italic" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans|Roboto" rel="stylesheet">
 
     <!-- SweetAlert Styles -->
     <link rel="stylesheet" href="{% static 'bower_components/sweetalert2/dist/sweetalert2.css' %}">
-
-    <!-- Chart Styles -->
-    <link rel="stylesheet" href="{% static 'bower_components/chartist/dist/chartist.min.css' %}">
 
     <!-- Calendar Styles -->
     <link rel="stylesheet" href="{% static 'bower_components/fullcalendar/dist/fullcalendar.css' %}">
 
     <!-- Flat jPlayer Skin -->
     <link rel="stylesheet" href="{% static 'flat-jplayer/css/flat.audio.css' %}">
-    <link rel="stylesheet" href="{% static 'flat-jplayer/css/flat.video.css' %}">
 
     <!-- Project Facet Styles -->
     <link rel="stylesheet" href="{% static 'css/magnific-popup.css' %}">
@@ -59,13 +53,16 @@
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
     <link rel="stylesheet" href="{% static 'css/facetui.css' %}">
 
-
     <!-- ================================================= -->
     <!--                 Javascript                        -->
     <!-- ================================================= -->
 
     <!-- jQuery -->
-    <script src="{% static 'bower_components/jquery/dist/jquery.js' %}"></script>
+    <script src="{% static 'bower_components/jquery/dist/jquery.min.js' %}"></script>
+
+    {% block head %}
+    <!-- Child Head Items -->
+    {% endblock %}
 
     <!-- Popup JS -->
     <script src="{% static 'scripts/jquery.magnific-popup.min.js' %}"></script>
@@ -77,7 +74,7 @@
     <script src="{% static 'scripts/chosen.jquery.min.js' %}"></script>
 
     <!-- Datetime Picker JS  -->
-    <script src="{% static 'scripts/moment.js' %}"></script>
+    <script src="{% static 'scripts/moment.min.js' %}"></script>
     <script src="{% static 'scripts/jquery.datetimepicker.js' %}"></script>
     <script src="{% static 'scripts/bootstrap-datetimepicker.js' %}"></script>
 
@@ -87,14 +84,10 @@
     <!-- Flat jPlayer JS -->
     <script src="{% static 'flat-jplayer/js/jquery.jplayer.js' %}"></script>
     <script src="{% static 'flat-jplayer/js/flat.audio.js' %}"></script>
-    <script src="{% static 'flat-jplayer/js/flat.video.js' %}"></script>
 
     <!-- SlimScroll -->
     <script src="{% static 'scripts/jquery.slimscroll.js' %}"></script>
 
-    {% block head %}
-    <!-- Child Head Items -->
-    {% endblock %}
 </head>
 
 
@@ -505,25 +498,20 @@
                       <!--     JS LINKS       -->
     <!-- ================================================= -->
 
-    <!-- <script src="{% static 'bower_components/jquery/dist/jquery.js' %}"></script> IN HEAD-->
     <script src="{% static 'bower_components/tether/dist/js/tether.js' %}"></script>
     <script src="{% static 'bower_components/bootstrap/dist/js/bootstrap.js' %}"></script>
     <script src="{% static 'bower_components/PACE/pace.js' %}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.0.0/lodash.min.js"></script>
-    <script src="{% static 'scripts/components/jquery-fullscreen/jquery.fullscreen-min.js' %}"></script>
     <script src="{% static 'bower_components/jquery-storage-api/jquery.storageapi.min.js' %}"></script>
     <script src="{% static 'bower_components/wow/dist/wow.min.js' %}"></script>
     <script src="{% static 'scripts/functions.js' %}"></script>
     <script src="{% static 'scripts/colors.js' %}"></script>
-    <!-- <script src="{% static 'scripts/left-sidebar.js' %}"></script> -->
     <script src="{% static 'scripts/navbar.js' %}"></script>
     <script src="{% static 'scripts/horizontal-navigation-3.js' %}"></script>
-    <!-- <script src="{% static 'scripts/main.js' %}"></script> -->
     <script src="{% static 'bower_components/notifyjs/dist/notify.js' %}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js"></script>
     <script src="{% static 'bower_components/chartist/dist/chartist.min.js' %}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/easy-pie-chart/2.1.6/jquery.easypiechart.min.js"></script>
-    <script src="{% static 'bower_components/d3/d3.js' %}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
     <script src="http://bower.batchthemes.com/bower_components/datamaps/dist/datamaps.all.js"></script>
 
@@ -531,15 +519,6 @@
 
     <!-- Content Tables -->
     <script src="{% static 'scripts/jquery.dataTables.min.js' %}"></script>
-    <!-- <script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script> -->
-
-    <!-- Text Editor JS -->
-    <script src="{% static 'scripts/tiny_mce/tinymce.min.js' %}"></script>
-
-    <!-- X-Editable -->
-    <script src="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/bootstrap3-editable/js/bootstrap-editable.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.full.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.js"></script>
 
     <!-- jQuery Dot Dot -->
     <!-- Truncates text so it fits into containers and ends with an ellipsis and a link -->
@@ -550,7 +529,6 @@
 
     <!-- SweetAlert -->
     <script src="{% static 'bower_components/sweetalert2/src/sweetalert2.js' %}"></script>
-
 
     {# Don't change/remove this next line; used to show render times on staging. #}
     <!-- RENDER_TIME -->

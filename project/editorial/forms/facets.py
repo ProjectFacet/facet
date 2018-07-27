@@ -76,8 +76,12 @@ def get_facet_form_for_template(template_id):
 
             # when stories are copied; editors and creditees should remain as
             # possibilities in the drop-down menu
-            self.fields['credit'].queryset = story_team_vocab | self.instance.credit.all()
-            self.fields['editor'].queryset = story_team_vocab | self.instance.editor.all()
+            if self.instance.id:
+                self.fields['credit'].queryset = (story_team_vocab | self.instance.credit.all()).distinct()
+                self.fields['editor'].queryset = (story_team_vocab | self.instance.editor.all()).distinct()
+            else:
+                self.fields['credit'].queryset = story_team_vocab
+                self.fields['editor'].queryset = story_team_vocab
 
             # We want to handle cases where templates are made inactive, or
             # when a facet is copied to an organization other than the one

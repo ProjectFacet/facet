@@ -1,5 +1,4 @@
 """ Media Asset handling views for editorial app.
-
     editorial/views/assetviews.py
 """
 
@@ -54,7 +53,6 @@ from editorial.models import (
     SimpleVideo,
     )
 
-
 #----------------------------------------------------------------------#
 #   Asset Library Views
 #----------------------------------------------------------------------#
@@ -64,7 +62,7 @@ from editorial.models import (
 class AssetLibraryTemplateView(LoginRequiredMixin, TemplateView):
     """ Display media library of all organization assets."""
 
-    template_name = 'editorial/asset_list.html'
+    template_name = 'editorial/assets/asset_list.html'
 
     def get_context_data(self):
         """Return all the (complex) assets associated with an organization."""
@@ -72,14 +70,13 @@ class AssetLibraryTemplateView(LoginRequiredMixin, TemplateView):
         organization = self.request.user.organization
         tab = "Recent Assets"
         recentassets = organization.get_org_recent_media()
-        print "RECENT ASSETS: ", recentassets
         return {'recentassets': recentassets, 'tab': tab,}
 
 
 class ImageAssetLibraryTemplateView(LoginRequiredMixin, TemplateView):
     """ Display media library of all organization image assets."""
 
-    template_name = 'editorial/asset_list.html'
+    template_name = 'editorial/assets/asset_list.html'
 
     def get_context_data(self):
         """Return all the (complex) assets associated with an organization."""
@@ -93,7 +90,7 @@ class ImageAssetLibraryTemplateView(LoginRequiredMixin, TemplateView):
 class DocumentAssetLibraryTemplateView(LoginRequiredMixin, TemplateView):
     """ Display media library of all organization document assets."""
 
-    template_name = 'editorial/asset_list.html'
+    template_name = 'editorial/assets/asset_list.html'
 
     def get_context_data(self):
         """Return all the (complex) assets associated with an organization."""
@@ -107,7 +104,7 @@ class DocumentAssetLibraryTemplateView(LoginRequiredMixin, TemplateView):
 class AudioAssetLibraryTemplateView(LoginRequiredMixin, TemplateView):
     """ Display media library of all organization audio assets."""
 
-    template_name = 'editorial/asset_list.html'
+    template_name = 'editorial/assets/asset_list.html'
 
     def get_context_data(self):
         """Return all the (complex) assets associated with an organization."""
@@ -121,7 +118,7 @@ class AudioAssetLibraryTemplateView(LoginRequiredMixin, TemplateView):
 class VideoAssetLibraryTemplateView(LoginRequiredMixin, TemplateView):
     """ Display media library of all organization video assets."""
 
-    template_name = 'editorial/asset_list.html'
+    template_name = 'editorial/assets/asset_list.html'
 
     def get_context_data(self):
         """Return all the (complex) assets associated with an organization."""
@@ -178,7 +175,7 @@ class LibraryImageAssociateView(LoginRequiredMixin, FormView):
     """ Add existing image(s) in the library to another facet."""
 
     form_class = LibraryImageAssociateForm
-    template_name = "editorial/_libraryimage.html"
+    template_name = "editorial/assets/_libraryimage.html"
 
     def get_form_kwargs(self):
         """Pass some initial things to scaffold form."""
@@ -225,6 +222,7 @@ class ImageAssetUpdateView(LoginRequiredMixin, UpdateView):
 
     model = ImageAsset
     form_class = ImageAssetForm
+    template_name = 'editorial/assets/imageasset_form.html'
 
     def image_usage(self):
         """Get all facets an image is associated with."""
@@ -246,7 +244,7 @@ class ImageAssetDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteView):
     """
 
     model = ImageAsset
-    template_name = "editorial/imageasset_delete.html"
+    template_name = "editorial/assets/imageasset_delete.html"
 
     form_valid_message = "Deleted."
     form_invalid_message = "Please check form."
@@ -303,7 +301,7 @@ class LibraryDocumentAssociateView(LoginRequiredMixin, FormView):
     """ Add existing document(s) in the library to another facet."""
 
     form_class = LibraryDocumentAssociateForm
-    template_name = "editorial/_librarydocument.html"
+    template_name = "editorial/assets/_librarydocument.html"
 
     def get_form_kwargs(self):
         """Pass some initial things to scaffold form."""
@@ -351,6 +349,7 @@ class DocumentAssetUpdateView(LoginRequiredMixin, UpdateView):
 
     model = DocumentAsset
     form_class = DocumentAssetForm
+    template_name = 'editorial/assets/documentasset_form.html'
 
     def document_usage(self):
         """Get all facets a document is associated with."""
@@ -372,7 +371,7 @@ class DocumentAssetDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteView)
     """
 
     model = DocumentAsset
-    template_name = "editorial/documentasset_delete.html"
+    template_name = "editorial/assets/documentasset_delete.html"
 
     form_valid_message = "Deleted."
     form_invalid_message = "Please check form."
@@ -428,7 +427,7 @@ class LibraryAudioAssociateView(LoginRequiredMixin, FormView):
     """ Add existing audio in the library to another facet."""
 
     form_class = LibraryAudioAssociateForm
-    template_name = "editorial/_libraryaudio.html"
+    template_name = "editorial/assets/_libraryaudio.html"
 
     def get_form_kwargs(self):
         """Pass some initial things to scaffold form."""
@@ -475,6 +474,7 @@ class AudioAssetUpdateView(LoginRequiredMixin, UpdateView):
 
     model = AudioAsset
     form_class = AudioAssetForm
+    template_name = 'editorial/assets/audioasset_form.html'
 
     def audio_usage(self):
         """Get all facets a audio is associated with."""
@@ -496,7 +496,7 @@ class AudioAssetDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteView):
     """
 
     model = AudioAsset
-    template_name = "editorial/audioasset_delete.html"
+    template_name = "editorial/assets/audioasset_delete.html"
 
     form_valid_message = "Deleted."
     form_invalid_message = "Please check form."
@@ -552,7 +552,7 @@ class LibraryVideoAssociateView(LoginRequiredMixin, FormView):
     """ Add existing video(s) in the library to another facet."""
 
     form_class = LibraryVideoAssociateForm
-    template_name = "editorial/_libraryvideo.html"
+    template_name = "editorial/assets/_libraryvideo.html"
 
     def get_form_kwargs(self):
         """Pass some initial things to scaffold form."""
@@ -599,6 +599,7 @@ class VideoAssetUpdateView(LoginRequiredMixin, UpdateView):
 
     model = VideoAsset
     form_class = VideoAssetForm
+    template_name = 'editorial/assets/videoasset_form.html'
 
     def video_usage(self):
         """Get all facets an video is associated with."""
@@ -620,7 +621,7 @@ class VideoAssetDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteView):
     """
 
     model = VideoAsset
-    template_name = "editorial/videoasset_delete.html"
+    template_name = "editorial/assets/videoasset_delete.html"
 
     form_valid_message = "Deleted."
     form_invalid_message = "Please check form."
@@ -643,7 +644,7 @@ class VideoAssetDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteView):
 class SimpleAssetLibraryTemplateView(LoginRequiredMixin, TemplateView):
     """ Display media library of all organization assets."""
 
-    template_name = 'editorial/simple_asset_list.html'
+    template_name = 'editorial/assets/simple_asset_list.html'
 
     def get_context_data(self, org):
         """Return all the (complex) assets associated with an organization."""
@@ -658,7 +659,7 @@ class SimpleAssetLibraryTemplateView(LoginRequiredMixin, TemplateView):
 class SimpleImageAssetLibraryTemplateView(LoginRequiredMixin, TemplateView):
     """ Display media library of all organization simple image assets."""
 
-    template_name = 'editorial/simple_asset_list.html'
+    template_name = 'editorial/assets/simple_asset_list.html'
 
     def get_context_data(self, org):
         """Return all the simple assets associated with an organization."""
@@ -673,7 +674,7 @@ class SimpleImageAssetLibraryTemplateView(LoginRequiredMixin, TemplateView):
 class SimpleDocumentAssetLibraryTemplateView(LoginRequiredMixin, TemplateView):
     """ Display media library of all organization simple document assets."""
 
-    template_name = 'editorial/simple_asset_list.html'
+    template_name = 'editorial/assets/simple_asset_list.html'
 
     def get_context_data(self, org):
         """Return all the simple assets associated with an organization."""
@@ -688,7 +689,7 @@ class SimpleDocumentAssetLibraryTemplateView(LoginRequiredMixin, TemplateView):
 class SimpleAudioAssetLibraryTemplateView(LoginRequiredMixin, TemplateView):
     """ Display media library of all organization simple audio assets."""
 
-    template_name = 'editorial/simple_asset_list.html'
+    template_name = 'editorial/assets/simple_asset_list.html'
 
     def get_context_data(self, org):
         """Return all the simple assets associated with an organization."""
@@ -703,7 +704,7 @@ class SimpleAudioAssetLibraryTemplateView(LoginRequiredMixin, TemplateView):
 class SimpleVideoAssetLibraryTemplateView(LoginRequiredMixin, TemplateView):
     """ Display media library of all organization simple video assets."""
 
-    template_name = 'editorial/simple_asset_list.html'
+    template_name = 'editorial/assets/simple_asset_list.html'
 
     def get_context_data(self, org):
         """Return all the simple assets associated with an organization."""
@@ -863,7 +864,6 @@ class SimpleImageLibraryAssociateView(LoginRequiredMixin, FormView):
     """ Add existing simple image(s) in the library to another object."""
 
     form_class = SimpleImageLibraryAssociateForm
-    template_name = "editorial/_simpleimage_library.html"
 
     def get_form_kwargs(self):
         """Pass some initial things to scaffold form."""
@@ -916,7 +916,7 @@ class SimpleImageUpdateView(LoginRequiredMixin, UpdateView):
 
     model = SimpleImage
     form_class = SimpleImageForm
-    template_name = "editorial/simple_asset_form.html"
+    template_name = "editorial/assets/simple_asset_form.html"
 
     def usage(self):
         """Get all facets the simple asset is associated with."""
@@ -936,7 +936,7 @@ class SimpleImageAssetDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteVi
     """
 
     model = SimpleImage
-    template_name = "editorial/simple_asset_delete.html"
+    template_name = "editorial/assets/simple_asset_delete.html"
 
     form_valid_message = "Deleted."
     form_invalid_message = "Please check form."
@@ -1131,7 +1131,7 @@ class SimpleDocumentUpdateView(LoginRequiredMixin, UpdateView):
 
     model = SimpleDocument
     form_class = SimpleDocumentForm
-    template_name = "editorial/simple_asset_form.html"
+    template_name = "editorial/assets/simple_asset_form.html"
 
     def extension(self):
         name, extension = os.path.splitext(self.file.name)
@@ -1155,7 +1155,7 @@ class SimpleDocumentAssetDeleteView(LoginRequiredMixin, FormMessagesMixin, Delet
     """
 
     model = SimpleDocument
-    template_name = "editorial/simple_asset_delete.html"
+    template_name = "editorial/assets/simple_asset_delete.html"
 
     form_valid_message = "Deleted."
     form_invalid_message = "Please check form."
@@ -1174,7 +1174,6 @@ class SimpleDocumentLibraryAssociateView(LoginRequiredMixin, FormView):
     """ Add existing simple document(s) in the library to another object."""
 
     form_class = SimpleDocumentLibraryAssociateForm
-    template_name = "editorial/_simpledocument_library.html"
 
     def get_form_kwargs(self):
         """Pass some initial things to scaffold form."""
@@ -1381,7 +1380,7 @@ class SimpleAudioUpdateView(LoginRequiredMixin, UpdateView):
 
     model = SimpleAudio
     form_class = SimpleAudioForm
-    template_name = "editorial/simple_asset_form.html"
+    template_name = "editorial/assets/simple_asset_form.html"
 
     def usage(self):
         """Get all facets the simple asset is associated with."""
@@ -1401,7 +1400,7 @@ class SimpleAudioAssetDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteVi
     """
 
     model = SimpleAudio
-    template_name = "editorial/simple_asset_delete.html"
+    template_name = "editorial/assets/simple_asset_delete.html"
 
     form_valid_message = "Deleted."
     form_invalid_message = "Please check form."
@@ -1420,7 +1419,7 @@ class SimpleAudioLibraryAssociateView(LoginRequiredMixin, FormView):
     """ Add existing simple audio(s) in the library to another object."""
 
     form_class = SimpleAudioLibraryAssociateForm
-    template_name = "editorial/_simpleaudio_library.html"
+    template_name = "editorial/assets/_simpleaudio_library.html"
 
     def get_form_kwargs(self):
         """Pass some initial things to scaffold form."""
@@ -1626,7 +1625,7 @@ class SimpleVideoUpdateView(LoginRequiredMixin, UpdateView):
 
     model = SimpleVideo
     form_class = SimpleVideoForm
-    template_name = "editorial/simple_asset_form.html"
+    template_name = "editorial/assets/simple_asset_form.html"
 
     def usage(self):
         """Get all facets the simple asset is associated with."""
@@ -1646,7 +1645,7 @@ class SimpleVideoAssetDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteVi
     """
 
     model = SimpleVideo
-    template_name = "editorial/simple_asset_delete.html"
+    template_name = "editorial/assets/simple_asset_delete.html"
 
     form_valid_message = "Deleted."
     form_invalid_message = "Please check form."
@@ -1665,7 +1664,7 @@ class SimpleVideoLibraryAssociateView(LoginRequiredMixin, FormView):
     """ Add existing simple video(s) in the library to another object."""
 
     form_class = SimpleVideoLibraryAssociateForm
-    template_name = "editorial/_simplevideo_library.html"
+    template_name = "editorial/assets/_simplevideo_library.html"
 
     def get_form_kwargs(self):
         """Pass some initial things to scaffold form."""
