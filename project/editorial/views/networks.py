@@ -53,7 +53,6 @@ from editorial.models import (
     Note,
     )
 
-
 #----------------------------------------------------------------------#
 #   Network Views
 #----------------------------------------------------------------------#
@@ -64,6 +63,7 @@ class NetworkCreateView(LoginRequiredMixin, CreateView):
 
     model = Network
     form_class = NetworkForm
+    template_name = 'editorial/network/network_form.html'
 
     def form_valid(self, form):
         """Save -- but first add owner organization."""
@@ -89,6 +89,7 @@ class NetworkUpdateView(LoginRequiredMixin, UpdateView):
 
     model = Network
     form_class = NetworkForm
+    template_name = 'editorial/network/network_form.html'
 
     def get_success_url(self):
         """Record action for activity stream."""
@@ -104,6 +105,7 @@ class NetworkListView(LoginRequiredMixin, ListView):
     """
 
     context_object_name = 'networks'
+    template_name = 'editorial/network/network_list.html'
 
     def get_queryset(self):
         """return relevant networks for an organization."""
@@ -116,6 +118,7 @@ class NetworkDetailView(LoginRequiredMixin, DetailView):
     """Return all the detail for a network."""
 
     model = Network
+    template_name = 'editorial/network/network_detail.html'
 
     def get_context_data(self, **kwargs):
         """Get network related info."""
@@ -165,7 +168,7 @@ class NetworkDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteView):
     """
 
     model = Network
-    template_name = "editorial/network_delete.html"
+    template_name = "editorial/network/network_delete.html"
 
     form_valid_message = "Deleted."
     form_invalid_message = "Please check form."
@@ -234,7 +237,7 @@ class NetworkStoryListView(LoginRequiredMixin, ListView):
     """
 
     context_object_name = 'networkstories'
-    template_name = 'editorial/networkstory_list.html'
+    template_name = 'editorial/network/networkstory_list.html'
 
     def get_queryset(self):
         """Return network stories."""

@@ -55,6 +55,7 @@ class ContractorCreateView(LoginRequiredMixin, CreateView):
 
     model = ContractorProfile
     form_class = ContractorProfileForm
+    template_name = 'editorial/contractor/contractorprofile_form.html'
 
     def form_valid(self, form):
         """Save -- but first connect to User."""
@@ -83,6 +84,7 @@ class ContractorDetailView(LoginRequiredMixin, DetailView):
     """Display details about a contractor."""
 
     model = ContractorProfile
+    template_name = 'editorial/contractor/contractorprofile_detail.html'
 
     def contractor_assignments(self):
         """Get assignments that are relevant to requesting user."""
@@ -121,6 +123,7 @@ class ContractorUpdateView(LoginRequiredMixin, UpdateView):
 
     model = ContractorProfile
     form_class = ContractorProfileForm
+    template_name = 'editorial/contractor/contractorprofile_form.html'
 
     def get_success_url(self):
         """Record action for activity stream."""
@@ -143,7 +146,7 @@ class PublicTalentEditorDetailView(LoginRequiredMixin, DetailView):
     """
 
     model = TalentEditorProfile
-    template_name = 'editorial/talenteditor_detail.html'
+    template_name = 'editorial/contractor/talenteditor_detail.html'
 
     def assignments(self):
         """Get assignments from this editor that are relevant to requesting
@@ -181,7 +184,7 @@ class PublicTalentEditorDashboardView(LoginRequiredMixin, DetailView):
     """A dashboard of relevant content for a contractor."""
 
     model = TalentEditorProfile
-    template_name = 'editorial/talenteditor_dashboard.html'
+    template_name = 'editorial/contractor/talenteditor_dashboard.html'
 
     def assignments(self):
         """Return all active assignments."""
@@ -219,7 +222,7 @@ class PublicContractorListView(LoginRequiredMixin, ListView):
     """Listing of all public contractors."""
 
     context_object_name = "contractors"
-    template_name = "editorial/publiccontractor_list.html"
+    template_name = "editorial/contractor/publiccontractor_list.html"
 
     def get_queryset(self):
         """Return all contractors that have opted into public listing."""
@@ -234,7 +237,7 @@ class PublicTalentEditorListView(LoginRequiredMixin, ListView):
     """Listing of all public contractors."""
 
     context_object_name = "editors"
-    template_name = "editorial/publictalenteditor_list.html"
+    template_name = "editorial/contractor/publictalenteditor_list.html"
 
     def get_queryset(self):
         """Return all users that are editors or admins that have opted into public listing."""
@@ -253,7 +256,7 @@ class AffiliationListView(LoginRequiredMixin, ListView):
     """Return all the contractors that an organization has a relationship with."""
 
     context_object_name = "affiliations"
-    template_name='editorial/affiliation_list.html'
+    template_name='editorial/contractor/affiliation_list.html'
 
     def get_queryset(self):
         """Return all the contractors associated with an organization."""
@@ -268,7 +271,7 @@ class AffiliationCreateView(LoginRequiredMixin, CreateView):
 
     model = OrganizationContractorAffiliation
     form_class = OrganizationContractorAffiliationForm
-    template_name='editorial/affiliation_form.html'
+    template_name='editorial/contractor/affiliation_form.html'
 
     def form_valid(self, form):
         """Save -- but first connect to organization."""
@@ -290,7 +293,7 @@ class AffiliationDetailView(LoginRequiredMixin, DetailView):
     """
 
     model = OrganizationContractorAffiliation
-    template_name='editorial/affiliation_detail.html'
+    template_name='editorial/contractor/affiliation_detail.html'
 
 
 # ACCESS: Only TalentEditors, admins from an org can edit affiliations of that org
@@ -301,7 +304,7 @@ class AffiliationUpdateView(LoginRequiredMixin, UpdateView):
 
     model = OrganizationContractorAffiliation
     form_class = OrganizationContractorAffiliationForm
-    template_name='editorial/affiliation_form.html'
+    template_name='editorial/contractor/affiliation_form.html'
 
     def get_success_url(self):
         """ Record action for activity stream."""
@@ -320,6 +323,7 @@ class PitchCreateView(LoginRequiredMixin, CreateView):
 
     model = Pitch
     form_class = PitchForm
+    template_name = 'editorial/contractor/pitch_form.html'
 
     def form_valid(self, form):
         """Save -- but first save some details."""
@@ -340,6 +344,7 @@ class PitchDetailView(LoginRequiredMixin, DetailView):
     """Show pitch details."""
 
     model = Pitch
+    template_name = 'editorial/contractor/pitch_detail.html'
 
     def simple_images(self):
         """Return simple images."""
@@ -381,6 +386,7 @@ class PitchUpdateView(LoginRequiredMixin, UpdateView):
 
     model = Pitch
     form_class = PitchForm
+    template_name = 'editorial/contractor/pitch_form.html'
 
     def simple_images(self):
         """Return all the associated simple images and the form to add.
@@ -429,6 +435,7 @@ class PitchListView(LoginRequiredMixin, ListView):
     """Return all of a contractor's pitches."""
 
     context_object_name = 'pitches'
+    template_name = 'editorial/contractor/pitch_list.html'
 
     def get_queryset(self):
         """Return all pitches related to the requesting user."""
@@ -456,7 +463,7 @@ class PitchDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteView):
     """
 
     model = Pitch
-    template_name = "editorial/pitch_delete.html'"
+    template_name = "editorial/contractor/pitch_delete.html'"
 
     form_valid_message = "Deleted."
     form_invalid_message = "Please check form."
@@ -477,6 +484,7 @@ class CallCreateView(LoginRequiredMixin, CreateView):
 
     model = Call
     form_class = CallForm
+    template_name = 'editorial/contractor/call_form.html'
 
     def get_form_kwargs(self):
         """Pass current user organization to the form."""
@@ -505,6 +513,7 @@ class CallDetailView(LoginRequiredMixin, DetailView):
     """Show call details."""
 
     model = Call
+    template_name = 'editorial/contractor/call_detail.html'
 
     def simple_images(self):
         """Return simple images."""
@@ -546,6 +555,7 @@ class CallUpdateView(LoginRequiredMixin, UpdateView):
 
     model = Call
     form_class = CallForm
+    template_name = 'editorial/contractor/call_form.html'
 
     def get_form_kwargs(self):
         """Pass current user organization to the form."""
@@ -603,6 +613,7 @@ class CallListView(LoginRequiredMixin, ListView):
     """List all calls from public talent editors."""
 
     context_object_name = 'calls'
+    template_name = 'editorial/contractor/call_list.html'
 
     def get_queryset(self):
         """Return all callss related to the requesting user."""
@@ -633,7 +644,7 @@ class CallDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteView):
     """
 
     model = Call
-    template_name = "editorial/call_delete.html'"
+    template_name = "editorial/contractor/call_delete.html'"
 
     form_valid_message = "Deleted."
     form_invalid_message = "Please check form."
@@ -654,6 +665,7 @@ class AssignmentCreateView(LoginRequiredMixin, CreateView):
 
     model = Assignment
     form_class = AssignmentForm
+    template_name = 'editorial/contractor/assignment_form.html'
 
     def get_form_kwargs(self):
         """Pass current user organization to the form."""
@@ -682,6 +694,7 @@ class AssignmentDetailView(LoginRequiredMixin, DetailView):
     """Show assignment details."""
 
     model = Assignment
+    template_name = 'editorial/contractor/assignment_detail.html'
 
     def simple_images(self):
         """Return simple images."""
@@ -723,6 +736,7 @@ class AssignmentUpdateView(LoginRequiredMixin, UpdateView):
 
     model = Assignment
     form_class = AssignmentForm
+    template_name = 'editorial/contractor/assignment_form.html'
 
     def get_form_kwargs(self):
         """Pass current user organization to the form."""
@@ -780,6 +794,7 @@ class AssignmentListView(LoginRequiredMixin, ListView):
     """Return all the assignments dependent on viewer."""
 
     context_object_name = 'assignments'
+    template_name = 'editorial/contractor/assignment_list.html'
 
     def get_queryset(self):
         """Return all assignments related to the requesting user."""
@@ -807,7 +822,7 @@ class AssignmentDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteView):
     """
 
     model = Assignment
-    template_name = "editorial/assignment_delete.html'"
+    template_name = "editorial/contractor/assignment_delete.html'"
 
     form_valid_message = "Deleted."
     form_invalid_message = "Please check form."

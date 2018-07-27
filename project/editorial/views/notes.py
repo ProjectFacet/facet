@@ -290,7 +290,7 @@ class NoteDelete(LoginRequiredMixin, FormMessagesMixin, DeleteView):
 class NetworkNoteView(LoginRequiredMixin, TemplateView):
     """Display all of the notes for a network."""
 
-    template_name = 'editorial/networknotes.html'
+    template_name = 'editorial/network/networknotes.html'
 
     def get_context_data(self, pk):
         network = get_object_or_404(Network, pk=pk)
