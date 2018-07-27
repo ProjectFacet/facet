@@ -36,6 +36,7 @@ class UserCreateView(LoginRequiredMixin, CreateView):
 
     model = User
     form_class = AddUserForm
+    template_name = 'editorial/user/user_form.html'
 
     def form_valid(self, form):
         """Save user -- but first set a few values."""
@@ -67,6 +68,7 @@ class UserDetailView(LoginRequiredMixin, DetailView):
     """
 
     model = User
+    template_name = 'editorial/user/user_detail.html'
 
     def content(self):
         """Get all content associated with a user."""
@@ -106,6 +108,7 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
 
     model = User
     form_class = UserProfileForm
+    template_name = 'editorial/user/user_form.html'
 
     def get_success_url(self):
         """Record action for activity stream."""

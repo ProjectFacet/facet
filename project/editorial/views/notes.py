@@ -325,7 +325,7 @@ class OrganizationNoteView(LoginRequiredMixin, TemplateView):
 class UserNoteView(LoginRequiredMixin, TemplateView):
     """Display all of the notes for a user."""
 
-    template_name = 'editorial/usernotes.html'
+    template_name = 'editorial/user/usernotes.html'
 
     def get_context_data(self, pk):
         user = get_object_or_404(User, pk=pk)
