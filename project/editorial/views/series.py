@@ -48,6 +48,7 @@ class SeriesListView(LoginRequiredMixin, ListView):
     """
 
     context_object_name = 'series'
+    template_name = "editorial/series/series_list.html"
 
     def get_queryset(self):
         """Return series belonging to the organization."""
@@ -71,6 +72,7 @@ class SeriesCreateView(LoginRequiredMixin, CreateView):
 
     model = Series
     form_class = SeriesForm
+    template_name = "editorial/series/series_form.html"
 
     def get_form_kwargs(self):
         """Pass current user organization to the series form."""
@@ -110,6 +112,7 @@ class SeriesDetailView(LoginRequiredMixin, DetailView):
     """
 
     model = Series
+    template_name = "editorial/series/series_detail.html"
 
     def get_form_kwargs(self):
         """Pass organization to forms."""
@@ -199,7 +202,7 @@ class SeriesTeamUpdateView(LoginRequiredMixin, FormMessagesMixin, UpdateView):
     """Process series team form."""
 
     model = Series
-    template_name = 'editorial/seriesteam_form.html'
+    template_name = 'editorial/series/seriesteam_form.html'
     form_class = SeriesTeamForm
     form_valid_message = "Series team updated."
     form_invalid_message = "Something went wrong. Please check the form."
@@ -229,10 +232,6 @@ class SeriesTeamUpdateView(LoginRequiredMixin, FormMessagesMixin, UpdateView):
         return redirect('series_detail', pk=series.id)
 
 
-
-
-
-
 # ACCESS: Any org user should be able to update details for a series belonging to their org
 class SeriesUpdateView(LoginRequiredMixin, UpdateView):
     """Update a series."""
@@ -242,6 +241,7 @@ class SeriesUpdateView(LoginRequiredMixin, UpdateView):
 
     model = Series
     form_class = SeriesForm
+    template_name = "editorial/series/series_form.html"
 
     def get_form_kwargs(self):
         """Pass current user organization to the series form."""
@@ -267,7 +267,7 @@ class SeriesAssetTemplateView(LoginRequiredMixin, TemplateView):
     # handle users that are not logged in
     login_url = settings.LOGIN_URL
 
-    template_name = 'editorial/series_assets.html'
+    template_name = 'editorial/series/series_assets.html'
 
     def get_context_data(self, pk):
         """Return all the (complex) assets associated with a series."""
@@ -290,7 +290,7 @@ class SeriesDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteView):
     """
 
     model = Series
-    template_name = "editorial/series_delete.html'"
+    template_name = "editorial/series/series_delete.html"
 
     form_valid_message = "Deleted."
     form_invalid_message = "Please check form."
@@ -310,8 +310,6 @@ class SeriesSchedule(View):
         series_calendar = series.get_series_schedule()
 
         return HttpResponse(json.dumps(series_calendar), content_type='application/json')
-
-
 
 
 def series_json(request):
