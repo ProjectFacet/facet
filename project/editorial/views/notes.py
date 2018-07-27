@@ -382,7 +382,7 @@ class SeriesNoteView(LoginRequiredMixin, TemplateView):
 class StoryNoteView(LoginRequiredMixin, TemplateView):
     """Display all of the notes for a story."""
 
-    template_name = 'editorial/storynotes.html'
+    template_name = 'editorial/story/storynotes.html'
 
     def get_context_data(self, pk):
         story = get_object_or_404(Story, pk=pk)

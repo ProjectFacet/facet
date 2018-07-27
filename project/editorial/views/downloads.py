@@ -34,7 +34,7 @@ from editorial.models import (
 class StoryDownloadTemplateView(CustomUserTest, TemplateView):
     """Display form for a story download."""
 
-    template_name = 'editorial/story_download_form.html'
+    template_name = 'editorial/story/story_download_form.html'
 
     def test_user(self, user):
         """User must be member of an org."""

@@ -54,6 +54,7 @@ class StoryListView(CustomUserTest, ListView):
     # than only for themselves.
 
     context_object_name = 'stories'
+    template_name = 'editorial/story/story_list.html'
 
     def test_user(self, user):
         """User must be member of an org."""
@@ -85,6 +86,8 @@ class StoryCreateView(CustomUserTest, FormMessagesMixin, CreateView):
 
     model = Story
     form_class = StoryForm
+    template_name = 'editorial/story/story_form.html'
+
     form_invalid_message = "Check the form."
     form_valid_message = "Story created."
 
@@ -141,6 +144,8 @@ class StoryUpdateView(CustomUserTest, FormMessagesMixin, UpdateView):
 
     model = Story
     form_class = StoryForm
+    template_name = 'editorial/story/story_form.html'
+
     form_invalid_message = "Something went wrong. Check the form."
     form_valid_message = "Changes saved."
 
@@ -185,6 +190,7 @@ class StoryDetailView(CustomUserTest, DetailView):
     """Show all the details and related items for a story."""
 
     model = Story
+    template_name = 'editorial/story/story_detail.html'
 
     def test_user(self, user):
         """User must be member of the story's org or a collaborating org."""
@@ -273,7 +279,8 @@ class StoryTeamUpdateView(LoginRequiredMixin, FormMessagesMixin, UpdateView):
     """Process story team form."""
 
     model = Story
-    template_name = 'editorial/storyteam_form.html'
+    template_name = 'editorial/story/storyteam_form.html'
+
     form_class = StoryTeamForm
     form_valid_message = "Story team updated."
     form_invalid_message = "Something went wrong. Please check the form."
@@ -312,7 +319,7 @@ class StoryDeleteView(CustomUserTest, FormMessagesMixin, DeleteView):
     """
 
     model = Story
-    template_name = "editorial/story_delete.html'"
+    template_name = "editorial/story/story_delete.html'"
 
     form_valid_message = "Deleted."
     form_invalid_message = "Please check form."
