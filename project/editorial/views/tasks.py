@@ -46,6 +46,8 @@ class TaskCreateView(LoginRequiredMixin, FormMessagesMixin, CreateView):
     model = Task
     form_class = TaskForm
 
+    template_name = "editorial/tasks/task_form.html"
+
     form_invalid_message = "Something went wrong. Check the form."
     form_valid_message = "Task created."
 
@@ -88,6 +90,9 @@ class TaskUpdateView(LoginRequiredMixin, FormMessagesMixin, UpdateView):
 
     model = Task
     form_class = TaskForm
+
+    template_name = "editorial/tasks/task_form.html"
+    
     form_invalid_message = "Something went wrong. Check the form."
     form_valid_message = "Change saved."
 
@@ -148,7 +153,7 @@ class TaskDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteView):
     """
 
     model = Task
-    template_name = "editorial/task_delete.html"
+    template_name = "editorial/tasks/task_delete.html"
 
     form_valid_message = "Deleted."
     form_invalid_message = "Please check form."
@@ -181,7 +186,7 @@ class ProjectTaskView(LoginRequiredMixin, FormMessagesMixin, CreateView):
     """Create a project task."""
 
     context_object_name = 'tasks'
-    template_name = 'editorial/task_list.html'
+    template_name = 'editorial/tasks/task_list.html'
     form_class = TaskForm
 
     form_invalid_message = "Something went wrong. Check the form."
@@ -226,7 +231,7 @@ class SeriesTaskView(LoginRequiredMixin, FormMessagesMixin, CreateView):
     """Create a series task."""
 
     context_object_name = 'tasks'
-    template_name = 'editorial/task_list.html'
+    template_name = 'editorial/tasks/task_list.html'
     form_class = TaskForm
 
     form_invalid_message = "Something went wrong. Check the form."
@@ -271,7 +276,7 @@ class StoryTaskView(LoginRequiredMixin, FormMessagesMixin, CreateView):
     """Create a story task."""
 
     context_object_name = 'tasks'
-    template_name = 'editorial/task_list.html'
+    template_name = 'editorial/tasks/task_list.html'
     form_class = TaskForm
 
     form_invalid_message = "Something went wrong. Check the form."
@@ -312,7 +317,7 @@ class EventTaskView(LoginRequiredMixin, FormMessagesMixin, CreateView):
     """Create event task."""
 
     context_object_name = 'tasks'
-    template_name = 'editorial/task_list.html'
+    template_name = 'editorial/tasks/task_list.html'
     form_class = TaskForm
 
     form_invalid_message = "Something went wrong. Check the form."
