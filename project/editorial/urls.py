@@ -34,7 +34,7 @@ from views.search import EditorialSearchView
 
 urlpatterns = [
     # robots
-    url(r'^robots.txt$', lambda r: HttpResponse("User-agent: *\nDisallow: /", mimetype="text/plain")),
+    url(r'^robots.txt$', lambda r: HttpResponse("User-agent: *\nDisallow: /", content_type="text/plain")),
 
 
     url(r'test/$', generic.TemplateView.as_view(template_name='editorial/test.html')),
