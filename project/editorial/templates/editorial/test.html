@@ -3,6 +3,15 @@
 {% load i18n %}
 {% load bootstrap3 %}
 
+{% block head %}
+  <script
+    src="https://code.jquery.com/jquery-3.3.1.js"
+    integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+    crossorigin="anonymous">
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.js"></script>
+{% endblock %}
+
 <!-------------------------------------------->
 <!--      BREADCRUMB NAVIGATION             -->
 <!-------------------------------------------->
@@ -25,17 +34,61 @@
 <div class="row m-b-20">
   <div class="col-xs-12">
 
-<button id="compose">Compose</button>
-
-<div id="compose-modal" style="border: solid 1px white">yo</div>
-
+<form>
+  <div class="form-group">
+  <label>Encryption</label>
+  <textarea class="form-control" id="content" rows="10"></textarea>
 </div>
+
+<input class="form-control" type="password" id="key">
+
+<button type="button" id="encrypt" class="btn btn-danger-900 m-t-10">Encrypt</button>
+<button type="button" id="decrypt" class="btn btn-info-900 m-t-10">Decrypt</button>
+</form>
+
+  </div>
 </div>
 
 <script>
-$("#compose").on("click", function () {
-   $("#compose-modal").load("/privatemessage/compose-modal/");
+
+let isPlain = true;
+
+$("#encrypt").click(function() {
+	// debugger;
+	let content = `{"valid": "valid", "msg": "${$("#content").val()}"}`;
+	let key = $("#key").val();
+	let ciphertext = CryptoJS.AES.encrypt(content, key);
+	$("#content").val(ciphertext.toString());
+	isPlain = false;
 });
+
+$("#decrypt").click(function() {
+	// debugger;
+
+	let cipher = $("#content").val();
+	let key = $("#key").val();
+	let bytes = CryptoJS.AES.decrypt(cipher, key);
+	try {
+	  var plain = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+	} catch(e) {
+		alert("wrong key");
+		throw Error("wrong key");
+	}
+	if (plain.valid !== "valid") {
+		alert("wrong key...");
+		throw Error("wrong key");
+	}
+	$("#content").val(plain.msg);
+	isPlain = true;
+});
+
+$("#myform").submit(function(evt) {
+	if (isPlain) {
+		evt.preventDefault();
+		alert("encrypt to save");
+	}
+})
+
 </script>
 
 
