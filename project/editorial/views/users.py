@@ -12,6 +12,7 @@ from braces.views import LoginRequiredMixin
 from django.conf import settings
 from django.core.mail import send_mail
 from django.shortcuts import redirect, get_object_or_404
+from django.urls import reverse
 from django.views.generic import UpdateView, DetailView, CreateView, View
 from editorial.forms import (
     AddUserForm,
@@ -43,13 +44,17 @@ class UserCreateView(LoginRequiredMixin, CreateView):
 
         user = self.object = form.save(commit=False)
         user.organization = self.request.user.organization
-        temp_pass = self.request.POST.get('password')
+        #not setting a password automatically calls set_unusable_password and creates a user
         user.save()
 
         # notify new user of of account creation
         mail_subject = "New User Details"
-        message = "You've been added to Facet. Your login is your email and your password is {pw}. Login to projectfacet.com and update your password.".format(pw=temp_pass)
-        print "MESSAGE: ", message
+        # send email to user to reset password
+        message = "You've been added to Facet on behalf of {org}. Your login is your email. Reset your password <a href='{reset}'>here</a>.".format(
+            org=user.organization,
+            reset=reverse('account_reset_password')
+        )
+        print("MESSAGE: ", message)
         recipient = [user.email]
         send_mail(mail_subject, message, settings.DEFAULT_FROM_EMAIL, recipient, fail_silently=False)
 

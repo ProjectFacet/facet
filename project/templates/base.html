@@ -265,8 +265,8 @@
                               <a class="dropdown-item animated fadeIn" href="{% url 'inbox' %}" title="View Inbox"> <i class="zmdi zmdi-email"></i> <span class="dropdown-text">Inbox</span> </a>
                               <a class="dropdown-item animated fadeIn" href="{% url 'user_detail' pk=request.user.id %}"> <i class="zmdi zmdi-settings-square"></i> <span class="dropdown-text">Profile</span> </a>
                               {% comment %}<a class="dropdown-item animated fadeIn" href="#"> <i class="zmdi zmdi-alarm"></i> <span class="dropdown-text">Lock screen</span> </a>{% endcomment %}
-                              <a class="dropdown-item animated fadeIn" href="/accounts/logout"> <i class="zmdi zmdi-power"></i> <span class="dropdown-text">Logout</span> </a>
-                              <a class="dropdown-item animated fadeIn" href="/accounts/password/reset/"><i class="fa fa-lock" aria-hidden="true"></i><span class="dropdown-text">Password</span> </a>
+                              <a class="dropdown-item animated fadeIn" href="{% url 'account_logout' %}"> <i class="zmdi zmdi-power"></i> <span class="dropdown-text">Logout</span> </a>
+                              <a class="dropdown-item animated fadeIn" href="{% url 'account_reset_password' %}"><i class="fa fa-lock" aria-hidden="true"></i><span class="dropdown-text">Password</span> </a>
                           </div>
                       </li>
                   </ul>

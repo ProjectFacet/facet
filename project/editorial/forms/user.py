@@ -17,10 +17,10 @@ class AddUserForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ['email', 'password', 'username', 'user_type']
+        fields = ['email', 'username', 'user_type']
         widgets = {
             'email': TextInput(attrs={'class': 'form-control', 'placeholder': 'Email'}),
-            'password': TextInput(attrs={'class': 'form-control', 'placeholder': 'Password'}),
+            # 'password': TextInput(attrs={'class': 'form-control', 'placeholder': 'Password'}),
             'username': TextInput(attrs={'class': 'form-control', 'placeholder': 'Username'}),
             'user_type': Select(attrs={'class': 'c-select', 'id': 'user-type'}),
         }
