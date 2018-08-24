@@ -54,7 +54,6 @@ class UserCreateView(LoginRequiredMixin, CreateView):
             org=user.organization,
             reset=reverse('account_reset_password')
         )
-        print("MESSAGE: ", message)
         recipient = [user.email]
         send_mail(mail_subject, message, settings.DEFAULT_FROM_EMAIL, recipient, fail_silently=False)
 
