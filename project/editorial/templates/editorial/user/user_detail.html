@@ -270,10 +270,10 @@ $(document).ready(function() {
               <h4 class="modal-title" id="addUserNoteLabel">Create a note</h4>
             </div>
             <div class="modal-body">
-              {% if usernoteform %}
+              {% if notes.form %}
               <form action="{% url 'create_usernote' %}" method="POST" class="post-form">
               {% csrf_token %}
-              {% bootstrap_form usernoteform %}
+              {% bootstrap_form notes.form %}
               <!-- Hidden Inputs -->
               <input type="hidden" name="association" value="user" />
               <input type="hidden" name="user" value="{{ request.user.id }}" />
@@ -286,26 +286,26 @@ $(document).ready(function() {
           </div>
         </div>
       </div>
-    <!-- Display User Note Modal -->
-    {% for note in notes.notes %}
-    <div class="modal fade" id="displayNote{{note.id}}" tabindex="-1" role="dialog" aria-labelledby="displayNote{{note.id}}">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <h4 class="modal-title" id="addNote{{note.id}}Label">{{ note.title }}</h4>
-          </div>
-          <div class="modal-body dark">
-            {{ note.text|linebreaksbr }}
-          </div>
-          <div class="modal-footer">
-            <p class="tiny-text">{{ note.owner }} | {{ note.creation_date|date:'D M j g:i a' }}<p>
-            <p class="tiny-text">Keywords: {% for keyword in note.keywords %}{{ keyword }}, {% endfor %}<p>
+      <!-- Display User Note Modal -->
+      {% for note in notes.notes %}
+      <div class="modal fade" id="viewNote{{note.id}}" tabindex="-1" role="dialog" aria-labelledby="displayNote{{note.id}}">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title" id="addNote{{note.id}}Label">{{ note.title }}</h4>
+            </div>
+            <div class="modal-body dark">
+              {{ note.text|linebreaksbr }}
+            </div>
+            <div class="modal-footer">
+              <p class="tiny-text">{{ note.owner }} | {{ note.creation_date|date:'D M j g:i a' }}<p>
+              <p class="tiny-text">Keywords: {% for keyword in note.keywords %}{{ keyword }}, {% endfor %}<p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    {% endfor %}
+      {% endfor %}
     {% endwith %}
     <!-- END Display User Note Modal -->
 {% endblock %}

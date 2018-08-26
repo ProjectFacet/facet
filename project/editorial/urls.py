@@ -133,6 +133,7 @@ urlpatterns = [
     url(r'^task/note/new/$', notes.NoteCreateView.as_view(), name='create_tasknote'),
     url(r'^event/note/new/$', notes.NoteCreateView.as_view(), name='create_eventnote'),
     url(r'^note/(?P<pk>\d+)/delete/$', notes.NoteDelete.as_view(), name='note_delete'),
+    url(r'^note/(?P<pk>\d+)/edit/$', notes.NoteEdit.as_view(), name='note_edit'),
     # url(r'^assignment/note/new/$', noteviews.NoteCreateView.as_view(), name='create_assignmentnote'),
 
     #   Platform URLS

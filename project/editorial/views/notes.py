@@ -14,7 +14,7 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.template.loader import render_to_string
-from django.views.generic import TemplateView, CreateView, DeleteView, View
+from django.views.generic import TemplateView, CreateView, DeleteView, UpdateView, View
 from editorial.forms import (
     NoteForm,
 )
@@ -227,6 +227,52 @@ class NoteCreateView(LoginRequiredMixin, FormMessagesMixin, CreateView):
 
 
 # ACCESS: Any org user, or user from an organization that is in collaborate_with
+# should be able to edite a note for P, Sr, St, F, T or E that they have access to
+class NoteEdit(LoginRequiredMixin, FormMessagesMixin, UpdateView):
+    """View for editing of a note.
+
+    A note will be edited on a template displaying a note form and populated with
+    the note's existing information.
+    """
+
+    model = Note
+    form_class = NoteForm
+    template_name = "editorial/note_edit.html"
+
+    form_valid_message = "Note changes saved."
+    form_invalid_message = "Changes not saved. Please check form."
+
+    def get_success_url(self):
+        """Post editing, return to the parent object detail url."""
+
+        if self.object.organization_set.first():
+            organization = self.object.organization_set.first()
+            return reverse('org_detail', kwargs={'pk': organization.id})
+        if self.object.user_set.first():
+            user = self.object.user_set.first()
+            return reverse('user_detail', kwargs={'pk': user.id})
+        if self.object.network_set.first():
+            network = self.object.network_set.first()
+            return reverse('network_detail', kwargs={'pk': network.id})
+        if self.object.project_set.first():
+            project = self.object.project_set.first()
+            return reverse('project_detail', kwargs={'pk': project.id})
+        if self.object.series_set.first():
+            series = self.object.series_set.first()
+            return reverse('series_detail', kwargs={'pk': series.id})
+        if self.object.story_set.first():
+            story = self.object.story_set.first()
+            return reverse('story_detail', kwargs={'pk': story.id})
+        if self.object.event_set.first():
+            event = self.object.event_set.first()
+            return reverse('event_detail', kwargs={'pk': event.id})
+        if self.object.task_set.first():
+            task = self.object.task_set.first()
+            return reverse('task_detail', kwargs={'pk': task.id})
+
+
+
+# ACCESS: Any org user, or user from an organization that is in collaborate_with
 # should be able to delete a note for P, Sr, St, F, T or E that they have access to
 class NoteDelete(LoginRequiredMixin, FormMessagesMixin, DeleteView):
     """View for handling deletion of a note.
@@ -245,39 +291,29 @@ class NoteDelete(LoginRequiredMixin, FormMessagesMixin, DeleteView):
     def get_success_url(self):
         """Post-deletion, return to the parent object detail url."""
 
-        print "THING: ", self.object
-        print self.object.pk
         if self.object.organization_set.first():
             organization = self.object.organization_set.first()
-            print "organization: ", organization
             return reverse('org_detail', kwargs={'pk': organization.id})
         if self.object.user_set.first():
             user = self.object.user_set.first()
-            print "user: ", user
             return reverse('user_detail', kwargs={'pk': user.id})
         if self.object.network_set.first():
             network = self.object.network_set.first()
-            print "NETWORK: ", network
             return reverse('network_detail', kwargs={'pk': network.id})
         if self.object.project_set.first():
             project = self.object.project_set.first()
-            print "PROJECT: ", project
             return reverse('project_detail', kwargs={'pk': project.id})
         if self.object.series_set.first():
             series = self.object.series_set.first()
-            print "SERIES: ", series
             return reverse('series_detail', kwargs={'pk': series.id})
         if self.object.story_set.first():
             story = self.object.story_set.first()
-            print "STORY: ", story
             return reverse('story_detail', kwargs={'pk': story.id})
         if self.object.event_set.first():
             event = self.object.event_set.first()
-            print "EVENT: ", event
             return reverse('event_detail', kwargs={'pk': event.id})
         if self.object.task_set.first():
             task = self.object.task_set.first()
-            print "TASK: ", task
             return reverse('task_detail', kwargs={'pk': task.id})
 
 

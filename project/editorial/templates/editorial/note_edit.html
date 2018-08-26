@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load bootstrap3 %}
+
+{% block head %}
+{{ form.media }}
+{% endblock %}
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+<!--             BREADCRUMB NAVIGATION                 -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
+{% block breadcrumb %}
+<div>
+  <ol class="breadcrumb icon-angle-right icon-th">
+    <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
+    <li class="fadeIn"> Content</li>
+    {% if note.organization_set.all %}
+      <li class="fadeIn"><a href="{% url 'org_detail' pk=note.organization_set.first.id %}" title="Go to {{ note.organization_set.first.name }}"> {{ note.organization_set.first.name }} </a></li>
+      <li class="fadeIn"> {{ note.title }}</li>
+      <li class="fadeIn"> Edit </li>
+    {% elif note.user_set.all %}
+      <li class="fadeIn"><a href="{% url 'user_detail' note.user_set.first.id %}" title="View {{ note.user_set.first.credit_name}}"> {{ note.user_set.first.credit_name }} </a></li>
+      <li class="fadeIn"><a href="{% url 'user_notes' note.user_set.first.id %}" title="You are here"> {{ note.user_set.first.credit_name }} Notes </a></li>
+      <li class="fadeIn"> {{ note.title }}</li>
+      <li class="fadeIn"> Edit </li>
+    {% elif note.network_set.all %}
+      <li class="fadeIn"><a href="{% url 'network_list' %}" title="Go to Network List"> Networks </a></li>
+      <li class="fadeIn"><a href="{% url 'network_detail' note.network_set.first.id %}" title="Go to {{ note.network_set.first.name }}"> {{note.network_set.first.name}} </a></li>
+      <li class="fadeIn"><a href="{% url 'network_notes' note.network_set.first.id %}" title="Go to {{note.network_set.first.name }} Notes"> Notes </a></li>
+      <li class="fadeIn"> {{ note.title }}</li>
+      <li class="fadeIn"> Edit </li>
+    {% elif note.project_set.all %}
+      <li class="fadeIn"><a href="{% url 'project_list' %}" title="Go to Project List"> Projects </a></li>
+      <li class="fadeIn"><a href="{% url 'project_detail' note.project_set.first.id %}" title="Go to {{note.project_set.first.name}}"> {{note.project_set.first.name}} </a></li>
+      <li class="fadeIn"><a href="{% url 'project_note_list' note.project_set.first.id %}" title="Go to {{note.project_set.first.name}} Notes"> Notes </a></li>
+      <li class="fadeIn"> {{ note.title }}</li>
+      <li class="fadeIn"> Edit </li>
+    {% elif note.series_set.all %}
+      <li class="fadeIn"><a href="{% url 'series_list' %}" title="Go to Series List"> Series </a></li>
+      <li class="fadeIn"><a href="{% url 'series_detail' note.series_set.first.id %}" title="Go to {{note.series_set.first.name}}"> {{note.series_set.first.name}} </a></li>
+      <li class="fadeIn"><a href="{% url 'series_note_list' note.series_set.first.id %}" title="Go to {{note.series_set.first.name}} Notes"> Notes </a></li>
+      <li class="fadeIn"> {{ note.title }}</li>
+      <li class="fadeIn"> Edit </li>
+    {% elif note.story_set.all %}
+      <li class="fadeIn"><a href="{% url 'story_list' %}" title="Go to Story List"> Stories </a></li>
+      <li class="fadeIn"><a href="{% url 'story_detail' note.story_set.first.id %}" title="Go to {{note.story_set.first.name}}"> {{note.story_set.first.name}} </a></li>
+      <li class="fadeIn"><a href="{% url 'story_note_list' note.story_set.first.id %}" title="Go to {{note.story_set.first.name}} Notes"> Notes </a></li>
+      <li class="fadeIn"> {{ note.title }}</li>
+      <li class="fadeIn"> Edit </li>
+    {% elif note.event_set.all %}
+      <li class="fadeIn"><a href="{% url 'event_detail' note.event_set.first.id %}" title="Go to {{note.event_set.first.name}}"> {{note.event_set.first.name}} </a></li>
+      <li class="fadeIn"><a href="{% url 'event_note_list' note.event_set.first.id %}" title="Go to {{note.event_set.first.name}} Notes"> Notes </a></li>
+      <li class="fadeIn"> {{ note.title }}</li>
+      <li class="fadeIn"> Edit </li>
+    {% elif note.task_set.all %}
+      <li class="fadeIn"><a href="{% url 'task_detail' note.task_set.first.id %}" title="Go to {{note.task_set.first.name}}"> {{note.task_set.first.name}} </a></li>
+      <li class="fadeIn"><a href="{% url 'task_note_list' note.task_set.first.id %}" title="Go to {{note.task_set.first.name}} Notes"> Notes </a></li>
+      <li class="fadeIn"> {{ note.title }}</li>
+      <li class="fadeIn"> Edit </li>
+    {% endif %}
+  </ol>
+</div>
+{% endblock breadcrumb %}
+
+<!-- ================================================= -->
+<!-- ================================================= -->
+<!--                   Main Section                    -->
+<!-- ================================================= -->
+<!-- ================================================= -->
+
+{% block content %}
+
+
+<!-- ================================================= -->
+<!-- CONTENT -->
+<!-- ================================================= -->
+
+<h1>{{ note }} </h1>
+
+<form method="POST" class="post-form">
+{% csrf_token %}
+{% bootstrap_form form %}
+<button type="submit" class="btn btn-primary">Save Changes</button>
+</form>
+
+
+{% endblock content %}
