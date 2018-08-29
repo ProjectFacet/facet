@@ -3,13 +3,14 @@
         <div class="pull-right">
         </div>
     </div>
-    <h4 class="m-b-20"> <span>Subject: </span> <span>{{ note.title }}</span> </h4>
-    <p class="text-bold m-b-20"> <span class="pull-right email-date">{{ note.creation_date|date:'D, M j' }} | {{ note.creation_date|date:'g:i a' }}</span> <span class="email-from"><strong>Author: </strong></span> {{ note.owner.credit_name }}</p>
-    <p class=""></p>
-    <p>{{ note.text|safe }}</p>
+    <h4 class="m-b-40"> <span>Subject: </span> <span>{{ note.title }}</span> </h4>
+    <p class="m-b-10"> <span class="email-from"><strong>Author: </strong></span> {{ note.owner.credit_name }}</p>
+    <p class="m-b-20"> <span class="email-date">{{ note.creation_date|date:'D, M j' }} | {{ note.creation_date|date:'g:i a' }}</span></p>
+    <hr class="subtle">
+    <p>{{ note.text|safe|linebreaksbr }}</p>
     {% if note.keywords %}
     {% endif %}
 </div>
 <div class="text-left">
-    {% comment %}<button type="button" class="btn btn-default"><i class="fa fa-trash-o"></i> Remove</button>{% endcomment %}
+    <a href="{% url 'note_edit' note.id %}" title="Edit Note"><button type="button" class="btn btn-default m-t-50"><i class="fa fa-pencil-square-o"></i> Edit</button></a>
 </div>

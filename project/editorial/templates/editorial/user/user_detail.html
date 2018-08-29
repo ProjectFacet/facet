@@ -299,8 +299,8 @@ $(document).ready(function() {
               {{ note.text|linebreaksbr }}
             </div>
             <div class="modal-footer">
-              <p class="tiny-text">{{ note.owner }} | {{ note.creation_date|date:'D M j g:i a' }}<p>
-              <p class="tiny-text">Keywords: {% for keyword in note.keywords %}{{ keyword }}, {% endfor %}<p>
+              <p class="sameline tiny-text f-w-400 f-r-8" style="float:left;">{{ note.owner }} | {{ note.creation_date|date:'D M j g:i a' }}</p>
+              <a href="{% url 'note_edit' note.id %}" title="Edit Note"><p class="tiny-text sameline float-right color-default f-r-8">Edit Note<p></a>
             </div>
           </div>
         </div>

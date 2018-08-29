@@ -436,7 +436,7 @@ class StoryNoteView(LoginRequiredMixin, TemplateView):
 class TaskNoteView(LoginRequiredMixin, TemplateView):
     """Display all of the notes for a task."""
 
-    template_name = 'editorial/tasknotes.html'
+    template_name = 'editorial/tasks/tasknotes.html'
 
     def get_context_data(self, pk):
         task = get_object_or_404(Task, pk=pk)
@@ -454,7 +454,7 @@ class TaskNoteView(LoginRequiredMixin, TemplateView):
 class EventNoteView(LoginRequiredMixin, TemplateView):
     """Display all of the notes for an event."""
 
-    template_name = 'editorial/eventnotes.html'
+    template_name = 'editorial/events/eventnotes.html'
 
     def get_context_data(self, pk):
         event = get_object_or_404(Event, pk=pk)
