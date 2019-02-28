@@ -14,7 +14,7 @@ class EditorialAppConfig(AppConfig):
 
         for model_name in [
             "Project",
-            "Series",
+            # "Series",
             "Story",
             "Facet",
             "Task",
@@ -54,7 +54,7 @@ class EditorialAppConfig(AppConfig):
         registry.register(self.get_model('Organization'))
         registry.register(self.get_model('Network'))
         registry.register(self.get_model('Project'))
-        registry.register(self.get_model('Series'))
+        # registry.register(self.get_model('Series'))
         registry.register(self.get_model('Story'))
         registry.register(self.get_model('Facet'))
         registry.register(self.get_model('FacetTemplate'))

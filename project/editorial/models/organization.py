@@ -333,18 +333,18 @@ class Organization(models.Model):
         story_comments = Comment.objects.filter(discussion__in=story_discussions)
         return story_comments
 
-    def get_series_comments(self):
-        """Retrieve all comments for series belonging to an organization.
-
-        Used to display all series comments in dashboard and inbox.
-        """
-        from . import Series, Comment
-
-        # TODO include series that are collaborative
-        org_series = Series.objects.filter(organization=self)
-        series_discussions = [series.discussion for series in org_series]
-        series_comments = Comment.objects.filter(discussion__in=series_discussions)
-        return series_comments
+    # def get_series_comments(self):
+    #     """Retrieve all comments for series belonging to an organization.
+    #
+    #     Used to display all series comments in dashboard and inbox.
+    #     """
+    #     from . import Series, Comment
+    #
+    #     # TODO include series that are collaborative
+    #     org_series = Series.objects.filter(organization=self)
+    #     series_discussions = [series.discussion for series in org_series]
+    #     series_comments = Comment.objects.filter(discussion__in=series_discussions)
+    #     return series_comments
 
     def get_facet_comments(self):
         """Retrieve all comments for facets belonging to stories of an organization.
@@ -383,14 +383,14 @@ class Organization(models.Model):
         """
 
         from . import Project
-        from . import Series
+        # from . import Series
         from . import Story
         external_collaborative_content = []
         external_projects = Project.objects.filter(Q(collaborate_with=self))
-        external_series = Series.objects.filter(Q(collaborate_with=self))
+        # external_series = Series.objects.filter(Q(collaborate_with=self))
         external_stories = Story.objects.filter(Q(collaborate_with=self))
         external_collaborative_content.extend(external_projects)
-        external_collaborative_content.extend(external_series)
+        # external_collaborative_content.extend(external_series)
         external_collaborative_content.extend(external_stories)
         return external_collaborative_content
 
@@ -401,10 +401,10 @@ class Organization(models.Model):
 
         internal_collaborative_content = []
         internal_projects = self.project_set.filter(Q(collaborate=True))
-        internal_series = self.series_set.filter(Q(collaborate=True))
+        # internal_series = self.series_set.filter(Q(collaborate=True))
         internal_stories = self.story_set.filter(Q(collaborate=True))
         internal_collaborative_content.extend()
-        internal_collaborative_content.extend()
+        # internal_collaborative_content.extend()
         internal_collaborative_content.extend()
         return internal_collaborative_content
 
@@ -464,7 +464,7 @@ class Organization(models.Model):
         return projects
 
     def get_org_content_tasks(self):
-        """Return all the tasks associated with projects, series, stories, or events.
+        """Return all the tasks associated with projects, stories, or events.
 
         This includes items from content that is collaborative.
         """
@@ -495,7 +495,7 @@ class Organization(models.Model):
         """Return queryset of all objects that can be searched by a user."""
 
         from .projects import Project
-        from .series import Series
+        # from .series import Series
         from .story import Story
         from .facets import Facet
 
@@ -505,7 +505,7 @@ class Organization(models.Model):
         searchable_objects = []
 
         projects = Project.objects.filter(Q(Q(organization=self) | Q(collaborate_with=self)))
-        series = Series.objects.filter(Q(Q(organization=self) | Q(collaborate_with=self)))
+        # series = Series.objects.filter(Q(Q(organization=self) | Q(collaborate_with=self)))
         stories = Story.objects.filter(Q(Q(organization=self) | Q(collaborate_with=self)))
         facets = Facet.objects.filter(Q(organization=self))
         imageassets = self.imageasset_set.all()
@@ -517,7 +517,7 @@ class Organization(models.Model):
         notes = self.get_org_searchable_notes()
 
         searchable_objects.append(projects)
-        searchable_objects.append(series)
+        # searchable_objects.append(series)
         searchable_objects.append(stories)
         searchable_objects.append(facets)
         searchable_objects.append(imageassets)

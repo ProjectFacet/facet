@@ -7,7 +7,6 @@ from django.forms import Textarea, Select
 
 from editorial.models import (
     Project,
-    Series,
     Story,
     Event,
 )
@@ -36,8 +35,8 @@ class EventForm(forms.ModelForm):
         # limit project, series and stories to those owned by org or part of content and org is collaborator for
         self.fields['project'].queryset = Project.objects.filter(
             Q(collaborate_with=org) | (Q(organization=org)))
-        self.fields['series'].queryset = Series.objects.filter(
-            Q(collaborate_with=org) | (Q(organization=org)))
+        # self.fields['series'].queryset = Series.objects.filter(
+            # Q(collaborate_with=org) | (Q(organization=org)))
         self.fields['story'].queryset = Story.objects.filter(
             Q(collaborate_with=org) | (Q(organization=org)))
 
@@ -45,7 +44,7 @@ class EventForm(forms.ModelForm):
         self.fields['event_type'].empty_label = 'Event Type'
         # self.fields['evt_organization'].empty_label = 'Select an Organization'
         self.fields['project'].empty_label = 'Select a Project'
-        self.fields['series'].empty_label = 'Select a Series'
+        # self.fields['series'].empty_label = 'Select a Series'
         self.fields['story'].empty_label = 'Select a Story'
 
     event_date = forms.DateTimeField(
@@ -68,7 +67,7 @@ class EventForm(forms.ModelForm):
             'venue',
             # 'evt_organization',
             'project',
-            'series',
+            # 'series',
             'story',
         ]
 
@@ -86,7 +85,7 @@ class EventForm(forms.ModelForm):
             # 'evt_organization': Select(
             #     attrs={'class': 'custom-select', 'id': 'event-organization'}),
             'project': Select(attrs={'class': 'custom-select', 'id': 'event-project'}),
-            'series': Select(attrs={'class': 'custom-select', 'id': 'event-series'}),
+            # 'series': Select(attrs={'class': 'custom-select', 'id': 'event-series'}),
             'story': Select(attrs={'class': 'custom-select', 'id': 'event-story'}),
         }
 

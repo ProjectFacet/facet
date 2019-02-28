@@ -80,10 +80,10 @@ from .projects import (
     ProjectTeamForm,
 )
 
-from .series import (
-    SeriesForm,
-    SeriesTeamForm,
-)
+# from .series import (
+#     SeriesForm,
+#     SeriesTeamForm,
+# )
 
 from .story import (
     StoryForm,

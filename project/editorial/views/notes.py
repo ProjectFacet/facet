@@ -23,7 +23,6 @@ from editorial.models import (
     Organization,
     Network,
     Project,
-    Series,
     Story,
     Event,
     Task,
@@ -148,25 +147,25 @@ class NoteCreateView(LoginRequiredMixin, FormMessagesMixin, CreateView):
             action.send(self.request.user, verb="created", action_object=note, target=action_target)
             # redirect to the associated object
             return HttpResponseRedirect(reverse('project_detail', args=(project.id,)))
-        elif associated_object == 'series':
-            # retrieve the object to connect with the note
-            series_id = self.request.POST.get('series')
-            series = get_object_or_404(Series, id=series_id)
-            # retrieve or set values for note attributes
-            title = self.request.POST.get('title')
-            text = self.request.POST.get('text')
-            important = form.cleaned_data['important']
-            note_type = "SER"
-            # create and save note
-            note = Note.objects.create_note(owner=self.request.user, title=title, text=text, note_type=note_type, important=important)
-            note.save()
-            # associate note with object
-            series.notes.add(note)
-            # record action
-            action_target = series
-            action.send(self.request.user, verb="created", action_object=note, target=action_target)
-            # redirect to the associated object
-            return HttpResponseRedirect(reverse('series_detail', args=(series.id,)))
+        # elif associated_object == 'series':
+        #     # retrieve the object to connect with the note
+        #     series_id = self.request.POST.get('series')
+        #     series = get_object_or_404(Series, id=series_id)
+        #     # retrieve or set values for note attributes
+        #     title = self.request.POST.get('title')
+        #     text = self.request.POST.get('text')
+        #     important = form.cleaned_data['important']
+        #     note_type = "SER"
+        #     # create and save note
+        #     note = Note.objects.create_note(owner=self.request.user, title=title, text=text, note_type=note_type, important=important)
+        #     note.save()
+        #     # associate note with object
+        #     series.notes.add(note)
+        #     # record action
+        #     action_target = series
+        #     action.send(self.request.user, verb="created", action_object=note, target=action_target)
+        #     # redirect to the associated object
+        #     return HttpResponseRedirect(reverse('series_detail', args=(series.id,)))
         elif associated_object == 'story':
             # retrieve the object to connect with the note
             story_id = self.request.POST.get('story')
@@ -257,9 +256,9 @@ class NoteEdit(LoginRequiredMixin, FormMessagesMixin, UpdateView):
         if self.object.project_set.first():
             project = self.object.project_set.first()
             return reverse('project_detail', kwargs={'pk': project.id})
-        if self.object.series_set.first():
-            series = self.object.series_set.first()
-            return reverse('series_detail', kwargs={'pk': series.id})
+        # if self.object.series_set.first():
+        #     series = self.object.series_set.first()
+        #     return reverse('series_detail', kwargs={'pk': series.id})
         if self.object.story_set.first():
             story = self.object.story_set.first()
             return reverse('story_detail', kwargs={'pk': story.id})
@@ -303,9 +302,9 @@ class NoteDelete(LoginRequiredMixin, FormMessagesMixin, DeleteView):
         if self.object.project_set.first():
             project = self.object.project_set.first()
             return reverse('project_detail', kwargs={'pk': project.id})
-        if self.object.series_set.first():
-            series = self.object.series_set.first()
-            return reverse('series_detail', kwargs={'pk': series.id})
+        # if self.object.series_set.first():
+        #     series = self.object.series_set.first()
+        #     return reverse('series_detail', kwargs={'pk': series.id})
         if self.object.story_set.first():
             story = self.object.story_set.first()
             return reverse('story_detail', kwargs={'pk': story.id})
@@ -396,20 +395,20 @@ class ProjectNoteView(LoginRequiredMixin, TemplateView):
 # ACCESS: Any org user, user from an organization that is part collaborate_with
 # for a series should be able to view/create notes for the series
 # A contractor with access to the series should be able to viewcreate a note for it.
-class SeriesNoteView(LoginRequiredMixin, TemplateView):
-    """Display all of the notes for a project."""
-
-    template_name = 'editorial/series/seriesnotes.html'
-
-    def get_context_data(self, pk):
-        series = get_object_or_404(Series, pk=pk)
-        form = NoteForm()
-        notes = series.notes.all().order_by('-creation_date')
-        return {
-            'series': series,
-            'form': form,
-            'notes': notes,
-        }
+# class SeriesNoteView(LoginRequiredMixin, TemplateView):
+#     """Display all of the notes for a project."""
+#
+#     template_name = 'editorial/series/seriesnotes.html'
+#
+#     def get_context_data(self, pk):
+#         series = get_object_or_404(Series, pk=pk)
+#         form = NoteForm()
+#         notes = series.notes.all().order_by('-creation_date')
+#         return {
+#             'series': series,
+#             'form': form,
+#             'notes': notes,
+#         }
 
 
 # ACCESS: Any org user, user from an organization that is part collaborate_with

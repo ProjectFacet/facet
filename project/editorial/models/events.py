@@ -4,7 +4,7 @@ from django.db import models
 from django.db.models import Q
 
 from . import SimpleImage, SimpleDocument, SimpleAudio, SimpleVideo
-from . import User, Organization, Project, Series, Story
+from . import User, Organization, Project, Story
 
 
 #-----------------------------------------------------------------------#
@@ -116,12 +116,12 @@ class Event(models.Model):
         null=True,
     )
 
-    series = models.ForeignKey(
-        Series,
-        on_delete=models.CASCADE,
-        blank=True,
-        null=True,
-    )
+    # series = models.ForeignKey(
+    #     Series,
+    #     on_delete=models.CASCADE,
+    #     blank=True,
+    #     null=True,
+    # )
 
     story = models.ForeignKey(
         Story,
@@ -175,12 +175,12 @@ class Event(models.Model):
             parent = self.evt_organization
         elif self.project:
             parent = self.project
-        elif self.series:
-            parent = self.project
+        # elif self.series:
+        #     parent = self.project
         elif self.story:
             parent = self.story
 
-        if parent.type == "project" or "series" or "story":
+        if parent.type == "project" or "story":
             collaborators = parent.collaborate_with.all()
             owner = parent.organization
             event_vocab = User.objects.filter(Q(Q(organization=self.organization) | Q(organization__in=collaborators) | Q(organization=owner)))
@@ -210,7 +210,7 @@ class Event(models.Model):
         count = (
             (1 if self.evt_organization else 0) +
             (1 if self.project else 0) +
-            (1 if self.series else 0) +
+            # (1 if self.series else 0) +
             (1 if self.story else 0)
         )
 

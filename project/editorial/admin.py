@@ -27,7 +27,7 @@ from models import (
     PlatformAccount,
     PrivateMessage,
     Project,
-    Series,
+    # Series,
     SimpleAudio,
     SimpleDocument,
     SimpleImage,
@@ -71,7 +71,7 @@ admin.site.register(Network)
 admin.site.register(Platform)
 admin.site.register(PlatformAccount)
 admin.site.register(Project)
-admin.site.register(Series)
+# admin.site.register(Series)
 admin.site.register(Story)
 admin.site.register(Facet)
 admin.site.register(Task)

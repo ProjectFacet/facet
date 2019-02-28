@@ -9,7 +9,7 @@ from datetime import datetime
 import time
 
 from . import SimpleImage, SimpleDocument, SimpleAudio, SimpleVideo
-from . import User, Organization, Network, Project, Series, Discussion
+from . import User, Organization, Network, Project, Discussion
 
 
 #-----------------------------------------------------------------------#
@@ -31,11 +31,11 @@ class Story(models.Model):
         null=True,
     )
 
-    series = models.ForeignKey(
-        Series,
-        blank=True,
-        null=True,
-    )
+    # series = models.ForeignKey(
+    #     Series,
+    #     blank=True,
+    #     null=True,
+    # )
 
     owner = models.ForeignKey(
         User,
@@ -125,7 +125,7 @@ class Story(models.Model):
     collaborate_with = models.ManyToManyField(
         Organization,
         related_name='story_collaborated_with_organization',
-        help_text='Organization ids that a series is open to collaboration with.',
+        help_text='Organization ids that a story is open to collaboration with.',
         blank=True,
     )
 
@@ -195,8 +195,8 @@ class Story(models.Model):
         story_copy.save()
 
         # clear relationships if they exist
-        if story_copy.series:
-            story_copy.series=None
+        # if story_copy.series:
+        #     story_copy.series=None
         if story_copy.share_with:
             story_copy.share_with.clear()
         if story_copy.collaborate_with:
@@ -235,7 +235,7 @@ class Story(models.Model):
         # print "NAME: ", name
         description = self.story_description.encode('utf-8')
 
-        series_name = self.series.name if self.series else ""
+        # series_name = self.series.name if self.series else ""
 
         story_download = """
         Story\r\n
@@ -243,7 +243,6 @@ class Story(models.Model):
         {name}\r\n
         --------------\r\n
         Description: {desc}\r\n
-        Series: {series}\r\n
         Owner: {owner}\r\n
         Organization: {organization}\r\n
         Original: {original}\r\n
@@ -259,7 +258,7 @@ class Story(models.Model):
         Collaborate: {collaborate}\r\n
         Collaborate With: {collaboratewith}\r\n
         Archived: {archived}\r\n
-        """.format(name=name, desc=description, series=series_name, owner=self.owner, organization=self.organization.name,
+        """.format(name=name, desc=description, owner=self.owner, organization=self.organization.name,
         original=self.original_story, team=team, created=self.creation_date, sensitive=self.sensitive,
         embargo=self.embargo, embargo_dt=self.embargo_datetime, share=self.share,
         sharedate=self.share_with_date, sharewith=share_with, shareready=self.ready_to_share,
@@ -325,7 +324,7 @@ class Story(models.Model):
 
     def get_story_facets_schedule(self):
         """Return deadlines of a story and its facets.
-        Used for inclusion with project and series schedules.
+        Used for inclusion with project schedules.
 
         Includes:
         story_share_date

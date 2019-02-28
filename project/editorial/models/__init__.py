@@ -32,7 +32,7 @@ from .assets import ImageAsset, DocumentAsset, AudioAsset, VideoAsset
 from .assets import SimpleImage, SimpleDocument, SimpleAudio, SimpleVideo
 from .discussion import Discussion, Comment, PrivateMessage
 from .projects import Project
-from .series import Series
+# from .series import Series
 from .story import Story
 from .facets import Facet, FacetTemplate, ContentLicense
 from .notes import Note

@@ -189,8 +189,8 @@ def get_facet_form_for_template(template_id):
                 'sidebar_content': TextInput(attrs={'class': 'form-control', 'rows': 2,
                                                     'placeholder': 'Sidebar content'}),
                 'producer': Select(attrs={'class': 'form-control'}),
-                'series_title': TextInput(
-                    attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Series Title'}),
+                # 'series_title': TextInput(
+                    # attrs={'class': 'form-control', 'rows': 2, 'placeholder': 'Series Title'}),
                 'episode_number': TextInput(attrs={'class': 'form-control', 'rows': 2,
                                                    'placeholder': 'Episode Number'}),
                 'usage_rights': TextInput(

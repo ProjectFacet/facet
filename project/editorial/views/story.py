@@ -27,7 +27,6 @@ from editorial.forms import (
 )
 
 from editorial.models import (
-    Series,
     Story,
     Discussion,
     User)
@@ -111,8 +110,8 @@ class StoryCreateView(CustomUserTest, FormMessagesMixin, CreateView):
 
         return self.request.user.organization.get_org_networks()
 
-    def series(self):
-        return Series.objects.filter(organization=self.request.user.organization)
+    # def series(self):
+    #     return Series.objects.filter(organization=self.request.user.organization)
 
     def projects(self):
         return self.request.user.organization.get_org_projects()

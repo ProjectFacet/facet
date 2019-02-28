@@ -6,7 +6,7 @@ from . import User
 
 #-----------------------------------------------------------------------#
 #   Notes:
-#   Note, NetworkNote, OrganizationNote, UserNote, SeriesNote, StoryNote
+#   Note, NetworkNote, OrganizationNote, UserNote, StoryNote
 #-----------------------------------------------------------------------#
 
 
@@ -51,7 +51,6 @@ class Note(models.Model):
     NETWORK = 'NET'
     USER = 'USER'
     PROJECT = 'PRO'
-    SERIES = 'SER'
     STORY = 'STO'
     TASK = 'TSK'
     EVENT = 'EV'
@@ -61,7 +60,6 @@ class Note(models.Model):
         (NETWORK, 'Network'),
         (USER, 'User'),
         (PROJECT, 'Project'),
-        (SERIES, 'Series'),
         (STORY, 'Story'),
         (TASK, 'Task'),
         (EVENT, 'Event'),

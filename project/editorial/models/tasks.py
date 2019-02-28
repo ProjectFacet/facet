@@ -4,7 +4,7 @@ from django.db import models
 from django.db.models import Q
 
 from . import SimpleImage, SimpleDocument, SimpleAudio, SimpleVideo
-from . import User, Organization, Project, Series, Story
+from . import User, Organization, Project, Story
 
 
 #-----------------------------------------------------------------------#
@@ -14,8 +14,8 @@ from . import User, Organization, Project, Series, Story
 class Task(models.Model):
     """A Task.
 
-    A task is an action item assigned to a project, series,
-    story or an event. A task has an assigned team of users.
+    A task is an action item assigned to a project, story or an event.
+    A task has an assigned team of users.
     """
 
     organization = models.ForeignKey(
@@ -97,12 +97,12 @@ class Task(models.Model):
         null=True,
     )
 
-    series = models.ForeignKey(
-        Series,
-        on_delete=models.CASCADE,
-        blank=True,
-        null=True,
-    )
+    # series = models.ForeignKey(
+    #     Series,
+    #     on_delete=models.CASCADE,
+    #     blank=True,
+    #     null=True,
+    # )
 
     story = models.ForeignKey(
         Story,
@@ -172,14 +172,14 @@ class Task(models.Model):
 
         if self.project:
             parent = self.project
-        elif self.series:
-            parent = self.series
+        # elif self.series:
+        #     parent = self.series
         elif self.story:
             parent = self.story
         else:
             parent = self.event
 
-        if parent.type == "project" or "series" or "story":
+        if parent.type == "project" or "story":
             collaborators = parent.collaborate_with.all()
             owner = parent.organization
             task_vocab = User.objects.filter(Q(Q(organization=self.organization) | Q(organization__in=collaborators) | Q(organization=owner)))
@@ -207,7 +207,6 @@ class Task(models.Model):
 
         count = (
             (1 if self.project else 0) +
-            (1 if self.series else 0) +
             (1 if self.story else 0) +
             (1 if self.event else 0)
         )

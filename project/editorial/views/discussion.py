@@ -30,7 +30,6 @@ from editorial.models import (
     Organization,
     Network,
     Project,
-    Series,
     Story,
     Facet,
     Task,
@@ -135,19 +134,19 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
             action.send(self.request.user, verb="posted", action_object=comment, target=action_target)
             # redirect to the associated object
             return HttpResponseRedirect(reverse('project_detail', args=(project.id,)))
-        elif associated_object == 'series':
-            series_id = self.request.POST.get('series')
-            series = get_object_or_404(Series, id=series_id)
-            discussion = get_object_or_404(Discussion, id=series.discussion.id)
-            comment_text = self.request.POST.get('text')
-            comment = Comment.objects.create_comment(user=self.request.user, discussion=discussion, text=comment_text)
-            # save comment
-            comment.save()
-            # record action for activity stream
-            action_target = series
-            action.send(self.request.user, verb="posted", action_object=comment, target=action_target)
-            # redirect to the associated object
-            return HttpResponseRedirect(reverse('series_detail', args=(series.id,)))
+        # elif associated_object == 'series':
+        #     series_id = self.request.POST.get('series')
+        #     series = get_object_or_404(Series, id=series_id)
+        #     discussion = get_object_or_404(Discussion, id=series.discussion.id)
+        #     comment_text = self.request.POST.get('text')
+        #     comment = Comment.objects.create_comment(user=self.request.user, discussion=discussion, text=comment_text)
+        #     # save comment
+        #     comment.save()
+        #     # record action for activity stream
+        #     action_target = series
+        #     action.send(self.request.user, verb="posted", action_object=comment, target=action_target)
+        #     # redirect to the associated object
+        #     return HttpResponseRedirect(reverse('series_detail', args=(series.id,)))
         elif associated_object == 'story':
             story_id = self.request.POST.get('story')
             story = get_object_or_404(Story, id=story_id)

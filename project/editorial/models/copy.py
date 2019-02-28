@@ -3,7 +3,7 @@ from django.utils.encoding import python_2_unicode_compatible
 
 from . import DocumentAsset, ImageAsset, AudioAsset, VideoAsset
 from . import Facet
-from . import Organization, Series, Story
+from . import Organization, Story
 
 
 #-----------------------------------------------------------------------#
@@ -14,64 +14,64 @@ from . import Organization, Series, Story
 #-----------------------------------------------------------------------#
 
 
-#-----------------------------------------------------------------------#
-#    SERIES
-#-----------------------------------------------------------------------#
-
-class SeriesCopyDetailManager(models.Manager):
-    """Custom manager to create copy records for series. """
-
-    def create_story_copy_record(self, original_org, partner, original_series, partner_series):
-        """Method for quick creation of a copy record."""
-        story_copy_detail=self.create(original_org=original_org, partner=partner, original_series=original_series, partner_series=partner_series)
-        return story_copy_detail
-
-
-@python_2_unicode_compatible
-class SeriesCopyDetail(models.Model):
-    """ The details of each copy of a series.
-
-    Each time an organization elects to copy a shared facet, query to see if the
-    series has already been copied over. If not copy the series and the story to the
-    new organization.
-    """
-
-    original_org = models.ForeignKey(
-        Organization,
-        help_text='Organization that originally created the content.',
-        related_name='original_series_organization',
-    )
-
-    original_series = models.ForeignKey(
-        Series,
-        help_text='Original copy of the series.',
-        related_name='original_series_detail'
-    )
-
-    partner = models.ForeignKey(
-        Organization,
-        help_text='Organization that made the copy.',
-        related_name='series_copying_organization',
-    )
-
-    partner_series = models.ForeignKey(
-        Series,
-        help_text='The new version of the series saved by the partner organization.',
-        related_name='series_copy',
-    )
-
-    copy_date = models.DateTimeField(
-        auto_now_add=True,
-        help_text='Datetime when copy was made.'
-    )
-
-    objects = SeriesCopyDetailManager()
-
-    def __str__(self):
-        return "Copyinfo for {copyorg} \'s copy of series: {series}".format(
-                                copyorg=self.partner.name,
-                                series=self.original_series,
-                                )
+# #-----------------------------------------------------------------------#
+# #    SERIES
+# #-----------------------------------------------------------------------#
+#
+# class SeriesCopyDetailManager(models.Manager):
+#     """Custom manager to create copy records for series. """
+#
+#     def create_story_copy_record(self, original_org, partner, original_series, partner_series):
+#         """Method for quick creation of a copy record."""
+#         story_copy_detail=self.create(original_org=original_org, partner=partner, original_series=original_series, partner_series=partner_series)
+#         return story_copy_detail
+#
+#
+# @python_2_unicode_compatible
+# class SeriesCopyDetail(models.Model):
+#     """ The details of each copy of a series.
+#
+#     Each time an organization elects to copy a shared facet, query to see if the
+#     series has already been copied over. If not copy the series and the story to the
+#     new organization.
+#     """
+#
+#     original_org = models.ForeignKey(
+#         Organization,
+#         help_text='Organization that originally created the content.',
+#         related_name='original_series_organization',
+#     )
+#
+#     original_series = models.ForeignKey(
+#         Series,
+#         help_text='Original copy of the series.',
+#         related_name='original_series_detail'
+#     )
+#
+#     partner = models.ForeignKey(
+#         Organization,
+#         help_text='Organization that made the copy.',
+#         related_name='series_copying_organization',
+#     )
+#
+#     partner_series = models.ForeignKey(
+#         Series,
+#         help_text='The new version of the series saved by the partner organization.',
+#         related_name='series_copy',
+#     )
+#
+#     copy_date = models.DateTimeField(
+#         auto_now_add=True,
+#         help_text='Datetime when copy was made.'
+#     )
+#
+#     objects = SeriesCopyDetailManager()
+#
+#     def __str__(self):
+#         return "Copyinfo for {copyorg} \'s copy of series: {series}".format(
+#                                 copyorg=self.partner.name,
+#                                 series=self.original_series,
+#                                 )
 
 
 #-----------------------------------------------------------------------#
