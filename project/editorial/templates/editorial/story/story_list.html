@@ -32,7 +32,7 @@
           <th class="dark">Story</th>
           <th class="dark">Team</th>
           <th class="dark">Facets</th>
-          <th class="dark">Series | Project</th>
+          <th class="dark">Project</th>
           <th class="dark text-center">Sharing</th>
           <th class="dark text-center">Collaboration</th>
         </tr>
@@ -66,9 +66,7 @@
 
           </td>
           <td>
-            {% if story.series %}
-              Series: {{ story.series.name }}
-            {% elif story.project %}
+            {% if story.project %}
               Project: {{ story.project.name }}
             {% endif %}
           </td>

@@ -22,9 +22,6 @@
         {% if project %}
         <li class="fadeIn"><a href="{% url 'project_list' %}" title="Go to Project List"> Projects </a></li>
         <li class="fadeIn"><a href="{% url 'project_detail' pk=project.id %}" title="Go to {{project.name}}"> {{project.name}} </a></li>
-        {% elif series %}
-        <li class="fadeIn"><a href="{% url 'series_list' %}" title="Go to Series List"> Series </a></li>
-        <li class="fadeIn"><a href="{% url 'series_detail' pk=series.id %}" title="Go to {{series.name}}"> {{series.name}} </a></li>
         {% elif story %}
         <li class="fadeIn"><a href="{% url 'story_list' %}" title="Go to Story List"> Stories </a></li>
         <li class="fadeIn"><a href="{% url 'story_detail' pk=story.id %}" title="Go to {{story.name}}"> {{story.name}} </a></li>
@@ -51,8 +48,6 @@
       <h5 class="m-b-20"> {{ evt_organization.name }} Events<span class="pull-right">Add new event to {{evt_organization.name}} <a data-toggle="modal" data-target="#addEvent" title="Add Organization Event"><i class="m-l-20 fa fa-plus" aria-hidden="true"></i></a></span></h5>
     {% elif project %}
       <h5 class="m-b-20"> {{ project.name }} Events<span class="pull-right">Add new event to {{project.name}} <a data-toggle="modal" data-target="#addEvent" title="Add Project Event"><i class="m-l-20 fa fa-plus" aria-hidden="true"></i></a></span></h5>
-    {% elif series %}
-    <h5 class="m-b-20"> {{ series.name }} Events<span class="pull-right">Add new event to {{series.name}} <a data-toggle="modal" data-target="#addEvent" title="Add Series Event"><i class="m-l-20 fa fa-plus" aria-hidden="true"></i></a></span></h5>
     {% elif story %}
     <h5 class="m-b-20"> {{ story.name }} Events<span class="pull-right">Add new event to {{story.name}} <a data-toggle="modal" data-target="#addEvent" title="Add Story Event"><i class="m-l-20 fa fa-plus" aria-hidden="true"></i></a></span></h5>
     {% endif %}
@@ -243,40 +238,6 @@ $(".chosen-select").chosen()
         });
     })();
 </script>
-{% elif series %}
-<!-- Series Schedule -->
-<script>
-    (function() {
-        'use strict';
-
-        $(function() {
-            var events_array = $.get('{% url "series_event_schedule" series.id %}')
-            $('#calendar').fullCalendar({
-                dayClick: function(date, jsEvent, view) {
-                    console.log('Clicked on: ' + date.format());
-                    console.log('Event: ', jsEvent);
-                    console.log('Coordinates: ' + jsEvent.pageX + ',' + jsEvent.pageY);
-                    console.log('Current view: ' + view.name);
-                    //$(this).css('background-color', 'red');
-                },
-                header: {
-                    left: 'prev,next',
-                    center: '',
-                    right: 'title'
-                },
-                // defaultDate: '2016-03-12',
-                defaultView: 'month',
-                editable: true,
-                events: '{% url "series_event_schedule" series.id %}',
-                // events: [{
-                //     title: 'Click for Google',
-                //     url: 'http://google.com/',
-                //     start: '2016-08-28'
-                // }]
-            });
-        });
-    })();
-</script>
 
 {% elif story %}
 <!-- Story Schedule -->
@@ -414,9 +375,6 @@ $(".chosen-select").chosen()
                   {% elif project %}
                   <input type="hidden" name="association" value="project" />
                   <input type="hidden" name="project" value="{{ project.pk }}" />
-                  {% elif series %}
-                  <input type="hidden" name="association" value="series" />
-                  <input type="hidden" name="series" value="{{ series.pk }}" />
                   {% elif story %}
                   <input type="hidden" name="association" value="story" />
                   <input type="hidden" name="story" value="{{ story.pk }}" />

@@ -52,10 +52,6 @@
                                             {% for project in comment.discussion.project_set.all %}
                                                 <a href="{% url 'project_detail' pk=project.id %}"> {{ project.type }} - {{ project.name }}<span class="color-default">  |  {{ comment.date|date:'N j' }} at {{ comment.date|date:'g:i a' }} </span></a>
                                             {% endfor %}
-                                          {% elif comment.discussion.series_set.all %}
-                                            {% for series in comment.discussion.series_set.all %}
-                                              <a href="{% url 'series_detail' pk=series.id %}"> {{ series.type }} - {{ series.name }}<span class="color-default">  |  {{ comment.date|date:'N j' }} at {{ comment.date|date:'g:i a' }} </span></a>
-                                            {% endfor %}
                                           {% elif comment.discussion.story_set.all %}
                                             {% for story in comment.discussion.story_set.all %}
                                               <a href="{% url 'story_detail' pk=story.id %}"> {{ story.type }} - {{ story.name }}<span class="color-default">  |  {{ comment.date|date:'N j' }} at {{ comment.date|date:'g:i a' }} </span></a>
@@ -82,11 +78,6 @@
                                           {% elif disc.discussion_type == 'PRO' %}
                                             {% for prj in disc.project_set.all %}
                                                 <a href="{% url 'project_detail' pk=prj.id %}"> {{ prj.type }} - {{ prj.name }}<span class="color-default">  |  {{ comment.date|date:'N j' }} at {{ comment.date|date:'g:i a' }} </span></a>
-                                            {% endfor %}
-
-                                          {% elif disc.discussion_type == 'SER' %}
-                                            {% for series in disc.series_set.all %}
-                                              <a href="{% url 'series_detail' pk=series.id %}"> {{ series.type }} - {{ series.name }}<span class="color-default">  |  {{ comment.date|date:'N j' }} at {{ comment.date|date:'g:i a' }} </span></a>
                                             {% endfor %}
 
                                           {% elif disc.discussion_type == 'STO' %}
@@ -122,7 +113,6 @@
                             <p class="f-s-14 subtle text-center italic">It looks like no one has commented on any <a href="{% url 'story_list' %}" title="View Story List" class="default">content</a>, your <a href="{% url 'org_detail' pk=request.user.organization.id %}" class="default">organization</a> or in any <a href="{% url 'network_list' %}" title="View Networks" class="default">networks</a>. Click one of those options to add a comment.</p>
                             {% endif %}
                           {% else %}
-                          <p class="f-s-14 subtle text-center italic">It looks like you don't have any content yet. Click here to add a <a href="{% url 'series_new' %}" title="Create New Series" class="default">series</a> or a <a href="{% url 'story_new' %}" title="Create New Story" class="default">story</a>.</p>
                           <p class="f-s-14 subtle text-center italic">Or welcome your team members to the site on the {% if request.user.organization %}<a href="{% url 'org_detail' pk=request.user.organization.id %}" class="default">organization</a>{% else %}organization {% endif %} page.</p>
                           {% endif %}
                         </div>

@@ -227,8 +227,6 @@
               <a href="{% url 'network_detail' instance.id %}" title="Go to Network"><p class="f-s-14 m-t-10"><i class="fa fa-long-arrow-right subtle m-r-5" aria-hidden="true"></i> Network: {{ instance.name }} </p></a>
             {% elif instance.type == "Project" %}
               <a href="{% url 'project_detail' instance.id %}" title="Go to Project"><p class="f-s-14 m-t-10"><i class="fa fa-long-arrow-right subtle m-r-5" aria-hidden="true"></i> Project: {{ instance.name }} </p></a>
-            {% elif instance.type == "Series" %}
-              <a href="{% url 'series_detail' instance.id %}" title="Go to Series"><p class="f-s-14 m-t-10"><i class="fa fa-long-arrow-right subtle m-r-5" aria-hidden="true"></i> Series: {{ instance.name }} </p></a>
             {% elif instance.type == "Task" %}
               <a href="{% url 'task_detail' instance.id %}" title="Go to Task"><p class="f-s-14 m-t-10"><i class="fa fa-long-arrow-right subtle m-r-5" aria-hidden="true"></i> Task: {{ instance.name }} </p></a>
             {% elif instance.type == "Event" %}

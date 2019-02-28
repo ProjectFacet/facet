@@ -19,10 +19,6 @@
       <li class="fadeIn"><a href="{% url 'project_list' %}" title="Go to project list"> Projects </a></li>
       <li class="fadeIn"><a href="{% url 'project_detail' event.project.id %}" title="Go to Project"> {{ event.project }} </a></li>
       <li class="fadeIn"><a href="{% url 'project_event_list' event.project.id %}" title="Go to Project Events"> Events </a></li>
-      {% elif event.series %}
-      <li class="fadeIn"><a href="{% url 'series_list' %}" title="Go to series list"> Series </a></li>
-      <li class="fadeIn"><a href="{% url 'series_detail' event.series.id %}" title="Go to Series"> {{ event.series }} </a></li>
-      <li class="fadeIn"><a href="{% url 'series_event_list' event.series.id %}" title="Go to Series Events"> Events </a></li>
       {% elif event.story %}
       <li class="fadeIn"><a href="{% url 'story_list' %}" title="Go to story list"> Stories </a></li>
       <li class="fadeIn"><a href="{% url 'story_detail' event.story.id %}" title="Go to Story"> {{ event.story }} </a></li>

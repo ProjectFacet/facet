@@ -94,9 +94,6 @@
       {% if story.project %}
       <a href="{% url 'project_detail' story.project.id %}" title="Go to Project detail"> <p class="f-s-14 f-w-300 thin"> Project: {{ story.project.name }}</p></a>
       {% endif %}
-      {% if story.series %}
-      <a href="{% url 'series_detail' story.series.id %}" title="Go to Series detail"> <p class="f-s-14 f-w-300 thin"> Series: {{ story.series.name }}</p></a>
-      {% endif %}
       <p style="margin-left:-10px;">
         <span class="sameline subtle">{% if story.sensitive == True %} <i class="fa fa-check-square-o subtle"></i>{% else %}  <i class="fa fa-square subtle"></i>{% endif %}</span><span class="f-s-14 f-w-500 slim-margin m-b-10"> Sensitive</span>
         <br><span class="sameline subtle">{% if story.archived == True %} <i class="fa fa-check-square-o subtle"></i>{% else %}<i class="fa fa-square subtle"></i>{% endif %}</span><span class="f-s-14 f-w-500 slim-margin m-b-10"> Archive</span>

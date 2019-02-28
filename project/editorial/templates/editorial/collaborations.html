@@ -43,8 +43,6 @@
             <td><a href="{% url 'project_detail' pk=item.id %}">Project: {{item.name}}</a></td>
             <td>{{ item.description }}</td>
             <td>{{ item.organization }}</td>
-            {% elif item.type == "Series" %}
-            <td><a href="{% url 'series_detail' pk=item.id %}">Series: {{item.name}}</a></td>
             <td>{{ item.description }}</td>
             <td>{{ item.organization }}</td>
             {% elif item.type == "Story" %}
@@ -57,7 +55,7 @@
         </tbody>
       </table>
       {% else %}
-        <p class="f-s-18 subtle text-center italic m-b-40 m-t-40">Welcome to the Collaborations page. This is where you will see all of the current active collaborations including your organization. Click here to add a new collaborative <a href="{% url 'series_new' %}" title="Create New Series" class="default">series</a> or <a href="{% url 'story_new' %}" title="Create New Story" class="default">story</a>.</p>
+        <p class="f-s-18 subtle text-center italic m-b-40 m-t-40">Welcome to the Collaborations page. This is where you will see all of the current active collaborations including your organization. Click here to add a new collaborative <a href="{% url 'project_new' %}" title="Create New Project" class="default">project</a> or <a href="{% url 'story_new' %}" title="Create New Story" class="default">story</a>.</p>
       {% endif %}
   </div>
 </div>

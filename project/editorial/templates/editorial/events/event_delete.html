@@ -30,11 +30,6 @@
           <li class="fadeIn"><a href="#" title="Go to Project Events"> Events </a></li>
           <li class="fadeIn"> {{  event.name }}</li>
           <li class="fadeIn"> Update</li>
-        {% elif event.series %}
-          <li class="fadeIn"><a href="{% url 'series_detail' pk=event.series.id %}" title="Go to {{ event.series.name}}"> {{ event.series.name}} </a></li>
-          <li class="fadeIn"><a href="#" title="Go to Series Events"> Events </a></li>
-          <li class="fadeIn"> {{ event.name}} </li>
-          <li class="fadeIn"> Update</li>
         {% elif event.story %}
           <li class="fadeIn"><a href="{% url 'story_detail' pk=event.story.id %}" title="Go to {{ event.story.name}}"> {{ event.story.name}} </a></li>
           <li class="fadeIn"><a href="#" title="Go to Story Events"> Events </a></li>

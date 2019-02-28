@@ -20,11 +20,6 @@
             <li class="fadeIn"><a href="{% url 'project_event_list' pk=event.project.id %}" title="Go to Project Events"> Events </a></li>
             <li class="fadeIn"> {{  event.name }}</li>
             <li class="fadeIn"> Update</li>
-          {% elif event.series %}
-            <li class="fadeIn"><a href="{% url 'series_detail' pk=event.series.id %}" title="Go to {{ event.series.name}}"> {{ event.series.name}} </a></li>
-            <li class="fadeIn"><a href="{% url 'series_event_list' pk=event.series.id %}" title="Go to Series Events"> Events </a></li>
-            <li class="fadeIn"> {{ event.name}} </li>
-            <li class="fadeIn"> Update</li>
           {% elif event.story %}
             <li class="fadeIn"><a href="{% url 'story_detail' pk=event.story.id %}" title="Go to {{ event.story.name}}"> {{ event.story.name}} </a></li>
             <li class="fadeIn"><a href="{% url 'story_event_list' pk=event.story.id %}" title="Go to Story Events"> Events </a></li>
@@ -69,7 +64,7 @@
 </div>
 
 
-<!-- The html for detail form is same regardless of associated object: Project, Series, Story or Event -->
+<!-- The html for detail form is same regardless of associated object: Project, Story or Event -->
 <div class="row">
   <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
     <div class="form-row">
@@ -155,7 +150,7 @@
       </div>
       <div class="row">
         <div class="col-xs-12 m-b-40">
-            <p class="f-s-14 subtle">Associate the event with an Organization Project, Series or Story.</p>
+            <p class="f-s-14 subtle">Associate the event with an Organization Project or Story.</p>
             <!-- Organization Select -->
             <div class="form-group" id="fieldset-event-projects">
               {{ form.evt_organization }}
@@ -168,13 +163,6 @@
               {{ form.project }}
               {% if form.project.errors %}
                 <small class="text-muted">{{ form.project.errors }}</small>
-              {% endif %}
-            </div>
-            <!-- Series Select -->
-            <div class="form-group" id="fieldset-event-series">
-              {{ form.series }}
-              {% if form.series.errors %}
-                <small class="text-muted">{{ form.series.errors }}</small>
               {% endif %}
             </div>
             <!-- Story Select -->

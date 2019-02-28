@@ -18,12 +18,6 @@
           <li class="fadeIn"><a href="{% url 'project_task_list' pk=task.project.id %}" title="Go to {{task.project.name}} Tasks"> Tasks </a></li>
           <li class="fadeIn"> {{ task.name }}</li>
           <li class="fadeIn"> Update</li>
-          {% elif task.series %}
-          <li class="fadeIn"><a href="{% url 'series_list' %}" title="Go to Series List"> Series </a></li>
-          <li class="fadeIn"><a href="{% url 'series_detail' pk=task.series.id %}" title="Go to {{task.series.name}}"> {{task.series.name}} </a></li>
-          <li class="fadeIn"><a href="{% url 'series_task_list' pk=task.series.id %}" title="Go to {{task.series.name}} Tasks"> Tasks </a></li>
-          <li class="fadeIn"> {{ task.name }}</li>
-          <li class="fadeIn"> Update</li>
           {% elif task.story %}
           <li class="fadeIn"><a href="{% url 'story_list' %}" title="Go to Story List"> Stories </a></li>
           <li class="fadeIn"><a href="{% url 'story_detail' pk=task.story.id %}" title="Go to {{task.story.name}}"> {{task.story.name}} </a></li>
@@ -76,7 +70,7 @@
 </div>
 
 
-<!-- The html for detail form is same regardless of associated object: Project, Series, Story or Event -->
+<!-- The html for detail form is same regardless of associated object: Project, Story or Event -->
 <div class="row">
   <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
     <div class="form-row">
@@ -173,7 +167,7 @@
       </div>
       <div class="row">
         <div class="col-xs-12 m-b-40">
-          <p class="f-s-14 subtle">Associate the task with a Project, Series, Story or Event</p>
+          <p class="f-s-14 subtle">Associate the task with a Project, Story or Event</p>
           <!-- Project Select -->
           <div class="form-group" id="fieldset-task-projects">
             {% comment %}
@@ -182,16 +176,6 @@
             {{ form.project }}
             {% if form.project.errors %}
               <small class="text-muted">{{ form.project.errors }}</small>
-            {% endif %}
-          </div>
-          <!-- Series Select -->
-          <div class="form-group" id="fieldset-task-series">
-            {% comment %}
-              <label class="capitalize pull-left subtle f-s-14">{{ form.series.label_tag }}</label>
-            {% endcomment %}
-            {{ form.series }}
-            {% if form.series.errors %}
-              <small class="text-muted">{{ form.series.errors }}</small>
             {% endif %}
           </div>
           <!-- Story Select -->

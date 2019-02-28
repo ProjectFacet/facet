@@ -41,7 +41,7 @@
 
                           def get-thing-to-loop-over(self):
                              if comment is discussion: return self.org_discussion.all()
-                             else if comment is series: ...
+                             else if comment is: ...
                     {% endcomment %}
 
                   {% if comment.discussion.organization_discussion.all %}
@@ -55,10 +55,6 @@
                   {% elif comment.discussion.project_set.all %}
                     {% for project in comment.discussion.project_set.all %}
                       <a href="{% url 'project_detail' pk=project.id %}"> {{ project.type }} - {{ project.name }}<span class="color-default">  |  {{ comment.date|date:'N j' }} at {{ comment.date|date:'g:i a' }} </span></a>
-                    {% endfor %}
-                  {% elif comment.discussion.series_set.all %}
-                    {% for series in comment.discussion.series_set.all %}
-                      <a href="{% url 'series_detail' pk=series.id %}"> {{ series.type }} - {{ series.name }}<span class="color-default">  |  {{ comment.date|date:'N j' }} at {{ comment.date|date:'g:i a' }} </span></a>
                     {% endfor %}
                   {% elif comment.discussion.story_set.all %}
                     {% for story in comment.discussion.story_set.all %}

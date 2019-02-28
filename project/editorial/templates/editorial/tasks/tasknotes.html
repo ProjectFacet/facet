@@ -15,10 +15,6 @@
     <li class="fadeIn"><a href="{% url 'project_list' %}" title="Go to project list"> Projects </a></li>
     <li class="fadeIn"><a href="{% url 'project_detail' task.project.id %}" title="Go to Project"> {{ task.project }} </a></li>
     <li class="fadeIn"><a href="{% url 'project_task_list' task.project.id %}" title="Go to Project Tasks"> Tasks </a></li>
-    {% elif task.series %}
-    <li class="fadeIn"><a href="{% url 'series_list' %}" title="Go to series list"> Series </a></li>
-    <li class="fadeIn"><a href="{% url 'series_detail' task.series.id %}" title="Go to Series"> {{ task.series }} </a></li>
-    <li class="fadeIn"><a href="{% url 'series_task_list' task.series.id %}" title="Go to Series Tasks"> Tasks </a></li>
     {% elif task.story %}
     <li class="fadeIn"><a href="{% url 'story_list' %}" title="Go to story list"> Stories </a></li>
     <li class="fadeIn"><a href="{% url 'story_detail' task.story.id %}" title="Go to Story"> {{ task.story }} </a></li>

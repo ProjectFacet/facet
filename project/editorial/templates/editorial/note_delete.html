@@ -39,12 +39,6 @@
       <li class="fadeIn"><a href="{% url 'project_note_list' note.project_set.first.id %}" title="Go to {{note.project_set.first.name}} Notes"> Notes </a></li>
       <li class="fadeIn"> {{ note.title }}</li>
       <li class="fadeIn"> Delete </li>
-    {% elif note.series_set.all %}
-      <li class="fadeIn"><a href="{% url 'series_list' %}" title="Go to Series List"> Series </a></li>
-      <li class="fadeIn"><a href="{% url 'series_detail' note.series_set.first.id %}" title="Go to {{note.series_set.first.name}}"> {{note.series_set.first.name}} </a></li>
-      <li class="fadeIn"><a href="{% url 'series_note_list' note.series_set.first.id %}" title="Go to {{note.series_set.first.name}} Notes"> Notes </a></li>
-      <li class="fadeIn"> {{ note.title }}</li>
-      <li class="fadeIn"> Delete </li>
     {% elif note.story_set.all %}
       <li class="fadeIn"><a href="{% url 'story_list' %}" title="Go to Story List"> Stories </a></li>
       <li class="fadeIn"><a href="{% url 'story_detail' note.story_set.first.id %}" title="Go to {{note.story_set.first.name}}"> {{note.story_set.first.name}} </a></li>

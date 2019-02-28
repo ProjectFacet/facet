@@ -135,7 +135,6 @@
                             <a class="dropdown-item" href="{% url 'schedule' %}" title="View Schedule"> <span class="title">Schedule</span> </a>
                             {% endcomment %}
                             <a class="dropdown-item" href="{% url 'project_list' %}" title="View Project List"> <span class="title">Projects</span> </a>
-                            <a class="dropdown-item" href="{% url 'series_list' %}" title="View Series List"> <span class="title">Series</span> </a>
                             <a class="dropdown-item" href="{% url 'story_list' %}" title="View Story List"> <span class="title">Stories</span> </a>
                             {% if request.user.organization %}
                             <a class="dropdown-item" href="{% url 'facet_template_list' org=request.user.organization_id %}" title="See all Facet Templates"> <span class="title">Facet Templates</span> </a>
@@ -188,7 +187,6 @@
                         <a class="nav-link dropdown-toggle no-after f-s-16" data-toggle="dropdown"> Create New Content </a>
                         <div class="dropdown-menu dropdown-menu-scale from-right dropdown-menu-right">
                             <a class="dropdown-item" href="{% url 'project_new' %}" title="Create New Project"> </span> <span class="title"> New Project </span> </a>
-                            <a class="dropdown-item" href="{% url 'series_new' %}" title="Create New Series"> <span class="title"> New Series </span> </a>
                             <a class="dropdown-item" href="{% url 'story_new' %}" title="Create New Story"> </span> <span class="title"> New Story </span> </a>
                         </div>
                     </li>
