@@ -14,7 +14,7 @@ from . import User, Organization, Project, Story
 class Event(models.Model):
     """An event.
 
-    An event can be assigned to an Organization, Project, Series or Story.
+    An event can be assigned to an Organization, Project or Story.
     """
 
     organization = models.ForeignKey(
@@ -97,7 +97,7 @@ class Event(models.Model):
     )
 
 
-    # an event can be associated with an organization, project, series or story.
+    # an event can be associated with an organization, project or story.
     # this can be different than organization that makes the event in the db
     # ex. a user from an org partnering with other orgs is the one to make the event
     # that's being hosted by another organization for the collaborative project.
@@ -115,13 +115,6 @@ class Event(models.Model):
         blank=True,
         null=True,
     )
-
-    # series = models.ForeignKey(
-    #     Series,
-    #     on_delete=models.CASCADE,
-    #     blank=True,
-    #     null=True,
-    # )
 
     story = models.ForeignKey(
         Story,
@@ -175,8 +168,6 @@ class Event(models.Model):
             parent = self.evt_organization
         elif self.project:
             parent = self.project
-        # elif self.series:
-        #     parent = self.project
         elif self.story:
             parent = self.story
 
@@ -210,7 +201,6 @@ class Event(models.Model):
         count = (
             (1 if self.evt_organization else 0) +
             (1 if self.project else 0) +
-            # (1 if self.series else 0) +
             (1 if self.story else 0)
         )
 

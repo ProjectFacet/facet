@@ -38,7 +38,6 @@ from editorial.models import (
     Assignment,
     Project,
     Story,
-    # Series,
     Event,
     Task,
     Organization,
@@ -730,7 +729,7 @@ class SimpleImageCreateView(LoginRequiredMixin, CreateView):
         """Save -- but first add owner and org to the image.
         And then connect the image to whatever object it is associated with.
 
-        Simple images can be connected to Projects, Series, Stories, Tasks, Events.
+        Simple images can be connected to Projects, Stories, Tasks, Events.
         Pitches, Calls and Assignments.
         """
 
@@ -755,17 +754,6 @@ class SimpleImageCreateView(LoginRequiredMixin, CreateView):
             action.send(self.request.user, verb="uploaded image", action_object=image, target=action_target)
             # redirect to the associated object
             return HttpResponseRedirect(reverse('project_detail', args=(project.id,)))
-        # elif associated_object == 'series':
-        #     series_id = self.request.POST.get('series')
-        #     series = get_object_or_404(Series, id=series_id)
-        #     # add simple image to the associated object
-        #     series.simple_image_assets.add(image)
-        #     series.save()
-        #     action_target = series
-        #     # record action for activity stream
-        #     action.send(self.request.user, verb="uploaded image", action_object=image, target=action_target)
-        #     # redirect to the associated object
-        #     return HttpResponseRedirect(reverse('series_detail', args=(series.id,)))
         elif associated_object == 'story':
             story_id = self.request.POST.get('story')
             story = get_object_or_404(Story, id=story_id)
@@ -894,11 +882,6 @@ class SimpleImageLibraryAssociateView(LoginRequiredMixin, FormView):
             project.simple_image_assets.add(*simpleimages)
             action.send(self.request.user, verb="added simple images", target=project)
             return redirect('project_detail', pk=project.id)
-        # if association == "series":
-        #     series = Series.objects.get(id=association_id)
-        #     series.simple_image_assets.add(*simpleimages)
-        #     action.send(self.request.user, verb="added simple images", target=series)
-        #     return redirect('series_detail', pk=series.id)
         if association == "task":
             task = Task.objects.get(id=association_id)
             task.simple_image_assets.add(*simpleimages)
@@ -949,7 +932,7 @@ class SimpleImageAssetDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteVi
 
 class SimpleImageAssetDisassociateView(LoginRequiredMixin, View):
     """ Process form to remove a simple asset from an associated Organization, Network,
-    Project, Series, Story, Task or Event.
+    Project, Story, Task or Event.
     """
 
     def post(self, request, simpleimage):
@@ -972,10 +955,6 @@ class SimpleImageAssetDisassociateView(LoginRequiredMixin, View):
             project = Project.objects.get(id=association_id)
             project.simple_image_assets.remove(simpleimage)
             return redirect('project_detail', pk=project.id)
-        # elif association == 'series':
-        #     series = Series.objects.get(id=association_id)
-        #     series.simple_image_assets.remove(simpleimage)
-        #     return redirect('series_detail', pk=series.id)
         elif association == 'task':
             task = Task.objects.get(id=association_id)
             task.simple_image_assets.remove(simpleimage)
@@ -997,7 +976,7 @@ class SimpleDocumentCreateView(LoginRequiredMixin, CreateView):
         """Save -- but first add owner and org to the document.
         And then connect the document to whatever object it is associated with.
 
-        Simple documents can be connected to Projects, Series, Stories, Tasks, Events.
+        Simple documents can be connected to Projects, Stories, Tasks, Events.
         Pitches, Calls and Assignments.
         """
 
@@ -1024,18 +1003,6 @@ class SimpleDocumentCreateView(LoginRequiredMixin, CreateView):
             action.send(self.request.user, verb="uploaded document", action_object=document, target=action_target)
             # redirect to the associated object
             return HttpResponseRedirect(reverse('project_detail', args=(project.id,)))
-        # elif associated_object == 'series':
-        #     series_id = self.request.POST.get('series')
-        #     series = get_object_or_404(Series, id=series_id)
-        #     # add simple document to the associated object
-        #     series.simple_document_assets.add(document)
-        #     series.save()
-        #
-        #     action_target = series
-        #     # record action for activity stream
-        #     action.send(self.request.user, verb="uploaded document", action_object=document, target=action_target)
-        #     # redirect to the associated object
-        #     return HttpResponseRedirect(reverse('series_detail', args=(series.id,)))
         elif associated_object == 'story':
             story_id = self.request.POST.get('story')
             story = get_object_or_404(Story, id=story_id)
@@ -1204,11 +1171,6 @@ class SimpleDocumentLibraryAssociateView(LoginRequiredMixin, FormView):
             project.simple_document_assets.add(*simpledocuments)
             action.send(self.request.user, verb="added simple documents", target=project)
             return redirect('project_detail', pk=project.id)
-        # if association == "series":
-        #     series = Series.objects.get(id=association_id)
-        #     series.simple_document_assets.add(*simpledocuments)
-        #     action.send(self.request.user, verb="added simple documents", target=series)
-        #     return redirect('series_detail', pk=series.id)
         if association == "task":
             task = Task.objects.get(id=association_id)
             task.simple_document_assets.add(*simpledocuments)
@@ -1223,7 +1185,7 @@ class SimpleDocumentLibraryAssociateView(LoginRequiredMixin, FormView):
 
 class SimpleDocumentAssetDisassociateView(LoginRequiredMixin, View):
     """ Process form to remove a simple asset from an associated Organization, Network,
-    Project, Series, Story, Task or Event.
+    Project, Story, Task or Event.
     """
 
     def post(self, request, simpledocument):
@@ -1246,10 +1208,6 @@ class SimpleDocumentAssetDisassociateView(LoginRequiredMixin, View):
             project = Project.objects.get(id=association_id)
             project.simple_document_assets.remove(simpledocument)
             return redirect('project_detail', pk=project.id)
-        # elif association == 'series':
-        #     series = Series.objects.get(id=association_id)
-        #     series.simple_document_assets.remove(simpledocument)
-        #     return redirect('series_detail', pk=series.id)
         elif association == 'task':
             task = Task.objects.get(id=association_id)
             task.simple_document_assets.remove(simpledocument)
@@ -1271,7 +1229,7 @@ class SimpleAudioCreateView(LoginRequiredMixin, CreateView):
         """Save -- but first add owner and org to the audio.
         And then connect the audio to whatever object it is associated with.
 
-        Simple audio can be connected to Projects, Series, Stories, Tasks, Events.
+        Simple audio can be connected to Projects, Stories, Tasks, Events.
         Pitches, Calls and Assignments.
         """
 
@@ -1296,17 +1254,6 @@ class SimpleAudioCreateView(LoginRequiredMixin, CreateView):
             action.send(self.request.user, verb="uploaded audio", action_object=audio, target=action_target)
             # redirect to the associated object
             return HttpResponseRedirect(reverse('project_detail', args=(project.id,)))
-        # elif associated_object == 'series':
-        #     series_id = self.request.POST.get('series')
-        #     series = get_object_or_404(Series, id=series_id)
-        #     # add simple audio to the associated object
-        #     series.simple_audio_assets.add(audio)
-        #     series.save()
-        #     action_target = series
-        #     # record action for activity stream
-        #     action.send(self.request.user, verb="uploaded audio", action_object=audio, target=action_target)
-        #     # redirect to the associated object
-        #     return HttpResponseRedirect(reverse('series_detail', args=(series.id,)))
         elif associated_object == 'story':
             story_id = self.request.POST.get('story')
             story = get_object_or_404(Story, id=story_id)
@@ -1450,11 +1397,6 @@ class SimpleAudioLibraryAssociateView(LoginRequiredMixin, FormView):
             project.simple_audio_assets.add(*simpleaudio)
             action.send(self.request.user, verb="added simple audios", target=project)
             return redirect('project_detail', pk=project.id)
-        # if association == "series":
-        #     series = Series.objects.get(id=association_id)
-        #     series.simple_audio_assets.add(*simpleaudio)
-        #     action.send(self.request.user, verb="added simple audios", target=series)
-        #     return redirect('series_detail', pk=series.id)
         if association == "task":
             task = Task.objects.get(id=association_id)
             task.simple_audio_assets.add(*simpleaudio)
@@ -1469,7 +1411,7 @@ class SimpleAudioLibraryAssociateView(LoginRequiredMixin, FormView):
 
 class SimpleAudioAssetDisassociateView(LoginRequiredMixin, View):
     """ Process form to remove a simple asset from an associated Organization, Network,
-    Project, Series, Story, Task or Event.
+    Project, Story, Task or Event.
     """
 
     def post(self, request, simpleaudio):
@@ -1492,10 +1434,6 @@ class SimpleAudioAssetDisassociateView(LoginRequiredMixin, View):
             project = Project.objects.get(id=association_id)
             project.simple_audio_assets.remove(simpleaudio)
             return redirect('project_detail', pk=project.id)
-        # elif association == 'series':
-        #     series = Series.objects.get(id=association_id)
-        #     series.simple_audio_assets.remove(simpleaudio)
-        #     return redirect('series_detail', pk=series.id)
         elif association == 'task':
             task = Task.objects.get(id=association_id)
             task.simple_audio_assets.remove(simpleaudio)
@@ -1516,7 +1454,7 @@ class SimpleVideoCreateView(LoginRequiredMixin, CreateView):
         """Save -- but first add owner and org to the video.
         And then connect the video to whatever object it is associated with.
 
-        Simple videos can be connected to Projects, Series, Stories, Tasks, Events.
+        Simple videos can be connected to Projects, Stories, Tasks, Events.
         Pitches, Calls and Assignments.
         """
 
@@ -1541,17 +1479,6 @@ class SimpleVideoCreateView(LoginRequiredMixin, CreateView):
             action.send(self.request.user, verb="uploaded video", action_object=video, target=action_target)
             # redirect to the associated object
             return HttpResponseRedirect(reverse('project_detail', args=(project.id,)))
-        # elif associated_object == 'series':
-        #     series_id = self.request.POST.get('series')
-        #     series = get_object_or_404(Series, id=series_id)
-        #     # add simple video to the associated object
-        #     series.simple_video_assets.add(video)
-        #     series.save()
-        #     action_target = series
-        #     # record action for activity stream
-        #     action.send(self.request.user, verb="uploaded video", action_object=video, target=action_target)
-        #     # redirect to the associated object
-        #     return HttpResponseRedirect(reverse('series_detail', args=(series.id,)))
         elif associated_object == 'story':
             story_id = self.request.POST.get('story')
             story = get_object_or_404(Story, id=story_id)
@@ -1695,11 +1622,6 @@ class SimpleVideoLibraryAssociateView(LoginRequiredMixin, FormView):
             project.simple_video_assets.add(*simplevideo)
             action.send(self.request.user, verb="added simple videos", target=project)
             return redirect('project_detail', pk=project.id)
-        # if association == "series":
-        #     series = Series.objects.get(id=association_id)
-        #     series.simple_video_assets.add(*simplevideo)
-        #     action.send(self.request.user, verb="added simple videos", target=series)
-        #     return redirect('series_detail', pk=series.id)
         if association == "task":
             task = Task.objects.get(id=association_id)
             task.simple_video_assets.add(*simplevideo)
@@ -1714,7 +1636,7 @@ class SimpleVideoLibraryAssociateView(LoginRequiredMixin, FormView):
 
 class SimpleVideoAssetDisassociateView(LoginRequiredMixin, View):
     """ Process form to remove a simple asset from an associated Organization, Network,
-    Project, Series, Story, Task or Event.
+    Project, Story, Task or Event.
     """
 
     def post(self, request, simplevideo):
@@ -1737,10 +1659,6 @@ class SimpleVideoAssetDisassociateView(LoginRequiredMixin, View):
             project = Project.objects.get(id=association_id)
             project.simple_video_assets.remove(simplevideo)
             return redirect('project_detail', pk=project.id)
-        # elif association == 'series':
-        #     series = Series.objects.get(id=association_id)
-        #     series.simple_video_assets.remove(simplevideo)
-        #     return redirect('series_detail', pk=series.id)
         elif association == 'task':
             task = Task.objects.get(id=association_id)
             task.simple_video_assets.remove(simplevideo)

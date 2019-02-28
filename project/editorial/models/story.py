@@ -31,12 +31,6 @@ class Story(models.Model):
         null=True,
     )
 
-    # series = models.ForeignKey(
-    #     Series,
-    #     blank=True,
-    #     null=True,
-    # )
-
     owner = models.ForeignKey(
         User,
         related_name='story_owner',
@@ -195,8 +189,6 @@ class Story(models.Model):
         story_copy.save()
 
         # clear relationships if they exist
-        # if story_copy.series:
-        #     story_copy.series=None
         if story_copy.share_with:
             story_copy.share_with.clear()
         if story_copy.collaborate_with:
@@ -234,8 +226,6 @@ class Story(models.Model):
         name = self.name.encode('utf-8')
         # print "NAME: ", name
         description = self.story_description.encode('utf-8')
-
-        # series_name = self.series.name if self.series else ""
 
         story_download = """
         Story\r\n

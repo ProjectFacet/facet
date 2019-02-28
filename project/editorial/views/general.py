@@ -105,12 +105,10 @@ class DashboardTemplateView(LoginRequiredMixin, TemplateView):
             # query for any new content created since last_login
             new_stories = Story.objects.filter(creation_date__gte=user.last_login)[:8]
             # new_projects = Project.objects.filter(creation_date__gte = self.request.user.last_login)[:8]
-            # new_series = Series.objects.filter(creation_date__gte = self.request.user.last_login)[:8]
 
             # if no new, display 10 most recent stories
             recent_stories = Story.objects.filter(organization=org)[:10]
             # recent_projects = Project.objects.filter(organization = self.request.user.organization)[:10]
-            # recent_series = Series.objects.filter(organization = self.request.user.organization)[:10]
 
             copied_shared_stories = StoryCopyDetail.objects.filter(original_org=org)
 
@@ -185,7 +183,7 @@ class TeamTemplateView(LoginRequiredMixin, TemplateView):
 
 # ACCESS: All org users have access to their org's list of collaborations.
 class CollaborationTemplateView(LoginRequiredMixin, TemplateView):
-    """Return dashboard of series and stories that are part of a collaboration."""
+    """Return dashboard of projects and stories that are part of a collaboration."""
 
     template_name = 'editorial/collaborations.html'
 

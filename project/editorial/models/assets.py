@@ -48,7 +48,7 @@ class BaseAsset(models.Model):
         help_text='When the asset was created.'
     )
 
-    # TODO: Addition of sensitive status. If an image is added to a Project or Series
+    # TODO: Addition of sensitive status. If an image is added to a Project
     # that is marked sensitive, or to a task or even that are part of senstive Projects,
     # the image should be changed to sensitive.
     # Sensitive images should be excluded from the library and "image add" forms.
@@ -222,20 +222,18 @@ class SimpleImage(BaseImage):
     """Simple image (with some metadata) for attaching to tasks, events, etc."""
 
     def get_usage(self):
-        """Return Organizations, Networks, Projects, Series, Events and Tasks
+        """Return Organizations, Networks, Projects, Events and Tasks
         the simple asset is associated with."""
 
         associations = []
         orgs = self.organization_simple_image.all()
         networks = self.network_set.all()
         projects = self.project_set.all()
-        # series = self.series_set.all()
         events = self.event_set.all()
         tasks = self.event_set.all()
         associations.extend(orgs)
         associations.extend(networks)
         associations.extend(projects)
-        # associations.extend(series)
         associations.extend(events)
         associations.extend(tasks)
 
@@ -325,20 +323,18 @@ class SimpleDocument(BaseDocumentAsset):
     """Simple Document (file upload, attached to events, tasks, etc.)"""
 
     def get_usage(self):
-        """Return Organizations, Networks, Projects, Series, Events and Tasks
+        """Return Organizations, Networks, Projects, Events and Tasks
         the simple asset is associated with."""
 
         associations = []
         orgs = self.organization_simple_document.all()
         networks = self.network_set.all()
         projects = self.project_set.all()
-        # series = self.series_set.all()
         events = self.event_set.all()
         tasks = self.event_set.all()
         associations.extend(orgs)
         associations.extend(networks)
         associations.extend(projects)
-        # associations.extend(series)
         associations.extend(events)
         associations.extend(tasks)
 
@@ -428,20 +424,18 @@ class SimpleAudio(BaseAudio):
     """Simple Audio (attaches to an event, task, etc.)"""
 
     def get_usage(self):
-        """Return Organizations, Networks, Projects, Series, Events and Tasks
+        """Return Organizations, Networks, Projects, Events and Tasks
         the simple asset is associated with."""
 
         associations = []
         orgs = self.organization_simple_audio.all()
         networks = self.network_set.all()
         projects = self.project_set.all()
-        # series = self.series_set.all()
         events = self.event_set.all()
         tasks = self.event_set.all()
         associations.extend(orgs)
         associations.extend(networks)
         associations.extend(projects)
-        # associations.extend(series)
         associations.extend(events)
         associations.extend(tasks)
 
@@ -534,20 +528,18 @@ class SimpleVideo(BaseVideo):
     """Uploaded video (attaches to tasks, events, etc)"""
 
     def get_usage(self):
-        """Return Organizations, Networks, Projects, Series, Events and Tasks
+        """Return Organizations, Networks, Projects, Events and Tasks
         the simple asset is associated with."""
 
         associations = []
         orgs = self.organization_simple_video.all()
         networks = self.network_set.all()
         projects = self.project_set.all()
-        # series = self.series_set.all()
         events = self.event_set.all()
         tasks = self.event_set.all()
         associations.extend(orgs)
         associations.extend(networks)
         associations.extend(projects)
-        # associations.extend(series)
         associations.extend(events)
         associations.extend(tasks)
 

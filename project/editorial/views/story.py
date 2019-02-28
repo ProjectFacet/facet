@@ -73,10 +73,10 @@ class StoryListView(CustomUserTest, ListView):
 
 
 # ACCESS: Any org user should be able to create a story for their org.
-# Any user of an org that's part of collaborate_with on a project or series should
-# be able to create a story for that project or series.
-# Future: A contractor with access to a project or series should be able to create
-# a story for that project or series.
+# Any user of an org that's part of collaborate_with on a project should
+# be able to create a story for that project.
+# Future: A contractor with access to a project should be able to create
+# a story for that project.
 class StoryCreateView(CustomUserTest, FormMessagesMixin, CreateView):
     """Create a story."""
 
@@ -109,9 +109,6 @@ class StoryCreateView(CustomUserTest, FormMessagesMixin, CreateView):
         """Get list of networks for the current user."""
 
         return self.request.user.organization.get_org_networks()
-
-    # def series(self):
-    #     return Series.objects.filter(organization=self.request.user.organization)
 
     def projects(self):
         return self.request.user.organization.get_org_projects()
@@ -181,10 +178,10 @@ class StoryUpdateView(CustomUserTest, FormMessagesMixin, UpdateView):
 
 
 # ACCESS: Any org user should be able to view a story for their org unless the story is marked sensitive.
-# Any user of an org that's part of collaborate_with on a project or series or story should
-# be able to view the stories of the project, series or a collaborative story.
-# Future: A contractor with access to a project or series or story should be able to view the
-# stories of that project or series or the specific story.
+# Any user of an org that's part of collaborate_with on a project or story should
+# be able to view the stories of the project or a collaborative story.
+# Future: A contractor with access to a project or story should be able to view the
+# stories of that project or the specific story.
 class StoryDetailView(CustomUserTest, DetailView):
     """Show all the details and related items for a story."""
 

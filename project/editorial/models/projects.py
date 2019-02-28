@@ -17,9 +17,9 @@ from . import User, Organization, Network
 class Project(models.Model):
     """A project.
 
-    Projects are a large-scale organizational component made up of multiple series and/or
-    stories. The primary use is as an organization mechanism for large scale complex
-    collaborative projects. Projects can have series, stories, assets, notes, discussions,
+    Projects are a large-scale organizational component made up of multiple stories.
+    The primary use is as an organization mechanism for large scale complex
+    collaborative projects. Projects can have stories, assets, notes, discussions,
     governing documents, events, calendars and meta information.
     """
 

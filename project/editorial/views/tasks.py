@@ -163,9 +163,6 @@ class TaskDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteView):
         if self.object.project:
             project = self.object.project
             return reverse('project_task_list', kwargs={'pk': project.id})
-        # if self.object.series:
-        #     series = self.object.series
-        #     return reverse('series_task_list', kwargs={'pk': series.id})
         if self.object.story:
             story = self.object.story
             return reverse('story_task_list', kwargs={'pk': story.id})
@@ -220,51 +217,6 @@ class ProjectTaskView(LoginRequiredMixin, FormMessagesMixin, CreateView):
         context['inprogress_ct'] = inprogress_ct
         context['complete_ct'] = complete_ct
         return context
-
-
-# ACCESS: Any org user should be able to view/create a task associated a series owned
-# by their organization
-# A user from an organization that is in collaborate_with on a series
-# should be able to view/create a task for a series they have access to.
-# class SeriesTaskView(LoginRequiredMixin, FormMessagesMixin, CreateView):
-#     """Create a series task."""
-#
-#     context_object_name = 'tasks'
-#     template_name = 'editorial/tasks/task_list.html'
-#     form_class = TaskForm
-#
-#     form_invalid_message = "Something went wrong. Check the form."
-#     form_valid_message = "Task created."
-#
-#     def get_form_kwargs(self):
-#         """Pass organization to form."""
-#
-#         kw = super(SeriesTaskView, self).get_form_kwargs()
-#         kw.update({'organization': self.request.user.organization})
-#         return kw
-#
-#     def get_context_data(self, **kwargs):
-#         """Return tasks belonging to the story."""
-#
-#         context = super(SeriesTaskView, self).get_context_data(**kwargs)
-#         series = get_object_or_404(Series, id=self.kwargs['pk'])
-#         tasks = series.task_set.all()
-#         count = tasks.count()
-#         identified_ct = series.task_set.filter(status="Identified").count()
-#         inprogress_ct = series.task_set.filter(status="In Progress").count()
-#         complete_ct = series.task_set.filter(status="Complete").count()
-#         # ratio of complete to total number of tasks
-#         if complete_ct>0:
-#             progress = 100 * float(complete_ct)/float(count)
-#         else:
-#             progress = 0
-#         context['series'] = series
-#         context['tasks'] = tasks
-#         context['progress'] = progress
-#         context['identified_ct'] = identified_ct
-#         context['inprogress_ct'] = inprogress_ct
-#         context['complete_ct'] = complete_ct
-#         return context
 
 
 # ACCESS: Any org user should be able to view/create a task associated a story owned

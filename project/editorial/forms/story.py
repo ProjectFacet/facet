@@ -24,14 +24,11 @@ class StoryForm(forms.ModelForm):
         self.fields['share_with'].queryset = org.get_org_networks()
         self.fields['collaborate_with'].queryset = org.get_org_collaborators_vocab()
 
-        # limit project and series to those owned by org or part of content and org is collaborator for
+        # limit project to those owned by org or part of content and org is collaborator for
         self.fields['project'].queryset = Project.objects.filter(
             Q(organization=org) | Q(collaborate_with=org))
-        # self.fields['series'].queryset = Series.objects.filter(
-        #     Q(organization=org) | Q(collaborate_with=org))
 
         # set empty labels
-        # self.fields['series'].empty_label = 'Select a series'
         self.fields['project'].empty_label = 'Select a project'
 
     embargo_datetime = forms.DateTimeField(
@@ -53,7 +50,6 @@ class StoryForm(forms.ModelForm):
         fields = ['name',
                   'story_description',
                   'project',
-                  # 'series',
                   'collaborate',
                   'collaborate_with',
                   'embargo',
@@ -75,7 +71,6 @@ class StoryForm(forms.ModelForm):
             'share_with': ArrayFieldSelectMultiple(
                 attrs={'class': 'chosen-select', 'id': 'share-with',
                        'data-placeholder': 'Select Networks'}),
-            # 'series': Select(attrs={'class': 'c-select', 'id': 'story-series'}),
             'project': Select(attrs={'class': 'c-select', 'id': 'story-project'}),
         }
 

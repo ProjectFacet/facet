@@ -89,20 +89,13 @@ class Task(models.Model):
         null=True,
     )
 
-    # a task can be associated with a project, series, story or an event.
+    # a task can be associated with a project, story or an event.
     project = models.ForeignKey(
         Project,
         on_delete=models.CASCADE,
         blank=True,
         null=True,
     )
-
-    # series = models.ForeignKey(
-    #     Series,
-    #     on_delete=models.CASCADE,
-    #     blank=True,
-    #     null=True,
-    # )
 
     story = models.ForeignKey(
         Story,
@@ -172,8 +165,6 @@ class Task(models.Model):
 
         if self.project:
             parent = self.project
-        # elif self.series:
-        #     parent = self.series
         elif self.story:
             parent = self.story
         else:

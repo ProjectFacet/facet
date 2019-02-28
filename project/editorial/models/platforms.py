@@ -5,9 +5,9 @@ from . import User, Organization
 
 #--------------------------------------------------------------------------#
 #   Platforms and PlatformAccounts
-#   Social accounts connected to Users, Organizations, Projects and Series.
+#   Social accounts connected to Users, Organizations or Projects.
 #   Ex. Users can have social media accounts, Organizations will often
-#   have multiple accounts on any single platform, a special project or series
+#   have multiple accounts on any single platform or a special project
 #   may have a unique social presence.
 #--------------------------------------------------------------------------#
 
@@ -49,7 +49,7 @@ class PlatformAccount(models.Model):
 
     Platform accounts are the types and urls of different social media
     and platform accounts. Platform accounts can be connected to a user,
-    organization, project or series. The attributes should always be the same
+    organization or project. The attributes should always be the same
     regardless of model it's associated with.
     """
 
@@ -73,7 +73,7 @@ class PlatformAccount(models.Model):
         help_text='Short description of the purpose of the account.',
     )
 
-    # if a social account is associated with an Organization, Project or Series.
+    # if a social account is associated with an Organization or Project.
     # UI not available to do this on platform accounts associated with a User.
     team = models.ManyToManyField(
         User,

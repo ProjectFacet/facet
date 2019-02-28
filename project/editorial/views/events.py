@@ -53,7 +53,7 @@ class EventCreateView(LoginRequiredMixin, FormMessagesMixin, CreateView):
     Ex: Hosting = A townhall discussion hosted by an organization
     Ex: Reporting = A press conference at city hall covered for a story.
     Ex. Administrative = An internal event like an org or team meeting.
-    Events have a connection to either a Project, Series, Story or Event.
+    Events have a connection to either a Project, Story or Event.
     """
 
     model = Event
@@ -176,9 +176,6 @@ class EventDeleteView(LoginRequiredMixin, FormMessagesMixin, DeleteView):
         if self.object.project:
             project = self.object.project
             return reverse('project_event_list', kwargs={'pk': project.id})
-        # if self.object.series:
-        #     series = self.object.series
-        #     return reverse('series_event_list', kwargs={'pk': series.id})
         if self.object.story:
             story = self.object.story
             return reverse('story_event_list', kwargs={'pk': story.id})
@@ -289,55 +286,6 @@ class ProjectEventSchedule(View):
         project_event_cal = project.get_project_event_schedule()
 
         return HttpResponse(json.dumps(project_event_cal), content_type='application/json')
-
-
-# ACCESS: Any org user should be able to view/create an event associated a series owned
-# by their organization
-# class SeriesEventView(LoginRequiredMixin, CreateView):
-#     """Display all the events associated with a series."""
-#
-#     context_object_name = 'events'
-#     template_name = 'editorial/events/event_list.html'
-#     form_class = EventForm
-#
-#     def get_form_kwargs(self):
-#         """Pass organization to form."""
-#
-#         kw = super(SeriesEventView, self).get_form_kwargs()
-#         kw.update({'organization': self.request.user.organization})
-#         return kw
-#
-#     def get_context_data(self, **kwargs):
-#         """Return events belonging to the series."""
-#
-#         context = super(SeriesEventView, self).get_context_data(**kwargs)
-#         series = get_object_or_404(Series, id=self.kwargs['pk'])
-#         events = series.event_set.all()
-#         reporting_ct = series.event_set.filter(event_type="Reporting").count()
-#         hosting_ct = series.event_set.filter(event_type="Hosting").count()
-#         administrative_ct = series.event_set.filter(event_type="Administrative").count()
-#         other_ct = series.event_set.filter(event_type="Other").count()
-#         context['series'] = series
-#         context['events'] = events
-#         context['reporting_ct'] = reporting_ct
-#         context['hosting_ct'] = hosting_ct
-#         context['administrative_ct'] = administrative_ct
-#         context['other_ct'] = other_ct
-#         return context
-
-
-# class SeriesEventSchedule(View):
-#     """Return JSON of series event schedule.
-#
-#     displayed at /series/pk/events/
-#     """
-#
-#     def get(self, request, *args, **kwargs):
-#         series_id = self.kwargs['pk']
-#         series = Series.objects.get(id=series_id)
-#         series_event_cal = series.get_series_event_schedule()
-#
-#         return HttpResponse(json.dumps(series_event_cal), content_type='application/json')
 
 
 # ACCESS: Any org user should be able to view/create an event associated a story owned

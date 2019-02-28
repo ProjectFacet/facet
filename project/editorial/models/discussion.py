@@ -27,7 +27,6 @@ class Discussion(models.Model):
     NETWORK = 'NET'
     PRIVATE = 'PRI'
     PROJECT = 'PRO'
-    SERIES = 'SER'
     STORY = 'STO'
     FACET = 'F'
     TASK = 'TSK'
@@ -38,7 +37,6 @@ class Discussion(models.Model):
         (NETWORK, 'Network Conversation'),
         (PRIVATE, 'Private Conversation'),
         (PROJECT, 'Project Conversation'),
-        (SERIES, 'Series Conversation'),
         (STORY, 'Story Conversation'),
         (FACET, 'Facet Conversation'),
         (TASK, 'Task Conversation'),
@@ -182,7 +180,7 @@ class CommentManager(models.Manager):
 class Comment(models.Model):
     """An individual comment.
 
-    Comments can be made on a seriesplan, storyplan, facet,
+    Comments can be made on a storyplan, facet,
     or between one or more people privately.
     """
 

@@ -83,9 +83,6 @@ class CommentList(TemplateView):
         elif comment_type=="story":
         # returns all comments for any story of an Organization
             comments = organization.get_story_comments()
-        # elif comment_type=="series":
-        # returns all comments for any series of an Organization
-            # comments = organization.get_series_comments()
         elif comment_type=="facet":
         # returns all comments for any facets of stories of an Organization
             comments = organization.get_facet_comments()

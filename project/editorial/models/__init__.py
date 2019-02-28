@@ -6,11 +6,10 @@
     Contributors: ContributorInfo, OrganizationContributorInfo
     Platforms: Platform, PlatformAccount
     Projects: Project
-    Series: Series
     Story: Story
     Facet: FacetTemplate, Facet, FacetContributor, ContentLicense
            - (Temp: Versions of above for web, print, audio, video facets)
-    Copy: SeriesCopyDetail, StoryCopyDetail, FacetCopyDetail, ImageAssetCopyDetail,
+    Copy: StoryCopyDetail, FacetCopyDetail, ImageAssetCopyDetail,
           DocumentAssetCopyDetail, AudioAssetCopyDetail, VideoAssetCopyDetail
           - (Temp: Versions of above for web, print, audio, video facets)
     Tasks: Task
@@ -20,7 +19,7 @@
             BaseDocument, DocumentAsset, DocumentImage,
             BaseAudio, AudioAsset, SimpleAudio,
             BaseVideo, VideoAsset, SimpleVideo,
-    Notes: (Base)Note, NetworkNote, OrganizationNote, UserNote, ProjectNote, SeriesNote, StoryNote
+    Notes: (Base)Note, NetworkNote, OrganizationNote, UserNote, ProjectNote, StoryNote
     Discussion: Discussion, PrivateDiscussion, PrivateMessage, Comment, CommentReadStatus
 
 """
@@ -32,7 +31,6 @@ from .assets import ImageAsset, DocumentAsset, AudioAsset, VideoAsset
 from .assets import SimpleImage, SimpleDocument, SimpleAudio, SimpleVideo
 from .discussion import Discussion, Comment, PrivateMessage
 from .projects import Project
-# from .series import Series
 from .story import Story
 from .facets import Facet, FacetTemplate, ContentLicense
 from .notes import Note
@@ -54,7 +52,7 @@ from .platforms import Platform, PlatformAccount
 # class SocialPost(models.Model):
 #     """A social post.
 #
-#     A social post to promote a project, series, story or event.
+#     A social post to promote a project, story or event.
 #     """
 #
 #     FACEBOOK = 'Facebook'
@@ -76,7 +74,7 @@ from .platforms import Platform, PlatformAccount
 #         help_text='Content of the post.'
 #     )
 #
-#     # a social post can be associated with a project, series, story or an event.
+#     # a social post can be associated with a project, story or an event.
 #     # Add connection to P, Se, St, or E
 #
 #     # Add Image assets for social posts to Assets section.

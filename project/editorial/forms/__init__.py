@@ -68,7 +68,7 @@ from .network import (
     InviteToNetworkForm,
 )
 
-# from .noteforms import NetworkNoteForm, OrganizationNoteForm, ProjectNoteForm, SeriesNoteForm, StoryNoteForm, UserNoteForm, TaskNoteForm, EventNoteForm
+# from .noteforms import NetworkNoteForm, OrganizationNoteForm, ProjectNoteForm, StoryNoteForm, UserNoteForm, TaskNoteForm, EventNoteForm
 
 from .platforms import (
     PlatformAccountForm,
@@ -79,11 +79,6 @@ from .projects import (
     ProjectForm,
     ProjectTeamForm,
 )
-
-# from .series import (
-#     SeriesForm,
-#     SeriesTeamForm,
-# )
 
 from .story import (
     StoryForm,

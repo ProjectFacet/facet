@@ -29,11 +29,9 @@ class TaskForm(forms.ModelForm):
         else:
             self.fields['assigned_to'].queryset = org.get_org_users()
 
-        # limit project, series and stories to those owned by org or part of content and org is collaborator for
+        # limit projects and stories to those owned by org or part of content and org is collaborator for
         self.fields['project'].queryset = Project.objects.filter(
             Q(collaborate_with=org) | (Q(organization=org)))
-        # self.fields['series'].queryset = Series.objects.filter(
-        #     Q(collaborate_with=org) | (Q(organization=org)))
         self.fields['story'].queryset = Story.objects.filter(
             Q(collaborate_with=org) | (Q(organization=org)))
         self.fields['event'].queryset = Event.objects.filter(
@@ -42,7 +40,6 @@ class TaskForm(forms.ModelForm):
         # set empty labels
         self.fields['status'].empty_label = 'Task Status'
         self.fields['project'].empty_label = 'Select a Project'
-        # self.fields['series'].empty_label = 'Select a Series'
         self.fields['story'].empty_label = 'Select a Story'
         self.fields['event'].empty_label = 'Select an Event'
 
@@ -64,7 +61,6 @@ class TaskForm(forms.ModelForm):
             'important',
             'due_date',
             'project',
-            # 'series',
             'story',
             'event',
         ]
@@ -79,7 +75,6 @@ class TaskForm(forms.ModelForm):
             'status': Select(attrs={'class': 'custom-select', 'id': 'task-status'}),
             'important': CheckboxInput(attrs={'class': ''}),
             'project': Select(attrs={'class': 'custom-select', 'id': 'task-projects'}),
-            # 'series': Select(attrs={'class': 'custom-select', 'id': 'task-series'}),
             'story': Select(attrs={'class': 'custom-select', 'id': 'task-stories'}),
             'event': Select(attrs={'class': 'custom-select', 'id': 'task-events'}),
         }
