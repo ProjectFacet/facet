@@ -76,6 +76,18 @@ class Organization(models.Model):
         blank=True,
     )
 
+    list_publicly = models.BooleanField(
+        default=False,
+        help_text='Whether the organization is listed publicly in discovery.',
+    )
+
+    public_profile = models.OneToOneField(
+        'OrganizationPublicProfile',
+        help_text = 'ID of public profile for an organization',
+        blank=True,
+        null=True,
+    )
+
     discussion = models.ForeignKey(
         'Discussion',
         related_name='organization_discussion',
@@ -532,50 +544,158 @@ class Organization(models.Model):
 @receiver(post_save, sender=Organization)
 def add_discussion(sender, instance, **kwargs):
     from . import Discussion
+    from . import OrganizationPublicProfile
 
     if not instance.discussion:
         instance.discussion = Discussion.objects.create_discussion("ORG")
+    if not instance.public_profile:
+        instance.public_profile = OrganizationPublicProfile.objects.create_public_profile()
         instance.save()
 
 
-class OrganizationSubscriptionManager(models.Manager):
-    """Custom manager for Subscription."""
+class OrganizationPublicProfileManager(models.Manager):
+    """Custom manager for public profiles."""
 
-    def create_subscription(self, organization, collaborations, contractors):
-        """Method for quick creation of subscription."""
-
-        subscription = self.create(
-                        organization=organization,
-                        collaborations=collaborations,
-                        contractors=contractors,
-                        )
-        return subscription
+    def create_public_profile(self):
+        """Method for automatic creation of a public profile."""
+        organization_public_profile = self.create()
+        return organization_public_profile
 
 
-@python_2_unicode_compatible
-class OrganizationSubscription(models.Model):
-    """Details of an organization subscription."""
+class OrganizationPublicProfile(models.Model):
+    """
+    Details for display in public listing of organization.
+    """
 
-    # if subscription is for an org account, associate with that org
-    # FIXME should be a one to one relationship
-    organization = models.ForeignKey(
-        Organization,
-        help_text='Organization associated with this subscription if Org subscription type.',
-        on_delete=models.CASCADE,
+    NONPROFIT = 'Nonprofit'
+    FORPROFIT = 'For profit'
+    OTHER = 'Other'
+    ORG_TYPE_CHOICES = (
+        (NONPROFIT, 'Nonprofit'),
+        (FORPROFIT, 'For profit'),
+        (OTHER, 'Other'),
     )
 
-    # Organization functionality
-    collaborations = models.BooleanField(
-        default=True,
-        help_text='If an organization is using the account for base features of editorial workflow, project management and collaboration.',
+    org_structure = models.CharField(
+        max_length=50,
+        choices=ORG_TYPE_CHOICES,
+        help_text='Financial structure of the organization.',
+        blank=True,
     )
 
-    contractors = models.BooleanField(
+    #platforms
+    platform_print = models.BooleanField(
         default=False,
-        help_text='If an organization is using the account to manage contractors.',
+        help_text='Organization publishes in print.',
     )
 
-    objects = OrganizationSubscriptionManager()
+    platform_online = models.BooleanField(
+        default=False,
+        help_text='Organization publishes online.',
+    )
+
+    platform_social = models.BooleanField(
+        default=False,
+        help_text='Organization publishes content on social platforms.',
+    )
+
+    platform_network_tv = models.BooleanField(
+        default=False,
+        help_text='Organization airs on network television.',
+    )
+
+    platform_cable_tv = models.BooleanField(
+        default=False,
+        help_text='Organization airs on cable television.',
+    )
+
+    platform_radio = models.BooleanField(
+        default=False,
+        help_text='Organization airs on radio.',
+    )
+
+    platform_podcast = models.BooleanField(
+        default=False,
+        help_text='Organization produces podcasts.',
+    )
+
+    platform_newsletter = models.BooleanField(
+        default=False,
+        help_text='Organization publishes newsletters.',
+    )
+
+    platform_streaming_video = models.BooleanField(
+        default=False,
+        help_text='Organization content airs on streaming video.',
+    )
+
+    primary_audience = models.CharField(
+        max_length=255,
+        blank=True,
+        help_text='Is the audience geographic, topic or of a special community.'
+    )
+
+    ownership = models.CharField(
+        max_length=255,
+        blank=True,
+        help_text='What is the ownership structure of the organization. What or who owns the organization.'
+    )
+
+    business_model = models.CharField(
+        max_length=255,
+        blank=True,
+        help_text='What are the sources of support for the organization.'
+    )
+
+    unionized_workforce = models.CharField(
+        max_length=255,
+        blank=True,
+        help_text='Is any part of the organization workforce unionized.'
+    )
+
+    diversity = models.TextField(
+        help_text="The makeup of the organization and any programs or efforts to help ensure diversity in staffing.",
+        blank=True,
+    )
+
+    special_skills = models.TextField(
+        help_text="Any special skills or strengths this newsroom has.",
+        blank=True,
+    )
+
+    good_partner = models.TextField(
+        help_text="What about this organization makes it a good collaborative partner.",
+        blank=True,
+    )
+
+    best_coverage = models.TextField(
+        help_text="What coverage has this organization been involved in that the newsroom is proud of.",
+        blank=True,
+    )
+
+    collab_experience = models.CharField(
+        max_length=500,
+        blank=True,
+        help_text='Has the organization collaborated before and how often.'
+    )
+
+    class Meta:
+        verbose_name = 'Organization Public Profile'
+        verbose_name_plural = "Organization Public Profiles"
+
+    objects = OrganizationPublicProfileManager()
 
     def __str__(self):
-        return "Organization Subscription - {organization}".format(organization=self.organization.name)
+        return "{organization} - Public Profile".format(organization=self.organization.name)
+
+    @property
+    def description(self):
+        return "{description}".format(description=self.organization.description)
+
+    @property
+    def search_title(self):
+        return "{organization} - Public Profile".format(organization=self.organization.name)
+
+    @property
+    def type(self):
+        return "Organization Public Profile"

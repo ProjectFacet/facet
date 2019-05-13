@@ -108,7 +108,7 @@
 <div class="row m-b-40">
   <!-- Left Side -->
   <div class="col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-5 col-md-offset-1 col-lg-5 col-lg-offset-1">
-    <h4 class="m-b-20">Organization</h1>
+    <h4 class="m-b-20">Organization</h4>
     <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
         <!-- Organization Name -->
         <fieldset class="form-group m-b-20">
@@ -215,6 +215,14 @@
         </div>
       </div>
     {% endfor %}
+  </div>
+</div>
+
+
+<div class="row m-b-40">
+  <div class="col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-5 col-md-offset-1 col-lg-5 col-lg-offset-1">
+    <h4 class="m-b-20">Public Profile</h4>
+    <a href="{% url 'org_public_profile_edit' pk=request.user.organization.id %}"><button class="save btn btn-info btn-sm m-t-20 pull-right">Edit Public Profile</button></a>
   </div>
 </div>
 

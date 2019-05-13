@@ -1,0 +1,340 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load bootstrap3 %}
+{% load staticfiles %}
+
+<!-------------------------------------------->
+<!--      BREADCRUMB NAVIGATION             -->
+<!-------------------------------------------->
+
+{% block breadcrumb %}
+<div>
+    <ol class="breadcrumb icon-angle-right icon-th">
+      <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
+      {% if not organization %}
+      <li class="hidden-md-down">Create Organization</li>
+      {% elif organization %}
+      <li class="fadeIn"><a href="{% url 'org_detail' pk=request.user.organization.id %}" title="View Organization Detail"> Organization </a></li>
+      <li class="hidden-md-down"> {{ organization.name }}</li>
+      <li class="hidden-md-down">Manage Public Profile</li>
+      {% endif %}
+    </ol>
+</div>
+{% endblock breadcrumb %}
+
+<!-------------------------------------------->
+<!--            Main Section                -->
+<!-------------------------------------------->
+
+{% block content %}
+
+
+<div class="row m-b-40">
+  <div class="col-xs-12">
+    <div class="row">
+    <form method="POST" class="post-form" enctype="multipart/form-data">{% csrf_token %}
+      <!-- Left Side -->
+      <div class="col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-5 col-md-offset-1 col-lg-5 col-lg-offset-1">
+        <!-- Organization Structure -->
+        <fieldset class="form-group m-b-20">
+
+          <div class="col-xs-3">
+            <label>{{ form.org_structure.label_tag }}</label>
+          </div>
+
+          <div class="col-xs-9">
+            {{ form.org_structure }}
+            {% if form.org_structure.errors %}
+            <small class="text-muted">{{ form.org_structure.errors }}</small>
+            {% endif %}
+          </div>
+        </fieldset>
+        <!-- Organization Ownership -->
+        <fieldset class="form-group m-b-20">
+          {% comment %}
+          <div class="col-xs-2">
+            <label>Ownership: </label>
+          </div>
+          {% endcomment %}
+          <div class="col-xs-12">
+            {{ form.ownership }}
+            {% if form.ownership.errors %}
+            <small class="text-muted">{{ form.ownership.errors }}</small>
+            {% endif %}
+          </div>
+        </fieldset>
+        <!-- Organization Business Model -->
+        <div class="form-group custom-form m-b-40">
+          {% comment %}
+          <div class="col-xs-2">
+            <label>{{ form.business_model.label_tag }}</label>
+          </div>
+          {% endcomment %}
+          <div class="col-xs-10">
+          {{ form.business_model }}
+          {% if form.business_model.errors %}
+            <div class="alert alert-warning" role="alert">
+            {{ form.business_model.errors }}
+            </div>
+          {% endif %}
+          </div>
+        </div>
+        <!-- Organization Unionization status -->
+        <div class="form-group custom-form m-b-40">
+          {% comment %}
+          <div class="col-xs-2">
+            <label>{{ form.unionized_workforce.label_tag }}</label>
+          </div>
+          {% endcomment %}
+          <div class="col-xs-10">
+          {{ form.unionized_workforce }}
+          {% if form.unionized_workforce.errors %}
+            <div class="alert alert-warning" role="alert">
+            {{ form.unionized_workforce.errors }}
+            </div>
+          {% endif %}
+          </div>
+        </div>
+        <!-- Organization Diversity Approach -->
+        <div class="form-group custom-form m-b-40">
+          {% comment %}
+          <div class="col-xs-2">
+            <label>{{ form.diversity.label_tag }}</label>
+          </div>
+          {% endcomment %}
+          <div class="col-xs-10">
+          {{ form.diversity }}
+          {% if form.diversity.errors %}
+            <div class="alert alert-warning" role="alert">
+            {{ form.diversity.errors }}
+            </div>
+          {% endif %}
+          </div>
+        </div>
+        <!-- Organization Special skills -->
+        <div class="form-group custom-form m-b-40">
+          {% comment %}
+          <div class="col-xs-2">
+            <label>{{ form.special_skills.label_tag }}</label>
+          </div>
+          {% endcomment %}
+          <div class="col-xs-10">
+          {{ form.special_skills }}
+          {% if form.special_skills.errors %}
+            <div class="alert alert-warning" role="alert">
+            {{ form.special_skills.errors }}
+            </div>
+          {% endif %}
+          </div>
+        </div>
+        <!-- Organization Good Partner -->
+        <div class="form-group custom-form m-b-40">
+          {% comment %}
+          <div class="col-xs-2">
+            <label>{{ form.good_partner.label_tag }}</label>
+          </div>
+          {% endcomment %}
+          <div class="col-xs-10">
+          {{ form.good_partner }}
+          {% if form.good_partner.errors %}
+            <div class="alert alert-warning" role="alert">
+            {{ form.good_partner.errors }}
+            </div>
+          {% endif %}
+          </div>
+        </div>
+        <!-- Organization Best Coverage -->
+        <div class="form-group custom-form m-b-40">
+          {% comment %}
+          <div class="col-xs-2">
+            <label>{{ form.best_coverage.label_tag }}</label>
+          </div>
+          {% endcomment %}
+          <div class="col-xs-10">
+          {{ form.best_coverage }}
+          {% if form.best_coverage.errors %}
+            <div class="alert alert-warning" role="alert">
+            {{ form.best_coverage.errors }}
+            </div>
+          {% endif %}
+          </div>
+        </div>
+        <!-- Organization Collaboration Experience -->
+        <div class="form-group custom-form m-b-40">
+          {% comment %}
+          <div class="col-xs-2">
+            <label>{{ form.collab_experience.label_tag }}</label>
+          </div>
+          {% endcomment %}
+          <div class="col-xs-10">
+          {{ form.collab_experience }}
+          {% if form.collab_experience.errors %}
+            <div class="alert alert-warning" role="alert">
+            {{ form.collab_experience.errors }}
+            </div>
+          {% endif %}
+          </div>
+        </div>
+      </div>
+      <!-- Right Side -->
+      <div class="col-xs-10 col-xs-offset-1 col-sm-10 col-sm-offset-1 col-md-4 col-md-offset-1 col-lg-4 col-lg-offset-1">
+        <!-- Organization Audience -->
+        <fieldset class="form-group m-b-20">
+
+          <div class="col-xs-3">
+            <label>{{ form.primary_audience.label_tag }}</label>
+          </div>
+
+          <div class="col-xs-9">
+            {{ form.primary_audience }}
+            {% if form.primary_audience.errors %}
+            <small class="text-muted">{{ form.primary_audience.errors }}</small>
+            {% endif %}
+          </div>
+        </fieldset>
+        <!-- Platform Print -->
+        <fieldset class="form-group m-b-20">
+
+          <div class="col-xs-3">
+            <label>{{ form.platform_print.label_tag }}</label>
+          </div>
+
+          <div class="col-xs-9">
+            {{ form.platform_print }}
+            {% if form.platform_print.errors %}
+            <small class="text-muted">{{ form.platform_print.errors }}</small>
+            {% endif %}
+          </div>
+        </fieldset>
+        <!-- Platform Online  -->
+        <fieldset class="form-group m-b-20">
+
+          <div class="col-xs-3">
+            <label>{{ form.platform_online.label_tag }}</label>
+          </div>
+
+          <div class="col-xs-9">
+            {{ form.platform_online }}
+            {% if form.platform_online.errors %}
+            <small class="text-muted">{{ form.platform_online.errors }}</small>
+            {% endif %}
+          </div>
+        </fieldset>
+        <!-- Platform Social -->
+        <fieldset class="form-group m-b-20">
+
+          <div class="col-xs-3">
+            <label>{{ form.platform_social.label_tag }}</label>
+          </div>
+
+          <div class="col-xs-9">
+            {{ form.platform_social }}
+            {% if form.platform_social.errors %}
+            <small class="text-muted">{{ form.platform_social.errors }}</small>
+            {% endif %}
+          </div>
+        </fieldset>
+        <!-- Platform Network TV -->
+        <fieldset class="form-group m-b-20">
+
+          <div class="col-xs-3">
+            <label>{{ form.platform_network_tv.label_tag }}</label>
+          </div>
+
+          <div class="col-xs-9">
+            {{ form.platform_network_tv }}
+            {% if form.platform_network_tv.errors %}
+            <small class="text-muted">{{ form.platform_network_tv.errors }}</small>
+            {% endif %}
+          </div>
+        </fieldset>
+        <!-- Platform Cable TV -->
+        <fieldset class="form-group m-b-20">
+
+          <div class="col-xs-3">
+            <label>{{ form.platform_cable_tv.label_tag }}</label>
+          </div>
+
+          <div class="col-xs-9">
+            {{ form.platform_cable_tv }}
+            {% if form.platform_cable_tv.errors %}
+            <small class="text-muted">{{ form.platform_cable_tv.errors }}</small>
+            {% endif %}
+          </div>
+        </fieldset>
+        <!-- Platform Radio -->
+        <fieldset class="form-group m-b-20">
+
+          <div class="col-xs-3">
+            <label>{{ form.platform_radio.label_tag }}</label>
+          </div>
+
+          <div class="col-xs-9">
+            {{ form.platform_radio }}
+            {% if form.platform_radio.errors %}
+            <small class="text-muted">{{ form.platform_radio.errors }}</small>
+            {% endif %}
+          </div>
+        </fieldset>
+        <!-- Platform Podcast -->
+        <fieldset class="form-group m-b-20">
+
+          <div class="col-xs-3">
+            <label>{{ form.platform_podcast.label_tag }}</label>
+          </div>
+
+          <div class="col-xs-9">
+            {{ form.platform_podcast }}
+            {% if form.platform_podcast.errors %}
+            <small class="text-muted">{{ form.platform_podcast.errors }}</small>
+            {% endif %}
+          </div>
+        </fieldset>
+        <!-- Platform Newsletter -->
+        <fieldset class="form-group m-b-20">
+
+          <div class="col-xs-3">
+            <label>{{ form.platform_newsletter.label_tag }}</label>
+          </div>
+
+          <div class="col-xs-9">
+            {{ form.platform_newsletter }}
+            {% if form.platform_newsletter.errors %}
+            <small class="text-muted">{{ form.platform_newsletter.errors }}</small>
+            {% endif %}
+          </div>
+        </fieldset>
+        <!-- Platform Streaming Video -->
+        <fieldset class="form-group m-b-20">
+
+          <div class="col-xs-3">
+            <label>{{ form.platform_streaming_video.label_tag }}</label>
+          </div>
+
+          <div class="col-xs-9">
+            {{ form.platform_streaming_video }}
+            {% if form.platform_streaming_video.errors %}
+            <small class="text-muted">{{ form.platform_streaming_video.errors }}</small>
+            {% endif %}
+          </div>
+        </fieldset>
+
+
+
+        <a href="{% url 'org_public_profile_edit' pk=request.user.organization.id %}"><button class="save btn btn-danger m-t-20 pull-right">Cancel</button></a>
+        <button type="submit" class="save btn btn-default m-t-20 m-r-10 pull-right">Save</button>
+      </div>
+
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+<script>
+$(".chosen-select").chosen()
+</script>
+
+{% endblock %}

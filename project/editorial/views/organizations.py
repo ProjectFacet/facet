@@ -10,10 +10,11 @@ from __future__ import unicode_literals
 from braces.views import SuperuserRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
-from django.views.generic import UpdateView, DetailView, CreateView
+from django.views.generic import UpdateView, DetailView, CreateView, ListView
 from editorial.forms import (
     CommentForm,
     OrganizationForm,
+    OrganizationPublicProfileForm,
     NoteForm,
     SimpleImageForm,
     SimpleDocumentForm,
@@ -24,6 +25,7 @@ from editorial.models import (
     User,
     Organization,
     OrganizationSubscription,
+    OrganizationPublicProfile,
     Comment,
 )
 from editorial.views import CustomUserTest
@@ -60,8 +62,9 @@ class OrganizationCreateView(CreateView):
         # create an organization subscription for the admin user and organization.
         subscription = OrganizationSubscription.objects.create_subscription(
                                                         organization=self.object,
-                                                        collaborations=True,
+                                                        collaborations=False,
                                                         contractors=False,
+                                                        partner_discovery=True,
                                                         )
         subscription.save()
 
@@ -143,3 +146,42 @@ class OrganizationDetailView(CustomUserTest, DetailView):
         form = SimpleDocumentForm()
         addform = SimpleDocumentLibraryAssociateForm(organization=self.request.user.organization)
         return {'documents': documents, 'form': form, 'addform': addform,}
+
+
+class OrganizationPublicProfilesListView(ListView):
+    """Displays all organizations with publicly listed profiles"""
+
+    context_object_name = 'organization_profiles'
+
+    template_name = 'editorial/organization/organization_profile_list.html'
+
+    def get_queryset(self):
+        """Return profiles from organizations that have opted for public display."""
+
+        organization_profiles = Organization.objects.filter(list_publicly=True)
+        return organization_profiles
+
+
+class OrganizationPublicProfileDetailView(DetailView):
+    """Public Profile view of an organization."""
+
+    model = Organization
+    template_name = "editorial/organization/organization_public_profile_detail.html"
+
+
+class OrganizationPublicProfileUpdateView(CustomUserTest, UpdateView):
+    """Edit an organization's public profile."""
+
+    model = Organization
+    form_class = OrganizationPublicProfileForm
+    template_name = "editorial/organization/organization_public_profile_form.html"
+
+    def test_user(self, user):
+        """"User must be member of this org to edit it."""
+
+        self.object = self.get_object()
+
+        if user.organization == self.object:
+            return True
+
+        raise PermissionDenied()

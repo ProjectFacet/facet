@@ -22,6 +22,7 @@ from models import (
     Organization,
     OrganizationContractorAffiliation,
     OrganizationSubscription,
+    OrganizationPublicProfile,
     Pitch,
     Platform,
     PlatformAccount,
@@ -64,6 +65,7 @@ admin.site.register(ContractorProfile)
 admin.site.register(TalentEditorProfile)
 admin.site.register(OrganizationContractorAffiliation)
 admin.site.register(Organization)
+admin.site.register(OrganizationPublicProfile)
 admin.site.register(OrganizationSubscription)
 admin.site.register(ContractorSubscription)
 admin.site.register(Network)

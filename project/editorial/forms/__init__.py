@@ -60,6 +60,7 @@ from .user import (
 from .organization import (
     OrganizationForm,
     OrganizationSubscriptionForm,
+    OrganizationPublicProfileForm,
 )
 
 from .network import (

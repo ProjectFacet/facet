@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% load i18n %}
+{% load bootstrap3 %}
+{% load staticfiles %}
+
+<!-------------------------------------------->
+<!--      BREADCRUMB NAVIGATION             -->
+<!-------------------------------------------->
+
+{% block breadcrumb %}
+<div>
+    <ol class="breadcrumb icon-angle-right icon-th">
+        <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
+        <li class="fadeIn"> Partner Discovery </li>
+    </ol>
+</div>
+{% endblock breadcrumb %}
+
+<!-------------------------------------------->
+<!--            Main Section                -->
+<!-------------------------------------------->
+
+{% block content %}
+<!-------------------------------------------->
+<!--              Content                   -->
+<!-------------------------------------------->
+
+<div class="row">
+  <div class="col-xs-12">
+    <h4>Organizations</h4>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12">
+    {% for organization in organization_profiles %}
+    <p> {{ organization.name }} | Public Profile</p>
+    {% endfor %}
+
+  </div>
+</div>
+
+<!-------------------------------------------->
+<!--            JS Scripts                  -->
+<!-------------------------------------------->
+
+<script>
+  $(".chosen-select").chosen()
+</script>
+
+{% endblock %}
+
+<!-------------------------------------------->
+<!--            Modals                      -->
+<!-------------------------------------------->
+
+{% block modals %}
+
+
+
+
+
+{% endblock modals %}

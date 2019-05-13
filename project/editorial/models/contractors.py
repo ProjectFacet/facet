@@ -120,48 +120,6 @@ class ContractorProfile(models.Model):
         return reverse('contractor_detail', kwargs={'pk': self.id})
 
 
-class ContractorSubscriptionManager(models.Manager):
-    """Custom manager for contractor subscription."""
-
-    def create_subscription(self, user, standard):
-        """Method for quick creation of subscription."""
-
-        subscription = self.create(
-                        user=user,
-                        standard=standard,
-                        )
-
-        return subscription
-
-
-@python_2_unicode_compatible
-class ContractorSubscription(models.Model):
-    """Details of a contractor subscription.
-
-    V1.0 limited utility but future-facing necessity.
-
-    """
-
-    # if subscription is for an org account, associate with that org
-    user = models.ForeignKey(
-        User,
-        help_text='User associated with this subscription.',
-        on_delete=models.CASCADE,
-    )
-
-    # Organization functionality
-    standard = models.BooleanField(
-        default=True,
-        help_text='If an organization is using the account for base features of editorial workflow, project management and collaboration.',
-    )
-
-    objects = ContractorSubscriptionManager()
-
-
-    def __str__(self):
-        return "Contractor Subscription - {user}".format(user=self.user.credit_name)
-
-
 class OrganizationContractorAffiliation(models.Model):
     """Information tracked by an organization about contractors.
 

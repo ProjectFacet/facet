@@ -25,7 +25,7 @@
 """
 
 from .user import User
-from .organization import Organization, OrganizationSubscription
+from .organization import Organization, OrganizationPublicProfile
 from .network import Network
 from .assets import ImageAsset, DocumentAsset, AudioAsset, VideoAsset
 from .assets import SimpleImage, SimpleDocument, SimpleAudio, SimpleVideo
@@ -38,8 +38,9 @@ from .platforms import Platform, PlatformAccount
 from .tasks import Task
 from .events import Event
 from .copy import *   # XXX
-from .contractors import ContractorProfile, TalentEditorProfile, ContractorSubscription, OrganizationContractorAffiliation, Pitch, Call, Assignment
+from .contractors import ContractorProfile, TalentEditorProfile, OrganizationContractorAffiliation, Pitch, Call, Assignment
 from .platforms import Platform, PlatformAccount
+from .subscription import OrganizationSubscription, ContractorSubscription
 
 #-----------------------------------------------------------------------#
 #  SOCIAL POST
