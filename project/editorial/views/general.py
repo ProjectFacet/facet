@@ -112,6 +112,10 @@ class DashboardTemplateView(LoginRequiredMixin, TemplateView):
 
             copied_shared_stories = StoryCopyDetail.objects.filter(original_org=org)
 
+            print "*******************************"
+            print all_comments
+            print older_comments
+
             return {
                 'networks': networks,
                 'older_comments': older_comments,

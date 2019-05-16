@@ -139,6 +139,15 @@
                             {% if request.user.organization %}
                             <a class="dropdown-item" href="{% url 'facet_template_list' org=request.user.organization_id %}" title="See all Facet Templates"> <span class="title">Facet Templates</span> </a>
                             {% endif %}
+                        </div>
+                    </li>
+                  </ul>
+
+                  <ul class="nav navbar-nav pull-left">
+                    <li class="nav-item dropdown dropdown-menu-right">
+                        <a class="nav-link dropdown-toggle no-after f-s-16" data-toggle="dropdown"> Collaboration </a>
+                        <div class="dropdown-menu dropdown-menu-scale from-right dropdown-menu-right">
+                            <a class="dropdown-item" href="{% url 'org_public_profiles' %}" title="Find Potential Partners"> <span class="title">Partner Discovery</span> </a>
                             <a class="dropdown-item" href="{% url 'collaborations' %}" title="View Content in Collaboration"> <span class="title">Collaborations</span> </a>
                         </div>
                     </li>
@@ -184,7 +193,7 @@
 
                   <ul class="nav navbar-nav pull-left">
                     <li class="nav-item dropdown dropdown-menu-right">
-                        <a class="nav-link dropdown-toggle no-after f-s-16" data-toggle="dropdown"> Create New Content </a>
+                        <a class="nav-link dropdown-toggle no-after f-s-16" data-toggle="dropdown"> Create New </a>
                         <div class="dropdown-menu dropdown-menu-scale from-right dropdown-menu-right">
                             <a class="dropdown-item" href="{% url 'project_new' %}" title="Create New Project"> </span> <span class="title"> New Project </span> </a>
                             <a class="dropdown-item" href="{% url 'story_new' %}" title="Create New Story"> </span> <span class="title"> New Story </span> </a>

@@ -69,8 +69,32 @@
   </div>
 </div>
 
+<div class="row m-t-20">
+  <div class="col-xs-12 bs-media">
+    <div class="media">
+      <a class="media-left">
+        <i class="fa fa-user" aria-hidden="true"></i>
+      </a>
+      <div class="media-body">
+          <h5 class="media-heading"> Our Team</h5>
+          <p>
+            {% for user in organization.user_set.all %}
+              {% if user.is_active %}
+                {% if user.display_photo %}
+                <img class="img-circle m-b-5" src="{{ user.display_photo.url }}" alt="user">
+                {% else %}
+                <p class="tiny-text">{{ user.first_name }}</p>
+                {% endif %}
+              {% endif %}
+          {% endfor %}
+        </p>
+      </div>
+      </div>
+  </div>
+</div>
 
-<div class="row">
+
+<div class="row m-t-20">
   <div class="col-xs-12 col-xl-6 bs-media">
     <div class="media">
       <a class="media-left">
@@ -157,21 +181,29 @@
             <p>
               {% if organization.public_profile.platform_print %}
               <i class="fa fa-newspaper-o"></i> Print
-              {% elif organization.public_profile.platform_online %}
+              {% endif %}
+              {% if organization.public_profile.platform_online %}
               <i class="fa fa-laptop m-l-10"></i> Online
-              {% elif organization.public_profile.platform_social %}
+              {% endif %}
+              {% if organization.public_profile.platform_social %}
               <i class="fa fa-comments-o m-l-10"></i> Social Platforms
-              {% elif organization.public_profile.platform_network_tv %}
+              {% endif %}
+              {% if organization.public_profile.platform_network_tv %}
               <i class="fa fa-tv m-l-10"></i> Network TV
-              {% elif organization.public_profile.platform_cable_tv %}
+              {% endif %}
+              {% if organization.public_profile.platform_cable_tv %}
               <i class="fa fa-tv m-l-10"></i> Cable TV
-              {% elif organization.public_profile.platform_radio %}
+              {% endif %}
+              {% if organization.public_profile.platform_radio %}
               <i class="fa fa-microphone m-l-10"></i> Radio
-              {% elif organization.public_profile.platform_podcast %}
+              {% endif %}
+              {% if organization.public_profile.platform_podcast %}
               <i class="fa fa-microphone m-l-10"></i> Podcast
-              {% elif organization.public_profile.platform_newsletter %}
+              {% endif %}
+              {% if organization.public_profile.platform_newsletter %}
               <i class="fa fa-send-o m-l-10"></i> Newsletter
-              {% elif organization.public_profile.platform_streaming_video %}
+              {% endif %}
+              {% if organization.public_profile.platform_streaming_video %}
               <i class="fa fa-video-camera m-l-10"></i> Streaming Video
               {% endif %}
             </p>

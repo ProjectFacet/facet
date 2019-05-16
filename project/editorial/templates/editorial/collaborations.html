@@ -40,15 +40,13 @@
           {% for item in external_collaborations %}
           <tr class="f-s-14">
             {% if item.type == "Project" %}
-            <td><a href="{% url 'project_detail' pk=item.id %}">Project: {{item.name}}</a></td>
-            <td>{{ item.description }}</td>
-            <td>{{ item.organization }}</td>
-            <td>{{ item.description }}</td>
-            <td>{{ item.organization }}</td>
+              <td><a href="{% url 'project_detail' pk=item.id %}">Project: {{item.name}}</a></td>
+              <td>{{ item.description }}</td>
+              <td>{{ item.organization }}</td>
             {% elif item.type == "Story" %}
-            <td><a href="{% url 'story_detail' pk=item.id %}">Story: {{item.name}}</a></td>
-            <td>{{ item.description }}</td>
-            <td>{{ item.organization }}</td>
+              <td><a href="{% url 'story_detail' pk=item.id %}">Story: {{item.name}}</a></td>
+              <td>{{ item.description }}</td>
+              <td>{{ item.organization }}</td>
             {% endif %}
           </tr>
           {% endfor %}
