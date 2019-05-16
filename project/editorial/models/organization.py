@@ -52,6 +52,16 @@ class Organization(models.Model):
         format='JPEG',
     )
 
+    cover_photo = models.ImageField(
+        upload_to='org_cover',
+        blank=True,
+    )
+
+    display_cover_photo = ImageSpecField(
+        source='cover_photo',
+        format='JPEG',
+    )
+
     location = models.CharField(
         max_length=255,
         blank=True,
@@ -679,6 +689,16 @@ class OrganizationPublicProfile(models.Model):
         help_text='Has the organization collaborated before and how often.'
     )
 
+    seeking_collabs = models.BooleanField(
+        default=False,
+        help_text='Actively seeking collaborative projects to participate in.'
+    )
+
+    seeking_partners = models.BooleanField(
+        default=False,
+        help_text='Actively seeking partners for a specific project.'
+    )
+
     class Meta:
         verbose_name = 'Organization Public Profile'
         verbose_name_plural = "Organization Public Profiles"
@@ -686,11 +706,11 @@ class OrganizationPublicProfile(models.Model):
     objects = OrganizationPublicProfileManager()
 
     def __str__(self):
-        return "{organization} - Public Profile".format(organization=self.organization.name)
+        return "{organization}".format(organization=self.organization.name)
 
     @property
     def description(self):
-        return "{description}".format(description=self.organization.description)
+        return "{organization}'s Public Profile".format(organization=self.organization.name)
 
     @property
     def search_title(self):

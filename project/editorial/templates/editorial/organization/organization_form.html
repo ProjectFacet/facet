@@ -92,6 +92,20 @@
           {% endif %}
           </div>
         </div>
+        <!-- Organization Cover Photo -->
+        <div class="form-group custom-form m-b-40">
+          <div class="col-xs-2">
+            <label class="subtle">Cover Photo </label>
+          </div>
+          <div class="col-xs-10">
+          {{ form.cover_photo }}
+          {% if form.cover_photo.errors %}
+            <div class="alert alert-warning" role="alert">
+            {{ form.cover_photo.errors }}
+            </div>
+          {% endif %}
+          </div>
+        </div>
 
         <a href="{% url 'org_new' %}"><button class="save btn btn-danger m-t-20 pull-right">Cancel</button></a>
         <button type="submit" class="save btn btn-default m-t-20 m-r-10 pull-right">Save</button>
@@ -147,7 +161,7 @@
           </div>
         </fieldset>
         <!-- Organization Logo -->
-        <div class="form-group custom-form m-b-40">
+        <div class="form-group custom-form m-b-50">
           <div class="col-xs-2">
             <label class="f-s-14 subtle">Logo: </label>
           </div>
@@ -156,6 +170,20 @@
           {% if form.logo.errors %}
             <div class="alert alert-warning" role="alert">
             {{ form.logo.errors }}
+            </div>
+          {% endif %}
+          </div>
+        </div>
+        <!-- Organization Cover Photo -->
+        <div class="form-group custom-form m-b-40">
+          <div class="col-xs-2">
+            <label class="f-s-14 subtle">Cover Photo: </label>
+          </div>
+          <div class="col-xs-10">
+          {{ form.cover_photo }}
+          {% if form.cover_photo.errors %}
+            <div class="alert alert-warning" role="alert">
+            {{ form.cover_photo.errors }}
             </div>
           {% endif %}
           </div>

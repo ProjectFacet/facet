@@ -17,6 +17,7 @@
 <div>
     <ol class="breadcrumb icon-angle-right icon-th">
         <li class="fadeIn"><a href="{% url 'dashboard' %}" title="Go to Dashboard"> Dashboard </a></li>
+        <li class="hidden-md-down"><a href="{% url 'org_public_profiles' %}">Partner Discovery</a></li>
         <li class="hidden-md-down">{{ organization.name }}</li>
         <li class="hidden-md-down">Public Profile</li>
     </ol>
@@ -33,16 +34,262 @@
 <!-------------------------------------------->
 
 <div class="row">
-  <div class="col-xs-12">
-    <h4>{{ organization.name }}</h4>
+    <div class="col-xs-12">
+      <div class="card bs-card">
+          <img class="card-img-top blur-1 opacity-1 img-fluid image-center" src="{{ organization.cover_photo.url }}" alt="{{ organization.name }} Featured Image"><span class="tag tag-white-outline">
+            <button type="button" class="btn btn-circle btn-facebook m-t-20"><i class="fa fa-facebook"></i>
+            </button>
+            <button type="button" class="btn btn-circle btn-twitter m-t-20"><i class="fa fa-twitter"></i>
+            </button>
+            <button type="button" class="btn btn-circle btn-success m-t-20"><i class="fa fa-external-link"></i>
+            </button>
+          </span>
+          <img class="top-user-img rounded-circle h-50 w-50" src="{{ organization.logo.url }}">
+          <h3 class="card-title m-b-20"> {{ organization.name}} </h3>
+          <p class="card-text">{{ organization.description }}</p>
+      </div>
+    </div>
+</div>
+
+
+<div class="row m-b-20">
+  <div class="col-xs-12 col-xl-6 bs-media">
+    {% if organization.public_profile.seeking_collabs %}
+    <button type="button" class="btn btn-info btn-lg btn-block btn-success"><icon class="fa fa-check-square-o"></icon> Seeking Projects</button>
+    {% else %}
+    <button type="button" class="btn btn-info btn-lg btn-block btn-warning disabled"><icon class="fa fa-square-o"></icon> Not Actively Seeking Projects</button>
+    {% endif %}
+  </div>
+  <div class="col-xs-12 col-xl-6 bs-media">
+    {% if organization.public_profile.seeking_partners %}
+    <button type="button" class="btn btn-info btn-lg btn-block btn-success"><icon class="fa fa-check-square-o"></icon> Actively Seeking Partners for a Project</button>
+    {% else %}
+    <button type="button" class="btn btn-info btn-lg btn-block btn-warning disabled"><icon class="fa fa-square-o"></icon> Not Actively Seeking Partners for a Projectt</button>
+    {% endif %}
   </div>
 </div>
+
 
 <div class="row">
-  <div class="col-xs-12">
-
+  <div class="col-xs-12 col-xl-6 bs-media">
+    <div class="media">
+      <a class="media-left">
+        <i class="fa fa-heart-o" aria-hidden="true"></i>
+      </a>
+      <div class="media-body">
+          <h5 class="media-heading"> Approach to Partnership</h5>
+          <p>{{ organization.public_profile.good_partner }}</p>
+      </div>
+      </div>
+  </div>
+  <div class="col-xs-12 col-xl-6 bs-media">
+    <div class="media">
+      <a class="media-left">
+        <i class="fa fa-bolt" aria-hidden="true"></i>
+      </a>
+      <div class="media-body">
+          <h5 class="media-heading"> Our Skills and Strengths</h5>
+          <p>{{ organization.public_profile.special_skills }}</p>
+      </div>
+      </div>
   </div>
 </div>
+
+<div class="row m-t-20">
+  <div class="col-xs-12 col-xl-6 bs-media">
+    <div class="media">
+      <a class="media-left">
+        <i class="fa fa-star" aria-hidden="true"></i>
+      </a>
+      <div class="media-body">
+          <h5 class="media-heading"> Coverage We're Proud Of</h5>
+          <p>{{ organization.public_profile.best_coverage }}</p>
+      </div>
+      </div>
+  </div>
+  <div class="col-xs-12 col-xl-6 bs-media">
+    <div class="media">
+      <a class="media-left">
+        <i class="fa fa-bar-chart-o" aria-hidden="true"></i>
+      </a>
+      <div class="media-body">
+          <h5 class="media-heading"> Our Experience in Collaboration</h5>
+          <p>{{ organization.public_profile.collab_experience }}</p>
+      </div>
+      </div>
+  </div>
+</div>
+
+<div class="row m-t-20">
+  <div class="col-xs-12 col-xl-6 bs-media">
+    <div class="media">
+      <a class="media-left">
+        <i class="fa fa-puzzle-piece" aria-hidden="true"></i>
+      </a>
+      <div class="media-body">
+          <h5 class="media-heading"> Our Audiences</h5>
+          <p>{{ organization.public_profile.primary_audience }}</p>
+      </div>
+      </div>
+  </div>
+  <div class="col-xs-12 col-xl-6 bs-media">
+    <div class="media">
+      <a class="media-left">
+        <i class="fa fa-money" aria-hidden="true"></i>
+      </a>
+      <div class="media-body">
+          <h5 class="media-heading"> Our Business Model</h5>
+          <p>{{ organization.public_profile.business_model }}</p>
+      </div>
+      </div>
+  </div>
+</div>
+
+
+<div class="row m-t-20">
+  <div class="col-xs-12 bs-media">
+    <div class="media">
+      <a class="media-left">
+        <i class="fa fa-bars" aria-hidden="true"></i>
+      </a>
+        <div class="media-body">
+            <h5 class="media-heading"> Our Primary Platforms</h5>
+            <p>
+              {% if organization.public_profile.platform_print %}
+              <i class="fa fa-newspaper-o"></i> Print
+              {% elif organization.public_profile.platform_online %}
+              <i class="fa fa-laptop m-l-10"></i> Online
+              {% elif organization.public_profile.platform_social %}
+              <i class="fa fa-comments-o m-l-10"></i> Social Platforms
+              {% elif organization.public_profile.platform_network_tv %}
+              <i class="fa fa-tv m-l-10"></i> Network TV
+              {% elif organization.public_profile.platform_cable_tv %}
+              <i class="fa fa-tv m-l-10"></i> Cable TV
+              {% elif organization.public_profile.platform_radio %}
+              <i class="fa fa-microphone m-l-10"></i> Radio
+              {% elif organization.public_profile.platform_podcast %}
+              <i class="fa fa-microphone m-l-10"></i> Podcast
+              {% elif organization.public_profile.platform_newsletter %}
+              <i class="fa fa-send-o m-l-10"></i> Newsletter
+              {% elif organization.public_profile.platform_streaming_video %}
+              <i class="fa fa-video-camera m-l-10"></i> Streaming Video
+              {% endif %}
+            </p>
+        </div>
+      </div>
+  </div>
+</div>
+
+
+<div class="row m-t-20">
+  <div class="col-xs-12 col-xl-6 bs-media">
+    <div class="media">
+      <a class="media-left">
+        <i class="fa fa-cogs" aria-hidden="true"></i>
+      </a>
+      <div class="media-body">
+          <h5 class="media-heading"> Organization Structure</h5>
+          <p>{{ organization.public_profile.org_structure }}</p>
+      </div>
+      </div>
+  </div>
+  <div class="col-xs-12 col-xl-6 bs-media">
+    <div class="media">
+      <a class="media-left">
+        <i class="fa fa-sitemap" aria-hidden="true"></i>
+      </a>
+      <div class="media-body">
+          <h5 class="media-heading"> Ownership</h5>
+          <p>{{ organization.public_profile.ownership }}</p>
+      </div>
+      </div>
+  </div>
+</div>
+
+
+<div class="row m-t-20">
+  <div class="col-xs-12 col-xl-6 bs-media">
+    <div class="media">
+      <a class="media-left">
+        <i class="fa fa-user-plus" aria-hidden="true"></i>
+      </a>
+      <div class="media-body">
+          <h5 class="media-heading"> Unionized Workforce</h5>
+          <p>{{ organization.public_profile.unionized_workforce }}</p>
+      </div>
+      </div>
+  </div>
+  <div class="col-xs-12 col-xl-6 bs-media">
+    <div class="media">
+      <a class="media-left">
+        <i class="fa fa-users" aria-hidden="true"></i>
+      </a>
+      <div class="media-body">
+          <h5 class="media-heading"> Diversity</h5>
+          <p>{{ organization.public_profile.diversity }}</p>
+      </div>
+      </div>
+  </div>
+
+</div>
+
+
+<!-------------------------------------------->
+<!--              Style                     -->
+<!-------------------------------------------->
+
+<style>
+
+  .bs-card {
+    width: 100%;
+    height: 200px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .bs-card img.card-img-top {
+    min-height: 100%;
+    min-width: 100%;
+    position: absolute;
+    top: -9999px;
+    bottom: -9999px;
+    left: -9999px;
+    right: -9999px;
+    margin: auto;
+  }
+
+  .bs-card .tag {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    border-radius: 3px;
+    z-index: 2;
+  }
+
+  .card-title {
+    position: absolute;
+    top: 25px;
+    left: 100px;
+    z-index: 2;
+  }
+
+  .card-text {
+    position: absolute;
+    top: 75px;
+    left: 100px;
+    z-index: 2;
+  }
+
+  .blur-1 {
+    filter: blur(4px) !important;
+}
+
+  .opacity-1 {
+      opacity: .5 !important;
+  }
+
+</style>
+
 
 <!-------------------------------------------->
 <!--            JS Scripts                  -->

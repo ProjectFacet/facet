@@ -33,12 +33,24 @@
 </div>
 
 <div class="row">
-  <div class="col-xs-12">
-    {% for organization in organization_profiles %}
-    <p> {{ organization.name }} | Public Profile</p>
-    {% endfor %}
-
+  {% for organization in organization_profiles %}
+  <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 m-b-20">
+    <div class="card bs-card">
+      <img class="card-img-top" src="{{ organization.cover_photo.url }}" alt="Organization featured photo">
+      <img class="top-user-img rounded-circle h-50 w-50" src="{{ organization.logo.url }}">
+      <div class="card-block">
+          <h4 class="card-title m-b-20"> {{ organization.name }} </h4>
+          <p class="card-text">{{ organization.description }}</p>
+          <p class="card-text">
+              <a href="{% url 'org_public_profile_detail' pk=organization.id %}" title="Learn more about this organization"><button type="button" class="btn btn-info btn-sm">Read more</button></a>
+          </p>
+      </div>
+    </div>
   </div>
+  {% if forloop.counter|divisibleby:"4" and not forloop.last %}
+    </div><div class="row">
+  {% endif %}
+  {% endfor %}
 </div>
 
 <!-------------------------------------------->

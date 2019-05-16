@@ -17,7 +17,7 @@ class OrganizationForm(forms.ModelForm):
 
     class Meta:
         model = Organization
-        fields = ['name', 'org_description', 'location', 'logo']
+        fields = ['name', 'org_description', 'location', 'logo', 'cover_photo']
         widgets = {
             'name': TextInput(
                 attrs={'class': 'form-control', 'placeholder': 'Organization Name'}),
