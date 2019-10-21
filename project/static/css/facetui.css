@@ -463,3 +463,10 @@ iframe#id_content_ifr {
   width: 317px !important;
   height: 200px !important;
 }
+
+
+/* Temp */
+
+#djShowToolBarButton {
+  display: none !important;
+}
