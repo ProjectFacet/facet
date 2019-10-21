@@ -9,7 +9,7 @@
 
 # core add-on products
 
-Django==1.11.9
+Django==1.11.23
 django-activity-stream==0.6.4
 django-allauth==0.35.0
 django-bootstrap3-datetimepicker-2==2.5.0
