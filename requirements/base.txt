@@ -30,7 +30,7 @@ djangorestframework==3.7.7
 # note that Pillow has some system dependencies for graphic libraries
 
 pilkit==2.0
-Pillow==5.0.0
+Pillow==8.3.2
 psycopg2==2.7.3.2
 
 # req'd by django-activity-stream but not installed automatically
