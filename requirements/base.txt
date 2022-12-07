@@ -41,7 +41,7 @@ django-jsonfield-compat==0.4.4
 # sub-requirements of other things; these would be installed automatically,
 # but are listed here to ensure versions don't accidentally change
 
-certifi==2017.11.5
+certifi==2022.12.7
 chardet==3.0.4
 idna==2.6
 oauthlib==2.0.6
